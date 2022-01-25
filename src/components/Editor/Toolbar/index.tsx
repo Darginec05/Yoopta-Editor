@@ -1,8 +1,8 @@
-import { useRef, useEffect, MouseEvent, useState } from "react";
+import { useRef, useEffect, MouseEvent, useState, ReactNode } from "react";
 import { Range, Editor } from "slate";
 import cx from "classnames";
 import { useSlate, ReactEditor } from "slate-react";
-import { isMarkActive, toggleMark } from "../utils";
+import { isMarkActive, isBlockActive, toggleBlock, toggleMark } from "../utils";
 import { ReactComponent as LinkIcon } from "./icons/link.svg";
 import { ReactComponent as BoldIcon } from "./icons/bold.svg";
 import { ReactComponent as ItalicIcon } from "./icons/italic.svg";
@@ -18,42 +18,64 @@ import { ReactComponent as NumberedListIcon } from "./icons/numbered_list.svg";
 import { ReactComponent as BlockQuoteIcon } from "./icons/blockquote.svg";
 import s from "./Toolbar.module.scss";
 
-const TextDropdown = () => {
+type Block = {
+  type: string;
+  name: string;
+  icon: ReactNode;
+};
+
+const ELEMENT_TYPES: Block[] = [
+  { icon: <ParagraphIcon />, name: "Text", type: "paragraph" },
+  { icon: <HeadingOneIcon />, name: "Heading 1", type: "heading-one" },
+  { icon: <HeadingTwoIcon />, name: "Heading 2", type: "heading-two" },
+  { icon: <HeadingThreeIcon />, name: "Heading 3", type: "heading-three" },
+  { icon: <BulletedListIcon />, name: "Bulleted List", type: "bulleted-list" },
+  { icon: <NumberedListIcon />, name: "Numbered List", type: "numbered-list" },
+  { icon: <BlockQuoteIcon />, name: "Blockquote", type: "block-quote" },
+];
+
+const defaultBlock: Block = {
+  name: "Heading 1",
+  type: "heading-one",
+  icon: null,
+};
+
+const TextDropdown = ({ handleBlockClick, activeElementType }) => {
   return (
     <div className={s.dropdown}>
-      <button type="button" className={cx(s.dropdownButton)}>
-        <ParagraphIcon /> <span>Text</span>
-      </button>
-      <button type="button" className={cx(s.dropdownButton, )}>
-        <HeadingOneIcon /> <span>Heading 1</span>
-      </button>
-      <button type="button" className={cx(s.dropdownButton, )}>
-        <HeadingTwoIcon /> <span>Heading 2</span>
-      </button>
-      <button type="button" className={cx(s.dropdownButton, )}>
-        <HeadingThreeIcon /> <span>Heading 3</span>
-      </button>
-      <button type="button" className={cx(s.dropdownButton, )}>
-        <BulletedListIcon /> <span>Bulleted list</span>
-      </button>
-      <button type="button" className={cx(s.dropdownButton, )}>
-        <NumberedListIcon /> <span>Numbered list</span>
-      </button>
-      <button type="button" className={cx(s.dropdownButton, )}>
-        <BlockQuoteIcon /> <span>Blockquote</span>
-      </button>
+      {ELEMENT_TYPES.map((element) => (
+        <button
+          onMouseDown={(e) => handleBlockClick(e, element.type)}
+          type="button"
+          className={cx(
+            s.dropdownButton,
+            activeElementType === element.type && s.__active
+          )}
+          key={element.type}
+        >
+          {element.icon} <span>{element.name}</span>
+        </button>
+      ))}
     </div>
   );
 };
 
 const Toolbar = () => {
+  const editor = useSlate();
   const ref = useRef<HTMLDivElement | null | any>();
   const [isDropdownOpen, setDropdownOpen] = useState<boolean>(false);
-  const editor = useSlate();
+  const [activeBlock, setActiveBlock] = useState<Block>(defaultBlock);
 
   const toggleTextDropdown = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setDropdownOpen(!isDropdownOpen);
+  };
+
+  const setCurrentBlock = () => {
+    const current = ELEMENT_TYPES.find((elem) =>
+      isBlockActive(editor, elem.type)
+    );
+    setActiveBlock(current || defaultBlock);
   };
 
   const showToolbar = () => {
@@ -79,55 +101,65 @@ const Toolbar = () => {
     const rect = domRange.getBoundingClientRect();
     el.style.opacity = "1";
 
-    el.style.top = "800.9375px";
-    el.style.left = "301.9375px";
-
-    // el.style.top = `${rect.top + window.pageYOffset - el.offsetHeight}px`;
-    // el.style.left = `${
-    //   rect.left + window.pageXOffset - el.offsetWidth / 2 + rect.width / 2
-    // }px`;
+    el.style.top = `${rect.top + window.pageYOffset - el.offsetHeight}px`;
+    el.style.left = `${
+      rect.left + window.pageXOffset - el.offsetWidth / 2 + rect.width / 2
+    }px`;
   };
 
-  useEffect(() => showToolbar());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    setCurrentBlock();
+    showToolbar();
+  });
 
-  const onMouseDown = (e: MouseEvent<HTMLButtonElement>, format: string) => {
+  const handleMarkClick = (e: MouseEvent<HTMLButtonElement>, mark: string) => {
     e.preventDefault();
-    toggleMark(editor, format);
+    toggleMark(editor, mark);
   };
 
-  console.log({ isDropdownOpen });
+  const handleBlockClick = (e: MouseEvent<HTMLButtonElement>, type: string) => {
+    e.preventDefault();
+    toggleBlock(editor, type);
+    toggleTextDropdown(e);
+  };
 
   return (
     <div ref={ref} className={s.menu}>
       <div className={s.toolbar}>
-        {isDropdownOpen && <TextDropdown />}
+        {isDropdownOpen && (
+          <TextDropdown
+            handleBlockClick={handleBlockClick}
+            activeElementType={activeBlock.type}
+          />
+        )}
         <button
           type="button"
           className={s.button}
           onMouseDown={toggleTextDropdown}
         >
-          Heading 1
+          {activeBlock?.name}
         </button>
         <button type="button" className={s.button}>
           <LinkIcon /> <span>Link</span>
         </button>
         <button
           type="button"
-          onMouseDown={(e) => onMouseDown(e, "bold")}
+          onMouseDown={(e) => handleMarkClick(e, "bold")}
           className={cx(s.button, isMarkActive(editor, "bold") && s.__active)}
         >
           <BoldIcon />
         </button>
         <button
           type="button"
-          onMouseDown={(e) => onMouseDown(e, "italic")}
+          onMouseDown={(e) => handleMarkClick(e, "italic")}
           className={cx(s.button, isMarkActive(editor, "italic") && s.__active)}
         >
           <ItalicIcon />
         </button>
         <button
           type="button"
-          onMouseDown={(e) => onMouseDown(e, "underline")}
+          onMouseDown={(e) => handleMarkClick(e, "underline")}
           className={cx(
             s.button,
             isMarkActive(editor, "underline") && s.__active
@@ -137,14 +169,14 @@ const Toolbar = () => {
         </button>
         <button
           type="button"
-          onMouseDown={(e) => onMouseDown(e, "strike")}
+          onMouseDown={(e) => handleMarkClick(e, "strike")}
           className={cx(s.button, isMarkActive(editor, "strike") && s.__active)}
         >
           <StrikeIcon />
         </button>
         <button
           type="button"
-          onMouseDown={(e) => onMouseDown(e, "code")}
+          onMouseDown={(e) => handleMarkClick(e, "code")}
           className={cx(s.button, isMarkActive(editor, "code") && s.__active)}
         >
           <CodeIcon />

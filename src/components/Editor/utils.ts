@@ -17,13 +17,13 @@ export const HOTKEYS: Record<string, string> = {
 
 export const LIST_TYPES = ["numbered-list", "bulleted-list"];
 
-export const isMarkActive = (editor: Editor, format: any): boolean => {
+export const isMarkActive = (editor: Editor, mark: any): boolean => {
   const marks: Omit<Text, "text"> | null = Editor.marks(editor);
 
-  return !!marks?.[format];
+  return !!marks?.[mark];
 };
 
-export const isBlockActive = (editor: Editor, format: any) => {
+export const isBlockActive = (editor: Editor, type: any) => {
   const { selection } = editor;
   if (!selection) return false;
 
@@ -31,7 +31,7 @@ export const isBlockActive = (editor: Editor, format: any) => {
     Editor.nodes(editor, {
       at: Editor.unhangRange(editor, selection),
       match: (n) =>
-        !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === format,
+        !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === type,
     })
   );
 

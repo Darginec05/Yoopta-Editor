@@ -28,6 +28,12 @@ const Element: FC<RenderElementProps | any> = ({
           {children}
         </h2>
       );
+    case "heading-three":
+      return (
+        <h3 className={s["heading-three"]} {...attributes}>
+          {children}
+        </h3>
+      );
     case "list-item":
       return (
         <li className={s.listItem} {...attributes}>

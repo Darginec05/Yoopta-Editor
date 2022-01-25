@@ -10,40 +10,19 @@ import {
   Element as SlateElement,
 } from "slate";
 import { useCallback, useMemo, useState, KeyboardEvent } from "react";
-import { Slate, Editable, withReact, useSlate } from "slate-react";
+import { Slate, Editable, withReact } from "slate-react";
 import { withHistory } from "slate-history";
-import { toggleBlock, isBlockActive, LIST_TYPES } from "./utils";
 import { TextLeaf } from "./TextLeaf";
 import { Element } from "./Element";
 import { withShortcuts, withSoftBreak } from "./plugins";
 import { Toolbar } from "./Toolbar";
 import { ParagraphElement } from "./custom-types";
 
-type ButtonProp = {
-  format: string;
-  icon: string;
-};
-
 const IGNORED_SOFT_BREAK_ELEMS = [
   "bulleted-list",
   "numbered-list",
   "list-item",
 ];
-
-const BlockButton = ({ format, icon }: ButtonProp) => {
-  const editor = useSlate();
-  return (
-    <button
-      style={{ color: isBlockActive(editor, format) ? "#000" : "#ccc" }}
-      onMouseDown={(event) => {
-        event.preventDefault();
-        toggleBlock(editor, format);
-      }}
-    >
-      <i>{icon}</i>
-    </button>
-  );
-};
 
 const getInitialData = () => {
   if (typeof window === "undefined") return [];
@@ -80,11 +59,8 @@ const SlateEditor = () => {
         children: [{ text: "" }],
       };
 
-      const [currentText] = Editor.leaf(
-        editor,
-        editor.selection!.anchor.path
-      );
-      
+      const [currentText] = Editor.leaf(editor, editor.selection!.anchor.path);
+
       const match = Editor.above(editor, {
         match: (n) => {
           return Editor.isBlock(editor, n) && n.type === "list-item";
@@ -142,13 +118,6 @@ const SlateEditor = () => {
           }}
         >
           <Toolbar />
-          <div style={{ marginBottom: "30px" }}>
-            <BlockButton format="heading-one" icon="heading_one" />
-            <BlockButton format="heading-two" icon="heading_two" />
-            <BlockButton format="block-quote" icon="quote" />
-            <BlockButton format="numbered-list" icon="list_numbered" />
-            <BlockButton format="bulleted-list" icon="list_bulleted" />
-          </div>
           <Editable
             placeholder="Type something.."
             renderLeaf={renderLeaf}
