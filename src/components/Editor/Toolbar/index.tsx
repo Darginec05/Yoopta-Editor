@@ -2,7 +2,7 @@ import { useRef, useEffect, MouseEvent, useState, ReactNode } from "react";
 import { Range, Editor } from "slate";
 import cx from "classnames";
 import { useSlate, ReactEditor } from "slate-react";
-import { isMarkActive, isBlockActive, toggleBlock, toggleMark } from "../utils";
+import { isMarkActive, isBlockActive, toggleBlock, toggleMark, unwrapLink } from "../utils";
 import { ReactComponent as LinkIcon } from "./icons/link.svg";
 import { ReactComponent as BoldIcon } from "./icons/bold.svg";
 import { ReactComponent as ItalicIcon } from "./icons/italic.svg";
@@ -124,6 +124,14 @@ const Toolbar = () => {
     toggleTextDropdown(e);
   };
 
+  const isLinkActive = isBlockActive(editor, "link");
+
+  const toggleLink = () => {
+    if (isLinkActive) {
+      unwrapLink(editor)
+    }
+  };
+
   return (
     <div ref={ref} className={s.menu}>
       <div className={s.toolbar}>
@@ -140,7 +148,11 @@ const Toolbar = () => {
         >
           {activeBlock?.name}
         </button>
-        <button type="button" className={s.button}>
+        <button
+          type="button"
+          className={cx(s.button, isLinkActive && s.__active)}
+          onMouseDown={toggleLink}
+        >
           <LinkIcon /> <span>Link</span>
         </button>
         <button

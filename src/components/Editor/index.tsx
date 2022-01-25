@@ -2,10 +2,7 @@ import {
   createEditor,
   Descendant,
   Editor,
-  Node,
-  Path,
   Range,
-  Text,
   Transforms,
   Element as SlateElement,
 } from "slate";
@@ -14,7 +11,7 @@ import { Slate, Editable, withReact } from "slate-react";
 import { withHistory } from "slate-history";
 import { TextLeaf } from "./TextLeaf";
 import { Element } from "./Element";
-import { withShortcuts, withSoftBreak } from "./plugins";
+import { withShortcuts, withSoftBreak, withInlines } from "./plugins";
 import { Toolbar } from "./Toolbar";
 import { ParagraphElement } from "./custom-types";
 
@@ -35,7 +32,10 @@ const getInitialData = () => {
 const SlateEditor = () => {
   const [value, setValue] = useState<Descendant[]>(() => getInitialData());
   const editor = useMemo(
-    () => withHistory(withShortcuts(withSoftBreak(withReact(createEditor())))),
+    () =>
+      withHistory(
+        withInlines(withShortcuts(withSoftBreak(withReact(createEditor()))))
+      ),
     []
   );
 
@@ -100,7 +100,7 @@ const SlateEditor = () => {
 
   return (
     <div style={{ display: "flex", width: "100%", justifyContent: "center" }}>
-      <div style={{ maxWidth: 680, paddingTop: "8rem", margin: "0 64px" }}>
+      <div style={{ maxWidth: 680, paddingTop: "4rem", margin: "0 64px" }}>
         <Slate
           editor={editor}
           value={value}

@@ -20,7 +20,7 @@
 .toolbar {
   border-radius: 10px;
   width: auto;
-  background: linear-gradient(to bottom,rgba(49,49,47,.99),#262625);
+  background: #262625;
   display: flex;
   padding: 0 7px;
   position: relative;
@@ -36,9 +36,10 @@
   padding: 13px 7px;
   background: inherit;
   transition: background 150ms ease-in-out;
+  border-right: 1px solid #262625;
 
   &:hover {
-    background: linear-gradient(to bottom, rgb(76 76 73 / 99%), #383835);
+    background: #383835;
   }
 
   span {
@@ -47,6 +48,7 @@
 
   &.__active {
     background: #007AFF;
+    border-right: 1px solid #262625;
   }
 }
 
@@ -67,4 +69,6 @@
   composes: button;
   padding: 8px 14px;
   justify-content: flex-start;
+
+  border-right: 1px solid !important;
 }
