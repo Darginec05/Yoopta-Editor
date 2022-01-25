@@ -8,13 +8,26 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@svgr/webpack": "^6.2.0",
+    "@types/uuid": "^8.3.4",
+    "classnames": "^2.3.1",
+    "is-hotkey": "^0.2.0",
+    "is-url": "^1.2.4",
     "next": "12.0.8",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "sass": "^1.48.0",
+    "slate": "^0.72.3",
+    "slate-history": "^0.66.0",
+    "slate-react": "^0.72.4",
+    "styled-components": "^5.3.3",
+    "url-loader": "^4.1.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/node": "17.0.8",
     "@types/react": "17.0.38",
+    "@types/styled-components": "^5.1.20",
     "eslint": "8.6.0",
     "eslint-config-next": "12.0.8",
     "typescript": "4.5.4"

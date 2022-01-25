@@ -1,0 +1,47 @@
+.heading-one {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 36px;
+  margin-top: 1.95em;
+  margin-bottom: -0.28em;
+  letter-spacing: 0;
+  color: rgba(41, 41, 41, 1);
+}
+
+.heading-two {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 28px;
+  margin-top: 1.72em;
+  margin-bottom: -0.31em;
+  color: rgba(41, 41, 41, 1);
+}
+
+.paragraph {
+  margin-top: 0.86em;
+  margin-bottom: -0.46em;
+  letter-spacing: -0.003em;
+  font-size: 21px;
+  color: rgba(41, 41, 41, 1);
+  line-height: 32px;
+  position: relative;
+}
+
+.blockquote {
+  composes: paragraph;
+  border-left: 3px solid currentcolor;
+  padding-left: 14px;
+  padding-right: 14px;
+  width: 100%;
+  margin-top: 2em;
+  margin-left: 0;
+}
+
+.listItem {
+  composes: paragraph;
+  margin-top: 0.56em;
+}
