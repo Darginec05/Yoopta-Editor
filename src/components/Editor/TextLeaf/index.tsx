@@ -1,7 +1,7 @@
-import { FC } from "react";
-import { RenderLeafProps } from "slate-react";
-import cx from "classnames";
-import s from "./TextLeaf.module.scss";
+import { FC } from 'react';
+import { RenderLeafProps } from 'slate-react';
+import cx from 'classnames';
+import s from './TextLeaf.module.scss';
 
 const TextLeaf: FC<RenderLeafProps> = ({ attributes, children, leaf }) => {
   return (
@@ -18,7 +18,8 @@ const TextLeaf: FC<RenderLeafProps> = ({ attributes, children, leaf }) => {
       {children}
       {leaf.placeholder && (
         <span className={s.placeholder} contentEditable={false}>
-          {' '}Type / to open menu
+          {' '}
+          Type / to open menu
         </span>
       )}
     </span>

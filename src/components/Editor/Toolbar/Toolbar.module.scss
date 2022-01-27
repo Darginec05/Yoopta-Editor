@@ -36,7 +36,7 @@
   padding: 13px 7px;
   background: inherit;
   transition: background 150ms ease-in-out;
-  border-right: 1px solid #262625;
+  // border-right: 1px solid #262625;
 
   &:hover {
     background: #383835;
@@ -48,7 +48,7 @@
 
   &.__active {
     background: #007AFF;
-    border-right: 1px solid #262625;
+    // border-right: 1px solid #262625;
   }
 }
 
@@ -58,17 +58,16 @@
   padding: 8px 0;
   position: absolute;
   bottom: calc(100% + 10px);
-  left: 0;
   background: linear-gradient(to right,rgba(49,49,47,.99),#262625);
   border-radius: 5px;
   display: flex;
   flex-direction: column;
+  transition: all 150ms ease-in;
 }
 
 .dropdownButton {
   composes: button;
   padding: 8px 14px;
   justify-content: flex-start;
-
-  border-right: 1px solid !important;
+  // border-right: 1px solid !important;
 }

@@ -1,7 +1,7 @@
 import { Editor, Element, Range, Transforms, Point } from "slate";
 import isUrl from "is-url";
 import { BulletedListElement } from "./custom-types";
-import { insertImage, isImageUrl, KEYBOARD_SHORTCUTS, wrapLink } from "./utils";
+import { insertImage, isImageUrl, KEYBOARD_SHORTCUTS, addLinkNode } from "./utils";
 
 // [TODO]
 export const withSoftBreak = (editor: Editor) => {
@@ -147,7 +147,7 @@ export const withInlines = (editor) => {
 
   editor.insertText = (text) => {
     if (text && isUrl(text)) {
-      wrapLink(editor, text);
+      addLinkNode(editor, text);
     } else {
       insertText(text);
     }
@@ -157,7 +157,7 @@ export const withInlines = (editor) => {
     const text = data.getData("text/plain");
 
     if (text && isUrl(text)) {
-      wrapLink(editor, text);
+      addLinkNode(editor, text);
     } else {
       insertData(data);
     }
