@@ -14,6 +14,7 @@ import { Element } from "./Element";
 import { withShortcuts, withSoftBreak, withInlines } from "./plugins";
 import { Toolbar } from "./Toolbar";
 import { ParagraphElement } from "./custom-types";
+import { DEFAULT_STATE } from "./utils";
 
 const IGNORED_SOFT_BREAK_ELEMS = [
   "bulleted-list",
@@ -26,7 +27,7 @@ const getInitialData = () => {
 
   const content = localStorage.getItem("content");
 
-  return content ? JSON.parse(content) : [];
+  return content ? JSON.parse(content) : JSON.parse(DEFAULT_STATE);
 };
 
 const SlateEditor = () => {
