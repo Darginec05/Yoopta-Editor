@@ -2,11 +2,14 @@
 const nextConfig = {
   webpack5: true,
   reactStrictMode: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   devIndicators: {
     autoPrerender: false,
   },
   images: {
-    domains: ["res.cloudinary.com"],
+    domains: ['res.cloudinary.com'],
   },
   typescript: {
     ignoreBuildErrors: true,
@@ -15,18 +18,18 @@ const nextConfig = {
     config.module.rules.push(
       {
         test: /\.svg$/,
-        use: ["@svgr/webpack", "url-loader"],
+        use: ['@svgr/webpack', 'url-loader'],
       },
       {
         test: /\.(eot|png|jpg|gif)$/,
         use: {
-          loader: "url-loader",
+          loader: 'url-loader',
           options: {
             limit: 100000,
-            name: "[name].[ext]",
+            name: '[name].[ext]',
           },
         },
-      }
+      },
     );
 
     return config;
