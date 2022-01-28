@@ -1,12 +1,14 @@
-import { CSSProperties, FC, ReactNode, useEffect, useState } from "react";
-import cx from "classnames";
-import s from "./Fade.module.scss";
+import {
+  CSSProperties, FC, ReactNode, useEffect, useState,
+} from 'react';
+import cx from 'classnames';
+import s from './Fade.module.scss';
 
 const useMountTransition = (show: boolean, unmountDelay: number) => {
   const [hasTransitionedIn, setHasTransitionedIn] = useState(false);
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId;
 
     if (show && !hasTransitionedIn) {
       setHasTransitionedIn(true);
@@ -29,10 +31,7 @@ type FadeProps = {
 };
 
 const Fade: FC<FadeProps> = ({
-  show,
-  animationDelay = 500,
-  children,
-  styles,
+  show, animationDelay = 500, children, styles,
 }) => {
   const hasTransitionedIn = useMountTransition(show, animationDelay);
 

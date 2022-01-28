@@ -5,11 +5,7 @@ import { Range, Editor } from 'slate';
 import cx from 'classnames';
 import { useSlate, ReactEditor } from 'slate-react';
 import {
-  isMarkActive,
-  isBlockActive,
-  toggleBlock,
-  toggleMark,
-  getMatchedNode,
+  isMarkActive, isBlockActive, toggleBlock, toggleMark, getMatchedNode, getAbsPositionBySelection,
 } from '../utils';
 import { ReactComponent as LinkIcon } from './icons/link.svg';
 import { ReactComponent as BoldIcon } from './icons/bold.svg';
@@ -50,14 +46,14 @@ const defaultBlock: Block = {
   icon: null,
 };
 
-const TextDropdown = ({ handleBlockClick, activeElementType }) => {
+export const TextDropdown = ({ handleBlockClick, selectedElementType }) => {
   return (
     <div className={s.dropdown}>
       {ELEMENT_TYPES.map((element) => (
         <button
           onMouseDown={(e) => handleBlockClick(e, element.type)}
           type="button"
-          className={cx(s.dropdownButton, activeElementType === element.type && s.__active)}
+          className={cx(s.dropdownButton, selectedElementType === element.type && s.__active)}
           key={element.type}
         >
           {element.icon}
@@ -78,15 +74,14 @@ const Toolbar = () => {
 
   const toggleTextDropdown = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    if (isLinkOpen) setLinkOpen(false);
     setDropdownOpen(!isDropdownOpen);
   };
 
   const toggleLinkInput = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    if (isDropdownOpen) setDropdownOpen(false);
     setLinkOpen(!isLinkOpen);
-    // if (isLinkActive) {
-    //   removeLinkNode(editor)
-    // }
   };
 
   const setCurrentBlock = () => {
@@ -109,16 +104,16 @@ const Toolbar = () => {
       || Editor.string(editor, selection) === ''
     ) {
       el.removeAttribute('style');
+      setLinkOpen(false);
+      setDropdownOpen(false);
       return;
     }
 
-    const domSelection = window.getSelection()!;
-    const domRange = domSelection.getRangeAt(0);
-    const rect = domRange.getBoundingClientRect();
-    el.style.opacity = '1';
+    const { top, left } = getAbsPositionBySelection(el);
 
-    el.style.top = `${rect.top + window.pageYOffset - el.offsetHeight}px`;
-    el.style.left = `${rect.left + window.pageXOffset - el.offsetWidth / 2 + rect.width / 2}px`;
+    el.style.opacity = '1';
+    el.style.top = `${top}px`;
+    el.style.left = `${left}px`;
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -144,7 +139,7 @@ const Toolbar = () => {
     <div ref={ref} className={s.menu}>
       <div className={s.toolbar}>
         <Fade show={isDropdownOpen} animationDelay={300}>
-          <TextDropdown handleBlockClick={handleBlockClick} activeElementType={activeBlock.type} />
+          <TextDropdown handleBlockClick={handleBlockClick} selectedElementType={activeBlock.type} />
         </Fade>
         <Fade show={isLinkOpen} animationDelay={300}>
           <LinkInput editor={editor} linkNode={linkNode} onClose={() => setLinkOpen(false)} />
