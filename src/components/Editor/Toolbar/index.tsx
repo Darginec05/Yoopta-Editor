@@ -1,11 +1,16 @@
 import {
-  useRef, useEffect, MouseEvent, useState, ReactNode,
+  useRef, useEffect, MouseEvent, useState, ReactNode, KeyboardEvent,
 } from 'react';
 import { Range, Editor } from 'slate';
 import cx from 'classnames';
 import { useSlate, ReactEditor } from 'slate-react';
 import {
-  isMarkActive, isBlockActive, toggleBlock, toggleMark, getMatchedNode, getAbsPositionBySelection,
+  isMarkActive,
+  isBlockActive,
+  toggleBlock,
+  toggleMark,
+  getMatchedNode,
+  getAbsPositionBySelection,
 } from '../utils';
 import { ReactComponent as LinkIcon } from './icons/link.svg';
 import { ReactComponent as BoldIcon } from './icons/bold.svg';
@@ -20,6 +25,8 @@ import { ReactComponent as HeadingThreeIcon } from './icons/heading_three.svg';
 import { ReactComponent as BulletedListIcon } from './icons/bulleted_list.svg';
 import { ReactComponent as NumberedListIcon } from './icons/numbered_list.svg';
 import { ReactComponent as BlockQuoteIcon } from './icons/blockquote.svg';
+import { ReactComponent as VideoIcon } from '../../../icons/video.svg';
+import { ReactComponent as ImageIcon } from '../../../icons/image.svg';
 import { Fade } from '../../Fade';
 import { LinkInput } from '../../LinkInput';
 import s from './Toolbar.module.scss';
@@ -38,6 +45,8 @@ const ELEMENT_TYPES: Block[] = [
   { icon: <BulletedListIcon />, name: 'Bulleted List', type: 'bulleted-list' },
   { icon: <NumberedListIcon />, name: 'Numbered List', type: 'numbered-list' },
   { icon: <BlockQuoteIcon />, name: 'Blockquote', type: 'block-quote' },
+  { icon: <ImageIcon />, name: 'Image', type: 'image' },
+  { icon: <VideoIcon />, name: 'Video', type: 'video' },
 ];
 
 const defaultBlock: Block = {
@@ -47,11 +56,29 @@ const defaultBlock: Block = {
 };
 
 export const TextDropdown = ({ handleBlockClick, selectedElementType }) => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     ref.current?.focus();
+  //   }, 100);
+
+  //   return () => clearTimeout(timer);
+  // }, []);
+
+  const onKeyDown = (e: KeyboardEvent<HTMLButtonElement>, type: string) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleBlockClick(e, type);
+    }
+  };
+
   return (
-    <div className={s.dropdown}>
+    <div className={s.dropdown} role="dialog" tabIndex={-1} ref={ref}>
       {ELEMENT_TYPES.map((element) => (
         <button
           onMouseDown={(e) => handleBlockClick(e, element.type)}
+          onKeyDown={(e) => onKeyDown(e, element.type)}
           type="button"
           className={cx(s.dropdownButton, selectedElementType === element.type && s.__active)}
           key={element.type}

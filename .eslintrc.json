@@ -40,6 +40,7 @@
     "react/jsx-filename-extension": 0,
     "react/function-component-definition": 0,
     "react/require-default-props": 0,
-    "max-len": ["error", { "code": 120 }]
+    "max-len": ["error", { "code": 120 }],
+    "object-curly-newline": 0
   }
 }

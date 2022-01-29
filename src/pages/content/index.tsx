@@ -1,9 +1,17 @@
 import { v4 } from 'uuid';
+import { useState } from 'react';
 import { TextLeaf } from '../../components/Editor/TextLeaf';
 import { Element } from '../../components/Editor/Element';
 import { DEFAULT_STATE } from '../../components/Editor/utils';
 
-const Content = ({ value }) => {
+const Content = ({ value: serverData }) => {
+  const [value] = useState(() => {
+    if (typeof window === 'undefined') return [];
+
+    const content = localStorage.getItem('content');
+    return content ? JSON.parse(content) : serverData;
+  });
+
   const renderChildren = (child) => {
     const childId = v4();
 

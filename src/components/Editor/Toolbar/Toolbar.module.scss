@@ -37,7 +37,7 @@
   background: inherit;
   transition: background 150ms ease-in-out;
 
-  &:hover {
+  &:hover, &:focus {
     background: #383835;
   }
 

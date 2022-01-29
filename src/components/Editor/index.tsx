@@ -1,20 +1,16 @@
-import {
-  createEditor, Descendant, Editor, Range, Transforms, Element as SlateElement,
-} from 'slate';
-import {
-  useCallback, useMemo, useState, KeyboardEvent, useRef,
-} from 'react';
-import {
-  Slate, Editable, withReact,
-} from 'slate-react';
+import { createEditor, Descendant, Editor, Range, Transforms } from 'slate';
+import { useCallback, useMemo, useState, KeyboardEvent, useRef } from 'react';
+import { Slate, Editable, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
+import { v4 } from 'uuid';
 import { TextLeaf } from './TextLeaf';
 import { Element } from './Element';
-import { withShortcuts, withSoftBreak, withInlines } from './plugins';
+import { withShortcuts, withSoftBreak, withInlines, withImages } from './plugins';
 import { TextDropdown, Toolbar } from './Toolbar';
 import { ParagraphElement } from './custom-types';
-import { DEFAULT_STATE, getAbsPositionBySelection, toggleBlock } from './utils';
+import { DEFAULT_STATE, getAbsPositionBySelection, isOpenCMDBar, toggleBlock } from './utils';
 import { Fade } from '../Fade';
+import { OutsideClick } from '../OutsideClick';
 
 const IGNORED_SOFT_BREAK_ELEMS = ['bulleted-list', 'numbered-list', 'list-item'];
 
@@ -28,8 +24,14 @@ const getInitialData = () => {
 
 const SlateEditor = () => {
   const [value, setValue] = useState<Descendant[]>(() => getInitialData());
-  const [CMDBar, setCMDBar] = useState({ open: false, position: {} });
-  const editor = useMemo(() => withHistory(withInlines(withShortcuts(withSoftBreak(withReact(createEditor()))))), []);
+  const [CMDBar, setCMDBar] = useState({
+    open: false,
+    position: {},
+  });
+  const editor = useMemo(
+    () => withHistory(withImages(withInlines(withShortcuts(withSoftBreak(withReact(createEditor())))))),
+    [],
+  );
   const CMDBarElementRef = useRef(null);
 
   const renderLeaf = useCallback((leafProps) => <TextLeaf {...leafProps} />, []);
@@ -42,38 +44,41 @@ const SlateEditor = () => {
 
     const [currentText] = Editor.leaf(editor, editor.selection!.anchor.path);
 
-    if (currentText.text.trim().length === 0 && event.key === '/') {
-      setCMDBar({ open: true, position: getAbsPositionBySelection(CMDBarElementRef.current) });
+    if (isOpenCMDBar({ text: currentText.text, event })) {
+      setCMDBar({
+        open: true,
+        position: getAbsPositionBySelection(CMDBarElementRef.current),
+      });
       return;
     }
 
-    if (CMDBar.open) setCMDBar({ open: false, position: {} });
+    if (CMDBar.open) {
+      setCMDBar({
+        open: false,
+        position: {},
+      });
+    }
 
     if (event.key === 'Enter') {
       const newLine: ParagraphElement = {
+        id: v4(),
         type: 'paragraph',
-        children: [{ text: '' }],
+        children: [
+          {
+            text: '',
+          },
+        ],
       };
 
-      const match = Editor.above(editor, {
+      const isListBlock = Editor.above(editor, {
         match: (n) => {
           return Editor.isBlock(editor, n) && n.type === 'list-item';
         },
       });
 
-      if (match && currentText.text.trim() === '') {
+      if (isListBlock && currentText.text.trim() === '') {
         event.preventDefault();
-
-        Transforms.setNodes<SlateElement>(editor, newLine, {
-          match: (n) => Editor.isBlock(editor, n),
-        });
-
-        Transforms.unwrapNodes(editor, {
-          match: (n) => !Editor.isEditor(n)
-            && SlateElement.isElement(n)
-            && (n.type === 'bulleted-list' || n.type === 'list-item' || n.type === 'numbered-list'),
-          split: true,
-        });
+        toggleBlock(editor, 'paragraph');
       }
 
       if (event.shiftKey) {
@@ -89,13 +94,16 @@ const SlateEditor = () => {
     }
   };
 
-  const handleBlockClick = (e, type: string) => {
+  const handleBlockClick = (_e: any, type: string) => {
     toggleBlock(editor, type);
     Transforms.insertText(editor, 'Change text', {
-      at: editor.selection.anchor.path,
+      at: editor.selection!.anchor.path,
     });
 
-    setCMDBar({ open: false, position: getAbsPositionBySelection(CMDBarElementRef.current) });
+    setCMDBar({
+      open: false,
+      position: getAbsPositionBySelection(CMDBarElementRef.current),
+    });
   };
 
   return (
@@ -125,52 +133,54 @@ const SlateEditor = () => {
         style={{
           maxWidth: 680,
           paddingTop: '4rem',
-          paddingBottom: '12rem',
+          paddingBottom: '30vh',
           margin: '0 64px',
+          width: '100%',
         }}
       >
-        <Slate
-          editor={editor}
-          value={value}
-          onChange={(val) => {
-            setValue(val);
+        <OutsideClick onClose={() => null}>
+          <Slate
+            editor={editor}
+            value={value}
+            onChange={(val) => {
+              setValue(val);
 
-            const isASTChanged = editor.operations.some((op) => op.type !== 'set_selection');
+              const isASTChanged = editor.operations.some((op) => op.type !== 'set_selection');
 
-            if (isASTChanged) {
-              const content = JSON.stringify(value);
-              localStorage.setItem('content', content);
-            }
-          }}
-        >
-          <Toolbar />
-          <Editable
-            placeholder="Type something.."
-            renderLeaf={renderLeaf}
-            renderElement={renderElement}
-            onKeyDown={onKeyDown}
-            decorate={([node, path]) => {
-              if (editor.selection) {
-                if (
-                  !Editor.isEditor(node)
-                  && Editor.string(editor, [path[0]]) === ''
-                  && Range.includes(editor.selection, path)
-                  && Range.isCollapsed(editor.selection)
-                ) {
-                  return [
-                    {
-                      ...editor.selection,
-                      placeholder: true,
-                    },
-                  ];
-                }
+              if (isASTChanged) {
+                const content = JSON.stringify(value);
+                localStorage.setItem('content', content);
               }
-              return [];
             }}
-            spellCheck
-            // autoFocus
-          />
-        </Slate>
+          >
+            <Toolbar />
+            <Editable
+              renderLeaf={renderLeaf}
+              renderElement={renderElement}
+              onKeyDown={onKeyDown}
+              decorate={([node, path]) => {
+                if (editor.selection) {
+                  if (
+                    !Editor.isEditor(node)
+                    && Editor.string(editor, [path[0]]) === ''
+                    && Range.includes(editor.selection, path)
+                    && Range.isCollapsed(editor.selection)
+                  ) {
+                    return [
+                      {
+                        ...editor.selection,
+                        placeholder: true,
+                      },
+                    ];
+                  }
+                }
+                return [];
+              }}
+              spellCheck
+              // autoFocus
+            />
+          </Slate>
+        </OutsideClick>
       </div>
     </div>
   );
