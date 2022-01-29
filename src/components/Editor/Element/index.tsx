@@ -1,20 +1,23 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
 import { FC } from 'react';
 import { RenderElementProps } from 'slate-react';
+import { Image } from '../../Image';
+import { ImageEditor } from '../../ImageEditor';
 import s from './Element.module.scss';
 
 const Element: FC<RenderElementProps | any> = ({ attributes, children, element }) => {
-  const onMouseEnter = (type) => {
-    console.log('Entered ', type);
+  const handleHover = (type) => {
+    console.log('Hovered', { type });
   };
 
   switch (element.type) {
     case 'block-quote':
       return (
         <blockquote
+          data-node-id={element.id}
           role="row"
           tabIndex={0}
-          onMouseEnter={() => onMouseEnter('block-quote')}
+          onMouseEnter={() => handleHover('block-quote')}
           className={s.blockquote}
           {...attributes}
         >
@@ -23,7 +26,13 @@ const Element: FC<RenderElementProps | any> = ({ attributes, children, element }
       );
     case 'bulleted-list':
       return (
-        <ul role="row" tabIndex={0} onMouseEnter={() => onMouseEnter('bulleted-list')} {...attributes}>
+        <ul
+          role="row"
+          data-node-id={element.id}
+          tabIndex={0}
+          onMouseEnter={() => handleHover('bulleted-list')}
+          {...attributes}
+        >
           {children}
         </ul>
       );
@@ -31,8 +40,9 @@ const Element: FC<RenderElementProps | any> = ({ attributes, children, element }
       return (
         <h1
           role="row"
+          data-node-id={element.id}
           tabIndex={0}
-          onMouseEnter={() => onMouseEnter('heading-one')}
+          onMouseEnter={() => handleHover('heading-one')}
           className={s['heading-one']}
           {...attributes}
         >
@@ -43,8 +53,9 @@ const Element: FC<RenderElementProps | any> = ({ attributes, children, element }
       return (
         <h2
           role="row"
+          data-node-id={element.id}
           tabIndex={0}
-          onMouseEnter={() => onMouseEnter('heading-two')}
+          onMouseEnter={() => handleHover('heading-two')}
           className={s['heading-two']}
           {...attributes}
         >
@@ -55,8 +66,9 @@ const Element: FC<RenderElementProps | any> = ({ attributes, children, element }
       return (
         <h3
           role="row"
+          data-node-id={element.id}
           tabIndex={0}
-          onMouseEnter={() => onMouseEnter('heading-three')}
+          onMouseEnter={() => handleHover('heading-three')}
           className={s['heading-three']}
           {...attributes}
         >
@@ -65,26 +77,68 @@ const Element: FC<RenderElementProps | any> = ({ attributes, children, element }
       );
     case 'list-item':
       return (
-        <li className={s.listItem} {...attributes}>
+        <li data-node-id={element.id} className={s.listItem} {...attributes}>
           {children}
         </li>
       );
     case 'numbered-list':
       return (
-        <ol role="row" tabIndex={0} onMouseEnter={() => onMouseEnter('numbered-list')} {...attributes}>
+        <ol
+          role="row"
+          data-node-id={element.id}
+          tabIndex={0}
+          onMouseEnter={() => handleHover('numbered-list')}
+          {...attributes}
+        >
           {children}
         </ol>
       );
 
     case 'link':
       return (
-        <a {...attributes} href={element.url} rel="noreferrer" target="_blank" className={s.link}>
+        <a
+          {...attributes}
+          data-node-id={element.id}
+          href={element.url}
+          rel="noreferrer"
+          target="_blank"
+          className={s.link}
+        >
           {children}
         </a>
       );
+
+    case 'image': {
+      if (element.src) {
+        return (
+          <div {...attributes} data-node-id={element.id} className={s.image} onMouseEnter={() => handleHover('image')}>
+            <Image src={element.src} alt="URI" />
+            {children}
+          </div>
+        );
+      }
+
+      return (
+        <ImageEditor
+          element={element}
+          attributes={attributes}
+          className={s.image}
+          onMouseEnter={() => handleHover('image')}
+        >
+          {children}
+        </ImageEditor>
+      );
+    }
     default:
       return (
-        <p role="row" tabIndex={0} className={s.paragraph} {...attributes}>
+        <p
+          role="row"
+          tabIndex={0}
+          className={s.paragraph}
+          {...attributes}
+          onMouseEnter={() => handleHover('paragraph')}
+          data-node-id={element.id}
+        >
           {children}
         </p>
       );

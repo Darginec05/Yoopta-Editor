@@ -1,6 +1,5 @@
-import {
-  Editor, Text, Element as SlateElement, Transforms, Range,
-} from 'slate';
+import { Editor, Text, Element as SlateElement, Transforms, Range } from 'slate';
+import { v4 } from 'uuid';
 import isUrl from 'is-url';
 import { ImageElement, LinkElement } from './custom-types';
 
@@ -35,7 +34,7 @@ export const getMatchedNode = (editor: Editor, type: any) => {
 
 export const isBlockActive = (editor: Editor, type: any) => !!getMatchedNode(editor, type);
 
-export const toggleBlock = (editor: Editor, blockType: any) => {
+export const toggleBlock = (editor: Editor, blockType: any, data = { isVoid: false }) => {
   const isActive = isBlockActive(editor, blockType);
   const isList = LIST_TYPES.includes(blockType);
 
@@ -44,13 +43,21 @@ export const toggleBlock = (editor: Editor, blockType: any) => {
     split: true,
   });
   const node: Partial<SlateElement> = {
+    id: v4(),
     // eslint-disable-next-line no-nested-ternary
     type: isActive ? 'paragraph' : isList ? 'list-item' : blockType,
+    ...data,
   };
+
+  // ignore active state when element is void
+  if (data.isVoid) {
+    node.type = blockType;
+  }
+
   Transforms.setNodes<SlateElement>(editor, node);
 
   if (!isActive && isList) {
-    const block = { type: blockType, children: [] };
+    const block = { id: v4(), type: blockType, children: [] };
     Transforms.wrapNodes(editor, block);
   }
 };
@@ -72,9 +79,9 @@ export const isImageUrl = (url: string) => {
   return true; // [TODO]
 };
 
-export const insertImage = (editor: Editor, url: string | ArrayBuffer | null) => {
+export const insertImage = (editor: Editor, src: string | ArrayBuffer | null) => {
   const text = { text: '' };
-  const image: ImageElement = { type: 'image', url, children: [text] };
+  const image: ImageElement = { id: v4(), type: 'image', src, children: [text] };
   Transforms.insertNodes(editor, image);
 };
 
@@ -92,6 +99,7 @@ export const addLinkNode = (editor: Editor, url: string) => {
   const { selection } = editor;
   const isCollapsed = selection && Range.isCollapsed(selection);
   const link: LinkElement = {
+    id: v4(),
     type: 'link',
     url,
     children: isCollapsed ? [{ text: url }] : [],
@@ -116,6 +124,14 @@ export const getAbsPositionBySelection = (element) => {
     top: rect.top + window.pageYOffset - element.offsetHeight,
     left: rect.left + window.pageXOffset - element.offsetWidth / 2 + rect.width / 2,
   };
+};
+
+export const isOpenCMDBar = ({ text, event }) => {
+  if (text.trim().length === 0 && event.key === '/') {
+    return true;
+  }
+
+  return false;
 };
 
 export const KEYBOARD_SHORTCUTS = {
