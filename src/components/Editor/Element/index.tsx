@@ -1,12 +1,11 @@
 /* eslint-disable react/display-name */
 /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
-import { FC, memo, ReactNode } from 'react';
-import { RenderElementProps, useSlate } from 'slate-react';
-import { v4 } from 'uuid';
-import { Transforms } from 'slate';
+import { FC, memo, ReactNode, useMemo } from 'react';
+import { RenderElementProps } from 'slate-react';
+import { ElementHover } from '../../HoveredMenu';
 import { Image as ImageRender } from '../../Image';
 import { ImageEditor } from '../../ImageEditor';
-import { ReactComponent as PlusIcon } from '../../../icons/add.svg';
+import { ELEMENT_TYPES_MAP } from '../constants';
 import s from './Element.module.scss';
 
 type ElementProps = {
@@ -14,41 +13,6 @@ type ElementProps = {
   element: any;
   children: ReactNode;
 };
-
-const HoveredMenu = () => {
-  const editor = useSlate();
-
-  return (
-    <div className={s.hoverSettings}>
-      <button
-        type="button"
-        // [TODO] - insert after clicked node
-        onClick={() => {
-          Transforms.insertNodes(editor, [
-            {
-              id: v4(),
-              type: 'paragraph',
-              children: [{ text: '' }],
-            },
-          ]);
-        }}
-        title="Click to add node"
-        className={s.hoverSettingsItem}
-      >
-        <PlusIcon fill="red" color="red" />
-      </button>
-    </div>
-  );
-};
-
-const ElementHover = memo<Omit<ElementProps, 'attributes'>>(({ children, element }) => {
-  return (
-    <div className={s.hoverItem} data-node-id={element.id}>
-      <HoveredMenu />
-      {children}
-    </div>
-  );
-});
 
 const Blockquote = memo<ElementProps>(({ attributes, element, children }) => {
   return (
@@ -137,17 +101,18 @@ const Paragraph = memo<ElementProps>(({ attributes, element, children }) => {
 });
 
 const Image = memo<ElementProps>(({ attributes, element, children }) => {
-  if (element.src) {
+  if (element['data-src']) {
     return (
       <ElementHover element={element}>
         <div {...attributes} className={s.image}>
-          <ImageRender src={element.src} alt="URI" />
+          <ImageRender src={element['data-src']} alt="URI" />
           {children}
         </div>
       </ElementHover>
     );
   }
 
+  // [TODO] - fix perfomance
   return (
     <ElementHover element={element}>
       <ImageEditor element={element} attributes={attributes} className={s.image}>
@@ -157,40 +122,27 @@ const Image = memo<ElementProps>(({ attributes, element, children }) => {
   );
 });
 
-export const ELEMENT_TYPES_MAP = {
-  'block-quote': 'block-quote',
-  'bulleted-list': 'bulleted-list',
-  'numbered-list': 'numbered-list',
-  'list-item': 'list-item',
-  'heading-one': 'heading-one',
-  'heading-two': 'heading-two',
-  'heading-three': 'heading-three',
-  link: 'link',
-  image: 'image',
-  paragraph: 'paragraph',
-};
-
 const ELEMENT_RENDER_ITEMS = {
-  [ELEMENT_TYPES_MAP.paragraph]: { component: Paragraph, props: {} },
-  [ELEMENT_TYPES_MAP['block-quote']]: { component: Blockquote, props: {} },
-  [ELEMENT_TYPES_MAP['bulleted-list']]: { component: BulletedList, props: {} },
-  [ELEMENT_TYPES_MAP['numbered-list']]: { component: NumberedList, props: {} },
-  [ELEMENT_TYPES_MAP['list-item']]: { component: ListItem, props: {} },
-  [ELEMENT_TYPES_MAP['heading-one']]: { component: HeadingOne, props: {} },
-  [ELEMENT_TYPES_MAP['heading-two']]: { component: HeadingTwo, props: {} },
-  [ELEMENT_TYPES_MAP['heading-three']]: { component: HeadingThree, props: {} },
-  [ELEMENT_TYPES_MAP.link]: { component: Link, props: {} },
-  [ELEMENT_TYPES_MAP.image]: { component: Image, props: {} },
-  [ELEMENT_TYPES_MAP.paragraph]: { component: Paragraph, props: {} },
+  [ELEMENT_TYPES_MAP.paragraph]: Paragraph,
+  [ELEMENT_TYPES_MAP['block-quote']]: Blockquote,
+  [ELEMENT_TYPES_MAP['bulleted-list']]: BulletedList,
+  [ELEMENT_TYPES_MAP['numbered-list']]: NumberedList,
+  [ELEMENT_TYPES_MAP['list-item']]: ListItem,
+  [ELEMENT_TYPES_MAP['heading-one']]: HeadingOne,
+  [ELEMENT_TYPES_MAP['heading-two']]: HeadingTwo,
+  [ELEMENT_TYPES_MAP['heading-three']]: HeadingThree,
+  [ELEMENT_TYPES_MAP.link]: Link,
+  [ELEMENT_TYPES_MAP.image]: Image,
+  [ELEMENT_TYPES_MAP.paragraph]: Paragraph,
 };
 
 const Element: FC<RenderElementProps | any> = ({ attributes, children, element }) => {
-  const { component: Component, props } = ELEMENT_RENDER_ITEMS[element.type];
+  const Component = useMemo(() => ELEMENT_RENDER_ITEMS[element.type], [element.type]);
 
   if (!Component) return null;
 
   return (
-    <Component {...props} attributes={attributes} element={element}>
+    <Component attributes={attributes} element={element}>
       {children}
     </Component>
   );

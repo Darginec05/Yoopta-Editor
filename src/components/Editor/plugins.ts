@@ -5,11 +5,6 @@ import isUrl from 'is-url';
 import { BulletedListElement } from './types';
 import { KEYBOARD_SHORTCUTS, addLinkNode } from './utils';
 
-// [TODO]
-export const withSoftBreak = (editor: Editor) => {
-  return editor;
-};
-
 export const withImages = (editor: Editor) => {
   const { isVoid } = editor;
 

@@ -1,18 +1,31 @@
 import { createEditor, Descendant, Editor, Range, Transforms } from 'slate';
-import { useCallback, useMemo, useState, KeyboardEvent, useRef } from 'react';
+import { useCallback, useMemo, useState, KeyboardEvent, useRef, CSSProperties } from 'react';
 import { Slate, Editable, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
 import { v4 } from 'uuid';
 import { TextLeaf } from './TextLeaf';
 import { Element } from './Element';
-import { withShortcuts, withSoftBreak, withInlines, withImages, withCorrectVoidBehavior } from './plugins';
+import { withShortcuts, withInlines, withImages, withCorrectVoidBehavior } from './plugins';
 import { TextDropdown, Toolbar } from './Toolbar';
 import { ParagraphElement } from './types';
 import { DEFAULT_STATE, getAbsPositionBySelection, isOpenCMDBar, toggleBlock } from './utils';
 import { Fade } from '../Fade';
-import { OutsideClick } from '../OutsideClick';
+import { ELEMENT_TYPES_MAP, IGNORED_SOFT_BREAK_ELEMS } from './constants';
 
-const IGNORED_SOFT_BREAK_ELEMS = ['bulleted-list', 'numbered-list', 'list-item'];
+const CONTAINER_STYLE: CSSProperties = {
+  display: 'flex',
+  width: '100%',
+  justifyContent: 'center',
+  position: 'relative',
+};
+
+const EDITOR_WRAP_STYLE: CSSProperties = {
+  maxWidth: 680,
+  paddingTop: '4rem',
+  paddingBottom: '30vh',
+  margin: '0 64px',
+  width: '100%',
+};
 
 const getInitialData = () => {
   if (typeof window === 'undefined') return [];
@@ -24,77 +37,112 @@ const getInitialData = () => {
 
 const SlateEditor = () => {
   const [value, setValue] = useState<Descendant[]>(() => getInitialData());
-  const [CMDBar, setCMDBar] = useState({
+  const [CMDBar, setCMDBar] = useState<any>({
     open: false,
     position: {},
   });
+
   const editor = useMemo(
     () => withHistory(
-      withCorrectVoidBehavior(withImages(withInlines(withShortcuts(withSoftBreak(withReact(createEditor())))))),
+      withCorrectVoidBehavior(withImages(withInlines(withShortcuts(withReact(createEditor()))))),
     ),
     [],
   );
+
   const CMDBarElementRef = useRef(null);
-
   const renderLeaf = useCallback((leafProps) => <TextLeaf {...leafProps} />, []);
-
   const renderElement = useCallback((elemProps) => <Element {...elemProps} />, []);
 
-  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    const { selection } = editor;
-    const element = editor.children[selection?.anchor.path[0] || 0];
+  const onKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLDivElement>) => {
+      const { selection } = editor;
+      const element: any = editor.children[selection?.anchor.path[0] || 0];
 
-    const [currentText] = Editor.leaf(editor, editor.selection!.anchor.path);
+      const [currentText] = Editor.leaf(editor, editor.selection!.anchor.path);
 
-    if (isOpenCMDBar({ text: currentText.text, event })) {
-      setCMDBar({
-        open: true,
-        position: getAbsPositionBySelection(CMDBarElementRef.current),
-      });
-      return;
-    }
+      if (isOpenCMDBar({ text: currentText.text, event })) {
+        setCMDBar({
+          open: true,
+          position: getAbsPositionBySelection(CMDBarElementRef.current),
+        });
+        return;
+      }
 
-    if (CMDBar.open) {
-      setCMDBar({
-        open: false,
-        position: {},
-      });
-    }
+      if (CMDBar.open) {
+        setCMDBar({
+          open: false,
+          position: {},
+        });
+      }
 
-    if (event.key === 'Enter') {
-      const newLine: ParagraphElement = {
-        id: v4(),
-        type: 'paragraph',
-        children: [
-          {
-            text: '',
+      if (event.key === 'Enter') {
+        const newLine: ParagraphElement = {
+          id: v4(),
+          type: 'paragraph',
+          children: [
+            {
+              text: '',
+            },
+          ],
+        };
+
+        const isListBlock = Editor.above(editor, {
+          match: (n) => {
+            return Editor.isBlock(editor, n) && n.type === ELEMENT_TYPES_MAP['list-item'];
           },
-        ],
-      };
+        });
 
-      const isListBlock = Editor.above(editor, {
-        match: (n) => {
-          return Editor.isBlock(editor, n) && n.type === 'list-item';
-        },
-      });
+        if (isListBlock && currentText.text.trim() === '') {
+          event.preventDefault();
+          toggleBlock(editor, ELEMENT_TYPES_MAP.paragraph);
+        }
 
-      if (isListBlock && currentText.text.trim() === '') {
-        event.preventDefault();
-        toggleBlock(editor, 'paragraph');
+        if (event.shiftKey) {
+          event.preventDefault();
+          editor.insertText('\n');
+        }
+
+        if (!event.shiftKey && !IGNORED_SOFT_BREAK_ELEMS.includes(element.type)) {
+          event.preventDefault();
+          Transforms.insertNodes(editor, newLine);
+        }
       }
+    },
+    [],
+  );
 
-      if (event.shiftKey) {
-        event.preventDefault();
-        editor.insertText('\n');
+  const onChange = useCallback(
+    (newValue) => {
+      setValue(newValue);
+
+      const isASTChanged = editor.operations.some((op) => op.type !== 'set_selection');
+
+      if (isASTChanged) {
+        const content = JSON.stringify(newValue);
+        localStorage.setItem('content', content);
       }
+    },
+    [],
+  );
 
-      if (!event.shiftKey && !IGNORED_SOFT_BREAK_ELEMS.includes(element.type)) {
-        event.preventDefault();
-
-        Transforms.insertNodes(editor, newLine);
+  const decorate = useCallback(([node, path]) => {
+    if (editor.selection) {
+      if (
+        !Editor.isEditor(node)
+        && Editor.string(editor, [path[0]]) === ''
+        && Range.includes(editor.selection, path)
+        && Range.isCollapsed(editor.selection)
+      ) {
+        return [
+          {
+            ...editor.selection,
+            placeholder: true,
+          },
+        ];
       }
     }
-  };
+    return [];
+  }, []);
 
   const handleBlockClick = (_e: any, type: string) => {
     toggleBlock(editor, type);
@@ -109,14 +157,7 @@ const SlateEditor = () => {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'center',
-        position: 'relative',
-      }}
-    >
+    <div style={CONTAINER_STYLE}>
       <div
         ref={CMDBarElementRef}
         style={{
@@ -131,58 +172,17 @@ const SlateEditor = () => {
         </Fade>
       </div>
 
-      <div
-        style={{
-          maxWidth: 680,
-          paddingTop: '4rem',
-          paddingBottom: '30vh',
-          margin: '0 64px',
-          width: '100%',
-        }}
-      >
-        <OutsideClick onClose={() => Editor.insertText(editor, '😈')}>
-          <Slate
-            editor={editor}
-            value={value}
-            onChange={(val) => {
-              setValue(val);
-
-              const isASTChanged = editor.operations.some((op) => op.type !== 'set_selection');
-
-              if (isASTChanged) {
-                const content = JSON.stringify(value);
-                localStorage.setItem('content', content);
-              }
-            }}
-          >
-            <Toolbar />
-            <Editable
-              renderLeaf={renderLeaf}
-              renderElement={renderElement}
-              onKeyDown={onKeyDown}
-              decorate={([node, path]) => {
-                if (editor.selection) {
-                  if (
-                    !Editor.isEditor(node)
-                    && Editor.string(editor, [path[0]]) === ''
-                    && Range.includes(editor.selection, path)
-                    && Range.isCollapsed(editor.selection)
-                  ) {
-                    return [
-                      {
-                        ...editor.selection,
-                        placeholder: true,
-                      },
-                    ];
-                  }
-                }
-                return [];
-              }}
-              spellCheck
-              // autoFocus
-            />
-          </Slate>
-        </OutsideClick>
+      <div style={EDITOR_WRAP_STYLE}>
+        <Slate editor={editor} value={value} onChange={onChange}>
+          <Toolbar />
+          <Editable
+            renderLeaf={renderLeaf}
+            renderElement={renderElement}
+            onKeyDown={onKeyDown}
+            decorate={decorate}
+            spellCheck
+          />
+        </Slate>
       </div>
     </div>
   );

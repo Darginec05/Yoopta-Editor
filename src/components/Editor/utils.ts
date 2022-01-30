@@ -1,7 +1,7 @@
 import { Editor, Text, Element as SlateElement, Transforms, Range } from 'slate';
 import { v4 } from 'uuid';
-import isUrl from 'is-url';
-import { ImageElement, LinkElement } from './types';
+import { LinkElement } from './types';
+import { ELEMENT_TYPES_MAP } from './constants';
 
 export const HOTKEYS: Record<string, string> = {
   'mod+b': 'bold',
@@ -45,7 +45,7 @@ export const toggleBlock = (editor: Editor, blockType: any, data = { isVoid: fal
   const node: Partial<SlateElement> = {
     id: v4(),
     // eslint-disable-next-line no-nested-ternary
-    type: isActive ? 'paragraph' : isList ? 'list-item' : blockType,
+    type: isActive ? ELEMENT_TYPES_MAP.paragraph : isList ? ELEMENT_TYPES_MAP['list-item'] : blockType,
     ...data,
   };
 
@@ -72,27 +72,14 @@ export const toggleMark = (editor: Editor, format: any) => {
   }
 };
 
-export const isImageUrl = (url: string) => {
-  if (!url) return false;
-  if (!isUrl(url)) return false;
-  // const ext = new URL(url).pathname.split('.').pop();
-  return true; // [TODO]
-};
-
-export const insertImage = (editor: Editor, src: string | ArrayBuffer | null) => {
-  const text = { text: '' };
-  const image: ImageElement = { id: v4(), type: 'image', src, children: [text] };
-  Transforms.insertNodes(editor, image);
-};
-
 export const removeLinkNode = (editor: Editor) => {
   Transforms.unwrapNodes(editor, {
-    match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === 'link',
+    match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === ELEMENT_TYPES_MAP.link,
   });
 };
 
 export const addLinkNode = (editor: Editor, url: string) => {
-  if (isBlockActive(editor, 'link')) {
+  if (isBlockActive(editor, ELEMENT_TYPES_MAP.link)) {
     removeLinkNode(editor);
   }
 
