@@ -5,7 +5,7 @@ import { withHistory } from 'slate-history';
 import { v4 } from 'uuid';
 import { TextLeaf } from './TextLeaf';
 import { Element } from './Element';
-import { withShortcuts, withSoftBreak, withInlines, withImages } from './plugins';
+import { withShortcuts, withSoftBreak, withInlines, withImages, withCorrectVoidBehavior } from './plugins';
 import { TextDropdown, Toolbar } from './Toolbar';
 import { ParagraphElement } from './custom-types';
 import { DEFAULT_STATE, getAbsPositionBySelection, isOpenCMDBar, toggleBlock } from './utils';
@@ -29,7 +29,9 @@ const SlateEditor = () => {
     position: {},
   });
   const editor = useMemo(
-    () => withHistory(withImages(withInlines(withShortcuts(withSoftBreak(withReact(createEditor())))))),
+    () => withHistory(
+      withCorrectVoidBehavior(withImages(withInlines(withShortcuts(withSoftBreak(withReact(createEditor())))))),
+    ),
     [],
   );
   const CMDBarElementRef = useRef(null);
@@ -138,7 +140,7 @@ const SlateEditor = () => {
           width: '100%',
         }}
       >
-        <OutsideClick onClose={() => null}>
+        <OutsideClick onClose={() => Editor.insertText(editor, '😈')}>
           <Slate
             editor={editor}
             value={value}
