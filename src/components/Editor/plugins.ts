@@ -2,7 +2,7 @@
 import { Editor, Element, Range, Transforms, Point, Node, Path } from 'slate';
 import { v4 } from 'uuid';
 import isUrl from 'is-url';
-import { BulletedListElement } from './custom-types';
+import { BulletedListElement } from './types';
 import { KEYBOARD_SHORTCUTS, addLinkNode } from './utils';
 
 // [TODO]
@@ -114,7 +114,7 @@ export const withShortcuts = (editor: Editor) => {
 export const withInlines = (editor) => {
   const { insertData, insertText, isInline } = editor;
 
-  editor.isInline = (element) => element.type === 'link' || isInline(element);
+  editor.isInline = (element) => (element.type === 'link' ? true : isInline(element));
 
   editor.insertText = (text) => {
     if (text && isUrl(text)) {
@@ -141,6 +141,7 @@ export const withCorrectVoidBehavior = (editor: Editor) => {
   const { deleteBackward, insertBreak } = editor;
 
   // if current selection is void node, insert a default node below
+  // eslint-disable-next-line consistent-return
   editor.insertBreak = () => {
     if (!editor.selection || !Range.isCollapsed(editor.selection)) {
       return insertBreak();
@@ -148,7 +149,6 @@ export const withCorrectVoidBehavior = (editor: Editor) => {
 
     const selectedNodePath = Path.parent(editor.selection.anchor.path);
     const selectedNode = Node.get(editor, selectedNodePath);
-    console.log(selectedNode);
 
     if (Editor.isVoid(editor, selectedNode)) {
       Editor.insertNode(editor, {
@@ -156,7 +156,7 @@ export const withCorrectVoidBehavior = (editor: Editor) => {
         type: 'paragraph',
         children: [{ text: '' }],
       });
-      return;
+      return undefined;
     }
 
     insertBreak();
@@ -174,6 +174,7 @@ export const withCorrectVoidBehavior = (editor: Editor) => {
 
     const parentPath = Path.parent(editor.selection.anchor.path);
     const parentNode = Node.get(editor, parentPath);
+    console.log(parentNode);
     const parentIsEmpty = Node.string(parentNode).length === 0;
 
     if (parentIsEmpty && Path.hasPrevious(parentPath)) {

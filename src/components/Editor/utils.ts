@@ -1,7 +1,7 @@
 import { Editor, Text, Element as SlateElement, Transforms, Range } from 'slate';
 import { v4 } from 'uuid';
 import isUrl from 'is-url';
-import { ImageElement, LinkElement } from './custom-types';
+import { ImageElement, LinkElement } from './types';
 
 export const HOTKEYS: Record<string, string> = {
   'mod+b': 'bold',

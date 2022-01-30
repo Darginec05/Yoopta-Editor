@@ -58,14 +58,6 @@ const defaultBlock: Block = {
 export const TextDropdown = ({ handleBlockClick, selectedElementType }) => {
   const ref = useRef<HTMLDivElement>(null);
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     ref.current?.focus();
-  //   }, 100);
-
-  //   return () => clearTimeout(timer);
-  // }, []);
-
   const onKeyDown = (e: KeyboardEvent<HTMLButtonElement>, type: string) => {
     if (e.key === 'Enter') {
       e.preventDefault();

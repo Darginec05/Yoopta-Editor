@@ -7,7 +7,7 @@ import { TextLeaf } from './TextLeaf';
 import { Element } from './Element';
 import { withShortcuts, withSoftBreak, withInlines, withImages, withCorrectVoidBehavior } from './plugins';
 import { TextDropdown, Toolbar } from './Toolbar';
-import { ParagraphElement } from './custom-types';
+import { ParagraphElement } from './types';
 import { DEFAULT_STATE, getAbsPositionBySelection, isOpenCMDBar, toggleBlock } from './utils';
 import { Fade } from '../Fade';
 import { OutsideClick } from '../OutsideClick';

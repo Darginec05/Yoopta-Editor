@@ -40,7 +40,7 @@ export type EditableVoidElement = {
   children: EmptyText[];
 };
 
-export type HeadingElement = { id: string;type: 'heading'; children: Descendant[] };
+export type HeadingElement = { id: string; type: 'heading'; children: Descendant[] };
 
 export type HeadingTwoElement = { id: string; type: 'heading-two'; children: Descendant[] };
 
@@ -76,7 +76,7 @@ export type VideoElement = {
   children: EmptyText[];
 };
 
-type CustomElement =
+export type CustomElement =
   | BlockQuoteElement
   | BulletedListElement
   | NumberedListElement
@@ -94,11 +94,3 @@ type CustomElement =
   | VideoElement;
 
 export type CustomEditor = BaseEditor & ReactEditor & HistoryEditor;
-
-declare module 'slate' {
-  interface CustomTypes {
-    Editor: CustomEditor;
-    Element: CustomElement;
-    Text: CustomText | EmptyText;
-  }
-}

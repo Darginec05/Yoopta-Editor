@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import { FC, MouseEvent } from 'react';
+import { FC } from 'react';
 import { useFocused, useSelected, useSlate } from 'slate-react';
 import { Transforms } from 'slate';
 import { v4 } from 'uuid';
 import { MediaEditorLayout } from '../MediaEditorLayout';
 import { ReactComponent as ImageIcon } from '../../icons/image.svg';
-import { ImageElement } from '../Editor/custom-types';
+import { ImageElement } from '../Editor/types';
 import { Image } from '../Image';
 import s from './ImageEditor.module.scss';
 
@@ -16,9 +16,9 @@ const toBase64 = (file): Promise<string | ArrayBuffer | null> => new Promise((re
   reader.onerror = (error) => reject(error);
 });
 
-type Props = { element: ImageElement; className: string; attributes: any; onMouseEnter: (_e: MouseEvent<any>) => void };
+type Props = { element: ImageElement; className: string; attributes: any };
 
-const ImageEditor: FC<Props> = ({ element, attributes, className, children, onMouseEnter }) => {
+const ImageEditor: FC<Props> = ({ element, attributes, className, children }) => {
   const editor = useSlate();
   const selected = useSelected();
   const focused = useFocused();
@@ -51,7 +51,6 @@ const ImageEditor: FC<Props> = ({ element, attributes, className, children, onMo
         {...attributes}
         data-node-id={element.id}
         className={className}
-        onMouseEnter={onMouseEnter}
         style={{
           boxShadow: `${selected && focused ? '0 0 0 3px #B4D5FF' : 'none'}`,
         }}
@@ -69,7 +68,6 @@ const ImageEditor: FC<Props> = ({ element, attributes, className, children, onMo
       {...attributes}
       style={{ userSelect: 'none' }}
       data-node-id={element.id}
-      onMouseEnter={onMouseEnter}
     >
       <label contentEditable={false} htmlFor="image_uploader" className={s.label}>
         <ImageIcon />

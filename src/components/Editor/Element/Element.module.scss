@@ -70,3 +70,40 @@
   max-height: 50em;
   margin: 35px 0;
 }
+
+.hoverSettings {
+  opacity: 0;
+  position: absolute;
+  left: -50px;
+  top: 7px;
+  transition: opacity 250ms;
+}
+
+.hoverItem {
+  width: 100%;
+  height: auto;
+  position: relative;
+
+  &:hover {
+    .hoverSettings {
+      opacity: 1;
+    }
+  }
+}
+
+.hoverSettingsItem {
+  all: unset;
+  cursor: pointer;
+  border-radius: 6px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: inherit;
+  transition: background-color 250ms;
+
+  &:hover {
+    background-color: #efefef;
+  }
+}
