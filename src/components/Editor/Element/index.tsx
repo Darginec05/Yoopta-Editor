@@ -133,6 +133,7 @@ const ELEMENT_RENDER_ITEMS = {
   [ELEMENT_TYPES_MAP['heading-three']]: HeadingThree,
   [ELEMENT_TYPES_MAP.link]: Link,
   [ELEMENT_TYPES_MAP.image]: Image,
+  // [ELEMENT_TYPES_MAP.video]: () => <div>NOT SUPPORTED</div>,
   [ELEMENT_TYPES_MAP.paragraph]: Paragraph,
 };
 

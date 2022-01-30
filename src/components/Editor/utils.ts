@@ -1,3 +1,4 @@
+import { KeyboardEvent } from 'react';
 import { Editor, Text, Element as SlateElement, Transforms, Range } from 'slate';
 import { v4 } from 'uuid';
 import { LinkElement } from './types';
@@ -113,7 +114,7 @@ export const getAbsPositionBySelection = (element) => {
   };
 };
 
-export const isOpenCMDBar = ({ text, event }) => {
+export const isOpenCMDBar = ({ text, event }: { text: string, event: KeyboardEvent<HTMLDivElement> }) => {
   if (text.trim().length === 0 && event.key === '/') {
     return true;
   }

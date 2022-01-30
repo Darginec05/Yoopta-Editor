@@ -57,10 +57,9 @@ const SlateEditor = () => {
     (event: KeyboardEvent<HTMLDivElement>) => {
       const { selection } = editor;
       const element: any = editor.children[selection?.anchor.path[0] || 0];
+      const text = Editor.string(editor, editor.selection!.anchor.path);
 
-      const [currentText] = Editor.leaf(editor, editor.selection!.anchor.path);
-
-      if (isOpenCMDBar({ text: currentText.text, event })) {
+      if (isOpenCMDBar({ text, event })) {
         setCMDBar({
           open: true,
           position: getAbsPositionBySelection(CMDBarElementRef.current),
@@ -92,7 +91,7 @@ const SlateEditor = () => {
           },
         });
 
-        if (isListBlock && currentText.text.trim() === '') {
+        if (isListBlock && text.trim() === '') {
           event.preventDefault();
           toggleBlock(editor, ELEMENT_TYPES_MAP.paragraph);
         }
@@ -108,18 +107,22 @@ const SlateEditor = () => {
         }
       }
     },
-    [],
+    [CMDBar.open],
   );
 
   const onChange = useCallback(
     (newValue) => {
       setValue(newValue);
-
       const isASTChanged = editor.operations.some((op) => op.type !== 'set_selection');
 
       if (isASTChanged) {
-        const content = JSON.stringify(newValue);
-        localStorage.setItem('content', content);
+        try {
+          const content = JSON.stringify(newValue);
+          localStorage.setItem('content', content);
+        } catch (error) {
+          // [TODO] - don't store base64 src in image node
+          console.log(error);
+        }
       }
     },
     [],

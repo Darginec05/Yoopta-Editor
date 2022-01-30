@@ -25,7 +25,7 @@ import { ReactComponent as HeadingThreeIcon } from './icons/heading_three.svg';
 import { ReactComponent as BulletedListIcon } from './icons/bulleted_list.svg';
 import { ReactComponent as NumberedListIcon } from './icons/numbered_list.svg';
 import { ReactComponent as BlockQuoteIcon } from './icons/blockquote.svg';
-import { ReactComponent as VideoIcon } from '../../../icons/video.svg';
+// import { ReactComponent as VideoIcon } from '../../../icons/video.svg';
 import { ReactComponent as ImageIcon } from '../../../icons/image.svg';
 import { Fade } from '../../Fade';
 import { LinkInput } from '../../LinkInput';
@@ -46,7 +46,7 @@ const ELEMENT_TYPES: Block[] = [
   { icon: <NumberedListIcon />, name: 'Numbered List', type: 'numbered-list' },
   { icon: <BlockQuoteIcon />, name: 'Blockquote', type: 'block-quote' },
   { icon: <ImageIcon />, name: 'Image', type: 'image' },
-  { icon: <VideoIcon />, name: 'Video', type: 'video' },
+  // { icon: <VideoIcon />, name: 'Video', type: 'video' },
 ];
 
 const defaultBlock: Block = {

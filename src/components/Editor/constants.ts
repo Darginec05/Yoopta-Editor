@@ -8,6 +8,7 @@ export const ELEMENT_TYPES_MAP = {
   'heading-three': 'heading-three',
   link: 'link',
   image: 'image',
+  video: 'video',
   paragraph: 'paragraph',
 };
 
