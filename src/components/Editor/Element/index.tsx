@@ -17,7 +17,7 @@ type ElementProps = {
 const Blockquote = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
-      <blockquote role="row" tabIndex={0} className={s.blockquote} {...attributes}>
+      <blockquote className={s.blockquote} {...attributes}>
         {children}
       </blockquote>
     </ElementHover>
@@ -27,7 +27,7 @@ const Blockquote = memo<ElementProps>(({ attributes, element, children }) => {
 const BulletedList = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
-      <ul role="row" tabIndex={0} {...attributes}>
+      <ul {...attributes}>
         {children}
       </ul>
     </ElementHover>
@@ -37,7 +37,7 @@ const BulletedList = memo<ElementProps>(({ attributes, element, children }) => {
 const NumberedList = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
-      <ol role="row" tabIndex={0} {...attributes}>
+      <ol {...attributes}>
         {children}
       </ol>
     </ElementHover>
@@ -55,7 +55,7 @@ const ListItem = memo<ElementProps>(({ attributes, children }) => {
 const HeadingOne = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
-      <h1 role="row" tabIndex={0} className={s['heading-one']} {...attributes}>
+      <h1 className={s['heading-one']} {...attributes}>
         {children}
       </h1>
     </ElementHover>
@@ -65,7 +65,7 @@ const HeadingOne = memo<ElementProps>(({ attributes, element, children }) => {
 const HeadingTwo = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
-      <h2 role="row" tabIndex={0} className={s['heading-two']} {...attributes}>
+      <h2 className={s['heading-two']} {...attributes}>
         {children}
       </h2>
     </ElementHover>
@@ -75,7 +75,7 @@ const HeadingTwo = memo<ElementProps>(({ attributes, element, children }) => {
 const HeadingThree = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
-      <h3 role="row" tabIndex={0} className={s['heading-three']} {...attributes}>
+      <h3 className={s['heading-three']} {...attributes}>
         {children}
       </h3>
     </ElementHover>
@@ -93,7 +93,7 @@ const Link = memo<ElementProps>(({ attributes, element, children }) => {
 const Paragraph = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
-      <p role="row" tabIndex={0} className={s.paragraph} {...attributes} data-node-id={element.id}>
+      <p className={s.paragraph} {...attributes} data-node-id={element.id}>
         {children}
       </p>
     </ElementHover>
@@ -101,11 +101,11 @@ const Paragraph = memo<ElementProps>(({ attributes, element, children }) => {
 });
 
 const Image = memo<ElementProps>(({ attributes, element, children }) => {
-  if (element['data-src']) {
+  if (element.src) {
     return (
       <ElementHover element={element}>
         <div {...attributes} className={s.image}>
-          <ImageRender src={element['data-src']} alt="URI" />
+          <ImageRender src={element.src} alt="URI" />
           {children}
         </div>
       </ElementHover>

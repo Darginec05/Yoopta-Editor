@@ -7,6 +7,8 @@ import { MediaEditorLayout } from '../MediaEditorLayout';
 import { ReactComponent as ImageIcon } from '../../icons/image.svg';
 import { ImageElement } from '../Editor/types';
 import { Image } from '../Image';
+import { uploadToCloudinary } from '../../utils';
+import { Loader } from '../Loader';
 import s from './ImageEditor.module.scss';
 
 const toBase64 = (file): Promise<string | ArrayBuffer | null> => new Promise((resolve, reject) => {
@@ -39,8 +41,17 @@ const ImageEditor: FC<Props> = ({ element, attributes, className, children }) =>
     };
 
     Transforms.removeNodes(editor);
-
     Transforms.insertNodes(editor, [image]);
+
+    const { url } = await uploadToCloudinary(file);
+    const newImage = {
+      ...image,
+      src: url,
+      'data-src': null,
+    };
+
+    Transforms.removeNodes(editor);
+    Transforms.insertNodes(editor, [newImage]);
   };
 
   const dataSrc = element['data-src'];
@@ -55,6 +66,9 @@ const ImageEditor: FC<Props> = ({ element, attributes, className, children }) =>
           boxShadow: `${selected && focused ? '0 0 0 3px #B4D5FF' : 'none'}`,
         }}
       >
+        <div className={s.loader}>
+          <Loader />
+        </div>
         <div contentEditable={false}>
           <Image src={dataSrc} alt="loaded_image" />
         </div>

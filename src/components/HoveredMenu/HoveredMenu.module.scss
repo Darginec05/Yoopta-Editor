@@ -28,9 +28,10 @@
   align-items: center;
   justify-content: center;
   background-color: inherit;
+  background-color: #efefef;
   transition: background-color 250ms;
 
   &:hover {
-    background-color: #efefef;
+    background-color: #dbdada;
   }
 }
