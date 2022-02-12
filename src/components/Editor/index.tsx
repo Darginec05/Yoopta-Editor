@@ -2,6 +2,8 @@ import { createEditor, Descendant, Editor, Range, Transforms } from 'slate';
 import { useCallback, useMemo, useState, KeyboardEvent, useRef, CSSProperties } from 'react';
 import { Slate, Editable, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { v4 } from 'uuid';
 import { TextLeaf } from './TextLeaf';
 import { Element } from './Element';
@@ -176,16 +178,18 @@ const SlateEditor = () => {
       </div>
 
       <div style={EDITOR_WRAP_STYLE}>
-        <Slate editor={editor} value={value} onChange={onChange}>
-          <Toolbar />
-          <Editable
-            renderLeaf={renderLeaf}
-            renderElement={renderElement}
-            onKeyDown={onKeyDown}
-            decorate={decorate}
-            spellCheck
-          />
-        </Slate>
+        <DndProvider backend={HTML5Backend}>
+          <Slate editor={editor} value={value} onChange={onChange}>
+            <Toolbar />
+            <Editable
+              renderLeaf={renderLeaf}
+              renderElement={renderElement}
+              onKeyDown={onKeyDown}
+              decorate={decorate}
+              spellCheck
+            />
+          </Slate>
+        </DndProvider>
       </div>
     </div>
   );

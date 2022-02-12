@@ -17,7 +17,7 @@ type ElementProps = {
 const Blockquote = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
-      <blockquote className={s.blockquote} {...attributes}>
+      <blockquote draggable={false} className={s.blockquote} {...attributes}>
         {children}
       </blockquote>
     </ElementHover>
@@ -27,7 +27,7 @@ const Blockquote = memo<ElementProps>(({ attributes, element, children }) => {
 const BulletedList = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
-      <ul {...attributes}>
+      <ul draggable={false} {...attributes}>
         {children}
       </ul>
     </ElementHover>
@@ -37,7 +37,7 @@ const BulletedList = memo<ElementProps>(({ attributes, element, children }) => {
 const NumberedList = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
-      <ol {...attributes}>
+      <ol draggable={false} {...attributes}>
         {children}
       </ol>
     </ElementHover>
@@ -46,7 +46,7 @@ const NumberedList = memo<ElementProps>(({ attributes, element, children }) => {
 
 const ListItem = memo<ElementProps>(({ attributes, children }) => {
   return (
-    <li className={s.listItem} {...attributes}>
+    <li className={s.listItem} draggable={false} {...attributes}>
       {children}
     </li>
   );
@@ -55,7 +55,7 @@ const ListItem = memo<ElementProps>(({ attributes, children }) => {
 const HeadingOne = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
-      <h1 className={s['heading-one']} {...attributes}>
+      <h1 className={s['heading-one']} draggable={false} {...attributes}>
         {children}
       </h1>
     </ElementHover>
@@ -65,7 +65,7 @@ const HeadingOne = memo<ElementProps>(({ attributes, element, children }) => {
 const HeadingTwo = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
-      <h2 className={s['heading-two']} {...attributes}>
+      <h2 className={s['heading-two']} draggable={false} {...attributes}>
         {children}
       </h2>
     </ElementHover>
@@ -75,7 +75,7 @@ const HeadingTwo = memo<ElementProps>(({ attributes, element, children }) => {
 const HeadingThree = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
-      <h3 className={s['heading-three']} {...attributes}>
+      <h3 className={s['heading-three']} draggable={false} {...attributes}>
         {children}
       </h3>
     </ElementHover>
@@ -84,7 +84,7 @@ const HeadingThree = memo<ElementProps>(({ attributes, element, children }) => {
 
 const Link = memo<ElementProps>(({ attributes, element, children }) => {
   return (
-    <a {...attributes} href={element.url} rel="noreferrer" target="_blank" className={s.link}>
+    <a draggable={false} {...attributes} href={element.url} rel="noreferrer" target="_blank" className={s.link}>
       {children}
     </a>
   );
@@ -93,7 +93,7 @@ const Link = memo<ElementProps>(({ attributes, element, children }) => {
 const Paragraph = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
-      <p className={s.paragraph} {...attributes} data-node-id={element.id}>
+      <p className={s.paragraph} draggable={false} {...attributes} data-node-id={element.id}>
         {children}
       </p>
     </ElementHover>
@@ -104,7 +104,7 @@ const Image = memo<ElementProps>(({ attributes, element, children }) => {
   if (element.src) {
     return (
       <ElementHover element={element}>
-        <div {...attributes} className={s.image}>
+        <div draggable={false} {...attributes} className={s.image}>
           <ImageRender src={element.src} alt="URI" />
           {children}
         </div>

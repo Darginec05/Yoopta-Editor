@@ -1,12 +1,4 @@
-.hoverSettings {
-  opacity: 0;
-  position: absolute;
-  left: -50px;
-  top: 7px;
-  transition: opacity 250ms;
-}
-
-.hoverItem {
+.hoverWrap {
   width: 100%;
   height: auto;
   position: relative;
@@ -18,18 +10,33 @@
   }
 }
 
+.hoverSettings {
+  opacity: 0;
+  position: absolute;
+  left: -60px;
+  top: 7px;
+  transition: opacity 250ms;
+  display: flex;
+}
+
 .hoverSettingsItem {
   all: unset;
   cursor: pointer;
   border-radius: 6px;
-  width: 24px;
+  width: auto;
   height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: inherit;
-  background-color: #efefef;
+  background-color: transparent;
   transition: background-color 250ms;
+  margin-right: 2px;
+
+  &:first-child {
+    padding: 0;
+    width: 24px;
+  }
 
   &:hover {
     background-color: #dbdada;
