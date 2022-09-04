@@ -100,4 +100,5 @@ export type ElementProps = {
   attributes: any;
   element: any;
   children: ReactNode;
+  isEdit?: boolean;
 };

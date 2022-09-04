@@ -32,7 +32,12 @@ const Content = ({ value: serverData }) => {
   };
 
   const renderElement = ({ type, children, ...rest }) => (
-    <Element element={{ type, ...rest }} attributes={{}} key={v4()}>
+    <Element
+      element={{ type, ...rest }}
+      attributes={{ 'data-slate-node': 'element', ref: null }}
+      key={v4()}
+      isEdit={false}
+    >
       {children.map(renderChildren)}
     </Element>
   );

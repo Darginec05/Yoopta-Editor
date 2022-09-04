@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { ElementProps } from '../../Editor/types';
 import s from './HeadingOne.module.scss';
 
 const HeadingOne = memo<ElementProps>(({ attributes, children }) => {

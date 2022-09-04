@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { ElementProps } from '../../Editor/types';
 import s from './Link.module.scss';
 
 const Link = memo<ElementProps>(({ attributes, element, children }) => {

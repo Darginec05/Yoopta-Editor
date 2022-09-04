@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { ElementProps } from '../../Editor/types';
 import s from './Blockquote.module.scss';
 
 const Blockquote = memo<ElementProps>(({ attributes, children }) => {

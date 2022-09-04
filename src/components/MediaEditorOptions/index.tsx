@@ -20,7 +20,7 @@ const MediaEditorOptions: FC<Props> = ({ onDelete, onUploadViaURL, onUpload, onA
   };
 
   return (
-    <button type="button" className={s.button} onClick={handleOptionsClick}>
+    <div aria-hidden className={s.button} onClick={handleOptionsClick}>
       <div className={s.dot} />
       <div className={s.dot} />
       <div className={s.dot} />
@@ -44,7 +44,7 @@ const MediaEditorOptions: FC<Props> = ({ onDelete, onUploadViaURL, onUpload, onA
           </div>
         </Fade>
       </OutsideClick>
-    </button>
+    </div>
   );
 };
 
