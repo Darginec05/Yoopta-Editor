@@ -1,20 +1,14 @@
 /* eslint-disable react/display-name */
-/* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
-import { FC, memo, ReactNode, useMemo } from 'react';
-import { RenderElementProps } from 'slate-react';
+import { FC, memo, useMemo } from 'react';
+import { RenderElementProps, useFocused, useSelected } from 'slate-react';
 import { ElementHover } from '../../HoveredMenu';
 import { Image as ImageRender } from '../../Image';
 import { ImageEditor } from '../../ImageEditor';
 import { ELEMENT_TYPES_MAP } from '../constants';
+import { ElementProps } from '../types';
 import s from './Element.module.scss';
 
-type ElementProps = {
-  attributes: any;
-  element: any;
-  children: ReactNode;
-};
-
-const Blockquote = memo<ElementProps>(({ attributes, element, children }) => {
+const BlockquoteElement = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
       <blockquote draggable={false} className={s.blockquote} {...attributes}>
@@ -24,7 +18,7 @@ const Blockquote = memo<ElementProps>(({ attributes, element, children }) => {
   );
 });
 
-const BulletedList = memo<ElementProps>(({ attributes, element, children }) => {
+const BulletedListElement = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
       <ul draggable={false} {...attributes}>
@@ -34,7 +28,7 @@ const BulletedList = memo<ElementProps>(({ attributes, element, children }) => {
   );
 });
 
-const NumberedList = memo<ElementProps>(({ attributes, element, children }) => {
+const NumberedListElement = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
       <ol draggable={false} {...attributes}>
@@ -44,7 +38,7 @@ const NumberedList = memo<ElementProps>(({ attributes, element, children }) => {
   );
 });
 
-const ListItem = memo<ElementProps>(({ attributes, children }) => {
+const ListItemElement = memo<ElementProps>(({ attributes, children }) => {
   return (
     <li className={s.listItem} draggable={false} {...attributes}>
       {children}
@@ -52,7 +46,7 @@ const ListItem = memo<ElementProps>(({ attributes, children }) => {
   );
 });
 
-const HeadingOne = memo<ElementProps>(({ attributes, element, children }) => {
+const HeadingOneElement = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
       <h1 className={s['heading-one']} draggable={false} {...attributes}>
@@ -62,7 +56,7 @@ const HeadingOne = memo<ElementProps>(({ attributes, element, children }) => {
   );
 });
 
-const HeadingTwo = memo<ElementProps>(({ attributes, element, children }) => {
+const HeadingTwoElement = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
       <h2 className={s['heading-two']} draggable={false} {...attributes}>
@@ -72,7 +66,7 @@ const HeadingTwo = memo<ElementProps>(({ attributes, element, children }) => {
   );
 });
 
-const HeadingThree = memo<ElementProps>(({ attributes, element, children }) => {
+const HeadingThreeElement = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
       <h3 className={s['heading-three']} draggable={false} {...attributes}>
@@ -82,7 +76,7 @@ const HeadingThree = memo<ElementProps>(({ attributes, element, children }) => {
   );
 });
 
-const Link = memo<ElementProps>(({ attributes, element, children }) => {
+const LinkElement = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <a draggable={false} {...attributes} href={element.url} rel="noreferrer" target="_blank" className={s.link}>
       {children}
@@ -90,7 +84,7 @@ const Link = memo<ElementProps>(({ attributes, element, children }) => {
   );
 });
 
-const Paragraph = memo<ElementProps>(({ attributes, element, children }) => {
+const ParagraphElement = memo<ElementProps>(({ attributes, element, children }) => {
   return (
     <ElementHover element={element}>
       <p className={s.paragraph} draggable={false} {...attributes} data-node-id={element.id}>
@@ -100,12 +94,21 @@ const Paragraph = memo<ElementProps>(({ attributes, element, children }) => {
   );
 });
 
-const Image = memo<ElementProps>(({ attributes, element, children }) => {
+const ImageElement = memo<ElementProps>(({ attributes, element, children }) => {
+  const selected = useSelected();
+  const focused = useFocused();
+
   if (element.src) {
     return (
       <ElementHover element={element}>
         <div draggable={false} {...attributes} className={s.image}>
-          <ImageRender src={element.src} alt="URI" />
+          <ImageRender
+            src={element.src}
+            alt="URI"
+            style={{
+              boxShadow: selected && focused ? '0 0 0 3px #B4D5FF' : 'none',
+            }}
+          />
           {children}
         </div>
       </ElementHover>
@@ -123,18 +126,18 @@ const Image = memo<ElementProps>(({ attributes, element, children }) => {
 });
 
 const ELEMENT_RENDER_ITEMS = {
-  [ELEMENT_TYPES_MAP.paragraph]: Paragraph,
-  [ELEMENT_TYPES_MAP['block-quote']]: Blockquote,
-  [ELEMENT_TYPES_MAP['bulleted-list']]: BulletedList,
-  [ELEMENT_TYPES_MAP['numbered-list']]: NumberedList,
-  [ELEMENT_TYPES_MAP['list-item']]: ListItem,
-  [ELEMENT_TYPES_MAP['heading-one']]: HeadingOne,
-  [ELEMENT_TYPES_MAP['heading-two']]: HeadingTwo,
-  [ELEMENT_TYPES_MAP['heading-three']]: HeadingThree,
-  [ELEMENT_TYPES_MAP.link]: Link,
-  [ELEMENT_TYPES_MAP.image]: Image,
-  // [ELEMENT_TYPES_MAP.video]: () => <div>NOT SUPPORTED</div>,
-  [ELEMENT_TYPES_MAP.paragraph]: Paragraph,
+  [ELEMENT_TYPES_MAP.paragraph]: ParagraphElement,
+  [ELEMENT_TYPES_MAP['block-quote']]: BlockquoteElement,
+  [ELEMENT_TYPES_MAP['bulleted-list']]: BulletedListElement,
+  [ELEMENT_TYPES_MAP['numbered-list']]: NumberedListElement,
+  [ELEMENT_TYPES_MAP['list-item']]: ListItemElement,
+  [ELEMENT_TYPES_MAP['heading-one']]: HeadingOneElement,
+  [ELEMENT_TYPES_MAP['heading-two']]: HeadingTwoElement,
+  [ELEMENT_TYPES_MAP['heading-three']]: HeadingThreeElement,
+  [ELEMENT_TYPES_MAP.link]: LinkElement,
+  [ELEMENT_TYPES_MAP.image]: ImageElement,
+  // [ELEMENT_TYPES_MAP.video]: () => <div>NOT SUPPORTED</div>Element,
+  [ELEMENT_TYPES_MAP.paragraph]: ParagraphElement,
 };
 
 const Element: FC<RenderElementProps | any> = ({ attributes, children, element }) => {

@@ -1,0 +1,51 @@
+.button {
+  background-color: rgba(0, 0, 0, 0.3);
+  position: relative;
+  display: flex;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  padding: 9px 4px;
+}
+
+.dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background-color: #fff;
+  margin: 1px;
+}
+
+.modal {
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 5px;
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  width: 148px;
+  filter: drop-shadow(0px 8px 25px rgba(0, 0, 0, 0.06));
+
+  & button {
+    border: none;
+    background-color: inherit;
+    border-radius: 8px;;
+    width: 100%;
+    padding: 11px 10px;
+    cursor: pointer;
+    text-align: left;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 14px;
+    color: #000000;
+
+    &:last-child {
+      color: #F03030;
+    }
+
+    &:hover {
+      background-color: #F3F3F3;
+    }
+  }
+}

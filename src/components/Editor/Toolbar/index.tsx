@@ -1,6 +1,4 @@
-import {
-  useRef, useEffect, MouseEvent, useState, ReactNode, KeyboardEvent,
-} from 'react';
+import { useRef, useEffect, MouseEvent, useState, ReactNode, KeyboardEvent, forwardRef } from 'react';
 import { Range, Editor } from 'slate';
 import cx from 'classnames';
 import { useSlate, ReactEditor } from 'slate-react';
@@ -55,9 +53,7 @@ const defaultBlock: Block = {
   icon: null,
 };
 
-export const TextDropdown = ({ handleBlockClick, selectedElementType }) => {
-  const ref = useRef<HTMLDivElement>(null);
-
+export const TextDropdown = forwardRef<any, any>(({ handleBlockClick, selectedElementType }, ref) => {
   const onKeyDown = (e: KeyboardEvent<HTMLButtonElement>, type: string) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -82,11 +78,14 @@ export const TextDropdown = ({ handleBlockClick, selectedElementType }) => {
       ))}
     </div>
   );
-};
+});
+
+TextDropdown.displayName = 'TextDropdown';
 
 const Toolbar = () => {
   const editor = useSlate();
   const ref = useRef<HTMLDivElement | null | any>();
+  const dropdownRef = useRef<HTMLDivElement | null | any>();
   const [isDropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [isLinkOpen, setLinkOpen] = useState<boolean>(false);
   const [activeBlock, setActiveBlock] = useState<Block>(defaultBlock);
@@ -128,6 +127,18 @@ const Toolbar = () => {
       return;
     }
 
+    const dropdownEl = dropdownRef.current;
+
+    if (dropdownEl) {
+      const { top: toolbarTop } = el.getBoundingClientRect();
+      const { height: dropdownHeight } = dropdownEl.getBoundingClientRect();
+
+      if (toolbarTop < dropdownHeight + 20) {
+        dropdownEl.style.bottom = 'auto';
+        dropdownEl.style.top = 'calc(100% + 10px)';
+      }
+    }
+
     const { top, left } = getAbsPositionBySelection(el);
 
     el.style.opacity = '1';
@@ -158,7 +169,7 @@ const Toolbar = () => {
     <div ref={ref} className={s.menu}>
       <div className={s.toolbar}>
         <Fade show={isDropdownOpen} animationDelay={300}>
-          <TextDropdown handleBlockClick={handleBlockClick} selectedElementType={activeBlock.type} />
+          <TextDropdown handleBlockClick={handleBlockClick} selectedElementType={activeBlock.type} ref={dropdownRef} />
         </Fade>
         <Fade show={isLinkOpen} animationDelay={300}>
           <LinkInput editor={editor} linkNode={linkNode} onClose={() => setLinkOpen(false)} />

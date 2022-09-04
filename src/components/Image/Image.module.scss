@@ -2,7 +2,17 @@
   width: 100%;
   max-width: 680px;
   height: auto;
-  max-height: 500px;
-  min-height: 200px;
+  max-height: 650px;
+  min-height: 440px;
   position: relative;
+
+  & img {
+    border-radius: 14px;
+  }
+}
+
+.options {
+  position: absolute;
+  right: 13.5px;
+  top: 13.5px;
 }
