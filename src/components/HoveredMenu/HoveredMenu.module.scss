@@ -32,6 +32,8 @@
   background-color: transparent;
   transition: background-color 250ms;
   margin-right: 2px;
+  position: relative;
+  z-index: 5;
 
   &:first-child {
     padding: 0;
@@ -41,4 +43,14 @@
   &:hover {
     background-color: #dbdada;
   }
+}
+
+.menu {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.menuList {
+  position: absolute;
 }

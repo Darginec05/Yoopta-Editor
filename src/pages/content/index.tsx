@@ -1,7 +1,7 @@
 import { v4 } from 'uuid';
 import { useState } from 'react';
 import { TextLeaf } from '../../components/Editor/TextLeaf';
-import { Element } from '../../components/Editor/Element';
+import { RenderElement } from '../../components/Editor/RenderElement/RenderElement';
 import { DEFAULT_STATE } from '../../components/Editor/utils';
 
 const Content = ({ value: serverData }) => {
@@ -32,14 +32,14 @@ const Content = ({ value: serverData }) => {
   };
 
   const renderElement = ({ type, children, ...rest }) => (
-    <Element
+    <RenderElement
       element={{ type, ...rest }}
       attributes={{ 'data-slate-node': 'element', ref: null }}
       key={v4()}
       isEdit={false}
     >
       {children.map(renderChildren)}
-    </Element>
+    </RenderElement>
   );
 
   return (

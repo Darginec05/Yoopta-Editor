@@ -1,4 +1,3 @@
-import { KeyboardEvent } from 'react';
 import { Editor, Text, Element as SlateElement, Transforms, Range } from 'slate';
 import { v4 } from 'uuid';
 import { LinkElement } from './types';
@@ -112,14 +111,6 @@ export const getAbsPositionBySelection = (element) => {
     top: rect.top + window.pageYOffset - element.offsetHeight,
     left: rect.left + window.pageXOffset - element.offsetWidth / 2 + rect.width / 2,
   };
-};
-
-export const isOpenCMDBar = ({ text, event }: { text: string, event: KeyboardEvent<HTMLDivElement> }) => {
-  if (text.trim().length === 0 && event.key === '/') {
-    return true;
-  }
-
-  return false;
 };
 
 export const KEYBOARD_SHORTCUTS = {

@@ -53,7 +53,7 @@ const defaultBlock: Block = {
   icon: null,
 };
 
-export const TextDropdown = forwardRef<any, any>(({ handleBlockClick, selectedElementType }, ref) => {
+export const ElementList = forwardRef<any, any>(({ handleBlockClick, selectedElementType }, ref) => {
   const onKeyDown = (e: KeyboardEvent<HTMLButtonElement>, type: string) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -80,7 +80,7 @@ export const TextDropdown = forwardRef<any, any>(({ handleBlockClick, selectedEl
   );
 });
 
-TextDropdown.displayName = 'TextDropdown';
+ElementList.displayName = 'ElementList';
 
 const Toolbar = () => {
   const editor = useSlate();
@@ -114,6 +114,8 @@ const Toolbar = () => {
     if (!el) {
       return;
     }
+
+    console.log({ selection });
 
     if (
       !selection
@@ -169,7 +171,7 @@ const Toolbar = () => {
     <div ref={ref} className={s.menu}>
       <div className={s.toolbar}>
         <Fade show={isDropdownOpen} animationDelay={300}>
-          <TextDropdown handleBlockClick={handleBlockClick} selectedElementType={activeBlock.type} ref={dropdownRef} />
+          <ElementList handleBlockClick={handleBlockClick} selectedElementType={activeBlock.type} ref={dropdownRef} />
         </Fade>
         <Fade show={isLinkOpen} animationDelay={300}>
           <LinkInput editor={editor} linkNode={linkNode} onClose={() => setLinkOpen(false)} />

@@ -1,4 +1,3 @@
-/* eslint-disable react/display-name */
 import { FC, useMemo } from 'react';
 import { RenderElementProps } from 'slate-react';
 import { ElementHover } from '../../HoveredMenu';
@@ -15,7 +14,6 @@ import { Link } from '../../Elements/Link/Link';
 import { Paragraph } from '../../Elements/Paragraph/Paragraph';
 
 const ELEMENT_RENDER_ITEMS = {
-  [ELEMENT_TYPES_MAP.paragraph]: Paragraph,
   [ELEMENT_TYPES_MAP['block-quote']]: Blockquote,
   [ELEMENT_TYPES_MAP['bulleted-list']]: BulletedList,
   [ELEMENT_TYPES_MAP['numbered-list']]: NumberedList,
@@ -29,9 +27,9 @@ const ELEMENT_RENDER_ITEMS = {
   [ELEMENT_TYPES_MAP.paragraph]: Paragraph,
 };
 
-const TYPES_DRAG_IGNORE = [ELEMENT_TYPES_MAP['list-item'], ELEMENT_TYPES_MAP.link];
+const TYPES_DRAG_IGNORE = [ELEMENT_TYPES_MAP['list-item'], ELEMENT_TYPES_MAP['numbered-list'], ELEMENT_TYPES_MAP.link];
 
-const Element: FC<RenderElementProps | any> = ({ attributes, children, element, isEdit = true }) => {
+const RenderElement: FC<RenderElementProps | any> = ({ attributes, children, element, isEdit = true }) => {
   const Component = useMemo(() => ELEMENT_RENDER_ITEMS[element.type], [element.type]);
 
   if (!Component) return null;
@@ -46,8 +44,8 @@ const Element: FC<RenderElementProps | any> = ({ attributes, children, element, 
     }
 
     return (
-      <ElementHover element={element}>
-        <Component isEdit attributes={attributes} element={element}>
+      <ElementHover element={element} attributes={attributes}>
+        <Component isEdit attributes={{}} element={element}>
           {children}
         </Component>
       </ElementHover>
@@ -61,4 +59,4 @@ const Element: FC<RenderElementProps | any> = ({ attributes, children, element, 
   );
 };
 
-export { Element };
+export { RenderElement };

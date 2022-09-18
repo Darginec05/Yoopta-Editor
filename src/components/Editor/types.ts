@@ -97,7 +97,7 @@ export type CustomElement =
 export type CustomEditor = BaseEditor & ReactEditor & HistoryEditor;
 
 export type ElementProps = {
-  attributes: any;
+  attributes?: any;
   element: any;
   children: ReactNode;
   isEdit?: boolean;

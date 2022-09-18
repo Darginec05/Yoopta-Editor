@@ -1,17 +1,16 @@
 import { createEditor, Descendant, Editor, Range, Transforms } from 'slate';
-import { useCallback, useMemo, useState, KeyboardEvent, useRef, CSSProperties } from 'react';
+import { useCallback, useMemo, useState, KeyboardEvent, CSSProperties } from 'react';
 import { Slate, Editable, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { v4 } from 'uuid';
 import { TextLeaf } from './TextLeaf';
-import { Element } from './Element';
+import { RenderElement } from './RenderElement/RenderElement';
 import { withShortcuts, withInlines, withImages, withCorrectVoidBehavior } from './plugins';
-import { TextDropdown, Toolbar } from './Toolbar';
+import { Toolbar } from './Toolbar';
 import { ParagraphElement } from './types';
-import { DEFAULT_STATE, getAbsPositionBySelection, isOpenCMDBar, toggleBlock } from './utils';
-import { Fade } from '../Fade';
+import { DEFAULT_STATE, toggleBlock } from './utils';
 import { ELEMENT_TYPES_MAP, IGNORED_SOFT_BREAK_ELEMS } from './constants';
 
 const CONTAINER_STYLE: CSSProperties = {
@@ -39,42 +38,20 @@ const getInitialData = () => {
 
 const SlateEditor = () => {
   const [value, setValue] = useState<Descendant[]>(() => getInitialData());
-  const [CMDBar, setCMDBar] = useState<any>({
-    open: false,
-    position: {},
-  });
 
   const editor = useMemo(
-    () => withHistory(
-      withCorrectVoidBehavior(withImages(withInlines(withShortcuts(withReact(createEditor()))))),
-    ),
+    () => withHistory(withCorrectVoidBehavior(withImages(withInlines(withShortcuts(withReact(createEditor())))))),
     [],
   );
 
-  const CMDBarElementRef = useRef(null);
   const renderLeaf = useCallback((leafProps) => <TextLeaf {...leafProps} />, []);
-  const renderElement = useCallback((elemProps) => <Element {...elemProps} />, []);
+  const renderElement = useCallback((elemProps) => <RenderElement {...elemProps} />, []);
 
   const onKeyDown = useCallback(
     (event: KeyboardEvent<HTMLDivElement>) => {
       const { selection } = editor;
       const element: any = editor.children[selection?.anchor.path[0] || 0];
       const text = Editor.string(editor, editor.selection!.anchor.path);
-
-      if (isOpenCMDBar({ text, event })) {
-        setCMDBar({
-          open: true,
-          position: getAbsPositionBySelection(CMDBarElementRef.current),
-        });
-        return;
-      }
-
-      if (CMDBar.open) {
-        setCMDBar({
-          open: false,
-          position: {},
-        });
-      }
 
       if (event.key === 'Enter') {
         const newLine: ParagraphElement = {
@@ -109,26 +86,23 @@ const SlateEditor = () => {
         }
       }
     },
-    [CMDBar.open],
-  );
-
-  const onChange = useCallback(
-    (newValue) => {
-      setValue(newValue);
-      const isASTChanged = editor.operations.some((op) => op.type !== 'set_selection');
-
-      if (isASTChanged) {
-        try {
-          const content = JSON.stringify(newValue);
-          localStorage.setItem('content', content);
-        } catch (error) {
-          // [TODO] - don't store base64 src in image node
-          console.log(error);
-        }
-      }
-    },
     [],
   );
+
+  const onChange = useCallback((newValue) => {
+    setValue(newValue);
+    const isASTChanged = editor.operations.some((op) => op.type !== 'set_selection');
+
+    if (isASTChanged) {
+      try {
+        const content = JSON.stringify(newValue);
+        localStorage.setItem('content', content);
+      } catch (error) {
+        // [TODO] - don't store base64 src in image node
+        console.log(error);
+      }
+    }
+  }, []);
 
   const decorate = useCallback(([node, path]) => {
     if (editor.selection) {
@@ -149,34 +123,20 @@ const SlateEditor = () => {
     return [];
   }, []);
 
-  const handleBlockClick = (_e: any, type: string) => {
-    toggleBlock(editor, type);
-    Transforms.insertText(editor, 'Change text', {
-      at: editor.selection!.anchor.path,
-    });
+  // const handleBlockClick = (_e: any, type: string) => {
+  //   toggleBlock(editor, type);
+  //   Transforms.insertText(editor, 'Change text', {
+  //     at: editor.selection!.anchor.path,
+  //   });
 
-    setCMDBar({
-      open: false,
-      position: getAbsPositionBySelection(CMDBarElementRef.current),
-    });
-  };
+  //   setCMDBar({
+  //     open: false,
+  //     position: getAbsPositionBySelection(CMDBarElementRef.current),
+  //   });
+  // };
 
   return (
     <div style={CONTAINER_STYLE}>
-      <div
-        ref={CMDBarElementRef}
-        style={{
-          position: 'absolute',
-          top: CMDBar.position.top,
-          left: CMDBar.position.left,
-          zIndex: 2,
-        }}
-      >
-        <Fade show={CMDBar.open}>
-          <TextDropdown handleBlockClick={handleBlockClick} selectedElementType={undefined} />
-        </Fade>
-      </div>
-
       <div style={EDITOR_WRAP_STYLE}>
         <DndProvider backend={HTML5Backend}>
           <Slate editor={editor} value={value} onChange={onChange}>

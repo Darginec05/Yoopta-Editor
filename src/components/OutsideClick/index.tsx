@@ -22,7 +22,7 @@ const OutsideClick: FC<Props> = ({ children, onClose }) => {
     };
   }, [ref, onClose]);
 
-  return <div ref={ref}>{children}</div>;
+  return <div contentEditable={false} ref={ref}>{children}</div>;
 };
 
 export { OutsideClick };

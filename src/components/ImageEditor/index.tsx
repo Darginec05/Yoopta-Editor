@@ -9,9 +9,9 @@ import { ImageElement } from '../Editor/types';
 import { ImageRender } from '../ImageRender/ImageRender';
 import { uploadToCloudinary } from '../../utils';
 import { Loader } from '../Loader';
-import s from './ImageEditor.module.scss';
 import { MediaEditorOptions } from '../MediaEditorOptions';
 import { ELEMENT_TYPES_MAP } from '../Editor/constants';
+import s from './ImageEditor.module.scss';
 
 const toBase64 = (file): Promise<string | ArrayBuffer | null> =>
   new Promise((resolve, reject) => {
