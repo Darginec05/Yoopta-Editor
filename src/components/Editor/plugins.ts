@@ -78,10 +78,10 @@ export const withShortcuts = (editor: Editor) => {
         const start = Editor.start(editor, path);
 
         if (
-          !Editor.isEditor(block)
-          && Element.isElement(block)
-          && block.type !== 'paragraph'
-          && Point.equals(selection.anchor, start)
+          !Editor.isEditor(block) &&
+          Element.isElement(block) &&
+          block.type !== 'paragraph' &&
+          Point.equals(selection.anchor, start)
         ) {
           const updatedLine: Partial<Element> = {
             type: 'paragraph',
@@ -159,17 +159,12 @@ export const withCorrectVoidBehavior = (editor: Editor) => {
 
   // if prev node is a void node, remove the current node and select the void node
   editor.deleteBackward = (unit: 'character' | 'word' | 'line' | 'block') => {
-    if (
-      !editor.selection
-      || !Range.isCollapsed(editor.selection)
-      || editor.selection.anchor.offset !== 0
-    ) {
+    if (!editor.selection || !Range.isCollapsed(editor.selection) || editor.selection.anchor.offset !== 0) {
       return deleteBackward(unit);
     }
 
     const parentPath = Path.parent(editor.selection.anchor.path);
     const parentNode = Node.get(editor, parentPath);
-    console.log(parentNode);
     const parentIsEmpty = Node.string(parentNode).length === 0;
 
     if (parentIsEmpty && Path.hasPrevious(parentPath)) {
@@ -183,5 +178,17 @@ export const withCorrectVoidBehavior = (editor: Editor) => {
     deleteBackward(unit);
   };
 
+  return editor;
+};
+
+export const withFixDeleteFragment = (editor: Editor) => {
+  // Fixes https://github.com/ianstormtaylor/slate/issues/3605
+  editor.deleteFragment = () => {
+    const { selection } = editor;
+
+    if (selection && Range.isExpanded(selection)) {
+      Transforms.delete(editor, { hanging: true });
+    }
+  };
   return editor;
 };

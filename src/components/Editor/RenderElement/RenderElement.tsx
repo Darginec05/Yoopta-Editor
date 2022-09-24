@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, ReactNode, useMemo } from 'react';
 import { RenderElementProps } from 'slate-react';
 import { ElementHover } from '../../HoveredMenu';
 import { ELEMENT_TYPES_MAP } from '../constants';
@@ -29,11 +29,18 @@ const ELEMENT_RENDER_ITEMS = {
 
 const TYPES_DRAG_IGNORE = [ELEMENT_TYPES_MAP['list-item'], ELEMENT_TYPES_MAP['numbered-list'], ELEMENT_TYPES_MAP.link];
 
-const RenderElement: FC<RenderElementProps | any> = ({ attributes, children, element, isEdit = true }) => {
+type Props = RenderElementProps & {
+  attributes: any;
+  children: ReactNode;
+  element: any;
+  isEdit?: boolean;
+  onPlusButtonClick?: () => void;
+};
+
+const RenderElement: FC<Props> = ({ element, children, attributes, onPlusButtonClick, isEdit = true }) => {
   const Component = useMemo(() => ELEMENT_RENDER_ITEMS[element.type], [element.type]);
 
   if (!Component) return null;
-
   if (isEdit) {
     if (TYPES_DRAG_IGNORE.includes(element.type)) {
       return (
@@ -44,7 +51,7 @@ const RenderElement: FC<RenderElementProps | any> = ({ attributes, children, ele
     }
 
     return (
-      <ElementHover element={element} attributes={attributes}>
+      <ElementHover element={element} attributes={attributes} onPlusButtonClick={onPlusButtonClick}>
         <Component isEdit attributes={{}} element={element}>
           {children}
         </Component>

@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { SlateEditor } from '../components/Editor';
+import { SlateEditor } from '../components/Editor/Editor';
 
 const isServer = typeof window === 'undefined';
 

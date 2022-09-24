@@ -1,4 +1,4 @@
-import { Descendant, BaseEditor } from 'slate';
+import { Descendant, BaseEditor, Node } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { HistoryEditor } from 'slate-history';
 import { ReactNode } from 'react';
@@ -76,6 +76,8 @@ export type VideoElement = {
   url: string;
   children: EmptyText[];
 };
+
+export type CustomNode = Node & { id: string, isVoid?: boolean };
 
 export type CustomElement =
   | BlockQuoteElement

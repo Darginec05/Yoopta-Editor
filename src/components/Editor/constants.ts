@@ -17,3 +17,15 @@ export const IGNORED_SOFT_BREAK_ELEMS = [
   ELEMENT_TYPES_MAP['numbered-list'],
   ELEMENT_TYPES_MAP['list-item'],
 ];
+
+export const TEXT_ELEMENTS_LIST = [
+  ELEMENT_TYPES_MAP['block-quote'],
+  ELEMENT_TYPES_MAP['bulleted-list'],
+  ELEMENT_TYPES_MAP['numbered-list'],
+  ELEMENT_TYPES_MAP['list-item'],
+  ELEMENT_TYPES_MAP['heading-one'],
+  ELEMENT_TYPES_MAP['heading-two'],
+  ELEMENT_TYPES_MAP['heading-three'],
+  ELEMENT_TYPES_MAP.link,
+  ELEMENT_TYPES_MAP.paragraph,
+];

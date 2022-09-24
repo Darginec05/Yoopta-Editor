@@ -1,93 +1,37 @@
-import { useSlate } from 'slate-react';
+import { Range } from 'slate';
+import { useState } from 'react';
+import { useSelected, useSlate } from 'slate-react';
+import cx from 'classnames';
 import { HoveredMenuItem } from './HoveredMenuItem';
 import s from './HoveredMenu.module.scss';
 
-const ElementHover = ({ children, element, attributes }) => {
+const ElementHover = ({ children, element, attributes, onPlusButtonClick }) => {
   const editor = useSlate();
-  // const ref = useRef(null);
-  // const index = ReactEditor.findPath(editor, element)[0];
+  const selected = useSelected();
+  const [hovered, setHovered] = useState(false);
 
-  // const findNode = (editor: Editor, id: string) => {
-  //   const voids = undefined;
+  const isCurrentItemSelected = editor.selection && Range.isCollapsed(editor.selection) && selected;
 
-  //   const nodeEntry = Editor.nodes(editor, {
-  //     voids,
-  //     match: (n) => {
-  //       return Element.isElement(n) && n.id === id;
-  //     },
-  //   });
+  const showPlaceholder =
+    isCurrentItemSelected && element.children[0].text === '' && !element.isVoid && !['image'].includes(element.type);
 
-  //   const { value } = nodeEntry.next();
-  //   return [value[0], value[1]];
-  // };
+  const onHover = () => setHovered(true);
 
-  // const [{ isDragging }, dragRef] = useDrag({
-  //   type: 'item',
-  //   item: { ...element, index },
-  //   collect: (monitor) => ({
-  //     isDragging: monitor.isDragging(),
-  //   }),
-  // });
-
-  // const [, dropRef] = useDrop({
-  //   accept: 'item',
-  //   collect: (monitor) => ({
-  //     isOver: monitor.isOver(),
-  //   }),
-  //   drop: (dragItem: any, monitor: DropTargetMonitor) => {
-  //     ReactEditor.focus(editor);
-
-  //     const dragEntry = findNode(editor, dragItem.id);
-  //     const [, dragPath] = dragEntry;
-  //     const dropEntry = findNode(editor, element.id);
-  //     const [, dropPath] = dropEntry;
-
-  //     const _dropPath = dropPath as Path;
-
-  //     const before = Path.isBefore(dragPath, _dropPath) && Path.isSibling(dragPath, _dropPath);
-  //     const to = before ? _dropPath : Path.next(_dropPath);
-
-  //     Transforms.moveNodes(editor, {
-  //       at: dragPath,
-  //       to,
-  //     });
-  //   },
-  //   hover: (item, monitor) => {
-  //     const dragIndex = item.index;
-  //     const hoverIndex = index;
-
-  //     // console.log(
-  //     //   Editor.nodes(editor, {
-  //     //     at: [dragIndex],
-  //     //   }),
-  //     // );
-  //     // console.log(
-  //     //   Editor.nodes(editor, {
-  //     //     at: [hoverIndex],
-  //     //   }),
-  //     // );
-
-  //     const hoverBoundingRect = ref.current?.getBoundingClientRect();
-  //     const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-  //     const hoverActualY = monitor.getClientOffset().y - hoverBoundingRect.top;
-
-  //     // if dragging down, continue only when hover is smaller than middle Y
-  //     if (dragIndex < hoverIndex && hoverActualY < hoverMiddleY) return;
-  //     // if dragging up, continue only when hover is bigger than middle Y
-  //     if (dragIndex > hoverIndex && hoverActualY > hoverMiddleY) return;
-
-  //     // // moveListItem(dragIndex, hoverIndex);
-  //     item.index = hoverIndex;
-  //   // },
-  // });
-
-  // const dragDropRef = dragRef(dropRef(ref));
-  // const opacity = isDragging ? 0.4 : 1;
+  const handlePlusButton = () => {
+    setHovered(false);
+    onPlusButtonClick(element);
+  };
 
   return (
-    <section className={s.hoverWrap} data-node-id={element.id} {...attributes}>
-      <HoveredMenuItem element={element} editor={editor} />
-      {children}
+    <section
+      className={cx(s.hoverWrap, { [s.placeholder]: showPlaceholder })}
+      data-node-id={element.id}
+      onMouseEnter={onHover}
+      onMouseLeave={() => setHovered(false)}
+      {...attributes}
+    >
+      <HoveredMenuItem handlePlusButton={handlePlusButton} hovered={hovered} />
+      <div style={{ padding: '0 64px' }}>{children}</div>
     </section>
   );
 };

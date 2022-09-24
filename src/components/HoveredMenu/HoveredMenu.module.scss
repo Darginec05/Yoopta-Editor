@@ -2,20 +2,19 @@
   width: 100%;
   height: auto;
   position: relative;
-
-  &:hover {
-    .hoverSettings {
-      opacity: 1;
-    }
-  }
 }
 
 .hoverSettings {
-  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+  display: flex;
   position: absolute;
-  left: -60px;
-  top: 7px;
-  transition: opacity 250ms;
+  top: 5px;
+  left: 0;
+  right: auto;
+  bottom: auto;
+}
+
+.actions {
   display: flex;
 }
 
@@ -33,7 +32,6 @@
   transition: background-color 250ms;
   margin-right: 2px;
   position: relative;
-  z-index: 5;
 
   &:first-child {
     padding: 0;
@@ -53,4 +51,19 @@
 
 .menuList {
   position: absolute;
+}
+
+.placeholder {
+  position: relative;
+}
+
+.placeholder:after {
+  content: " Type something..";
+  color: #aaa;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  user-select: none;
+  text-indent: 2px;
+  left: 64px;
 }

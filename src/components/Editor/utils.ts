@@ -34,7 +34,7 @@ export const getMatchedNode = (editor: Editor, type: any) => {
 
 export const isBlockActive = (editor: Editor, type: any) => !!getMatchedNode(editor, type);
 
-export const toggleBlock = (editor: Editor, blockType: any, data = { isVoid: false }) => {
+export const toggleBlock = (editor: Editor, blockType: any, data: any = { isVoid: false }) => {
   const isActive = isBlockActive(editor, blockType);
   const isList = LIST_TYPES.includes(blockType);
 
@@ -48,6 +48,8 @@ export const toggleBlock = (editor: Editor, blockType: any, data = { isVoid: fal
     type: isActive ? ELEMENT_TYPES_MAP.paragraph : isList ? ELEMENT_TYPES_MAP['list-item'] : blockType,
     ...data,
   };
+
+  console.log(node);
 
   // ignore active state when element is void
   if (data.isVoid) {
@@ -100,16 +102,25 @@ export const addLinkNode = (editor: Editor, url: string) => {
   }
 };
 
-export const getAbsPositionBySelection = (element) => {
-  if (!element) return { top: -10000, left: -10000 };
-
+export const getRectByCurrentSelection = () => {
   const domSelection = window.getSelection()!;
   const domRange = domSelection.getRangeAt(0);
   const rect = domRange.getBoundingClientRect();
 
+  return rect;
+};
+
+export const getAbsPositionBySelection = (element) => {
+  if (!element) return { top: -10000, left: -10000 };
+
+  const selectionRect = getRectByCurrentSelection();
+
+  console.log(selectionRect);
+  console.log(element.offsetHeight);
+
   return {
-    top: rect.top + window.pageYOffset - element.offsetHeight,
-    left: rect.left + window.pageXOffset - element.offsetWidth / 2 + rect.width / 2,
+    top: selectionRect.top - element.offsetHeight,
+    left: selectionRect.left + window.pageXOffset - element.offsetWidth / 2 + selectionRect.width / 2,
   };
 };
 

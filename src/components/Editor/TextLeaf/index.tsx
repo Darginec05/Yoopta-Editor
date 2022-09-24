@@ -16,12 +16,6 @@ const TextLeaf: FC<RenderLeafProps> = ({ attributes, children, leaf }) => {
       })}
     >
       {children}
-      {leaf.placeholder && (
-        <span className={s.placeholder} contentEditable={false}>
-          {' '}
-          Type / to open menu
-        </span>
-      )}
     </span>
   );
 };
