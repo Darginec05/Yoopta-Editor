@@ -4,6 +4,32 @@
   position: relative;
 }
 
+.isOver {
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -7px;
+    height: 3px;
+    width: calc(100% - 128px);
+    background-color: #007AFF;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.isOverCurrent {
+  &::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    height: 3px;
+    width: calc(100% - 128px);
+    background-color: #007AFF;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
 .hoverSettings {
   transition: opacity 200ms ease-in-out;
   display: flex;

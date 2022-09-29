@@ -34,10 +34,24 @@ type Props = RenderElementProps & {
   children: ReactNode;
   element: any;
   isEdit?: boolean;
+  dndState: any;
   onPlusButtonClick?: () => void;
+  onDragStart?: () => void;
+  onDragEnd?: () => void;
+  onDrop?: () => void;
 };
 
-const RenderElement: FC<Props> = ({ element, children, attributes, onPlusButtonClick, isEdit = true }) => {
+const RenderElement: FC<Props> = ({
+  element,
+  onDragStart,
+  onDragEnd,
+  onDrop,
+  dndState,
+  children,
+  attributes,
+  onPlusButtonClick,
+  isEdit = true,
+}) => {
   const Component = useMemo(() => ELEMENT_RENDER_ITEMS[element.type], [element.type]);
 
   if (!Component) return null;
@@ -51,7 +65,15 @@ const RenderElement: FC<Props> = ({ element, children, attributes, onPlusButtonC
     }
 
     return (
-      <ElementHover element={element} attributes={attributes} onPlusButtonClick={onPlusButtonClick}>
+      <ElementHover
+        element={element}
+        attributes={attributes}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        onDrop={onDrop}
+        dndState={dndState}
+        onPlusButtonClick={onPlusButtonClick}
+      >
         <Component isEdit attributes={{}} element={element}>
           {children}
         </Component>

@@ -2,8 +2,6 @@ import { createEditor, Descendant, Editor, Transforms, Element as SlateElement }
 import { useCallback, useMemo, useState, KeyboardEvent, CSSProperties, useRef, MouseEvent } from 'react';
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 import { withHistory } from 'slate-history';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 import { v4 } from 'uuid';
 import { TextLeaf } from './TextLeaf';
 import { RenderElement } from './RenderElement/RenderElement';
@@ -14,6 +12,7 @@ import { DEFAULT_STATE, getRectByCurrentSelection, toggleBlock } from './utils';
 import { ELEMENT_TYPES_MAP, IGNORED_SOFT_BREAK_ELEMS } from './constants';
 import { ElementsListDropdown } from './ElementsListDropdown/ElementsListDropdown';
 import { OutsideClick } from '../OutsideClick';
+import { useDragDrop } from '../../hooks/useDragDrop';
 // import { ElementsListDropdown } from './ElementsListDropdown/ElementsListDropdown';
 
 const CONTAINER_STYLE: CSSProperties = {
@@ -45,27 +44,14 @@ const SlateEditor = () => {
   const elementsListPositionRef = useRef<HTMLDivElement>(null);
 
   const editor = useMemo(
-    () => withFixDeleteFragment(
-      withHistory(withCorrectVoidBehavior(withImages(withInlines(withShortcuts(withReact(createEditor())))))),
-    ),
+    () =>
+      withFixDeleteFragment(
+        withHistory(withCorrectVoidBehavior(withImages(withInlines(withShortcuts(withReact(createEditor())))))),
+      ),
     [],
   );
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     Transforms.moveNodes(editor, {
-  //       // This will again be expanded to a range of the entire node at `[2]`.
-  //       at: [0],
-  //       // Matches nodes with a longer path, which are the children.
-  //       to: [1],
-  //       match: (node: Node, path: Path) => {
-  //         console.log(node);
-  //         return Editor.isBlock(editor, node);
-  //       }
-  //     });
-
-  //   }, 5000);
-  // }, []);
+  const { onDrop, dndState, onDragEnd, onDragStart, isDisableByDrag } = useDragDrop({ editor });
 
   const showElementsList = () => {
     const selectionRect = getRectByCurrentSelection();
@@ -118,8 +104,17 @@ const SlateEditor = () => {
 
   const renderLeaf = useCallback((leafProps) => <TextLeaf {...leafProps} />, []);
   const renderElement = useCallback(
-    (elemProps) => <RenderElement onPlusButtonClick={onPlusButtonClick} {...elemProps} />,
-    [],
+    (elemProps) => (
+      <RenderElement
+        onPlusButtonClick={onPlusButtonClick}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        onDrop={onDrop}
+        dndState={dndState}
+        {...elemProps}
+      />
+    ),
+    [onDragEnd, onDragStart, dndState, onDrop],
   );
 
   const onKeyUp = useCallback(() => {
@@ -140,8 +135,6 @@ const SlateEditor = () => {
     const element: any = editor.children[selection?.anchor.path[0] || 0];
     const text = Editor.string(editor, editor.selection!.anchor.path);
     const isEnterPressed = event.key === 'Enter';
-
-    console.log(selection);
 
     if (
       (event.key === 'Backspace' && text.length === 0) ||
@@ -221,25 +214,24 @@ const SlateEditor = () => {
   return (
     <div style={CONTAINER_STYLE}>
       <div style={EDITOR_WRAP_STYLE}>
-        <DndProvider backend={HTML5Backend}>
-          <Slate editor={editor} value={value} onChange={onChange}>
-            <OutsideClick onClose={hideElementsList}>
-              <ElementsListDropdown
-                ref={elementsListPositionRef}
-                filterListCallback={filterElementsListBySearchText}
-                handleBlockClick={handleBlockClick}
-              />
-            </OutsideClick>
-            <Toolbar />
-            <Editable
-              renderLeaf={renderLeaf}
-              renderElement={renderElement}
-              onKeyDown={onKeyDown}
-              onKeyUp={onKeyUp}
-              spellCheck
+        <Slate editor={editor} value={value} onChange={onChange}>
+          <OutsideClick onClose={hideElementsList}>
+            <ElementsListDropdown
+              ref={elementsListPositionRef}
+              filterListCallback={filterElementsListBySearchText}
+              handleBlockClick={handleBlockClick}
             />
-          </Slate>
-        </DndProvider>
+          </OutsideClick>
+          <Toolbar />
+          <Editable
+            renderLeaf={renderLeaf}
+            renderElement={renderElement}
+            onKeyDown={onKeyDown}
+            onKeyUp={onKeyUp}
+            readOnly={isDisableByDrag}
+            spellCheck
+          />
+        </Slate>
       </div>
     </div>
   );

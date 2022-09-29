@@ -115,9 +115,6 @@ export const getAbsPositionBySelection = (element) => {
 
   const selectionRect = getRectByCurrentSelection();
 
-  console.log(selectionRect);
-  console.log(element.offsetHeight);
-
   return {
     top: selectionRect.top - element.offsetHeight,
     left: selectionRect.left + window.pageXOffset - element.offsetWidth / 2 + selectionRect.width / 2,
