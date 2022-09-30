@@ -1,0 +1,47 @@
+.root {
+  position: absolute;
+  right: calc(100% - 15px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: auto;
+  z-index: 10;
+  padding-right: 20px;
+}
+
+.content {
+  width: 215px;
+  height: auto;
+  border-radius: 10px;
+  background-color: #262625;
+  padding: 5px;
+  box-shadow: rgb(15 15 15 / 5%) 0px 0px 0px 1px, rgb(15 15 15 / 10%) 0px 3px 6px, rgb(15 15 15 / 20%) 0px 9px 24px;
+}
+
+.listSettings {
+  width: 100%;
+}
+
+.settingsButton {
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  padding: 8px 14px;
+  transition: background-color 150ms;
+  cursor: pointer;
+  color: #fff;
+  text-align: left;
+  font-size: 16px;
+  border-radius: 10px;
+  line-height: normal;
+  height: 38px;
+  display: flex;
+  align-items: center;
+
+  & span {
+    margin-left: 8px;
+  }
+
+  &:hover {
+    background-color: #383835;
+  }
+}

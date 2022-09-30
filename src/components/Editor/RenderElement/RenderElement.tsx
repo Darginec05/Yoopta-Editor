@@ -1,6 +1,6 @@
 import { FC, ReactNode, useMemo } from 'react';
 import { RenderElementProps } from 'slate-react';
-import { ElementHover } from '../../HoveredMenu';
+import { ElementHover } from '../../HoveredMenu/HoveredMenu';
 import { ELEMENT_TYPES_MAP } from '../constants';
 import { Blockquote } from '../../Elements/Blockquote/Blockquote';
 import { HeadingOne } from '../../Elements/HeadingOne/HeadingOne';
@@ -9,6 +9,7 @@ import { HeadingThree } from '../../Elements/HeadingThree/HeadingThree';
 import { BulletedList } from '../../Elements/BulletedList/BulletedList';
 import { NumberedList } from '../../Elements/NumberedList/NumberedList';
 import { Image } from '../../Elements/Image/Image';
+import { Callout } from '../../Elements/Callout/Callout';
 import { ListItem } from '../../Elements/ListItem/ListItem';
 import { Link } from '../../Elements/Link/Link';
 import { Paragraph } from '../../Elements/Paragraph/Paragraph';
@@ -23,6 +24,7 @@ const ELEMENT_RENDER_ITEMS = {
   [ELEMENT_TYPES_MAP['heading-three']]: HeadingThree,
   [ELEMENT_TYPES_MAP.link]: Link,
   [ELEMENT_TYPES_MAP.image]: Image,
+  [ELEMENT_TYPES_MAP.callout]: Callout,
   // [ELEMENT_TYPES_MAP.video]: () => <div>NOT SUPPORTED</div>,
   [ELEMENT_TYPES_MAP.paragraph]: Paragraph,
 };

@@ -17,3 +17,8 @@ a {
 .no-scroll {
   overflow: hidden;
 }
+
+.button {
+  cursor: pointer;
+  border: none;
+}

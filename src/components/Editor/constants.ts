@@ -10,6 +10,7 @@ export const ELEMENT_TYPES_MAP = {
   image: 'image',
   video: 'video',
   paragraph: 'paragraph',
+  callout: 'callout',
 };
 
 export const IGNORED_SOFT_BREAK_ELEMS = [
@@ -28,4 +29,5 @@ export const TEXT_ELEMENTS_LIST = [
   ELEMENT_TYPES_MAP['heading-three'],
   ELEMENT_TYPES_MAP.link,
   ELEMENT_TYPES_MAP.paragraph,
+  ELEMENT_TYPES_MAP.callout,
 ];

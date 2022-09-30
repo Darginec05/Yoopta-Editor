@@ -13,7 +13,7 @@ import { ELEMENT_TYPES_MAP, IGNORED_SOFT_BREAK_ELEMS } from './constants';
 import { ElementsListDropdown } from './ElementsListDropdown/ElementsListDropdown';
 import { OutsideClick } from '../OutsideClick';
 import { useDragDrop } from '../../hooks/useDragDrop';
-// import { ElementsListDropdown } from './ElementsListDropdown/ElementsListDropdown';
+import { useScrollToElement } from '../../hooks/useScrollToElement';
 
 const CONTAINER_STYLE: CSSProperties = {
   display: 'flex',
@@ -44,12 +44,13 @@ const SlateEditor = () => {
   const elementsListPositionRef = useRef<HTMLDivElement>(null);
 
   const editor = useMemo(
-    () =>
-      withFixDeleteFragment(
-        withHistory(withCorrectVoidBehavior(withImages(withInlines(withShortcuts(withReact(createEditor())))))),
-      ),
+    () => withFixDeleteFragment(
+      withHistory(withCorrectVoidBehavior(withImages(withInlines(withShortcuts(withReact(createEditor())))))),
+    ),
     [],
   );
+
+  useScrollToElement();
 
   const { onDrop, dndState, onDragEnd, onDragStart, isDisableByDrag } = useDragDrop({ editor });
 
@@ -220,6 +221,7 @@ const SlateEditor = () => {
               ref={elementsListPositionRef}
               filterListCallback={filterElementsListBySearchText}
               handleBlockClick={handleBlockClick}
+              selectedElementType={ELEMENT_TYPES_MAP.paragraph}
             />
           </OutsideClick>
           <Toolbar />

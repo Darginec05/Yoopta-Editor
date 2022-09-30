@@ -1,4 +1,4 @@
-import { forwardRef, KeyboardEvent, ReactNode, useEffect, useRef } from 'react';
+import { forwardRef, KeyboardEvent, ReactNode } from 'react';
 import cx from 'classnames';
 import { ReactComponent as ParagraphIcon } from '../Toolbar/icons/paragraph.svg';
 import { ReactComponent as HeadingOneIcon } from '../Toolbar/icons/heading_one.svg';
@@ -7,6 +7,7 @@ import { ReactComponent as HeadingThreeIcon } from '../Toolbar/icons/heading_thr
 import { ReactComponent as BulletedListIcon } from '../Toolbar/icons/bulleted_list.svg';
 import { ReactComponent as NumberedListIcon } from '../Toolbar/icons/numbered_list.svg';
 import { ReactComponent as BlockQuoteIcon } from '../Toolbar/icons/blockquote.svg';
+import { ReactComponent as CalloutIcon } from '../Toolbar/icons/callout.svg';
 import { ReactComponent as VideoIcon } from '../../../icons/video.svg';
 import { ReactComponent as ImageIcon } from '../../../icons/image.svg';
 import s from './ElementsListDropdown.module.scss';
@@ -25,6 +26,7 @@ export const ELEMENT_TYPES: Block[] = [
   { icon: <BulletedListIcon />, name: 'Bulleted List', type: 'bulleted-list' },
   { icon: <NumberedListIcon />, name: 'Numbered List', type: 'numbered-list' },
   { icon: <BlockQuoteIcon />, name: 'Blockquote', type: 'block-quote' },
+  { icon: <CalloutIcon />, name: 'Callout', type: 'callout' },
   { icon: <ImageIcon />, name: 'Image', type: 'image' },
   { icon: <VideoIcon />, name: 'Video', type: 'video' },
 ];
@@ -41,7 +43,7 @@ export const ElementsListDropdown = forwardRef<any, any>(
     const elements =
       typeof filterListCallback === 'function' ? ELEMENT_TYPES.filter(filterListCallback) : ELEMENT_TYPES;
 
-    const isBlockActive = (elem) => selectedElementType === elem.type || elements[0].type === elem.type;
+    const isBlockActive = (elem) => selectedElementType === elem.type;
 
     const notFound = elements.length === 0;
 
@@ -55,7 +57,9 @@ export const ElementsListDropdown = forwardRef<any, any>(
             className={cx(s.dropdownButton, isBlockActive(element) && s.__active)}
             key={element.type}
           >
-            {element.icon} <span>{element.name}</span>
+            {element.icon}
+            {' '}
+            <span>{element.name}</span>
           </button>
         ))}
         {notFound && (

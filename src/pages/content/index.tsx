@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { TextLeaf } from '../../components/Editor/TextLeaf';
 import { RenderElement } from '../../components/Editor/RenderElement/RenderElement';
 import { DEFAULT_STATE } from '../../components/Editor/utils';
+import { useScrollToElement } from '../../hooks/useScrollToElement';
 
 const Content = ({ value: serverData }) => {
   const [value] = useState(() => {
@@ -11,6 +12,8 @@ const Content = ({ value: serverData }) => {
     const content = localStorage.getItem('content');
     return content ? JSON.parse(content) : serverData;
   });
+
+  useScrollToElement();
 
   const renderChildren = (child) => {
     const childId = v4();

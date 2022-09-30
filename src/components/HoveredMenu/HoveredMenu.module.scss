@@ -17,7 +17,7 @@
   }
 }
 
-.isOverCurrent {
+.isOverSelf {
   &::before {
     content: "";
     position: absolute;

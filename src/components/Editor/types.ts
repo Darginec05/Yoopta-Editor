@@ -15,6 +15,7 @@ export type EmptyText = {
 };
 
 export type BlockQuoteElement = { id: string; type: 'block-quote'; children: Descendant[] };
+export type CalloutElement = { id: string; type: 'block-quote'; children: Descendant[] };
 
 export type BulletedListElement = {
   id: string;
@@ -81,6 +82,7 @@ export type CustomNode = Node & { id: string, isVoid?: boolean };
 
 export type CustomElement =
   | BlockQuoteElement
+  | CalloutElement
   | BulletedListElement
   | NumberedListElement
   | CheckListItemElement
