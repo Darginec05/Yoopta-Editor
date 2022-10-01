@@ -29,7 +29,7 @@ const ELEMENT_RENDER_ITEMS = {
   [ELEMENT_TYPES_MAP.paragraph]: Paragraph,
 };
 
-const TYPES_DRAG_IGNORE = [ELEMENT_TYPES_MAP['list-item'], ELEMENT_TYPES_MAP['numbered-list'], ELEMENT_TYPES_MAP.link];
+const TYPES_DRAG_IGNORE = [ELEMENT_TYPES_MAP['list-item'], ELEMENT_TYPES_MAP.link];
 
 type Props = RenderElementProps & {
   attributes: any;

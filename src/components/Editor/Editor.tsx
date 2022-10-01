@@ -45,16 +45,17 @@ const SlateEditor = () => {
   const elementsListPositionRef = useRef<HTMLDivElement>(null);
 
   const editor = useMemo(
-    () =>
-      withFixDeleteFragment(
-        withHistory(withCorrectVoidBehavior(withImages(withInlines(withShortcuts(withReact(createEditor())))))),
-      ),
+    () => withFixDeleteFragment(
+      withHistory(withCorrectVoidBehavior(withImages(withInlines(withShortcuts(withReact(createEditor())))))),
+    ),
     [],
   );
 
   useScrollToElement();
 
   const { onDrop, dndState, onDragEnd, onDragStart, isDisableByDrag } = useDragDrop({ editor });
+
+  const isReadOnly = isDisableByDrag;
 
   const showElementsList = () => {
     const selectionRect = getRectByCurrentSelection();
@@ -66,8 +67,6 @@ const SlateEditor = () => {
   };
 
   const hideElementsList = () => {
-    console.log("hideElementsList called");
-
     elementsListPositionRef.current!.style.opacity = '0';
     elementsListPositionRef.current!.style.left = '-1000px';
     elementsListPositionRef.current!.style.top = '-1000px';
@@ -217,10 +216,12 @@ const SlateEditor = () => {
   }, []);
 
   return (
-    <div style={CONTAINER_STYLE}>
-      <div style={EDITOR_WRAP_STYLE}>
-        <AlertProvider>
-          <Slate editor={editor} value={value} onChange={onChange}>
+    <main style={CONTAINER_STYLE}>
+      <AlertProvider>
+        <Slate editor={editor} value={value} onChange={onChange}>
+          <div
+            style={EDITOR_WRAP_STYLE}
+          >
             <OutsideClick onClose={hideElementsList}>
               <ElementsListDropdown
                 ref={elementsListPositionRef}
@@ -235,13 +236,13 @@ const SlateEditor = () => {
               renderElement={renderElement}
               onKeyDown={onKeyDown}
               onKeyUp={onKeyUp}
-              readOnly={isDisableByDrag}
+              readOnly={isReadOnly}
               spellCheck
             />
-          </Slate>
-        </AlertProvider>
-      </div>
-    </div>
+          </div>
+        </Slate>
+      </AlertProvider>
+    </main>
   );
 };
 

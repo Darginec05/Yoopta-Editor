@@ -10,7 +10,7 @@ export const HOTKEYS: Record<string, string> = {
   'mod+`': 'code',
 };
 
-export const LIST_TYPES = ['numbered-list', 'bulleted-list'];
+export const LIST_TYPES = ['numbered-list', 'bulleted-list', 'list-item'];
 
 export const isMarkActive = (editor: Editor, mark: any): boolean => {
   const marks: Omit<Text, 'text'> | null = Editor.marks(editor);
@@ -42,14 +42,13 @@ export const toggleBlock = (editor: Editor, blockType: any, data: any = { isVoid
     match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && LIST_TYPES.includes(n.type),
     split: true,
   });
+
   const node: Partial<SlateElement> = {
     id: v4(),
     // eslint-disable-next-line no-nested-ternary
     type: isActive ? ELEMENT_TYPES_MAP.paragraph : isList ? ELEMENT_TYPES_MAP['list-item'] : blockType,
     ...data,
   };
-
-  console.log(node);
 
   // ignore active state when element is void
   if (data.isVoid) {
