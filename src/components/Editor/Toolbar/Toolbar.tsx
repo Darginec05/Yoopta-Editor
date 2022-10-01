@@ -40,7 +40,7 @@ type ToolbarProps = {};
 
 const Toolbar: FC<ToolbarProps> = () => {
   const editor = useSlate();
-  const ref = useRef<HTMLDivElement | null | any>();
+  const toolbarRef = useRef<HTMLDivElement | null | any>();
   const elementsListDropdownRef = useRef<HTMLDivElement | null | any>();
   const [isDropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [isLinkOpen, setLinkOpen] = useState<boolean>(false);
@@ -70,14 +70,23 @@ const Toolbar: FC<ToolbarProps> = () => {
   };
 
   const hideAllToolbarTools = () => {
-    ref.current.removeAttribute('style');
+    toolbarRef.current.removeAttribute('style');
     setLinkOpen(false);
     setDropdownOpen(false);
     hideElementsList();
   };
 
+  const showToolbar = () => {
+    const el = toolbarRef.current;
+    const { top, left } = getAbsPositionBySelection(el);
+
+    el.style.opacity = '1';
+    el.style.top = `${top}px`;
+    el.style.left = `${left}px`;
+  }
+
   const toggleToolbar = () => {
-    const el = ref.current;
+    const el = toolbarRef.current;
     const elementsListDropdown = elementsListDropdownRef.current;
 
     const { selection } = editor;
@@ -92,6 +101,7 @@ const Toolbar: FC<ToolbarProps> = () => {
       Range.isCollapsed(selection) ||
       Editor.string(editor, selection) === ''
     ) {
+      window.removeEventListener('scroll', showToolbar);
       return hideAllToolbarTools();
     }
 
@@ -107,11 +117,10 @@ const Toolbar: FC<ToolbarProps> = () => {
       elementsListDropdown.style.bottom = isBottomPosition ? 'auto' : `${toolbarRect.height + 5}px`;
     }
 
-    const { top, left } = getAbsPositionBySelection(el);
+    showToolbar();
 
-    el.style.opacity = '1';
-    el.style.top = `${top}px`;
-    el.style.left = `${left}px`;
+    // [TODO] - rewrite logic of Toolbar showing
+    // window.addEventListener('scroll', showToolbar);
   };
 
   useEffect(() => {
@@ -134,7 +143,7 @@ const Toolbar: FC<ToolbarProps> = () => {
 
   return (
     <OutsideClick onClose={hideAllToolbarTools}>
-      <div ref={ref} className={s.menu}>
+      <div ref={toolbarRef} className={s.menu}>
         <div className={s.toolbar}>
           <ElementsListDropdown
             handleBlockClick={handleBlockClick}

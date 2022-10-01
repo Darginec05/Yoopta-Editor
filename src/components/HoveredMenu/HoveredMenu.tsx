@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { ReactEditor, useSelected, useSlate } from 'slate-react';
 import cx from 'classnames';
 import { HoveredMenuItem } from './HoveredMenuItem';
+import { useAlert } from '../Alert/Alert';
 import s from './HoveredMenu.module.scss';
 
 const ElementHover = ({
@@ -19,6 +20,7 @@ const ElementHover = ({
 }) => {
   const editor = useSlate();
   const selected = useSelected();
+  const alert = useAlert();
   const [hovered, setHovered] = useState(false);
 
   const elementRef = attributes.ref;
@@ -52,10 +54,12 @@ const ElementHover = ({
   };
 
   const handleDuplicateNode = () => {
-    const currentNode = Array.from(Editor.nodes(editor, {
-      match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
-      at: editor.selection?.anchor,
-    }))[0]?.[0];
+    const currentNode = Array.from(
+      Editor.nodes(editor, {
+        match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
+        at: editor.selection?.anchor,
+      }),
+    )[0]?.[0];
 
     if (currentNode) {
       const duplicatedNode = { ...currentNode, id: v4() };
@@ -72,8 +76,8 @@ const ElementHover = ({
   };
 
   const handleCopyLinkNode = () => {
-    // [TODO] - show alert
     copy(`${window.location.origin}#${element.id}`);
+    alert.info('Link successfully copied', { position: 'right' });
   };
 
   return (

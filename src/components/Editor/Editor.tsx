@@ -14,6 +14,7 @@ import { ElementsListDropdown } from './ElementsListDropdown/ElementsListDropdow
 import { OutsideClick } from '../OutsideClick';
 import { useDragDrop } from '../../hooks/useDragDrop';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
+import { AlertProvider } from '../Alert/Alert';
 
 const CONTAINER_STYLE: CSSProperties = {
   display: 'flex',
@@ -44,9 +45,10 @@ const SlateEditor = () => {
   const elementsListPositionRef = useRef<HTMLDivElement>(null);
 
   const editor = useMemo(
-    () => withFixDeleteFragment(
-      withHistory(withCorrectVoidBehavior(withImages(withInlines(withShortcuts(withReact(createEditor())))))),
-    ),
+    () =>
+      withFixDeleteFragment(
+        withHistory(withCorrectVoidBehavior(withImages(withInlines(withShortcuts(withReact(createEditor())))))),
+      ),
     [],
   );
 
@@ -64,11 +66,14 @@ const SlateEditor = () => {
   };
 
   const hideElementsList = () => {
+    console.log("hideElementsList called");
+
     elementsListPositionRef.current!.style.opacity = '0';
     elementsListPositionRef.current!.style.left = '-1000px';
     elementsListPositionRef.current!.style.top = '-1000px';
     setFilterTextValue('');
-    document.body.classList.remove('no-scroll');
+
+    window.removeEventListener('scroll', showElementsList);
   };
 
   const onPlusButtonClick = (element) => {
@@ -93,14 +98,13 @@ const SlateEditor = () => {
 
       const selectionTimeout = setTimeout(() => {
         showElementsList();
+        window.addEventListener('scroll', showElementsList);
 
         clearTimeout(selectionTimeout);
       }, 0);
 
       clearTimeout(focusTimeout);
     }, 0);
-
-    document.body.classList.add('no-scroll');
   };
 
   const renderLeaf = useCallback((leafProps) => <TextLeaf {...leafProps} />, []);
@@ -215,25 +219,27 @@ const SlateEditor = () => {
   return (
     <div style={CONTAINER_STYLE}>
       <div style={EDITOR_WRAP_STYLE}>
-        <Slate editor={editor} value={value} onChange={onChange}>
-          <OutsideClick onClose={hideElementsList}>
-            <ElementsListDropdown
-              ref={elementsListPositionRef}
-              filterListCallback={filterElementsListBySearchText}
-              handleBlockClick={handleBlockClick}
-              selectedElementType={ELEMENT_TYPES_MAP.paragraph}
+        <AlertProvider>
+          <Slate editor={editor} value={value} onChange={onChange}>
+            <OutsideClick onClose={hideElementsList}>
+              <ElementsListDropdown
+                ref={elementsListPositionRef}
+                filterListCallback={filterElementsListBySearchText}
+                handleBlockClick={handleBlockClick}
+                selectedElementType={ELEMENT_TYPES_MAP.paragraph}
+              />
+            </OutsideClick>
+            <Toolbar />
+            <Editable
+              renderLeaf={renderLeaf}
+              renderElement={renderElement}
+              onKeyDown={onKeyDown}
+              onKeyUp={onKeyUp}
+              readOnly={isDisableByDrag}
+              spellCheck
             />
-          </OutsideClick>
-          <Toolbar />
-          <Editable
-            renderLeaf={renderLeaf}
-            renderElement={renderElement}
-            onKeyDown={onKeyDown}
-            onKeyUp={onKeyUp}
-            readOnly={isDisableByDrag}
-            spellCheck
-          />
-        </Slate>
+          </Slate>
+        </AlertProvider>
       </div>
     </div>
   );
