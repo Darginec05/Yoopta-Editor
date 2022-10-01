@@ -47,10 +47,10 @@ const ElementSettings = ({
               <DuplicateIcon />
               <span>Duplicate</span>
             </button>
-            <button type="button" onClick={onTransformIntoNode} className={s.settingsButton}>
+            {/* <button type="button" onClick={onTransformIntoNode} className={s.settingsButton}>
               <ChangeIcon />
               <span>Change into</span>
-            </button>
+            </button> */}
             <button type="button" onClick={onCopyLinkNode} className={s.settingsButton}>
               <CopyIcon />
               <span>Copy block link </span>
