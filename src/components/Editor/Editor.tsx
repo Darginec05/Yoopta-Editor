@@ -9,7 +9,7 @@ import { RenderElement } from './RenderElement/RenderElement';
 import {
   withShortcuts,
   withInlines,
-  withImages,
+  withVoidNodes,
   withCorrectVoidBehavior,
   withFixDeleteFragment,
 } from './plugins';
@@ -57,10 +57,9 @@ const SlateEditor = () => {
   const elementsListPositionRef = useRef<HTMLDivElement>(null);
 
   const editor = useMemo(
-    () =>
-      withFixDeleteFragment(
-        withHistory(withCorrectVoidBehavior(withImages(withInlines(withShortcuts(withReact(createEditor())))))),
-      ),
+    () => withFixDeleteFragment(
+      withHistory(withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor())))))),
+    ),
     [],
   );
 
@@ -274,9 +273,7 @@ const SlateEditor = () => {
   // }, []);
 
   return (
-    <main style={CONTAINER_STYLE} onClick={() => {
-      console.log(editor.selection);
-    }}>
+    <main style={CONTAINER_STYLE}>
       <AlertProvider>
         <Slate editor={editor} value={value} onChange={onChange}>
           <div style={EDITOR_WRAP_STYLE}>

@@ -5,9 +5,10 @@ type ImageProps = { style?: CSSProperties | undefined } & JSX.IntrinsicElements[
 
 const ImageRender = ({ src, style, ...rest }: ImageProps) => {
   return (
-    <div className={s.wrap} style={style}>
-      <img src={src} width={680} height={440} loading="lazy" alt={rest.alt} />
-    </div>
+    <figure className={s.wrap} style={style}>
+      <img src={src} loading="lazy" alt={rest.alt} />
+      <figcaption>{rest.caption || rest.alt || 'caption'}</figcaption>
+    </figure>
   );
 };
 

@@ -4,7 +4,7 @@
   padding: 5px;
   position: fixed;
   background: linear-gradient(to right,rgba(49,49,47,.99),#262625);
-  border-radius: 14px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   z-index: 6;
@@ -12,6 +12,8 @@
   top: -1000px;
   opacity: 0;
   transition: opacity 150ms ease-in;
+  max-height: 304px;
+  overflow: auto;
 }
 
 .button {

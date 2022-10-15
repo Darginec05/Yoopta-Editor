@@ -2,17 +2,16 @@
   width: 100%;
   max-width: 680px;
   height: auto;
-  max-height: 650px;
-  min-height: 440px;
   position: relative;
+  display: block;
+  margin: 0;
 
   & img {
-    border-radius: 14px;
+    border-radius: inherit;
+    width: 100%;
   }
-}
 
-.options {
-  position: absolute;
-  right: 13.5px;
-  top: 13.5px;
+  & figcaption {
+    padding: 5px 10px;
+  }
 }

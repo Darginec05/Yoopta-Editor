@@ -6,7 +6,7 @@
   margin-top: -6px;
   opacity: 0;
   background-color: #222;
-  border-radius: 14px;
+  border-radius: 10px;
   transition: opacity 350ms;
 
   & > * {
@@ -18,7 +18,7 @@
 }
 
 .toolbar {
-  border-radius: 14px;
+  border-radius: 10px;
   width: auto;
   background: #262625;
   display: flex;

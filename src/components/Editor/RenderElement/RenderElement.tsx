@@ -9,6 +9,7 @@ import { HeadingThree } from '../../Elements/HeadingThree/HeadingThree';
 import { BulletedList } from '../../Elements/BulletedList/BulletedList';
 import { NumberedList } from '../../Elements/NumberedList/NumberedList';
 import { Image } from '../../Elements/Image/Image';
+import { Video } from '../../Elements/Video/Video';
 import { Callout } from '../../Elements/Callout/Callout';
 import { ListItem } from '../../Elements/ListItem/ListItem';
 import { Link } from '../../Elements/Link/Link';
@@ -27,7 +28,7 @@ const ELEMENT_RENDER_ITEMS = {
   [ELEMENT_TYPES_MAP.image]: Image,
   [ELEMENT_TYPES_MAP.callout]: Callout,
   [ELEMENT_TYPES_MAP.code]: Code,
-  // [ELEMENT_TYPES_MAP.video]: () => <div>NOT SUPPORTED</div>,
+  [ELEMENT_TYPES_MAP.video]: Video,
   [ELEMENT_TYPES_MAP.paragraph]: Paragraph,
 };
 

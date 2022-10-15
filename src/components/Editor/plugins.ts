@@ -4,12 +4,15 @@ import { v4 } from 'uuid';
 import isUrl from 'is-url';
 import { BulletedListElement } from './types';
 import { KEYBOARD_SHORTCUTS, addLinkNode } from './utils';
+import { ELEMENT_TYPES_MAP } from './constants';
 
-export const withImages = (editor: Editor) => {
+const VOID_ELEMENTS = [ELEMENT_TYPES_MAP.video, ELEMENT_TYPES_MAP.image];
+
+export const withVoidNodes = (editor: Editor) => {
   const { isVoid } = editor;
 
   editor.isVoid = (element: Element) => {
-    return element.type === 'image' ? true : isVoid(element);
+    return VOID_ELEMENTS.includes(element.type) ? true : isVoid(element);
   };
 
   return editor;
@@ -165,13 +168,9 @@ export const withCorrectVoidBehavior = (editor: Editor) => {
       return deleteBackward(unit);
     }
 
-    console.log({ unit });
-
     const parentPath = Path.parent(editor.selection.anchor.path);
     const parentNode = Node.get(editor, parentPath);
     const parentIsEmpty = Node.string(parentNode).length === 0;
-
-    console.log({ parentIsEmpty });
 
     if (parentIsEmpty && Path.hasPrevious(parentPath)) {
       const prevNodePath = Path.previous(parentPath);
@@ -180,8 +179,6 @@ export const withCorrectVoidBehavior = (editor: Editor) => {
         Transforms.removeNodes(editor);
         return Transforms.select(editor, prevNodePath);
       }
-
-      console.log({ prevNode, prevNodePath });
     }
 
     deleteBackward(unit);
