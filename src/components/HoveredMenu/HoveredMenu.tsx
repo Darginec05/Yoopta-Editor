@@ -87,7 +87,8 @@ const ElementHover = ({
         [s.isOver]: isOver,
         [s.isOverSelf]: isOverSelf,
       })}
-      data-node-id={element.id}
+      data-node-id={element.id || v4()}
+      data-node-type={element.type}
       onMouseEnter={onHover}
       onMouseLeave={onHoverOut}
       style={{ opacity }}

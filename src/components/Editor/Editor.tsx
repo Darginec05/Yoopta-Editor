@@ -1,11 +1,18 @@
-import { createEditor, Descendant, Editor, Transforms, Element as SlateElement } from 'slate';
+import { createEditor, Descendant, Editor, Transforms, Element as SlateElement, Text } from 'slate';
 import { useCallback, useMemo, useState, KeyboardEvent, CSSProperties, useRef, MouseEvent } from 'react';
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 import { withHistory } from 'slate-history';
 import { v4 } from 'uuid';
+// import Prism from 'prismjs';
 import { TextLeaf } from './TextLeaf';
 import { RenderElement } from './RenderElement/RenderElement';
-import { withShortcuts, withInlines, withImages, withCorrectVoidBehavior, withFixDeleteFragment } from './plugins';
+import {
+  withShortcuts,
+  withInlines,
+  withImages,
+  withCorrectVoidBehavior,
+  withFixDeleteFragment,
+} from './plugins';
 import { Toolbar } from './Toolbar/Toolbar';
 import { ParagraphElement, CustomNode } from './types';
 import { DEFAULT_STATE, getRectByCurrentSelection, toggleBlock } from './utils';
@@ -15,6 +22,11 @@ import { OutsideClick } from '../OutsideClick';
 import { useDragDrop } from '../../hooks/useDragDrop';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { AlertProvider } from '../Alert/Alert';
+
+// import 'prismjs/components/prism-python';
+// import 'prismjs/components/prism-php';
+// import 'prismjs/components/prism-sql';
+// import 'prismjs/components/prism-java';
 
 const CONTAINER_STYLE: CSSProperties = {
   display: 'flex',
@@ -45,9 +57,10 @@ const SlateEditor = () => {
   const elementsListPositionRef = useRef<HTMLDivElement>(null);
 
   const editor = useMemo(
-    () => withFixDeleteFragment(
-      withHistory(withCorrectVoidBehavior(withImages(withInlines(withShortcuts(withReact(createEditor())))))),
-    ),
+    () =>
+      withFixDeleteFragment(
+        withHistory(withCorrectVoidBehavior(withImages(withInlines(withShortcuts(withReact(createEditor())))))),
+      ),
     [],
   );
 
@@ -106,19 +119,27 @@ const SlateEditor = () => {
     }, 0);
   };
 
-  const renderLeaf = useCallback((leafProps) => <TextLeaf {...leafProps} />, []);
+  const renderLeaf = useCallback((leafProps) => {
+    // console.log(leafProps);
+
+    return <TextLeaf {...leafProps} />;
+  }, []);
   const renderElement = useCallback(
-    (elemProps) => (
-      <RenderElement
-        onPlusButtonClick={onPlusButtonClick}
-        onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onDrop={onDrop}
-        dndState={dndState}
-        {...elemProps}
-      />
-    ),
-    [onDragEnd, onDragStart, dndState, onDrop],
+    (elemProps) => {
+      // console.log(elemProps);
+
+      return (
+        <RenderElement
+          onPlusButtonClick={onPlusButtonClick}
+          onDragStart={onDragStart}
+          onDragEnd={onDragEnd}
+          onDrop={onDrop}
+          dndState={dndState}
+          {...elemProps}
+        />
+      );
+    },
+    [dndState],
   );
 
   const onKeyUp = useCallback(() => {
@@ -215,13 +236,50 @@ const SlateEditor = () => {
     }
   }, []);
 
+  // const getLength = (token) => {
+  //   if (typeof token === 'string') {
+  //     return token.length;
+  //   }
+  //   if (typeof token.content === 'string') {
+  //     return token.content.length;
+  //   }
+  //   return token.content.reduce((l, t) => l + getLength(t), 0);
+  // };
+
+  // const decorate = useCallback(([node, path]) => {
+  //   const ranges = [];
+
+  //   if (!Text.isText(node)) return ranges;
+  //   const tokens = Prism.tokenize(node.text, Prism.languages.javascript);
+
+  //   let start = 0;
+
+  //   // eslint-disable-next-line no-restricted-syntax
+  //   for (const token of tokens) {
+  //     const length = getLength(token);
+  //     const end = start + length;
+
+  //     if (typeof token !== 'string') {
+  //       ranges.push({
+  //         token: token.type,
+  //         anchor: { path, offset: start },
+  //         focus: { path, offset: end },
+  //       });
+  //     }
+
+  //     start = end;
+  //   }
+
+  //   return ranges;
+  // }, []);
+
   return (
-    <main style={CONTAINER_STYLE}>
+    <main style={CONTAINER_STYLE} onClick={() => {
+      console.log(editor.selection);
+    }}>
       <AlertProvider>
         <Slate editor={editor} value={value} onChange={onChange}>
-          <div
-            style={EDITOR_WRAP_STYLE}
-          >
+          <div style={EDITOR_WRAP_STYLE}>
             <OutsideClick onClose={hideElementsList}>
               <ElementsListDropdown
                 ref={elementsListPositionRef}
@@ -238,6 +296,7 @@ const SlateEditor = () => {
               onKeyUp={onKeyUp}
               readOnly={isReadOnly}
               spellCheck
+              // decorate={decorate}
             />
           </div>
         </Slate>

@@ -13,13 +13,12 @@ import { MediaEditorOptions } from '../MediaEditorOptions';
 import { ELEMENT_TYPES_MAP } from '../Editor/constants';
 import s from './ImageEditor.module.scss';
 
-const toBase64 = (file): Promise<string | ArrayBuffer | null> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
+const toBase64 = (file): Promise<string | ArrayBuffer | null> => new Promise((resolve, reject) => {
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = () => resolve(reader.result);
+  reader.onerror = (error) => reject(error);
+});
 
 type Props = { element: ImageElement; className: string; attributes: any };
 
@@ -31,6 +30,9 @@ const ImageEditor: FC<Props> = ({ element, attributes, className, children }) =>
   const onUpload = async (file: File) => {
     const dataSrc = await toBase64(file);
 
+    const currentSelection = editor.selection;
+    const beforeCurrentSelection = Editor.before(editor, editor.selection!);
+
     const image: ImageElement & { isVoid: boolean } = {
       id: v4(),
       type: 'image',
@@ -41,7 +43,7 @@ const ImageEditor: FC<Props> = ({ element, attributes, className, children }) =>
     };
 
     Transforms.removeNodes(editor);
-    Transforms.insertNodes(editor, [image]);
+    Transforms.insertNodes(editor, image, { select: true, at: Editor.before(editor, editor.selection!), voids: true });
 
     const { url } = await uploadToCloudinary(file);
     const newImage = {
@@ -51,7 +53,11 @@ const ImageEditor: FC<Props> = ({ element, attributes, className, children }) =>
     };
 
     Transforms.removeNodes(editor);
-    Transforms.insertNodes(editor, [newImage]);
+    Transforms.insertNodes(editor, newImage, { at: beforeCurrentSelection });
+
+    if (currentSelection) {
+      Transforms.select(editor, currentSelection);
+    }
   };
 
   const dataSrc = element['data-src'];
@@ -64,7 +70,7 @@ const ImageEditor: FC<Props> = ({ element, attributes, className, children }) =>
     });
   };
 
-  if (dataSrc) {
+  if (element.src || dataSrc) {
     return (
       <div
         draggable={false}
@@ -72,29 +78,16 @@ const ImageEditor: FC<Props> = ({ element, attributes, className, children }) =>
         contentEditable={false}
         className={cx(className, { [s.selected]: selected && focused })}
       >
-        <div className={s.loader}>
-          <Loader />
-        </div>
-        <div contentEditable={false}>
-          <ImageRender src={dataSrc} alt="loaded_image" />
-        </div>
-        {children}
-      </div>
-    );
-  }
-
-  if (element.src) {
-    return (
-      <div
-        draggable={false}
-        {...attributes}
-        contentEditable={false}
-        className={cx(className, { [s.selected]: selected && focused })}
-      >
-        <div className={s.options}>
-          <MediaEditorOptions onDelete={onDelete} isImage />
-        </div>
-        <ImageRender src={element.src} alt="URI" />
+        {dataSrc ? (
+          <div className={s.loader}>
+            <Loader />
+          </div>
+        ) : (
+          <div className={s.options}>
+            <MediaEditorOptions onDelete={onDelete} isImage />
+          </div>
+        )}
+        <ImageRender key="render_image" src={element.src || dataSrc} alt="URI" />
         {children}
       </div>
     );

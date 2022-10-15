@@ -3,7 +3,9 @@ import { RenderLeafProps } from 'slate-react';
 import cx from 'classnames';
 import s from './TextLeaf.module.scss';
 
-const TextLeaf: FC<RenderLeafProps> = ({ attributes, children, leaf }) => {
+const TextLeaf: FC<RenderLeafProps> = ({ attributes, children, leaf}) => {
+  // console.log(children);
+
   return (
     <span
       {...attributes}
@@ -13,6 +15,7 @@ const TextLeaf: FC<RenderLeafProps> = ({ attributes, children, leaf }) => {
         [s.strike]: leaf.strike,
         [s.underline]: leaf.underline,
         [s.code]: leaf.code,
+        [`token ${leaf.token}`]: leaf.token,
       })}
     >
       {children}

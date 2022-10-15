@@ -55,6 +55,8 @@ export const toggleBlock = (editor: Editor, blockType: any, data: any = { isVoid
     node.type = blockType;
   }
 
+  // if (node.type === ELEMENT_TYPES_MAP.image) Transforms.removeNodes(editor);
+
   Transforms.setNodes<SlateElement>(editor, node);
 
   if (!isActive && isList) {

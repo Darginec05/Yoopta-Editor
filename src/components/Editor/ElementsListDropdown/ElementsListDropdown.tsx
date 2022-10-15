@@ -10,6 +10,7 @@ import { ReactComponent as BlockQuoteIcon } from '../Toolbar/icons/blockquote.sv
 import { ReactComponent as CalloutIcon } from '../Toolbar/icons/callout.svg';
 import { ReactComponent as VideoIcon } from '../../../icons/video.svg';
 import { ReactComponent as ImageIcon } from '../../../icons/image.svg';
+import { ELEMENT_TYPES_MAP } from '../constants';
 import s from './ElementsListDropdown.module.scss';
 
 type Block = {
@@ -19,16 +20,17 @@ type Block = {
 };
 
 export const ELEMENT_TYPES: Block[] = [
-  { icon: <ParagraphIcon />, name: 'Text', type: 'paragraph' },
-  { icon: <HeadingOneIcon />, name: 'Heading 1', type: 'heading-one' },
-  { icon: <HeadingTwoIcon />, name: 'Heading 2', type: 'heading-two' },
-  { icon: <HeadingThreeIcon />, name: 'Heading 3', type: 'heading-three' },
-  { icon: <BulletedListIcon />, name: 'Bulleted List', type: 'bulleted-list' },
-  { icon: <NumberedListIcon />, name: 'Numbered List', type: 'numbered-list' },
-  { icon: <BlockQuoteIcon />, name: 'Blockquote', type: 'block-quote' },
-  { icon: <CalloutIcon />, name: 'Callout', type: 'callout' },
-  { icon: <ImageIcon />, name: 'Image', type: 'image' },
-  { icon: <VideoIcon />, name: 'Video', type: 'video' },
+  { icon: <ParagraphIcon />, name: 'Text', type: ELEMENT_TYPES_MAP.paragraph },
+  { icon: <HeadingOneIcon />, name: 'Heading 1', type: ELEMENT_TYPES_MAP['heading-one'] },
+  { icon: <HeadingTwoIcon />, name: 'Heading 2', type: ELEMENT_TYPES_MAP['heading-two'] },
+  { icon: <HeadingThreeIcon />, name: 'Heading 3', type: ELEMENT_TYPES_MAP['heading-three'] },
+  { icon: <BulletedListIcon />, name: 'Bulleted List', type: ELEMENT_TYPES_MAP['bulleted-list'] },
+  { icon: <NumberedListIcon />, name: 'Numbered List', type: ELEMENT_TYPES_MAP['numbered-list'] },
+  { icon: <BlockQuoteIcon />, name: 'Blockquote', type: ELEMENT_TYPES_MAP['block-quote'] },
+  { icon: <CalloutIcon />, name: 'Callout', type: ELEMENT_TYPES_MAP.callout },
+  { icon: <CalloutIcon />, name: 'Code', type: ELEMENT_TYPES_MAP.code },
+  { icon: <ImageIcon />, name: 'Image', type: ELEMENT_TYPES_MAP.image },
+  { icon: <VideoIcon />, name: 'Video', type: ELEMENT_TYPES_MAP.video },
 ];
 
 export const ElementsListDropdown = forwardRef<any, any>(

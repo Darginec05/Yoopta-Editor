@@ -69,8 +69,6 @@ export type MentionElement = {
 
 export type ParagraphElement = { id: string; type: 'paragraph'; children: Descendant[] };
 
-export type TitleElement = { id: string; type: 'title'; children: Descendant[] };
-
 export type VideoElement = {
   id: string;
   type: 'video';
@@ -78,7 +76,12 @@ export type VideoElement = {
   children: EmptyText[];
 };
 
-export type CustomNode = Node & { id: string, isVoid?: boolean };
+export type CodeElement = {
+  id: string;
+  type: 'code';
+  language: string;
+  children: EmptyText[];
+};
 
 export type CustomElement =
   | BlockQuoteElement
@@ -95,8 +98,9 @@ export type CustomElement =
   | ListItemElement
   | MentionElement
   | ParagraphElement
-  | TitleElement
   | VideoElement;
+
+export type CustomNode = Node & { id: string, isVoid?: boolean, type: string };
 
 export type CustomEditor = BaseEditor & ReactEditor & HistoryEditor;
 

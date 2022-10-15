@@ -1,13 +1,12 @@
-import NextImage, { ImageProps as NextImageProps } from 'next/image';
 import { CSSProperties } from 'react';
 import s from './ImageRender.module.scss';
 
-type ImageProps = { style?: CSSProperties | undefined } & NextImageProps;
+type ImageProps = { style?: CSSProperties | undefined } & JSX.IntrinsicElements['img'];
 
 const ImageRender = ({ src, style, ...rest }: ImageProps) => {
   return (
     <div className={s.wrap} style={style}>
-      <NextImage src={src} width={680} height={440} quality={75} {...rest} />
+      <img src={src} width={680} height={440} loading="lazy" alt={rest.alt} />
     </div>
   );
 };

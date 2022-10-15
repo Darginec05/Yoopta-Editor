@@ -47,7 +47,8 @@ export const useDragDrop = ({ editor }) => {
       return true;
     };
 
-    setDndState((prevDrag) => ({ ...prevDrag, from: [...e.target.parentNode.children].indexOf(e.target) }));
+    const fromIndex = Array.from(e.target.parentNode.children).indexOf(e.target);
+    setDndState((prevDrag) => ({ ...prevDrag, from: fromIndex }));
   };
 
   return {

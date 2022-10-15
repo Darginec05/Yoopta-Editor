@@ -135,6 +135,8 @@ export const withInlines = (editor) => {
 export const withCorrectVoidBehavior = (editor: Editor) => {
   const { deleteBackward, insertBreak } = editor;
 
+  // return editor;
+
   // if current selection is void node, insert a default node below
   // eslint-disable-next-line consistent-return
   editor.insertBreak = () => {
@@ -163,16 +165,23 @@ export const withCorrectVoidBehavior = (editor: Editor) => {
       return deleteBackward(unit);
     }
 
+    console.log({ unit });
+
     const parentPath = Path.parent(editor.selection.anchor.path);
     const parentNode = Node.get(editor, parentPath);
     const parentIsEmpty = Node.string(parentNode).length === 0;
+
+    console.log({ parentIsEmpty });
 
     if (parentIsEmpty && Path.hasPrevious(parentPath)) {
       const prevNodePath = Path.previous(parentPath);
       const prevNode = Node.get(editor, prevNodePath);
       if (Editor.isVoid(editor, prevNode)) {
-        return Transforms.removeNodes(editor);
+        Transforms.removeNodes(editor);
+        return Transforms.select(editor, prevNodePath);
       }
+
+      console.log({ prevNode, prevNodePath });
     }
 
     deleteBackward(unit);
