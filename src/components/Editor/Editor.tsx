@@ -1,4 +1,4 @@
-import { createEditor, Descendant, Editor, Transforms, Element as SlateElement, Text } from 'slate';
+import { createEditor, Descendant, Editor, Transforms, Element as SlateElement } from 'slate';
 import { useCallback, useMemo, useState, KeyboardEvent, CSSProperties, useRef, MouseEvent } from 'react';
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 import { withHistory } from 'slate-history';
@@ -6,16 +6,10 @@ import { v4 } from 'uuid';
 // import Prism from 'prismjs';
 import { TextLeaf } from './TextLeaf';
 import { RenderElement } from './RenderElement/RenderElement';
-import {
-  withShortcuts,
-  withInlines,
-  withVoidNodes,
-  withCorrectVoidBehavior,
-  withFixDeleteFragment,
-} from './plugins';
+import { withShortcuts, withInlines, withVoidNodes, withCorrectVoidBehavior, withFixDeleteFragment } from './plugins';
 import { Toolbar } from './Toolbar/Toolbar';
 import { ParagraphElement, CustomNode } from './types';
-import { DEFAULT_STATE, getRectByCurrentSelection, toggleBlock } from './utils';
+import { DEFAULT_STATE, getRectByCurrentSelection, LIST_TYPES, toggleBlock } from './utils';
 import { ELEMENT_TYPES_MAP, IGNORED_SOFT_BREAK_ELEMS } from './constants';
 import { ElementsListDropdown } from './ElementsListDropdown/ElementsListDropdown';
 import { OutsideClick } from '../OutsideClick';
@@ -56,12 +50,9 @@ const SlateEditor = () => {
   const [filterTextValue, setFilterTextValue] = useState('');
   const elementsListPositionRef = useRef<HTMLDivElement>(null);
 
-  const editor = useMemo(
-    () => withFixDeleteFragment(
-      withHistory(withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor())))))),
-    ),
-    [],
-  );
+  const [editor] = useState(() => withFixDeleteFragment(
+    withHistory(withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor())))))),
+  ));
 
   useScrollToElement();
 
@@ -119,14 +110,10 @@ const SlateEditor = () => {
   };
 
   const renderLeaf = useCallback((leafProps) => {
-    // console.log(leafProps);
-
     return <TextLeaf {...leafProps} />;
   }, []);
   const renderElement = useCallback(
     (elemProps) => {
-      // console.log(elemProps);
-
       return (
         <RenderElement
           onPlusButtonClick={onPlusButtonClick}
@@ -156,7 +143,7 @@ const SlateEditor = () => {
 
   const onKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
     const { selection } = editor;
-    const element: any = editor.children[selection?.anchor.path[0] || 0];
+    const node: any = editor.children[selection?.anchor.path[0] || 0];
     const text = Editor.string(editor, editor.selection!.anchor.path);
     const isEnterPressed = event.key === 'Enter';
 
@@ -189,7 +176,13 @@ const SlateEditor = () => {
 
       if (isListBlock && text.trim() === '') {
         event.preventDefault();
-        toggleBlock(editor, ELEMENT_TYPES_MAP.paragraph);
+
+        Transforms.unwrapNodes(editor, {
+          match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && LIST_TYPES.includes(n.type),
+          split: true,
+        });
+
+        return Transforms.setNodes(editor, newLine);
       }
 
       if (event.shiftKey) {
@@ -197,7 +190,7 @@ const SlateEditor = () => {
         editor.insertText('\n');
       }
 
-      if (!event.shiftKey && !IGNORED_SOFT_BREAK_ELEMS.includes(element.type)) {
+      if (!event.shiftKey && !IGNORED_SOFT_BREAK_ELEMS.includes(node.type)) {
         event.preventDefault();
         Transforms.insertNodes(editor, newLine);
       }
@@ -276,7 +269,34 @@ const SlateEditor = () => {
     <main style={CONTAINER_STYLE}>
       <AlertProvider>
         <Slate editor={editor} value={value} onChange={onChange}>
-          <div style={EDITOR_WRAP_STYLE}>
+          <div
+            style={EDITOR_WRAP_STYLE}
+            aria-hidden
+            onClick={() => {
+              if (!editor.selection) {
+                Transforms.insertNodes(
+                  editor,
+                  {
+                    id: v4(),
+                    type: 'paragraph',
+                    children: [
+                      {
+                        text: '',
+                      },
+                    ],
+                  },
+                  { at: [editor.children.length] },
+                );
+
+                Transforms.select(editor, {
+                  anchor: { path: [editor.children.length - 1, 0], offset: 0 },
+                  focus: { path: [editor.children.length - 1, 0], offset: 0 },
+                });
+
+                ReactEditor.focus(editor);
+              }
+            }}
+          >
             <OutsideClick onClose={hideElementsList}>
               <ElementsListDropdown
                 ref={elementsListPositionRef}

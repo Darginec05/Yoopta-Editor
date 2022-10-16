@@ -28,11 +28,9 @@ export const useDragDrop = ({ editor }) => {
     if (dndState.from === dndState.to || dndState.from === -1 || dndState.to === -1) return undefined;
 
     Transforms.moveNodes(editor, {
-      // This will again be expanded to a range of the entire node at `[2]`.
       at: [dndState.from],
-      // Matches nodes with a longer path, which are the children.
       to: [dndState.to],
-      match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
+      match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node) && node.type !== 'list-item',
     });
   };
 

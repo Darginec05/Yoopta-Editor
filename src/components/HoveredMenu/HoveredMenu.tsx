@@ -1,7 +1,7 @@
 import { Range, Transforms, Editor, Element as SlateElement } from 'slate';
 import { v4 } from 'uuid';
 import copy from 'copy-to-clipboard';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ReactEditor, useSelected, useSlate } from 'slate-react';
 import cx from 'classnames';
 import { HoveredMenuItem } from './HoveredMenuItem';
@@ -22,6 +22,8 @@ const ElementHover = ({
   const selected = useSelected();
   const alert = useAlert();
   const [hovered, setHovered] = useState(false);
+
+  const id = useMemo(() => v4(), []);
 
   const elementRef = attributes.ref;
 
@@ -87,7 +89,7 @@ const ElementHover = ({
         [s.isOver]: isOver,
         [s.isOverSelf]: isOverSelf,
       })}
-      data-node-id={element.id || v4()}
+      data-node-id={element.id || id}
       data-node-type={element.type}
       onMouseEnter={onHover}
       onMouseLeave={onHoverOut}

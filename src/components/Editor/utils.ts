@@ -10,7 +10,7 @@ export const HOTKEYS: Record<string, string> = {
   'mod+`': 'code',
 };
 
-export const LIST_TYPES = ['numbered-list', 'bulleted-list', 'list-item'];
+export const LIST_TYPES = ['numbered-list', 'bulleted-list'];
 
 export const isMarkActive = (editor: Editor, mark: any): boolean => {
   const marks: Omit<Text, 'text'> | null = Editor.marks(editor);
@@ -35,34 +35,38 @@ export const getMatchedNode = (editor: Editor, type: any) => {
 export const isBlockActive = (editor: Editor, type: any) => !!getMatchedNode(editor, type);
 
 export const toggleBlock = (editor: Editor, blockType: any, data: any = { isVoid: false }) => {
-  const isActive = isBlockActive(editor, blockType);
-  const isList = LIST_TYPES.includes(blockType);
+  Editor.withoutNormalizing(editor, () => {
+    const isActive = isBlockActive(editor, blockType);
+    const isList = LIST_TYPES.includes(blockType);
 
-  Transforms.unwrapNodes(editor, {
-    match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && LIST_TYPES.includes(n.type),
-    split: true,
+    Transforms.unwrapNodes(editor, {
+      match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && LIST_TYPES.includes(n.type),
+      split: true,
+      at: editor.selection?.anchor,
+    });
+
+    const node = {
+      id: v4(),
+      // eslint-disable-next-line no-nested-ternary
+      type: isActive ? 'paragraph' : isList ? 'list-item' : blockType,
+      ...data,
+    };
+
+    if (data.isVoid) {
+      node.type = blockType;
+    }
+
+    Transforms.setNodes(editor, node, {
+      at: editor.selection?.anchor,
+    });
+
+    if (!isActive && isList) {
+      const block = { type: blockType, children: [{ text: '' }] };
+      Transforms.wrapNodes(editor, block, {
+        at: editor.selection?.anchor,
+      });
+    }
   });
-
-  const node: Partial<SlateElement> = {
-    id: v4(),
-    // eslint-disable-next-line no-nested-ternary
-    type: isActive ? ELEMENT_TYPES_MAP.paragraph : isList ? ELEMENT_TYPES_MAP['list-item'] : blockType,
-    ...data,
-  };
-
-  // ignore active state when element is void
-  if (data.isVoid) {
-    node.type = blockType;
-  }
-
-  // if (node.type === ELEMENT_TYPES_MAP.image) Transforms.removeNodes(editor);
-
-  Transforms.setNodes<SlateElement>(editor, node);
-
-  if (!isActive && isList) {
-    const block = { id: v4(), type: blockType, children: [] };
-    Transforms.wrapNodes(editor, block);
-  }
 };
 
 export const toggleMark = (editor: Editor, format: any) => {
@@ -123,16 +127,14 @@ export const getAbsPositionBySelection = (element) => {
 };
 
 export const KEYBOARD_SHORTCUTS = {
-  '*': 'list-item',
-  '-': 'list-item',
-  '+': 'list-item',
-  '>': 'block-quote',
-  '#': 'heading-one',
-  '##': 'heading-two',
-  '###': 'heading-three',
-  '####': 'heading-four',
-  '#####': 'heading-five',
-  '######': 'heading-six',
+  '*': ELEMENT_TYPES_MAP['list-item'],
+  '-': ELEMENT_TYPES_MAP['list-item'],
+  '+': ELEMENT_TYPES_MAP['list-item'],
+  '>': ELEMENT_TYPES_MAP['block-quote'],
+  '<': ELEMENT_TYPES_MAP.callout,
+  '#': ELEMENT_TYPES_MAP['heading-one'],
+  '##': ELEMENT_TYPES_MAP['heading-two'],
+  '###': ELEMENT_TYPES_MAP['heading-three'],
 };
 
 // eslint-disable-next-line max-len

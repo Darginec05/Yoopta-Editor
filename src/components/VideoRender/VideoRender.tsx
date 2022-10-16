@@ -6,7 +6,7 @@ type Video = { style?: CSSProperties | undefined } & JSX.IntrinsicElements['vide
 const VideoRender = ({ src, style, ...rest }: Video) => {
   return (
     <div className={s.wrap} style={style}>
-      <video controls>
+      <video controls preload="none">
         <source src={src} type="video/mp4" />
         {/* <source src="forrest_gump.ogg" type="video/ogg" /> */}
         <track src={src} kind="subtitles" srcLang="en" label="English" />

@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { Editor, Element, Range, Transforms, Point, Node, Path } from 'slate';
+import { Editor, Element, Range, Transforms, Node, Path } from 'slate';
 import { v4 } from 'uuid';
 import isUrl from 'is-url';
 import { BulletedListElement } from './types';
@@ -19,7 +19,7 @@ export const withVoidNodes = (editor: Editor) => {
 };
 
 export const withShortcuts = (editor: Editor) => {
-  const { deleteBackward, insertText } = editor;
+  const { insertText } = editor;
 
   editor.insertText = (text: string) => {
     const { selection } = editor;
@@ -66,45 +66,45 @@ export const withShortcuts = (editor: Editor) => {
     insertText(text);
   };
 
-  editor.deleteBackward = (...args) => {
-    const { selection } = editor;
+  // editor.deleteBackward = (...args) => {
+  //   const { selection } = editor;
 
-    if (selection && Range.isCollapsed(selection)) {
-      const match = Editor.above(editor, {
-        match: (n) => {
-          return Editor.isBlock(editor, n);
-        },
-      });
+  //   if (selection && Range.isCollapsed(selection)) {
+  //     const match = Editor.above(editor, {
+  //       match: (n) => {
+  //         return Editor.isBlock(editor, n);
+  //       },
+  //     });
 
-      if (match) {
-        const [block, path] = match;
-        const start = Editor.start(editor, path);
+  //     if (match) {
+  //       const [block, path] = match;
+  //       const start = Editor.start(editor, path);
 
-        if (
-          !Editor.isEditor(block) &&
-          Element.isElement(block) &&
-          block.type !== 'paragraph' &&
-          Point.equals(selection.anchor, start)
-        ) {
-          const updatedLine: Partial<Element> = {
-            type: 'paragraph',
-          };
-          Transforms.setNodes(editor, updatedLine);
+  //       if (
+  //         !Editor.isEditor(block) &&
+  //         Element.isElement(block) &&
+  //         block.type !== 'paragraph' &&
+  //         Point.equals(selection.anchor, start)
+  //       ) {
+  //         const updatedLine: Partial<Element> = {
+  //           type: 'paragraph',
+  //         };
+  //         Transforms.setNodes(editor, updatedLine);
 
-          if (block.type === 'list-item') {
-            Transforms.unwrapNodes(editor, {
-              match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'bulleted-list',
-              split: true,
-            });
-          }
+  //         if (block.type === 'list-item') {
+  //           Transforms.unwrapNodes(editor, {
+  //             match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'bulleted-list',
+  //             split: true,
+  //           });
+  //         }
 
-          return;
-        }
-      }
+  //         return;
+  //       }
+  //     }
 
-      deleteBackward(...args);
-    }
-  };
+  //     deleteBackward(...args);
+  //   }
+  // };
 
   return editor;
 };
