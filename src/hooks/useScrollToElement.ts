@@ -6,7 +6,7 @@ export const useScrollToElement = () => {
 
     if (elementId) {
       const element = document.querySelector(`[data-node-id="${elementId}"]`);
-      element?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      element?.scrollIntoView({ block: 'start', inline: 'start', behavior: 'smooth' });
     }
   }, []);
 

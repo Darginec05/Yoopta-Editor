@@ -1,5 +1,5 @@
 import { createEditor, Descendant, Editor, Transforms, Element as SlateElement } from 'slate';
-import { useCallback, useMemo, useState, KeyboardEvent, CSSProperties, useRef, MouseEvent } from 'react';
+import { useCallback, useState, KeyboardEvent, CSSProperties, useRef, MouseEvent } from 'react';
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 import { withHistory } from 'slate-history';
 import { v4 } from 'uuid';
@@ -265,56 +265,59 @@ const SlateEditor = () => {
   //   return ranges;
   // }, []);
 
+  const handleOutsideEditorClick = (e) => {
+    const style = window.getComputedStyle(e.target, null);
+    const pBottom = parseFloat(style.getPropertyValue('padding-bottom'));
+
+    // if (pBottom > 0) {
+    //   Transforms.insertNodes(
+    //     editor,
+    //     {
+    //       id: v4(),
+    //       type: 'paragraph',
+    //       children: [
+    //         {
+    //           text: '',
+    //         },
+    //       ],
+    //     },
+    //     { at: [editor.children.length] },
+    //   );
+
+    //   Transforms.select(editor, {
+    //     anchor: { path: [editor.children.length - 1, 0], offset: 0 },
+    //     focus: { path: [editor.children.length - 1, 0], offset: 0 },
+    //   });
+
+    //   ReactEditor.focus(editor);
+    // }
+  };
+
   return (
     <main style={CONTAINER_STYLE}>
       <AlertProvider>
         <Slate editor={editor} value={value} onChange={onChange}>
-          <div
-            style={EDITOR_WRAP_STYLE}
-            aria-hidden
-            onClick={() => {
-              if (!editor.selection) {
-                Transforms.insertNodes(
-                  editor,
-                  {
-                    id: v4(),
-                    type: 'paragraph',
-                    children: [
-                      {
-                        text: '',
-                      },
-                    ],
-                  },
-                  { at: [editor.children.length] },
-                );
-
-                Transforms.select(editor, {
-                  anchor: { path: [editor.children.length - 1, 0], offset: 0 },
-                  focus: { path: [editor.children.length - 1, 0], offset: 0 },
-                });
-
-                ReactEditor.focus(editor);
-              }
-            }}
-          >
-            <OutsideClick onClose={hideElementsList}>
-              <ElementsListDropdown
-                ref={elementsListPositionRef}
-                filterListCallback={filterElementsListBySearchText}
-                handleBlockClick={handleBlockClick}
-                selectedElementType={ELEMENT_TYPES_MAP.paragraph}
+          <div style={EDITOR_WRAP_STYLE} aria-hidden onClick={handleOutsideEditorClick}>
+            <div id="content">
+              <OutsideClick onClose={hideElementsList}>
+                <ElementsListDropdown
+                  ref={elementsListPositionRef}
+                  filterListCallback={filterElementsListBySearchText}
+                  handleBlockClick={handleBlockClick}
+                  selectedElementType={ELEMENT_TYPES_MAP.paragraph}
+                />
+              </OutsideClick>
+              <Toolbar />
+              <Editable
+                renderLeaf={renderLeaf}
+                renderElement={renderElement}
+                onKeyDown={onKeyDown}
+                onKeyUp={onKeyUp}
+                readOnly={isReadOnly}
+                spellCheck
+                // decorate={decorate}
               />
-            </OutsideClick>
-            <Toolbar />
-            <Editable
-              renderLeaf={renderLeaf}
-              renderElement={renderElement}
-              onKeyDown={onKeyDown}
-              onKeyUp={onKeyUp}
-              readOnly={isReadOnly}
-              spellCheck
-              // decorate={decorate}
-            />
+            </div>
           </div>
         </Slate>
       </AlertProvider>
