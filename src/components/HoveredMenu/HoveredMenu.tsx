@@ -24,9 +24,7 @@ const ElementHover = ({
   const [hovered, setHovered] = useState(false);
 
   const id = useMemo(() => v4(), []);
-
   const elementRef = attributes.ref;
-
   const index = ReactEditor.findPath(editor, element)[0];
 
   const isDragging = index === dndState.from;

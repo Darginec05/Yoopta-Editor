@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { ReactComponent as PlusIcon } from '../../icons/add.svg';
 import { ReactComponent as DragIcon } from '../../icons/drag.svg';
 import { Fade } from '../Fade';
 import { ElementSettings } from '../ElementSettings/ElementSettings';
+import { useScrollContext } from '../../contexts/ScrollContext/ScrollContext';
 import s from './HoveredMenu.module.scss';
 
 export const HoveredMenuItem = ({
@@ -17,46 +18,49 @@ export const HoveredMenuItem = ({
   handleTransformIntoNode,
   handleCopyLinkNode,
 }) => {
-  const handleRef = useRef(null);
+  const handleRef = useRef<HTMLDivElement>(null);
   const [isOpenSettingsOpen, setSettingsOpen] = useState(false);
+  const { enableScroll, disableScroll } = useScrollContext();
 
-  useEffect(() => {
-    if (!hovered && isOpenSettingsOpen) {
-      setSettingsOpen(false);
-    }
-  }, [hovered, isOpenSettingsOpen]);
-
-  const onMouseDown = (e) => {
+  const onMouseDown = () => {
     const handler = handleRef.current!;
     const target = elementRef.current!;
 
-    handler.setAttribute('draggable', false);
-    target.setAttribute('draggable', true);
+    handler.setAttribute('draggable', 'false');
+    target.setAttribute('draggable', 'true');
     target.ondragstart = onDragStart;
     target.ondragend = onDragEnd;
   };
 
-  const onClick = (e) => {
+  const onClick = () => {
     setSettingsOpen(true);
+    disableScroll();
+  };
+
+  const onClose = () => {
+    setSettingsOpen(false);
+    enableScroll();
+  };
+
+  const getOpacity = () => {
+    if (isOpenSettingsOpen) return 1;
+
+    if (hovered && !isDragging) return 1;
+
+    return 0;
   };
 
   return (
-    <div className={s.hoverSettings} style={{ opacity: hovered && !isDragging ? 1 : 0 }}>
+    <div className={s.hoverSettings} style={{ opacity: getOpacity() }}>
       <div className={s.actions}>
         <button type="button" onClick={handlePlusButton} className={s.hoverSettingsItem}>
           <PlusIcon />
         </button>
-        <div
-          aria-hidden
-          className={s.hoverSettingsItem}
-          onMouseDown={onMouseDown}
-          onClick={onClick}
-          ref={handleRef}
-        >
+        <div aria-hidden className={s.hoverSettingsItem} onMouseDown={onMouseDown} onClick={onClick} ref={handleRef}>
           <DragIcon />
           <Fade animationDelay={150} show={isOpenSettingsOpen}>
             <ElementSettings
-              onClose={() => setSettingsOpen(false)}
+              onClose={onClose}
               handleDeleteNode={handleDeleteNode}
               handleDuplicateNode={handleDuplicateNode}
               handleTransformIntoNode={handleTransformIntoNode}

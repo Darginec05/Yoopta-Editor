@@ -27,7 +27,7 @@ const MediaEditorOptions: FC<Props> = ({ onDelete, onUploadViaURL, onUpload, onA
       <OutsideClick onClose={() => setIsOpen(false)}>
         <Fade show={isOpen} animationDelay={300}>
           <div className={s.modal}>
-            <button type="button" onClick={onUpload}>
+            {/* <button type="button" onClick={onUpload}>
               Upload File
             </button>
             <button type="button" onClick={onUploadViaURL}>
@@ -37,7 +37,7 @@ const MediaEditorOptions: FC<Props> = ({ onDelete, onUploadViaURL, onUpload, onA
               <button type="button" onClick={onAddCaption}>
                 Caption
               </button>
-            )}
+            )} */}
             <button type="button" onClick={onDelete}>
               Delete
             </button>

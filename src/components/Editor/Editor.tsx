@@ -16,6 +16,7 @@ import { OutsideClick } from '../OutsideClick';
 import { useDragDrop } from '../../hooks/useDragDrop';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { AlertProvider } from '../Alert/Alert';
+import { ScrollProvider } from '../../contexts/ScrollContext/ScrollContext';
 
 // import 'prismjs/components/prism-python';
 // import 'prismjs/components/prism-php';
@@ -50,9 +51,11 @@ const SlateEditor = () => {
   const [filterTextValue, setFilterTextValue] = useState('');
   const elementsListPositionRef = useRef<HTMLDivElement>(null);
 
-  const [editor] = useState(() => withFixDeleteFragment(
-    withHistory(withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor())))))),
-  ));
+  const [editor] = useState(() =>
+    withFixDeleteFragment(
+      withHistory(withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor())))))),
+    ),
+  );
 
   useScrollToElement();
 
@@ -295,32 +298,34 @@ const SlateEditor = () => {
 
   return (
     <main style={CONTAINER_STYLE}>
-      <AlertProvider>
-        <Slate editor={editor} value={value} onChange={onChange}>
-          <div style={EDITOR_WRAP_STYLE} aria-hidden onClick={handleOutsideEditorClick}>
-            <div id="content">
-              <OutsideClick onClose={hideElementsList}>
-                <ElementsListDropdown
-                  ref={elementsListPositionRef}
-                  filterListCallback={filterElementsListBySearchText}
-                  handleBlockClick={handleBlockClick}
-                  selectedElementType={ELEMENT_TYPES_MAP.paragraph}
+      <ScrollProvider>
+        <AlertProvider>
+          <Slate editor={editor} value={value} onChange={onChange}>
+            <div style={EDITOR_WRAP_STYLE} aria-hidden onClick={handleOutsideEditorClick}>
+              <div id="content">
+                <OutsideClick onClose={hideElementsList}>
+                  <ElementsListDropdown
+                    ref={elementsListPositionRef}
+                    filterListCallback={filterElementsListBySearchText}
+                    handleBlockClick={handleBlockClick}
+                    selectedElementType={ELEMENT_TYPES_MAP.paragraph}
+                  />
+                </OutsideClick>
+                <Toolbar />
+                <Editable
+                  renderLeaf={renderLeaf}
+                  renderElement={renderElement}
+                  onKeyDown={onKeyDown}
+                  onKeyUp={onKeyUp}
+                  readOnly={isReadOnly}
+                  spellCheck
+                  // decorate={decorate}
                 />
-              </OutsideClick>
-              <Toolbar />
-              <Editable
-                renderLeaf={renderLeaf}
-                renderElement={renderElement}
-                onKeyDown={onKeyDown}
-                onKeyUp={onKeyUp}
-                readOnly={isReadOnly}
-                spellCheck
-                // decorate={decorate}
-              />
+              </div>
             </div>
-          </div>
-        </Slate>
-      </AlertProvider>
+          </Slate>
+        </AlertProvider>
+      </ScrollProvider>
     </main>
   );
 };
