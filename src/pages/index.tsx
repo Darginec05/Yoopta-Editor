@@ -1,5 +1,7 @@
 import type { NextPage } from 'next';
+import { AlertProvider } from '../components/Alert/Alert';
 import { SlateEditor } from '../components/Editor/Editor';
+import { ScrollProvider } from '../contexts/ScrollContext/ScrollContext';
 
 const isServer = typeof window === 'undefined';
 
@@ -8,7 +10,11 @@ const Home: NextPage = () => {
 
   return (
     <div>
-      <SlateEditor />
+      <ScrollProvider>
+        <AlertProvider>
+          <SlateEditor />
+        </AlertProvider>
+      </ScrollProvider>
     </div>
   );
 };

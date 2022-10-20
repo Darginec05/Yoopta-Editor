@@ -6,7 +6,7 @@ import { BulletedListElement } from './types';
 import { KEYBOARD_SHORTCUTS, addLinkNode } from './utils';
 import { ELEMENT_TYPES_MAP } from './constants';
 
-const VOID_ELEMENTS = [ELEMENT_TYPES_MAP.video, ELEMENT_TYPES_MAP.image];
+export const VOID_ELEMENTS = [ELEMENT_TYPES_MAP.video, ELEMENT_TYPES_MAP.image];
 
 export const withVoidNodes = (editor: Editor) => {
   const { isVoid } = editor;
@@ -66,46 +66,6 @@ export const withShortcuts = (editor: Editor) => {
     insertText(text);
   };
 
-  // editor.deleteBackward = (...args) => {
-  //   const { selection } = editor;
-
-  //   if (selection && Range.isCollapsed(selection)) {
-  //     const match = Editor.above(editor, {
-  //       match: (n) => {
-  //         return Editor.isBlock(editor, n);
-  //       },
-  //     });
-
-  //     if (match) {
-  //       const [block, path] = match;
-  //       const start = Editor.start(editor, path);
-
-  //       if (
-  //         !Editor.isEditor(block) &&
-  //         Element.isElement(block) &&
-  //         block.type !== 'paragraph' &&
-  //         Point.equals(selection.anchor, start)
-  //       ) {
-  //         const updatedLine: Partial<Element> = {
-  //           type: 'paragraph',
-  //         };
-  //         Transforms.setNodes(editor, updatedLine);
-
-  //         if (block.type === 'list-item') {
-  //           Transforms.unwrapNodes(editor, {
-  //             match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'bulleted-list',
-  //             split: true,
-  //           });
-  //         }
-
-  //         return;
-  //       }
-  //     }
-
-  //     deleteBackward(...args);
-  //   }
-  // };
-
   return editor;
 };
 
@@ -114,7 +74,7 @@ export const withInlines = (editor) => {
 
   editor.isInline = (element) => (element.type === 'link' ? true : isInline(element));
 
-  editor.insertText = (text) => {
+  editor.insertText = (text: string) => {
     if (text && isUrl(text)) {
       addLinkNode(editor, text);
     } else {
@@ -137,8 +97,6 @@ export const withInlines = (editor) => {
 
 export const withCorrectVoidBehavior = (editor: Editor) => {
   const { deleteBackward, insertBreak } = editor;
-
-  // return editor;
 
   // if current selection is void node, insert a default node below
   // eslint-disable-next-line consistent-return

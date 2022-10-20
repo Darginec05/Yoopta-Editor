@@ -1,0 +1,14 @@
+.editorContainer {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  position: relative;
+}
+
+.editorContent {
+  max-width: 800px;
+  padding-top: 4rem;
+  padding-bottom: 30vh;
+  margin: 0;
+  width: 100%;
+}

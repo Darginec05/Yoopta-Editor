@@ -1,4 +1,4 @@
-import { useRef, useEffect, MouseEvent, useState, ReactNode, FC } from 'react';
+import { useRef, useEffect, MouseEvent, useState, ReactNode, FC, CSSProperties } from 'react';
 import { Range, Editor } from 'slate';
 import cx from 'classnames';
 import { useSlate, ReactEditor } from 'slate-react';
@@ -37,6 +37,7 @@ const defaultBlock: Block = {
 };
 
 type ToolbarProps = {};
+type ToolbarState = { open: boolean; style?: CSSProperties };
 
 const Toolbar: FC<ToolbarProps> = () => {
   const editor = useSlate();
@@ -45,6 +46,7 @@ const Toolbar: FC<ToolbarProps> = () => {
   const [isDropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [isLinkOpen, setLinkOpen] = useState<boolean>(false);
   const [activeBlock, setActiveBlock] = useState<Block>(defaultBlock);
+  const [toolbarProps, setToolbarProps] = useState<ToolbarState>({ open: false, style: {} });
 
   const toggleElementsListDropdown = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -64,94 +66,114 @@ const Toolbar: FC<ToolbarProps> = () => {
   };
 
   const hideElementsList = () => {
-    elementsListDropdownRef.current!.style.opacity = '0';
-    elementsListDropdownRef.current!.style.left = '-1000px';
-    elementsListDropdownRef.current!.style.top = '-1000px';
+    // elementsListDropdownRef.current!.style.opacity = '0';
+    // elementsListDropdownRef.current!.style.left = '-1000px';
+    // elementsListDropdownRef.current!.style.top = '-1000px';
   };
 
   const hideAllToolbarTools = () => {
-    toolbarRef.current.removeAttribute('style');
-    setLinkOpen(false);
-    setDropdownOpen(false);
-    hideElementsList();
+    // toolbarRef.current.removeAttribute('style');
+    // setLinkOpen(false);
+    // setDropdownOpen(false);
+    // hideElementsList();
   };
+
+  // if (editor?.selection) {
+  //   console.log({
+  //     collapsed: Range.isCollapsed(editor?.selection),
+  //     isExpanded: Range.isExpanded(editor?.selection),
+  //     string: Editor.string(editor, editor?.selection),
+  //     focus: editor?.selection.focus.path,
+  //     anchor: editor?.selection.anchor.path,
+  //   });
+  // }
 
   const showToolbar = () => {
-    const el = toolbarRef.current;
-    const { top, left } = getAbsPositionBySelection(el);
-
-    el.style.opacity = '1';
-    el.style.top = `${top}px`;
-    el.style.left = `${left}px`;
-  }
-
-  const toggleToolbar = () => {
-    const el = toolbarRef.current;
-    const elementsListDropdown = elementsListDropdownRef.current;
-
-    const { selection } = editor;
-
-    if (!el) {
-      return;
-    }
-
-    if (
-      !selection ||
-      !ReactEditor.isFocused(editor) ||
-      Range.isCollapsed(selection) ||
-      Editor.string(editor, selection) === ''
-    ) {
-      window.removeEventListener('scroll', showToolbar);
-      return hideAllToolbarTools();
-    }
-
-    if (elementsListDropdown) {
-      const toolbarRect = el.getBoundingClientRect();
-      const elementsListDropdownRect = elementsListDropdown.getBoundingClientRect();
-
-      const isBottomPosition = toolbarRect.top < elementsListDropdownRect.height;
-
-      elementsListDropdown.style.opacity = isDropdownOpen ? '1' : '0px';
-      elementsListDropdown.style.left = isDropdownOpen ? '0px' : '-1000px';
-      elementsListDropdown.style.top = isBottomPosition ? `${toolbarRect.height + 5}px` : 'auto';
-      elementsListDropdown.style.bottom = isBottomPosition ? 'auto' : `${toolbarRect.height + 5}px`;
-    }
-
-    showToolbar();
-
-    // [TODO] - rewrite logic of Toolbar showing
-    // window.addEventListener('scroll', showToolbar);
+    const { top, left } = getAbsPositionBySelection(toolbarRef.current);
+    setToolbarProps({ open: true, style: { top, left, opacity: 1 } });
   };
 
+  const hideToolbar = () => setToolbarProps({ open: false });
+
   useEffect(() => {
-    setCurrentBlock();
-    toggleToolbar();
-  });
+    if (!editor.selection) return hideToolbar();
+
+    const isExpanded = Range.isExpanded(editor.selection) && Editor.string(editor, editor.selection).trim() !== '';
+    if (!isExpanded) return hideToolbar();
+
+    showToolbar();
+    window.addEventListener('scroll', showToolbar);
+
+    return () => window.removeEventListener('scroll', showToolbar);
+  }, [editor.selection]);
+
+  // const toggleToolbar = () => {
+  //   const el = toolbarRef.current;
+  //   const elementsListDropdown = elementsListDropdownRef.current;
+
+  //   const { selection } = editor;
+
+  //   if (!el) {
+  //     return;
+  //   }
+
+  //   if (
+  //     !selection ||
+  //     !ReactEditor.isFocused(editor) ||
+  //     Range.isCollapsed(selection) ||
+  //     Editor.string(editor, selection) === ''
+  //   ) {
+  //     window.removeEventListener('scroll', showToolbar);
+  //     return hideAllToolbarTools();
+  //   }
+
+  //   if (elementsListDropdown) {
+  //     const toolbarRect = el.getBoundingClientRect();
+  //     // const elementsListDropdownRect = elementsListDropdown.getBoundingClientRect();
+
+  //     // const isBottomPosition = toolbarRect.top < elementsListDropdownRect.height;
+
+  //     // elementsListDropdown.style.opacity = isDropdownOpen ? '1' : '0px';
+  //     // elementsListDropdown.style.left = isDropdownOpen ? '0px' : '-1000px';
+  //     // elementsListDropdown.style.top = isBottomPosition ? `${toolbarRect.height + 5}px` : 'auto';
+  //     // elementsListDropdown.style.bottom = isBottomPosition ? 'auto' : `${toolbarRect.height + 5}px`;
+  //   }
+
+  //   showToolbar();
+
+  //   // [TODO] - rewrite logic of Toolbar showing
+  //   // window.addEventListener('scroll', showToolbar);
+  // };
+
+  // useEffect(() => {
+  //   setCurrentBlock();
+  //   toggleToolbar();
+  // });
 
   const handleMarkClick = (e: MouseEvent<HTMLButtonElement>, mark: string) => {
     e.preventDefault();
     toggleMark(editor, mark);
   };
 
-  const handleBlockClick = (e: MouseEvent<HTMLButtonElement>, type: string) => {
-    e.preventDefault();
-    toggleBlock(editor, type);
-    toggleElementsListDropdown(e);
-  };
+  // const handleBlockClick = (e: MouseEvent<HTMLButtonElement>, type: string) => {
+  //   e.preventDefault();
+  //   toggleBlock(editor, type);
+  //   toggleElementsListDropdown(e);
+  // };
 
   const linkNode = getMatchedNode(editor, 'link');
 
   return (
     <OutsideClick onClose={hideAllToolbarTools}>
-      <div ref={toolbarRef} className={s.menu}>
+      <div ref={toolbarRef} className={s.menu} style={toolbarProps.style}>
         <div className={s.toolbar}>
-          <ElementsListDropdown
+          {/* <ElementsListDropdown
             handleBlockClick={handleBlockClick}
             selectedElementType={activeBlock.type}
             filterListCallback={(item) => TEXT_ELEMENTS_LIST.includes(item.type)}
             ref={elementsListDropdownRef}
             style={{ position: 'absolute' }}
-          />
+          /> */}
           <Fade show={isLinkOpen} animationDelay={300}>
             <LinkInput editor={editor} linkNode={linkNode} onClose={() => setLinkOpen(false)} />
           </Fade>
@@ -159,7 +181,9 @@ const Toolbar: FC<ToolbarProps> = () => {
             {activeBlock?.name}
           </button>
           <button type="button" className={cx(s.button, !!linkNode && s.__active)} onMouseDown={toggleLinkInput}>
-            <LinkIcon /> <span>Link</span>
+            <LinkIcon />
+            {' '}
+            <span>Link</span>
           </button>
           <button
             type="button"
@@ -197,6 +221,7 @@ const Toolbar: FC<ToolbarProps> = () => {
             <CodeIcon />
           </button>
         </div>
+        {/* )} */}
       </div>
     </OutsideClick>
   );

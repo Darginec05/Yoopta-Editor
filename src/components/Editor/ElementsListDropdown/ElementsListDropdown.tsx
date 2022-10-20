@@ -1,4 +1,4 @@
-import { forwardRef, KeyboardEvent, ReactNode } from 'react';
+import { forwardRef, KeyboardEvent, ReactNode, useEffect } from 'react';
 import cx from 'classnames';
 import { ReactComponent as ParagraphIcon } from '../Toolbar/icons/paragraph.svg';
 import { ReactComponent as HeadingOneIcon } from '../Toolbar/icons/heading_one.svg';
@@ -34,7 +34,7 @@ export const ELEMENT_TYPES: Block[] = [
 ];
 
 export const ElementsListDropdown = forwardRef<any, any>(
-  ({ handleBlockClick, selectedElementType, filterListCallback, style }, ref) => {
+  ({ handleBlockClick, selectedElementType, filterListCallback, style, onClose }, ref) => {
     const onKeyDown = (e: KeyboardEvent<HTMLButtonElement>, type: string) => {
       if (e.key === 'Enter') {
         e.preventDefault();
@@ -45,9 +45,20 @@ export const ElementsListDropdown = forwardRef<any, any>(
     const elements =
       typeof filterListCallback === 'function' ? ELEMENT_TYPES.filter(filterListCallback) : ELEMENT_TYPES;
 
-    const isBlockActive = (elem) => selectedElementType === elem.type;
+    // eslint-disable-next-line max-len
+    const isBlockActive = (elem) => (selectedElementType ? selectedElementType === elem.type : elements[0].type === elem.type);
 
     const notFound = elements.length === 0;
+
+    useEffect(() => {
+      if (notFound) {
+        const timeout = setTimeout(() => {
+          onClose();
+        }, 1500);
+
+        return () => clearTimeout(timeout);
+      }
+    }, [notFound]);
 
     return (
       <div className={s.dropdown} role="dialog" aria-modal="true" ref={ref} style={style}>

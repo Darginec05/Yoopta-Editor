@@ -7,6 +7,7 @@ import cx from 'classnames';
 import { HoveredMenuItem } from './HoveredMenuItem';
 import { useAlert } from '../Alert/Alert';
 import s from './HoveredMenu.module.scss';
+import { VOID_ELEMENTS } from '../Editor/plugins';
 
 const ElementHover = ({
   children,
@@ -36,7 +37,10 @@ const ElementHover = ({
   const isCurrentItemSelected = editor.selection && Range.isCollapsed(editor.selection) && selected;
 
   const showPlaceholder =
-    isCurrentItemSelected && element.children[0].text === '' && !element.isVoid && !['image'].includes(element.type);
+    isCurrentItemSelected &&
+    element.children[0].text === '' &&
+    !element.isVoid &&
+    !VOID_ELEMENTS.includes(element.type);
 
   const onHover = () => setHovered(true);
   const onHoverOut = () => setHovered(false);

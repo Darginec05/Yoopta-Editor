@@ -1,5 +1,5 @@
-import { createEditor, Descendant, Editor, Transforms, Element as SlateElement } from 'slate';
-import { useCallback, useState, KeyboardEvent, CSSProperties, useRef, MouseEvent } from 'react';
+import { createEditor, Descendant, Editor, Transforms, Element as SlateElement, Point } from 'slate';
+import { useCallback, useState, KeyboardEvent, MouseEvent } from 'react';
 import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
 import { withHistory } from 'slate-history';
 import { v4 } from 'uuid';
@@ -9,34 +9,14 @@ import { RenderElement } from './RenderElement/RenderElement';
 import { withShortcuts, withInlines, withVoidNodes, withCorrectVoidBehavior, withFixDeleteFragment } from './plugins';
 import { Toolbar } from './Toolbar/Toolbar';
 import { ParagraphElement, CustomNode } from './types';
-import { DEFAULT_STATE, getRectByCurrentSelection, LIST_TYPES, toggleBlock } from './utils';
+import { DEFAULT_STATE, LIST_TYPES, toggleBlock } from './utils';
 import { ELEMENT_TYPES_MAP, IGNORED_SOFT_BREAK_ELEMS } from './constants';
 import { ElementsListDropdown } from './ElementsListDropdown/ElementsListDropdown';
 import { OutsideClick } from '../OutsideClick';
 import { useDragDrop } from '../../hooks/useDragDrop';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
-import { AlertProvider } from '../Alert/Alert';
-import { ScrollProvider } from '../../contexts/ScrollContext/ScrollContext';
-
-// import 'prismjs/components/prism-python';
-// import 'prismjs/components/prism-php';
-// import 'prismjs/components/prism-sql';
-// import 'prismjs/components/prism-java';
-
-const CONTAINER_STYLE: CSSProperties = {
-  display: 'flex',
-  width: '100%',
-  justifyContent: 'center',
-  position: 'relative',
-};
-
-const EDITOR_WRAP_STYLE: CSSProperties = {
-  maxWidth: 800,
-  paddingTop: '4rem',
-  paddingBottom: '30vh',
-  margin: 0,
-  width: '100%',
-};
+import { useSuggestionListHanler, SUGGESTION_TRIGGER } from '../../hooks/useSuggestionListHandler';
+import s from './Editor.module.scss';
 
 const getInitialData = () => {
   if (typeof window === 'undefined') return [];
@@ -48,38 +28,24 @@ const getInitialData = () => {
 
 const SlateEditor = () => {
   const [value, setValue] = useState<Descendant[]>(() => getInitialData());
-  const [filterTextValue, setFilterTextValue] = useState('');
-  const elementsListPositionRef = useRef<HTMLDivElement>(null);
 
-  const [editor] = useState(() =>
-    withFixDeleteFragment(
-      withHistory(withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor())))))),
-    ),
-  );
+  const [editor] = useState(() => withFixDeleteFragment(
+    withHistory(withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor())))))),
+  ));
 
   useScrollToElement();
-
   const { onDrop, dndState, onDragEnd, onDragStart, isDisableByDrag } = useDragDrop({ editor });
+  const {
+    showSuggestionList,
+    hideSuggestionList,
+    filterSuggestionList,
+    onChangeSuggestionFilterText,
+    isSuggesstionListOpen,
+    suggesstionListStyle,
+    suggestionListRef,
+  } = useSuggestionListHanler();
 
   const isReadOnly = isDisableByDrag;
-
-  const showElementsList = () => {
-    const selectionRect = getRectByCurrentSelection();
-
-    elementsListPositionRef.current!.style.opacity = '1';
-    elementsListPositionRef.current!.style.left = `${selectionRect.left}px`;
-    elementsListPositionRef.current!.style.top = `${selectionRect.top + 40}px`;
-    elementsListPositionRef.current?.scrollIntoView({ block: 'center', inline: 'center' });
-  };
-
-  const hideElementsList = () => {
-    elementsListPositionRef.current!.style.opacity = '0';
-    elementsListPositionRef.current!.style.left = '-1000px';
-    elementsListPositionRef.current!.style.top = '-1000px';
-    setFilterTextValue('');
-
-    window.removeEventListener('scroll', showElementsList);
-  };
 
   const onPlusButtonClick = (element) => {
     const path = ReactEditor.findPath(editor, element);
@@ -102,9 +68,7 @@ const SlateEditor = () => {
       ReactEditor.focus(editor);
 
       const selectionTimeout = setTimeout(() => {
-        showElementsList();
-        window.addEventListener('scroll', showElementsList);
-
+        showSuggestionList();
         clearTimeout(selectionTimeout);
       }, 0);
 
@@ -112,55 +76,57 @@ const SlateEditor = () => {
     }, 0);
   };
 
-  const renderLeaf = useCallback((leafProps) => {
-    return <TextLeaf {...leafProps} />;
-  }, []);
+  const renderLeaf = useCallback((leafProps) => <TextLeaf {...leafProps} />, []);
+
   const renderElement = useCallback(
-    (elemProps) => {
-      return (
-        <RenderElement
-          onPlusButtonClick={onPlusButtonClick}
-          onDragStart={onDragStart}
-          onDragEnd={onDragEnd}
-          onDrop={onDrop}
-          dndState={dndState}
-          {...elemProps}
-        />
-      );
-    },
+    (elemProps) => (
+      <RenderElement
+        onPlusButtonClick={onPlusButtonClick}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        onDrop={onDrop}
+        dndState={dndState}
+        {...elemProps}
+      />
+    ),
     [dndState],
   );
 
-  const onKeyUp = useCallback(() => {
-    const text = Editor.string(editor, editor.selection!.anchor.path);
-    const isElementsListOpen = window.getComputedStyle(elementsListPositionRef!.current!).opacity === '1';
+  const onKeyUp = useCallback(
+    (event) => {
+      const text = Editor.string(editor, editor.selection!.anchor.path);
 
-    if (!isElementsListOpen && text === '/') {
-      showElementsList();
-    }
+      if (!isSuggesstionListOpen && event.key === SUGGESTION_TRIGGER) {
+        showSuggestionList();
+      }
 
-    if (isElementsListOpen) {
-      setFilterTextValue(text);
-    }
-  }, [editor]);
+      if (isSuggesstionListOpen) {
+        onChangeSuggestionFilterText(text);
+      }
+    },
+    [isSuggesstionListOpen],
+  );
 
   const onKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
     const { selection } = editor;
     const node: any = editor.children[selection?.anchor.path[0] || 0];
     const text = Editor.string(editor, editor.selection!.anchor.path);
-    const isEnterPressed = event.key === 'Enter';
+    const isEnterKey = event.key === 'Enter';
 
+    // [TODO] - will be removed after making dropdown accessibility
     if (
-      (event.key === 'Backspace' && text.length === 0) ||
-      isEnterPressed ||
+      (event.key === 'Backspace' && (text.length === 0 || text === SUGGESTION_TRIGGER)) ||
+      isEnterKey ||
       event.key === 'ArrowLeft' ||
       event.key === 'ArrowRight' ||
+      event.key === 'ArrowUp' ||
+      event.key === 'ArrowDown' ||
       event.key === 'Meta'
     ) {
-      hideElementsList();
+      hideSuggestionList();
     }
 
-    if (isEnterPressed) {
+    if (isEnterKey) {
       const newLine: ParagraphElement = {
         id: v4(),
         type: 'paragraph',
@@ -203,18 +169,8 @@ const SlateEditor = () => {
   const handleBlockClick = (e: MouseEvent<HTMLButtonElement>, type: string) => {
     e.preventDefault();
     toggleBlock(editor, type, { isVoid: false, children: [{ text: '' }] });
-    hideElementsList();
+    hideSuggestionList();
   };
-
-  const filterElementsListBySearchText = useCallback(
-    (elementItem) => {
-      return (
-        elementItem.name.toLowerCase().indexOf(filterTextValue) > -1 ||
-        elementItem.type.toLowerCase().indexOf(filterTextValue) > -1
-      );
-    },
-    [filterTextValue],
-  );
 
   const onChange = useCallback((newValue) => {
     setValue(newValue);
@@ -231,101 +187,33 @@ const SlateEditor = () => {
     }
   }, []);
 
-  // const getLength = (token) => {
-  //   if (typeof token === 'string') {
-  //     return token.length;
-  //   }
-  //   if (typeof token.content === 'string') {
-  //     return token.content.length;
-  //   }
-  //   return token.content.reduce((l, t) => l + getLength(t), 0);
-  // };
-
-  // const decorate = useCallback(([node, path]) => {
-  //   const ranges = [];
-
-  //   if (!Text.isText(node)) return ranges;
-  //   const tokens = Prism.tokenize(node.text, Prism.languages.javascript);
-
-  //   let start = 0;
-
-  //   // eslint-disable-next-line no-restricted-syntax
-  //   for (const token of tokens) {
-  //     const length = getLength(token);
-  //     const end = start + length;
-
-  //     if (typeof token !== 'string') {
-  //       ranges.push({
-  //         token: token.type,
-  //         anchor: { path, offset: start },
-  //         focus: { path, offset: end },
-  //       });
-  //     }
-
-  //     start = end;
-  //   }
-
-  //   return ranges;
-  // }, []);
-
-  const handleOutsideEditorClick = (e) => {
-    const style = window.getComputedStyle(e.target, null);
-    const pBottom = parseFloat(style.getPropertyValue('padding-bottom'));
-
-    // if (pBottom > 0) {
-    //   Transforms.insertNodes(
-    //     editor,
-    //     {
-    //       id: v4(),
-    //       type: 'paragraph',
-    //       children: [
-    //         {
-    //           text: '',
-    //         },
-    //       ],
-    //     },
-    //     { at: [editor.children.length] },
-    //   );
-
-    //   Transforms.select(editor, {
-    //     anchor: { path: [editor.children.length - 1, 0], offset: 0 },
-    //     focus: { path: [editor.children.length - 1, 0], offset: 0 },
-    //   });
-
-    //   ReactEditor.focus(editor);
-    // }
-  };
-
   return (
-    <main style={CONTAINER_STYLE}>
-      <ScrollProvider>
-        <AlertProvider>
-          <Slate editor={editor} value={value} onChange={onChange}>
-            <div style={EDITOR_WRAP_STYLE} aria-hidden onClick={handleOutsideEditorClick}>
-              <div id="content">
-                <OutsideClick onClose={hideElementsList}>
-                  <ElementsListDropdown
-                    ref={elementsListPositionRef}
-                    filterListCallback={filterElementsListBySearchText}
-                    handleBlockClick={handleBlockClick}
-                    selectedElementType={ELEMENT_TYPES_MAP.paragraph}
-                  />
-                </OutsideClick>
-                <Toolbar />
-                <Editable
-                  renderLeaf={renderLeaf}
-                  renderElement={renderElement}
-                  onKeyDown={onKeyDown}
-                  onKeyUp={onKeyUp}
-                  readOnly={isReadOnly}
-                  spellCheck
-                  // decorate={decorate}
-                />
-              </div>
-            </div>
-          </Slate>
-        </AlertProvider>
-      </ScrollProvider>
+    <main className={s.editorContainer}>
+      <Slate editor={editor} value={value} onChange={onChange}>
+        <div className={s.editorContent}>
+          <OutsideClick onClose={hideSuggestionList}>
+            <ElementsListDropdown
+              filterListCallback={filterSuggestionList}
+              handleBlockClick={handleBlockClick}
+              // selectedElementType={ELEMENT_TYPES_MAP.paragraph}
+              style={suggesstionListStyle}
+              onClose={hideSuggestionList}
+              ref={suggestionListRef}
+            />
+          </OutsideClick>
+          <Toolbar />
+          <Editable
+            renderLeaf={renderLeaf}
+            renderElement={renderElement}
+            onKeyDown={onKeyDown}
+            onKeyUp={onKeyUp}
+            readOnly={isReadOnly}
+            // onInput={console.log}
+            // onDOMBeforeInput={(event) => console.log(event.AT_TARGET)}
+            spellCheck
+          />
+        </div>
+      </Slate>
     </main>
   );
 };
