@@ -2,7 +2,6 @@ import React, {
   CSSProperties,
   MutableRefObject,
   ReactNode,
-  Ref,
   useCallback,
   useContext,
   useEffect,
@@ -32,7 +31,8 @@ const defaultBlock: Block = {
 type ActionMenuContextType = {
   onChangeSuggestionFilterText: (_v: string) => void;
   hideSuggestionList: () => void;
-  showSuggestionList: (_style?: CSSProperties) => void;
+  hideToolbarTools: () => void;
+  showSuggestionList: (_style?: CSSProperties, _trigger?: boolean) => void;
   filterSuggestionList: (_elem: Block) => void;
   updateToolbarView: (_style?: CSSProperties) => void;
   isSuggesstionListOpen: boolean;
@@ -47,7 +47,8 @@ type ActionMenuContextType = {
 const ActionMenuContext = React.createContext<ActionMenuContextType>({
   onChangeSuggestionFilterText: (_v) => {},
   hideSuggestionList: () => {},
-  showSuggestionList: (_style) => {},
+  hideToolbarTools: () => {},
+  showSuggestionList: (_style, _trigger) => {},
   filterSuggestionList: (_elem: {}) => {},
   updateToolbarView: (_style) => {},
   isSuggesstionListOpen: false,
@@ -59,7 +60,7 @@ const ActionMenuContext = React.createContext<ActionMenuContextType>({
   toolbarRef: null,
 });
 
-type ActionMenu = { open: boolean; style?: CSSProperties };
+type ActionMenu = { open: boolean; style?: CSSProperties; triggeredBySuggestion?: boolean };
 
 export const SUGGESTION_TRIGGER = '/';
 
@@ -77,7 +78,7 @@ const ActionMenuProvider = ({ children }) => {
   const isToolbarActionOpen = toolbarProps.open;
   const isSuggesstionListOpen = suggestionListProps.open;
 
-  const showSuggestionList = (style?: CSSProperties) => {
+  const showSuggestionList = (style?: CSSProperties, triggeredBySuggestion?: ActionMenu['triggeredBySuggestion']) => {
     const selectionRect = getRectByCurrentSelection();
     const suggesstionListRect = suggestionListRef.current?.getBoundingClientRect();
     if (!selectionRect) return;
@@ -86,7 +87,11 @@ const ActionMenuProvider = ({ children }) => {
     const top = isOutViewport ? 'auto' : selectionRect.top + selectionRect.height + 10;
     const bottom = isOutViewport ? window.innerHeight - selectionRect.bottom + selectionRect!.height + 10 : 'auto';
 
-    setSuggestionListProps({ open: true, style: style || { left: selectionRect.left, top, bottom, opacity: 1 } });
+    setSuggestionListProps({
+      open: true,
+      triggeredBySuggestion,
+      style: style || { left: selectionRect.left, top, bottom, opacity: 1 },
+    });
     disableScroll();
   };
 
@@ -97,37 +102,39 @@ const ActionMenuProvider = ({ children }) => {
     enableScroll();
   };
 
-  const updateToolbarView = (style?: CSSProperties) => {
-    const { top, left } = getAbsPositionBySelection(toolbarRef.current);
-    setToolbarProps({ open: true, style: style || { top, left, opacity: 1 } });
-  };
-
-  const showToolbar = () => updateToolbarView();
-
-  const hideToolbar = () => {
-    // setElementListProps({ open: false });
-    hideSuggestionList();
-    setSelectedElement(defaultBlock);
-    setToolbarProps({ open: false });
-  };
-
   const setCurrentBlock = () => {
     const current = ELEMENT_TYPES.find((elem) => isBlockActive(editor, elem.type));
     setSelectedElement(current || defaultBlock);
   };
 
+  const updateToolbarView = (style?: CSSProperties) => {
+    const { top, left } = getAbsPositionBySelection(toolbarRef.current);
+    setCurrentBlock();
+    setToolbarProps({ open: true, style: style || { top, left, opacity: 1 } });
+  };
+
+  const showToolbarTools = () => updateToolbarView();
+
+  const hideToolbarTools = () => {
+    hideSuggestionList();
+    setSelectedElement(defaultBlock);
+    setToolbarProps({ open: false });
+  };
+
   useEffect(() => {
-    if (!editor.selection) return hideToolbar();
+    if (suggestionListProps.triggeredBySuggestion) return;
+
+    if (!editor.selection) return hideToolbarTools();
 
     const isExpanded = Range.isExpanded(editor.selection) && Editor.string(editor, editor.selection).trim() !== '';
-    if (!isExpanded) return hideToolbar();
+
+    if (!isExpanded) return hideToolbarTools();
 
     updateToolbarView();
-    setCurrentBlock();
 
-    window.addEventListener('scroll', showToolbar);
-    return () => window.removeEventListener('scroll', showToolbar);
-  }, [editor.selection, editor.children]);
+    window.addEventListener('scroll', showToolbarTools);
+    return () => window.removeEventListener('scroll', showToolbarTools);
+  }, [editor.selection, editor.children, suggestionListProps.triggeredBySuggestion]);
 
   const onChangeSuggestionFilterText = (value: string) => setSuggestionFilterText(value);
 
@@ -144,20 +151,24 @@ const ActionMenuProvider = ({ children }) => {
     [suggestionFilterText, isToolbarActionOpen],
   );
 
-  const value = {
-    onChangeSuggestionFilterText,
-    hideSuggestionList,
-    showSuggestionList,
-    filterSuggestionList,
-    isSuggesstionListOpen,
-    selectedElement,
-    suggesstionListStyle: suggestionListProps.style,
-    toolbarStyle: toolbarProps.style,
-    isToolbarActionOpen,
-    suggestionListRef,
-    toolbarRef,
-    updateToolbarView,
-  };
+  const value = useMemo(
+    () => ({
+      onChangeSuggestionFilterText,
+      hideSuggestionList,
+      showSuggestionList,
+      filterSuggestionList,
+      isSuggesstionListOpen,
+      selectedElement,
+      suggesstionListStyle: suggestionListProps.style,
+      toolbarStyle: toolbarProps.style,
+      isToolbarActionOpen,
+      suggestionListRef,
+      toolbarRef,
+      hideToolbarTools,
+      updateToolbarView,
+    }),
+    [toolbarProps, suggestionListProps, toolbarRef.current, suggestionListRef.current, suggestionFilterText],
+  );
 
   return <ActionMenuContext.Provider value={value}>{children}</ActionMenuContext.Provider>;
 };

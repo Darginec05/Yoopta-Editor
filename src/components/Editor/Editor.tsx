@@ -6,12 +6,13 @@ import { TextLeaf } from './TextLeaf';
 import { RenderElement } from './RenderElement/RenderElement';
 import { Toolbar } from './Toolbar/Toolbar';
 import { ParagraphElement, CustomNode } from './types';
-import { getRectByCurrentSelection, LIST_TYPES, toggleBlock } from './utils';
+import { LIST_TYPES, toggleBlock } from './utils';
 import { ELEMENT_TYPES_MAP, IGNORED_SOFT_BREAK_ELEMS } from './constants';
 import { ElementsListDropdown } from './ElementsListDropdown/ElementsListDropdown';
 import { useDragDrop } from '../../hooks/useDragDrop';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionMenuContext/ActionMenuContext';
+import { OutsideClick } from '../OutsideClick';
 import s from './Editor.module.scss';
 
 type YoptaProps = { editor: Editor };
@@ -24,6 +25,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
     toolbarRef,
     toolbarStyle,
     selectedElement,
+    hideToolbarTools,
     suggestionListRef,
     showSuggestionList,
     hideSuggestionList,
@@ -38,6 +40,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
   const onPlusButtonClick = (element) => {
     const path = ReactEditor.findPath(editor, element);
     const after = Editor.after(editor, path);
+    showSuggestionList(undefined, true);
 
     const node: CustomNode = {
       id: v4(),
@@ -56,7 +59,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
       ReactEditor.focus(editor);
 
       const selectionTimeout = setTimeout(() => {
-        showSuggestionList();
+        showSuggestionList(undefined, true);
         clearTimeout(selectionTimeout);
       }, 0);
 
@@ -85,7 +88,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
       const text = Editor.string(editor, editor.selection!.anchor.path);
 
       if (!isSuggesstionListOpen && event.key === SUGGESTION_TRIGGER) {
-        showSuggestionList();
+        showSuggestionList(undefined, true);
       }
 
       if (isSuggesstionListOpen) {
@@ -163,17 +166,17 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
   return (
     <main className={s.editorContainer}>
       <div className={s.editorContent}>
-        <Toolbar toolbarRef={toolbarRef} toolbarStyle={toolbarStyle} editor={editor} />
-        {/* <OutsideClick onClose={hideSuggestionList}> */}
-        <ElementsListDropdown
-          filterListCallback={filterSuggestionList}
-          handleBlockClick={handleBlockClick}
-          style={suggesstionListStyle}
-          onClose={hideSuggestionList}
-          selectedElementType={selectedElement.type}
-          ref={suggestionListRef}
-        />
-        {/* </OutsideClick> */}
+        <OutsideClick onClose={hideToolbarTools}>
+          <Toolbar toolbarRef={toolbarRef} toolbarStyle={toolbarStyle} editor={editor} />
+          <ElementsListDropdown
+            filterListCallback={filterSuggestionList}
+            handleBlockClick={handleBlockClick}
+            style={suggesstionListStyle}
+            onClose={hideSuggestionList}
+            selectedElementType={selectedElement.type}
+            ref={suggestionListRef}
+          />
+        </OutsideClick>
         <Editable
           renderLeaf={renderLeaf}
           renderElement={renderElement}
