@@ -4,7 +4,9 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 const ScrollContext = React.createContext({ enableScroll: () => {}, disableScroll: () => {} });
 
 const ScrollProvider = ({ children }) => {
-  const disableScroll = () => disableBodyScroll(document.querySelector('body')!, { reserveScrollBarGap: true });
+  const disableScroll = () => {
+    disableBodyScroll(document.querySelector('body')!, { reserveScrollBarGap: true });
+  };
   const enableScroll = () => enableBodyScroll(document.querySelector('body')!);
 
   const value = useMemo(() => ({ enableScroll, disableScroll }), []);

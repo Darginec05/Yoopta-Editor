@@ -1,4 +1,4 @@
-import { forwardRef, KeyboardEvent, ReactNode, useEffect } from 'react';
+import { forwardRef, KeyboardEvent, ReactNode, useEffect, CSSProperties } from 'react';
 import cx from 'classnames';
 import { ReactComponent as ParagraphIcon } from '../Toolbar/icons/paragraph.svg';
 import { ReactComponent as HeadingOneIcon } from '../Toolbar/icons/heading_one.svg';
@@ -33,13 +33,18 @@ export const ELEMENT_TYPES: Block[] = [
   { icon: <VideoIcon />, name: 'Video', type: ELEMENT_TYPES_MAP.video },
 ];
 
-export const ElementsListDropdown = forwardRef<any, any>(
+type Props = {
+  handleBlockClick: (_e: any, _type: string) => void;
+  filterListCallback?: (_elem: Block) => void;
+  onClose?: () => void;
+  style?: CSSProperties;
+  selectedElementType?: string;
+}
+
+export const ElementsListDropdown = forwardRef<HTMLDivElement, Props>(
   ({ handleBlockClick, selectedElementType, filterListCallback, style, onClose }, ref) => {
     const onKeyDown = (e: KeyboardEvent<HTMLButtonElement>, type: string) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        handleBlockClick(e, type);
-      }
+      e.preventDefault();
     };
 
     const elements =
@@ -51,7 +56,9 @@ export const ElementsListDropdown = forwardRef<any, any>(
     const notFound = elements.length === 0;
 
     useEffect(() => {
-      if (notFound) {
+      console.log('notFound && onClose RE-RENDER');
+
+      if (notFound && onClose) {
         const timeout = setTimeout(() => {
           onClose();
         }, 1500);

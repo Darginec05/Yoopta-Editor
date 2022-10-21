@@ -1,49 +1,37 @@
-import { createEditor, Descendant, Editor, Transforms, Element as SlateElement, Point } from 'slate';
-import { useCallback, useState, KeyboardEvent, MouseEvent } from 'react';
-import { Slate, Editable, withReact, ReactEditor } from 'slate-react';
-import { withHistory } from 'slate-history';
+import { Editor, Transforms, Element as SlateElement } from 'slate';
+import { useCallback, KeyboardEvent, MouseEvent } from 'react';
+import { Editable, ReactEditor } from 'slate-react';
 import { v4 } from 'uuid';
-// import Prism from 'prismjs';
 import { TextLeaf } from './TextLeaf';
 import { RenderElement } from './RenderElement/RenderElement';
-import { withShortcuts, withInlines, withVoidNodes, withCorrectVoidBehavior, withFixDeleteFragment } from './plugins';
 import { Toolbar } from './Toolbar/Toolbar';
 import { ParagraphElement, CustomNode } from './types';
-import { DEFAULT_STATE, LIST_TYPES, toggleBlock } from './utils';
+import { getRectByCurrentSelection, LIST_TYPES, toggleBlock } from './utils';
 import { ELEMENT_TYPES_MAP, IGNORED_SOFT_BREAK_ELEMS } from './constants';
 import { ElementsListDropdown } from './ElementsListDropdown/ElementsListDropdown';
-import { OutsideClick } from '../OutsideClick';
 import { useDragDrop } from '../../hooks/useDragDrop';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
-import { useSuggestionListHanler, SUGGESTION_TRIGGER } from '../../hooks/useSuggestionListHandler';
+import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionMenuContext/ActionMenuContext';
 import s from './Editor.module.scss';
 
-const getInitialData = () => {
-  if (typeof window === 'undefined') return [];
+type YoptaProps = { editor: Editor };
 
-  const content = localStorage.getItem('content');
-
-  return content ? JSON.parse(content) : JSON.parse(DEFAULT_STATE);
-};
-
-const SlateEditor = () => {
-  const [value, setValue] = useState<Descendant[]>(() => getInitialData());
-
-  const [editor] = useState(() => withFixDeleteFragment(
-    withHistory(withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor())))))),
-  ));
-
+const YoptaEditor = ({ editor }: YoptaProps) => {
   useScrollToElement();
+
   const { onDrop, dndState, onDragEnd, onDragStart, isDisableByDrag } = useDragDrop({ editor });
   const {
+    toolbarRef,
+    toolbarStyle,
+    selectedElement,
+    suggestionListRef,
     showSuggestionList,
     hideSuggestionList,
     filterSuggestionList,
-    onChangeSuggestionFilterText,
-    isSuggesstionListOpen,
     suggesstionListStyle,
-    suggestionListRef,
-  } = useSuggestionListHanler();
+    isSuggesstionListOpen,
+    onChangeSuggestionFilterText,
+  } = useActionMenuContext();
 
   const isReadOnly = isDisableByDrag;
 
@@ -168,54 +156,35 @@ const SlateEditor = () => {
 
   const handleBlockClick = (e: MouseEvent<HTMLButtonElement>, type: string) => {
     e.preventDefault();
-    toggleBlock(editor, type, { isVoid: false, children: [{ text: '' }] });
+    toggleBlock(editor, type, { isVoid: false, children: [{ text: '' }] }, 'toggle');
     hideSuggestionList();
   };
 
-  const onChange = useCallback((newValue) => {
-    setValue(newValue);
-    const isASTChanged = editor.operations.some((op) => op.type !== 'set_selection');
-
-    if (isASTChanged) {
-      try {
-        const content = JSON.stringify(newValue);
-        localStorage.setItem('content', content);
-      } catch (error) {
-        // [TODO] - don't store base64 src in image node
-        console.log(error);
-      }
-    }
-  }, []);
-
   return (
     <main className={s.editorContainer}>
-      <Slate editor={editor} value={value} onChange={onChange}>
-        <div className={s.editorContent}>
-          <OutsideClick onClose={hideSuggestionList}>
-            <ElementsListDropdown
-              filterListCallback={filterSuggestionList}
-              handleBlockClick={handleBlockClick}
-              // selectedElementType={ELEMENT_TYPES_MAP.paragraph}
-              style={suggesstionListStyle}
-              onClose={hideSuggestionList}
-              ref={suggestionListRef}
-            />
-          </OutsideClick>
-          <Toolbar />
-          <Editable
-            renderLeaf={renderLeaf}
-            renderElement={renderElement}
-            onKeyDown={onKeyDown}
-            onKeyUp={onKeyUp}
-            readOnly={isReadOnly}
-            // onInput={console.log}
-            // onDOMBeforeInput={(event) => console.log(event.AT_TARGET)}
-            spellCheck
-          />
-        </div>
-      </Slate>
+      <div className={s.editorContent}>
+        <Toolbar toolbarRef={toolbarRef} toolbarStyle={toolbarStyle} editor={editor} />
+        {/* <OutsideClick onClose={hideSuggestionList}> */}
+        <ElementsListDropdown
+          filterListCallback={filterSuggestionList}
+          handleBlockClick={handleBlockClick}
+          style={suggesstionListStyle}
+          onClose={hideSuggestionList}
+          selectedElementType={selectedElement.type}
+          ref={suggestionListRef}
+        />
+        {/* </OutsideClick> */}
+        <Editable
+          renderLeaf={renderLeaf}
+          renderElement={renderElement}
+          onKeyDown={onKeyDown}
+          onKeyUp={onKeyUp}
+          readOnly={isReadOnly}
+          spellCheck
+        />
+      </div>
     </main>
   );
 };
 
-export { SlateEditor };
+export { YoptaEditor };

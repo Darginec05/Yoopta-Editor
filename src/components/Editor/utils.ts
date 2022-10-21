@@ -1,4 +1,5 @@
 import { Editor, Text, Element as SlateElement, Transforms, Range } from 'slate';
+import { ReactEditor } from 'slate-react';
 import { v4 } from 'uuid';
 import { LinkElement } from './types';
 import { ELEMENT_TYPES_MAP } from './constants';
@@ -34,17 +35,51 @@ export const getMatchedNode = (editor: Editor, type: any) => {
 
 export const isBlockActive = (editor: Editor, type: any) => !!getMatchedNode(editor, type);
 
-type ChangeMode = 'toggle' | 'add';
+type ToggleMode = 'toggle' | 'add';
 
+// [TODO] - fix deleting '/' after adding or toggling nodes
 export const toggleBlock = (
   editor: Editor,
   blockType: any,
   data: any = { isVoid: false },
-  mode: ChangeMode = 'toggle',
+  mode: ToggleMode = 'toggle',
 ) => {
   Editor.withoutNormalizing(editor, () => {
     const isActive = isBlockActive(editor, blockType);
     const isList = LIST_TYPES.includes(blockType);
+
+    if (mode === 'add') {
+      const node = {
+        id: v4(),
+        type: isList ? 'list-item' : blockType,
+        ...data,
+      };
+
+      if (data.isVoid) {
+        node.type = blockType;
+      }
+
+      const nextPath = editor.selection!.focus.path[0] + 1;
+
+      Transforms.insertNodes(editor, node, {
+        at: {
+          focus: { path: [nextPath, 0], offset: 0 },
+          anchor: { path: [nextPath, 0], offset: 0 },
+        },
+      });
+
+      Transforms.select(editor, { path: [nextPath, 0], offset: 0 });
+      ReactEditor.focus(editor);
+
+      // [TODO] - refactor and fix adding list
+      // if (isList) {
+      //   Transforms.wrapNodes(editor, node, {
+      //     at: { path: [nextPath, 0], offset: 0 },
+      //   });
+      // }
+
+      return;
+    }
 
     Transforms.unwrapNodes(editor, {
       match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && LIST_TYPES.includes(n.type),
@@ -68,7 +103,7 @@ export const toggleBlock = (
     });
 
     if (!isActive && isList) {
-      const block = { type: blockType, children: [{ text: '' }] };
+      const block = { id: v4(), type: blockType, children: [{ text: '' }] };
       Transforms.wrapNodes(editor, block, {
         at: editor.selection?.anchor,
       });
@@ -114,18 +149,22 @@ export const addLinkNode = (editor: Editor, url: string) => {
   }
 };
 
-export const getRectByCurrentSelection = () => {
-  const domSelection = window.getSelection()!;
+export const getRectByCurrentSelection = (): DOMRect | undefined => {
+  const domSelection = window.getSelection();
+  if (!domSelection) return;
+
   const domRange = domSelection.getRangeAt(0);
   const rect = domRange.getBoundingClientRect();
 
   return rect;
 };
 
-export const getAbsPositionBySelection = (element) => {
+export const getAbsPositionBySelection = (element?: HTMLElement) => {
   if (!element) return { top: -10000, left: -10000 };
 
   const selectionRect = getRectByCurrentSelection();
+
+  if (!selectionRect) return {};
 
   return {
     top: selectionRect.top - element.offsetHeight,
