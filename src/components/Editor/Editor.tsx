@@ -8,7 +8,7 @@ import { Toolbar } from './Toolbar/Toolbar';
 import { ParagraphElement, CustomNode } from './types';
 import { LIST_TYPES, toggleBlock } from './utils';
 import { ELEMENT_TYPES_MAP, IGNORED_SOFT_BREAK_ELEMS } from './constants';
-import { ElementsListDropdown } from './ElementsListDropdown/ElementsListDropdown';
+import { SuggestionElementList } from './SuggestionElementList/SuggestionElementList';
 import { useDragDrop } from '../../hooks/useDragDrop';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionMenuContext/ActionMenuContext';
@@ -85,9 +85,12 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
 
   const onKeyUp = useCallback(
     (event) => {
-      const text = Editor.string(editor, editor.selection!.anchor.path);
+      if (!editor.selection) return;
 
-      if (!isSuggesstionListOpen && event.key === SUGGESTION_TRIGGER) {
+      const text = Editor.string(editor, editor.selection.anchor.path);
+
+      // [TODO] - make trigger not only empty paragraph
+      if (!isSuggesstionListOpen && event.key === SUGGESTION_TRIGGER && text === SUGGESTION_TRIGGER) {
         showSuggestionList(undefined, true);
       }
 
@@ -100,20 +103,13 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
 
   const onKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
     const { selection } = editor;
+    if (!selection) return;
+
     const node: any = editor.children[selection?.anchor.path[0] || 0];
-    const text = Editor.string(editor, editor.selection!.anchor.path);
+    const text = Editor.string(editor, selection.anchor.path);
     const isEnterKey = event.key === 'Enter';
 
-    // [TODO] - will be removed after making dropdown accessibility
-    if (
-      (event.key === 'Backspace' && (text.length === 0 || text === SUGGESTION_TRIGGER)) ||
-      isEnterKey ||
-      event.key === 'ArrowLeft' ||
-      event.key === 'ArrowRight' ||
-      event.key === 'ArrowUp' ||
-      event.key === 'ArrowDown' ||
-      event.key === 'Meta'
-    ) {
+    if (event.key === 'Backspace' && (text.length === 0 || text === SUGGESTION_TRIGGER)) {
       hideSuggestionList();
     }
 
@@ -168,12 +164,13 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
       <div className={s.editorContent}>
         <OutsideClick onClose={hideToolbarTools}>
           <Toolbar toolbarRef={toolbarRef} toolbarStyle={toolbarStyle} editor={editor} />
-          <ElementsListDropdown
+          <SuggestionElementList
             filterListCallback={filterSuggestionList}
             handleBlockClick={handleBlockClick}
             style={suggesstionListStyle}
             onClose={hideSuggestionList}
-            selectedElementType={selectedElement.type}
+            selectedElementType={selectedElement?.type}
+            isOpen={isSuggesstionListOpen}
             ref={suggestionListRef}
           />
         </OutsideClick>

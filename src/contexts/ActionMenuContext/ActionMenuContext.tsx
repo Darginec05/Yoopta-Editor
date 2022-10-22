@@ -12,7 +12,7 @@ import React, {
 import { Editor, Range } from 'slate';
 import { useSlate } from 'slate-react';
 import { ELEMENT_TYPES_MAP, TEXT_ELEMENTS_LIST } from '../../components/Editor/constants';
-import { ELEMENT_TYPES } from '../../components/Editor/ElementsListDropdown/ElementsListDropdown';
+import { ELEMENT_TYPES } from '../../components/Editor/SuggestionElementList/SuggestionElementList';
 import { getAbsPositionBySelection, getRectByCurrentSelection, isBlockActive } from '../../components/Editor/utils';
 import { useScrollContext } from '../ScrollContext/ScrollContext';
 
@@ -39,7 +39,7 @@ type ActionMenuContextType = {
   suggesstionListStyle?: CSSProperties;
   toolbarStyle?: CSSProperties;
   isToolbarActionOpen: boolean;
-  selectedElement: Block;
+  selectedElement: Block | null;
   suggestionListRef: MutableRefObject<HTMLDivElement | undefined>;
   toolbarRef: MutableRefObject<HTMLDivElement | undefined>;
 };
@@ -55,7 +55,7 @@ const ActionMenuContext = React.createContext<ActionMenuContextType>({
   suggesstionListStyle: {},
   toolbarStyle: {},
   isToolbarActionOpen: false,
-  selectedElement: defaultBlock,
+  selectedElement: null,
   suggestionListRef: null,
   toolbarRef: null,
 });
@@ -69,7 +69,7 @@ const ActionMenuProvider = ({ children }) => {
   const { enableScroll, disableScroll } = useScrollContext();
 
   const [suggestionFilterText, setSuggestionFilterText] = useState('');
-  const [selectedElement, setSelectedElement] = useState<Block>(defaultBlock);
+  const [selectedElement, setSelectedElement] = useState<Block | null>(null);
   const [suggestionListProps, setSuggestionListProps] = useState<ActionMenu>({ open: false });
   const [toolbarProps, setToolbarProps] = useState<ActionMenu>({ open: false });
   const suggestionListRef = useRef<HTMLDivElement>();
@@ -108,6 +108,7 @@ const ActionMenuProvider = ({ children }) => {
   };
 
   const updateToolbarView = (style?: CSSProperties) => {
+    console.log(style);
     const { top, left } = getAbsPositionBySelection(toolbarRef.current);
     setCurrentBlock();
     setToolbarProps({ open: true, style: style || { top, left, opacity: 1 } });
@@ -117,7 +118,7 @@ const ActionMenuProvider = ({ children }) => {
 
   const hideToolbarTools = () => {
     hideSuggestionList();
-    setSelectedElement(defaultBlock);
+    setSelectedElement(null);
     setToolbarProps({ open: false });
   };
 

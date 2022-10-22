@@ -68,16 +68,18 @@ const ElementHover = ({
     if (currentNode) {
       const duplicatedNode = { ...currentNode, id: v4() };
 
-      Transforms.insertNodes(editor, duplicatedNode, {
-        at: { offset: 0, path: [editor.selection!.anchor.path[0] + 1, 0] },
-        match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
-      });
+      if (editor.selection) {
+        Transforms.insertNodes(editor, duplicatedNode, {
+          at: { offset: 0, path: [editor.selection.anchor.path[0], 0] },
+          match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
+        });
+
+        ReactEditor.focus(editor);
+      }
     }
   };
 
-  const handleTransformIntoNode = () => {
-    console.log(editor.selection?.anchor);
-  };
+  const handleTransformIntoNode = () => undefined;
 
   const handleCopyLinkNode = () => {
     copy(`${window.location.origin}#${element.id}`);

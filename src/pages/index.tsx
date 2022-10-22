@@ -19,7 +19,7 @@ import { ActionMenuProvider } from '../contexts/ActionMenuContext/ActionMenuCont
 const isServer = typeof window === 'undefined';
 
 const getInitialData = () => {
-  if (typeof window === 'undefined') return [];
+  if (isServer) return [];
 
   const content = localStorage.getItem('content');
 

@@ -166,9 +166,11 @@ export const getAbsPositionBySelection = (element?: HTMLElement) => {
 
   if (!selectionRect) return {};
 
+  const elementRect = element.getBoundingClientRect();
+
   return {
-    top: selectionRect.top - element.offsetHeight,
-    left: selectionRect.left + window.pageXOffset - element.offsetWidth / 2 + selectionRect.width / 2,
+    top: selectionRect.top - elementRect.height,
+    left: selectionRect.left + window.pageXOffset - elementRect.width / 2 + selectionRect.width / 2,
   };
 };
 

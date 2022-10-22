@@ -10,9 +10,8 @@ import { ReactComponent as StrikeIcon } from './icons/strike.svg';
 import { ReactComponent as CodeIcon } from './icons/code.svg';
 import { Fade } from '../../Fade';
 import { LinkInput } from '../../LinkInput';
-
-import s from './Toolbar.module.scss';
 import { useActionMenuContext } from '../../../contexts/ActionMenuContext/ActionMenuContext';
+import s from './Toolbar.module.scss';
 
 type ToolbarProps = {
   editor: Editor;
@@ -49,7 +48,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
   const linkNode = getMatchedNode(editor, 'link');
 
   return (
-    <div ref={toolbarRef} className={s.menu} style={toolbarStyle}>
+    <div ref={toolbarRef} role="tooltip" className={s.menu} style={toolbarStyle}>
       <div className={s.toolbar}>
         <Fade show={isLinkOpen} animationDelay={300}>
           <LinkInput editor={editor} linkNode={linkNode} onClose={() => setLinkOpen(false)} />
