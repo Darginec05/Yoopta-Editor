@@ -37,6 +37,7 @@ export const HoveredMenuItem = ({
     disableScroll();
   };
 
+  // [TODO] - bug
   const onClose = () => {
     setSettingsOpen(false);
     enableScroll();

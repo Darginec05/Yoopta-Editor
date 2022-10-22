@@ -1,13 +1,12 @@
-import { Range, Transforms, Editor, Element as SlateElement } from 'slate';
+import { Transforms, Editor, Element as SlateElement } from 'slate';
 import { v4 } from 'uuid';
 import copy from 'copy-to-clipboard';
 import { useMemo, useState } from 'react';
-import { ReactEditor, useSelected, useSlate } from 'slate-react';
+import { ReactEditor, useSlate } from 'slate-react';
 import cx from 'classnames';
 import { HoveredMenuItem } from './HoveredMenuItem';
 import { useAlert } from '../Alert/Alert';
 import s from './HoveredMenu.module.scss';
-import { VOID_ELEMENTS } from '../Editor/plugins';
 
 const ElementHover = ({
   children,
@@ -20,7 +19,6 @@ const ElementHover = ({
   dndState,
 }) => {
   const editor = useSlate();
-  const selected = useSelected();
   const alert = useAlert();
   const [hovered, setHovered] = useState(false);
 
@@ -33,14 +31,6 @@ const ElementHover = ({
   const isOverSelf = isDragging && isOver;
 
   const opacity = isDragging ? 0.4 : 1;
-
-  const isCurrentItemSelected = editor.selection && Range.isCollapsed(editor.selection) && selected;
-
-  const showPlaceholder =
-    isCurrentItemSelected &&
-    element.children[0].text === '' &&
-    !element.isVoid &&
-    !VOID_ELEMENTS.includes(element.type);
 
   const onHover = () => setHovered(true);
   const onHoverOut = () => setHovered(false);
@@ -89,7 +79,6 @@ const ElementHover = ({
   return (
     <section
       className={cx(s.hoverWrap, {
-        [s.placeholder]: showPlaceholder,
         [s.isOver]: isOver,
         [s.isOverSelf]: isOverSelf,
       })}
@@ -113,7 +102,7 @@ const ElementHover = ({
         handleTransformIntoNode={handleTransformIntoNode}
         handleCopyLinkNode={handleCopyLinkNode}
       />
-      <div style={{ padding: '0 64px' }}>{children}</div>
+      <div className={s.content}>{children}</div>
     </section>
   );
 };

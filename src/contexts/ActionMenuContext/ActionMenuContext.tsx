@@ -108,7 +108,8 @@ const ActionMenuProvider = ({ children }) => {
   };
 
   const updateToolbarView = (style?: CSSProperties) => {
-    console.log(style);
+    console.log(toolbarRef.current?.offsetWidth);
+    // [TODO] - bug
     const { top, left } = getAbsPositionBySelection(toolbarRef.current);
     setCurrentBlock();
     setToolbarProps({ open: true, style: style || { top, left, opacity: 1 } });

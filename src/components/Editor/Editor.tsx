@@ -1,4 +1,4 @@
-import { Editor, Transforms, Element as SlateElement } from 'slate';
+import { Editor, Transforms, Element as SlateElement, Range } from 'slate';
 import { useCallback, KeyboardEvent, MouseEvent } from 'react';
 import { Editable, ReactEditor } from 'slate-react';
 import { v4 } from 'uuid';
@@ -153,10 +153,31 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
     }
   }, []);
 
-  const handleBlockClick = (e: MouseEvent<HTMLButtonElement>, type: string) => {
+  const handleBlockClick = (e: MouseEvent<HTMLButtonElement>, type?: string) => {
     e.preventDefault();
+    if (!type) return;
+
     toggleBlock(editor, type, { isVoid: false, children: [{ text: '' }] }, 'toggle');
     hideSuggestionList();
+  };
+
+  const decorate = ([node, path]) => {
+    if (editor.selection) {
+      if (
+        !Editor.isEditor(node) &&
+        Editor.string(editor, [path[0]]) === '' &&
+        Range.includes(editor.selection, path) &&
+        Range.isCollapsed(editor.selection)
+      ) {
+        return [
+          {
+            ...editor.selection,
+            placeholder: true,
+          },
+        ];
+      }
+    }
+    return [];
   };
 
   return (
@@ -181,6 +202,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
           onKeyUp={onKeyUp}
           readOnly={isReadOnly}
           spellCheck
+          decorate={decorate}
         />
       </div>
     </main>

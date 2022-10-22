@@ -4,6 +4,7 @@ import { TextLeaf } from '../../components/Editor/TextLeaf';
 import { RenderElement } from '../../components/Editor/RenderElement/RenderElement';
 import { DEFAULT_STATE } from '../../components/Editor/utils';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
+import s from '../../components/Editor/Editor.module.scss';
 
 const Content = ({ value: serverData }) => {
   const [value] = useState(() => {
@@ -46,9 +47,13 @@ const Content = ({ value: serverData }) => {
   );
 
   return (
-    <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
-      <div style={{ maxWidth: 680, padding: '1rem 0 2rem 0', margin: '0 64px' }}>{value.map(renderElement)}</div>
-    </div>
+    <main className={s.editorContainer}>
+      <div className={s.editorContent}>
+        <div style={{ padding: '0 64px' }}>
+          {value.map(renderElement)}
+        </div>
+      </div>
+    </main>
   );
 };
 

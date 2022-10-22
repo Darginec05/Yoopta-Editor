@@ -45,7 +45,7 @@ export const ELEMENT_TYPES: Block[] = [
 ];
 
 type Props = {
-  handleBlockClick: (_e: any, _type: string) => void;
+  handleBlockClick: (_e: any, _type?: string) => void;
   filterListCallback?: (_elem: Block) => void;
   onClose?: () => void;
   style?: CSSProperties;
@@ -62,6 +62,7 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
     [filterListCallback],
   );
 
+  // TODO - bug
   const elementRefs = useRef<any[]>([]);
 
   const isBlockActive = (elem: Block) =>
@@ -81,8 +82,6 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
   }, [notFound]);
 
   useEffect(() => {
-    console.log(elementRefs.current);
-
     if (!isOpen) {
       ReactEditor.focus(editor);
       return undefined;
@@ -140,9 +139,10 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
         elementRefs.current[focusableItem]?.current?.focus();
         event.preventDefault();
       } else if (event.key === 'Enter') {
-        const currentSelectedType = document.activeElement as HTMLButtonElement;
-        handleBlockClick(event, currentSelectedType?.dataset.type || 'paragraph');
         event.preventDefault();
+        const currentSelectedType = document.activeElement as HTMLButtonElement;
+        // TODO - bug
+        handleBlockClick(event, currentSelectedType?.dataset.type || ELEMENT_TYPES_MAP['heading-one']);
       } else if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
         event.preventDefault();
         onClose?.();

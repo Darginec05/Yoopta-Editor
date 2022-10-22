@@ -79,17 +79,6 @@
   position: absolute;
 }
 
-.placeholder {
-  position: relative;
-}
-
-.placeholder:after {
-  content: " Type something..";
-  color: #aaa;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  user-select: none;
-  text-indent: 2px;
-  left: 64px;
+.content {
+  padding: 0 64px;
 }
