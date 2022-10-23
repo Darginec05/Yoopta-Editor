@@ -7,7 +7,13 @@ import { useActionMenuContext } from '../../contexts/ActionMenuContext/ActionMen
 import { OutsideClick } from '../OutsideClick';
 import s from './ElementSettings.module.scss';
 
-const ElementSettings = ({ handleDeleteNode, handleDuplicateNode, isVoidElement, handleCopyLinkNode, onClose }) => {
+const ElementSettings = ({
+  handleDeleteNode,
+  handleDuplicateNode,
+  isVoidElement,
+  handleCopyLinkNode,
+  onClose,
+}) => {
   const settingsRef = useRef<HTMLDivElement>(null);
   const { showSuggestionList, hideSuggestionList, isSuggesstionListOpen } = useActionMenuContext();
 

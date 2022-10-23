@@ -18,12 +18,12 @@ export const HoveredMenuItem = ({
   handleCopyLinkNode,
   isVoidElement,
 }) => {
-  const handleRef = useRef<HTMLDivElement>(null);
+  const handlerRef = useRef<HTMLDivElement>(null);
   const [isOpenSettingsOpen, setSettingsOpen] = useState(false);
   const { enableScroll, disableScroll } = useScrollContext();
 
   const onMouseDown = () => {
-    const handler = handleRef.current!;
+    const handler = handlerRef.current!;
     const target = elementRef.current!;
 
     handler.setAttribute('draggable', 'false');
@@ -57,7 +57,13 @@ export const HoveredMenuItem = ({
         <button type="button" onClick={handlePlusButton} className={s.hoverSettingsItem}>
           <PlusIcon />
         </button>
-        <div aria-hidden className={s.hoverSettingsItem} onMouseDown={onMouseDown} onClick={onOpenMenu} ref={handleRef}>
+        <div
+          aria-hidden
+          className={s.hoverSettingsItem}
+          onMouseDown={onMouseDown}
+          onClick={onOpenMenu}
+          ref={handlerRef}
+        >
           <DragIcon />
           <Fade animationDelay={150} show={isOpenSettingsOpen}>
             <ElementSettings

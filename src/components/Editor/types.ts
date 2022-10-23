@@ -52,6 +52,7 @@ export type ImageElement = {
   src: string | ArrayBuffer | null;
   'data-src'?: string | ArrayBuffer | null;
   children: EmptyText[];
+  options: any;
 };
 
 export type LinkElement = { id: string; type: 'link'; url: string; children: Descendant[] };
@@ -74,6 +75,7 @@ export type VideoElement = {
   type: 'video';
   url: string;
   children: EmptyText[];
+  options: any;
 };
 
 export type CodeElement = {

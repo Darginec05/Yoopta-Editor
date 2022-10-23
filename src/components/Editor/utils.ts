@@ -81,12 +81,6 @@ export const toggleBlock = (
       return;
     }
 
-    Transforms.unwrapNodes(editor, {
-      match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && LIST_TYPES.includes(n.type),
-      split: true,
-      at: editor.selection?.anchor,
-    });
-
     const node = {
       id: v4(),
       // eslint-disable-next-line no-nested-ternary
@@ -94,9 +88,18 @@ export const toggleBlock = (
       ...data,
     };
 
+    console.log({ node, blockType });
+
     if (data.isVoid) {
       node.type = blockType;
     }
+
+    Transforms.unwrapNodes(editor, {
+      match: (n) => !Editor.isEditor(n) &&
+        SlateElement.isElement(n) &&
+        LIST_TYPES.includes(n.type),
+      split: true,
+    });
 
     Transforms.setNodes(editor, node, {
       at: editor.selection?.anchor,
@@ -153,13 +156,15 @@ export const getRectByCurrentSelection = (): DOMRect | undefined => {
   const domSelection = window.getSelection();
   if (!domSelection) return;
 
-  const domRange = domSelection.getRangeAt(0);
-  const rect = domRange.getBoundingClientRect();
+  try {
+    const domRange = domSelection.getRangeAt(0);
+    const rect = domRange.getBoundingClientRect();
 
-  return rect;
+    return rect;
+  } catch (error) {}
 };
 
-export const getAbsPositionBySelection = (element?: HTMLElement) => {
+export const getAbsPositionBySelection = (element) => {
   if (!element) return { top: -10000, left: -10000 };
 
   const selectionRect = getRectByCurrentSelection();
@@ -185,7 +190,7 @@ export const KEYBOARD_SHORTCUTS = {
   '###': ELEMENT_TYPES_MAP['heading-three'],
 };
 
-export const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
+export const capitalizeFirstLetter = (string?: string): string | undefined => (string ? string.charAt(0).toUpperCase() + string.slice(1) : undefined);
 
 // eslint-disable-next-line max-len
 export const DEFAULT_STATE =

@@ -1,19 +1,23 @@
-import { FC } from 'react';
 import { RenderLeafProps } from 'slate-react';
 import cx from 'classnames';
 import s from './TextLeaf.module.scss';
 import { ELEMENT_TYPES_MAP } from '../constants';
 import { capitalizeFirstLetter } from '../utils';
 
-const TextLeaf: FC<RenderLeafProps> = ({ attributes, children, leaf }) => {
+type LeafProps = RenderLeafProps & { isEdit?: boolean };
+
+const TextLeaf = ({ attributes, children, leaf, isEdit }: LeafProps) => {
+  const getPlaceholder = () => {
+    if (!isEdit) return undefined;
+    return children.props?.parent.type === ELEMENT_TYPES_MAP.paragraph
+      ? ' Type / to open menu'
+      : ` ${capitalizeFirstLetter(children.props?.parent.type)}`;
+  };
+
   return (
     <span
       {...attributes}
-      data-placeholder={
-        children.props.parent.type === ELEMENT_TYPES_MAP.paragraph
-          ? ' Type / to open menu'
-          : ` ${capitalizeFirstLetter(children.props.parent.type)}`
-      }
+      data-placeholder={getPlaceholder()}
       className={cx(s.leaf, {
         [s.bold]: leaf.bold,
         [s.italic]: leaf.italic,
@@ -21,7 +25,6 @@ const TextLeaf: FC<RenderLeafProps> = ({ attributes, children, leaf }) => {
         [s.underline]: leaf.underline,
         [s.code]: leaf.code,
         [s.placeholder]: leaf.placeholder,
-        [`token ${leaf.token}`]: leaf.token,
       })}
     >
       {children}

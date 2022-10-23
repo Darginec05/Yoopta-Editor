@@ -1,4 +1,4 @@
-import { Editor, Transforms, Element as SlateElement, Range } from 'slate';
+import { Editor, Transforms, Element as SlateElement, Range, Node } from 'slate';
 import { useCallback, KeyboardEvent, MouseEvent } from 'react';
 import { Editable, ReactEditor } from 'slate-react';
 import { v4 } from 'uuid';
@@ -39,8 +39,9 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
 
   const onPlusButtonClick = (element) => {
     const path = ReactEditor.findPath(editor, element);
+    const currentNode: any = editor.children[path[0]];
     const after = Editor.after(editor, path);
-    showSuggestionList(undefined, true);
+    showSuggestionList(undefined, { triggeredBySuggestion: true });
 
     const node: CustomNode = {
       id: v4(),
@@ -49,17 +50,25 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
       children: [{ text: '' }],
     };
 
-    Transforms.insertNodes(editor, node, {
-      at: after,
-      match: (n) => SlateElement.isElement(n),
-    });
+    const isEmptyNode = Editor.string(editor, path).trim().length === 0;
+    const isVoidNode = Editor.isVoid(editor, currentNode);
+    const afterPath = after || [path[0] + 1];
+
+    console.log({ after, path, isEmptyNode, isVoidNode });
+
+    if (!isEmptyNode || isVoidNode) {
+      Transforms.insertNodes(editor, node, {
+        at: afterPath,
+        match: (n) => SlateElement.isElement(n),
+      });
+    }
 
     const focusTimeout = setTimeout(() => {
-      Transforms.select(editor, after!);
+      Transforms.select(editor, isEmptyNode && !isVoidNode ? path : afterPath);
       ReactEditor.focus(editor);
 
       const selectionTimeout = setTimeout(() => {
-        showSuggestionList(undefined, true);
+        showSuggestionList(undefined, { triggeredBySuggestion: true });
         clearTimeout(selectionTimeout);
       }, 0);
 
@@ -67,7 +76,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
     }, 0);
   };
 
-  const renderLeaf = useCallback((leafProps) => <TextLeaf {...leafProps} />, []);
+  const renderLeaf = useCallback((leafProps) => <TextLeaf isEdit {...leafProps} />, []);
 
   const renderElement = useCallback(
     (elemProps) => (
@@ -91,7 +100,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
 
       // [TODO] - make trigger not only empty paragraph
       if (!isSuggesstionListOpen && event.key === SUGGESTION_TRIGGER && text === SUGGESTION_TRIGGER) {
-        showSuggestionList(undefined, true);
+        showSuggestionList(undefined, { triggeredBySuggestion: true });
       }
 
       if (isSuggesstionListOpen) {
@@ -133,12 +142,13 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
       if (isListBlock && text.trim() === '') {
         event.preventDefault();
 
-        Transforms.unwrapNodes(editor, {
-          match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && LIST_TYPES.includes(n.type),
-          split: true,
-        });
+        // Transforms.unwrapNodes(editor, {
+        //   match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && LIST_TYPES.includes(n.type),
+        //   split: true,
+        // });
 
-        return Transforms.setNodes(editor, newLine);
+        // return Transforms.setNodes(editor, newLine);
+        return;
       }
 
       if (event.shiftKey) {
@@ -148,6 +158,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
 
       if (!event.shiftKey && !IGNORED_SOFT_BREAK_ELEMS.includes(node.type)) {
         event.preventDefault();
+        // [TODO] - check for void elements
         Transforms.insertNodes(editor, newLine);
       }
     }
@@ -157,6 +168,8 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
     e.preventDefault();
     if (!type) return;
 
+    // [TODO] - remove text in current node
+    // Transforms.delete(editor, { at: editor.selection?.anchor });
     toggleBlock(editor, type, { isVoid: false, children: [{ text: '' }] }, 'toggle');
     hideSuggestionList();
   };

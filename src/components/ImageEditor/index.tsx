@@ -13,12 +13,13 @@ import { MediaEditorOptions } from '../MediaEditorOptions';
 import { ELEMENT_TYPES_MAP } from '../Editor/constants';
 import s from './ImageEditor.module.scss';
 
-const toBase64 = (file): Promise<string | ArrayBuffer | null> => new Promise((resolve, reject) => {
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = () => resolve(reader.result);
-  reader.onerror = (error) => reject(error);
-});
+const toBase64 = (file): Promise<string | ArrayBuffer | null> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
 
 type Props = { element: ImageElement; className: string; attributes: any };
 
@@ -30,9 +31,6 @@ const ImageEditor: FC<Props> = ({ element, attributes, className, children }) =>
   const onUpload = async (file: File) => {
     const dataSrc = await toBase64(file);
 
-    const currentSelection = editor.selection;
-    const beforeCurrentSelection = Editor.before(editor, editor.selection!);
-
     const image: ImageElement & { isVoid: boolean } = {
       id: v4(),
       type: 'image',
@@ -42,21 +40,20 @@ const ImageEditor: FC<Props> = ({ element, attributes, className, children }) =>
       isVoid: true,
     };
 
-    Transforms.removeNodes(editor);
-    Transforms.insertNodes(editor, image, { select: true, at: Editor.before(editor, editor.selection!), voids: true });
+    Transforms.setNodes(editor, image, { at: editor.selection?.anchor });
 
-    const { url } = await uploadToCloudinary(file);
+    const { url, data } = await uploadToCloudinary(file);
     const newImage = {
       ...image,
       src: url,
       'data-src': null,
+      options: data,
     };
 
-    Transforms.removeNodes(editor);
-    Transforms.insertNodes(editor, newImage, { at: beforeCurrentSelection });
+    Transforms.setNodes(editor, newImage, { at: editor.selection?.anchor, voids: true });
 
-    if (currentSelection) {
-      Transforms.select(editor, currentSelection);
+    if (editor.selection) {
+      Transforms.select(editor, editor.selection);
     }
   };
 
@@ -87,7 +84,7 @@ const ImageEditor: FC<Props> = ({ element, attributes, className, children }) =>
             <MediaEditorOptions onDelete={onDelete} isImage />
           </div>
         )}
-        <ImageRender key="render_image" src={element.src || dataSrc} alt="URI" />
+        <ImageRender key="render_image" src={element.src || dataSrc} alt="URI" options={element.options} />
         {children}
       </div>
     );

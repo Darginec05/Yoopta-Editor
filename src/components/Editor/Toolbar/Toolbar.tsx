@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { Editor } from 'slate';
 import cx from 'classnames';
 import { isMarkActive, toggleMark, getMatchedNode } from '../utils';
@@ -19,8 +19,15 @@ type ToolbarProps = {
 
 const Toolbar = ({ editor }: ToolbarProps) => {
   const [isLinkOpen, setLinkOpen] = useState<boolean>(false);
-  const { toolbarRef, toolbarStyle, showSuggestionList, hideSuggestionList, isSuggesstionListOpen, selectedElement } =
-    useActionMenuContext();
+  const {
+    toolbarRef,
+    toolbarStyle,
+    showSuggestionList,
+    hideSuggestionList,
+    isSuggesstionListOpen,
+    selectedElement,
+    isToolbarActionOpen,
+  } = useActionMenuContext();
 
   const toggleElementsListDropdown = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -37,13 +44,19 @@ const Toolbar = ({ editor }: ToolbarProps) => {
 
   const toggleLinkInput = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    hideSuggestionList();
     setLinkOpen(!isLinkOpen);
   };
 
   const handleMarkClick = (e: MouseEvent<HTMLButtonElement>, mark: string) => {
     e.preventDefault();
+    setLinkOpen(false);
     toggleMark(editor, mark);
   };
+
+  useEffect(() => {
+    if (!isToolbarActionOpen) setLinkOpen(false);
+  }, [isToolbarActionOpen]);
 
   const linkNode = getMatchedNode(editor, 'link');
 

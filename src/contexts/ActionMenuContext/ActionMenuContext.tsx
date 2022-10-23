@@ -28,6 +28,18 @@ const defaultBlock: Block = {
   icon: null,
 };
 
+type ActionMenu = {
+  open: boolean;
+  style?: CSSProperties;
+  triggeredBySuggestion?: boolean;
+  shouldShowTextNodes?: boolean;
+};
+
+type ShowSuggestionOptions = {
+  triggeredBySuggestion?: ActionMenu['triggeredBySuggestion'];
+  shouldShowTextNodes?: ActionMenu['shouldShowTextNodes'];
+};
+
 type ActionMenuContextType = {
   onChangeSuggestionFilterText: (_v: string) => void;
   hideSuggestionList: () => void;
@@ -59,18 +71,6 @@ const ActionMenuContext = React.createContext<ActionMenuContextType>({
   suggestionListRef: null,
   toolbarRef: null,
 });
-
-type ActionMenu = {
-  open: boolean;
-  style?: CSSProperties;
-  triggeredBySuggestion?: boolean;
-  shouldShowTextNodes?: boolean;
-};
-
-type ShowSuggestionOptions = {
-  triggeredBySuggestion?: ActionMenu['triggeredBySuggestion'];
-  shouldShowTextNodes?: ActionMenu['shouldShowTextNodes'];
-};
 
 export const SUGGESTION_TRIGGER = '/';
 
@@ -118,8 +118,6 @@ const ActionMenuProvider = ({ children }) => {
   };
 
   const updateToolbarView = (style?: CSSProperties) => {
-    console.log(toolbarRef.current?.offsetWidth);
-    // [TODO] - bug
     const { top, left } = getAbsPositionBySelection(toolbarRef.current);
     setCurrentBlock();
     setToolbarProps({ open: true, style: style || { top, left, opacity: 1 } });

@@ -1,18 +1,23 @@
 import { CSSProperties } from 'react';
 import s from './VideoRender.module.scss';
 
-type Video = { style?: CSSProperties | undefined } & JSX.IntrinsicElements['video'];
+type Video = { style?: CSSProperties | undefined; options: any } & JSX.IntrinsicElements['video'];
 
-const VideoRender = ({ src, style }: Video) => {
+const VideoRender = ({ src, style, options = {} }: Video) => {
   const onContextMenu = (e) => e.preventDefault();
 
   return (
     <div className={s.wrap} style={style}>
-      <video onContextMenu={onContextMenu} controls controlsList="nodownload">
-        <source src={src} type="video/mp4" />
-        {/* <source src="forrest_gump.ogg" type="video/ogg" /> */}
-        <track src={src} kind="subtitles" srcLang="en" label="English" />
-      </video>
+      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+      <video
+        onContextMenu={onContextMenu}
+        width={options.width}
+        height={options.height}
+        controls
+        preload="metadata"
+        controlsList="nodownload"
+        src={src}
+      />
     </div>
   );
 };

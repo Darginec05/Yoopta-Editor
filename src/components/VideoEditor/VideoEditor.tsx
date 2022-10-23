@@ -31,9 +31,6 @@ const VideoEditor: FC<Props> = ({ element, attributes, className, children }) =>
   const onUpload = async (file: File) => {
     const dataSrc = await toBase64(file);
 
-    const currentSelection = editor.selection;
-    const beforeCurrentSelection = Editor.before(editor, editor.selection!);
-
     const video: ImageElement & { isVoid: boolean } = {
       id: v4(),
       type: 'video',
@@ -43,23 +40,21 @@ const VideoEditor: FC<Props> = ({ element, attributes, className, children }) =>
       isVoid: true,
     };
 
-    Transforms.removeNodes(editor);
-    Transforms.insertNodes(editor, video, { select: true, at: Editor.before(editor, editor.selection!), voids: true });
+    Transforms.setNodes(editor, video, { at: editor.selection?.anchor });
 
-    const mediaData = await uploadToCloudinary(file, 'video');
-    console.log(mediaData);
+    const { url, data } = await uploadToCloudinary(file, 'video');
 
     const newImage = {
       ...video,
-      src: mediaData.url,
+      src: url,
       'data-src': null,
+      options: data,
     };
 
-    Transforms.removeNodes(editor);
-    Transforms.insertNodes(editor, newImage, { at: beforeCurrentSelection });
+    Transforms.setNodes(editor, newImage, { at: editor.selection?.anchor, voids: true });
 
-    if (currentSelection) {
-      Transforms.select(editor, currentSelection);
+    if (editor.selection) {
+      Transforms.select(editor, editor.selection);
     }
   };
 
@@ -90,7 +85,7 @@ const VideoEditor: FC<Props> = ({ element, attributes, className, children }) =>
             <MediaEditorOptions onDelete={onDelete} isImage />
           </div>
         )}
-        <VideoRender key="render_image" src={element.src || dataSrc} alt="URI" />
+        <VideoRender key="render_image" src={element.src || dataSrc} alt="URI" options={element.options} />
         {children}
       </div>
     );
