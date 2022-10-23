@@ -7,7 +7,9 @@ const ScrollProvider = ({ children }) => {
   const disableScroll = () => {
     disableBodyScroll(document.querySelector('body')!, { reserveScrollBarGap: true });
   };
-  const enableScroll = () => enableBodyScroll(document.querySelector('body')!);
+  const enableScroll = () => {
+    enableBodyScroll(document.querySelector('body')!);
+  };
 
   const value = useMemo(() => ({ enableScroll, disableScroll }), []);
 

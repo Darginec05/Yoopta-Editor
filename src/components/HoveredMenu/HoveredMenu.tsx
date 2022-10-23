@@ -6,6 +6,7 @@ import { ReactEditor, useSlate } from 'slate-react';
 import cx from 'classnames';
 import { HoveredMenuItem } from './HoveredMenuItem';
 import { useAlert } from '../Alert/Alert';
+import { VOID_ELEMENTS } from '../Editor/plugins';
 import s from './HoveredMenu.module.scss';
 
 const ElementHover = ({
@@ -69,8 +70,6 @@ const ElementHover = ({
     }
   };
 
-  const handleTransformIntoNode = () => undefined;
-
   const handleCopyLinkNode = () => {
     copy(`${window.location.origin}#${element.id}`);
     alert.info('Link successfully copied', { position: 'right' });
@@ -99,8 +98,8 @@ const ElementHover = ({
         isDragging={isDragging}
         handleDeleteNode={handleDeleteNode}
         handleDuplicateNode={handleDuplicateNode}
-        handleTransformIntoNode={handleTransformIntoNode}
         handleCopyLinkNode={handleCopyLinkNode}
+        isVoidElement={VOID_ELEMENTS.includes(element.type)}
       />
       <div className={s.content}>{children}</div>
     </section>

@@ -39,6 +39,7 @@ const Fade: FC<FadeProps> = ({
     return (
       <div
         className={cx(show ? s.fadeIn : s.fadeOut)}
+        contentEditable={false}
         style={{ animationDuration: `${animationDelay + 100}ms`, ...styles }}
       >
         {children}

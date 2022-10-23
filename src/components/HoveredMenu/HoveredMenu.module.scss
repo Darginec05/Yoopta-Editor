@@ -64,7 +64,7 @@
     width: 24px;
   }
 
-  &:hover {
+  &:hover, &:focus, &:active {
     background-color: #dbdada;
   }
 }

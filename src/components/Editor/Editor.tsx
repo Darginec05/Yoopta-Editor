@@ -107,13 +107,13 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
 
     const node: any = editor.children[selection?.anchor.path[0] || 0];
     const text = Editor.string(editor, selection.anchor.path);
-    const isEnterKey = event.key === 'Enter';
+    const isEnter = event.key === 'Enter';
 
     if (event.key === 'Backspace' && (text.length === 0 || text === SUGGESTION_TRIGGER)) {
       hideSuggestionList();
     }
 
-    if (isEnterKey) {
+    if (isEnter) {
       const newLine: ParagraphElement = {
         id: v4(),
         type: 'paragraph',

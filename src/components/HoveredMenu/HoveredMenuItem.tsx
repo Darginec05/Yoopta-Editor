@@ -15,8 +15,8 @@ export const HoveredMenuItem = ({
   handlePlusButton,
   handleDeleteNode,
   handleDuplicateNode,
-  handleTransformIntoNode,
   handleCopyLinkNode,
+  isVoidElement,
 }) => {
   const handleRef = useRef<HTMLDivElement>(null);
   const [isOpenSettingsOpen, setSettingsOpen] = useState(false);
@@ -32,21 +32,21 @@ export const HoveredMenuItem = ({
     target.ondragend = onDragEnd;
   };
 
-  const onClick = () => {
-    setSettingsOpen(true);
-    disableScroll();
-  };
-
-  // [TODO] - bug
   const onClose = () => {
     setSettingsOpen(false);
     enableScroll();
   };
 
-  const getOpacity = () => {
-    if (isOpenSettingsOpen) return 1;
+  const onOpenMenu = () => {
+    if (isOpenSettingsOpen) return onClose();
 
-    if (hovered && !isDragging) return 1;
+    setSettingsOpen(true);
+    disableScroll();
+  };
+
+  const getOpacity = () => {
+    if (isDragging) return 0;
+    if (isOpenSettingsOpen || hovered) return 1;
 
     return 0;
   };
@@ -57,15 +57,15 @@ export const HoveredMenuItem = ({
         <button type="button" onClick={handlePlusButton} className={s.hoverSettingsItem}>
           <PlusIcon />
         </button>
-        <div aria-hidden className={s.hoverSettingsItem} onMouseDown={onMouseDown} onClick={onClick} ref={handleRef}>
+        <div aria-hidden className={s.hoverSettingsItem} onMouseDown={onMouseDown} onClick={onOpenMenu} ref={handleRef}>
           <DragIcon />
           <Fade animationDelay={150} show={isOpenSettingsOpen}>
             <ElementSettings
-              onClose={onClose}
               handleDeleteNode={handleDeleteNode}
               handleDuplicateNode={handleDuplicateNode}
-              handleTransformIntoNode={handleTransformIntoNode}
               handleCopyLinkNode={handleCopyLinkNode}
+              isVoidElement={isVoidElement}
+              onClose={onClose}
             />
           </Fade>
         </div>

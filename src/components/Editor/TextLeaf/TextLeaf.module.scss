@@ -36,17 +36,15 @@
   border-radius: 5px;
 }
 
-.placeholder {
-  font-size: 85%;
-}
-
 .placeholder:after {
-  content: " Type something..";
+  content: attr(data-placeholder);
   color: #aaa;
   position: absolute;
   top: 50%;
-  font-size: inherit;
   transform: translateY(-50%);
   user-select: none;
   text-indent: 2px;
+  font-size: 75%;
+  font-weight: inherit;
+  font-style: inherit;
 }

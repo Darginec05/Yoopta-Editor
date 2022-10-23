@@ -32,7 +32,7 @@ type ActionMenuContextType = {
   onChangeSuggestionFilterText: (_v: string) => void;
   hideSuggestionList: () => void;
   hideToolbarTools: () => void;
-  showSuggestionList: (_style?: CSSProperties, _trigger?: boolean) => void;
+  showSuggestionList: (_style?: CSSProperties, _options?: ShowSuggestionOptions) => void;
   filterSuggestionList: (_elem: Block) => void;
   updateToolbarView: (_style?: CSSProperties) => void;
   isSuggesstionListOpen: boolean;
@@ -40,15 +40,15 @@ type ActionMenuContextType = {
   toolbarStyle?: CSSProperties;
   isToolbarActionOpen: boolean;
   selectedElement: Block | null;
-  suggestionListRef: MutableRefObject<HTMLDivElement | undefined>;
-  toolbarRef: MutableRefObject<HTMLDivElement | undefined>;
+  suggestionListRef: MutableRefObject<HTMLDivElement | null>;
+  toolbarRef: MutableRefObject<HTMLDivElement | null>;
 };
 
 const ActionMenuContext = React.createContext<ActionMenuContextType>({
   onChangeSuggestionFilterText: (_v) => {},
   hideSuggestionList: () => {},
   hideToolbarTools: () => {},
-  showSuggestionList: (_style, _trigger) => {},
+  showSuggestionList: (_style, _options) => {},
   filterSuggestionList: (_elem: {}) => {},
   updateToolbarView: (_style) => {},
   isSuggesstionListOpen: false,
@@ -60,7 +60,17 @@ const ActionMenuContext = React.createContext<ActionMenuContextType>({
   toolbarRef: null,
 });
 
-type ActionMenu = { open: boolean; style?: CSSProperties; triggeredBySuggestion?: boolean };
+type ActionMenu = {
+  open: boolean;
+  style?: CSSProperties;
+  triggeredBySuggestion?: boolean;
+  shouldShowTextNodes?: boolean;
+};
+
+type ShowSuggestionOptions = {
+  triggeredBySuggestion?: ActionMenu['triggeredBySuggestion'];
+  shouldShowTextNodes?: ActionMenu['shouldShowTextNodes'];
+};
 
 export const SUGGESTION_TRIGGER = '/';
 
@@ -72,13 +82,13 @@ const ActionMenuProvider = ({ children }) => {
   const [selectedElement, setSelectedElement] = useState<Block | null>(null);
   const [suggestionListProps, setSuggestionListProps] = useState<ActionMenu>({ open: false });
   const [toolbarProps, setToolbarProps] = useState<ActionMenu>({ open: false });
-  const suggestionListRef = useRef<HTMLDivElement>();
-  const toolbarRef = useRef<HTMLDivElement>();
+  const suggestionListRef = useRef<HTMLDivElement>(null);
+  const toolbarRef = useRef<HTMLDivElement>(null);
 
   const isToolbarActionOpen = toolbarProps.open;
   const isSuggesstionListOpen = suggestionListProps.open;
 
-  const showSuggestionList = (style?: CSSProperties, triggeredBySuggestion?: ActionMenu['triggeredBySuggestion']) => {
+  const showSuggestionList = (style?: CSSProperties, options?: ShowSuggestionOptions) => {
     const selectionRect = getRectByCurrentSelection();
     const suggesstionListRect = suggestionListRef.current?.getBoundingClientRect();
     if (!selectionRect) return;
@@ -89,8 +99,8 @@ const ActionMenuProvider = ({ children }) => {
 
     setSuggestionListProps({
       open: true,
-      triggeredBySuggestion,
       style: style || { left: selectionRect.left, top, bottom, opacity: 1 },
+      ...options,
     });
     disableScroll();
   };
@@ -118,6 +128,8 @@ const ActionMenuProvider = ({ children }) => {
   const showToolbarTools = () => updateToolbarView();
 
   const hideToolbarTools = () => {
+    if (!isToolbarActionOpen) return;
+
     hideSuggestionList();
     setSelectedElement(null);
     setToolbarProps({ open: false });
@@ -125,6 +137,7 @@ const ActionMenuProvider = ({ children }) => {
 
   useEffect(() => {
     if (suggestionListProps.triggeredBySuggestion) return;
+    setCurrentBlock();
 
     if (!editor.selection) return hideToolbarTools();
 
@@ -142,7 +155,9 @@ const ActionMenuProvider = ({ children }) => {
 
   const filterSuggestionList = useCallback(
     (elementItem) => {
-      if (isToolbarActionOpen) return TEXT_ELEMENTS_LIST.includes(elementItem.type);
+      if (isToolbarActionOpen || suggestionListProps.shouldShowTextNodes) {
+        return TEXT_ELEMENTS_LIST.includes(elementItem.type);
+      }
 
       const filterText = suggestionFilterText.replace(SUGGESTION_TRIGGER, '');
       return (
@@ -150,7 +165,7 @@ const ActionMenuProvider = ({ children }) => {
         elementItem.type.toLowerCase().indexOf(filterText) > -1
       );
     },
-    [suggestionFilterText, isToolbarActionOpen],
+    [suggestionFilterText, suggestionListProps.shouldShowTextNodes, isToolbarActionOpen],
   );
 
   const value = useMemo(
