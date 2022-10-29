@@ -4,7 +4,7 @@ import s from './TextLeaf.module.scss';
 import { ELEMENT_TYPES_MAP } from '../constants';
 import { capitalizeFirstLetter } from '../utils';
 
-type LeafProps = RenderLeafProps & { isEdit?: boolean };
+type LeafProps = RenderLeafProps & { isEdit?: boolean, leaf: any };
 
 const TextLeaf = ({ attributes, children, leaf, isEdit }: LeafProps) => {
   const getPlaceholder = () => {

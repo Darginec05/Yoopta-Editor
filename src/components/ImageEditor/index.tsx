@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import cx from 'classnames';
 import { ReactEditor, useFocused, useSelected, useSlate } from 'slate-react';
 import { Editor, Transforms, Element as SlateElement } from 'slate';
@@ -21,7 +21,7 @@ const toBase64 = (file): Promise<string | ArrayBuffer | null> =>
     reader.onerror = (error) => reject(error);
   });
 
-type Props = { element: ImageElement; className: string; attributes: any };
+type Props = { element: ImageElement; className: string; attributes: any, children: ReactNode };
 
 const ImageEditor: FC<Props> = ({ element, attributes, className, children }) => {
   const editor = useSlate();
@@ -31,7 +31,7 @@ const ImageEditor: FC<Props> = ({ element, attributes, className, children }) =>
   const onUpload = async (file: File) => {
     const dataSrc = await toBase64(file);
 
-    const image: ImageElement & { isVoid: boolean } = {
+    const image: any & { isVoid: boolean } = {
       id: v4(),
       type: 'image',
       children: [{ text: '' }],

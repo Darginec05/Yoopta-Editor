@@ -1,8 +1,8 @@
 import { useRef } from 'react';
-import { ReactComponent as DeleteIcon } from './icons/delete.svg';
-import { ReactComponent as DuplicateIcon } from './icons/duplicate.svg';
-import { ReactComponent as CopyIcon } from './icons/copy.svg';
-import { ReactComponent as ChangeIcon } from './icons/change.svg';
+import DeleteIcon from './icons/delete.svg';
+import DuplicateIcon from './icons/duplicate.svg';
+import CopyIcon from './icons/copy.svg';
+import ChangeIcon from './icons/change.svg';
 import { useActionMenuContext } from '../../contexts/ActionMenuContext/ActionMenuContext';
 import { OutsideClick } from '../OutsideClick';
 import s from './ElementSettings.module.scss';

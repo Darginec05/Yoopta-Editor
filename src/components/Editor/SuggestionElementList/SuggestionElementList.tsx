@@ -1,24 +1,16 @@
-import React, {
-  forwardRef,
-  ReactNode,
-  useEffect,
-  CSSProperties,
-  useRef,
-  createRef,
-  useMemo,
-} from 'react';
+import React, { forwardRef, ReactNode, useEffect, CSSProperties, useRef, createRef, useMemo } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
 import cx from 'classnames';
-import { ReactComponent as ParagraphIcon } from '../Toolbar/icons/paragraph.svg';
-import { ReactComponent as HeadingOneIcon } from '../Toolbar/icons/heading_one.svg';
-import { ReactComponent as HeadingTwoIcon } from '../Toolbar/icons/heading_two.svg';
-import { ReactComponent as HeadingThreeIcon } from '../Toolbar/icons/heading_three.svg';
-import { ReactComponent as BulletedListIcon } from '../Toolbar/icons/bulleted_list.svg';
-import { ReactComponent as NumberedListIcon } from '../Toolbar/icons/numbered_list.svg';
-import { ReactComponent as BlockQuoteIcon } from '../Toolbar/icons/blockquote.svg';
-import { ReactComponent as CalloutIcon } from '../Toolbar/icons/callout.svg';
-import { ReactComponent as VideoIcon } from '../../../icons/video.svg';
-import { ReactComponent as ImageIcon } from '../../../icons/image.svg';
+import ParagraphIcon from '../Toolbar/icons/paragraph.svg';
+import HeadingOneIcon from '../Toolbar/icons/heading_one.svg';
+import HeadingTwoIcon from '../Toolbar/icons/heading_two.svg';
+import HeadingThreeIcon from '../Toolbar/icons/heading_three.svg';
+import BulletedListIcon from '../Toolbar/icons/bulleted_list.svg';
+import NumberedListIcon from '../Toolbar/icons/numbered_list.svg';
+import BlockQuoteIcon from '../Toolbar/icons/blockquote.svg';
+import CalloutIcon from '../Toolbar/icons/callout.svg';
+import VideoIcon from '../../../icons/video.svg';
+import ImageIcon from '../../../icons/image.svg';
 import { ELEMENT_TYPES_MAP } from '../constants';
 import s from './SuggestionElementList.module.scss';
 
@@ -102,7 +94,8 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
       const isLastElementFocusable = document.activeElement === lastElement;
       const isFirstElementFocusable = document.activeElement === firstElement;
 
-      const isChildFocused = ref.current?.contains(document.activeElement);
+      /** @ts-ignore */
+      const isChildFocused = ref?.current?.contains(document.activeElement);
 
       if (!isChildFocused && KEYS.includes(event.key)) {
         const selected: HTMLButtonElement | null = document.querySelector(`[data-type="${selectedElementType}"]`);
@@ -157,7 +150,7 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
   }, [isOpen]);
 
   useEffect(() => {
-    elementRefs.current = elements.map((_, index) => elementRefs.current[index] = createRef());
+    elementRefs.current = elements.map((_, index) => (elementRefs.current[index] = createRef()));
   }, [elements]);
 
   return (

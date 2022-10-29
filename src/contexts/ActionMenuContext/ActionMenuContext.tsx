@@ -1,6 +1,5 @@
 import React, {
   CSSProperties,
-  MutableRefObject,
   ReactNode,
   useCallback,
   useContext,
@@ -52,8 +51,10 @@ type ActionMenuContextType = {
   toolbarStyle?: CSSProperties;
   isToolbarActionOpen: boolean;
   selectedElement: Block | null;
-  suggestionListRef: MutableRefObject<HTMLDivElement | null>;
-  toolbarRef: MutableRefObject<HTMLDivElement | null>;
+  // suggestionListRef: MutableRefObject<HTMLDivElement | null>;
+  suggestionListRef: any;
+  // toolbarRef: MutableRefObject<HTMLDivElement | null>;
+  toolbarRef: any;
 };
 
 const ActionMenuContext = React.createContext<ActionMenuContextType>({

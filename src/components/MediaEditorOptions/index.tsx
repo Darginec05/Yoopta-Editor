@@ -5,13 +5,13 @@ import s from './MediaEditorOptions.module.scss';
 
 type Props = {
   onDelete: () => void;
-  onUploadViaURL: () => void;
-  onUpload: () => void;
-  onAddCaption: () => void;
+  // onUploadViaURL: () => void;
+  // onUpload: () => void;
+  // onAddCaption: () => void;
   isImage?: boolean;
 };
 
-const MediaEditorOptions: FC<Props> = ({ onDelete, onUploadViaURL, onUpload, onAddCaption, isImage }) => {
+const MediaEditorOptions: FC<Props> = ({ onDelete, isImage }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOptionsClick = (e: MouseEvent<HTMLElement>) => {

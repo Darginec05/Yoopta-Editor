@@ -16,7 +16,7 @@ const Video = ({ element, attributes, children, isEdit }) => {
 
   return (
     <div className={s.image}>
-      <VideoRender src={element.src} alt="URI" options={element.options} />
+      <VideoRender src={element.src} options={element.options} />
     </div>
   );
 };

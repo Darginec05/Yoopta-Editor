@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import cx from 'classnames';
 import { ReactEditor, useFocused, useSelected, useSlate } from 'slate-react';
 import { Editor, Transforms, Element as SlateElement } from 'slate';
 import { v4 } from 'uuid';
 import { MediaEditorLayout } from '../MediaEditorLayout';
-import { ImageElement } from '../Editor/types';
+import { VideoElement } from '../Editor/types';
 import { VideoRender } from '../VideoRender/VideoRender';
 import { uploadToCloudinary } from '../../utils';
 import { Loader } from '../Loader';
@@ -13,7 +13,7 @@ import { MediaEditorOptions } from '../MediaEditorOptions';
 import { ELEMENT_TYPES_MAP } from '../Editor/constants';
 import s from './VideoEditor.module.scss';
 
-const toBase64 = (file): Promise<string | ArrayBuffer | null> =>
+const toBase64 = (file): Promise<any> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -21,7 +21,7 @@ const toBase64 = (file): Promise<string | ArrayBuffer | null> =>
     reader.onerror = (error) => reject(error);
   });
 
-type Props = { element: ImageElement; className: string; attributes: any };
+type Props = { element: VideoElement; className: string; attributes: any; children: ReactNode };
 
 const VideoEditor: FC<Props> = ({ element, attributes, className, children }) => {
   const editor = useSlate();
@@ -31,7 +31,7 @@ const VideoEditor: FC<Props> = ({ element, attributes, className, children }) =>
   const onUpload = async (file: File) => {
     const dataSrc = await toBase64(file);
 
-    const video: ImageElement & { isVoid: boolean } = {
+    const video: any = {
       id: v4(),
       type: 'video',
       children: [{ text: '' }],
@@ -85,7 +85,7 @@ const VideoEditor: FC<Props> = ({ element, attributes, className, children }) =>
             <MediaEditorOptions onDelete={onDelete} isImage />
           </div>
         )}
-        <VideoRender key="render_image" src={element.src || dataSrc} alt="URI" options={element.options} />
+        <VideoRender key="render_image" src={element.src || dataSrc} options={element.options} />
         {children}
       </div>
     );

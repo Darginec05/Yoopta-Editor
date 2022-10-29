@@ -12,9 +12,6 @@
 }
 
 .code :global {
-
-  /* PrismJS 1.29.0
-https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript+bash+c+csharp+cpp+dart+django+docker+elm+fsharp+git+go+graphql+java+json+json5+jsonp+less+markup-templating+php+plsql+python+r+jsx+tsx+ruby+rust+sass+scss+solidity+sql+swift+typescript+vim+yaml */
   code[class*=language-],
   pre[class*=language-] {
     color: #000;

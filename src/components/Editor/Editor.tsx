@@ -43,7 +43,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
     const after = Editor.after(editor, path);
     showSuggestionList(undefined, { triggeredBySuggestion: true });
 
-    const node: CustomNode = {
+    const node: any = {
       id: v4(),
       type: ELEMENT_TYPES_MAP.paragraph,
       isVoid: false,
@@ -197,6 +197,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
     <main className={s.editorContainer}>
       <div className={s.editorContent}>
         <OutsideClick onClose={hideToolbarTools}>
+          {/* @ts-ignore */}
           <Toolbar toolbarRef={toolbarRef} toolbarStyle={toolbarStyle} editor={editor} />
           <SuggestionElementList
             filterListCallback={filterSuggestionList}

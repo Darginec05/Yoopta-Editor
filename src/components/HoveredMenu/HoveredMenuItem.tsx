@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
-import { ReactComponent as PlusIcon } from '../../icons/add.svg';
-import { ReactComponent as DragIcon } from '../../icons/drag.svg';
+import PlusIcon from '../../icons/add.svg';
+import DragIcon from '../../icons/drag.svg';
 import { Fade } from '../Fade';
 import { ElementSettings } from '../ElementSettings/ElementSettings';
 import { useScrollContext } from '../../contexts/ScrollContext/ScrollContext';

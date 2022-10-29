@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, MouseEvent } from 'react';
 import isUrl from 'is-url';
-import { ReactComponent as CloseIcon } from '../../icons/close.svg';
-import { ReactComponent as DoneIcon } from '../../icons/done.svg';
+import CloseIcon from '../../icons/close.svg';
+import DoneIcon from '../../icons/done.svg';
 import { removeLinkNode, addLinkNode } from '../Editor/utils';
 import s from './LinkInput.module.scss';
 

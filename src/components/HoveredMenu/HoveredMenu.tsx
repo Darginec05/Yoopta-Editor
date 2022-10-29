@@ -1,11 +1,10 @@
 import { Transforms, Editor, Element as SlateElement } from 'slate';
 import { v4 } from 'uuid';
 import copy from 'copy-to-clipboard';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
 import cx from 'classnames';
 import { HoveredMenuItem } from './HoveredMenuItem';
-import { useAlert } from '../Alert/Alert';
 import { VOID_ELEMENTS } from '../Editor/plugins';
 import s from './HoveredMenu.module.scss';
 
@@ -20,10 +19,7 @@ const ElementHover = ({
   dndState,
 }) => {
   const editor = useSlate();
-  const alert = useAlert();
   const [hovered, setHovered] = useState(false);
-
-  const id = useMemo(() => v4(), []);
   const elementRef = attributes.ref;
   const index = ReactEditor.findPath(editor, element)[0];
 
@@ -72,7 +68,7 @@ const ElementHover = ({
 
   const handleCopyLinkNode = () => {
     copy(`${window.location.origin}#${element.id}`);
-    alert.info('Link successfully copied', { position: 'right' });
+    // alert.info('Link successfully copied', { position: 'right' });
   };
 
   return (
@@ -81,7 +77,7 @@ const ElementHover = ({
         [s.isOver]: isOver,
         [s.isOverSelf]: isOverSelf,
       })}
-      data-node-id={element.id || id}
+      data-node-id={element.id}
       data-node-type={element.type}
       onMouseEnter={onHover}
       onMouseLeave={onHoverOut}

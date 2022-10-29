@@ -1,8 +1,8 @@
 import { useDropzone, DropzoneOptions, Accept } from 'react-dropzone';
 import { useCallback, ReactNode, FC } from 'react';
 import cx from 'classnames';
-import { ReactComponent as ImageUploadIcon } from './icons/ImageUploadIcon.svg';
-import { ReactComponent as VideoUploadIcon } from './icons/VideoUploadIcon.svg';
+import ImageUploadIcon from './icons/ImageUploadIcon.svg';
+import VideoUploadIcon from './icons/VideoUploadIcon.svg';
 import s from './MediaEditorLayout.module.scss';
 
 const icons = {

@@ -50,7 +50,7 @@ export type ImageElement = {
   id: string;
   type: 'image';
   src: string | ArrayBuffer | null;
-  'data-src'?: string | ArrayBuffer | null;
+  'data-src'?: string | ArrayBuffer | null | any;
   children: EmptyText[];
   options: any;
 };
@@ -73,7 +73,8 @@ export type ParagraphElement = { id: string; type: 'paragraph'; children: Descen
 export type VideoElement = {
   id: string;
   type: 'video';
-  url: string;
+  src: string | null;
+  'data-src'?: string | ArrayBuffer | null | any;
   children: EmptyText[];
   options: any;
 };
