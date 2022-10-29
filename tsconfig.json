@@ -26,6 +26,7 @@
     "sourceMap": true,
     "outDir": "dist",
     "allowSyntheticDefaultImports": true,
+    "preserveSymlinks": false
   },
   "include": [
     "react-svg.d.ts",

@@ -1,12 +1,13 @@
-import { Editor, Transforms, Element as SlateElement, Range, Node } from 'slate';
+import { Editor, Transforms, Element as SlateElement, Range } from 'slate';
 import { useCallback, KeyboardEvent, MouseEvent } from 'react';
+import cx from 'classnames';
 import { Editable, ReactEditor } from 'slate-react';
 import { v4 } from 'uuid';
 import { TextLeaf } from './TextLeaf';
 import { RenderElement } from './RenderElement/RenderElement';
 import { Toolbar } from './Toolbar/Toolbar';
-import { ParagraphElement, CustomNode } from './types';
-import { LIST_TYPES, toggleBlock } from './utils';
+import { ParagraphElement } from './types';
+import { toggleBlock } from './utils';
 import { ELEMENT_TYPES_MAP, IGNORED_SOFT_BREAK_ELEMS } from './constants';
 import { SuggestionElementList } from './SuggestionElementList/SuggestionElementList';
 import { useDragDrop } from '../../hooks/useDragDrop';
@@ -14,10 +15,13 @@ import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionMenuContext/ActionMenuContext';
 import { OutsideClick } from '../OutsideClick';
 import s from './Editor.module.scss';
+import { useSettings } from '../../contexts/SettingsContext/SettingsContext';
 
 type YoptaProps = { editor: Editor };
 
 const YoptaEditor = ({ editor }: YoptaProps) => {
+  const { options } = useSettings();
+
   useScrollToElement();
 
   const { onDrop, dndState, onDragEnd, onDragStart, isDisableByDrag } = useDragDrop({ editor });
@@ -194,8 +198,8 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
   };
 
   return (
-    <main className={s.editorContainer}>
-      <div className={s.editorContent}>
+    <main className={cx(s.editorContainer, options.wrapCls)}>
+      <div className={cx(s.editorContent, options.contentCls)}>
         <OutsideClick onClose={hideToolbarTools}>
           {/* @ts-ignore */}
           <Toolbar toolbarRef={toolbarRef} toolbarStyle={toolbarStyle} editor={editor} />
@@ -217,6 +221,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
           readOnly={isReadOnly}
           spellCheck
           decorate={decorate}
+          autoFocus
         />
       </div>
     </main>

@@ -188,6 +188,5 @@ export const KEYBOARD_SHORTCUTS = {
   '###': ELEMENT_TYPES_MAP['heading-three'],
 };
 
-export const capitalizeFirstLetter = (string?: string): string | undefined => (string ? string.charAt(0).toUpperCase() + string.slice(1) : undefined);
-
-export const DEFAULT_STATE = JSON.stringify([{ type: 'paragraph', children: [{ text: '' }] }]);
+export const capitalizeFirstLetter = (string?: string): string | undefined =>
+  string ? string.charAt(0).toUpperCase() + string.slice(1) : undefined;

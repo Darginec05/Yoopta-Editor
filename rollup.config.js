@@ -1,20 +1,20 @@
 import json from 'rollup-plugin-json';
-import commonjs from 'rollup-plugin-commonjs';
-import nodeResolve from 'rollup-plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import sourceMaps from 'rollup-plugin-sourcemaps';
-import replace from 'rollup-plugin-replace';
+import replace from '@rollup/plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 import svgr from '@svgr/rollup';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
+// import html from '@rollup/plugin-html';
+// import serve from 'rollup-plugin-serve';
 
 import pkg from './package.json' assert { type: 'json' };
 
 const isProd = process.env.NODE_ENV === 'production';
 const isDev = process.env.NODE_ENV === 'development';
-
-console.log({ isProd, isDev, peerDeps: [...Object.keys(pkg.peerDependencies), 'react/jsx-runtime'] });
 
 /**
  * @type {import('rollup').RollupOptions}
@@ -51,9 +51,19 @@ const config = {
     replace({
       exclude: 'node_modules/**',
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      preventAssignment: true,
     }),
     isProd && terser(),
+    // isDev && html(),
+    // isDev && serve({
+    //   open: true,
+    //   verbose: true,
+    //   contentBase: 'examples',
+    //   host: 'localhost',
+    //   port: 3000,
+    // }),
   ].filter(Boolean),
+  cache: isDev,
   external: [...Object.keys(pkg.peerDependencies), 'react/jsx-runtime'],
 };
 

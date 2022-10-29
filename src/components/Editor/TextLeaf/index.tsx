@@ -1,8 +1,8 @@
 import { RenderLeafProps } from 'slate-react';
 import cx from 'classnames';
-import s from './TextLeaf.module.scss';
 import { ELEMENT_TYPES_MAP } from '../constants';
 import { capitalizeFirstLetter } from '../utils';
+import s from './TextLeaf.module.scss';
 
 type LeafProps = RenderLeafProps & { isEdit?: boolean, leaf: any };
 

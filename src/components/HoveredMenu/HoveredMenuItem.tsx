@@ -25,6 +25,7 @@ export const HoveredMenuItem = ({
   const onMouseDown = () => {
     const handler = handlerRef.current!;
     const target = elementRef.current!;
+    console.log({ handler, target });
 
     handler.setAttribute('draggable', 'false');
     target.setAttribute('draggable', 'true');

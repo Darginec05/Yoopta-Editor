@@ -12,42 +12,45 @@ import {
   withFixDeleteFragment,
 } from './components/Editor/plugins';
 import { ActionMenuProvider } from './contexts/ActionMenuContext/ActionMenuContext';
+import { SettingsProvider } from './contexts/SettingsContext/SettingsContext';
+import type { LibOptions } from './contexts/SettingsContext/SettingsContext';
 
 type Props = {
   onChange: (_value: Descendant[]) => void;
-  state: Descendant[];
-};
+  value?: Descendant[];
+} & LibOptions;
 
-const YoptaEditor = ({ onChange, state = [] }: Props) => {
-  const [value, setValue] = useState<Descendant[]>(state);
+export const DEFAULT_STATE = [{ id: 'kek', type: 'paragraph', children: [{ text: '' }] }] as Descendant[];
 
+const YoptaEditor = ({ onChange, value = DEFAULT_STATE, ...options }: Props) => {
   const [editor] = useState(() => withFixDeleteFragment(
     withHistory(withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor())))))),
   ));
 
-  const onChangeValue = useCallback((newValue) => {
+  const onChangeValue = useCallback((newValue: Descendant[]) => {
     onChange(newValue);
-    setValue(newValue);
+
+    if (!options.shouldStoreInLocalStorage) return;
+
     const isASTChanged = editor.operations.some((op) => op.type !== 'set_selection');
 
     if (isASTChanged) {
       try {
         const content = JSON.stringify(newValue);
         localStorage.setItem('content', content);
-      } catch (error) {
-        // [TODO] - don't store base64 src in image node
-        console.log(error);
-      }
+      } catch (error) {}
     }
-  }, []);
+  }, [options.shouldStoreInLocalStorage]);
 
   return (
     <Slate editor={editor} value={value} onChange={onChangeValue}>
-      <ScrollProvider>
-        <ActionMenuProvider>
-          <Editor editor={editor} />
-        </ActionMenuProvider>
-      </ScrollProvider>
+      <SettingsProvider options={options}>
+        <ScrollProvider>
+          <ActionMenuProvider>
+            <Editor editor={editor} />
+          </ActionMenuProvider>
+        </ScrollProvider>
+      </SettingsProvider>
     </Slate>
   );
 };

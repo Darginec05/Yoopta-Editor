@@ -3,12 +3,10 @@
   width: 100%;
   justify-content: center;
   position: relative;
+  min-height: 100vh;
 }
 
 .editorContent {
-  max-width: 864px;
-  padding-top: 4rem;
-  padding-bottom: 30vh;
-  margin: 0;
   width: 100%;
+  height: auto;
 }
