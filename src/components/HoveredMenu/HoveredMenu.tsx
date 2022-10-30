@@ -23,6 +23,8 @@ const ElementHover = ({
   const elementRef = attributes.ref;
   const index = ReactEditor.findPath(editor, element)[0];
 
+  console.log({ attributes });
+
   const isDragging = index === dndState.from;
   const isOver = index === dndState.to;
   const isOverSelf = isDragging && isOver;

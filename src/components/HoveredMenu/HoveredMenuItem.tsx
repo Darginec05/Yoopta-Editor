@@ -23,9 +23,9 @@ export const HoveredMenuItem = ({
   const { enableScroll, disableScroll } = useScrollContext();
 
   const onMouseDown = () => {
+    console.log({ elementRef });
     const handler = handlerRef.current!;
     const target = elementRef.current!;
-    console.log({ handler, target });
 
     handler.setAttribute('draggable', 'false');
     target.setAttribute('draggable', 'true');

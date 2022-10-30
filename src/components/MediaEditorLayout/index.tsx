@@ -1,5 +1,5 @@
-import { useDropzone, DropzoneOptions, Accept } from 'react-dropzone';
-import { useCallback, ReactNode, FC } from 'react';
+import { useDropzone, DropzoneOptions } from 'react-dropzone';
+import { useCallback, FC } from 'react';
 import cx from 'classnames';
 import ImageUploadIcon from './icons/ImageUploadIcon.svg';
 import VideoUploadIcon from './icons/VideoUploadIcon.svg';
@@ -14,15 +14,14 @@ type MediaType = 'image' | 'video';
 
 type Props = {
   mediaType: MediaType;
-  accept: Accept | undefined;
   onUpload: (_file: File) => Promise<void>;
   options?: DropzoneOptions;
   maxFiles?: number;
 };
 
-const MediaEditorLayout: FC<Props> = ({ accept, mediaType, options, onUpload, maxFiles = 1 }) => {
+const MediaEditorLayout: FC<Props> = ({ mediaType, options, onUpload, maxFiles = 1 }) => {
   const onDrop = useCallback(
-    (acceptedFiles) => {
+    (acceptedFiles: File[]) => {
       const [file] = acceptedFiles;
       onUpload(file);
     },
@@ -31,7 +30,6 @@ const MediaEditorLayout: FC<Props> = ({ accept, mediaType, options, onUpload, ma
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept,
     maxFiles,
     ...options,
   });
@@ -44,7 +42,9 @@ const MediaEditorLayout: FC<Props> = ({ accept, mediaType, options, onUpload, ma
         <input {...getInputProps()} />
         <Icon />
         <p className={s.text}>
-          Drag and drop here or <strong>select file</strong>
+          Drag and drop here or
+          {' '}
+          <strong>select file</strong>
         </p>
       </div>
     </div>

@@ -7,19 +7,18 @@ import { v4 } from 'uuid';
 import { MediaEditorLayout } from '../MediaEditorLayout';
 import { VideoElement } from '../Editor/types';
 import { VideoRender } from '../VideoRender/VideoRender';
-import { uploadToCloudinary } from '../../utils';
 import { Loader } from '../Loader';
 import { MediaEditorOptions } from '../MediaEditorOptions';
 import { ELEMENT_TYPES_MAP } from '../Editor/constants';
+import { useSettings } from '../../contexts/SettingsContext/SettingsContext';
 import s from './VideoEditor.module.scss';
 
-const toBase64 = (file): Promise<any> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
+const toBase64 = (file: File): Promise<any> => new Promise((resolve, reject) => {
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = () => resolve(reader.result);
+  reader.onerror = (error) => reject(error);
+});
 
 type Props = { element: VideoElement; className: string; attributes: any; children: ReactNode };
 
@@ -27,34 +26,46 @@ const VideoEditor: FC<Props> = ({ element, attributes, className, children }) =>
   const editor = useSlate();
   const selected = useSelected();
   const focused = useFocused();
+  const {
+    options: { media },
+  } = useSettings();
+
+  const videoProps = media?.videoProps;
+  const optimistic = typeof videoProps?.optimistic === 'boolean' ? videoProps?.optimistic : true;
 
   const onUpload = async (file: File) => {
-    const dataSrc = await toBase64(file);
+    let video = {};
 
-    const video: any = {
-      id: v4(),
-      type: 'video',
-      children: [{ text: '' }],
-      'data-src': dataSrc,
-      src: null,
-      isVoid: true,
-    };
+    if (optimistic) {
+      const dataSrc = await toBase64(file);
 
-    Transforms.setNodes(editor, video, { at: editor.selection?.anchor });
+      video = {
+        id: v4(),
+        type: 'video',
+        children: [{ text: '' }],
+        'data-src': dataSrc,
+        src: null,
+        isVoid: true,
+      };
 
-    const { url, data } = await uploadToCloudinary(file, 'video');
+      Transforms.setNodes(editor, video, { at: editor.selection?.anchor });
+    }
 
-    const newImage = {
-      ...video,
-      src: url,
-      'data-src': null,
-      options: data,
-    };
+    if (typeof videoProps?.onChange === 'function') {
+      const { url, options } = await videoProps.onChange(file);
 
-    Transforms.setNodes(editor, newImage, { at: editor.selection?.anchor, voids: true });
+      const newImage = {
+        ...video,
+        src: url,
+        'data-src': null,
+        options,
+      };
 
-    if (editor.selection) {
-      Transforms.select(editor, editor.selection);
+      Transforms.setNodes(editor, newImage, { at: editor.selection?.anchor, voids: true });
+
+      if (editor.selection) {
+        Transforms.select(editor, editor.selection);
+      }
     }
   };
 
@@ -69,6 +80,12 @@ const VideoEditor: FC<Props> = ({ element, attributes, className, children }) =>
   };
 
   if (element.src || dataSrc) {
+    const loader = videoProps?.loader || (
+      <div className={s.loader}>
+        <Loader />
+      </div>
+    );
+
     return (
       <div
         draggable={false}
@@ -76,10 +93,8 @@ const VideoEditor: FC<Props> = ({ element, attributes, className, children }) =>
         contentEditable={false}
         className={cx(className, { [s.selected]: selected && focused })}
       >
-        {dataSrc ? (
-          <div className={s.loader}>
-            <Loader />
-          </div>
+        {optimistic && dataSrc ? (
+          loader
         ) : (
           <div className={s.options}>
             <MediaEditorOptions onDelete={onDelete} isImage />
@@ -96,7 +111,14 @@ const VideoEditor: FC<Props> = ({ element, attributes, className, children }) =>
       <div className={s.options}>
         <MediaEditorOptions isImage onDelete={onDelete} />
       </div>
-      <MediaEditorLayout mediaType="video" accept={{ 'video/*': [] }} onUpload={onUpload} />
+      <MediaEditorLayout
+        mediaType="video"
+        onUpload={onUpload}
+        options={{
+          accept: videoProps?.accept || { 'video/*': [] },
+          multiple: videoProps?.multiple,
+        }}
+      />
       {children}
     </div>
   );
