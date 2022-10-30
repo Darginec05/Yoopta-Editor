@@ -20,11 +20,12 @@ const isDev = process.env.NODE_ENV === 'development';
  * @type {import('rollup').RollupOptions}
  */
 const config = {
-  input: 'src/index.ts',
+  input: ['src/index.ts', 'src/YoptaRenderer.tsx'],
   output: [
     {
-      file: pkg.module,
+      // file: pkg.module,
       format: 'esm',
+      dir: 'dist',
       sourcemap: isDev,
       globals: { react: 'React' },
     },

@@ -58,8 +58,6 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
     const isVoidNode = Editor.isVoid(editor, currentNode);
     const afterPath = after || [path[0] + 1];
 
-    console.log({ after, path, isEmptyNode, isVoidNode });
-
     if (!isEmptyNode || isVoidNode) {
       Transforms.insertNodes(editor, node, {
         at: afterPath,

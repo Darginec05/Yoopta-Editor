@@ -9,3 +9,10 @@
   justify-content: center;
   align-items: center;
 }
+
+.editorWrapper {
+  max-width: 850px;
+  width: 100%;
+  padding-top: 3.5rem;
+  padding-bottom: 11rem;
+}

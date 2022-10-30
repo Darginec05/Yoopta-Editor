@@ -23,14 +23,15 @@ export default function Home() {
       <div className={styles.main}>
         <YoptaEditor
           value={value}
-          onChange={(val) => setState(val)}
+          wrapCls={styles.editorWrapper}
+          onChange={(val: Descendant[]) => setState(val)}
           shouldStoreInLocalStorage
           media={{
             imageProps: {
-              onChange: (file) => onChangeMedia(file, 'image'),
+              onChange: (file: File) => onChangeMedia(file, 'image'),
             },
             videoProps: {
-              onChange: (file) => onChangeMedia(file, 'video'),
+              onChange: (file: File) => onChangeMedia(file, 'video'),
             },
           }}
         />

@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { withHistory } from 'slate-history';
 import { v4 } from 'uuid';
 import { createEditor, Descendant } from 'slate';
@@ -45,7 +45,6 @@ const getInitialState = (
 
 const YoptaEditorLib = ({ onChange, value, ...options }: Props) => {
   const [val, setVal] = useState(() => getInitialState(options.shouldStoreInLocalStorage, value));
-  const rerender = useRef(0);
 
   const [editor] = useState(() => withFixDeleteFragment(
     withHistory(withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor())))))),
@@ -64,16 +63,11 @@ const YoptaEditorLib = ({ onChange, value, ...options }: Props) => {
         try {
           const content = JSON.stringify(newValue);
           localStorage.setItem(DEFAULT_YOPTA_LS_NAME, content);
-          // eslint-disable-next-line no-empty
         } catch (error) {}
       }
     },
     [options.shouldStoreInLocalStorage],
   );
-
-  rerender.current += 1;
-
-  console.log({ rerender: rerender.current });
 
   return (
     <Slate editor={editor} value={val} onChange={onChangeValue}>
