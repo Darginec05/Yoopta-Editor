@@ -1,10 +1,12 @@
 import { memo } from 'react';
+import cx from 'classnames';
 import { ElementProps } from '../../Editor/types';
 import s from './HeadingTwo.module.scss';
+import { getElementClassname } from '../../Editor/utils';
 
-const HeadingTwo = memo<ElementProps>(({ attributes, children }) => {
+const HeadingTwo = memo<ElementProps>(({ attributes, children, element }) => {
   return (
-    <h2 className={s['heading-two']} draggable={false} {...attributes}>
+    <h2 className={cx(s['heading-two'], getElementClassname(element))} draggable={false} {...attributes}>
       {children}
     </h2>
   );

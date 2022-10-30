@@ -1,10 +1,12 @@
+import cx from 'classnames';
 import { memo } from 'react';
 import { ElementProps } from '../../Editor/types';
+import { getElementClassname } from '../../Editor/utils';
 import s from './ListItem.module.scss';
 
-const ListItem = memo<ElementProps>(({ attributes, children }) => {
+const ListItem = memo<ElementProps>(({ attributes, children, element }) => {
   return (
-    <li className={s.listItem} draggable={false} {...attributes}>
+    <li className={cx(s.listItem, getElementClassname(element))} draggable={false} {...attributes}>
       {children}
     </li>
   );

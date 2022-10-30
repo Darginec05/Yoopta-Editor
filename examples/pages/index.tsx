@@ -1,17 +1,26 @@
 import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import styles from '../styles/Home.module.scss';
 import { YoptaEditor } from 'yopta-editor';
 import { useState } from 'react';
 import { Descendant } from 'slate';
 import { uploadToCloudinary } from '../utils';
 
 export default function Home() {
-  const [value, setState] = useState<Descendant[]>();
+  const [editorValue, setEditorValue] = useState<Descendant[]>();
 
   const onChangeMedia = async (file: File, type: string) => {
     const { url, data } = await uploadToCloudinary(file, type);
     return { url, options: data };
   };
+
+  const media = {
+    imageProps: {
+      onChange: (file: File) => onChangeMedia(file, 'image'),
+    },
+    videoProps: {
+      onChange: (file: File) => onChangeMedia(file, 'video'),
+    },
+  }
 
   return (
     <div className={styles.container}>
@@ -22,18 +31,11 @@ export default function Home() {
       </Head>
       <div className={styles.main}>
         <YoptaEditor
-          value={value}
+          value={editorValue}
           wrapCls={styles.editorWrapper}
-          onChange={(val: Descendant[]) => setState(val)}
+          onChange={(val: Descendant[]) => setEditorValue(val)}
           shouldStoreInLocalStorage
-          media={{
-            imageProps: {
-              onChange: (file: File) => onChangeMedia(file, 'image'),
-            },
-            videoProps: {
-              onChange: (file: File) => onChangeMedia(file, 'video'),
-            },
-          }}
+          media={media}
         />
       </div>
     </div>

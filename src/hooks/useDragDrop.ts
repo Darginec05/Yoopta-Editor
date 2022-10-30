@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Editor, Transforms, Element as SlateElement } from 'slate';
 
 export const useDragDrop = ({ editor }) => {
-  const [readOnly, setReadOnly] = useState(false);
+  const [isDisableByDrag, setIsDisableByDrag] = useState(false);
   const [dndState, setDndState] = useState({ from: -1, to: -1 });
 
   const onDragEnter = (e) => {
@@ -20,7 +20,7 @@ export const useDragDrop = ({ editor }) => {
     e.target.ondragenter = null;
     e.target.ondragover = null;
 
-    setReadOnly(false);
+    setIsDisableByDrag(false);
     setDndState({ from: -1, to: -1 });
   };
 
@@ -35,7 +35,7 @@ export const useDragDrop = ({ editor }) => {
   };
 
   const onDragStart = (e) => {
-    setReadOnly(true);
+    setIsDisableByDrag(true);
 
     e.dataTransfer.setData('Text', '');
     e.dataTransfer.effectAllowed = 'move';
@@ -50,11 +50,11 @@ export const useDragDrop = ({ editor }) => {
   };
 
   return {
-    onDragEnd,
-    onDragStart,
-    onDragEnter,
     onDrop,
-    isDisableByDrag: readOnly,
     dndState,
+    onDragEnd,
+    onDragEnter,
+    onDragStart,
+    isDisableByDrag,
   };
 };

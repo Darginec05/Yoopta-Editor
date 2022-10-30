@@ -15,4 +15,15 @@
   width: 100%;
   padding-top: 3.5rem;
   padding-bottom: 11rem;
+
+  :global {
+    .yopta-paragraph, .yopta-list-item {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 29px;
+      color: #000000;
+    }
+  }
 }

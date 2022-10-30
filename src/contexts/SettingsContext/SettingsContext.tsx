@@ -1,7 +1,7 @@
 import React, { ReactNode, useContext, useMemo } from 'react';
 import { Accept } from 'react-dropzone';
 
-type MediaResponse = { url: string, options?: any };
+type MediaResponse = { url: string; options?: any };
 
 type MediaProps = {
   imageProps?: {

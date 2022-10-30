@@ -1,21 +1,20 @@
+import cx from 'classnames';
+import { getElementClassname } from '../../Editor/utils';
 import { VideoEditor } from '../../VideoEditor/VideoEditor';
 import { VideoRender } from '../../VideoRender/VideoRender';
 import s from './Video.module.scss';
 
-// [TODO] - problems when dynamic import
-// const VideoEditor = dynamic(() => import('../../VideoEditor').then((mod) => mod.VideoEditor));
-
 const Video = ({ element, attributes, children, isEdit }) => {
   if (isEdit) {
     return (
-      <VideoEditor element={element} attributes={attributes} className={s.image}>
+      <VideoEditor element={element} attributes={attributes} className={cx(s.video, getElementClassname(element))}>
         {children}
       </VideoEditor>
     );
   }
 
   return (
-    <div className={s.image}>
+    <div className={cx(s.video, getElementClassname(element))}>
       <VideoRender src={element.src} options={element.options} />
     </div>
   );
