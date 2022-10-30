@@ -3,9 +3,15 @@ import styles from '../styles/Home.module.css';
 import { YoptaEditor } from 'yopta-editor';
 import { useState } from 'react';
 import { Descendant } from 'slate';
+import { uploadToCloudinary } from '../utils';
 
 export default function Home() {
   const [value, setState] = useState<Descendant[]>();
+
+  const onChangeMedia = async (file: File, type: string) => {
+    const { url, data } = await uploadToCloudinary(file, type);
+    return { url, options: data };
+  };
 
   return (
     <div className={styles.container}>
@@ -15,7 +21,19 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.main}>
-        <YoptaEditor shouldStoreInLocalStorage value={value} onChange={(val) => setState(val)} />
+        <YoptaEditor
+          value={value}
+          onChange={(val) => setState(val)}
+          shouldStoreInLocalStorage
+          media={{
+            imageProps: {
+              onChange: (file) => onChangeMedia(file, 'image'),
+            },
+            videoProps: {
+              onChange: (file) => onChangeMedia(file, 'video'),
+            },
+          }}
+        />
       </div>
     </div>
   );
