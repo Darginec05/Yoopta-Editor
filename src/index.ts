@@ -1,3 +1,2 @@
-import YoptaEditor from './YoptaEditor';
-
-export { YoptaEditor };
+export { YoptaEditor } from './YoptaEditor';
+export { YoptaRenderer } from './YoptaRenderer';

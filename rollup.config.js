@@ -8,8 +8,6 @@ import typescript from 'rollup-plugin-typescript2';
 import svgr from '@svgr/rollup';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
-// import html from '@rollup/plugin-html';
-// import serve from 'rollup-plugin-serve';
 
 import pkg from './package.json' assert { type: 'json' };
 
@@ -20,14 +18,18 @@ const isDev = process.env.NODE_ENV === 'development';
  * @type {import('rollup').RollupOptions}
  */
 const config = {
-  input: ['src/index.ts', 'src/YoptaRenderer.tsx'],
+  input: 'src/index.ts',
+  // input: {
+  //   YoptaEditor: 'src/YoptaEditor.tsx',
+  //   YoptaRender: 'src/YoptaRenderer.tsx',
+  // },
   output: [
     {
-      // file: pkg.module,
       format: 'esm',
       dir: 'dist',
       sourcemap: isDev,
       globals: { react: 'React' },
+      entryFileNames: '[name].js',
     },
   ],
   plugins: [
@@ -55,14 +57,6 @@ const config = {
       preventAssignment: true,
     }),
     isProd && terser(),
-    // isDev && html(),
-    // isDev && serve({
-    //   open: true,
-    //   verbose: true,
-    //   contentBase: 'examples',
-    //   host: 'localhost',
-    //   port: 3000,
-    // }),
   ].filter(Boolean),
   cache: isDev,
   external: [...Object.keys(pkg.peerDependencies), 'react/jsx-runtime'],

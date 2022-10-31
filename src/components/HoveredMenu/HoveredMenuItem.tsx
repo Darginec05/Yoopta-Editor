@@ -10,27 +10,28 @@ export const HoveredMenuItem = ({
   hovered,
   onDragEnd,
   isDragging,
-  elementRef,
+  elementId,
   onDragStart,
   handlePlusButton,
   handleDeleteNode,
   handleDuplicateNode,
   handleCopyLinkNode,
   isVoidElement,
-}) => {
+}: any) => {
   const handlerRef = useRef<HTMLDivElement>(null);
   const [isOpenSettingsOpen, setSettingsOpen] = useState(false);
   const { enableScroll, disableScroll } = useScrollContext();
 
   const onMouseDown = () => {
-    console.log({ elementRef });
     const handler = handlerRef.current!;
-    const target = elementRef.current!;
+    const target = document.querySelector<HTMLDivElement>(`[data-node-id="${elementId}"]`);
 
     handler.setAttribute('draggable', 'false');
-    target.setAttribute('draggable', 'true');
-    target.ondragstart = onDragStart;
-    target.ondragend = onDragEnd;
+    if (target) {
+      target.setAttribute('draggable', 'true');
+      target.ondragstart = onDragStart;
+      target.ondragend = onDragEnd;
+    }
   };
 
   const onClose = () => {

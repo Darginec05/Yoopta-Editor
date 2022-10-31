@@ -25,9 +25,7 @@ const ImageEditor: FC<Props> = ({ element, attributes, className, children }) =>
   const editor = useSlate();
   const selected = useSelected();
   const focused = useFocused();
-  const {
-    options: { media },
-  } = useSettings();
+  const { options: { media } } = useSettings();
 
   const imageProps = media?.imageProps;
   const optimistic = typeof imageProps?.optimistic === 'boolean' ? imageProps?.optimistic : true;

@@ -18,11 +18,11 @@
 
   :global {
     .yopta-paragraph, .yopta-list-item {
-      font-family: 'Inter';
+      font-family: inherit;
       font-style: normal;
       font-weight: 400;
-      font-size: 18px;
-      line-height: 29px;
+      font-size: 17px;
+      line-height: 27px;
       color: #000000;
     }
   }

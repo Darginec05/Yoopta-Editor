@@ -1,7 +1,7 @@
 import { MouseEvent, useEffect, useState } from 'react';
 import { Editor } from 'slate';
 import cx from 'classnames';
-import { isMarkActive, toggleMark, getMatchedNode } from '../utils';
+import { isMarkActive, toggleMark, getMatchedNode, removeLinkNode, addLinkNode } from '../utils';
 import LinkIcon from './icons/link.svg';
 import BoldIcon from './icons/bold.svg';
 import ItalicIcon from './icons/italic.svg';
@@ -61,10 +61,16 @@ const Toolbar = ({ editor }: ToolbarProps) => {
   const linkNode = getMatchedNode(editor, 'link');
 
   return (
-    <div ref={toolbarRef} role="tooltip" className={s.menu} style={toolbarStyle}>
+    <div ref={toolbarRef} role="tooltip" className={cx(s.menu, 'yopta-toolbar')} style={toolbarStyle}>
       <div className={s.toolbar}>
         <Fade show={isLinkOpen} animationDelay={300}>
-          <LinkInput editor={editor} linkNode={linkNode} onClose={() => setLinkOpen(false)} />
+          <LinkInput
+            linkUrl={linkNode?.[0]?.url}
+            onClose={() => setLinkOpen(false)}
+            onRemove={() => removeLinkNode(editor)}
+            onAdd={(url: string) => addLinkNode(editor, url)}
+            placeholder="type link"
+          />
         </Fade>
         <button type="button" className={s.button} onMouseDown={toggleElementsListDropdown}>
           {selectedElement?.name}

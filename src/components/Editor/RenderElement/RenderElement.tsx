@@ -14,6 +14,7 @@ import { Callout } from '../../Elements/Callout/Callout';
 import { ListItem } from '../../Elements/ListItem/ListItem';
 import { Link } from '../../Elements/Link/Link';
 import { Paragraph } from '../../Elements/Paragraph/Paragraph';
+import { Embed } from '../../Elements/Embed/Embed';
 import { Code } from '../../Elements/Code/Code';
 
 const ELEMENT_RENDER_ITEMS = {
@@ -30,6 +31,7 @@ const ELEMENT_RENDER_ITEMS = {
   [ELEMENT_TYPES_MAP.code]: Code,
   [ELEMENT_TYPES_MAP.video]: Video,
   [ELEMENT_TYPES_MAP.paragraph]: Paragraph,
+  [ELEMENT_TYPES_MAP.embed]: Embed,
 };
 
 const TYPES_DRAG_IGNORE = [ELEMENT_TYPES_MAP['list-item'], ELEMENT_TYPES_MAP.link];

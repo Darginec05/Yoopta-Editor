@@ -34,6 +34,7 @@ export const ELEMENT_TYPES: Block[] = [
   { icon: <CalloutIcon />, name: 'Code', type: ELEMENT_TYPES_MAP.code },
   { icon: <ImageIcon />, name: 'Image', type: ELEMENT_TYPES_MAP.image },
   { icon: <VideoIcon />, name: 'Video', type: ELEMENT_TYPES_MAP.video },
+  { icon: <VideoIcon />, name: 'Embed', type: ELEMENT_TYPES_MAP.embed },
 ];
 
 type Props = {

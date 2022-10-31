@@ -1,13 +1,4 @@
-import React, {
-  CSSProperties,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { CSSProperties, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Editor, Range } from 'slate';
 import { useSlate } from 'slate-react';
 import { ELEMENT_TYPES_MAP, TEXT_ELEMENTS_LIST } from '../../components/Editor/constants';
@@ -51,9 +42,7 @@ type ActionMenuContextType = {
   toolbarStyle?: CSSProperties;
   isToolbarActionOpen: boolean;
   selectedElement: Block | null;
-  // suggestionListRef: MutableRefObject<HTMLDivElement | null>;
   suggestionListRef: any;
-  // toolbarRef: MutableRefObject<HTMLDivElement | null>;
   toolbarRef: any;
 };
 
@@ -120,6 +109,7 @@ const ActionMenuProvider = ({ children }) => {
 
   const updateToolbarView = (style?: CSSProperties) => {
     const { top, left } = getAbsPositionBySelection(toolbarRef.current);
+    console.log({ w: toolbarRef.current?.offsetWidth });
     setCurrentBlock();
     setToolbarProps({ open: true, style: style || { top, left, opacity: 1 } });
   };
@@ -183,7 +173,14 @@ const ActionMenuProvider = ({ children }) => {
       hideToolbarTools,
       updateToolbarView,
     }),
-    [toolbarProps, suggestionListProps, toolbarRef.current, suggestionListRef.current, suggestionFilterText],
+    [
+      toolbarProps,
+      suggestionListProps,
+      toolbarRef.current,
+      suggestionListRef.current,
+      suggestionFilterText,
+      selectedElement,
+    ],
   );
 
   return <ActionMenuContext.Provider value={value}>{children}</ActionMenuContext.Provider>;

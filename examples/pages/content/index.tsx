@@ -1,4 +1,4 @@
-import { YoptaRenderer } from 'yopta-editor/dist/YoptaRenderer';
+import { YoptaRenderer } from 'yopta-editor';
 import s from '../../styles/Home.module.scss';
 
 const exampleData = [

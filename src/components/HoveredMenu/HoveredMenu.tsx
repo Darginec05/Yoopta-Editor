@@ -1,7 +1,7 @@
 import { Transforms, Editor, Element as SlateElement } from 'slate';
 import { v4 } from 'uuid';
 import copy from 'copy-to-clipboard';
-import { LegacyRef, useRef, useState } from 'react';
+import { useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
 import cx from 'classnames';
 import { HoveredMenuItem } from './HoveredMenuItem';
@@ -20,7 +20,6 @@ const ElementHover = ({
 }) => {
   const editor = useSlate();
   const [hovered, setHovered] = useState(false);
-  const elementRef = useRef<HTMLDivElement>(null);
   const index = ReactEditor.findPath(editor, element)[0];
 
   const isDragging = index === dndState.from;
@@ -71,12 +70,6 @@ const ElementHover = ({
     // alert.info('Link successfully copied', { position: 'right' });
   };
 
-  const onRef = (ref: LegacyRef<HTMLDivElement>) => {
-    /* @ts-ignore */
-    elementRef.current = ref;
-    attributes.ref(ref);
-  };
-
   return (
     <section
       className={cx(s.hoverWrap, {
@@ -90,18 +83,17 @@ const ElementHover = ({
       style={{ opacity }}
       onDrop={onDrop}
       {...attributes}
-      ref={onRef}
     >
       <HoveredMenuItem
         handlePlusButton={handlePlusButton}
         hovered={hovered}
-        elementRef={elementRef}
         onDragEnd={onDragEnd}
         onDragStart={onDragStart}
         isDragging={isDragging}
         handleDeleteNode={handleDeleteNode}
         handleDuplicateNode={handleDuplicateNode}
         handleCopyLinkNode={handleCopyLinkNode}
+        elementId={element.id}
         isVoidElement={VOID_ELEMENTS.includes(element.type)}
       />
       <div className={s.content}>{children}</div>

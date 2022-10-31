@@ -192,3 +192,10 @@ export const capitalizeFirstLetter = (string?: string): string | undefined =>
   string ? string.charAt(0).toUpperCase() + string.slice(1) : undefined;
 
 export const getElementClassname = (element) => `yopta-${element.type}`;
+
+export const getMediaAspectRatio = (srcWidth: number, srcHeight: number, maxWidth: number, maxHeight: number) => {
+  if (!srcWidth || !srcHeight) return {};
+  const ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+
+  return { width: srcWidth * ratio, height: srcHeight * ratio };
+};

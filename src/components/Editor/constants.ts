@@ -12,6 +12,7 @@ export const ELEMENT_TYPES_MAP = {
   paragraph: 'paragraph',
   callout: 'callout',
   code: 'code',
+  embed: 'embed',
 };
 
 export const IGNORED_SOFT_BREAK_ELEMS = [

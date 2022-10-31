@@ -6,7 +6,7 @@ import { BulletedListElement } from './types';
 import { KEYBOARD_SHORTCUTS, addLinkNode } from './utils';
 import { ELEMENT_TYPES_MAP } from './constants';
 
-export const VOID_ELEMENTS = [ELEMENT_TYPES_MAP.video, ELEMENT_TYPES_MAP.image];
+export const VOID_ELEMENTS = [ELEMENT_TYPES_MAP.video, ELEMENT_TYPES_MAP.image, ELEMENT_TYPES_MAP.embed];
 
 export const withVoidNodes = (editor: Editor) => {
   const { isVoid } = editor;

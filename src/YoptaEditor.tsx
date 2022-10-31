@@ -88,4 +88,4 @@ const YoptaEditor = (props: Props) => (
   </NoSSR>
 );
 
-export default YoptaEditor;
+export { YoptaEditor };
