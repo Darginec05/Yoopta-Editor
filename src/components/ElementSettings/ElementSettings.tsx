@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import cx from 'classnames';
 import DeleteIcon from './icons/delete.svg';
 import DuplicateIcon from './icons/duplicate.svg';
 import CopyIcon from './icons/copy.svg';
@@ -63,7 +64,7 @@ const ElementSettings = ({
   return (
     <OutsideClick onClose={handleClose}>
       <div
-        className={s.root}
+        className={cx(s.root, 'yopta-element_settings')}
         aria-hidden
         onMouseDown={stopPropagation}
         ref={settingsRef}

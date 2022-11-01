@@ -14,8 +14,8 @@ import { useDragDrop } from '../../hooks/useDragDrop';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionMenuContext/ActionMenuContext';
 import { OutsideClick } from '../OutsideClick';
-import s from './Editor.module.scss';
 import { useSettings } from '../../contexts/SettingsContext/SettingsContext';
+import s from './Editor.module.scss';
 
 type YoptaProps = { editor: Editor };
 
@@ -143,13 +143,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
 
       if (isListBlock && text.trim() === '') {
         event.preventDefault();
-
-        // Transforms.unwrapNodes(editor, {
-        //   match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && LIST_TYPES.includes(n.type),
-        //   split: true,
-        // });
-
-        // return Transforms.setNodes(editor, newLine);
+        toggleBlock(editor, 'paragraph');
         return;
       }
 

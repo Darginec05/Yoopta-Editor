@@ -155,7 +155,7 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
   }, [elements]);
 
   return (
-    <div className={s.dropdown} role="dialog" aria-modal="true" ref={ref} style={style}>
+    <div className={cx(s.dropdown, 'yopta-suggesstion_list')} role="dialog" aria-modal="true" ref={ref} style={style}>
       {elements.map((element, i) => (
         <button
           type="button"

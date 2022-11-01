@@ -34,8 +34,8 @@ export default function Home() {
           value={editorValue}
           wrapCls={styles.editorWrapper}
           onChange={(val: Descendant[]) => setEditorValue(val)}
-          shouldStoreInLocalStorage
           media={media}
+          shouldStoreInLocalStorage={{ name: 'example-content' }}
         />
       </div>
     </div>

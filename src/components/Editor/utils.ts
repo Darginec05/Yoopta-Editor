@@ -88,8 +88,6 @@ export const toggleBlock = (
       ...data,
     };
 
-    console.log({ node, blockType });
-
     if (data.isVoid) {
       node.type = blockType;
     }
@@ -189,7 +187,7 @@ export const KEYBOARD_SHORTCUTS = {
 };
 
 export const capitalizeFirstLetter = (string?: string): string | undefined =>
-  string ? string.charAt(0).toUpperCase() + string.slice(1) : undefined;
+  (string ? string.charAt(0).toUpperCase() + string.slice(1) : undefined);
 
 export const getElementClassname = (element) => `yopta-${element.type}`;
 

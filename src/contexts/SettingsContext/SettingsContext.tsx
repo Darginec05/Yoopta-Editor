@@ -23,7 +23,7 @@ type MediaProps = {
 type LibOptions = {
   wrapCls?: string;
   contentCls?: string;
-  shouldStoreInLocalStorage?: boolean;
+  shouldStoreInLocalStorage?: boolean | { name: string };
   media?: MediaProps;
 };
 

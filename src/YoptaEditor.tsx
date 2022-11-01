@@ -24,11 +24,20 @@ type Props = {
 
 const DEFAULT_YOPTA_LS_NAME = 'yopta-content';
 
+const getStorageName = (shouldStoreInLocalStorage: LibOptions['shouldStoreInLocalStorage']) => {
+  if (typeof shouldStoreInLocalStorage === 'object' && shouldStoreInLocalStorage.name) {
+    return shouldStoreInLocalStorage.name;
+  }
+
+  return DEFAULT_YOPTA_LS_NAME;
+};
+
 const isValidNode = (value: any): boolean =>
   Array.isArray(value) && value.length > 0 && value[0].type && value[0].children.length > 0;
 
 const getInitialState = (
   shouldStoreInLocalStorage: LibOptions['shouldStoreInLocalStorage'],
+  storageName: string,
   value?: Descendant[],
 ): Descendant[] => {
   const DEFAULT_STATE = [{ id: v4(), type: 'paragraph', children: [{ text: '' }] }] as Descendant[];
@@ -36,16 +45,17 @@ const getInitialState = (
   const defaultValue = isValidNode(value) ? value : DEFAULT_STATE;
 
   if (!shouldStoreInLocalStorage) {
-    localStorage.removeItem(DEFAULT_YOPTA_LS_NAME);
+    localStorage.removeItem(storageName);
     return defaultValue as Descendant[];
   }
 
-  const storedData = JSON.parse(localStorage.getItem(DEFAULT_YOPTA_LS_NAME) || '[]');
+  const storedData = JSON.parse(localStorage.getItem(storageName) || '[]');
   return isValidNode(storedData) ? storedData : defaultValue;
 };
 
 const YoptaEditorLib = ({ onChange, value, ...options }: Props) => {
-  const [val, setVal] = useState(() => getInitialState(options.shouldStoreInLocalStorage, value));
+  const storageName = getStorageName(options.shouldStoreInLocalStorage);
+  const [val, setVal] = useState(() => getInitialState(options.shouldStoreInLocalStorage, storageName, value));
 
   const [editor] = useState(() =>
     withFixDeleteFragment(
@@ -64,7 +74,7 @@ const YoptaEditorLib = ({ onChange, value, ...options }: Props) => {
       if (hasChanges) {
         try {
           const content = JSON.stringify(newValue);
-          localStorage.setItem(DEFAULT_YOPTA_LS_NAME, content);
+          localStorage.setItem(storageName, content);
         } catch (error) {}
       }
     },
