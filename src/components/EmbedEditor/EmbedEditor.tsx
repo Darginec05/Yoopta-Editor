@@ -8,8 +8,9 @@ import { MediaEditorOptions } from '../MediaEditorOptions';
 import { ELEMENT_TYPES_MAP } from '../Editor/constants';
 import { EmbedRender } from '../EmbedRender/EmbedRender';
 import { LinkInput } from '../LinkInput';
-import s from './EmbedEditor.module.scss';
 import { Fade } from '../Fade';
+import { OutsideClick } from '../OutsideClick';
+import s from './EmbedEditor.module.scss';
 
 type Props = { element: EmbedElement; className: string; attributes: any; children: ReactNode };
 
@@ -17,7 +18,7 @@ const EmbedEditor: FC<Props> = ({ element, attributes, className, children }) =>
   const editor = useSlate();
   const selected = useSelected();
   const focused = useFocused();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isLinkInputOpen, setIsLinkInputOpen] = useState(false);
 
   const handleChangeEmbedUrl = (url: string) => {
     const embed: EmbedElement = {
@@ -44,6 +45,20 @@ const EmbedEditor: FC<Props> = ({ element, attributes, className, children }) =>
     });
   };
 
+  const linkNode = (
+    <Fade show={isLinkInputOpen} animationDelay={150}>
+      <OutsideClick onClose={() => setIsLinkInputOpen(false)}>
+        <LinkInput
+          linkUrl={element.src || ''}
+          onClose={() => setIsLinkInputOpen(false)}
+          onRemove={() => {}}
+          onAdd={handleChangeEmbedUrl}
+          placeholder="Paste embed url"
+        />
+      </OutsideClick>
+    </Fade>
+  );
+
   if (element.src) {
     return (
       <div
@@ -52,8 +67,13 @@ const EmbedEditor: FC<Props> = ({ element, attributes, className, children }) =>
         contentEditable={false}
         className={cx(className, { [s.selected]: selected && focused })}
       >
+        {linkNode}
         <div className={s.options}>
-          <MediaEditorOptions onDelete={onDelete} isImage />
+          <MediaEditorOptions
+            hasUrl={!!element.src}
+            handleDelete={onDelete}
+            handleChangeUrl={() => setIsLinkInputOpen(true)}
+          />
         </div>
         <EmbedRender src={element.src} title={element.title} />
         {children}
@@ -68,20 +88,16 @@ const EmbedEditor: FC<Props> = ({ element, attributes, className, children }) =>
       {...attributes}
       contentEditable={false}
       className={cx(className, s.editorLayout)}
-      onClick={() => setIsOpen(!isOpen)}
+      onClick={() => setIsLinkInputOpen(true)}
     >
-      <Fade show={isOpen} animationDelay={150}>
-        <LinkInput
-          linkUrl={element.src || ''}
-          onClose={() => setIsOpen(false)}
-          onRemove={() => {}}
-          onAdd={handleChangeEmbedUrl}
-          placeholder="Paste embed url"
-        />
-      </Fade>
+      {linkNode}
       <span className={s.text}>Click to embed</span>
       <div className={s.options}>
-        <MediaEditorOptions isImage onDelete={onDelete} />
+        <MediaEditorOptions
+          hasUrl={!!element.src}
+          handleDelete={onDelete}
+          handleChangeUrl={() => setIsLinkInputOpen(true)}
+        />
       </div>
       {children}
     </button>

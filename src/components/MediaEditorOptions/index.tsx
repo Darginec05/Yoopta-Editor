@@ -4,41 +4,39 @@ import { OutsideClick } from '../OutsideClick';
 import s from './MediaEditorOptions.module.scss';
 
 type Props = {
-  onDelete: () => void;
+  handleDelete: () => void;
   // onUploadViaURL: () => void;
-  // onUpload: () => void;
   // onAddCaption: () => void;
-  isImage?: boolean;
+  handleChangeUrl: () => void;
+  hasUrl?: boolean;
 };
 
-const MediaEditorOptions: FC<Props> = ({ onDelete, isImage }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const MediaEditorOptions: FC<Props> = ({ handleDelete, handleChangeUrl, hasUrl }) => {
+  const [isOptionsVisibile, setIsOptionsVisible] = useState(false);
 
   const handleOptionsClick = (e: MouseEvent<HTMLElement>) => {
     e.stopPropagation();
-    setIsOpen(true);
+    setIsOptionsVisible(true);
   };
+
+  const onAddClick = () => {
+    setIsOptionsVisible(false);
+    handleChangeUrl();
+  };
+  console.log({ hasUrl, isOptionsVisibile });
 
   return (
     <div aria-hidden className={s.button} onClick={handleOptionsClick}>
       <div className={s.dot} />
       <div className={s.dot} />
       <div className={s.dot} />
-      <OutsideClick onClose={() => setIsOpen(false)}>
-        <Fade show={isOpen} animationDelay={300}>
+      <OutsideClick onClose={() => setIsOptionsVisible(false)}>
+        <Fade show={isOptionsVisibile} animationDelay={150}>
           <div className={s.modal}>
-            {/* <button type="button" onClick={onUpload}>
-              Upload File
+            <button type="button" onClick={onAddClick}>
+              {hasUrl ? 'Change link' : 'Add link'}
             </button>
-            <button type="button" onClick={onUploadViaURL}>
-              Upload via URL
-            </button>
-            {isImage && (
-              <button type="button" onClick={onAddCaption}>
-                Caption
-              </button>
-            )} */}
-            <button type="button" onClick={onDelete}>
+            <button type="button" onClick={handleDelete}>
               Delete
             </button>
           </div>

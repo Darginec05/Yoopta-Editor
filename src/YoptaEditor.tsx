@@ -24,31 +24,33 @@ type Props = {
 
 const DEFAULT_YOPTA_LS_NAME = 'yopta-content';
 
+const isValidNode = (value: any): boolean =>
+  Array.isArray(value) && value.length > 0 && value[0].type && value[0].children.length > 0;
+
 const getInitialState = (
   shouldStoreInLocalStorage: LibOptions['shouldStoreInLocalStorage'],
   value?: Descendant[],
 ): Descendant[] => {
   const DEFAULT_STATE = [{ id: v4(), type: 'paragraph', children: [{ text: '' }] }] as Descendant[];
 
-  const defaultValue =
-    /* @ts-ignore */
-    Array.isArray(value) && value.length && value[0].type && value[0].children > 0 ? value : DEFAULT_STATE;
+  const defaultValue = isValidNode(value) ? value : DEFAULT_STATE;
 
   if (!shouldStoreInLocalStorage) {
     localStorage.removeItem(DEFAULT_YOPTA_LS_NAME);
-    return defaultValue;
+    return defaultValue as Descendant[];
   }
 
-  const storedData = localStorage.getItem(DEFAULT_YOPTA_LS_NAME);
-  return storedData ? JSON.parse(storedData) : defaultValue;
+  const storedData = JSON.parse(localStorage.getItem(DEFAULT_YOPTA_LS_NAME) || '[]');
+  return isValidNode(storedData) ? storedData : defaultValue;
 };
 
 const YoptaEditorLib = ({ onChange, value, ...options }: Props) => {
   const [val, setVal] = useState(() => getInitialState(options.shouldStoreInLocalStorage, value));
 
-  const [editor] = useState(() => withFixDeleteFragment(
-    withHistory(withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor())))))),
-  ));
+  const [editor] = useState(() =>
+    withFixDeleteFragment(
+      withHistory(withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor())))))),
+    ));
 
   const onChangeValue = useCallback(
     (newValue: Descendant[]) => {

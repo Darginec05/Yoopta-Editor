@@ -47,6 +47,7 @@
     "operator-linebreak": 0,
     "no-return-assign": 0,
     "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
-    "object-curly-spacing": 0
+    "object-curly-spacing": 0,
+    "implicit-arrow-linebreak": 0
   }
 }
