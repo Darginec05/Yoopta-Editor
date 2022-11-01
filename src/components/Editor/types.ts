@@ -122,6 +122,7 @@ export type CustomEditor = BaseEditor & ReactEditor & HistoryEditor;
 export type ElementProps = {
   attributes?: any;
   element: any;
+  dataNodeId?: string;
   children: ReactNode;
   isEdit?: boolean;
 };

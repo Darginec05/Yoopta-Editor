@@ -12,6 +12,7 @@ const EmbedRender = ({ src, title }: EmbedProps) => {
       height={500}
       width="100%"
       allowFullScreen
+      frameBorder={0}
     />
   );
 };

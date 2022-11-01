@@ -30,13 +30,12 @@ const YoptaRenderer = ({ data, wrapCls }: Props) => {
   };
 
   const renderElement = ({ id, type, children, ...rest }) => {
-    console.log(children);
-
     return (
       /* @ts-ignore */
       <RenderElement
-        element={{ type, ...rest }}
+        element={{ id, type, ...rest }}
         attributes={{ 'data-slate-node': 'element', ref: null }}
+        dataNodeId={id}
         key={id}
         isEdit={false}
       >

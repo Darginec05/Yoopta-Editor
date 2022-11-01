@@ -19,12 +19,6 @@ const MediaEditorOptions: FC<Props> = ({ handleDelete, handleChangeUrl, hasUrl }
     setIsOptionsVisible(true);
   };
 
-  const onAddClick = () => {
-    setIsOptionsVisible(false);
-    handleChangeUrl();
-  };
-  console.log({ hasUrl, isOptionsVisibile });
-
   return (
     <div aria-hidden className={s.button} onClick={handleOptionsClick}>
       <div className={s.dot} />
@@ -33,7 +27,7 @@ const MediaEditorOptions: FC<Props> = ({ handleDelete, handleChangeUrl, hasUrl }
       <OutsideClick onClose={() => setIsOptionsVisible(false)}>
         <Fade show={isOptionsVisibile} animationDelay={150}>
           <div className={s.modal}>
-            <button type="button" onClick={onAddClick}>
+            <button type="button" onClick={handleChangeUrl}>
               {hasUrl ? 'Change link' : 'Add link'}
             </button>
             <button type="button" onClick={handleDelete}>

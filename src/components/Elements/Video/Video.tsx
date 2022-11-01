@@ -4,7 +4,7 @@ import { VideoEditor } from '../../VideoEditor/VideoEditor';
 import { VideoRender } from '../../VideoRender/VideoRender';
 import s from './Video.module.scss';
 
-const Video = ({ element, attributes, children, isEdit }) => {
+const Video = ({ element, attributes, children, isEdit, dataNodeId }) => {
   if (isEdit) {
     return (
       <VideoEditor element={element} attributes={attributes} className={cx(s.video, getElementClassname(element))}>
@@ -14,7 +14,7 @@ const Video = ({ element, attributes, children, isEdit }) => {
   }
 
   return (
-    <div className={cx(s.video, getElementClassname(element))}>
+    <div className={cx(s.video, getElementClassname(element))} data-node-id={dataNodeId}>
       <VideoRender src={element.src} options={element.options} />
     </div>
   );

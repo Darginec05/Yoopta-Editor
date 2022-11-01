@@ -40,6 +40,7 @@ type Props = RenderElementProps & {
   attributes: any;
   children: ReactNode;
   element: any;
+  dataNodeId?: string;
   isEdit?: boolean;
   dndState: any;
   onPlusButtonClick?: () => void;
@@ -57,6 +58,7 @@ const RenderElement: FC<Props> = ({
   children,
   attributes,
   onPlusButtonClick,
+  dataNodeId,
   isEdit = true,
 }) => {
   const Component = useMemo(() => ELEMENT_RENDER_ITEMS[element.type], [element.type]);
@@ -65,7 +67,7 @@ const RenderElement: FC<Props> = ({
   if (isEdit) {
     if (TYPES_DRAG_IGNORE.includes(element.type)) {
       return (
-        <Component isEdit attributes={attributes} element={element}>
+        <Component dataNodeId={undefined} isEdit attributes={attributes} element={element}>
           {children}
         </Component>
       );
@@ -81,7 +83,7 @@ const RenderElement: FC<Props> = ({
         dndState={dndState}
         onPlusButtonClick={onPlusButtonClick}
       >
-        <Component isEdit attributes={{}} element={element}>
+        <Component dataNodeId={undefined} isEdit attributes={{}} element={element}>
           {children}
         </Component>
       </ElementHover>
@@ -89,7 +91,7 @@ const RenderElement: FC<Props> = ({
   }
 
   return (
-    <Component attributes={attributes} element={element} isEdit={false}>
+    <Component attributes={attributes} element={element} dataNodeId={dataNodeId} isEdit={false}>
       {children}
     </Component>
   );
