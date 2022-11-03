@@ -17,7 +17,7 @@
   padding-bottom: 400px;
 
   :global {
-    .yopta-paragraph, .yopta-list-item {
+    .yopta-paragraph, .yopta-list-item, .yopta-block-quote, .yopta-callout {
       font-family: inherit;
       font-style: normal;
       font-weight: 400;

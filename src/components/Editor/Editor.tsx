@@ -166,7 +166,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
 
     // [TODO] - remove text in current node
     // Transforms.delete(editor, { at: editor.selection?.anchor });
-    toggleBlock(editor, type, { isVoid: false, children: [{ text: '' }] }, 'toggle');
+    toggleBlock(editor, type, { isVoid: false, children: [{ text: '' }] });
     hideSuggestionList();
   };
 
@@ -189,10 +189,17 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
     return [];
   };
 
+  const onCloseTools = () => {
+    hideToolbarTools();
+    hideSuggestionList();
+  };
+
+  const handleEmptyZoneClick = () => {};
+
   return (
     <main className={cx(s.editorContainer, options.wrapCls)}>
       <div className={cx(s.editorContent, options.contentCls)}>
-        <OutsideClick onClose={hideToolbarTools}>
+        <OutsideClick onClose={onCloseTools}>
           {/* @ts-ignore */}
           <Toolbar toolbarRef={toolbarRef} toolbarStyle={toolbarStyle} editor={editor} />
           <SuggestionElementList

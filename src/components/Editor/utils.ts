@@ -1,5 +1,4 @@
 import { Editor, Text, Element as SlateElement, Transforms, Range } from 'slate';
-import { ReactEditor } from 'slate-react';
 import { v4 } from 'uuid';
 import { LinkElement } from './types';
 import { ELEMENT_TYPES_MAP } from './constants';
@@ -35,52 +34,15 @@ export const getMatchedNode = (editor: Editor, type: any) => {
 
 export const isBlockActive = (editor: Editor, type: any) => !!getMatchedNode(editor, type);
 
-type ToggleMode = 'toggle' | 'add';
-
 // [TODO] - fix deleting '/' after adding or toggling nodes
 export const toggleBlock = (
   editor: Editor,
   blockType: any,
   data: any = { isVoid: false },
-  mode: ToggleMode = 'toggle',
 ) => {
   Editor.withoutNormalizing(editor, () => {
     const isActive = isBlockActive(editor, blockType);
     const isList = LIST_TYPES.includes(blockType);
-
-    if (mode === 'add') {
-      const node = {
-        id: v4(),
-        type: isList ? 'list-item' : blockType,
-        ...data,
-      };
-
-      if (data.isVoid) {
-        node.type = blockType;
-      }
-
-      const nextPath = editor.selection!.focus.path[0] + 1;
-
-      Transforms.insertNodes(editor, node, {
-        at: {
-          focus: { path: [nextPath, 0], offset: 0 },
-          anchor: { path: [nextPath, 0], offset: 0 },
-        },
-      });
-
-      Transforms.select(editor, { path: [nextPath, 0], offset: 0 });
-      ReactEditor.focus(editor);
-
-      // [TODO] - refactor and fix adding list
-      // if (isList) {
-      //   Transforms.wrapNodes(editor, node, {
-      //     at: { path: [nextPath, 0], offset: 0 },
-      //   });
-      // }
-
-      return;
-    }
-
     const node = {
       id: v4(),
       // eslint-disable-next-line no-nested-ternary
@@ -179,8 +141,10 @@ export const KEYBOARD_SHORTCUTS = {
   '*': ELEMENT_TYPES_MAP['list-item'],
   '-': ELEMENT_TYPES_MAP['list-item'],
   '+': ELEMENT_TYPES_MAP['list-item'],
+  '1.': ELEMENT_TYPES_MAP['list-item'],
   '>': ELEMENT_TYPES_MAP['block-quote'],
   '<': ELEMENT_TYPES_MAP.callout,
+  hw: ELEMENT_TYPES_MAP.code,
   '#': ELEMENT_TYPES_MAP['heading-one'],
   '##': ELEMENT_TYPES_MAP['heading-two'],
   '###': ELEMENT_TYPES_MAP['heading-three'],

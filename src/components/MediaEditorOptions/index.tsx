@@ -16,7 +16,7 @@ const MediaEditorOptions: FC<Props> = ({ handleDelete, handleChangeUrl, hasUrl }
 
   const handleOptionsClick = (e: MouseEvent<HTMLElement>) => {
     e.stopPropagation();
-    setIsOptionsVisible(true);
+    setIsOptionsVisible(!isOptionsVisibile);
   };
 
   return (

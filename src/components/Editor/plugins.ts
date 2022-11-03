@@ -2,7 +2,7 @@
 import { Editor, Element, Range, Transforms, Node, Path } from 'slate';
 import { v4 } from 'uuid';
 import isUrl from 'is-url';
-import { BulletedListElement } from './types';
+import { BulletedListElement, NumberedListElement } from './types';
 import { KEYBOARD_SHORTCUTS, addLinkNode } from './utils';
 import { ELEMENT_TYPES_MAP } from './constants';
 
@@ -49,9 +49,9 @@ export const withShortcuts = (editor: Editor) => {
         });
 
         if (type === 'list-item') {
-          const list: BulletedListElement = {
+          const list: BulletedListElement | NumberedListElement = {
             id: v4(),
-            type: 'bulleted-list',
+            type: beforeText === '-' ? 'bulleted-list' : 'numbered-list',
             children: [],
           };
           Transforms.wrapNodes(editor, list, {

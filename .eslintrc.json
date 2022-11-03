@@ -48,6 +48,7 @@
     "no-return-assign": 0,
     "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "object-curly-spacing": 0,
-    "implicit-arrow-linebreak": 0
+    "implicit-arrow-linebreak": 0,
+    "jsx-a11y/click-events-have-key-events": 0
   }
 }

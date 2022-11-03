@@ -1,8 +1,8 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { withHistory } from 'slate-history';
 import { v4 } from 'uuid';
-import { createEditor, Descendant } from 'slate';
-import { Slate, withReact } from 'slate-react';
+import { createEditor, Descendant, Transforms } from 'slate';
+import { ReactEditor, Slate, withReact } from 'slate-react';
 import { YoptaEditor as Editor } from './components/Editor/Editor';
 import { ScrollProvider } from './contexts/ScrollContext/ScrollContext';
 import {
@@ -61,6 +61,17 @@ const YoptaEditorLib = ({ onChange, value, ...options }: Props) => {
     withFixDeleteFragment(
       withHistory(withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor())))))),
     ));
+
+  useEffect(() => {
+    if (!editor.selection && editor.children.length > 0) {
+      const focusTimeout = setTimeout(() => {
+        Transforms.select(editor, { path: [0, 0], offset: 0 });
+        ReactEditor.focus(editor);
+
+        clearTimeout(focusTimeout);
+      }, 0);
+    }
+  }, []);
 
   const onChangeValue = useCallback(
     (newValue: Descendant[]) => {

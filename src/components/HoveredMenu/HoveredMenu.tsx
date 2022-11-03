@@ -19,7 +19,7 @@ const ElementHover = ({
   dndState,
 }) => {
   const editor = useSlate();
-  const [hovered, setHovered] = useState(false);
+  const [hovered, setHovered] = useState(editor.children.length <= 1);
   const index = ReactEditor.findPath(editor, element)[0];
 
   const isDragging = index === dndState.from;
