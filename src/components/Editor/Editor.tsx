@@ -6,9 +6,8 @@ import { v4 } from 'uuid';
 import { TextLeaf } from './TextLeaf';
 import { RenderElement } from './RenderElement/RenderElement';
 import { Toolbar } from './Toolbar/Toolbar';
-import { ParagraphElement } from './types';
 import { toggleBlock } from './utils';
-import { ELEMENT_TYPES_MAP, IGNORED_SOFT_BREAK_ELEMS } from './constants';
+import { ELEMENT_TYPES_MAP } from './constants';
 import { SuggestionElementList } from './SuggestionElementList/SuggestionElementList';
 import { useDragDrop } from '../../hooks/useDragDrop';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
@@ -16,6 +15,7 @@ import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionM
 import { OutsideClick } from '../OutsideClick';
 import { useSettings } from '../../contexts/SettingsContext/SettingsContext';
 import s from './Editor.module.scss';
+import { ParagraphElement } from './types';
 
 type YoptaProps = { editor: Editor };
 
@@ -116,25 +116,14 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
     const { selection } = editor;
     if (!selection) return;
 
-    const node: any = editor.children[selection?.anchor.path[0] || 0];
     const text = Editor.string(editor, selection.anchor.path);
     const isEnter = event.key === 'Enter';
 
-    if (event.key === 'Backspace' && (text.length === 0 || text === SUGGESTION_TRIGGER)) {
+    if (event.key === 'Meta' || (event.key === 'Backspace' && (text.length === 0 || text === SUGGESTION_TRIGGER))) {
       hideSuggestionList();
     }
 
     if (isEnter) {
-      const newLine: ParagraphElement = {
-        id: v4(),
-        type: 'paragraph',
-        children: [
-          {
-            text: '',
-          },
-        ],
-      };
-
       const isListBlock = Editor.above(editor, {
         match: (n) => {
           return Editor.isBlock(editor, n) && n.type === ELEMENT_TYPES_MAP['list-item'];
@@ -152,7 +141,17 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
         editor.insertText('\n');
       }
 
-      if (!event.shiftKey && !IGNORED_SOFT_BREAK_ELEMS.includes(node.type)) {
+      if (!event.shiftKey) {
+        const newLine: ParagraphElement = {
+          id: v4(),
+          type: 'paragraph',
+          children: [
+            {
+              text: '',
+            },
+          ],
+        };
+
         event.preventDefault();
         // [TODO] - check for void elements
         Transforms.insertNodes(editor, newLine);
@@ -164,8 +163,20 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
     e.preventDefault();
     if (!type) return;
 
-    // [TODO] - remove text in current node
-    // Transforms.delete(editor, { at: editor.selection?.anchor });
+    if (editor.selection) {
+      const { offset, path } = editor.selection.anchor;
+      const text = Editor.string(editor, path);
+
+      if (Range.isCollapsed(editor.selection) && text.length > 0) {
+        Transforms.delete(editor, {
+          at: {
+            anchor: { path, offset: 0 },
+            focus: { path, offset },
+          },
+        });
+      }
+    }
+
     toggleBlock(editor, type, { isVoid: false, children: [{ text: '' }] });
     hideSuggestionList();
   };
@@ -194,11 +205,47 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
     hideSuggestionList();
   };
 
-  const handleEmptyZoneClick = () => {};
+  const handleEmptyZoneClick = (e: MouseEvent<HTMLDivElement>) => {
+    console.log({
+      'e.currentTarget': e.currentTarget,
+      'e.target': e.target,
+      child: editor.children,
+      path: editor.selection?.anchor.path,
+    });
+
+    // if (e.currentTarget === e.target) {
+    //   const newLine: ParagraphElement = {
+    //     id: v4(),
+    //     type: 'paragraph',
+    //     children: [
+    //       {
+    //         text: '',
+    //       },
+    //     ],
+    //   };
+
+    //   console.log(editor.selection);
+
+    //   Transforms.insertNodes(editor, newLine, {
+    //     at: { offset: 0, path: [editor.children.length, 0] },
+    //     match: (node) => {
+    //       if (Editor.isEditor(editor) && SlateElement.isElement(node)) return true;
+    //       return false;
+    //     },
+    //   });
+
+    //   ReactEditor.focus(editor);
+    // }
+  };
 
   return (
-    <main className={cx(s.editorContainer, options.wrapCls)}>
-      <div className={cx(s.editorContent, options.contentCls)}>
+    <main className={cx(s.editorContainer, options.wrapCls, 'yopta-editor')}>
+      <div
+        role="button"
+        tabIndex={0}
+        className={cx(s.editorContent, options.contentCls)}
+        onClick={handleEmptyZoneClick}
+      >
         <OutsideClick onClose={onCloseTools}>
           {/* @ts-ignore */}
           <Toolbar toolbarRef={toolbarRef} toolbarStyle={toolbarStyle} editor={editor} />

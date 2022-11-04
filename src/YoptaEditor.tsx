@@ -16,6 +16,7 @@ import { ActionMenuProvider } from './contexts/ActionMenuContext/ActionMenuConte
 import { SettingsProvider } from './contexts/SettingsContext/SettingsContext';
 import NoSSR from './components/NoSsr/NoSsr';
 import type { LibOptions } from './contexts/SettingsContext/SettingsContext';
+import { CustomEditor } from './components/Editor/types';
 
 type Props = {
   onChange: (_value: Descendant[]) => void;
@@ -57,7 +58,15 @@ const YoptaEditorLib = ({ onChange, value, ...options }: Props) => {
   const storageName = getStorageName(options.shouldStoreInLocalStorage);
   const [val, setVal] = useState(() => getInitialState(options.shouldStoreInLocalStorage, storageName, value));
 
-  const [editor] = useState(() =>
+  // const editorRef = useRef<CustomEditor>();
+  // if (!editorRef.current) {
+  //   editorRef.current = withFixDeleteFragment(
+  //     withHistory(withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor())))))),
+  //   );
+  // }
+  // const editor = editorRef.current;
+
+  const [editor] = useState<CustomEditor>(() =>
     withFixDeleteFragment(
       withHistory(withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor())))))),
     ));

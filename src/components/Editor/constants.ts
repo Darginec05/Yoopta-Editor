@@ -15,12 +15,6 @@ export const ELEMENT_TYPES_MAP = {
   embed: 'embed',
 };
 
-export const IGNORED_SOFT_BREAK_ELEMS = [
-  ELEMENT_TYPES_MAP['bulleted-list'],
-  ELEMENT_TYPES_MAP['numbered-list'],
-  ELEMENT_TYPES_MAP['list-item'],
-];
-
 export const TEXT_ELEMENTS_LIST = [
   ELEMENT_TYPES_MAP['block-quote'],
   ELEMENT_TYPES_MAP['bulleted-list'],

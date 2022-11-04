@@ -26,19 +26,19 @@
   padding: 7px 10px;
   border-radius: 10px;
   background: inherit;
-  transition: background 150ms ease-in-out;
+  // transition: background 150ms ease-in-out;
 
   &:hover, &:focus {
-    background: #61748a;
+    background: #007AFF;
   }
 
   span {
     margin-left: 8px;
   }
 
-  &.__active {
-    background: #007AFF;
-  }
+  // &.__active {
+  //   background: #007AFF;
+  // }
 }
 
 .dropdownButton {

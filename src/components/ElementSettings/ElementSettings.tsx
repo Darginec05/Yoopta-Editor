@@ -62,39 +62,37 @@ const ElementSettings = ({
   };
 
   return (
-    <OutsideClick onClose={handleClose}>
-      <div
-        className={cx(s.root, 'yopta-element_settings')}
-        aria-hidden
-        onMouseDown={stopPropagation}
-        ref={settingsRef}
-        contentEditable={false}
-        onClick={stopPropagation}
-      >
-        <div className={s.content}>
-          <div className={s.listSettings}>
-            <button type="button" onClick={onDeleteNode} className={s.settingsButton}>
-              <DeleteIcon />
-              <span>Delete</span>
-            </button>
-            <button type="button" onClick={onDuplicateNode} className={s.settingsButton}>
-              <DuplicateIcon />
-              <span>Duplicate</span>
-            </button>
-            {!isVoidElement && (
-              <button type="button" onClick={onTransformIntoNode} className={s.settingsButton}>
-                <ChangeIcon />
-                <span>Change into</span>
-              </button>
-            )}
-            <button type="button" onClick={onCopyLinkNode} className={s.settingsButton}>
-              <CopyIcon />
-              <span>Copy block link </span>
-            </button>
-          </div>
+    <div
+      className={cx(s.root, 'yopta-element_settings')}
+      aria-hidden
+      onMouseDown={stopPropagation}
+      ref={settingsRef}
+      contentEditable={false}
+      onClick={stopPropagation}
+    >
+      <div className={s.content}>
+        <div className={s.listSettings}>
+          <button type="button" onClick={onDeleteNode} className={s.settingsButton}>
+            <DeleteIcon />
+            <span>Delete</span>
+          </button>
+          <button type="button" onClick={onDuplicateNode} className={s.settingsButton}>
+            <DuplicateIcon />
+            <span>Duplicate</span>
+          </button>
+          {!isVoidElement && (
+          <button type="button" onClick={onTransformIntoNode} className={s.settingsButton}>
+            <ChangeIcon />
+            <span>Change into</span>
+          </button>
+          )}
+          <button type="button" onClick={onCopyLinkNode} className={s.settingsButton}>
+            <CopyIcon />
+            <span>Copy block link </span>
+          </button>
         </div>
       </div>
-    </OutsideClick>
+    </div>
   );
 };
 

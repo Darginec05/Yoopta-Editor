@@ -4,6 +4,8 @@
   justify-content: center;
   position: relative;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizelegibility;
 }
 
 .editorContent {

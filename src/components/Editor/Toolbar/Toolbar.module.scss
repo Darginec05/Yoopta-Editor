@@ -8,6 +8,7 @@
   background-color: #222;
   border-radius: 10px;
   transition: opacity 350ms;
+  user-select: none;
 
   & > * {
     display: inline-block;

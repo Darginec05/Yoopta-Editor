@@ -58,8 +58,10 @@ const ElementHover = ({
         Transforms.insertNodes(editor, duplicatedNode, {
           at: { offset: 0, path: [editor.selection.anchor.path[0], 0] },
           match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
+          select: true,
         });
 
+        // Transforms.select(editor, [editor.selection!.anchor.path[0], editor.selection?.anchor.path[1]]);
         ReactEditor.focus(editor);
       }
     }
@@ -67,7 +69,6 @@ const ElementHover = ({
 
   const handleCopyLinkNode = () => {
     copy(`${window.location.origin}#${element.id}`);
-    // alert.info('Link successfully copied', { position: 'right' });
   };
 
   return (

@@ -3,13 +3,6 @@ import { v4 } from 'uuid';
 import { LinkElement } from './types';
 import { ELEMENT_TYPES_MAP } from './constants';
 
-export const HOTKEYS: Record<string, string> = {
-  'mod+b': 'bold',
-  'mod+i': 'italic',
-  'mod+u': 'underline',
-  'mod+`': 'code',
-};
-
 export const LIST_TYPES = ['numbered-list', 'bulleted-list'];
 
 export const isMarkActive = (editor: Editor, mark: any): boolean => {
