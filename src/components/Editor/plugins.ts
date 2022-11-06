@@ -4,9 +4,7 @@ import { v4 } from 'uuid';
 import isUrl from 'is-url';
 import { BulletedListElement, NumberedListElement } from './types';
 import { KEYBOARD_SHORTCUTS, addLinkNode } from './utils';
-import { ELEMENT_TYPES_MAP } from './constants';
-
-export const VOID_ELEMENTS = [ELEMENT_TYPES_MAP.video, ELEMENT_TYPES_MAP.image, ELEMENT_TYPES_MAP.embed];
+import { VOID_ELEMENTS } from './constants';
 
 export const withVoidNodes = (editor: Editor) => {
   const { isVoid } = editor;

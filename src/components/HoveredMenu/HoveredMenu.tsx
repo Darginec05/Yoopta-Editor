@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
 import cx from 'classnames';
 import { HoveredMenuItem } from './HoveredMenuItem';
-import { VOID_ELEMENTS } from '../Editor/plugins';
+import { VOID_ELEMENTS } from '../Editor/constants';
 import s from './HoveredMenu.module.scss';
 
 const ElementHover = ({
