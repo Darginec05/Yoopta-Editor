@@ -7,7 +7,7 @@ import { TextLeaf } from './TextLeaf';
 import { RenderElement } from './RenderElement/RenderElement';
 import { Toolbar } from './Toolbar/Toolbar';
 import { toggleBlock } from './utils';
-import { ELEMENT_TYPES_MAP } from './constants';
+import { ELEMENT_TYPES_MAP, TEXT_ELEMENTS_LIST, VOID_ELEMENTS } from './constants';
 import { SuggestionElementList } from './SuggestionElementList/SuggestionElementList';
 import { useDragDrop } from '../../hooks/useDragDrop';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
@@ -97,7 +97,6 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
   const onKeyUp = useCallback(
     (event) => {
       if (!editor.selection) return;
-
       const text = Editor.string(editor, editor.selection.anchor.path);
 
       // [TODO] - make trigger not only empty paragraph
@@ -116,6 +115,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
     const { selection } = editor;
     if (!selection) return;
 
+    const node: any = editor.children[editor.selection?.anchor.path[0] || 0];
     const text = Editor.string(editor, selection.anchor.path);
     const isEnter = event.key === 'Enter';
 
@@ -132,7 +132,6 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
 
       if (isListBlock && text.trim() === '') {
         event.preventDefault();
-        toggleBlock(editor, 'paragraph');
         return;
       }
 
@@ -140,21 +139,27 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
         event.preventDefault();
         editor.insertText('\n');
       }
+      const newLine: ParagraphElement = {
+        id: v4(),
+        type: 'paragraph',
+        children: [
+          {
+            text: '',
+          },
+        ],
+      };
 
       if (!event.shiftKey) {
-        const newLine: ParagraphElement = {
-          id: v4(),
-          type: 'paragraph',
-          children: [
-            {
-              text: '',
-            },
-          ],
-        };
-
-        event.preventDefault();
-        // [TODO] - check for void elements
-        Transforms.insertNodes(editor, newLine);
+        // change next element to paragraph
+        if (TEXT_ELEMENTS_LIST.includes(node.type)) {
+          event.preventDefault();
+          Transforms.splitNodes(editor, { always: true });
+          Transforms.setNodes(editor, newLine);
+        // add new line in case of void element (e.g. image)
+        } else if (VOID_ELEMENTS.includes(node.type)) {
+          event.preventDefault();
+          Transforms.insertNodes(editor, newLine);
+        }
       }
     }
   }, []);

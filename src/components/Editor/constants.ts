@@ -28,3 +28,9 @@ export const TEXT_ELEMENTS_LIST = [
   ELEMENT_TYPES_MAP.callout,
   ELEMENT_TYPES_MAP.code,
 ];
+
+export const VOID_ELEMENTS = [
+  ELEMENT_TYPES_MAP.video,
+  ELEMENT_TYPES_MAP.image,
+  ELEMENT_TYPES_MAP.embed,
+];
