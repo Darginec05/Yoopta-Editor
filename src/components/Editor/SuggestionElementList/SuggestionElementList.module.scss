@@ -29,16 +29,16 @@
   // transition: background 150ms ease-in-out;
 
   &:hover, &:focus {
-    background: #007AFF;
+    background: #383835;
   }
 
   span {
     margin-left: 8px;
   }
 
-  // &.__active {
-  //   background: #007AFF;
-  // }
+  &.__active {
+    background: #007AFF;
+  }
 }
 
 .dropdownButton {

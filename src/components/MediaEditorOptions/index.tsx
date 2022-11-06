@@ -1,6 +1,5 @@
-import { FC, MouseEvent, useState } from 'react';
-import { Fade } from '../Fade';
-import { OutsideClick } from '../OutsideClick';
+import { FC, MouseEvent, useRef, useState } from 'react';
+import { Modal } from '../Modal/Modal';
 import s from './MediaEditorOptions.module.scss';
 
 type Props = {
@@ -13,6 +12,7 @@ type Props = {
 
 const MediaEditorOptions: FC<Props> = ({ handleDelete, handleChangeUrl, hasUrl }) => {
   const [isOptionsVisibile, setIsOptionsVisible] = useState(false);
+  const handlerRef = useRef<HTMLDivElement>(null);
 
   const handleOptionsClick = (e: MouseEvent<HTMLElement>) => {
     e.stopPropagation();
@@ -20,12 +20,14 @@ const MediaEditorOptions: FC<Props> = ({ handleDelete, handleChangeUrl, hasUrl }
   };
 
   return (
-    <div aria-hidden className={s.button} onClick={handleOptionsClick}>
-      <div className={s.dot} />
-      <div className={s.dot} />
-      <div className={s.dot} />
-      <OutsideClick onClose={() => setIsOptionsVisible(false)}>
-        <Fade show={isOptionsVisibile} animationDelay={150}>
+    <div role="button" tabIndex={0} className={s.button} onClick={handleOptionsClick} ref={handlerRef}>
+      <div className={s.dots}>
+        <div className={s.dot} />
+        <div className={s.dot} />
+        <div className={s.dot} />
+      </div>
+      {isOptionsVisibile && (
+        <Modal onClose={() => setIsOptionsVisible(false)} handlerRef={handlerRef}>
           <div className={s.modal}>
             <button type="button" onClick={handleChangeUrl}>
               {hasUrl ? 'Change link' : 'Add link'}
@@ -34,8 +36,8 @@ const MediaEditorOptions: FC<Props> = ({ handleDelete, handleChangeUrl, hasUrl }
               Delete
             </button>
           </div>
-        </Fade>
-      </OutsideClick>
+        </Modal>
+      )}
     </div>
   );
 };

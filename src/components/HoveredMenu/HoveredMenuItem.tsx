@@ -1,9 +1,9 @@
 import { useRef, useState } from 'react';
 import PlusIcon from '../../icons/add.svg';
 import DragIcon from '../../icons/drag.svg';
-import { Fade } from '../Fade';
 import { ElementSettings } from '../ElementSettings/ElementSettings';
 import { useScrollContext } from '../../contexts/ScrollContext/ScrollContext';
+import { Modal } from '../Modal/Modal';
 import s from './HoveredMenu.module.scss';
 
 export const HoveredMenuItem = ({
@@ -18,7 +18,7 @@ export const HoveredMenuItem = ({
   handleCopyLinkNode,
   isVoidElement,
 }: any) => {
-  const handlerRef = useRef<HTMLDivElement>(null);
+  const handlerRef = useRef<HTMLButtonElement>(null);
   const [isOpenSettingsOpen, setSettingsOpen] = useState(false);
   const { enableScroll, disableScroll } = useScrollContext();
 
@@ -46,7 +46,7 @@ export const HoveredMenuItem = ({
     disableScroll();
   };
 
-  const getOpacity = () => {
+  const getVisibility = () => {
     if (isDragging) return 0;
     if (isOpenSettingsOpen || hovered) return 1;
 
@@ -54,30 +54,32 @@ export const HoveredMenuItem = ({
   };
 
   return (
-    <div className={s.hoverSettings} style={{ opacity: getOpacity() }}>
+    <div className={s.hoverSettings} style={{ opacity: getVisibility() }}>
       <div className={s.actions}>
         <button type="button" onClick={handlePlusButton} className={s.hoverSettingsItem}>
           <PlusIcon />
         </button>
-        <div
-          aria-hidden
+        <button
           className={s.hoverSettingsItem}
           onMouseDown={onMouseDown}
           onClick={onOpenMenu}
           ref={handlerRef}
+          type="button"
         >
           <DragIcon />
-          <Fade animationDelay={150} show={isOpenSettingsOpen}>
-            <ElementSettings
-              handleDeleteNode={handleDeleteNode}
-              handleDuplicateNode={handleDuplicateNode}
-              handleCopyLinkNode={handleCopyLinkNode}
-              isVoidElement={isVoidElement}
-              onClose={onClose}
-            />
-          </Fade>
-        </div>
+        </button>
       </div>
+      {isOpenSettingsOpen && (
+        <Modal handlerRef={handlerRef} onClose={() => setSettingsOpen(false)}>
+          <ElementSettings
+            handleDeleteNode={handleDeleteNode}
+            handleDuplicateNode={handleDuplicateNode}
+            handleCopyLinkNode={handleCopyLinkNode}
+            isVoidElement={isVoidElement}
+            onClose={onClose}
+          />
+        </Modal>
+      )}
     </div>
   );
 };

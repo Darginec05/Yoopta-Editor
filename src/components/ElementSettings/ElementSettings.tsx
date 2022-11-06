@@ -5,20 +5,11 @@ import DuplicateIcon from './icons/duplicate.svg';
 import CopyIcon from './icons/copy.svg';
 import ChangeIcon from './icons/change.svg';
 import { useActionMenuContext } from '../../contexts/ActionMenuContext/ActionMenuContext';
-import { OutsideClick } from '../OutsideClick';
 import s from './ElementSettings.module.scss';
 
-const ElementSettings = ({
-  handleDeleteNode,
-  handleDuplicateNode,
-  isVoidElement,
-  handleCopyLinkNode,
-  onClose,
-}) => {
+const ElementSettings = ({ handleDeleteNode, handleDuplicateNode, isVoidElement, handleCopyLinkNode, onClose }) => {
   const settingsRef = useRef<HTMLDivElement>(null);
   const { showSuggestionList, hideSuggestionList, isSuggesstionListOpen } = useActionMenuContext();
-
-  const stopPropagation = (e) => e.stopPropagation();
 
   const handleClose = () => {
     if (isSuggesstionListOpen) hideSuggestionList();
@@ -46,6 +37,7 @@ const ElementSettings = ({
       top: settingsRect.top - settingsRect.height / 2,
       bottom: 'auto',
       opacity: 1,
+      zIndex: 1400,
     };
 
     const options = {
@@ -62,14 +54,7 @@ const ElementSettings = ({
   };
 
   return (
-    <div
-      className={cx(s.root, 'yopta-element_settings')}
-      aria-hidden
-      onMouseDown={stopPropagation}
-      ref={settingsRef}
-      contentEditable={false}
-      onClick={stopPropagation}
-    >
+    <div className={cx(s.root, 'yopta-element_settings')} aria-hidden ref={settingsRef} contentEditable={false}>
       <div className={s.content}>
         <div className={s.listSettings}>
           <button type="button" onClick={onDeleteNode} className={s.settingsButton}>
@@ -81,10 +66,10 @@ const ElementSettings = ({
             <span>Duplicate</span>
           </button>
           {!isVoidElement && (
-          <button type="button" onClick={onTransformIntoNode} className={s.settingsButton}>
-            <ChangeIcon />
-            <span>Change into</span>
-          </button>
+            <button type="button" onClick={onTransformIntoNode} className={s.settingsButton}>
+              <ChangeIcon />
+              <span>Change into</span>
+            </button>
           )}
           <button type="button" onClick={onCopyLinkNode} className={s.settingsButton}>
             <CopyIcon />

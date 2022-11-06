@@ -14,8 +14,8 @@ import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionMenuContext/ActionMenuContext';
 import { OutsideClick } from '../OutsideClick';
 import { useSettings } from '../../contexts/SettingsContext/SettingsContext';
-import s from './Editor.module.scss';
 import { ParagraphElement } from './types';
+import s from './Editor.module.scss';
 
 type YoptaProps = { editor: Editor };
 
@@ -211,12 +211,12 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
   };
 
   const handleEmptyZoneClick = (e: MouseEvent<HTMLDivElement>) => {
-    console.log({
-      'e.currentTarget': e.currentTarget,
-      'e.target': e.target,
-      child: editor.children,
-      path: editor.selection?.anchor.path,
-    });
+    // console.log({
+    //   'e.currentTarget': e.currentTarget,
+    //   'e.target': e.target,
+    //   child: editor.children,
+    //   path: editor.selection?.anchor.path,
+    // });
 
     // if (e.currentTarget === e.target) {
     //   const newLine: ParagraphElement = {
@@ -231,20 +231,28 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
 
     //   console.log(editor.selection);
 
-    //   Transforms.insertNodes(editor, newLine, {
-    //     at: { offset: 0, path: [editor.children.length, 0] },
-    //     match: (node) => {
-    //       if (Editor.isEditor(editor) && SlateElement.isElement(node)) return true;
-    //       return false;
-    //     },
+    //   Transforms.select(editor, {
+    //     path: [editor.children.length, 0],
+    //     offset: 0,
     //   });
+    //   Transforms.insertNodes(editor, newLine);
 
-    //   ReactEditor.focus(editor);
+    //   // Transforms.insertNodes(editor, newLine, {
+    //   //   at: { offset: 0, path: [editor.children.length, 0] },
+    //   //   match: (node) => {
+    //   //     if (Editor.isEditor(editor) && SlateElement.isElement(node)) return true;
+    //   //     return false;
+    //   //   },
+    //   // });
+
+    //   // ReactEditor.focus(editor);
     // }
   };
 
+  console.log(suggesstionListStyle);
+
   return (
-    <main className={cx(s.editorContainer, options.wrapCls, 'yopta-editor')}>
+    <main id="yopta-editor" className={cx(s.editorContainer, options.wrapCls)}>
       <div
         role="button"
         tabIndex={0}
