@@ -1,40 +1,39 @@
 import { Transforms, Editor, Element as SlateElement } from 'slate';
 import { v4 } from 'uuid';
 import copy from 'copy-to-clipboard';
-import { useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
 import cx from 'classnames';
 import { HoveredMenuItem } from './HoveredMenuItem';
 import { VOID_ELEMENTS } from '../Editor/constants';
+import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import s from './HoveredMenu.module.scss';
 
 const ElementHover = ({
   children,
   element,
   attributes,
-  onPlusButtonClick,
   onDragStart,
   onDragEnd,
   onDrop,
   dndState,
 }) => {
   const editor = useSlate();
-  const [hovered, setHovered] = useState(editor.children.length <= 1);
   const index = ReactEditor.findPath(editor, element)[0];
+  const { onHover, onHoverOut, hoveredNodeId, onPlusButtonClick } = useNodeSettingsContext();
 
   const isDragging = index === dndState.from;
   const isOver = index === dndState.to;
   const isOverSelf = isDragging && isOver;
 
   const opacity = isDragging ? 0.4 : 1;
+  const hovered = hoveredNodeId === element.id;
 
-  const onHover = () => setHovered(true);
-  const onHoverOut = () => setHovered(false);
-
-  const handlePlusButton = () => {
-    onHoverOut();
-    onPlusButtonClick(element);
+  const onMouseEnter = () => {
+    onHover(element.id);
   };
+  const onMouseLeave = () => onHoverOut();
+
+  const handlePlusButton = () => onPlusButtonClick(element);
 
   const handleDeleteNode = () => {
     Transforms.removeNodes(editor, {
@@ -79,8 +78,8 @@ const ElementHover = ({
       })}
       data-node-id={element.id}
       data-node-type={element.type}
-      onMouseEnter={onHover}
-      onMouseLeave={onHoverOut}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       style={{ opacity }}
       onDrop={onDrop}
       {...attributes}

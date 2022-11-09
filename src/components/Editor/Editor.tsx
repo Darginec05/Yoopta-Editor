@@ -1,4 +1,4 @@
-import { Editor, Transforms, Element as SlateElement, Range } from 'slate';
+import { Editor, Transforms, Range } from 'slate';
 import { useCallback, KeyboardEvent, MouseEvent } from 'react';
 import cx from 'classnames';
 import { Editable, ReactEditor } from 'slate-react';
@@ -7,7 +7,7 @@ import { TextLeaf } from './TextLeaf';
 import { RenderElement } from './RenderElement/RenderElement';
 import { Toolbar } from './Toolbar/Toolbar';
 import { LIST_TYPES, toggleBlock } from './utils';
-import { ELEMENT_TYPES_MAP, TEXT_ELEMENTS_LIST, VOID_ELEMENTS } from './constants';
+import { TEXT_ELEMENTS_LIST, VOID_ELEMENTS } from './constants';
 import { SuggestionElementList } from './SuggestionElementList/SuggestionElementList';
 import { useDragDrop } from '../../hooks/useDragDrop';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
@@ -15,11 +15,13 @@ import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionM
 import { useSettings } from '../../contexts/SettingsContext/SettingsContext';
 import { ParagraphElement } from './types';
 import s from './Editor.module.scss';
+import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 
 type YoptaProps = { editor: Editor };
 
 const YoptaEditor = ({ editor }: YoptaProps) => {
   const { options } = useSettings();
+  const { onChangeHoveredNodeId } = useNodeSettingsContext();
 
   useScrollToElement();
 
@@ -39,50 +41,11 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
   } = useActionMenuContext();
 
   const isReadOnly = isDisableByDrag;
-
-  const onPlusButtonClick = (element) => {
-    const path = ReactEditor.findPath(editor, element);
-    const currentNode: any = editor.children[path[0]];
-    const after = Editor.after(editor, path);
-    showSuggestionList(undefined, { triggeredBySuggestion: true });
-
-    const node: any = {
-      id: v4(),
-      type: ELEMENT_TYPES_MAP.paragraph,
-      isVoid: false,
-      children: [{ text: '' }],
-    };
-
-    const isEmptyNode = Editor.string(editor, path).trim().length === 0;
-    const isVoidNode = Editor.isVoid(editor, currentNode);
-    const afterPath = after || [path[0] + 1];
-
-    if (!isEmptyNode || isVoidNode) {
-      Transforms.insertNodes(editor, node, {
-        at: afterPath,
-        match: (n) => SlateElement.isElement(n),
-      });
-    }
-
-    const focusTimeout = setTimeout(() => {
-      Transforms.select(editor, isEmptyNode && !isVoidNode ? path : afterPath);
-      ReactEditor.focus(editor);
-
-      const selectionTimeout = setTimeout(() => {
-        showSuggestionList(undefined, { triggeredBySuggestion: true });
-        clearTimeout(selectionTimeout);
-      }, 0);
-
-      clearTimeout(focusTimeout);
-    }, 0);
-  };
-
+  
   const renderLeaf = useCallback((leafProps) => <TextLeaf isEdit {...leafProps} />, []);
-
   const renderElement = useCallback(
     (elemProps) => (
       <RenderElement
-        onPlusButtonClick={onPlusButtonClick}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
         onDrop={onDrop}
@@ -138,7 +101,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
         editor.insertText('\n');
       }
 
-      const newLine: ParagraphElement = {
+      const lineParagraph: ParagraphElement = {
         id: v4(),
         type: 'paragraph',
         children: [
@@ -153,12 +116,14 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
         if (isTextNode) {
           event.preventDefault();
           Transforms.splitNodes(editor, { always: true });
-          Transforms.setNodes(editor, newLine);
+          Transforms.setNodes(editor, lineParagraph);
           // add new line in case of void element (e.g. image)
         } else if (isVoidNode) {
           event.preventDefault();
-          Transforms.insertNodes(editor, newLine);
+          Transforms.insertNodes(editor, lineParagraph);
         }
+
+        onChangeHoveredNodeId(lineParagraph.id);
       }
     }
   }, []);
@@ -233,13 +198,12 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
         unit: 'block',
       });
 
-      if (after) {
-        Transforms.select(editor, {
-          path: after?.path,
-          offset: after?.offset || 0,
-        });
-      }
-      const newLine: ParagraphElement = {
+      Transforms.select(editor, {
+        path: after?.path || location.anchor.path,
+        offset: after?.offset || 0,
+      });
+
+      const lineParagraph: ParagraphElement = {
         id: v4(),
         type: 'paragraph',
         children: [
@@ -249,7 +213,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
         ],
       };
 
-      Editor.insertNode(editor, newLine);
+      Editor.insertNode(editor, lineParagraph);
       ReactEditor.focus(editor);
     });
   };

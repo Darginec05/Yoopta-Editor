@@ -17,6 +17,7 @@ import { SettingsProvider } from './contexts/SettingsContext/SettingsContext';
 import NoSSR from './components/NoSsr/NoSsr';
 import type { LibOptions } from './contexts/SettingsContext/SettingsContext';
 import { CustomEditor } from './components/Editor/types';
+import { NodeSettingsProvider } from './contexts/NodeSettingsContext/NodeSettingsContext';
 
 type Props = {
   onChange: (_value: Descendant[]) => void;
@@ -69,7 +70,8 @@ const YoptaEditorLib = ({ onChange, value, ...options }: Props) => {
   const [editor] = useState<CustomEditor>(() =>
     withFixDeleteFragment(
       withHistory(withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor())))))),
-    ));
+    ),
+  );
 
   useEffect(() => {
     if (!editor.selection && editor.children.length > 0) {
@@ -106,7 +108,9 @@ const YoptaEditorLib = ({ onChange, value, ...options }: Props) => {
       <SettingsProvider options={options}>
         <ScrollProvider>
           <ActionMenuProvider>
-            <Editor editor={editor} />
+            <NodeSettingsProvider>
+              <Editor editor={editor} />
+            </NodeSettingsProvider>
           </ActionMenuProvider>
         </ScrollProvider>
       </SettingsProvider>

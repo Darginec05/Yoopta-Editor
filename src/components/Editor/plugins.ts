@@ -2,7 +2,7 @@
 import { Editor, Element, Range, Transforms, Node, Path } from 'slate';
 import { v4 } from 'uuid';
 import isUrl from 'is-url';
-import { BulletedListElement, NumberedListElement } from './types';
+import { BulletedListElement, NumberedListElement, ParagraphElement } from './types';
 import { KEYBOARD_SHORTCUTS, addLinkNode } from './utils';
 import { VOID_ELEMENTS } from './constants';
 
@@ -149,7 +149,18 @@ export const withFixDeleteFragment = (editor: Editor) => {
     const { selection } = editor;
 
     if (selection && Range.isExpanded(selection)) {
-      Transforms.delete(editor, { hanging: true });
+      const lineParagraph: ParagraphElement = {
+        id: v4(),
+        type: 'paragraph',
+        children: [
+          {
+            text: '',
+          },
+        ],
+      };
+
+      Transforms.delete(editor, { hanging: false });
+      Transforms.setNodes(editor, lineParagraph);
     }
   };
   return editor;

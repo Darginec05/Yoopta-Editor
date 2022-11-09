@@ -43,7 +43,6 @@ type Props = RenderElementProps & {
   dataNodeId?: string;
   isEdit?: boolean;
   dndState: any;
-  onPlusButtonClick?: () => void;
   onDragStart?: () => void;
   onDragEnd?: () => void;
   onDrop?: () => void;
@@ -57,7 +56,6 @@ const RenderElement: FC<Props> = ({
   dndState,
   children,
   attributes,
-  onPlusButtonClick,
   dataNodeId,
   isEdit = true,
 }) => {
@@ -81,7 +79,6 @@ const RenderElement: FC<Props> = ({
         onDragEnd={onDragEnd}
         onDrop={onDrop}
         dndState={dndState}
-        onPlusButtonClick={onPlusButtonClick}
       >
         <Component dataNodeId={undefined} isEdit attributes={{}} element={element}>
           {children}
