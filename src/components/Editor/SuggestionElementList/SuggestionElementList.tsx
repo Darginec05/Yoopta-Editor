@@ -80,10 +80,9 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
       return undefined;
     }
 
-    let focusableItem = 0;
+    const focusableItem = 0;
 
     const firstElement = elementRefs.current[focusableItem]?.current;
-    const lastElement = elementRefs.current.at(-1)?.current;
 
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') {
@@ -91,9 +90,6 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
         event.stopPropagation();
         return onClose?.();
       }
-
-      const isLastElementFocusable = document.activeElement === lastElement;
-      const isFirstElementFocusable = document.activeElement === firstElement;
 
       /** @ts-ignore */
       const isChildFocused = ref?.current?.contains(document.activeElement);
@@ -104,41 +100,10 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
         else firstElement?.focus();
       }
 
-      if (event.key === 'Tab' && !event.shiftKey) {
-        focusableItem += 1;
-
-        if (isLastElementFocusable) {
-          focusableItem = 0;
-          firstElement?.focus();
-          event.preventDefault();
-        }
-      } else if (event.key === 'Tab' && event.shiftKey) {
-        focusableItem -= 1;
-
-        if (isFirstElementFocusable) {
-          focusableItem = elementRefs.current.length - 1;
-          lastElement?.focus();
-          event.preventDefault();
-        }
-      } else if (event.key === 'ArrowUp') {
-        focusableItem -= 1;
-
-        if (isFirstElementFocusable) focusableItem = elementRefs.current.length - 1;
-        elementRefs.current[focusableItem]?.current?.focus();
-        event.preventDefault();
-      } else if (event.key === 'ArrowDown') {
-        focusableItem += 1;
-
-        if (isLastElementFocusable) focusableItem = 0;
-        elementRefs.current[focusableItem]?.current?.focus();
-        event.preventDefault();
-      } else if (event.key === 'Enter') {
+      if (event.key === 'Enter') {
         event.preventDefault();
         const currentSelectedType = document.activeElement as HTMLButtonElement;
-        // TODO - bug
         handleBlockClick(event, currentSelectedType?.dataset.type || ELEMENT_TYPES_MAP['heading-one']);
-      } else if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-        event.preventDefault();
         onClose?.();
       }
     };

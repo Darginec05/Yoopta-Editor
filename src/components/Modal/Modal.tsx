@@ -1,5 +1,6 @@
 import { CSSProperties, ReactNode, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
+import cx from 'classnames';
 import s from './Modal.module.scss';
 
 type ModalProps = {
@@ -7,6 +8,8 @@ type ModalProps = {
   handlerRef?: any;
   children: ReactNode;
   className?: string;
+  keepMounted?: boolean;
+  isOpen?: boolean;
 };
 
 const Modal = ({ onClose, handlerRef, className = 'portal', children }: ModalProps) => {
@@ -34,7 +37,12 @@ const Modal = ({ onClose, handlerRef, className = 'portal', children }: ModalPro
   }, [handlerRef]);
 
   const node = (
-    <div role="presentation" data-overlay="true" className={s.modalWrap} onClick={onClose}>
+    <div
+      role="presentation"
+      data-overlay="true"
+      className={cx(s.modalWrap)}
+      onClick={onClose}
+    >
       <div className={s.modalFake} />
       <div className={s.modalContent} style={contentPosition} onClick={(e) => e.stopPropagation()} aria-hidden>
         {children}

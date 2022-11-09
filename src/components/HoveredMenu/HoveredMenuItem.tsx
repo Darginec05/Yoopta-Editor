@@ -70,7 +70,7 @@ export const HoveredMenuItem = ({
         </button>
       </div>
       {isOpenSettingsOpen && (
-        <Modal handlerRef={handlerRef} onClose={() => setSettingsOpen(false)}>
+        <Modal handlerRef={handlerRef} isOpen onClose={() => setSettingsOpen(false)}>
           <ElementSettings
             handleDeleteNode={handleDeleteNode}
             handleDuplicateNode={handleDuplicateNode}

@@ -6,13 +6,12 @@ import { v4 } from 'uuid';
 import { TextLeaf } from './TextLeaf';
 import { RenderElement } from './RenderElement/RenderElement';
 import { Toolbar } from './Toolbar/Toolbar';
-import { toggleBlock } from './utils';
+import { LIST_TYPES, toggleBlock } from './utils';
 import { ELEMENT_TYPES_MAP, TEXT_ELEMENTS_LIST, VOID_ELEMENTS } from './constants';
 import { SuggestionElementList } from './SuggestionElementList/SuggestionElementList';
 import { useDragDrop } from '../../hooks/useDragDrop';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionMenuContext/ActionMenuContext';
-import { OutsideClick } from '../OutsideClick';
 import { useSettings } from '../../contexts/SettingsContext/SettingsContext';
 import { ParagraphElement } from './types';
 import s from './Editor.module.scss';
@@ -115,7 +114,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
     const { selection } = editor;
     if (!selection) return;
 
-    const node: any = editor.children[editor.selection?.anchor.path[0] || 0];
+    const currentNode: any = editor.children[editor.selection?.anchor.path[0] || 0];
     const text = Editor.string(editor, selection.anchor.path);
     const isEnter = event.key === 'Enter';
 
@@ -124,14 +123,13 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
     }
 
     if (isEnter) {
-      const isListBlock = Editor.above(editor, {
-        match: (n) => {
-          return Editor.isBlock(editor, n) && n.type === ELEMENT_TYPES_MAP['list-item'];
-        },
-      });
+      const isListNode = LIST_TYPES.includes(currentNode.type);
+      const isVoidNode = VOID_ELEMENTS.includes(currentNode.type);
+      const isTextNode = TEXT_ELEMENTS_LIST.includes(currentNode.type);
 
-      if (isListBlock && text.trim() === '') {
+      if (isListNode && text.trim() === '') {
         event.preventDefault();
+        toggleBlock(editor, 'paragraph');
         return;
       }
 
@@ -139,6 +137,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
         event.preventDefault();
         editor.insertText('\n');
       }
+
       const newLine: ParagraphElement = {
         id: v4(),
         type: 'paragraph',
@@ -149,14 +148,14 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
         ],
       };
 
-      if (!event.shiftKey) {
+      if (!event.shiftKey && !isListNode) {
         // change next element to paragraph
-        if (TEXT_ELEMENTS_LIST.includes(node.type)) {
+        if (isTextNode) {
           event.preventDefault();
           Transforms.splitNodes(editor, { always: true });
           Transforms.setNodes(editor, newLine);
-        // add new line in case of void element (e.g. image)
-        } else if (VOID_ELEMENTS.includes(node.type)) {
+          // add new line in case of void element (e.g. image)
+        } else if (isVoidNode) {
           event.preventDefault();
           Transforms.insertNodes(editor, newLine);
         }
@@ -166,12 +165,22 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
 
   const handleBlockClick = (e: MouseEvent<HTMLButtonElement>, type?: string) => {
     e.preventDefault();
+
     if (!type) return;
 
     if (editor.selection) {
       const { offset, path } = editor.selection.anchor;
+      const currentNode: any = editor.children[path[0]];
+
+      if (currentNode.type === type) return hideSuggestionList();
+
       const text = Editor.string(editor, path);
 
+      console.log(Range.isCollapsed(editor.selection));
+      console.log(editor.selection.anchor);
+      console.log(text);
+
+      // TODO - fix it
       if (Range.isCollapsed(editor.selection) && text.length > 0) {
         Transforms.delete(editor, {
           at: {
@@ -211,67 +220,68 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
   };
 
   const handleEmptyZoneClick = (e: MouseEvent<HTMLDivElement>) => {
-    // console.log({
-    //   'e.currentTarget': e.currentTarget,
-    //   'e.target': e.target,
-    //   child: editor.children,
-    //   path: editor.selection?.anchor.path,
-    // });
+    if (e.currentTarget !== e.target || !editor.selection) return;
+    e.preventDefault();
 
-    // if (e.currentTarget === e.target) {
-    //   const newLine: ParagraphElement = {
-    //     id: v4(),
-    //     type: 'paragraph',
-    //     children: [
-    //       {
-    //         text: '',
-    //       },
-    //     ],
-    //   };
+    Editor.withoutNormalizing(editor, () => {
+      const location = {
+        anchor: { path: [editor.children.length - 1, 0], offset: 0 },
+        focus: { path: [editor.children.length - 1, 0], offset: 0 },
+      };
 
-    //   console.log(editor.selection);
+      const after = Editor.after(editor, location, {
+        unit: 'block',
+      });
 
-    //   Transforms.select(editor, {
-    //     path: [editor.children.length, 0],
-    //     offset: 0,
-    //   });
-    //   Transforms.insertNodes(editor, newLine);
+      if (after) {
+        Transforms.select(editor, {
+          path: after?.path,
+          offset: after?.offset || 0,
+        });
+      }
+      const newLine: ParagraphElement = {
+        id: v4(),
+        type: 'paragraph',
+        children: [
+          {
+            text: '',
+          },
+        ],
+      };
 
-    //   // Transforms.insertNodes(editor, newLine, {
-    //   //   at: { offset: 0, path: [editor.children.length, 0] },
-    //   //   match: (node) => {
-    //   //     if (Editor.isEditor(editor) && SlateElement.isElement(node)) return true;
-    //   //     return false;
-    //   //   },
-    //   // });
-
-    //   // ReactEditor.focus(editor);
-    // }
+      Editor.insertNode(editor, newLine);
+      ReactEditor.focus(editor);
+    });
   };
 
-  console.log(suggesstionListStyle);
-
   return (
-    <main id="yopta-editor" className={cx(s.editorContainer, options.wrapCls)}>
+    <main
+      id="yopta-editor"
+      aria-hidden
+      className={cx(s.editorContainer, options.wrapCls)}
+      onClick={handleEmptyZoneClick}
+    >
       <div
-        role="button"
-        tabIndex={0}
         className={cx(s.editorContent, options.contentCls)}
-        onClick={handleEmptyZoneClick}
+        aria-hidden
+        onClick={(e) => {
+          e.stopPropagation();
+          e.nativeEvent.stopImmediatePropagation();
+        }}
       >
-        <OutsideClick onClose={onCloseTools}>
-          {/* @ts-ignore */}
-          <Toolbar toolbarRef={toolbarRef} toolbarStyle={toolbarStyle} editor={editor} />
-          <SuggestionElementList
-            filterListCallback={filterSuggestionList}
-            handleBlockClick={handleBlockClick}
-            style={suggesstionListStyle}
-            onClose={hideSuggestionList}
-            selectedElementType={selectedElement?.type}
-            isOpen={isSuggesstionListOpen}
-            ref={suggestionListRef}
-          />
-        </OutsideClick>
+        {/* <OutsideClick onClose={onCloseTools}> */}
+        {/* @ts-ignore */}
+        <Toolbar toolbarRef={toolbarRef} toolbarStyle={toolbarStyle} editor={editor} />
+        <SuggestionElementList
+          filterListCallback={filterSuggestionList}
+          handleBlockClick={handleBlockClick}
+          style={suggesstionListStyle}
+          onClose={hideSuggestionList}
+          selectedElementType={selectedElement?.type}
+          isOpen={isSuggesstionListOpen}
+          ref={suggestionListRef}
+        />
+        {/* </OutsideClick> */}
         <Editable
           renderLeaf={renderLeaf}
           renderElement={renderElement}

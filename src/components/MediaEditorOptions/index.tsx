@@ -1,5 +1,4 @@
 import { FC, MouseEvent, useRef, useState } from 'react';
-import { Modal } from '../Modal/Modal';
 import s from './MediaEditorOptions.module.scss';
 
 type Props = {
@@ -27,16 +26,14 @@ const MediaEditorOptions: FC<Props> = ({ handleDelete, handleChangeUrl, hasUrl }
         <div className={s.dot} />
       </div>
       {isOptionsVisibile && (
-        <Modal onClose={() => setIsOptionsVisible(false)} handlerRef={handlerRef}>
-          <div className={s.modal}>
-            <button type="button" onClick={handleChangeUrl}>
-              {hasUrl ? 'Change link' : 'Add link'}
-            </button>
-            <button type="button" onClick={handleDelete}>
-              Delete
-            </button>
-          </div>
-        </Modal>
+        <div className={s.modal}>
+          <button type="button" onClick={handleChangeUrl}>
+            {hasUrl ? 'Change link' : 'Add link'}
+          </button>
+          <button type="button" onClick={handleDelete}>
+            Delete
+          </button>
+        </div>
       )}
     </div>
   );
