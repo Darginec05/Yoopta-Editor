@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Editor, Transforms, Element as SlateElement } from 'slate';
 
-export const useDragDrop = ({ editor }) => {
+export const useDragDrop = (editor) => {
   const [isDisableByDrag, setIsDisableByDrag] = useState(false);
   const [dndState, setDndState] = useState({ from: -1, to: -1 });
 

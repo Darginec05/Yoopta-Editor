@@ -14,15 +14,13 @@ import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionMenuContext/ActionMenuContext';
 import { useSettings } from '../../contexts/SettingsContext/SettingsContext';
 import { ParagraphElement } from './types';
+import { NodeSettings } from '../NodeSettings/NodeSettings';
 import s from './Editor.module.scss';
-import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 
 type YoptaProps = { editor: Editor };
 
 const YoptaEditor = ({ editor }: YoptaProps) => {
   const { options } = useSettings();
-  const { onChangeHoveredNodeId } = useNodeSettingsContext();
-
   useScrollToElement();
 
   const { onDrop, dndState, onDragEnd, onDragStart, isDisableByDrag } = useDragDrop({ editor });
@@ -41,7 +39,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
   } = useActionMenuContext();
 
   const isReadOnly = isDisableByDrag;
-  
+
   const renderLeaf = useCallback((leafProps) => <TextLeaf isEdit {...leafProps} />, []);
   const renderElement = useCallback(
     (elemProps) => (
@@ -123,11 +121,12 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
           Transforms.insertNodes(editor, lineParagraph);
         }
 
-        onChangeHoveredNodeId(lineParagraph.id);
+        // onChangeHoveredNodeId(lineParagraph.id);
       }
     }
   }, []);
 
+  // move to action context
   const handleBlockClick = (e: MouseEvent<HTMLButtonElement>, type?: string) => {
     e.preventDefault();
 
@@ -185,8 +184,8 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
   };
 
   const handleEmptyZoneClick = (e: MouseEvent<HTMLDivElement>) => {
-    if (e.currentTarget !== e.target || !editor.selection) return;
     e.preventDefault();
+    if (e.currentTarget !== e.target || !editor.selection) return;
 
     Editor.withoutNormalizing(editor, () => {
       const location = {
@@ -245,6 +244,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
           isOpen={isSuggesstionListOpen}
           ref={suggestionListRef}
         />
+        <NodeSettings />
         {/* </OutsideClick> */}
         <Editable
           renderLeaf={renderLeaf}
@@ -255,6 +255,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
           spellCheck
           decorate={decorate}
           autoFocus
+          id="yopta-contenteditable"
         />
       </div>
     </main>
