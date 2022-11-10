@@ -1,0 +1,30 @@
+.actions {
+  display: flex;
+}
+
+.hoverSettingsItem {
+  all: unset;
+  cursor: pointer;
+  border-radius: 6px;
+  width: auto;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: inherit;
+  background-color: transparent;
+  transition: background-color 250ms;
+  margin-right: 2px;
+  position: relative;
+
+  &:first-child {
+    padding: 0;
+    width: 24px;
+  }
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: #dbdada;
+  }
+}

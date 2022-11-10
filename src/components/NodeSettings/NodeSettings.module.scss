@@ -40,3 +40,17 @@
     background-color: #383835;
   }
 }
+
+.actionItems {
+  display: flex;
+  position: fixed;
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+  transform: translate(-1000px, -1000px);
+  z-index: 300;
+}
+
+.actionItemsShow {
+  opacity: 1;
+  transform: translate(0, 0);
+}

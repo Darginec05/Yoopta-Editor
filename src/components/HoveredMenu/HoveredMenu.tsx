@@ -1,9 +1,9 @@
+import { MouseEvent } from 'react';
 import { Transforms, Editor, Element as SlateElement } from 'slate';
 import { v4 } from 'uuid';
 import copy from 'copy-to-clipboard';
 import { ReactEditor, useSlate } from 'slate-react';
 import cx from 'classnames';
-import { HoveredMenuItem } from './HoveredMenuItem';
 import { VOID_ELEMENTS } from '../Editor/constants';
 import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import s from './HoveredMenu.module.scss';
@@ -19,21 +19,16 @@ const ElementHover = ({
 }) => {
   const editor = useSlate();
   const index = ReactEditor.findPath(editor, element)[0];
-  const { onHover, onHoverOut, hoveredNodeId, onPlusButtonClick } = useNodeSettingsContext();
+  const [, { hoverIn, hoverOut }] = useNodeSettingsContext();
 
   const isDragging = index === dndState.from;
   const isOver = index === dndState.to;
   const isOverSelf = isDragging && isOver;
 
   const opacity = isDragging ? 0.4 : 1;
-  const hovered = hoveredNodeId === element.id;
 
-  const onMouseEnter = () => {
-    onHover(element.id);
-  };
-  const onMouseLeave = () => onHoverOut();
-
-  const handlePlusButton = () => onPlusButtonClick(element);
+  const onMouseEnter = (e: MouseEvent<HTMLDivElement>) => hoverIn(e, element);
+  const onMouseLeave = (e: MouseEvent<HTMLDivElement>) => hoverOut(e, element);
 
   const handleDeleteNode = () => {
     Transforms.removeNodes(editor, {
@@ -84,8 +79,7 @@ const ElementHover = ({
       onDrop={onDrop}
       {...attributes}
     >
-      <HoveredMenuItem
-        handlePlusButton={handlePlusButton}
+      {/* <HoveredMenuItem
         hovered={hovered}
         onDragEnd={onDragEnd}
         onDragStart={onDragStart}
@@ -95,7 +89,7 @@ const ElementHover = ({
         handleCopyLinkNode={handleCopyLinkNode}
         elementId={element.id}
         isVoidElement={VOID_ELEMENTS.includes(element.type)}
-      />
+      /> */}
       <div className={s.content}>{children}</div>
     </section>
   );
