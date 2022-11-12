@@ -1,8 +1,20 @@
 import { useState } from 'react';
 import { Editor, Transforms, Element as SlateElement } from 'slate';
 
-export const useDragDrop = (editor) => {
-  const [isDisableByDrag, setIsDisableByDrag] = useState(false);
+export type DragDropValues = {
+  dndState: { from: number, to: number },
+  disableWhileDrag: boolean;
+};
+
+export type DragDropHandlers = {
+  onDrop: (_e) => void;
+  onDragEnd: (_e) => void;
+  onDragEnter: (_e) => void;
+  onDragStart: (_e) => void;
+};
+
+export const useDragDrop = (editor: Editor): [DragDropValues, DragDropHandlers] => {
+  const [disableWhileDrag, setIsDisableByDrag] = useState(false);
   const [dndState, setDndState] = useState({ from: -1, to: -1 });
 
   const onDragEnter = (e) => {
@@ -49,12 +61,13 @@ export const useDragDrop = (editor) => {
     setDndState((prevDrag) => ({ ...prevDrag, from: fromIndex }));
   };
 
-  return {
-    onDrop,
-    dndState,
-    onDragEnd,
-    onDragEnter,
-    onDragStart,
-    isDisableByDrag,
-  };
+  return [
+    { dndState, disableWhileDrag },
+    {
+      onDrop,
+      onDragEnd,
+      onDragEnter,
+      onDragStart,
+    },
+  ];
 };

@@ -42,23 +42,9 @@ type Props = RenderElementProps & {
   element: any;
   dataNodeId?: string;
   isEdit?: boolean;
-  dndState: any;
-  onDragStart?: () => void;
-  onDragEnd?: () => void;
-  onDrop?: () => void;
 };
 
-const RenderElement: FC<Props> = ({
-  element,
-  onDragStart,
-  onDragEnd,
-  onDrop,
-  dndState,
-  children,
-  attributes,
-  dataNodeId,
-  isEdit = true,
-}) => {
+const RenderElement: FC<Props> = ({ element, children, attributes, dataNodeId, isEdit = true }) => {
   const Component = useMemo(() => ELEMENT_RENDER_ITEMS[element.type], [element.type]);
 
   if (!Component) return null;
@@ -72,14 +58,7 @@ const RenderElement: FC<Props> = ({
     }
 
     return (
-      <ElementHover
-        element={element}
-        attributes={attributes}
-        onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onDrop={onDrop}
-        dndState={dndState}
-      >
+      <ElementHover element={element} attributes={attributes}>
         <Component dataNodeId={undefined} isEdit attributes={{}} element={element}>
           {children}
         </Component>
