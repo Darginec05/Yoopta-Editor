@@ -9,21 +9,20 @@ import { Toolbar } from './Toolbar/Toolbar';
 import { LIST_TYPES, toggleBlock } from './utils';
 import { TEXT_ELEMENTS_LIST, VOID_ELEMENTS } from './constants';
 import { SuggestionElementList } from './SuggestionElementList/SuggestionElementList';
-import { useDragDrop } from '../../hooks/useDragDrop';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionMenuContext/ActionMenuContext';
 import { useSettings } from '../../contexts/SettingsContext/SettingsContext';
 import { ParagraphElement } from './types';
-import { NodeSettings } from '../NodeSettings/NodeSettings';
 import s from './Editor.module.scss';
+import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 
 type YoptaProps = { editor: Editor };
 
 const YoptaEditor = ({ editor }: YoptaProps) => {
   const { options } = useSettings();
   useScrollToElement();
+  const [{ disableWhileDrag }, { changeHoveredNode }] = useNodeSettingsContext();
 
-  const { onDrop, dndState, onDragEnd, onDragStart, isDisableByDrag } = useDragDrop({ editor });
   const {
     toolbarRef,
     toolbarStyle,
@@ -38,21 +37,10 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
     onChangeSuggestionFilterText,
   } = useActionMenuContext();
 
-  const isReadOnly = isDisableByDrag;
+  const isReadOnly = disableWhileDrag;
 
   const renderLeaf = useCallback((leafProps) => <TextLeaf isEdit {...leafProps} />, []);
-  const renderElement = useCallback(
-    (elemProps) => (
-      <RenderElement
-        onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onDrop={onDrop}
-        dndState={dndState}
-        {...elemProps}
-      />
-    ),
-    [dndState],
-  );
+  const renderElement = useCallback((elemProps) => <RenderElement {...elemProps} />, []);
 
   const onKeyUp = useCallback(
     (event) => {
@@ -121,7 +109,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
           Transforms.insertNodes(editor, lineParagraph);
         }
 
-        // onChangeHoveredNodeId(lineParagraph.id);
+        changeHoveredNode(lineParagraph);
       }
     }
   }, []);
@@ -212,6 +200,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
         ],
       };
 
+      changeHoveredNode(lineParagraph);
       Editor.insertNode(editor, lineParagraph);
       ReactEditor.focus(editor);
     });
@@ -232,7 +221,6 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
           e.nativeEvent.stopImmediatePropagation();
         }}
       >
-        {/* <OutsideClick onClose={onCloseTools}> */}
         {/* @ts-ignore */}
         <Toolbar toolbarRef={toolbarRef} toolbarStyle={toolbarStyle} editor={editor} />
         <SuggestionElementList
@@ -244,8 +232,6 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
           isOpen={isSuggesstionListOpen}
           ref={suggestionListRef}
         />
-        <NodeSettings />
-        {/* </OutsideClick> */}
         <Editable
           renderLeaf={renderLeaf}
           renderElement={renderElement}

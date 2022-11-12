@@ -1,115 +1,108 @@
-import { Editor, Transforms, Element as SlateElement, Path } from 'slate';
+import { Editor, Transforms, Element as SlateElement } from 'slate';
 import copy from 'copy-to-clipboard';
 import { v4 } from 'uuid';
-import React, { CSSProperties, MouseEvent, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { CSSProperties, MouseEvent, useContext, useMemo, useState } from 'react';
 import { ReactEditor, useSlateStatic } from 'slate-react';
 import { CustomElement } from '../../components/Editor/types';
 import { ELEMENT_TYPES_MAP } from '../../components/Editor/constants';
 import { useActionMenuContext } from '../ActionMenuContext/ActionMenuContext';
 import { useScrollContext } from '../ScrollContext/ScrollContext';
-import { useDragDrop } from '../../hooks/useDragDrop';
+import { useDragDrop, DragDropValues, DragDropHandlers } from '../../hooks/useDragDrop';
 
-type Hovered = {
-  style?: CSSProperties;
-  path: Path;
-  node: CustomElement | null;
-};
+export type HoveredNode = CustomElement | null;
 
-type NodeSettingsContextValue = {
-  hovered: Hovered;
-  dragRef?: any;
+export type NodeSettingsContextValues = DragDropValues & {
+  hoveredNode: HoveredNode;
   isNodeSettingsOpen: boolean;
   nodeSettingsPos?: CSSProperties;
 };
 
-type NodeSettingsContextHandlers = {
-  openNodeSettings: (_path: Path) => void;
+export type NodeSettingsContextHandlers = DragDropHandlers & {
+  openNodeSettings: (_dragRef?: any) => void;
   closeNodeSettings: () => void;
   hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => void;
   hoverOut: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => void;
-  triggerPlusButton: (_element: CustomElement) => void;
+  triggerPlusButton: (_e: MouseEvent<HTMLButtonElement>) => void;
   deleteNode: () => void;
   duplicateNode: () => void;
   copyLinkNode: () => void;
+  changeHoveredNode: (_hoveredProps: HoveredNode) => void;
 };
 
-type NodeSettingsContextType = [NodeSettingsContextValue, NodeSettingsContextHandlers];
+export type NodeSettingsContextType = [NodeSettingsContextValues, NodeSettingsContextHandlers];
 
-const defaultValues = {
-  hovered: { node: null, style: undefined, path: [0, 0] },
+const defaultValues: NodeSettingsContextValues = {
+  hoveredNode: null,
   isNodeSettingsOpen: false,
   nodeSettingsPos: undefined,
+  dndState: { from: -1, to: -1 },
+  disableWhileDrag: false,
 };
 
 const NodeSettingsContext = React.createContext<NodeSettingsContextType>([
   defaultValues,
   {
-    openNodeSettings: (_path: Path) => {},
+    openNodeSettings: (_dragRef: any) => {},
     closeNodeSettings: () => {},
     hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => {},
     hoverOut: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => {},
-    triggerPlusButton: (_element) => {},
+    triggerPlusButton: (_e: MouseEvent<HTMLButtonElement>) => {},
     deleteNode: () => {},
     duplicateNode: () => {},
     copyLinkNode: () => {},
+    onDrop: (_e) => {},
+    onDragEnd: (_e) => {},
+    onDragEnter: (_e) => {},
+    onDragStart: (_e) => {},
+    changeHoveredNode: (_hoveredProps: HoveredNode) => {},
   },
 ]);
 
-const getInitialState = ({ children }: Editor): Hovered => {
+const getInitialState = ({ children }: Editor): HoveredNode => {
   if (children.length === 1) {
     const node = children[0] as CustomElement;
-    return { node, path: [] };
+    return node;
   }
 
-  return { node: null, path: [] };
+  return null;
 };
 
 const NodeSettingsProvider = ({ children }) => {
   const editor = useSlateStatic();
   const { showSuggestionList } = useActionMenuContext();
   const { disableScroll, enableScroll } = useScrollContext();
+  const [dragValues, dragHandlers] = useDragDrop(editor);
 
   const [nodeSettingsPos, setNodeSettingsPos] = useState<CSSProperties>();
-  const [hovered, setHovered] = useState<Hovered>(() => getInitialState(editor));
+  const [hoveredNode, setHoveredNode] = useState<HoveredNode>(() => getInitialState(editor));
   const [isNodeSettingsOpen, setNodeSettingsOpen] = useState<boolean>(false);
-  const dragRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    const reset = () => setHovered({ node: null, path: [] });
-
-    document.addEventListener('scroll', reset);
-    return () => {
-      document.removeEventListener('scroll', reset);
-    };
-  }, []);
-
-  const values: NodeSettingsContextValue = {
-    hovered,
+  const values: NodeSettingsContextValues = {
+    hoveredNode,
     isNodeSettingsOpen,
-    dragRef,
     nodeSettingsPos,
+    ...dragValues,
   };
-
-  console.log(hovered.node);
 
   const handlers = useMemo<NodeSettingsContextHandlers>(
     () => ({
       hoverIn: (e: MouseEvent<HTMLDivElement>, node: CustomElement) => {
         if (isNodeSettingsOpen) return e.preventDefault();
-        const { left, top } = e.currentTarget.getBoundingClientRect();
-        setHovered({ node, style: { left: left - 46 - 20 + 64, top: top + 3 }, path: [] });
+        setHoveredNode(node);
       },
 
       hoverOut: (e: MouseEvent<HTMLDivElement>, node: CustomElement) => {
-        // if (node.id === hovered.node?.id || isNodeSettingsOpen) return e.preventDefault();
-        // setHovered({ node: null, path: [] });
+        if (node.id === hoveredNode?.id || isNodeSettingsOpen) return e.preventDefault();
+        setHoveredNode(null);
       },
+
+      changeHoveredNode: (hoverProps: HoveredNode) => setHoveredNode(hoverProps),
 
       triggerPlusButton: () => {
         Editor.withoutNormalizing(editor, () => {
-          if (!hovered.node) return;
+          if (!hoveredNode) return;
 
-          const path = ReactEditor.findPath(editor, hovered.node);
+          const path = ReactEditor.findPath(editor, hoveredNode);
           const currentNode: any = editor.children[path[0]];
           const after = Editor.after(editor, path);
 
@@ -117,7 +110,7 @@ const NodeSettingsProvider = ({ children }) => {
           const isVoidNode = Editor.isVoid(editor, currentNode);
           const afterPath = after || [path[0] + 1];
 
-          setHovered({ node: null, path });
+          setHoveredNode(null);
 
           if (!isEmptyNode || isVoidNode) {
             const lineParagraph: any = {
@@ -147,12 +140,9 @@ const NodeSettingsProvider = ({ children }) => {
         });
       },
 
-      openNodeSettings: (path) => {
-        const nodePath = [path[0], 0];
-
+      openNodeSettings: (dragRef) => {
         disableScroll();
         setNodeSettingsOpen(true);
-        setHovered((prev) => ({ ...prev, path: nodePath }));
 
         if (dragRef.current) {
           const dragRect = dragRef.current!.getBoundingClientRect();
@@ -167,21 +157,27 @@ const NodeSettingsProvider = ({ children }) => {
       },
 
       deleteNode: () => {
+        if (!hoveredNode) return;
+
+        const path = ReactEditor.findPath(editor, hoveredNode);
         Transforms.removeNodes(editor, {
-          at: hovered.path,
+          at: path,
           match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
         });
 
-        setHovered({ node: null, path: [] });
+        setHoveredNode(null);
         handlers.closeNodeSettings();
       },
 
       duplicateNode: () => {
         Editor.withoutNormalizing(editor, () => {
+          if (!hoveredNode) return;
+          const path = ReactEditor.findPath(editor, hoveredNode);
+
           const currentNode = Array.from(
             Editor.nodes(editor, {
               match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
-              at: hovered.path,
+              at: path,
             }),
           )[0]?.[0];
 
@@ -189,32 +185,37 @@ const NodeSettingsProvider = ({ children }) => {
             const duplicatedNode = { ...currentNode, id: v4() };
 
             Transforms.insertNodes(editor, duplicatedNode, {
-              at: { offset: 0, path: [hovered.path[0], 0] },
+              at: { offset: 0, path: [path[0], 0] },
               match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
             });
 
             const focusTimeout = setTimeout(() => {
-              Transforms.select(editor, { offset: 0, path: [hovered.path[0] + 1, 0] });
+              Transforms.select(editor, { offset: 0, path: [path[0] + 1, 0] });
               ReactEditor.focus(editor);
 
               clearTimeout(focusTimeout);
             }, 0);
           }
 
-          setHovered({ node: null, path: [] });
+          setHoveredNode(null);
           handlers.closeNodeSettings();
         });
       },
 
       copyLinkNode: () => {
-        copy(`${window.location.origin}#${hovered.node?.id}`);
+        copy(`${window.location.origin}#${hoveredNode?.id}`);
         handlers.closeNodeSettings();
       },
+
+      ...dragHandlers,
     }),
-    [hovered.node, isNodeSettingsOpen],
+    [hoveredNode, isNodeSettingsOpen, dragValues],
   );
 
-  const contextValue = useMemo<NodeSettingsContextType>(() => [values, handlers], [hovered.node, isNodeSettingsOpen]);
+  const contextValue = useMemo<NodeSettingsContextType>(
+    () => [values, handlers],
+    [hoveredNode, isNodeSettingsOpen, dragValues],
+  );
 
   return <NodeSettingsContext.Provider value={contextValue}>{children}</NodeSettingsContext.Provider>;
 };

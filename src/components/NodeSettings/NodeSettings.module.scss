@@ -43,14 +43,13 @@
 
 .actionItems {
   display: flex;
-  position: fixed;
+  position: absolute;
   opacity: 0;
-  transition: opacity 200ms ease-in-out;
-  transform: translate(-1000px, -1000px);
-  z-index: 300;
+  left: 0;
+  top: 2.5px;
+  transition: opacity 150ms ease-in;
 }
 
 .actionItemsShow {
   opacity: 1;
-  transform: translate(0, 0);
 }
