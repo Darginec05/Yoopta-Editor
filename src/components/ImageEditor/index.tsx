@@ -157,6 +157,7 @@ const ImageEditor: FC<Props> = ({ element, attributes, className, children }) =>
       </div>
       <MediaEditorLayout
         mediaType="image"
+        nodeId={element.id}
         options={{
           accept: imageProps?.accept || 'image/*',
           multiple: imageProps?.multiple,

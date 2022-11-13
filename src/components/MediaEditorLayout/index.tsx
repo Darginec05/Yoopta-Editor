@@ -19,9 +19,10 @@ type Props = {
   mediaType: MediaType;
   onUpload: (_file: File) => Promise<void>;
   options?: Options;
+  nodeId: string;
 };
 
-const MediaEditorLayout: FC<Props> = ({ mediaType, options, onUpload }) => {
+const MediaEditorLayout: FC<Props> = ({ nodeId, mediaType, options, onUpload }) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -33,9 +34,16 @@ const MediaEditorLayout: FC<Props> = ({ mediaType, options, onUpload }) => {
 
   return (
     <div className={s.editor}>
-      <label className={s.root} htmlFor="fileUpload">
+      <label className={s.root} htmlFor={`file_upload_for_${nodeId}`}>
         <Icon />
-        <input id="fileUpload" type="file" accept={options?.accept} multiple={false} onChange={handleChange} />
+        <input
+          id={`file_upload_for_${nodeId}`}
+          type="file"
+          accept={options?.accept}
+          multiple={false}
+          onChange={handleChange}
+          className={s.input}
+        />
         <p className={s.text}>
           Drag and drop here or
           {' '}

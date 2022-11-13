@@ -16,6 +16,7 @@ export default function Home() {
   const media = {
     imageProps: {
       onChange: (file: File) => onChangeMedia(file, 'image'),
+      accept: 'image/png, image/jpg'
     },
     videoProps: {
       onChange: (file: File) => onChangeMedia(file, 'video'),

@@ -160,6 +160,7 @@ const VideoEditor: FC<Props> = ({ element, attributes, className, children }) =>
       <MediaEditorLayout
         mediaType="video"
         onUpload={onUpload}
+        nodeId={element.id}
         options={{
           accept: videoProps?.accept || 'video/*',
           multiple: videoProps?.multiple,
