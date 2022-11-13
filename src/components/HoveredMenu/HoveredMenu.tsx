@@ -42,6 +42,7 @@ const ElementHover = ({ children, element, attributes }) => {
         isNodeSettingsOpen={isNodeSettingsOpen}
         nodeSettingsPos={nodeSettingsPos}
         handlers={handlers}
+        editor={editor}
       />
       <div className={s.content}>{children}</div>
     </section>

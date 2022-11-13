@@ -41,6 +41,14 @@
   }
 }
 
+.settingsButtonDisable {
+  pointer-events: none;
+}
+
+.settingsButtonActive {
+  background-color: #383835;
+}
+
 .actionItems {
   display: flex;
   position: absolute;

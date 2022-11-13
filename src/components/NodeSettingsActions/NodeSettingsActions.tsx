@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { HoveredNode, NodeSettingsContextHandlers } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
+import { ActionMenuContextType } from '../../contexts/ActionMenuContext/ActionMenuContext';
 import PlusIcon from '../../icons/add.svg';
 import DragIcon from '../../icons/drag.svg';
 import s from './NodeSettingsActions.module.scss';
@@ -7,9 +8,10 @@ import s from './NodeSettingsActions.module.scss';
 type Props = {
   node: HoveredNode;
   handlers: NodeSettingsContextHandlers;
+  showSuggestionList: ActionMenuContextType['showSuggestionList'];
 };
 
-export const NodeSettingsActions = ({ handlers, node }: Props) => {
+export const NodeSettingsActions = ({ handlers, node, showSuggestionList }: Props) => {
   const { openNodeSettings, triggerPlusButton, onDragEnd, onDragStart } = handlers;
   const dragRef = useRef<HTMLButtonElement>(null);
 
@@ -26,9 +28,15 @@ export const NodeSettingsActions = ({ handlers, node }: Props) => {
     }
   };
 
+  const handlePlusButton = () => {
+    triggerPlusButton(() => {
+      showSuggestionList(undefined, { triggeredBySuggestion: true });
+    });
+  };
+
   return (
     <div className={s.actions}>
-      <button type="button" onClick={triggerPlusButton} contentEditable={false} className={s.hoverSettingsItem}>
+      <button type="button" onClick={handlePlusButton} contentEditable={false} className={s.hoverSettingsItem}>
         <PlusIcon />
       </button>
       <button

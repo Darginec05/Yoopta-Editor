@@ -13,8 +13,9 @@ import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionMenuContext/ActionMenuContext';
 import { useSettings } from '../../contexts/SettingsContext/SettingsContext';
 import { ParagraphElement } from './types';
-import s from './Editor.module.scss';
 import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
+import { OutsideClick } from '../OutsideClick';
+import s from './Editor.module.scss';
 
 type YoptaProps = { editor: Editor };
 
@@ -35,6 +36,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
     suggesstionListStyle,
     isSuggesstionListOpen,
     onChangeSuggestionFilterText,
+    changeNodeType,
   } = useActionMenuContext();
 
   const isReadOnly = disableWhileDrag;
@@ -114,39 +116,6 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
     }
   }, []);
 
-  // move to action context
-  const handleBlockClick = (e: MouseEvent<HTMLButtonElement>, type?: string) => {
-    e.preventDefault();
-
-    if (!type) return;
-
-    if (editor.selection) {
-      const { offset, path } = editor.selection.anchor;
-      const currentNode: any = editor.children[path[0]];
-
-      if (currentNode.type === type) return hideSuggestionList();
-
-      const text = Editor.string(editor, path);
-
-      console.log(Range.isCollapsed(editor.selection));
-      console.log(editor.selection.anchor);
-      console.log(text);
-
-      // TODO - fix it
-      if (Range.isCollapsed(editor.selection) && text.length > 0) {
-        Transforms.delete(editor, {
-          at: {
-            anchor: { path, offset: 0 },
-            focus: { path, offset },
-          },
-        });
-      }
-    }
-
-    toggleBlock(editor, type, { isVoid: false, children: [{ text: '' }] });
-    hideSuggestionList();
-  };
-
   const decorate = ([node, path]) => {
     if (editor.selection) {
       if (
@@ -164,11 +133,6 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
       }
     }
     return [];
-  };
-
-  const onCloseTools = () => {
-    hideToolbarTools();
-    hideSuggestionList();
   };
 
   const handleEmptyZoneClick = (e: MouseEvent<HTMLDivElement>) => {
@@ -221,15 +185,17 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
           e.nativeEvent.stopImmediatePropagation();
         }}
       >
-        {/* @ts-ignore */}
-        <Toolbar toolbarRef={toolbarRef} toolbarStyle={toolbarStyle} editor={editor} />
+        <OutsideClick onClose={hideToolbarTools}>
+          {/* @ts-ignore */}
+          <Toolbar toolbarRef={toolbarRef} toolbarStyle={toolbarStyle} editor={editor} />
+        </OutsideClick>
         <SuggestionElementList
           filterListCallback={filterSuggestionList}
-          handleBlockClick={handleBlockClick}
           style={suggesstionListStyle}
           onClose={hideSuggestionList}
           selectedElementType={selectedElement?.type}
           isOpen={isSuggesstionListOpen}
+          changeNodeType={changeNodeType}
           ref={suggestionListRef}
         />
         <Editable
