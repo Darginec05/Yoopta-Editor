@@ -1,6 +1,4 @@
-import { useDropzone, DropzoneOptions } from 'react-dropzone';
-import { useCallback, FC } from 'react';
-import cx from 'classnames';
+import { FC, ChangeEvent } from 'react';
 import ImageUploadIcon from './icons/ImageUploadIcon.svg';
 import VideoUploadIcon from './icons/VideoUploadIcon.svg';
 import s from './MediaEditorLayout.module.scss';
@@ -12,41 +10,38 @@ const icons = {
 
 type MediaType = 'image' | 'video';
 
+type Options = {
+  accept?: string;
+  multiple?: boolean;
+};
+
 type Props = {
   mediaType: MediaType;
   onUpload: (_file: File) => Promise<void>;
-  options?: DropzoneOptions;
-  maxFiles?: number;
+  options?: Options;
 };
 
-const MediaEditorLayout: FC<Props> = ({ mediaType, options, onUpload, maxFiles = 1 }) => {
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      const [file] = acceptedFiles;
-      onUpload(file);
-    },
-    [onUpload],
-  );
+const MediaEditorLayout: FC<Props> = ({ mediaType, options, onUpload }) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    onUpload(file);
+  };
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    maxFiles,
-    ...options,
-  });
-
+  // label for to make area clickable
   const Icon = icons[mediaType];
 
   return (
     <div className={s.editor}>
-      <div {...getRootProps()} className={cx(s.root, { [s.isDragActive]: isDragActive })}>
-        <input {...getInputProps()} />
+      <label className={s.root} htmlFor="fileUpload">
         <Icon />
+        <input id="fileUpload" type="file" accept={options?.accept} multiple={false} onChange={handleChange} />
         <p className={s.text}>
           Drag and drop here or
           {' '}
           <strong>select file</strong>
         </p>
-      </div>
+      </label>
     </div>
   );
 };
