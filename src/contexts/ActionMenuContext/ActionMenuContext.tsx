@@ -1,9 +1,14 @@
 import React, { CSSProperties, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { Editor, Range } from 'slate';
+import { Editor, Range, Transforms } from 'slate';
 import { useSlate } from 'slate-react';
-import { ELEMENT_TYPES_MAP, TEXT_ELEMENTS_LIST } from '../../components/Editor/constants';
 import { ELEMENT_TYPES } from '../../components/Editor/SuggestionElementList/SuggestionElementList';
-import { getAbsPositionBySelection, getRectByCurrentSelection, isBlockActive } from '../../components/Editor/utils';
+import { ELEMENT_TYPES_MAP, TEXT_ELEMENTS_LIST } from '../../components/Editor/constants';
+import {
+  getAbsPositionBySelection,
+  getRectByCurrentSelection,
+  isBlockActive,
+  toggleBlock,
+} from '../../components/Editor/utils';
 import { useScrollContext } from '../ScrollContext/ScrollContext';
 
 type Block = {
@@ -22,18 +27,19 @@ type ActionMenu = {
   open: boolean;
   style?: CSSProperties;
   triggeredBySuggestion?: boolean;
-  shouldShowTextNodes?: boolean;
+  shouldShowOnlyTextNodes?: boolean;
 };
 
 type ShowSuggestionOptions = {
   triggeredBySuggestion?: ActionMenu['triggeredBySuggestion'];
-  shouldShowTextNodes?: ActionMenu['shouldShowTextNodes'];
+  shouldShowOnlyTextNodes?: ActionMenu['shouldShowOnlyTextNodes'];
 };
 
-type ActionMenuContextType = {
+export type ActionMenuContextType = {
   onChangeSuggestionFilterText: (_v: string) => void;
   hideSuggestionList: () => void;
   hideToolbarTools: () => void;
+  changeNodeType: (_type: string) => void;
   showSuggestionList: (_style?: CSSProperties, _options?: ShowSuggestionOptions) => void;
   filterSuggestionList: (_elem: Block) => void;
   updateToolbarView: (_style?: CSSProperties) => void;
@@ -50,6 +56,7 @@ const ActionMenuContext = React.createContext<ActionMenuContextType>({
   onChangeSuggestionFilterText: (_v) => {},
   hideSuggestionList: () => {},
   hideToolbarTools: () => {},
+  changeNodeType: (_type: string) => {},
   showSuggestionList: (_style, _options) => {},
   filterSuggestionList: (_elem: {}) => {},
   updateToolbarView: (_style) => {},
@@ -107,6 +114,29 @@ const ActionMenuProvider = ({ children }) => {
     setSelectedElement(current || defaultBlock);
   };
 
+  const changeNodeType = (to: string) => {
+    if (editor.selection && suggestionListProps.triggeredBySuggestion) {
+      const { offset, path } = editor.selection.anchor;
+      const currentNode: any = editor.children[path[0]];
+
+      if (currentNode.type === to) return hideSuggestionList();
+
+      const text = Editor.string(editor, path);
+
+      if (Range.isCollapsed(editor.selection) && text.length > 0) {
+        Transforms.delete(editor, {
+          at: {
+            anchor: { path, offset: 0 },
+            focus: { path, offset },
+          },
+        });
+      }
+    }
+
+    toggleBlock(editor, to, { isVoid: false, children: [{ text: '' }] });
+    hideSuggestionList();
+  };
+
   const updateToolbarView = (style?: CSSProperties) => {
     const { top, left } = getAbsPositionBySelection(toolbarRef.current);
     setCurrentBlock();
@@ -143,7 +173,7 @@ const ActionMenuProvider = ({ children }) => {
 
   const filterSuggestionList = useCallback(
     (elementItem) => {
-      if (isToolbarActionOpen || suggestionListProps.shouldShowTextNodes) {
+      if (isToolbarActionOpen || suggestionListProps.shouldShowOnlyTextNodes) {
         return TEXT_ELEMENTS_LIST.includes(elementItem.type);
       }
 
@@ -153,7 +183,7 @@ const ActionMenuProvider = ({ children }) => {
         elementItem.type.toLowerCase().indexOf(filterText) > -1
       );
     },
-    [suggestionFilterText, suggestionListProps.shouldShowTextNodes, isToolbarActionOpen],
+    [suggestionFilterText, suggestionListProps.shouldShowOnlyTextNodes, isToolbarActionOpen],
   );
 
   const value = useMemo(
@@ -171,6 +201,7 @@ const ActionMenuProvider = ({ children }) => {
       toolbarRef,
       hideToolbarTools,
       updateToolbarView,
+      changeNodeType,
     }),
     [
       toolbarProps,

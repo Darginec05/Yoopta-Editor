@@ -1,4 +1,4 @@
-import React, { forwardRef, ReactNode, useEffect, CSSProperties, useRef, createRef, useMemo } from 'react';
+import { forwardRef, ReactNode, useEffect, CSSProperties, useRef, createRef, useMemo } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
 import cx from 'classnames';
 import ParagraphIcon from '../Toolbar/icons/paragraph.svg';
@@ -12,6 +12,7 @@ import CalloutIcon from '../Toolbar/icons/callout.svg';
 import VideoIcon from '../../../icons/video.svg';
 import ImageIcon from '../../../icons/image.svg';
 import { ELEMENT_TYPES_MAP } from '../constants';
+import { useNodeSettingsContext } from '../../../contexts/NodeSettingsContext/NodeSettingsContext';
 import s from './SuggestionElementList.module.scss';
 
 type Block = {
@@ -38,8 +39,8 @@ export const ELEMENT_TYPES: Block[] = [
 ];
 
 type Props = {
-  handleBlockClick: (_e: any, _type?: string) => void;
   filterListCallback?: (_elem: Block) => void;
+  changeNodeType: (_type: any) => void;
   onClose?: () => void;
   style?: CSSProperties;
   selectedElementType?: string;
@@ -47,7 +48,8 @@ type Props = {
 };
 
 export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, ref) => {
-  const { handleBlockClick, selectedElementType, filterListCallback, style, onClose, isOpen } = props;
+  const [, { closeNodeSettings }] = useNodeSettingsContext();
+  const { changeNodeType, selectedElementType, filterListCallback, style, onClose, isOpen } = props;
   const editor = useSlate();
 
   const elements = useMemo(
@@ -73,6 +75,13 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
       return () => clearTimeout(timeout);
     }
   }, [notFound]);
+
+  const handleChangeNode = (e: any, type: string) => {
+    e.stopPropagation();
+
+    closeNodeSettings();
+    changeNodeType(type);
+  };
 
   useEffect(() => {
     if (!isOpen) {
@@ -103,7 +112,7 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
       if (event.key === 'Enter') {
         event.preventDefault();
         const currentSelectedType = document.activeElement as HTMLButtonElement;
-        handleBlockClick(event, currentSelectedType?.dataset.type || ELEMENT_TYPES_MAP['heading-one']);
+        handleChangeNode(event, currentSelectedType?.dataset.type || ELEMENT_TYPES_MAP['heading-one']);
         onClose?.();
       }
     };
@@ -126,7 +135,7 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
           type="button"
           key={element.type}
           data-type={element.type}
-          onMouseDown={(e) => handleBlockClick(e, element.type)}
+          onClick={(e) => handleChangeNode(e, element.type)}
           ref={elementRefs.current[i]}
           className={cx(s.dropdownButton, isBlockActive(element) && s.__active)}
         >

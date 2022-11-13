@@ -5,7 +5,6 @@ import React, { CSSProperties, MouseEvent, useContext, useMemo, useState } from 
 import { ReactEditor, useSlateStatic } from 'slate-react';
 import { CustomElement } from '../../components/Editor/types';
 import { ELEMENT_TYPES_MAP } from '../../components/Editor/constants';
-import { useActionMenuContext } from '../ActionMenuContext/ActionMenuContext';
 import { useScrollContext } from '../ScrollContext/ScrollContext';
 import { useDragDrop, DragDropValues, DragDropHandlers } from '../../hooks/useDragDrop';
 
@@ -22,7 +21,7 @@ export type NodeSettingsContextHandlers = DragDropHandlers & {
   closeNodeSettings: () => void;
   hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => void;
   hoverOut: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => void;
-  triggerPlusButton: (_e: MouseEvent<HTMLButtonElement>) => void;
+  triggerPlusButton: (_onFocusCallback: () => void) => void;
   deleteNode: () => void;
   duplicateNode: () => void;
   copyLinkNode: () => void;
@@ -46,7 +45,7 @@ const NodeSettingsContext = React.createContext<NodeSettingsContextType>([
     closeNodeSettings: () => {},
     hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => {},
     hoverOut: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => {},
-    triggerPlusButton: (_e: MouseEvent<HTMLButtonElement>) => {},
+    triggerPlusButton: (_onFocusCallback: () => void) => {},
     deleteNode: () => {},
     duplicateNode: () => {},
     copyLinkNode: () => {},
@@ -69,7 +68,6 @@ const getInitialState = ({ children }: Editor): HoveredNode => {
 
 const NodeSettingsProvider = ({ children }) => {
   const editor = useSlateStatic();
-  const { showSuggestionList } = useActionMenuContext();
   const { disableScroll, enableScroll } = useScrollContext();
   const [dragValues, dragHandlers] = useDragDrop(editor);
 
@@ -98,7 +96,7 @@ const NodeSettingsProvider = ({ children }) => {
 
       changeHoveredNode: (hoverProps: HoveredNode) => setHoveredNode(hoverProps),
 
-      triggerPlusButton: () => {
+      triggerPlusButton: (onFocusCallback: any) => {
         Editor.withoutNormalizing(editor, () => {
           if (!hoveredNode) return;
 
@@ -131,7 +129,7 @@ const NodeSettingsProvider = ({ children }) => {
             ReactEditor.focus(editor);
 
             const selectionTimeout = setTimeout(() => {
-              showSuggestionList(undefined, { triggeredBySuggestion: true });
+              onFocusCallback();
               clearTimeout(selectionTimeout);
             }, 0);
 
