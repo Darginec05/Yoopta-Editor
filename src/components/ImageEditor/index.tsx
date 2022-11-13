@@ -158,7 +158,7 @@ const ImageEditor: FC<Props> = ({ element, attributes, className, children }) =>
       <MediaEditorLayout
         mediaType="image"
         options={{
-          accept: imageProps?.accept || { 'image/*': [] },
+          accept: imageProps?.accept || 'image/*',
           multiple: imageProps?.multiple,
         }}
         onUpload={onUpload}

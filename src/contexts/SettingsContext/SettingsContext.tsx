@@ -1,5 +1,4 @@
 import React, { ReactNode, useContext, useMemo } from 'react';
-import { Accept } from 'react-dropzone';
 
 type MediaResponse = { url: string; options?: any };
 
@@ -8,14 +7,14 @@ type MediaProps = {
     onChange: (_s: File) => Promise<MediaResponse>;
     optimistic?: boolean;
     loader?: ReactNode;
-    accept?: Accept | undefined;
+    accept?: string | undefined;
     multiple?: boolean;
   };
   videoProps?: {
     onChange: (_s: File) => Promise<MediaResponse>;
     optimistic?: boolean;
     loader?: ReactNode;
-    accept?: Accept | undefined;
+    accept?: string | undefined;
     multiple?: boolean;
   };
 };
