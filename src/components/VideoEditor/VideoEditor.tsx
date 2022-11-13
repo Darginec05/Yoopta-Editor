@@ -133,7 +133,6 @@ const VideoEditor: FC<Props> = ({ element, attributes, className, children }) =>
           loader
         ) : (
           <div className={s.options}>
-            {/* @ts-ignore */}
             <MediaEditorOptions
               hasUrl={!!element.src}
               handleDelete={onDelete}

@@ -1,6 +1,6 @@
 {
   "name": "yopta-editor",
-  "version": "1.0.17",
+  "version": "1.0.19",
   "license": "MIT",
   "private": false,
   "type": "module",
@@ -22,7 +22,6 @@
     "copy-to-clipboard": "^3.3.2",
     "is-hotkey": "^0.2.0",
     "is-url": "^1.2.4",
-    "react-dropzone": "^14.2.2",
     "slate-history": "^0.66.0",
     "uuid": "^8.3.2"
   },
