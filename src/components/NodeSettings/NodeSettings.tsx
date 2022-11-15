@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import { ReactEditor } from 'slate-react';
 import { Transforms, Editor } from 'slate';
 import cx from 'classnames';
 import DeleteIcon from './icons/delete.svg';
@@ -13,6 +12,7 @@ import {
   NodeSettingsContextValues,
 } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { useActionMenuContext } from '../../contexts/ActionMenuContext/ActionMenuContext';
+import { getNodePath } from '../Editor/utils';
 import s from './NodeSettings.module.scss';
 
 type Props = Pick<NodeSettingsContextValues, 'hoveredNode' | 'isNodeSettingsOpen' | 'nodeSettingsPos'> & {
@@ -40,14 +40,14 @@ const NodeSettings = ({ hoveredNode, isNodeSettingsOpen, elementId, nodeSettings
       zIndex: 1400,
     };
 
+    const path = getNodePath(editor, hoveredNode);
+
     const options = {
       triggeredBySuggestion: false,
       shouldShowOnlyTextNodes: true,
     };
 
-    const nodePath = ReactEditor.findPath(editor, hoveredNode);
-
-    Transforms.select(editor, { path: [nodePath[0], 0], offset: 0 });
+    Transforms.select(editor, { path, offset: 0 });
     showSuggestionList(styles, options);
   };
 

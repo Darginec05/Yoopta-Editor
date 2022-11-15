@@ -2,11 +2,12 @@ import { Editor, Transforms, Element as SlateElement } from 'slate';
 import copy from 'copy-to-clipboard';
 import { v4 } from 'uuid';
 import React, { CSSProperties, MouseEvent, useContext, useMemo, useState } from 'react';
-import { ReactEditor, useSlateStatic } from 'slate-react';
+import { ReactEditor, useSlate } from 'slate-react';
 import { CustomElement } from '../../components/Editor/types';
 import { ELEMENT_TYPES_MAP } from '../../components/Editor/constants';
 import { useScrollContext } from '../ScrollContext/ScrollContext';
 import { useDragDrop, DragDropValues, DragDropHandlers } from '../../hooks/useDragDrop';
+import { getNodePath } from '../../components/Editor/utils';
 
 export type HoveredNode = CustomElement | null;
 
@@ -17,7 +18,7 @@ export type NodeSettingsContextValues = DragDropValues & {
 };
 
 export type NodeSettingsContextHandlers = DragDropHandlers & {
-  openNodeSettings: (_dragRef?: any) => void;
+  openNodeSettings: (_dragRef: any, _node: HoveredNode) => void;
   closeNodeSettings: () => void;
   hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => void;
   hoverOut: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => void;
@@ -41,7 +42,7 @@ const defaultValues: NodeSettingsContextValues = {
 const NodeSettingsContext = React.createContext<NodeSettingsContextType>([
   defaultValues,
   {
-    openNodeSettings: (_dragRef: any) => {},
+    openNodeSettings: (_dragRef: any, _node?: HoveredNode) => {},
     closeNodeSettings: () => {},
     hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => {},
     hoverOut: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => {},
@@ -67,7 +68,7 @@ const getInitialState = ({ children }: Editor): HoveredNode => {
 };
 
 const NodeSettingsProvider = ({ children }) => {
-  const editor = useSlateStatic();
+  const editor = useSlate();
   const { disableScroll, enableScroll } = useScrollContext();
   const [dragValues, dragHandlers] = useDragDrop(editor);
 
@@ -100,7 +101,7 @@ const NodeSettingsProvider = ({ children }) => {
         Editor.withoutNormalizing(editor, () => {
           if (!hoveredNode) return;
 
-          const path = ReactEditor.findPath(editor, hoveredNode);
+          const path = getNodePath(editor, hoveredNode);
           const currentNode: any = editor.children[path[0]];
           const after = Editor.after(editor, path);
 
@@ -138,9 +139,12 @@ const NodeSettingsProvider = ({ children }) => {
         });
       },
 
-      openNodeSettings: (dragRef) => {
+      openNodeSettings: (dragRef, node) => {
         disableScroll();
         setNodeSettingsOpen(true);
+
+        const path = getNodePath(editor, node);
+        Transforms.setSelection(editor, { anchor: { path, offset: 0 }, focus: { path, offset: 0 } });
 
         if (dragRef.current) {
           const dragRect = dragRef.current!.getBoundingClientRect();
@@ -170,7 +174,7 @@ const NodeSettingsProvider = ({ children }) => {
       duplicateNode: () => {
         Editor.withoutNormalizing(editor, () => {
           if (!hoveredNode) return;
-          const path = ReactEditor.findPath(editor, hoveredNode);
+          const path = getNodePath(editor, hoveredNode);
 
           const currentNode = Array.from(
             Editor.nodes(editor, {
@@ -183,12 +187,13 @@ const NodeSettingsProvider = ({ children }) => {
             const duplicatedNode = { ...currentNode, id: v4() };
 
             Transforms.insertNodes(editor, duplicatedNode, {
-              at: { offset: 0, path: [path[0], 0] },
+              at: { offset: 0, path },
               match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
+              select: true,
             });
 
             const focusTimeout = setTimeout(() => {
-              Transforms.select(editor, { offset: 0, path: [path[0] + 1, 0] });
+              Transforms.select(editor, { path, offset: editor.selection?.anchor.offset || 0 });
               ReactEditor.focus(editor);
 
               clearTimeout(focusTimeout);
@@ -212,7 +217,7 @@ const NodeSettingsProvider = ({ children }) => {
 
   const contextValue = useMemo<NodeSettingsContextType>(
     () => [values, handlers],
-    [hoveredNode, isNodeSettingsOpen, dragValues],
+    [hoveredNode, isNodeSettingsOpen, dragValues, editor.selection],
   );
 
   return <NodeSettingsContext.Provider value={contextValue}>{children}</NodeSettingsContext.Provider>;

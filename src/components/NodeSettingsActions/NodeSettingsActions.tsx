@@ -42,7 +42,7 @@ export const NodeSettingsActions = ({ handlers, node, showSuggestionList }: Prop
       <button
         className={s.hoverSettingsItem}
         onMouseDown={onMouseDown}
-        onClick={() => openNodeSettings(dragRef)}
+        onClick={() => openNodeSettings(dragRef, node)}
         ref={dragRef}
         type="button"
         contentEditable={false}

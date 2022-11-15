@@ -1,9 +1,20 @@
+import { ReactEditor } from 'slate-react';
 import { Editor, Text, Element as SlateElement, Transforms, Range } from 'slate';
 import { v4 } from 'uuid';
 import { LinkElement } from './types';
 import { ELEMENT_TYPES_MAP } from './constants';
 
 export const LIST_TYPES = ['numbered-list', 'bulleted-list'];
+
+export const getNodePath = (editor: Editor, node: any) => {
+  const path = ReactEditor.findPath(editor, node);
+  const isList = LIST_TYPES.includes(node.type);
+
+  let nodePath = path.length === 1 ? [path[0], 0] : path;
+  if (isList) nodePath = [...nodePath, 0];
+
+  return nodePath;
+};
 
 export const isMarkActive = (editor: Editor, mark: any): boolean => {
   const marks: Omit<Text, 'text'> | null = Editor.marks(editor);

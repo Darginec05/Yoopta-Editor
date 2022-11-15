@@ -38,7 +38,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
     if (isSuggesstionListOpen) {
       hideSuggestionList();
     } else {
-      showSuggestionList({ ...toolbarStyle, top: (toolbarStyle!.top as number) + toolbarRect.height });
+      showSuggestionList({ ...toolbarStyle, top: (toolbarStyle!.top as number) + toolbarRect.height, zIndex: 1400 });
     }
   };
 
@@ -61,7 +61,13 @@ const Toolbar = ({ editor }: ToolbarProps) => {
   const linkNode = getMatchedNode(editor, 'link');
 
   return (
-    <div ref={toolbarRef} role="tooltip" className={cx(s.menu, 'yopta-toolbar')} style={toolbarStyle}>
+    <div
+      ref={toolbarRef}
+      role="tooltip"
+      className={cx(s.menu, 'yopta-toolbar')}
+      style={toolbarStyle}
+      contentEditable={false}
+    >
       <div className={s.toolbar}>
         <Fade show={isLinkOpen} animationDelay={300}>
           <LinkInput
@@ -116,7 +122,6 @@ const Toolbar = ({ editor }: ToolbarProps) => {
           <CodeIcon />
         </button>
       </div>
-      {/* )} */}
     </div>
   );
 };

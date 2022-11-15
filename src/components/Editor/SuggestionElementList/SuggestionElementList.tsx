@@ -1,5 +1,4 @@
 import { forwardRef, ReactNode, useEffect, CSSProperties, useRef, createRef, useMemo } from 'react';
-import { ReactEditor, useSlate } from 'slate-react';
 import cx from 'classnames';
 import ParagraphIcon from '../Toolbar/icons/paragraph.svg';
 import HeadingOneIcon from '../Toolbar/icons/heading_one.svg';
@@ -50,7 +49,6 @@ type Props = {
 export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const [, { closeNodeSettings }] = useNodeSettingsContext();
   const { changeNodeType, selectedElementType, filterListCallback, style, onClose, isOpen } = props;
-  const editor = useSlate();
 
   const elements = useMemo(
     () => (typeof filterListCallback === 'function' ? ELEMENT_TYPES.filter(filterListCallback) : ELEMENT_TYPES),
@@ -78,6 +76,7 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
 
   const handleChangeNode = (e: any, type: string) => {
     e.stopPropagation();
+    e.preventDefault();
 
     closeNodeSettings();
     changeNodeType(type);
@@ -85,7 +84,6 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
 
   useEffect(() => {
     if (!isOpen) {
-      ReactEditor.focus(editor);
       return undefined;
     }
 
@@ -135,7 +133,7 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
           type="button"
           key={element.type}
           data-type={element.type}
-          onClick={(e) => handleChangeNode(e, element.type)}
+          onMouseDown={(e) => handleChangeNode(e, element.type)}
           ref={elementRefs.current[i]}
           className={cx(s.dropdownButton, isBlockActive(element) && s.__active)}
         >

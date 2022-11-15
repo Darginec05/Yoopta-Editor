@@ -137,6 +137,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
 
   const handleEmptyZoneClick = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
+
     if (e.currentTarget !== e.target || !editor.selection) return;
 
     Editor.withoutNormalizing(editor, () => {
@@ -170,20 +171,22 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
     });
   };
 
+  const stopPropagation = (e: any) => {
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+  };
+
   return (
     <main
       id="yopta-editor"
       aria-hidden
       className={cx(s.editorContainer, options.wrapCls)}
-      onClick={handleEmptyZoneClick}
+      onMouseDown={handleEmptyZoneClick}
     >
       <div
         className={cx(s.editorContent, options.contentCls)}
         aria-hidden
-        onClick={(e) => {
-          e.stopPropagation();
-          e.nativeEvent.stopImmediatePropagation();
-        }}
+        onMouseDown={stopPropagation}
       >
         <OutsideClick onClose={hideToolbarTools}>
           {/* @ts-ignore */}

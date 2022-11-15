@@ -1,5 +1,5 @@
 import React, { CSSProperties, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { Editor, Range, Transforms } from 'slate';
+import { Editor, Path, Range, Transforms } from 'slate';
 import { useSlate } from 'slate-react';
 import { ELEMENT_TYPES } from '../../components/Editor/SuggestionElementList/SuggestionElementList';
 import { ELEMENT_TYPES_MAP, TEXT_ELEMENTS_LIST } from '../../components/Editor/constants';
@@ -81,6 +81,7 @@ const ActionMenuProvider = ({ children }) => {
   const [toolbarProps, setToolbarProps] = useState<ActionMenu>({ open: false });
   const suggestionListRef = useRef<HTMLDivElement>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
+  const suggetionListPath = useRef<null | Path>(null);
 
   const isToolbarActionOpen = toolbarProps.open;
   const isSuggesstionListOpen = suggestionListProps.open;
@@ -115,23 +116,26 @@ const ActionMenuProvider = ({ children }) => {
   };
 
   const changeNodeType = (to: string) => {
-    if (editor.selection && suggestionListProps.triggeredBySuggestion) {
-      const { offset, path } = editor.selection.anchor;
-      const currentNode: any = editor.children[path[0]];
+    Editor.withoutNormalizing(editor, () => {
+      if (editor.selection && suggestionListProps.triggeredBySuggestion) {
+        const { offset, path } = editor.selection.anchor;
 
-      if (currentNode.type === to) return hideSuggestionList();
+        const currentNode: any = editor.children[path[0]];
 
-      const text = Editor.string(editor, path);
+        if (currentNode.type === to) return hideSuggestionList();
 
-      if (Range.isCollapsed(editor.selection) && text.length > 0) {
-        Transforms.delete(editor, {
-          at: {
-            anchor: { path, offset: 0 },
-            focus: { path, offset },
-          },
-        });
+        const text = Editor.string(editor, path);
+
+        if (Range.isCollapsed(editor.selection) && text.length > 0) {
+          Transforms.delete(editor, {
+            at: {
+              anchor: { path, offset: 0 },
+              focus: { path, offset },
+            },
+          });
+        }
       }
-    }
+    });
 
     toggleBlock(editor, to, { isVoid: false, children: [{ text: '' }] });
     hideSuggestionList();
@@ -152,6 +156,25 @@ const ActionMenuProvider = ({ children }) => {
     setSelectedElement(null);
     setToolbarProps({ open: false });
   };
+
+  useEffect(() => {
+    if (!suggestionListProps.triggeredBySuggestion) {
+      suggetionListPath.current = null;
+      return;
+    }
+
+    if (
+      suggetionListPath.current !== null &&
+      !Path.equals(editor.selection?.anchor.path || [], suggetionListPath.current)
+    ) {
+      hideSuggestionList();
+      suggetionListPath.current = null;
+    }
+
+    if (isSuggesstionListOpen && !suggetionListPath.current) {
+      suggetionListPath.current = editor.selection?.anchor.path || null;
+    }
+  }, [isSuggesstionListOpen, suggetionListPath.current, suggestionListProps.triggeredBySuggestion, editor.selection]);
 
   useEffect(() => {
     if (suggestionListProps.triggeredBySuggestion) return;
@@ -210,6 +233,7 @@ const ActionMenuProvider = ({ children }) => {
       suggestionListRef.current,
       suggestionFilterText,
       selectedElement,
+      editor.selection,
     ],
   );
 
