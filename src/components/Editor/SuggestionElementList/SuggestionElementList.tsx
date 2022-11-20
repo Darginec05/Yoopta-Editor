@@ -1,5 +1,6 @@
-import { forwardRef, ReactNode, useEffect, CSSProperties, useRef, createRef, useMemo } from 'react';
+import { forwardRef, ReactNode, useEffect, CSSProperties, useRef, createRef, useMemo, useState } from 'react';
 import cx from 'classnames';
+import isHotkey from 'is-hotkey';
 import ParagraphIcon from '../Toolbar/icons/paragraph.svg';
 import HeadingOneIcon from '../Toolbar/icons/heading_one.svg';
 import HeadingTwoIcon from '../Toolbar/icons/heading_two.svg';
@@ -49,6 +50,7 @@ type Props = {
 export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const [, { closeNodeSettings }] = useNodeSettingsContext();
   const { changeNodeType, selectedElementType, filterListCallback, style, onClose, isOpen } = props;
+  const [activeElementIndex, setActiveElementIndex] = useState<number>(0);
 
   const elements = useMemo(
     () => (typeof filterListCallback === 'function' ? ELEMENT_TYPES.filter(filterListCallback) : ELEMENT_TYPES),
@@ -74,6 +76,15 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
     }
   }, [notFound]);
 
+  useEffect(() => {
+    elementRefs.current.map((item, index) => {
+      if (item?.current?.dataset.type === selectedElementType) {
+        setActiveElementIndex(index);
+      }
+      return index;
+    });
+  }, [selectedElementType]);
+
   const handleChangeNode = (e: any, type: string) => {
     e.stopPropagation();
     e.preventDefault();
@@ -87,15 +98,30 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
       return undefined;
     }
 
-    const focusableItem = 0;
+    const handleArrowPress = (isDownPress: boolean) => {
+      const focusIndex = isDownPress ? activeElementIndex + 1 : activeElementIndex - 1;
+      if (!(focusIndex > elementRefs.current.length - 1 || focusIndex < 0)) {
+        setActiveElementIndex(focusIndex);
+        elementRefs.current[focusIndex].current.focus();
+      } else {
+        // do nothing
+        return false;
+      }
+    };
 
-    const firstElement = elementRefs.current[focusableItem]?.current;
-
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        event.stopPropagation();
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // close menu on escape press
+      if (isHotkey('Escape', event)) {
         return onClose?.();
+      }
+      if (isHotkey(['Down', 'Up'], event)) {
+        event.preventDefault();
+        handleArrowPress(isHotkey('Down', event));
+      }
+      if (isHotkey('Enter', event)) {
+        const currentSelectedType = document.activeElement as HTMLButtonElement;
+        handleChangeNode(event, currentSelectedType?.dataset.type || ELEMENT_TYPES_MAP['heading-one']);
+        onClose?.();
       }
 
       /** @ts-ignore */
@@ -104,14 +130,7 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
       if (!isChildFocused && KEYS.includes(event.key)) {
         const selected: HTMLButtonElement | null = document.querySelector(`[data-type="${selectedElementType}"]`);
         if (selected) selected.focus();
-        else firstElement?.focus();
-      }
-
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        const currentSelectedType = document.activeElement as HTMLButtonElement;
-        handleChangeNode(event, currentSelectedType?.dataset.type || ELEMENT_TYPES_MAP['heading-one']);
-        onClose?.();
+        else elementRefs.current[0]?.current?.focus();
       }
     };
 
@@ -120,7 +139,7 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen]);
+  }, [isOpen, activeElementIndex]);
 
   useEffect(() => {
     elementRefs.current = elements.map((_, index) => (elementRefs.current[index] = createRef()));
