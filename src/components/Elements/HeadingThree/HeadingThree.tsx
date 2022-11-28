@@ -4,14 +4,9 @@ import { ElementProps } from '../../Editor/types';
 import { getElementClassname } from '../../Editor/utils';
 import s from './HeadingThree.module.scss';
 
-const HeadingThree = memo<ElementProps>(({ attributes, children, element, dataNodeId }) => {
+const HeadingThree = memo<ElementProps>(({ attributes, children, element }) => {
   return (
-    <h3
-      className={cx(s['heading-three'], getElementClassname(element))}
-      draggable={false}
-      data-node-id={dataNodeId}
-      {...attributes}
-    >
+    <h3 className={cx(s['heading-three'], getElementClassname(element))} draggable={false} {...attributes}>
       {children}
     </h3>
   );

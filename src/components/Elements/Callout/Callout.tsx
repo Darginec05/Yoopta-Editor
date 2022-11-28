@@ -4,14 +4,9 @@ import { ElementProps } from '../../Editor/types';
 import { getElementClassname } from '../../Editor/utils';
 import s from './Callout.module.scss';
 
-const Callout = memo<ElementProps>(({ attributes, children, element, dataNodeId }) => {
+const Callout = memo<ElementProps>(({ attributes, children, element }) => {
   return (
-    <div
-      draggable={false}
-      className={cx(s.callout, getElementClassname(element))}
-      data-node-id={dataNodeId}
-      {...attributes}
-    >
+    <div draggable={false} className={cx(s.callout, getElementClassname(element))} {...attributes}>
       {children}
     </div>
   );

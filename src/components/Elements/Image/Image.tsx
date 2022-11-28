@@ -4,7 +4,7 @@ import { ImageEditor } from '../../ImageEditor';
 import { ImageRender } from '../../ImageRender/ImageRender';
 import s from './Image.module.scss';
 
-const Image = ({ element, attributes, children, isEdit, dataNodeId }) => {
+const Image = ({ element, attributes, children, isEdit }) => {
   if (isEdit) {
     return (
       <ImageEditor element={element} attributes={attributes} className={cx(s.image, getElementClassname(element))}>
@@ -14,7 +14,7 @@ const Image = ({ element, attributes, children, isEdit, dataNodeId }) => {
   }
 
   return (
-    <div className={cx(s.image, getElementClassname(element))} data-node-id={dataNodeId}>
+    <div className={cx(s.image, getElementClassname(element))}>
       <ImageRender src={element.src} alt="URI" options={element.options} />
     </div>
   );

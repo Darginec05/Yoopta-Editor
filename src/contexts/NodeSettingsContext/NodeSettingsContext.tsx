@@ -206,7 +206,7 @@ const NodeSettingsProvider = ({ children }) => {
       },
 
       copyLinkNode: () => {
-        copy(`${window.location.origin}#${hoveredNode?.id}`);
+        copy(`${window.location.href}#${hoveredNode?.id}`);
         handlers.closeNodeSettings();
       },
 

@@ -6,21 +6,17 @@ import { EmbedEditor } from '../../EmbedEditor/EmbedEditor';
 import { EmbedRender } from '../../EmbedRender/EmbedRender';
 import s from './Embed.module.scss';
 
-const Embed = memo<ElementProps>(({ element, attributes, isEdit, children, dataNodeId }) => {
+const Embed = memo<ElementProps>(({ element, attributes, isEdit, children }) => {
   if (isEdit) {
     return (
-      <EmbedEditor
-        element={element}
-        attributes={attributes}
-        className={cx(s.iframeWrap, getElementClassname(element))}
-      >
+      <EmbedEditor element={element} attributes={attributes} className={cx(s.iframeWrap, getElementClassname(element))}>
         {children}
       </EmbedEditor>
     );
   }
 
   return (
-    <div className={cx(s.iframeWrap, getElementClassname(element))} data-node-id={dataNodeId}>
+    <div className={cx(s.iframeWrap, getElementClassname(element))}>
       <EmbedRender src={element.src} title={element.title} />
     </div>
   );

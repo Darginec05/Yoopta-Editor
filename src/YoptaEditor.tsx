@@ -59,19 +59,10 @@ const YoptaEditorLib = ({ onChange, value, ...options }: Props) => {
   const storageName = getStorageName(options.shouldStoreInLocalStorage);
   const [val, setVal] = useState(() => getInitialState(options.shouldStoreInLocalStorage, storageName, value));
 
-  // const editorRef = useRef<CustomEditor>();
-  // if (!editorRef.current) {
-  //   editorRef.current = withFixDeleteFragment(
-  //     withHistory(withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor())))))),
-  //   );
-  // }
-  // const editor = editorRef.current;
-
   const [editor] = useState<CustomEditor>(() =>
     withFixDeleteFragment(
       withHistory(withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor())))))),
-    ),
-  );
+    ));
 
   useEffect(() => {
     if (!editor.selection && editor.children.length > 0) {

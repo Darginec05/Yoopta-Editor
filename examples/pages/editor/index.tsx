@@ -1,9 +1,9 @@
 import Head from 'next/head';
-import styles from '../styles/Home.module.scss';
+import styles from '../../styles/Home.module.scss';
 import { YoptaEditor } from 'yopta-editor';
 import { useState } from 'react';
 import { Descendant } from 'slate';
-import { uploadToCloudinary } from '../utils';
+import { uploadToCloudinary } from '../../utils';
 
 export default function Home() {
   const [editorValue, setEditorValue] = useState<Descendant[]>();
@@ -16,12 +16,12 @@ export default function Home() {
   const media = {
     imageProps: {
       onChange: (file: File) => onChangeMedia(file, 'image'),
-      accept: 'image/*'
+      accept: 'image/*',
     },
     videoProps: {
       onChange: (file: File) => onChangeMedia(file, 'video'),
     },
-  }
+  };
 
   return (
     <div className={styles.container}>

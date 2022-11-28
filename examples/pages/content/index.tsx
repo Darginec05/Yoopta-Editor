@@ -3,277 +3,153 @@ import s from '../../styles/Home.module.scss';
 
 const exampleData = [
   {
-    id: 'f21104c7-57e2-4a82-8647-7b0fc1516aa6',
+    id: 'c26b1ada-d7ec-40a7-b763-e0b9bdd74aba',
+    type: 'heading-one',
+    children: [
+      {
+        text: 'Largest Contentful Paint (LCP)',
+      },
+    ],
+    isVoid: false,
+  },
+  {
+    id: '153488ef-2216-4421-bffc-37f1c7ce21d7',
+    type: 'callout',
+    children: [
+      {
+        text: "Largest Contentful Paint (LCP) is an important, user-centric metric for measuring perceived load speed because it marks the point in the page load timeline when the page's main content has likely loaded—a fast LCP helps reassure the user that the page is useful.",
+      },
+    ],
+    isVoid: false,
+  },
+  {
+    id: 'c4ab0772-2057-41b5-b959-ddfe738312eb',
+    type: 'paragraph',
+    isVoid: false,
+    children: [
+      {
+        text: '',
+      },
+    ],
+  },
+  {
+    id: '8a575985-d847-49aa-a912-87752f12e243',
+    type: 'paragraph',
+    isVoid: false,
+    children: [
+      {
+        text: "Historically, it's been a challenge for web developers to measure how quickly the main content of a web page loads and is visible to users.",
+      },
+    ],
+  },
+  {
+    id: '46fe4c3d-6938-46f6-9b5e-27514169164e',
+    type: 'paragraph',
+    isVoid: false,
+    children: [
+      {
+        text: "Older metrics like load or DOMContentLoaded are not good because they don't necessarily correspond to what the user sees on their screen. And newer, user-centric performance metrics like First Contentful Paint (FCP) only capture the very beginning of the loading experience. If a page shows a splash screen or displays a loading indicator, this moment is not very relevant to the user.",
+      },
+    ],
+  },
+  {
+    id: '39abe317-814b-4672-9738-34c78b56a315',
+    type: 'paragraph',
+    isVoid: false,
+    children: [
+      {
+        text: '',
+      },
+    ],
+  },
+  {
+    id: 'd44720cf-8799-45b6-a557-419f30afe627',
+    type: 'paragraph',
+    isVoid: false,
+    children: [
+      {
+        text: "In the past we've recommended performance metrics like First Meaningful Paint (FMP) and Speed Index (SI) (both available in Lighthouse) to help capture more of the loading experience after the initial paint, but these metrics are complex, hard to explain, and often wrong—meaning they still do not identify when the main content of the page has loaded.",
+      },
+    ],
+  },
+  {
+    id: '1a6577c2-2b50-4a94-8b87-4f1e8fa72680',
+    type: 'callout',
+    isVoid: false,
+    children: [
+      {
+        text: 'To learn more about the research and methodology behind this recommendation, see: Defining the Core Web Vitals metrics thresholds',
+      },
+    ],
+  },
+  {
+    id: 'eb7e7f80-cf9e-43d2-a806-703bb00f73a5',
+    type: 'paragraph',
+    isVoid: false,
+    children: [
+      {
+        text: "Sometimes simpler is better. Based on discussions in the W3C Web Performance Working Group and research done at Google, we've found that a more accurate way to measure when the main content of a page is loaded is to look at when the largest element was rendered.",
+      },
+    ],
+  },
+  {
+    id: '60fe9685-cb18-4ca1-8895-d94de39e0c12',
     type: 'heading-two',
-    children: [
-      {
-        text: 'CHEST & HIP ROLLS',
-      },
-    ],
     isVoid: false,
-  },
-  {
-    id: '6cbf3bec-b865-44db-85d6-a5c6303f1b72',
-    type: 'paragraph',
     children: [
       {
-        text: 'WELCOME TO THE FIRST CHAPTER OF OUR JOURNEY!',
+        text: 'What is LCP?',
       },
     ],
   },
   {
-    id: '80e7eaca-9d6e-4a7f-843e-917fe325034e',
-    type: 'paragraph',
-    children: [
-      {
-        text: 'ALL THE VIDEOS ARE INVERTED FOR YOUR COMFORT TRAINING.',
-      },
-    ],
-  },
-  {
-    id: 'b70cd440-a328-4afe-a011-74f421f54302',
-    type: 'paragraph',
-    children: [
-      {
-        text: 'In the first video, you will learn how to do ',
-      },
-      {
-        text: 'different',
-        code: true,
-      },
-      {
-        text: " chest rolls. Don't forget to do warmup & back stretch first. The warmup video you can find on my Instagram page ",
-      },
-      {
-        text: '@alinakosmoss',
-        bold: true,
-      },
-      {
-        text: '.',
-      },
-    ],
-  },
-  {
-    id: '358c4c78-f51f-4a2b-8092-6e91e611bc2c',
-    type: 'video',
-    children: [
-      {
-        text: '/vid',
-      },
-    ],
-    isVoid: false,
-  },
-  {
-    id: '658665c2-773b-45f3-bef7-219bd077867c',
-    type: 'paragraph',
-    children: [
-      {
-        text: 'I am so glad, that you decided to start it with me. I appreciate it so much!',
-      },
-    ],
-  },
-  {
-    id: '5038dcca-6f2a-47bf-8f43-d204b7fdaee7',
-    type: 'paragraph',
-    children: [
-      {
-        text: 'Ok, here are some main points from this video:',
-      },
-    ],
-  },
-  {
-    id: '911513af-51b9-4ed0-b7f6-5688e5ae9a44',
-    type: 'bulleted-list',
-    children: [
-      {
-        id: '62b4017b-410f-496e-bd7c-32c4e0f1e1d4',
-        type: 'list-item',
-        children: [
-          {
-            text: 'do a breath in when you open your chest and put your shoulder blades together at the same time. And do a breath out when you roll back ',
-          },
-        ],
-        isVoid: false,
-      },
-      {
-        id: '62b4017b-410f-496e-bd7c-32c4e0f1e1d4',
-        type: 'list-item',
-        isVoid: false,
-        children: [
-          {
-            text: 'help yourself with arms',
-          },
-        ],
-      },
-      {
-        id: '62b4017b-410f-496e-bd7c-32c4e0f1e1d4',
-        type: 'list-item',
-        isVoid: false,
-        children: [
-          {
-            text: 'keep your shoulder ',
-          },
-          {
-            id: '3257f46e-8a94-44a5-a164-8b6087b72353',
-            type: 'link',
-            url: 'https://link.com',
-            children: [
-              {
-                text: 'always',
-              },
-            ],
-          },
-          {
-            text: ' down',
-          },
-        ],
-      },
-      {
-        id: '62b4017b-410f-496e-bd7c-32c4e0f1e1d4',
-        type: 'list-item',
-        isVoid: false,
-        children: [
-          {
-            text: 'isolate your lower body',
-          },
-        ],
-      },
-      {
-        id: '62b4017b-410f-496e-bd7c-32c4e0f1e1d4',
-        type: 'list-item',
-        isVoid: false,
-        children: [
-          {
-            text: 'always start from the points to help yourself to understand direction, then “join” these points with a line.',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'e853dbf8-f674-465f-bca1-89a4d4644e8a',
+    id: '9eebfdc1-0433-4d0b-b0c8-ed51af2dbf00',
     type: 'paragraph',
     isVoid: false,
     children: [
       {
-        text: 'Now we can try it with music :)',
+        text: 'The Largest Contentful Paint (LCP) metric reports the render time of the largest image or text block visible within the viewport, relative to when the page first started loading.',
       },
     ],
   },
   {
-    id: '8d59dca5-85fa-41b1-8de1-9c1dd874f419',
-    type: 'video',
+    id: '1137d9f0-2cdf-484a-afa8-aeca3914a965',
+    type: 'heading-three',
+    isVoid: false,
     children: [
       {
-        text: '/vi',
+        text: 'What is a good LCP score?',
       },
     ],
-    isVoid: false,
   },
   {
-    id: 'b844a9d0-beb9-4b62-9422-f54869f13e95',
-    type: 'paragraph',
-    children: [
-      {
-        text: "Ok, great job! In the next video, I will teach you how to do hip rolls. This exercise love all my students! Hope, you will like it too. LET'S GO!",
-      },
-    ],
-    isVoid: false,
-  },
-  {
-    id: 'cc4ef616-258d-4ea5-ad6f-b8c1ae3fac7b',
-    type: 'video',
-    children: [
-      {
-        text: '/vi',
-      },
-    ],
-    isVoid: false,
-  },
-  {
-    id: 'e80c322d-9535-4b19-80bb-c9da4145b1c6',
+    id: '1d90d30c-262a-4b25-90e0-6c4e929f77fa',
     type: 'paragraph',
     isVoid: false,
     children: [
       {
-        text: 'Ok, here are some main points from this video:',
+        text: "To provide a good user experience, sites should strive to have Largest Contentful Paint of 2.5 seconds or less. To ensure you're hitting this target for most of your users, a good threshold to measure is the 75th percentile of page loads, segmented across mobile and desktop devices.",
       },
     ],
   },
   {
-    id: '7745e9ce-7732-45e0-9941-c1e113a591d5',
-    type: 'bulleted-list',
+    id: '76ff6a02-2fbe-47ba-9818-a834f6a37b32',
+    type: 'image',
+    isVoid: true,
     children: [
       {
-        id: '2f02944b-d9c2-497e-8f27-8c73652d7261',
-        type: 'list-item',
-        children: [
-          {
-            text: 'Do all the rolls on soft knees',
-          },
-        ],
-        isVoid: false,
-      },
-      {
-        id: '2f02944b-d9c2-497e-8f27-8c73652d7261',
-        type: 'list-item',
-        isVoid: false,
-        children: [
-          {
-            text: 'start with the points to understand direction, then “join” these points with a line.',
-          },
-        ],
-      },
-      {
-        id: '2f02944b-d9c2-497e-8f27-8c73652d7261',
-        type: 'list-item',
-        isVoid: false,
-        children: [
-          {
-            text: 'isolate your upper body',
-          },
-        ],
+        text: '',
       },
     ],
-  },
-  {
-    id: '434c8b8a-1241-4fdd-8248-60540382860f',
-    type: 'paragraph',
-    isVoid: false,
-    children: [
-      {
-        text: "Let's try it with music!",
-      },
-    ],
-  },
-  {
-    id: '65998dbe-f7bd-4edd-bb70-3c6e14ef60d9',
-    type: 'video',
-    children: [
-      {
-        text: '/vi',
-      },
-    ],
-    isVoid: false,
-  },
-  {
-    id: '5e164efe-2581-4a49-b01d-98c81c8d758c',
-    type: 'paragraph',
-    isVoid: false,
-    children: [
-      {
-        text: 'Great job! Before we start to learn body rolls, I will ask you to do homework.',
-      },
-    ],
-  },
-  {
-    id: 'ecab0088-730b-4b83-9bc9-a02e6b42c42c',
-    type: 'paragraph',
-    children: [
-      {
-        text: 'Train and film how yourself doing chest & hip rolls. You can send me this video and I will check it out.',
-      },
-    ],
+    src: 'https://res.cloudinary.com/ench-app/image/upload/v1669657143/elqsdYqQEefWJbUM2qMO_epivsr.svg',
+    options: {
+      width: 768,
+      height: 192,
+      format: 'svg',
+      name: 'elqsdYqQEefWJbUM2qMO_epivsr',
+      id: 'ea74090ad48af9cc54773d04fe0192e2',
+      secure_url: 'https://res.cloudinary.com/ench-app/image/upload/v1669657143/elqsdYqQEefWJbUM2qMO_epivsr.svg',
+    },
   },
 ];
 

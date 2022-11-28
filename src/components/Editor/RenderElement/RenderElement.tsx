@@ -67,9 +67,11 @@ const RenderElement: FC<Props> = ({ element, children, attributes, dataNodeId, i
   }
 
   return (
-    <Component attributes={attributes} element={element} dataNodeId={dataNodeId} isEdit={false}>
-      {children}
-    </Component>
+    <section data-node-id={element.id} data-node-type={element.type} {...attributes}>
+      <Component attributes={attributes} element={element} dataNodeId={dataNodeId} isEdit={false}>
+        {children}
+      </Component>
+    </section>
   );
 };
 

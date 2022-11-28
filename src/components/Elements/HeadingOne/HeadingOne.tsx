@@ -4,14 +4,9 @@ import { ElementProps } from '../../Editor/types';
 import { getElementClassname } from '../../Editor/utils';
 import s from './HeadingOne.module.scss';
 
-const HeadingOne = memo<ElementProps>(({ attributes, children, element, dataNodeId }) => {
+const HeadingOne = memo<ElementProps>(({ attributes, children, element }) => {
   return (
-    <h1
-      className={cx(s['heading-one'], getElementClassname(element))}
-      draggable={false}
-      data-node-id={dataNodeId}
-      {...attributes}
-    >
+    <h1 className={cx(s['heading-one'], getElementClassname(element))} draggable={false} {...attributes}>
       {children}
     </h1>
   );
