@@ -184,8 +184,8 @@ export const withCopyPasting = (editor: Editor) => {
         ],
       };
 
-      insertData(data);
-      Transforms.setNodes(editor, lineParagraph);
+      Transforms.removeNodes(editor);
+      Transforms.insertNodes(editor, lineParagraph);
       return;
     }
 
