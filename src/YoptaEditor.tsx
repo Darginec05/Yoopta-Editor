@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, Key } from 'react';
 import { withHistory } from 'slate-history';
 import { v4 } from 'uuid';
 import { createEditor, Descendant, Transforms } from 'slate';
@@ -22,6 +22,7 @@ import { NodeSettingsProvider } from './contexts/NodeSettingsContext/NodeSetting
 type Props = {
   onChange: (_value: Descendant[]) => void;
   value?: Descendant[];
+  key?: Key;
 } & LibOptions;
 
 const DEFAULT_YOPTA_LS_NAME = 'yopta-content';
@@ -55,7 +56,7 @@ const getInitialState = (
   return isValidNode(storedData) ? storedData : defaultValue;
 };
 
-const YoptaEditorLib = ({ onChange, value, ...options }: Props) => {
+const YoptaEditorLib = ({ onChange, value, key, ...options }: Props) => {
   const storageName = getStorageName(options.shouldStoreInLocalStorage);
   const [val, setVal] = useState(() => getInitialState(options.shouldStoreInLocalStorage, storageName, value));
 
@@ -88,6 +89,7 @@ const YoptaEditorLib = ({ onChange, value, ...options }: Props) => {
         try {
           const content = JSON.stringify(newValue);
           localStorage.setItem(storageName, content);
+        // eslint-disable-next-line no-empty
         } catch (error) {}
       }
     },
@@ -95,7 +97,7 @@ const YoptaEditorLib = ({ onChange, value, ...options }: Props) => {
   );
 
   return (
-    <Slate editor={editor} value={val} onChange={onChangeValue}>
+    <Slate editor={editor} value={val} onChange={onChangeValue} key={key}>
       <SettingsProvider options={options}>
         <ScrollProvider>
           <ActionMenuProvider>

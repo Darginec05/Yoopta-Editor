@@ -1,6 +1,6 @@
 import { Descendant } from 'slate';
-import { RenderElement } from './components/Editor/RenderElement/RenderElement';
 import { TextLeaf } from './components/Editor/TextLeaf';
+import { ELEMENT_RENDER_ITEMS } from './components/Elements';
 import { useScrollToElement } from './hooks/useScrollToElement';
 
 type Props = {
@@ -29,22 +29,19 @@ const YoptaRenderer = ({ data, wrapCls }: Props) => {
     );
   };
 
-  const renderElement = ({ id, type, children, ...rest }) => {
+  const renderElement = (element) => {
+    const { id, type, children, attributes } = element;
+    const Component = ELEMENT_RENDER_ITEMS[type];
+
     return (
-      /* @ts-ignore */
-      <RenderElement
-        element={{ id, type, ...rest }}
-        attributes={{ 'data-slate-node': 'element', ref: null }}
-        dataNodeId={id}
-        key={id}
-        isEdit={false}
-      >
-        {children.map(renderChildren)}
-      </RenderElement>
+      <section key={id} data-node-id={element.id} data-node-type={element.type} {...attributes}>
+        <Component attributes={attributes} element={element} dataNodeId={id} isEdit={false}>
+          {children.map(renderChildren)}
+        </Component>
+      </section>
     );
   };
 
-  /* @ts-ignore */
   return <div className={wrapCls}>{data.map(renderElement)}</div>;
 };
 

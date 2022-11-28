@@ -42,7 +42,10 @@ const config = {
     }),
     postcss({
       extract: true,
-      modules: true,
+      modules: {
+        generateScopedName: isProd ? '[hash:base64:8]' : '[name]_[local]',
+      },
+      autoModules: true,
       minimize: true,
       use: ['sass'],
     }),
