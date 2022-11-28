@@ -24,7 +24,7 @@ const YoptaRenderer = ({ data, wrapCls }: Props) => {
           'data-slate-leaf': true,
         }}
       >
-        {child.text}
+        {child.text.length > 0 ? child.text : <span>&#xFEFF;</span>}
       </TextLeaf>
     );
   };

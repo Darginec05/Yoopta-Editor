@@ -13,8 +13,8 @@ const exampleData = [
     isVoid: false,
   },
   {
-    id: '153488ef-2216-4421-bffc-37f1c7ce21d7',
-    type: 'callout',
+    id: '50bfaea5-c150-4783-ac2d-e6fd72f374e8',
+    type: 'paragraph',
     children: [
       {
         text: "Largest Contentful Paint (LCP) is an important, user-centric metric for measuring perceived load speed because it marks the point in the page load timeline when the page's main content has likely loaded—a fast LCP helps reassure the user that the page is useful.",
@@ -23,7 +23,7 @@ const exampleData = [
     isVoid: false,
   },
   {
-    id: 'c4ab0772-2057-41b5-b959-ddfe738312eb',
+    id: 'e5885ae8-51ab-4247-b6e4-72f46bd242a5',
     type: 'paragraph',
     isVoid: false,
     children: [
@@ -43,8 +43,18 @@ const exampleData = [
     ],
   },
   {
-    id: '46fe4c3d-6938-46f6-9b5e-27514169164e',
+    id: '0c2c51fb-e9e6-4109-a1b1-e7dc1af17a9c',
     type: 'paragraph',
+    isVoid: false,
+    children: [
+      {
+        text: '',
+      },
+    ],
+  },
+  {
+    id: 'f65f6fbe-8f6c-4d33-9cf8-475174b6271c',
+    type: 'callout',
     isVoid: false,
     children: [
       {
@@ -53,7 +63,7 @@ const exampleData = [
     ],
   },
   {
-    id: '39abe317-814b-4672-9738-34c78b56a315',
+    id: 'ce546468-ba37-4e10-b088-f5a8e264026a',
     type: 'paragraph',
     isVoid: false,
     children: [
@@ -69,6 +79,8 @@ const exampleData = [
     children: [
       {
         text: "In the past we've recommended performance metrics like First Meaningful Paint (FMP) and Speed Index (SI) (both available in Lighthouse) to help capture more of the loading experience after the initial paint, but these metrics are complex, hard to explain, and often wrong—meaning they still do not identify when the main content of the page has loaded.",
+        bold: true,
+        italic: true,
       },
     ],
   },
@@ -83,16 +95,6 @@ const exampleData = [
     ],
   },
   {
-    id: 'eb7e7f80-cf9e-43d2-a806-703bb00f73a5',
-    type: 'paragraph',
-    isVoid: false,
-    children: [
-      {
-        text: "Sometimes simpler is better. Based on discussions in the W3C Web Performance Working Group and research done at Google, we've found that a more accurate way to measure when the main content of a page is loaded is to look at when the largest element was rendered.",
-      },
-    ],
-  },
-  {
     id: '60fe9685-cb18-4ca1-8895-d94de39e0c12',
     type: 'heading-two',
     isVoid: false,
@@ -103,12 +105,12 @@ const exampleData = [
     ],
   },
   {
-    id: '9eebfdc1-0433-4d0b-b0c8-ed51af2dbf00',
+    id: 'eb7e7f80-cf9e-43d2-a806-703bb00f73a5',
     type: 'paragraph',
     isVoid: false,
     children: [
       {
-        text: 'The Largest Contentful Paint (LCP) metric reports the render time of the largest image or text block visible within the viewport, relative to when the page first started loading.',
+        text: "Sometimes simpler is better. Based on discussions in the W3C Web Performance Working Group and research done at Google, we've found that a more accurate way to measure when the main content of a page is loaded is to look at when the largest element was rendered.",
       },
     ],
   },
@@ -119,16 +121,6 @@ const exampleData = [
     children: [
       {
         text: 'What is a good LCP score?',
-      },
-    ],
-  },
-  {
-    id: '1d90d30c-262a-4b25-90e0-6c4e929f77fa',
-    type: 'paragraph',
-    isVoid: false,
-    children: [
-      {
-        text: "To provide a good user experience, sites should strive to have Largest Contentful Paint of 2.5 seconds or less. To ensure you're hitting this target for most of your users, a good threshold to measure is the 75th percentile of page loads, segmented across mobile and desktop devices.",
       },
     ],
   },
@@ -150,6 +142,26 @@ const exampleData = [
       id: 'ea74090ad48af9cc54773d04fe0192e2',
       secure_url: 'https://res.cloudinary.com/ench-app/image/upload/v1669657143/elqsdYqQEefWJbUM2qMO_epivsr.svg',
     },
+  },
+  {
+    id: '9eebfdc1-0433-4d0b-b0c8-ed51af2dbf00',
+    type: 'paragraph',
+    isVoid: false,
+    children: [
+      {
+        text: 'The Largest Contentful Paint (LCP) metric reports the render time of the largest image or text block visible within the viewport, relative to when the page first started loading.',
+      },
+    ],
+  },
+  {
+    id: '1d90d30c-262a-4b25-90e0-6c4e929f77fa',
+    type: 'paragraph',
+    isVoid: false,
+    children: [
+      {
+        text: "To provide a good user experience, sites should strive to have Largest Contentful Paint of 2.5 seconds or less. To ensure you're hitting this target for most of your users, a good threshold to measure is the 75th percentile of page loads, segmented across mobile and desktop devices.",
+      },
+    ],
   },
 ];
 
