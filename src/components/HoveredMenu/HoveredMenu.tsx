@@ -44,7 +44,7 @@ const ElementHover = ({ children, element, attributes }) => {
         handlers={handlers}
         editor={editor}
       />
-      <div className={s.content}>{children}</div>
+      <div>{children}</div>
     </section>
   );
 };
