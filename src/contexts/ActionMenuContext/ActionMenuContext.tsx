@@ -194,6 +194,8 @@ const ActionMenuProvider = ({ children }) => {
 
   const onChangeSuggestionFilterText = (value: string) => setSuggestionFilterText(value);
 
+  const filterBy = (item, text: string, field: string) => item[field]?.toLowerCase().indexOf(text) > -1;
+
   const filterSuggestionList = useCallback(
     (elementItem) => {
       if (isToolbarActionOpen || suggestionListProps.shouldShowOnlyTextNodes) {
@@ -202,8 +204,9 @@ const ActionMenuProvider = ({ children }) => {
 
       const filterText = suggestionFilterText.replace(SUGGESTION_TRIGGER, '');
       return (
-        elementItem.name.toLowerCase().indexOf(filterText) > -1 ||
-        elementItem.type.toLowerCase().indexOf(filterText) > -1
+        filterBy(elementItem, filterText, 'name') ||
+        filterBy(elementItem, filterText, 'type') ||
+        filterBy(elementItem, filterText, 'keywords')
       );
     },
     [suggestionFilterText, suggestionListProps.shouldShowOnlyTextNodes, isToolbarActionOpen],

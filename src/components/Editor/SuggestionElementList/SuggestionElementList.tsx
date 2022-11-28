@@ -18,23 +18,49 @@ type Block = {
   type: string;
   name: string;
   icon: ReactNode;
+  keywords: string;
 };
 
 const KEYS = ['Tab', 'ArrowUp', 'ArrowDown'];
 
 export const ELEMENT_TYPES: Block[] = [
-  { icon: <ParagraphIcon />, name: 'Text', type: ELEMENT_TYPES_MAP.paragraph },
-  { icon: <HeadingOneIcon />, name: 'Heading 1', type: ELEMENT_TYPES_MAP['heading-one'] },
-  { icon: <HeadingTwoIcon />, name: 'Heading 2', type: ELEMENT_TYPES_MAP['heading-two'] },
-  { icon: <HeadingThreeIcon />, name: 'Heading 3', type: ELEMENT_TYPES_MAP['heading-three'] },
-  { icon: <BulletedListIcon />, name: 'Bulleted List', type: ELEMENT_TYPES_MAP['bulleted-list'] },
-  { icon: <NumberedListIcon />, name: 'Numbered List', type: ELEMENT_TYPES_MAP['numbered-list'] },
-  { icon: <BlockQuoteIcon />, name: 'Blockquote', type: ELEMENT_TYPES_MAP['block-quote'] },
-  { icon: <CalloutIcon />, name: 'Callout', type: ELEMENT_TYPES_MAP.callout },
-  { icon: <CalloutIcon />, name: 'Code', type: ELEMENT_TYPES_MAP.code },
-  { icon: <ImageIcon />, name: 'Image', type: ELEMENT_TYPES_MAP.image },
-  { icon: <VideoIcon />, name: 'Video', type: ELEMENT_TYPES_MAP.video },
-  { icon: <VideoIcon />, name: 'Embed', type: ELEMENT_TYPES_MAP.embed },
+  { icon: <ParagraphIcon />, keywords: 'text paragraph', name: 'Text', type: ELEMENT_TYPES_MAP.paragraph },
+  {
+    icon: <HeadingOneIcon />,
+    keywords: 'heading 1 one title h1',
+    name: 'Heading 1',
+    type: ELEMENT_TYPES_MAP['heading-one'],
+  },
+  {
+    icon: <HeadingTwoIcon />,
+    keywords: 'Heading 2 two subtitle h2',
+    name: 'Heading 2',
+    type: ELEMENT_TYPES_MAP['heading-two'],
+  },
+  {
+    icon: <HeadingThreeIcon />,
+    keywords: 'Heading 3 h3 three',
+    name: 'Heading 3',
+    type: ELEMENT_TYPES_MAP['heading-three'],
+  },
+  {
+    icon: <BulletedListIcon />,
+    keywords: 'bulleted list',
+    name: 'Bulleted List',
+    type: ELEMENT_TYPES_MAP['bulleted-list'],
+  },
+  {
+    icon: <NumberedListIcon />,
+    keywords: 'numbered list num',
+    name: 'Numbered List',
+    type: ELEMENT_TYPES_MAP['numbered-list'],
+  },
+  { icon: <BlockQuoteIcon />, keywords: 'blockquote', name: 'Blockquote', type: ELEMENT_TYPES_MAP['block-quote'] },
+  { icon: <CalloutIcon />, keywords: 'callout', name: 'Callout', type: ELEMENT_TYPES_MAP.callout },
+  { icon: <CalloutIcon />, keywords: 'code bug', name: 'Code', type: ELEMENT_TYPES_MAP.code },
+  { icon: <ImageIcon />, keywords: 'image picture', name: 'Image', type: ELEMENT_TYPES_MAP.image },
+  { icon: <VideoIcon />, keywords: 'video', name: 'Video', type: ELEMENT_TYPES_MAP.video },
+  { icon: <VideoIcon />, keywords: 'embed', name: 'Embed', type: ELEMENT_TYPES_MAP.embed },
 ];
 
 type Props = {
