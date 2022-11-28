@@ -11,6 +11,7 @@ import {
   withVoidNodes,
   withCorrectVoidBehavior,
   withFixDeleteFragment,
+  withCopyPasting,
 } from './components/Editor/plugins';
 import { ActionMenuProvider } from './contexts/ActionMenuContext/ActionMenuContext';
 import { SettingsProvider } from './contexts/SettingsContext/SettingsContext';
@@ -61,8 +62,12 @@ const YoptaEditorLib = ({ onChange, value, key, ...options }: Props) => {
   const [val, setVal] = useState(() => getInitialState(options.shouldStoreInLocalStorage, storageName, value));
 
   const [editor] = useState<CustomEditor>(() =>
-    withFixDeleteFragment(
-      withHistory(withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor())))))),
+    withHistory(
+      withCopyPasting(
+        withFixDeleteFragment(
+          withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor()))))),
+        ),
+      ),
     ));
 
   useEffect(() => {
@@ -89,7 +94,7 @@ const YoptaEditorLib = ({ onChange, value, key, ...options }: Props) => {
         try {
           const content = JSON.stringify(newValue);
           localStorage.setItem(storageName, content);
-        // eslint-disable-next-line no-empty
+          // eslint-disable-next-line no-empty
         } catch (error) {}
       }
     },

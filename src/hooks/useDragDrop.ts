@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { DragEvent, useState } from 'react';
 import { Editor, Transforms, Element as SlateElement } from 'slate';
 
 export type DragDropValues = {
@@ -36,7 +36,7 @@ export const useDragDrop = (editor: Editor): [DragDropValues, DragDropHandlers] 
     setDndState({ from: -1, to: -1 });
   };
 
-  const onDrop = () => {
+  const onDrop = (e: DragEvent<HTMLDivElement>) => {
     if (dndState.from === dndState.to || dndState.from === -1 || dndState.to === -1) return undefined;
 
     Transforms.moveNodes(editor, {
@@ -44,21 +44,28 @@ export const useDragDrop = (editor: Editor): [DragDropValues, DragDropHandlers] 
       to: [dndState.to],
       match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node) && node.type !== 'list-item',
     });
+
+    e.dataTransfer.clearData();
   };
 
-  const onDragStart = (e) => {
+  const onDragStart = (e: DragEvent<HTMLDivElement>) => {
     setIsDisableByDrag(true);
 
     e.dataTransfer.setData('Text', '');
     e.dataTransfer.effectAllowed = 'move';
-    e.target.parentNode.ondragenter = onDragEnter;
-    e.target.parentNode.ondragover = (event) => {
-      event.preventDefault();
-      return true;
-    };
 
-    const fromIndex = Array.from(e.target.parentNode.children).indexOf(e.target);
-    setDndState((prevDrag) => ({ ...prevDrag, from: fromIndex }));
+    const target = e.target as HTMLDivElement;
+    if (target.parentNode) {
+      // @ts-ignore
+      target.parentNode.ondragenter = onDragEnter;
+      // @ts-ignore
+      target.parentNode.ondragover = (event) => {
+        event.preventDefault();
+        return true;
+      };
+      const fromIndex = Array.from(target.parentNode.children).indexOf(target);
+      setDndState((prevDrag) => ({ ...prevDrag, from: fromIndex }));
+    }
   };
 
   return [

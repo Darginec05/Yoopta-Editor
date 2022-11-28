@@ -165,3 +165,32 @@ export const withFixDeleteFragment = (editor: Editor) => {
   };
   return editor;
 };
+
+export const withCopyPasting = (editor: Editor) => {
+  const { insertData } = editor;
+
+  editor.insertData = (data: DataTransfer) => {
+    const html = data.getData('text/html');
+
+    if (html) {
+      const parsed = new DOMParser().parseFromString(html, 'text/html');
+      const lineParagraph: ParagraphElement = {
+        id: v4(),
+        type: 'paragraph',
+        children: [
+          {
+            text: parsed.body.textContent || '',
+          },
+        ],
+      };
+
+      insertData(data);
+      Transforms.setNodes(editor, lineParagraph);
+      return;
+    }
+
+    insertData(data);
+  };
+
+  return editor;
+};
