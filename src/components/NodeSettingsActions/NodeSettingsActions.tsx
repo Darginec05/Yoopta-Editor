@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import cx from 'classnames';
 import { HoveredNode, NodeSettingsContextHandlers } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { ActionMenuContextType } from '../../contexts/ActionMenuContext/ActionMenuContext';
 import PlusIcon from '../../icons/add.svg';
@@ -35,12 +36,17 @@ export const NodeSettingsActions = ({ handlers, node, showSuggestionList }: Prop
   };
 
   return (
-    <div className={s.actions}>
-      <button type="button" onClick={handlePlusButton} contentEditable={false} className={s.hoverSettingsItem}>
+    <div className={cx(s.actions, 'node-settings-actions')}>
+      <button
+        type="button"
+        onClick={handlePlusButton}
+        contentEditable={false}
+        className={cx(s.hoverSettingsItem, 'node-settings-add')}
+      >
         <PlusIcon />
       </button>
       <button
-        className={s.hoverSettingsItem}
+        className={cx(s.hoverSettingsItem, 'node-settings-drag')}
         onMouseDown={onMouseDown}
         onClick={() => openNodeSettings(dragRef, node)}
         ref={dragRef}
