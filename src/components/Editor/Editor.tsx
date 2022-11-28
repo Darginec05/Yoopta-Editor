@@ -6,8 +6,8 @@ import { v4 } from 'uuid';
 import { TextLeaf } from './TextLeaf';
 import { RenderElement } from './RenderElement/RenderElement';
 import { Toolbar } from './Toolbar/Toolbar';
-import { LIST_TYPES, toggleBlock } from './utils';
-import { TEXT_ELEMENTS_LIST, VOID_ELEMENTS } from './constants';
+import { capitalizeFirstLetter, LIST_TYPES, toggleBlock } from './utils';
+import { ELEMENT_TYPES_MAP, TEXT_ELEMENTS_LIST, VOID_ELEMENTS } from './constants';
 import { SuggestionElementList } from './SuggestionElementList/SuggestionElementList';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionMenuContext/ActionMenuContext';
@@ -41,8 +41,15 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
 
   const isReadOnly = disableWhileDrag;
 
-  const renderLeaf = useCallback((leafProps) => <TextLeaf isEdit {...leafProps} />, []);
   const renderElement = useCallback((elemProps) => <RenderElement {...elemProps} />, []);
+  const renderLeaf = useCallback((leafProps) => {
+    const placeholder =
+      leafProps.children.props?.parent.type === ELEMENT_TYPES_MAP.paragraph
+        ? ' Type / to open menu'
+        : ` ${capitalizeFirstLetter(leafProps.children.props?.parent.type)}`;
+
+    return <TextLeaf placeholder={placeholder} {...leafProps} />;
+  }, []);
 
   const onKeyUp = useCallback(
     (event) => {
@@ -183,11 +190,7 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
       className={cx(s.editorContainer, options.wrapCls)}
       onMouseDown={handleEmptyZoneClick}
     >
-      <div
-        className={cx(s.editorContent, options.contentCls)}
-        aria-hidden
-        onMouseDown={stopPropagation}
-      >
+      <div className={cx(s.editorContent, options.contentCls)} aria-hidden onMouseDown={stopPropagation}>
         <OutsideClick onClose={hideToolbarTools}>
           {/* @ts-ignore */}
           <Toolbar toolbarRef={toolbarRef} toolbarStyle={toolbarStyle} editor={editor} />
