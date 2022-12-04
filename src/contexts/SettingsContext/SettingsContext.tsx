@@ -23,6 +23,8 @@ type LibOptions = {
   wrapCls?: string;
   contentCls?: string;
   shouldStoreInLocalStorage?: boolean | { name: string };
+  autoFocus?: boolean;
+  placeholder?: string;
   media?: MediaProps;
 };
 

@@ -3,7 +3,7 @@ import { Editor, Element, Range, Transforms, Node, Path } from 'slate';
 import { v4 } from 'uuid';
 import isUrl from 'is-url';
 import { BulletedListElement, NumberedListElement, ParagraphElement } from './types';
-import { KEYBOARD_SHORTCUTS, addLinkNode } from './utils';
+import { KEYBOARD_SHORTCUTS, addLinkNode, deserializeHTML } from './utils';
 import { VOID_ELEMENTS } from './constants';
 
 export const withVoidNodes = (editor: Editor) => {
@@ -174,18 +174,9 @@ export const withCopyPasting = (editor: Editor) => {
 
     if (html) {
       const parsed = new DOMParser().parseFromString(html, 'text/html');
-      const lineParagraph: ParagraphElement = {
-        id: v4(),
-        type: 'paragraph',
-        children: [
-          {
-            text: parsed.body.textContent || '',
-          },
-        ],
-      };
 
-      Transforms.removeNodes(editor);
-      Transforms.insertNodes(editor, lineParagraph);
+      const fragment = deserializeHTML(parsed.body);
+      Transforms.insertFragment(editor, fragment);
       return;
     }
 

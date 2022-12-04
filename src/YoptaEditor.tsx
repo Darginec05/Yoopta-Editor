@@ -57,7 +57,7 @@ const getInitialState = (
   return isValidNode(storedData) ? storedData : defaultValue;
 };
 
-const YoptaEditorLib = ({ onChange, value, key, ...options }: Props) => {
+const YoptaEditorLib = ({ onChange, value, key, autoFocus, placeholder, ...options }: Props) => {
   const storageName = getStorageName(options.shouldStoreInLocalStorage);
   const [val, setVal] = useState(() => getInitialState(options.shouldStoreInLocalStorage, storageName, value));
 
@@ -71,15 +71,17 @@ const YoptaEditorLib = ({ onChange, value, key, ...options }: Props) => {
     ));
 
   useEffect(() => {
+    if (!autoFocus) return;
+
     if (!editor.selection && editor.children.length > 0) {
       const focusTimeout = setTimeout(() => {
         Transforms.select(editor, { path: [0, 0], offset: 0 });
         ReactEditor.focus(editor);
-
-        clearTimeout(focusTimeout);
       }, 0);
+
+      return () => clearTimeout(focusTimeout);
     }
-  }, []);
+  }, [autoFocus]);
 
   const onChangeValue = useCallback(
     (newValue: Descendant[]) => {
@@ -107,7 +109,7 @@ const YoptaEditorLib = ({ onChange, value, key, ...options }: Props) => {
         <ScrollProvider>
           <ActionMenuProvider>
             <NodeSettingsProvider>
-              <Editor editor={editor} />
+              <Editor editor={editor} placeholder={placeholder} />
             </NodeSettingsProvider>
           </ActionMenuProvider>
         </ScrollProvider>

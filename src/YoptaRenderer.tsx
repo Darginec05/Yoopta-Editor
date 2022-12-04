@@ -8,41 +8,56 @@ type Props = {
   wrapCls?: string;
 };
 
+const RenderChildren = ({ child }) => {
+  // eslint-disable-next-line no-use-before-define
+  if (child.type) return <RenderElement element={child} fromChild />;
+
+  return (
+    /* @ts-ignore */
+    <TextLeaf
+      leaf={child}
+      attributes={{
+        'data-slate-leaf': true,
+      }}
+    >
+      {child.text.length > 0 ? child.text : <span>&#xFEFF;</span>}
+    </TextLeaf>
+  );
+};
+
+const RenderElement = ({ element, fromChild }) => {
+  const { id, type, children, attributes } = element;
+  const Component = ELEMENT_RENDER_ITEMS[type];
+  if (!Component) return null;
+
+  const node = (
+    <Component attributes={attributes} element={element} dataNodeId={id} isEdit={false}>
+      {children.map((child, i) => (
+        <RenderChildren key={child.id || i} child={child} />
+      ))}
+    </Component>
+  );
+
+  if (fromChild) return node;
+
+  return (
+    <section key={id} data-node-id={element.id} data-node-type={element.type} {...attributes}>
+      {node}
+    </section>
+  );
+};
+
 const YoptaRenderer = ({ data, wrapCls }: Props) => {
   useScrollToElement();
 
-  const renderChildren = (child, i) => {
-    // eslint-disable-next-line no-use-before-define
-    if (child.type) return renderElement(child);
-
-    return (
-      /* @ts-ignore */
-      <TextLeaf
-        key={i}
-        leaf={child}
-        attributes={{
-          'data-slate-leaf': true,
-        }}
-      >
-        {child.text.length > 0 ? child.text : <span>&#xFEFF;</span>}
-      </TextLeaf>
-    );
-  };
-
-  const renderElement = (element) => {
-    const { id, type, children, attributes } = element;
-    const Component = ELEMENT_RENDER_ITEMS[type];
-
-    return (
-      <section key={id} data-node-id={element.id} data-node-type={element.type} {...attributes}>
-        <Component attributes={attributes} element={element} dataNodeId={id} isEdit={false}>
-          {children.map(renderChildren)}
-        </Component>
-      </section>
-    );
-  };
-
-  return <div className={wrapCls}>{data.map(renderElement)}</div>;
+  return (
+    <div className={wrapCls}>
+      {data.map((element) => (
+        /* @ts-ignore */
+        <RenderElement key={element.id} element={element} />
+      ))}
+    </div>
+  );
 };
 
 export { YoptaRenderer };

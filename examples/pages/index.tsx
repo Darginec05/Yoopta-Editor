@@ -36,6 +36,7 @@ export default function Home() {
           wrapCls={styles.editorWrapper}
           onChange={(val: Descendant[]) => setEditorValue(val)}
           media={media}
+          autoFocus
           shouldStoreInLocalStorage={{ name: 'example-content' }}
         />
       </div>

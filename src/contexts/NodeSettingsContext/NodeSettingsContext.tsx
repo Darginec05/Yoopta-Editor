@@ -163,7 +163,7 @@ const NodeSettingsProvider = ({ children }) => {
 
         const path = ReactEditor.findPath(editor, hoveredNode);
         Transforms.removeNodes(editor, {
-          at: path,
+          at: [path[0], 0], // remove the whole node including inline nodes
           match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
         });
 

@@ -3,168 +3,178 @@ import s from '../../styles/Home.module.scss';
 
 const exampleData = [
   {
-    id: 'c26b1ada-d7ec-40a7-b763-e0b9bdd74aba',
-    type: 'heading-one',
-    children: [
-      {
-        text: 'Largest Contentful Paint (LCP)',
-      },
-    ],
-    isVoid: false,
-  },
-  {
-    id: '50bfaea5-c150-4783-ac2d-e6fd72f374e8',
     type: 'paragraph',
+    id: 'fbd6a0f9-17a4-4837-9661-0bfb3888470c',
     children: [
       {
-        text: "Largest Contentful Paint (LCP) is an important, user-centric metric for measuring perceived load speed because it marks the point in the page load timeline when the page's main content has likely loaded—a fast LCP helps reassure the user that the page is useful.",
+        text: 'With ',
       },
-    ],
-    isVoid: false,
-  },
-  {
-    id: 'e5885ae8-51ab-4247-b6e4-72f46bd242a5',
-    type: 'paragraph',
-    isVoid: false,
-    children: [
       {
-        text: '',
-      },
-    ],
-  },
-  {
-    id: '8a575985-d847-49aa-a912-87752f12e243',
-    type: 'paragraph',
-    isVoid: false,
-    children: [
-      {
-        text: "Historically, it's been a challenge for web developers to measure how quickly the main content of a web page loads and is visible to users.",
-      },
-    ],
-  },
-  {
-    id: '0c2c51fb-e9e6-4109-a1b1-e7dc1af17a9c',
-    type: 'paragraph',
-    isVoid: false,
-    children: [
-      {
-        text: '',
-      },
-    ],
-  },
-  {
-    id: 'f65f6fbe-8f6c-4d33-9cf8-475174b6271c',
-    type: 'callout',
-    isVoid: false,
-    children: [
-      {
-        text: "Older metrics like load or DOMContentLoaded are not good because they don't necessarily correspond to what the user sees on their screen. And newer, user-centric performance metrics like First Contentful Paint (FCP) only capture the very beginning of the loading experience. If a page shows a splash screen or displays a loading indicator, this moment is not very relevant to the user.",
-      },
-    ],
-  },
-  {
-    id: 'ce546468-ba37-4e10-b088-f5a8e264026a',
-    type: 'paragraph',
-    isVoid: false,
-    children: [
-      {
-        text: '',
-      },
-    ],
-  },
-  {
-    id: 'd44720cf-8799-45b6-a557-419f30afe627',
-    type: 'paragraph',
-    isVoid: false,
-    children: [
-      {
-        text: "In the past we've recommended performance metrics like First Meaningful Paint (FMP) and Speed Index (SI) (both available in Lighthouse) to help capture more of the loading experience after the initial paint, but these metrics are complex, hard to explain, and often wrong—meaning they still do not identify when the main content of the page has loaded.",
+        text: '23 million unique visitors per month',
         bold: true,
-        italic: true,
       },
-    ],
-  },
-  {
-    id: '1a6577c2-2b50-4a94-8b87-4f1e8fa72680',
-    type: 'callout',
-    isVoid: false,
-    children: [
       {
-        text: 'To learn more about the research and methodology behind this recommendation, see: Defining the Core Web Vitals metrics thresholds',
+        text: ', ',
       },
-    ],
-  },
-  {
-    id: '60fe9685-cb18-4ca1-8895-d94de39e0c12',
-    type: 'heading-two',
-    isVoid: false,
-    children: [
       {
-        text: 'What is LCP?',
+        type: 'link',
+        url: 'https://www.cdiscount.com/',
+        id: 'a49a16e6-9d3e-4e64-8367-44126fdce04d',
+        children: [
+          {
+            text: 'Cdiscount',
+          },
+        ],
+      },
+      {
+        text: ' is the French leader in e-commerce, and as a result, we continuously strive to achieve the best possible performance. The reason is very simple: better performance usually means a better user experience and therefore a higher user retention rate.',
       },
     ],
   },
   {
-    id: 'eb7e7f80-cf9e-43d2-a806-703bb00f73a5',
     type: 'paragraph',
-    isVoid: false,
+    id: '6ebbed78-bf08-4513-b809-9ddd800e0335',
     children: [
       {
-        text: "Sometimes simpler is better. Based on discussions in the W3C Web Performance Working Group and research done at Google, we've found that a more accurate way to measure when the main content of a page is loaded is to look at when the largest element was rendered.",
+        text: 'Google announced in May 2020 that it will prioritize sites based on ',
+      },
+      {
+        type: 'link',
+        url: 'https://web.dev/vitals/',
+        id: '3a9c3ca4-146f-473f-9f64-7618eb9c5745',
+        children: [
+          {
+            text: 'Core Web Vitals (LCP, FID, and CLS)',
+          },
+        ],
+      },
+      {
+        text: '. As a result, performance is no longer just about user experience, but also about SEO ranking.',
       },
     ],
   },
   {
-    id: '1137d9f0-2cdf-484a-afa8-aeca3914a965',
-    type: 'heading-three',
-    isVoid: false,
+    type: 'paragraph',
+    id: 'c215d39a-48b0-4e10-acb0-0e428a0e054e',
     children: [
       {
-        text: 'What is a good LCP score?',
+        text: 'In this article we will see how the implementation of progressive hydration strategies helped us to',
+      },
+      {
+        text: ' reduce ',
+        bold: true,
+      },
+      {
+        text: 'the ',
+      },
+      {
+        type: 'link',
+        url: 'https://web.dev/fid/',
+        id: 'ed630e8a-4f58-4751-9c2b-b1818024d806',
+        children: [
+          {
+            text: 'First Input Delay',
+          },
+        ],
+      },
+      {
+        text: ' on our mobile site ',
+      },
+      {
+        text: 'by more than 50%',
+        bold: true,
+      },
+      {
+        text: ', allowing us to reach the “FAST” goal on all three indicators.',
       },
     ],
   },
   {
-    id: '76ff6a02-2fbe-47ba-9818-a834f6a37b32',
-    type: 'image',
-    isVoid: true,
+    type: 'heading-one',
+    id: '8590ada6-4579-4e7b-8ba7-ac25d89fe040',
+    children: [
+      {
+        text: 'Hydration and its impact on the FID',
+      },
+    ],
+  },
+  {
+    type: 'paragraph',
+    id: '87304480-d494-4077-bf6a-558cd77f4a72',
+    children: [
+      {
+        text: 'With a strong SEO focus and highly cacheable content, server-side rendering is an obvious choice for an e-commerce website like Cdiscount.',
+      },
+    ],
+  },
+  {
+    type: 'paragraph',
+    id: '66c87530-a012-490f-b213-8a00d33e84ff',
+    children: [
+      {
+        text: 'Despite server rendering allowing users to view our website quickly in their browsers, the JavaScript bundles must still be loaded, processed, and executed for them to interact with it. In this process, called ',
+      },
+      {
+        type: 'link',
+        url: 'https://reactjs.org/docs/react-dom.html#hydrate',
+        id: '22e04d8d-27d5-40e2-9ced-c3caca2392f4',
+        children: [
+          {
+            text: 'hydration',
+            bold: true,
+          },
+        ],
+      },
+      {
+        text: ', React checks the nodes in the current DOM and hydrates them with the corresponding JavaScript by creating what is called the ',
+      },
+      {
+        type: 'link',
+        url: 'https://reactjs.org/docs/faq-internals.html',
+        id: 'd941d7eb-025d-4a28-ae67-4650827f0619',
+        children: [
+          {
+            text: 'Virtual DOM',
+          },
+        ],
+      },
+      {
+        text: '.',
+      },
+    ],
+  },
+  {
+    type: 'paragraph',
+    id: 'e155444a-b25e-4c96-8a38-d6ba46e6320e',
+    children: [
+      {
+        text: 'The whole page is hydrated all at once, meaning the user must wait until the bottom of the page is hydrated before they can interact with the top of the page. This can be frustrating for the user, as the UI can appear frozen.',
+      },
+    ],
+  },
+  {
+    type: 'paragraph',
+    id: 'b9931417-dabb-469a-91dd-d849586d1ad6',
+    children: [
+      {
+        text: 'So how exactly does hydration impact FID? ',
+        bold: true,
+      },
+      {
+        text: 'Long first input delays are typically caused when a user tries to interact with the page while the main thread is busy and unable to respond right away. On a server-side rendered page, the hydration process can take up a lot of space on the main thread.',
+      },
+    ],
+  },
+  {
+    id: 'f49824c5-9825-415e-86b7-9f0f5042e7fc',
+    type: 'paragraph',
     children: [
       {
         text: '',
-      },
-    ],
-    src: 'https://res.cloudinary.com/ench-app/image/upload/v1669657143/elqsdYqQEefWJbUM2qMO_epivsr.svg',
-    options: {
-      width: 768,
-      height: 192,
-      format: 'svg',
-      name: 'elqsdYqQEefWJbUM2qMO_epivsr',
-      id: 'ea74090ad48af9cc54773d04fe0192e2',
-      secure_url: 'https://res.cloudinary.com/ench-app/image/upload/v1669657143/elqsdYqQEefWJbUM2qMO_epivsr.svg',
-    },
-  },
-  {
-    id: '9eebfdc1-0433-4d0b-b0c8-ed51af2dbf00',
-    type: 'paragraph',
-    isVoid: false,
-    children: [
-      {
-        text: 'The Largest Contentful Paint (LCP) metric reports the render time of the largest image or text block visible within the viewport, relative to when the page first started loading.',
-      },
-    ],
-  },
-  {
-    id: '1d90d30c-262a-4b25-90e0-6c4e929f77fa',
-    type: 'paragraph',
-    isVoid: false,
-    children: [
-      {
-        text: "To provide a good user experience, sites should strive to have Largest Contentful Paint of 2.5 seconds or less. To ensure you're hitting this target for most of your users, a good threshold to measure is the 75th percentile of page loads, segmented across mobile and desktop devices.",
       },
     ],
   },
 ];
-
 const ContentPage = () => {
   return (
     <div className={s.main}>

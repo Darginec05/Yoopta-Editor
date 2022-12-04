@@ -11,15 +11,15 @@ import { ELEMENT_TYPES_MAP, TEXT_ELEMENTS_LIST, VOID_ELEMENTS } from './constant
 import { SuggestionElementList } from './SuggestionElementList/SuggestionElementList';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionMenuContext/ActionMenuContext';
-import { useSettings } from '../../contexts/SettingsContext/SettingsContext';
+import { LibOptions, useSettings } from '../../contexts/SettingsContext/SettingsContext';
 import { ParagraphElement } from './types';
 import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { OutsideClick } from '../OutsideClick';
 import s from './Editor.module.scss';
 
-type YoptaProps = { editor: Editor };
+type YoptaProps = { editor: Editor; placeholder: LibOptions['placeholder'] };
 
-const YoptaEditor = ({ editor }: YoptaProps) => {
+const YoptaEditor = ({ editor, placeholder }: YoptaProps) => {
   const { options } = useSettings();
   useScrollToElement();
   const [{ disableWhileDrag }, { changeHoveredNode }] = useNodeSettingsContext();
@@ -43,12 +43,12 @@ const YoptaEditor = ({ editor }: YoptaProps) => {
 
   const renderElement = useCallback((elemProps) => <RenderElement {...elemProps} />, []);
   const renderLeaf = useCallback((leafProps) => {
-    const placeholder =
+    const nodePlaceholder =
       leafProps.children.props?.parent.type === ELEMENT_TYPES_MAP.paragraph
-        ? ' Type / to open menu'
+        ? (placeholder || ' Type / to open menu')
         : ` ${capitalizeFirstLetter(leafProps.children.props?.parent.type)}`;
 
-    return <TextLeaf placeholder={placeholder} {...leafProps} />;
+    return <TextLeaf placeholder={nodePlaceholder} {...leafProps} />;
   }, []);
 
   const onKeyUp = useCallback(
