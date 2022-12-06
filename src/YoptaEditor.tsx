@@ -24,6 +24,7 @@ type Props = {
   onChange: (_value: Descendant[]) => void;
   value?: Descendant[];
   key?: Key;
+  scrollElementSelector?: string;
 } & LibOptions;
 
 const DEFAULT_YOPTA_LS_NAME = 'yopta-content';
@@ -57,7 +58,15 @@ const getInitialState = (
   return isValidNode(storedData) ? storedData : defaultValue;
 };
 
-const YoptaEditorLib = ({ onChange, value, key, autoFocus, placeholder, ...options }: Props) => {
+const YoptaEditorLib = ({
+  onChange,
+  value,
+  key,
+  placeholder,
+  scrollElementSelector,
+  autoFocus = true,
+  ...options
+}: Props) => {
   const storageName = getStorageName(options.shouldStoreInLocalStorage);
   const [val, setVal] = useState(() => getInitialState(options.shouldStoreInLocalStorage, storageName, value));
 
@@ -68,7 +77,8 @@ const YoptaEditorLib = ({ onChange, value, key, autoFocus, placeholder, ...optio
           withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor()))))),
         ),
       ),
-    ));
+    ),
+  );
 
   useEffect(() => {
     if (!autoFocus) return;
@@ -106,7 +116,7 @@ const YoptaEditorLib = ({ onChange, value, key, autoFocus, placeholder, ...optio
   return (
     <Slate editor={editor} value={val} onChange={onChangeValue} key={key}>
       <SettingsProvider options={options}>
-        <ScrollProvider>
+        <ScrollProvider scrollElementSelector={scrollElementSelector}>
           <ActionMenuProvider>
             <NodeSettingsProvider>
               <Editor editor={editor} placeholder={placeholder} />

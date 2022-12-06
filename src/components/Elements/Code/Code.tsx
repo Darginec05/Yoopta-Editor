@@ -7,7 +7,7 @@ import s from './Code.module.scss';
 const Code = memo<ElementProps>(({ attributes, children, element }) => {
   return (
     <code className={cx(s.code, getElementClassname(element))} {...attributes}>
-      <pre>{children}</pre>
+      <pre className={s.pre}>{children}</pre>
     </code>
   );
 });

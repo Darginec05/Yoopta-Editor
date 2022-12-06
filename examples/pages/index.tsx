@@ -16,12 +16,12 @@ export default function Home() {
   const media = {
     imageProps: {
       onChange: (file: File) => onChangeMedia(file, 'image'),
-      accept: 'image/*'
+      accept: 'image/*',
     },
     videoProps: {
       onChange: (file: File) => onChangeMedia(file, 'video'),
     },
-  }
+  };
 
   return (
     <div className={styles.container}>
@@ -36,8 +36,8 @@ export default function Home() {
           wrapCls={styles.editorWrapper}
           onChange={(val: Descendant[]) => setEditorValue(val)}
           media={media}
-          autoFocus
           shouldStoreInLocalStorage={{ name: 'example-content' }}
+          scrollElementSelector={`.${styles.main}`}
         />
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { Descendant } from 'slate';
-import { TextLeaf } from './components/Editor/TextLeaf';
+import { TextLeaf } from './components/Editor/TextLeaf/TextLeaf';
 import { ELEMENT_RENDER_ITEMS } from './components/Elements';
 import { useScrollToElement } from './hooks/useScrollToElement';
 
