@@ -1,4 +1,4 @@
-import { Editor, Transforms, Element as SlateElement } from 'slate';
+import { Editor, Transforms, Element as SlateElement, Point, Path } from 'slate';
 import copy from 'copy-to-clipboard';
 import { v4 } from 'uuid';
 import React, { CSSProperties, MouseEvent, useContext, useMemo, useState } from 'react';
@@ -58,6 +58,20 @@ const NodeSettingsContext = React.createContext<NodeSettingsContextType>([
   },
 ]);
 
+// We can get next nodes with sub paths [5, 0] | [5, 1] || [5, 2, 3];
+const getRootLevelNextNodePath = (currentPath: Path, nextPoint: Point | undefined): Point | Path => {
+  if (!nextPoint) return [currentPath[0] + 1];
+
+  const rootNodePath = nextPoint.path[0];
+  const subNodePath = nextPoint.path[1];
+
+  if (typeof subNodePath === 'number' && subNodePath > 0) {
+    return { path: [rootNodePath + 1, 0], offset: 0 };
+  }
+
+  return { path: [rootNodePath, 0], offset: 0 };
+};
+
 const getInitialState = ({ children }: Editor): HoveredNode => {
   if (children.length === 1) {
     const node = children[0] as CustomElement;
@@ -107,7 +121,8 @@ const NodeSettingsProvider = ({ children }) => {
 
           const isEmptyNode = Editor.string(editor, path).trim().length === 0;
           const isVoidNode = Editor.isVoid(editor, currentNode);
-          const afterPath = after || [path[0] + 1];
+
+          const afterPath = getRootLevelNextNodePath(path, after);
 
           setHoveredNode(null);
 

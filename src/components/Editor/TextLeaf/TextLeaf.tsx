@@ -21,6 +21,11 @@ const TextLeaf = memo(({ attributes, children, placeholder, leaf }: LeafProps) =
           [s.placeholder]: leaf.placeholder,
         },
         leaf.token ? `token ${leaf.token}` : '',
+        leaf.bold ? 'leaf-bold' : '',
+        leaf.italic ? 'leaf-italic' : '',
+        leaf.strike ? 'leaf-strike' : '',
+        leaf.underline ? 'leaf-underline' : '',
+        leaf.code ? 'leaf-code' : '',
       )}
     >
       {children}
