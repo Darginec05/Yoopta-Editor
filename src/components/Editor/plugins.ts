@@ -39,6 +39,7 @@ export const withShortcuts = (editor: Editor) => {
         Transforms.select(editor, range);
         Transforms.delete(editor);
         const newProperties: Partial<Element> = {
+          // id: v4(),
           type,
         };
 

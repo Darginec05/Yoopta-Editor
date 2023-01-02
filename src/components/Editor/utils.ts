@@ -145,8 +145,11 @@ export const KEYBOARD_SHORTCUTS = {
   '<': ELEMENT_TYPES_MAP.callout,
   hw: ELEMENT_TYPES_MAP.code,
   '#': ELEMENT_TYPES_MAP['heading-one'],
+  h1: ELEMENT_TYPES_MAP['heading-one'],
   '##': ELEMENT_TYPES_MAP['heading-two'],
+  h2: ELEMENT_TYPES_MAP['heading-two'],
   '###': ELEMENT_TYPES_MAP['heading-three'],
+  h3: ELEMENT_TYPES_MAP['heading-three'],
 };
 
 export const capitalizeFirstLetter = (string?: string): string | undefined =>
