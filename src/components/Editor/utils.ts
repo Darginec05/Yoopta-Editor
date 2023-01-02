@@ -3,9 +3,7 @@ import { Editor, Text, Element as SlateElement, Transforms, Range } from 'slate'
 import { v4 } from 'uuid';
 import { jsx } from 'slate-hyperscript';
 import { LinkElement } from './types';
-import { ELEMENT_TYPES_MAP } from './constants';
-
-export const LIST_TYPES = ['numbered-list', 'bulleted-list'];
+import { ELEMENT_TYPES_MAP, LIST_TYPES } from './constants';
 
 export const getNodePath = (editor: Editor, node: any) => {
   const path = ReactEditor.findPath(editor, node);
@@ -152,7 +150,7 @@ export const KEYBOARD_SHORTCUTS = {
 };
 
 export const capitalizeFirstLetter = (string?: string): string | undefined =>
-  (string ? string.charAt(0).toUpperCase() + string.slice(1) : undefined);
+  string ? string.charAt(0).toUpperCase() + string.slice(1) : undefined;
 
 export const getElementClassname = (element) => `yopta-${element.type}`;
 

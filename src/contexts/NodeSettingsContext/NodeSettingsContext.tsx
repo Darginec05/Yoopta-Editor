@@ -191,6 +191,7 @@ const NodeSettingsProvider = ({ children }) => {
           if (!hoveredNode) return;
           const path = getNodePath(editor, hoveredNode);
 
+          // [TODO] - make util function to get current node by levels path
           const currentNode = Array.from(
             Editor.nodes(editor, {
               match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
@@ -208,7 +209,7 @@ const NodeSettingsProvider = ({ children }) => {
             });
 
             const focusTimeout = setTimeout(() => {
-              Transforms.select(editor, { path, offset: editor.selection?.anchor.offset || 0 });
+              Transforms.select(editor, { path, offset: 0 });
               ReactEditor.focus(editor);
 
               clearTimeout(focusTimeout);

@@ -1,14 +1,13 @@
 import { Editor, Transforms, Range } from 'slate';
 import { useCallback, KeyboardEvent, MouseEvent } from 'react';
 import cx from 'classnames';
-import Prism from 'prismjs';
 import { Editable, ReactEditor } from 'slate-react';
 import { v4 } from 'uuid';
 import { TextLeaf } from './TextLeaf/TextLeaf';
 import { RenderElement } from './RenderElement/RenderElement';
 import { Toolbar } from './Toolbar/Toolbar';
-import { capitalizeFirstLetter, LIST_TYPES, toggleBlock } from './utils';
-import { ELEMENT_TYPES_MAP, TEXT_ELEMENTS_LIST, VOID_ELEMENTS } from './constants';
+import { capitalizeFirstLetter, toggleBlock } from './utils';
+import { ELEMENT_TYPES_MAP, LIST_TYPES, TEXT_ELEMENTS_LIST, VOID_ELEMENTS } from './constants';
 import { SuggestionElementList } from './SuggestionElementList/SuggestionElementList';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionMenuContext/ActionMenuContext';
@@ -16,20 +15,10 @@ import { LibOptions, useSettings } from '../../contexts/SettingsContext/Settings
 import { CustomElement, ParagraphElement } from './types';
 import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { OutsideClick } from '../OutsideClick';
+import { codeDecorator } from '../Elements/Code/decorator';
 import s from './Editor.module.scss';
 
 type YoptaProps = { editor: Editor; placeholder: LibOptions['placeholder'] };
-
-// TODO - move code decorator to code utils
-const getLength = (token) => {
-  if (typeof token === 'string') {
-    return token.length;
-  }
-  if (typeof token.content === 'string') {
-    return token.content.length;
-  }
-  return token.content.reduce((l, t) => l + getLength(t), 0);
-};
 
 const YoptaEditor = ({ editor, placeholder }: YoptaProps) => {
   const { options } = useSettings();
@@ -84,7 +73,8 @@ const YoptaEditor = ({ editor, placeholder }: YoptaProps) => {
     const { selection } = editor;
     if (!selection) return;
 
-    const currentNode: any = editor.children[editor.selection?.anchor.path[0] || 0];
+    const currentRootLevelNode: any = editor.children[editor.selection?.anchor.path[0] || 0];
+
     const text = Editor.string(editor, selection.anchor.path);
     const isEnter = event.key === 'Enter';
 
@@ -93,19 +83,14 @@ const YoptaEditor = ({ editor, placeholder }: YoptaProps) => {
     }
 
     if (isEnter) {
-      const isListNode = LIST_TYPES.includes(currentNode.type);
-      const isVoidNode = VOID_ELEMENTS.includes(currentNode.type);
-      const isTextNode = TEXT_ELEMENTS_LIST.includes(currentNode.type);
+      const isListNode = LIST_TYPES.includes(currentRootLevelNode.type);
+      const isVoidNode = VOID_ELEMENTS.includes(currentRootLevelNode.type);
+      const isTextNode = TEXT_ELEMENTS_LIST.includes(currentRootLevelNode.type);
 
       if (isListNode && text.trim() === '') {
         event.preventDefault();
         toggleBlock(editor, 'paragraph');
         return;
-      }
-
-      if (event.shiftKey) {
-        event.preventDefault();
-        editor.insertText('\n');
       }
 
       const lineParagraph: ParagraphElement = {
@@ -118,10 +103,27 @@ const YoptaEditor = ({ editor, placeholder }: YoptaProps) => {
         ],
       };
 
-      if (!event.shiftKey && !isListNode) {
-        // change next element to paragraph
-        if (isTextNode) {
+      if (event.shiftKey) {
+        if (currentRootLevelNode.type === ELEMENT_TYPES_MAP.code) {
           event.preventDefault();
+
+          Transforms.splitNodes(editor, { always: true });
+          Transforms.setNodes(editor, lineParagraph);
+          return;
+        }
+
+        event.preventDefault();
+        editor.insertText('\n');
+      }
+
+      if (!event.shiftKey && !isListNode) {
+        if (currentRootLevelNode.type === ELEMENT_TYPES_MAP.code) {
+          event.preventDefault();
+          editor.insertText('\n');
+        } else if (isTextNode) {
+          // change next element to paragraph
+          event.preventDefault();
+
           Transforms.splitNodes(editor, { always: true });
           Transforms.setNodes(editor, lineParagraph);
           // add new line in case of void element (e.g. image)
@@ -136,30 +138,7 @@ const YoptaEditor = ({ editor, placeholder }: YoptaProps) => {
   }, []);
 
   const decorate = ([node, path]) => {
-    if (node.type === 'code') {
-      const ranges = [];
-      const tokens = Prism.tokenize(node.children[0].text, Prism.languages.javascript);
-      let start = 0;
-
-      // eslint-disable-next-line no-restricted-syntax
-      for (const token of tokens) {
-        const length = getLength(token);
-        const end = start + length;
-
-        if (typeof token !== 'string') {
-          // @ts-ignore
-          ranges.push({
-            token: token.type,
-            anchor: { path, offset: start },
-            focus: { path, offset: end },
-          });
-        }
-
-        start = end;
-      }
-
-      return ranges;
-    }
+    if (node.type === 'code') return codeDecorator([node, path]);
 
     if (editor.selection) {
       if (

@@ -29,8 +29,6 @@ export const TEXT_ELEMENTS_LIST = [
   ELEMENT_TYPES_MAP.code,
 ];
 
-export const VOID_ELEMENTS = [
-  ELEMENT_TYPES_MAP.video,
-  ELEMENT_TYPES_MAP.image,
-  ELEMENT_TYPES_MAP.embed,
-];
+export const VOID_ELEMENTS = [ELEMENT_TYPES_MAP.video, ELEMENT_TYPES_MAP.image, ELEMENT_TYPES_MAP.embed];
+
+export const LIST_TYPES = [ELEMENT_TYPES_MAP['bulleted-list'], ELEMENT_TYPES_MAP['numbered-']];

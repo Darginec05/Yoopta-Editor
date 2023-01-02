@@ -19,6 +19,7 @@ import NoSSR from './components/NoSsr/NoSsr';
 import type { LibOptions } from './contexts/SettingsContext/SettingsContext';
 import { CustomEditor } from './components/Editor/types';
 import { NodeSettingsProvider } from './contexts/NodeSettingsContext/NodeSettingsContext';
+import { isValidYoptaNodes } from './utils';
 
 type Props = {
   onChange: (_value: Descendant[]) => void;
@@ -37,9 +38,6 @@ const getStorageName = (shouldStoreInLocalStorage: LibOptions['shouldStoreInLoca
   return DEFAULT_YOPTA_LS_NAME;
 };
 
-const isValidNode = (value: any): boolean =>
-  Array.isArray(value) && value.length > 0 && value[0].type && value[0].children.length > 0;
-
 const getInitialState = (
   shouldStoreInLocalStorage: LibOptions['shouldStoreInLocalStorage'],
   storageName: string,
@@ -47,15 +45,21 @@ const getInitialState = (
 ): Descendant[] => {
   const DEFAULT_STATE = [{ id: v4(), type: 'paragraph', children: [{ text: '' }] }] as Descendant[];
 
-  const defaultValue = isValidNode(value) ? value : DEFAULT_STATE;
+  const defaultValue = isValidYoptaNodes(value) ? value : DEFAULT_STATE;
 
   if (!shouldStoreInLocalStorage) {
     localStorage.removeItem(storageName);
     return defaultValue as Descendant[];
   }
 
-  const storedData = JSON.parse(localStorage.getItem(storageName) || '[]');
-  return isValidNode(storedData) ? storedData : defaultValue;
+  try {
+    const storedData = JSON.parse(localStorage.getItem(storageName) || '[]');
+
+    return isValidYoptaNodes(storedData) ? storedData : defaultValue;
+  } catch (error) {
+    localStorage.removeItem(storageName);
+    return DEFAULT_STATE;
+  }
 };
 
 const YoptaEditorLib = ({

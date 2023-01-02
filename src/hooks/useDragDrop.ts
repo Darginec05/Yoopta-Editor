@@ -2,14 +2,14 @@ import { DragEvent, useState } from 'react';
 import { Editor, Transforms, Element as SlateElement } from 'slate';
 
 export type DragDropValues = {
-  dndState: { from: number, to: number },
+  dndState: { from: number; to: number };
   disableWhileDrag: boolean;
 };
 
 export type DragDropHandlers = {
-  onDrop: (_e) => void;
+  onDrop: (_e: DragEvent<HTMLDivElement>) => void;
+  onDragEnter: (_e: DragEvent<HTMLDivElement>) => void;
   onDragEnd: (_e) => void;
-  onDragEnter: (_e) => void;
   onDragStart: (_e) => void;
 };
 

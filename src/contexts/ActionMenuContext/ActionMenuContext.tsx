@@ -71,6 +71,8 @@ const ActionMenuContext = React.createContext<ActionMenuContextType>({
 
 export const SUGGESTION_TRIGGER = '/';
 
+// const NODE_LEVELS = [[1, 0], [2, 3, 0]]
+
 const ActionMenuProvider = ({ children }) => {
   const editor = useSlate();
   const { enableScroll, disableScroll } = useScrollContext();
