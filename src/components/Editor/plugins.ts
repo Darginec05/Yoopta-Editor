@@ -4,7 +4,7 @@ import { v4 } from 'uuid';
 import isUrl from 'is-url';
 import { BulletedListElement, NumberedListElement } from './types';
 import { KEYBOARD_SHORTCUTS, addLinkNode, deserializeHTML } from './utils';
-import { VOID_ELEMENTS } from './constants';
+import { ELEMENT_TYPES_MAP, VOID_ELEMENTS } from './constants';
 
 export const withVoidNodes = (editor: Editor) => {
   const { isVoid } = editor;
@@ -25,9 +25,12 @@ export const withShortcuts = (editor: Editor) => {
     if (text === ' ' && selection && Range.isCollapsed(selection)) {
       const { anchor } = selection;
 
-      const block = Editor.above(editor, {
+      const block: any = Editor.above(editor, {
         match: (n) => Editor.isBlock(editor, n),
       });
+
+      if (block?.[0].type === ELEMENT_TYPES_MAP['list-item']) return;
+
       const path = block ? block[1] : [];
       const start = Editor.start(editor, path);
       const range = { anchor, focus: start };
@@ -38,14 +41,14 @@ export const withShortcuts = (editor: Editor) => {
       if (type) {
         Transforms.select(editor, range);
         Transforms.delete(editor);
-        const newProperties: Partial<Element> = {
-          // id: v4(),
-          type,
-        };
 
-        Transforms.setNodes<Element>(editor, newProperties, {
-          match: (n) => Editor.isBlock(editor, n),
-        });
+        Transforms.setNodes<Element>(
+          editor,
+          { type },
+          {
+            match: (n) => Editor.isBlock(editor, n),
+          },
+        );
 
         if (type === 'list-item') {
           const list: BulletedListElement | NumberedListElement = {

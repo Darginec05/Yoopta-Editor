@@ -5,6 +5,7 @@ import { ELEMENT_TYPES } from '../../components/Editor/SuggestionElementList/Sug
 import { ELEMENT_TYPES_MAP, TEXT_ELEMENTS_LIST } from '../../components/Editor/constants';
 import {
   getAbsPositionBySelection,
+  getNodeByCurrentPath,
   getRectByCurrentSelection,
   isBlockActive,
   toggleBlock,
@@ -121,8 +122,7 @@ const ActionMenuProvider = ({ children }) => {
     Editor.withoutNormalizing(editor, () => {
       if (editor.selection && suggestionListProps.triggeredBySuggestion) {
         const { offset, path } = editor.selection.anchor;
-
-        const currentNode: any = editor.children[path[0]];
+        const currentNode: any = getNodeByCurrentPath(editor);
 
         if (currentNode.type === to) return hideSuggestionList();
 
