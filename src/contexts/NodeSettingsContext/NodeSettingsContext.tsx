@@ -35,7 +35,7 @@ const defaultValues: NodeSettingsContextValues = {
   hoveredNode: null,
   isNodeSettingsOpen: false,
   nodeSettingsPos: undefined,
-  dndState: { from: -1, to: -1 },
+  dndState: { fromPath: null, toPath: null },
   disableWhileDrag: false,
 };
 

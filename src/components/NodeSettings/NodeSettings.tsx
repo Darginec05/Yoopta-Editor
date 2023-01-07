@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Transforms, Editor } from 'slate';
+import { Transforms, Editor, Element as SlateElement } from 'slate';
 import cx from 'classnames';
 import DeleteIcon from './icons/delete.svg';
 import DuplicateIcon from './icons/duplicate.svg';
@@ -16,14 +16,14 @@ import { getNodePath } from '../Editor/utils';
 import s from './NodeSettings.module.scss';
 
 type Props = Pick<NodeSettingsContextValues, 'hoveredNode' | 'isNodeSettingsOpen' | 'nodeSettingsPos'> & {
-  elementId: string;
   handlers: NodeSettingsContextHandlers;
   editor: Editor;
+  element: SlateElement;
 };
 
-const NodeSettings = ({ hoveredNode, isNodeSettingsOpen, elementId, nodeSettingsPos, handlers, editor }: Props) => {
+const NodeSettings = ({ hoveredNode, element, isNodeSettingsOpen, nodeSettingsPos, handlers, editor }: Props) => {
   const nodeSettingsRef = useRef<HTMLDivElement>(null);
-  const isHovered = hoveredNode?.id === elementId;
+  const isHovered = hoveredNode?.id === element.id;
   const { hideSuggestionList, showSuggestionList, isSuggesstionListOpen } = useActionMenuContext();
 
   /* @ts-ignore */
@@ -61,7 +61,7 @@ const NodeSettings = ({ hoveredNode, isNodeSettingsOpen, elementId, nodeSettings
   return (
     <div className={cx(s.actionItems, { [s.actionItemsShow]: isHovered })} contentEditable={false}>
       <div>
-        <NodeSettingsActions node={hoveredNode} handlers={handlers} showSuggestionList={showSuggestionList} />
+        <NodeSettingsActions element={element} handlers={handlers} showSuggestionList={showSuggestionList} />
         {isNodeSettingsOpen && isHovered && (
           <Modal onClose={handleClose} style={nodeSettingsPos} className="yopta-node_settings">
             <div

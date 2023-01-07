@@ -1,20 +1,39 @@
-import { MouseEvent } from 'react';
+import { MouseEvent, useMemo } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
 import cx from 'classnames';
 import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { NodeSettings } from '../NodeSettings/NodeSettings';
 import s from './HoveredMenu.module.scss';
+import { getNodePath } from '../Editor/utils';
 
 const ElementHover = ({ children, element, attributes, shouldIgnoreSettings = false, isInlineNode = false }) => {
   const editor = useSlate();
-  const index = ReactEditor.findPath(editor, element)[0];
 
   const [{ hoveredNode, isNodeSettingsOpen, nodeSettingsPos, dndState }, handlers] = useNodeSettingsContext();
   const { hoverIn, hoverOut, onDrop } = handlers;
 
-  const isDragging = index === dndState.from;
-  const isOver = index === dndState.to;
-  const isOverSelf = isDragging && isOver;
+  const dragState = useMemo(() => {
+    if (dndState.fromPath === null || dndState.toPath === null) {
+      return {
+        isDragging: false,
+        isOver: false,
+        isOverSelf: false,
+      };
+    }
+
+    const nodePath = getNodePath(editor, element);
+    const isDragging = dndState.fromPath.toString() === nodePath.toString();
+    const isOver = dndState.toPath.toString() === nodePath.toString();
+    const isOverSelf = isDragging && isOver;
+
+    return {
+      isDragging,
+      isOver,
+      isOverSelf,
+    };
+  }, [dndState.fromPath, dndState.toPath]);
+
+  const { isDragging, isOver, isOverSelf } = dragState;
 
   const styles = {
     opacity: isDragging ? 0.4 : 1,
@@ -42,11 +61,11 @@ const ElementHover = ({ children, element, attributes, shouldIgnoreSettings = fa
       {!shouldIgnoreSettings && (
         <NodeSettings
           hoveredNode={hoveredNode}
-          elementId={element.id}
           isNodeSettingsOpen={isNodeSettingsOpen}
           nodeSettingsPos={nodeSettingsPos}
           handlers={handlers}
           editor={editor}
+          element={element}
         />
       )}
       <div>{children}</div>
