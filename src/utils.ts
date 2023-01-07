@@ -11,7 +11,9 @@ export function isValidYoptaNodes(nodes: any): boolean {
     // eslint-disable-next-line max-len
     // if (!node.type || !node.id || !nodeChild || !Array.isArray(nodeChild) || typeof nodeChild?.[0]?.text !== 'string') {
     if (!node.type || !node.id || !nodeChild || !Array.isArray(nodeChild)) {
-      return false;
+      // [TODO]
+      throw node;
+      // return false;
     }
   }
 

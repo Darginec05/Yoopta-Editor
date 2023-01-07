@@ -1,8 +1,11 @@
 import { DragEvent, useState } from 'react';
 import { Editor, Transforms, Element as SlateElement } from 'slate';
+import { ELEMENT_TYPES_MAP } from '../components/Editor/constants';
+
+export type DndState = { fromPath: number[] | null; toPath: number[] | null };
 
 export type DragDropValues = {
-  dndState: { from: number; to: number };
+  dndState: DndState;
   disableWhileDrag: boolean;
 };
 
@@ -10,18 +13,24 @@ export type DragDropHandlers = {
   onDrop: (_e: DragEvent<HTMLDivElement>) => void;
   onDragEnter: (_e: DragEvent<HTMLDivElement>) => void;
   onDragEnd: (_e) => void;
-  onDragStart: (_e) => void;
+  onDragStart: (_e, _data?: any) => void;
 };
 
 export const useDragDrop = (editor: Editor): [DragDropValues, DragDropHandlers] => {
   const [disableWhileDrag, setIsDisableByDrag] = useState(false);
-  const [dndState, setDndState] = useState({ from: -1, to: -1 });
+  const [dndState, setDndState] = useState<DndState>({ fromPath: null, toPath: null });
 
   const onDragEnter = (e) => {
     const target = e.target.closest('section');
 
     if (target) {
-      setDndState((p) => ({ ...p, to: [...target.parentNode.children].indexOf(target) }));
+      const isListItem = target.dataset.nodeType === ELEMENT_TYPES_MAP['list-item'];
+
+      if (isListItem) return false;
+
+      const enteredIndex = [...target.parentNode.children].indexOf(target);
+      const toPath = [enteredIndex, 0];
+      setDndState((p) => ({ ...p, toPath }));
     }
   };
 
@@ -33,48 +42,55 @@ export const useDragDrop = (editor: Editor): [DragDropValues, DragDropHandlers] 
     e.target.ondragover = null;
 
     setIsDisableByDrag(false);
-    setDndState({ from: -1, to: -1 });
+    setDndState({ fromPath: null, toPath: null });
   };
 
   const onDrop = (e: DragEvent<HTMLDivElement>) => {
-    if (dndState.from === dndState.to || dndState.from === -1 || dndState.to === -1) return undefined;
+    if (
+      dndState.fromPath?.toString() === dndState.toPath?.toString() ||
+      dndState.fromPath === null ||
+      dndState.toPath === null
+    ) {
+      return undefined;
+    }
 
     Transforms.moveNodes(editor, {
-      at: [dndState.from],
-      to: [dndState.to],
-      match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node) && node.type !== 'list-item',
+      at: [dndState.fromPath[0]],
+      to: [dndState.toPath[0]],
+      mode: 'highest',
+      match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
     });
 
     e.dataTransfer.clearData();
   };
 
-  const onDragStart = (e: DragEvent<HTMLDivElement>) => {
+  const onDragStart = (e: DragEvent<HTMLDivElement>, fromPath: number[]) => {
     setIsDisableByDrag(true);
 
     e.dataTransfer.setData('Text', '');
     e.dataTransfer.effectAllowed = 'move';
 
-    const target = e.target as HTMLDivElement;
-    if (target.parentNode) {
+    const editorEl = document.getElementById('yopta-contenteditable');
+
+    if (editorEl) {
       // @ts-ignore
-      target.parentNode.ondragenter = onDragEnter;
+      editorEl.ondragenter = onDragEnter;
       // @ts-ignore
-      target.parentNode.ondragover = (event) => {
+      editorEl.ondragover = (event) => {
         event.preventDefault();
-        return true;
+        return false;
       };
-      const fromIndex = Array.from(target.parentNode.children).indexOf(target);
-      setDndState((prevDrag) => ({ ...prevDrag, from: fromIndex }));
+      setDndState((prevDragState) => ({ ...prevDragState, fromPath }));
     }
   };
 
-  return [
-    { dndState, disableWhileDrag },
-    {
-      onDrop,
-      onDragEnd,
-      onDragEnter,
-      onDragStart,
-    },
-  ];
+  const values = { dndState, disableWhileDrag };
+  const handlers = {
+    onDrop,
+    onDragEnd,
+    onDragEnter,
+    onDragStart,
+  };
+
+  return [values, handlers];
 };
