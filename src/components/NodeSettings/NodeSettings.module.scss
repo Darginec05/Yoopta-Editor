@@ -21,7 +21,7 @@
   border: none;
   background-color: transparent;
   padding: 8px 14px;
-  transition: background-color 150ms;
+  transition: background-color 0.18s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   color: #fff;
   text-align: left;
@@ -55,7 +55,7 @@
   opacity: 0;
   left: -64px;
   top: 2.5px;
-  transition: opacity 150ms ease-in;
+  transition: opacity 0.18s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .actionItemsShow {

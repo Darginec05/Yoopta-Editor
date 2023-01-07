@@ -165,8 +165,6 @@ const YoptaEditor = ({ editor, placeholder }: YoptaProps) => {
     return [];
   }, []);
 
-  console.log(editor.selection?.anchor.path);
-
   const handleEmptyZoneClick = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
 

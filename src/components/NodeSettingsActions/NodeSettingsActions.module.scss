@@ -13,7 +13,7 @@
   justify-content: center;
   background-color: inherit;
   background-color: transparent;
-  transition: background-color 250ms;
+  transition: background-color 0.18s cubic-bezier(0.4, 0, 0.2, 1);
   margin-right: 2px;
   position: relative;
 

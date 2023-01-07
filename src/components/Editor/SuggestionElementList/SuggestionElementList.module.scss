@@ -11,7 +11,7 @@
   left: -1000px;
   top: -1000px;
   opacity: 0;
-  transition: opacity 150ms ease-in;
+  transition: opacity 0.18s cubic-bezier(0.4, 0, 0.2, 1);
   max-height: 304px;
   overflow: auto;
 }
@@ -26,7 +26,7 @@
   padding: 7px 10px;
   border-radius: 10px;
   background: inherit;
-  // transition: background 150ms ease-in-out;
+  // transition: background 0.18s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover, &:focus {
     background: #383835;

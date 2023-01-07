@@ -59,8 +59,8 @@ const NodeSettingsContext = React.createContext<NodeSettingsContextType>([
 ]);
 
 // We can get next nodes with sub paths [5, 0] | [5, 1] || [5, 2, 3];
-const getRootLevelNextNodePath = (currentPath: Path, nextPoint: Point | undefined): Point | Path => {
-  if (!nextPoint) return [currentPath[0] + 1];
+const getRootLevelNextNodePath = (currentPath: Path, nextPoint: Point | undefined): Point => {
+  if (!nextPoint) return { path: [currentPath[0] + 1], offset: 0 };
 
   const rootNodePath = nextPoint.path[0];
   const subNodePath = nextPoint.path[1];
@@ -116,8 +116,10 @@ const NodeSettingsProvider = ({ children }) => {
           if (!hoveredNode) return;
 
           const path = getNodePath(editor, hoveredNode);
+
           // [TOOD] - getNodeByCurrentPath remove
           const currentNode: any = getNodeByCurrentPath(editor);
+
           const after = Editor.after(editor, path);
 
           const isEmptyNode = Editor.string(editor, path).trim().length === 0;
@@ -130,7 +132,6 @@ const NodeSettingsProvider = ({ children }) => {
             const lineParagraph: any = {
               id: v4(),
               type: ELEMENT_TYPES_MAP.paragraph,
-              isVoid: false,
               children: [{ text: '' }],
             };
 
@@ -195,25 +196,22 @@ const NodeSettingsProvider = ({ children }) => {
           const currentNode = getNodeByPath(editor);
 
           if (currentNode) {
-            const duplicatedNode = { ...currentNode, id: v4() };
-
-            console.log({ path });
+            const duplicatedNode = structuredClone(currentNode);
+            duplicatedNode.id = v4();
 
             Transforms.insertNodes(editor, duplicatedNode, {
               at: { offset: 0, path },
               match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
-              // select: true,
-              hanging: false,
-              select: false,
-              voids: false,
             });
 
-            // const focusTimeout = setTimeout(() => {
-            // Transforms.select(editor, { path, offset: 0 });
-            // ReactEditor.focus(editor);
+            const after = Editor.after(editor, path);
 
-            //   clearTimeout(focusTimeout);
-            // }, 0);
+            const focusTimeout = setTimeout(() => {
+              Transforms.select(editor, { path: after?.path || path, offset: 0 });
+              ReactEditor.focus(editor);
+
+              clearTimeout(focusTimeout);
+            }, 0);
           }
 
           setHoveredNode(null);

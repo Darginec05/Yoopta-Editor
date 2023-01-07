@@ -4,11 +4,14 @@ import { ELEMENT_RENDER_ITEMS } from '../../Elements';
 import { ElementHover } from '../../HoveredMenu/HoveredMenu';
 import { ELEMENT_TYPES_MAP } from '../constants';
 
-const TYPES_DRAG_IGNORE = [
+const IGNORE_SETTINGS_ELEMENTS = [
   ELEMENT_TYPES_MAP['bulleted-list'],
   ELEMENT_TYPES_MAP['numbered-list'],
   ELEMENT_TYPES_MAP.link,
 ];
+
+const INLINE_ELEMENTS = [ELEMENT_TYPES_MAP.link];
+const NESTED_OR_INLINE_ELEMENTS = [ELEMENT_TYPES_MAP['list-item'], ...INLINE_ELEMENTS];
 
 type Props = RenderElementProps & {
   attributes: any;
@@ -21,16 +24,26 @@ const RenderElement: FC<Props> = ({ element, children, attributes }) => {
 
   if (!Component) return null;
 
-  if (TYPES_DRAG_IGNORE.includes(element.type)) {
+  const shouldIgnoreSettings = IGNORE_SETTINGS_ELEMENTS.includes(element.type);
+  const isInlineNode = INLINE_ELEMENTS.includes(element.type);
+
+  if (NESTED_OR_INLINE_ELEMENTS.includes(element.type)) {
     return (
       <Component isEdit attributes={attributes} element={element}>
-        {children}
+        <ElementHover
+          element={element}
+          attributes={attributes}
+          shouldIgnoreSettings={shouldIgnoreSettings}
+          isInlineNode={isInlineNode}
+        >
+          {children}
+        </ElementHover>
       </Component>
     );
   }
 
   return (
-    <ElementHover element={element} attributes={attributes}>
+    <ElementHover element={element} attributes={attributes} shouldIgnoreSettings={shouldIgnoreSettings}>
       <Component isEdit attributes={{}} element={element}>
         {children}
       </Component>

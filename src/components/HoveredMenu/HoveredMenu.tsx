@@ -5,9 +5,10 @@ import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeS
 import { NodeSettings } from '../NodeSettings/NodeSettings';
 import s from './HoveredMenu.module.scss';
 
-const ElementHover = ({ children, element, attributes }) => {
+const ElementHover = ({ children, element, attributes, shouldIgnoreSettings = false, isInlineNode = false }) => {
   const editor = useSlate();
   const index = ReactEditor.findPath(editor, element)[0];
+
   const [{ hoveredNode, isNodeSettingsOpen, nodeSettingsPos, dndState }, handlers] = useNodeSettingsContext();
   const { hoverIn, hoverOut, onDrop } = handlers;
 
@@ -21,6 +22,8 @@ const ElementHover = ({ children, element, attributes }) => {
 
   const onMouseEnter = (e: MouseEvent<HTMLDivElement>) => hoverIn(e, element);
   const onMouseLeave = (e: MouseEvent<HTMLDivElement>) => hoverOut(e, element);
+
+  if (isInlineNode) return children;
 
   return (
     <section
@@ -36,14 +39,16 @@ const ElementHover = ({ children, element, attributes }) => {
       onDrop={onDrop}
       {...attributes}
     >
-      <NodeSettings
-        hoveredNode={hoveredNode}
-        elementId={element.id}
-        isNodeSettingsOpen={isNodeSettingsOpen}
-        nodeSettingsPos={nodeSettingsPos}
-        handlers={handlers}
-        editor={editor}
-      />
+      {!shouldIgnoreSettings && (
+        <NodeSettings
+          hoveredNode={hoveredNode}
+          elementId={element.id}
+          isNodeSettingsOpen={isNodeSettingsOpen}
+          nodeSettingsPos={nodeSettingsPos}
+          handlers={handlers}
+          editor={editor}
+        />
+      )}
       <div>{children}</div>
     </section>
   );
