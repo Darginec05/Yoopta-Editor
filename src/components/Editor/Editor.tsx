@@ -1,21 +1,22 @@
 import { Editor, Transforms, Range } from 'slate';
-import { useCallback, KeyboardEvent, MouseEvent } from 'react';
+import { useCallback, KeyboardEvent, MouseEvent, useMemo } from 'react';
 import cx from 'classnames';
 import { Editable, ReactEditor } from 'slate-react';
 import { v4 } from 'uuid';
 import { TextLeaf } from './TextLeaf/TextLeaf';
 import { RenderElement } from './RenderElement/RenderElement';
 import { Toolbar } from './Toolbar/Toolbar';
-import { capitalizeFirstLetter, toggleBlock } from './utils';
-import { ELEMENT_TYPES_MAP, LIST_TYPES, TEXT_ELEMENTS_LIST, VOID_ELEMENTS } from './constants';
+import { capitalizeFirstLetter, getNodeByPath } from './utils';
+import { ELEMENT_TYPES_MAP, TEXT_ELEMENTS_LIST, VOID_ELEMENTS } from './constants';
 import { SuggestionElementList } from './SuggestionElementList/SuggestionElementList';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionMenuContext/ActionMenuContext';
 import { LibOptions, useSettings } from '../../contexts/SettingsContext/SettingsContext';
-import { CustomElement, ParagraphElement } from './types';
+import { ParagraphElement } from './types';
 import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { OutsideClick } from '../OutsideClick';
 import { codeDecorator } from '../Elements/Code/decorator';
+import { createListPlugin } from '../../plugins/list';
 import s from './Editor.module.scss';
 
 type YoptaProps = { editor: Editor; placeholder: LibOptions['placeholder'] };
@@ -52,6 +53,8 @@ const YoptaEditor = ({ editor, placeholder }: YoptaProps) => {
     return <TextLeaf placeholder={nodePlaceholder} {...leafProps} />;
   }, []);
 
+  const ListPlugin = useMemo(() => createListPlugin(editor), []);
+
   const onKeyUp = useCallback(
     (event) => {
       if (!editor.selection) return;
@@ -73,26 +76,30 @@ const YoptaEditor = ({ editor, placeholder }: YoptaProps) => {
     const { selection } = editor;
     if (!selection) return;
 
-    const currentRootLevelNode: any = editor.children[editor.selection?.anchor.path[0] || 0];
+    const currentNode: any = getNodeByPath(editor);
+    const isListItemNode = currentNode.type === ELEMENT_TYPES_MAP['list-item'];
+    const isVoidNode = VOID_ELEMENTS.includes(currentNode.type);
+    const isTextNode = TEXT_ELEMENTS_LIST.includes(currentNode.type);
 
     const text = Editor.string(editor, selection.anchor.path);
     const isEnter = event.key === 'Enter';
+    const isBackspace = event.key === 'Backspace';
 
     if (event.key === 'Meta' || (event.key === 'Backspace' && (text.length === 0 || text === SUGGESTION_TRIGGER))) {
       hideSuggestionList();
     }
 
+    if (isBackspace && isListItemNode) {
+      ListPlugin.handlers.onBackspace(event);
+      return;
+    }
+
+    if (isEnter && isListItemNode) {
+      ListPlugin.handlers.onEnter(event);
+      return;
+    }
+
     if (isEnter) {
-      const isListNode = LIST_TYPES.includes(currentRootLevelNode.type);
-      const isVoidNode = VOID_ELEMENTS.includes(currentRootLevelNode.type);
-      const isTextNode = TEXT_ELEMENTS_LIST.includes(currentRootLevelNode.type);
-
-      if (isListNode && text.trim() === '') {
-        event.preventDefault();
-        toggleBlock(editor, 'paragraph');
-        return;
-      }
-
       const lineParagraph: ParagraphElement = {
         id: v4(),
         type: 'paragraph',
@@ -104,7 +111,7 @@ const YoptaEditor = ({ editor, placeholder }: YoptaProps) => {
       };
 
       if (event.shiftKey) {
-        if (currentRootLevelNode.type === ELEMENT_TYPES_MAP.code) {
+        if (currentNode.type === ELEMENT_TYPES_MAP.code) {
           event.preventDefault();
 
           Transforms.splitNodes(editor, { always: true });
@@ -116,17 +123,17 @@ const YoptaEditor = ({ editor, placeholder }: YoptaProps) => {
         editor.insertText('\n');
       }
 
-      if (!event.shiftKey && !isListNode) {
-        if (currentRootLevelNode.type === ELEMENT_TYPES_MAP.code) {
+      if (!event.shiftKey && !isListItemNode) {
+        if (currentNode.type === ELEMENT_TYPES_MAP.code) {
           event.preventDefault();
           editor.insertText('\n');
         } else if (isTextNode) {
-          // change next element to paragraph
+          // [TODO] - change next element to paragraph
           event.preventDefault();
 
           Transforms.splitNodes(editor, { always: true });
           Transforms.setNodes(editor, lineParagraph);
-          // add new line in case of void element (e.g. image)
+          // [TODO] - add new line in case of void element (e.g. image)
         } else if (isVoidNode) {
           event.preventDefault();
           Transforms.insertNodes(editor, lineParagraph);
@@ -137,7 +144,7 @@ const YoptaEditor = ({ editor, placeholder }: YoptaProps) => {
     }
   }, []);
 
-  const decorate = ([node, path]) => {
+  const decorate = useCallback(([node, path]) => {
     if (node.type === 'code') return codeDecorator([node, path]);
 
     if (editor.selection) {
@@ -156,7 +163,9 @@ const YoptaEditor = ({ editor, placeholder }: YoptaProps) => {
       }
     }
     return [];
-  };
+  }, []);
+
+  console.log(editor.selection?.anchor.path);
 
   const handleEmptyZoneClick = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -165,17 +174,13 @@ const YoptaEditor = ({ editor, placeholder }: YoptaProps) => {
 
     Editor.withoutNormalizing(editor, () => {
       const lastPath = [editor.children.length - 1, 0];
-      const lastNode = editor.children[lastPath[0]] as CustomElement;
+      const lastNode: any = getNodeByPath(editor, lastPath, 'highest');
       const lastNodeText = Editor.string(editor, lastPath);
 
       const location = {
         anchor: { path: lastPath, offset: 0 },
         focus: { path: lastPath, offset: 0 },
       };
-
-      const after = Editor.after(editor, location, {
-        unit: 'block',
-      });
 
       if (lastNode.type === ELEMENT_TYPES_MAP.paragraph && lastNodeText.length === 0) {
         Transforms.select(editor, {
@@ -186,11 +191,6 @@ const YoptaEditor = ({ editor, placeholder }: YoptaProps) => {
         changeHoveredNode(lastNode);
         return ReactEditor.focus(editor);
       }
-
-      Transforms.select(editor, {
-        path: after?.path || location.anchor.path,
-        offset: after?.offset || 0,
-      });
 
       const lineParagraph: ParagraphElement = {
         id: v4(),
@@ -203,7 +203,11 @@ const YoptaEditor = ({ editor, placeholder }: YoptaProps) => {
       };
 
       changeHoveredNode(lineParagraph);
-      Editor.insertNode(editor, lineParagraph);
+
+      Transforms.insertNodes(editor, lineParagraph, {
+        at: [editor.children.length],
+        select: true,
+      });
       ReactEditor.focus(editor);
     });
   };

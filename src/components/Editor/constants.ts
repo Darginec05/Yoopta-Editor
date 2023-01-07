@@ -31,4 +31,4 @@ export const TEXT_ELEMENTS_LIST = [
 
 export const VOID_ELEMENTS = [ELEMENT_TYPES_MAP.video, ELEMENT_TYPES_MAP.image, ELEMENT_TYPES_MAP.embed];
 
-export const LIST_TYPES = [ELEMENT_TYPES_MAP['bulleted-list'], ELEMENT_TYPES_MAP['numbered-']];
+export const LIST_TYPES = [ELEMENT_TYPES_MAP['bulleted-list'], ELEMENT_TYPES_MAP['numbered-list']];

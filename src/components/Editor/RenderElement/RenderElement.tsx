@@ -4,7 +4,11 @@ import { ELEMENT_RENDER_ITEMS } from '../../Elements';
 import { ElementHover } from '../../HoveredMenu/HoveredMenu';
 import { ELEMENT_TYPES_MAP } from '../constants';
 
-const TYPES_DRAG_IGNORE = [ELEMENT_TYPES_MAP['list-item'], ELEMENT_TYPES_MAP.link];
+const TYPES_DRAG_IGNORE = [
+  ELEMENT_TYPES_MAP['bulleted-list'],
+  ELEMENT_TYPES_MAP['numbered-list'],
+  ELEMENT_TYPES_MAP.link,
+];
 
 type Props = RenderElementProps & {
   attributes: any;

@@ -1,18 +1,33 @@
 import { ReactEditor } from 'slate-react';
-import { Editor, Text, Element as SlateElement, Transforms, Range } from 'slate';
+import { Editor, Text, Element as SlateElement, Transforms, Range, Path } from 'slate';
 import { v4 } from 'uuid';
 import { jsx } from 'slate-hyperscript';
 import { LinkElement } from './types';
 import { ELEMENT_TYPES_MAP, LIST_TYPES } from './constants';
 
 export const getNodePath = (editor: Editor, node: any) => {
+  // [TODO] - some when lost focus bug
   const path = ReactEditor.findPath(editor, node);
-  const isList = LIST_TYPES.includes(node.type);
+  const isListItem = [ELEMENT_TYPES_MAP['list-item']].includes(node.type);
 
   let nodePath = path.length === 1 ? [path[0], 0] : path;
-  if (isList) nodePath = [...nodePath, 0];
+  if (isListItem) nodePath = [...nodePath, 0];
 
   return nodePath;
+};
+
+export const getNodeByPath = (editor: Editor, path?: Path, mode: 'all' | 'highest' | 'lowest' = 'lowest') => {
+  const nodeEntry = Array.from(
+    Editor.nodes(editor, {
+      match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
+      at: path || editor.selection?.anchor.path,
+      mode,
+    }),
+  )[0];
+
+  if (nodeEntry) return nodeEntry[0];
+
+  return editor.children[0];
 };
 
 export const isMarkActive = (editor: Editor, mark: any): boolean => {
@@ -230,4 +245,20 @@ export const deserializeHTML = (el) => {
   }
 
   return children;
+};
+
+// Make recursive for deep nested items
+export const getNodeByCurrentPath = (editor: Editor) => {
+  const { path } = editor.selection!.anchor;
+  const level = path.length;
+
+  const isNestedLevel = level > 2;
+  const isRootLevel = !isNestedLevel;
+  const rootNode: any = editor.children[path[0] || 0];
+
+  if (isRootLevel) {
+    return rootNode;
+  }
+
+  return rootNode.children[path[1]];
 };

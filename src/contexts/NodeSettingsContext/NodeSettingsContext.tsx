@@ -7,7 +7,7 @@ import { CustomElement } from '../../components/Editor/types';
 import { ELEMENT_TYPES_MAP } from '../../components/Editor/constants';
 import { useScrollContext } from '../ScrollContext/ScrollContext';
 import { useDragDrop, DragDropValues, DragDropHandlers } from '../../hooks/useDragDrop';
-import { getNodePath } from '../../components/Editor/utils';
+import { getNodeByCurrentPath, getNodePath, getNodeByPath } from '../../components/Editor/utils';
 
 export type HoveredNode = CustomElement | null;
 
@@ -116,12 +116,12 @@ const NodeSettingsProvider = ({ children }) => {
           if (!hoveredNode) return;
 
           const path = getNodePath(editor, hoveredNode);
-          const currentNode: any = editor.children[path[0]];
+          // [TOOD] - getNodeByCurrentPath remove
+          const currentNode: any = getNodeByCurrentPath(editor);
           const after = Editor.after(editor, path);
 
           const isEmptyNode = Editor.string(editor, path).trim().length === 0;
           const isVoidNode = Editor.isVoid(editor, currentNode);
-
           const afterPath = getRootLevelNextNodePath(path, after);
 
           setHoveredNode(null);
@@ -176,10 +176,12 @@ const NodeSettingsProvider = ({ children }) => {
       deleteNode: () => {
         if (!hoveredNode) return;
 
-        const path = ReactEditor.findPath(editor, hoveredNode);
+        const path = getNodePath(editor, hoveredNode);
+
         Transforms.removeNodes(editor, {
-          at: [path[0], 0], // remove the whole node including inline nodes
+          at: path, // remove the whole node including inline nodes
           match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
+          mode: 'lowest',
         });
 
         setHoveredNode(null);
@@ -190,30 +192,28 @@ const NodeSettingsProvider = ({ children }) => {
         Editor.withoutNormalizing(editor, () => {
           if (!hoveredNode) return;
           const path = getNodePath(editor, hoveredNode);
-
-          // [TODO] - make util function to get current node by levels path
-          const currentNode = Array.from(
-            Editor.nodes(editor, {
-              match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
-              at: path,
-            }),
-          )[0]?.[0];
+          const currentNode = getNodeByPath(editor);
 
           if (currentNode) {
             const duplicatedNode = { ...currentNode, id: v4() };
 
+            console.log({ path });
+
             Transforms.insertNodes(editor, duplicatedNode, {
               at: { offset: 0, path },
               match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
-              select: true,
+              // select: true,
+              hanging: false,
+              select: false,
+              voids: false,
             });
 
-            const focusTimeout = setTimeout(() => {
-              Transforms.select(editor, { path, offset: 0 });
-              ReactEditor.focus(editor);
+            // const focusTimeout = setTimeout(() => {
+            // Transforms.select(editor, { path, offset: 0 });
+            // ReactEditor.focus(editor);
 
-              clearTimeout(focusTimeout);
-            }, 0);
+            //   clearTimeout(focusTimeout);
+            // }, 0);
           }
 
           setHoveredNode(null);
