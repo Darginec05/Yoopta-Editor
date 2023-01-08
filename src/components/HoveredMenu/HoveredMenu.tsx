@@ -1,5 +1,5 @@
 import { MouseEvent, useMemo } from 'react';
-import { ReactEditor, useSlate } from 'slate-react';
+import { useSlate } from 'slate-react';
 import cx from 'classnames';
 import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { NodeSettings } from '../NodeSettings/NodeSettings';

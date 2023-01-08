@@ -29,7 +29,9 @@ export const withShortcuts = (editor: Editor) => {
         match: (n) => Editor.isBlock(editor, n),
       });
 
-      if (block?.[0].type === ELEMENT_TYPES_MAP['list-item']) return;
+      if (block?.[0].type === ELEMENT_TYPES_MAP['list-item']) {
+        return insertText(text);
+      }
 
       const path = block ? block[1] : [];
       const start = Editor.start(editor, path);

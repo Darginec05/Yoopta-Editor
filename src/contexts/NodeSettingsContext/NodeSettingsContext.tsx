@@ -119,12 +119,11 @@ const NodeSettingsProvider = ({ children }) => {
 
           // [TOOD] - getNodeByCurrentPath remove
           const currentNode: any = getNodeByCurrentPath(editor);
-
           const after = Editor.after(editor, path);
 
           const isEmptyNode = Editor.string(editor, path).trim().length === 0;
           const isVoidNode = Editor.isVoid(editor, currentNode);
-          const afterPath = getRootLevelNextNodePath(path, after);
+          const afterPath = !after ? [path[0] + 1] : getRootLevelNextNodePath(path, after);
 
           setHoveredNode(null);
 
@@ -176,7 +175,6 @@ const NodeSettingsProvider = ({ children }) => {
 
       deleteNode: () => {
         if (!hoveredNode) return;
-
         const path = getNodePath(editor, hoveredNode);
 
         Transforms.removeNodes(editor, {
