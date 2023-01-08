@@ -3,7 +3,7 @@ import { withHistory } from 'slate-history';
 import { v4 } from 'uuid';
 import { createEditor, Descendant, Transforms } from 'slate';
 import { ReactEditor, Slate, withReact } from 'slate-react';
-import { YoptaEditor as Editor } from './components/Editor/Editor';
+import { EditorYopta } from './components/Editor/Editor';
 import { ScrollProvider } from './contexts/ScrollContext/ScrollContext';
 import {
   withShortcuts,
@@ -44,7 +44,6 @@ const getInitialState = (
   value?: Descendant[],
 ): Descendant[] => {
   const DEFAULT_STATE = [{ id: v4(), type: 'paragraph', children: [{ text: '' }] }] as Descendant[];
-
   const defaultValue = isValidYoptaNodes(value) ? value : DEFAULT_STATE;
 
   if (!shouldStoreInLocalStorage) {
@@ -89,7 +88,10 @@ const YoptaEditorLib = ({
 
     if (!editor.selection && editor.children.length > 0) {
       const focusTimeout = setTimeout(() => {
-        Transforms.select(editor, { path: [0, 0], offset: 0 });
+        const firstNode: any = editor.children[0];
+        const isList = ['numbered-list', 'ordered-list'].includes(firstNode.type);
+
+        Transforms.select(editor, { path: isList ? [0, 0, 0] : [0, 0], offset: 0 });
         ReactEditor.focus(editor);
       }, 0);
 
@@ -123,7 +125,7 @@ const YoptaEditorLib = ({
         <ScrollProvider scrollElementSelector={scrollElementSelector}>
           <ActionMenuProvider>
             <NodeSettingsProvider>
-              <Editor editor={editor} placeholder={placeholder} />
+              <EditorYopta editor={editor} placeholder={placeholder} />
             </NodeSettingsProvider>
           </ActionMenuProvider>
         </ScrollProvider>

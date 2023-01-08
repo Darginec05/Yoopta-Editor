@@ -21,7 +21,7 @@ import s from './Editor.module.scss';
 
 type YoptaProps = { editor: Editor; placeholder: LibOptions['placeholder'] };
 
-const YoptaEditor = ({ editor, placeholder }: YoptaProps) => {
+const EditorYopta = ({ editor, placeholder }: YoptaProps) => {
   const { options } = useSettings();
   useScrollToElement();
   const [{ disableWhileDrag }, { changeHoveredNode }] = useNodeSettingsContext();
@@ -252,4 +252,4 @@ const YoptaEditor = ({ editor, placeholder }: YoptaProps) => {
   );
 };
 
-export { YoptaEditor };
+export { EditorYopta };
