@@ -20,6 +20,7 @@ import type { LibOptions } from './contexts/SettingsContext/SettingsContext';
 import { CustomEditor } from './components/Editor/types';
 import { NodeSettingsProvider } from './contexts/NodeSettingsContext/NodeSettingsContext';
 import { isValidYoptaNodes } from './utils';
+import { LIST_TYPES } from './components/Editor/constants';
 
 type Props = {
   onChange: (_value: Descendant[]) => void;
@@ -89,7 +90,7 @@ const YoptaEditorLib = ({
     if (!editor.selection && editor.children.length > 0) {
       const focusTimeout = setTimeout(() => {
         const firstNode: any = editor.children[0];
-        const isList = ['numbered-list', 'ordered-list'].includes(firstNode.type);
+        const isList = LIST_TYPES.includes(firstNode.type);
 
         Transforms.select(editor, { path: isList ? [0, 0, 0] : [0, 0], offset: 0 });
         ReactEditor.focus(editor);

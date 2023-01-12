@@ -17,6 +17,7 @@ import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeS
 import { OutsideClick } from '../OutsideClick';
 import { codeDecorator } from '../Elements/Code/decorator';
 import { createListPlugin } from '../../plugins/list';
+import { createLinkPlugin } from '../../plugins/link';
 import s from './Editor.module.scss';
 
 type YoptaProps = { editor: Editor; placeholder: LibOptions['placeholder'] };
@@ -53,7 +54,13 @@ const EditorYopta = ({ editor, placeholder }: YoptaProps) => {
     return <TextLeaf placeholder={nodePlaceholder} {...leafProps} />;
   }, []);
 
-  const ListPlugin = useMemo(() => createListPlugin(editor), []);
+  const { ListPlugin, LinkPlugin } = useMemo(
+    () => ({
+      ListPlugin: createListPlugin(editor),
+      LinkPlugin: createLinkPlugin(editor),
+    }),
+    [],
+  );
 
   const onKeyUp = useCallback(
     (event) => {
@@ -84,9 +91,20 @@ const EditorYopta = ({ editor, placeholder }: YoptaProps) => {
     const text = Editor.string(editor, selection.anchor.path);
     const isEnter = event.key === 'Enter';
     const isBackspace = event.key === 'Backspace';
+    const isSpace = event.code === 'Space';
 
     if (event.key === 'Meta' || (event.key === 'Backspace' && (text.length === 0 || text === SUGGESTION_TRIGGER))) {
       hideSuggestionList();
+    }
+
+    if (isEnter && currentNode.type === ELEMENT_TYPES_MAP.link) {
+      LinkPlugin.handlers.onEnter(event);
+      return;
+    }
+
+    if (isSpace && currentNode.type === ELEMENT_TYPES_MAP.link) {
+      LinkPlugin.handlers.onSpace(event);
+      return;
     }
 
     if (isBackspace && isListItemNode) {

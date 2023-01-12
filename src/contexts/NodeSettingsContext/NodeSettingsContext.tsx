@@ -4,7 +4,7 @@ import { v4 } from 'uuid';
 import React, { CSSProperties, MouseEvent, useContext, useMemo, useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
 import { CustomElement } from '../../components/Editor/types';
-import { ELEMENT_TYPES_MAP } from '../../components/Editor/constants';
+import { ELEMENT_TYPES_MAP, LIST_TYPES } from '../../components/Editor/constants';
 import { useScrollContext } from '../ScrollContext/ScrollContext';
 import { useDragDrop, DragDropValues, DragDropHandlers } from '../../hooks/useDragDrop';
 import { getNodeByCurrentPath, getNodePath, getNodeByPath } from '../../components/Editor/utils';
@@ -111,6 +111,7 @@ const NodeSettingsProvider = ({ children }) => {
 
       changeHoveredNode: (hoverProps: HoveredNode) => setHoveredNode(hoverProps),
 
+      // [TODO] - write function to get path: [10], [10, 1], [12, 3, 4]
       triggerPlusButton: (onFocusCallback: any) => {
         Editor.withoutNormalizing(editor, () => {
           if (!hoveredNode) return;
@@ -120,10 +121,17 @@ const NodeSettingsProvider = ({ children }) => {
           // [TOOD] - getNodeByCurrentPath remove
           const currentNode: any = getNodeByCurrentPath(editor);
           const after = Editor.after(editor, path);
+          const nextNode: any = getNodeByPath(editor, after?.path, 'highest');
 
           const isEmptyNode = Editor.string(editor, path).trim().length === 0;
           const isVoidNode = Editor.isVoid(editor, currentNode);
-          const afterPath = !after ? [path[0] + 1] : getRootLevelNextNodePath(path, after);
+          const isListItemNode = hoveredNode.type === ELEMENT_TYPES_MAP['list-item'];
+          const isNextListNode = LIST_TYPES.includes(nextNode.type);
+
+          // if after node is empty we need add to root [path], overwise add [path1, path2]
+          const shouldAddToRoot =
+            !after || (!!after?.path[1] && after?.path[1] > 0) || isListItemNode || isNextListNode;
+          const afterPath = shouldAddToRoot ? [path[0] + 1] : getRootLevelNextNodePath(path, after);
 
           setHoveredNode(null);
 

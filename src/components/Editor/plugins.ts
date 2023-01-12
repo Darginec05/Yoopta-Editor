@@ -156,7 +156,7 @@ export const withFixDeleteFragment = (editor: Editor) => {
 
     if (selection && Range.isExpanded(selection)) {
       Transforms.delete(editor, { hanging: false });
-      Transforms.setNodes(editor, { type: 'paragraph', id: v4() });
+      // Transforms.setNodes(editor, { type: 'paragraph', id: v4() });
     }
   };
   return editor;

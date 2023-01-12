@@ -1,23 +1,37 @@
+import { LIST_TYPES } from './components/Editor/constants';
+
 export function isValidYoptaNodes(nodes: any): boolean {
   if (!Array.isArray(nodes)) return false;
   if (nodes.length === 0) return false;
-
-  const nestedItems = ['numbered-list', 'ordered-list'];
 
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < nodes.length; i++) {
     const node = nodes[i];
     const nodeChild = node.children;
 
-    const isNested = nestedItems.includes(node.type);
+    const isNested = LIST_TYPES.includes(node.type);
 
     if (isNested) {
       return isValidYoptaNodes(nodeChild);
     }
 
-    // eslint-disable-next-line max-len
-    if (!node.type || !node.id || !nodeChild || !Array.isArray(nodeChild) || typeof nodeChild?.[0]?.text !== 'string') {
-      console.error('NOT VALID NODE', node);
+    if (!node.type) {
+      console.error('NOT VALID NODE: missed type in node', node);
+      return false;
+    }
+
+    if (!node.id) {
+      console.error('NOT VALID NODE: missed id in node', node);
+      return false;
+    }
+
+    if (!nodeChild || !Array.isArray(nodeChild)) {
+      console.error('NOT VALID NODE: node.children should be array', node);
+      return false;
+    }
+
+    if (typeof nodeChild?.[0]?.text !== 'string') {
+      console.error('NOT VALID NODE: node.children[0].text should be String', node);
       return false;
     }
   }
