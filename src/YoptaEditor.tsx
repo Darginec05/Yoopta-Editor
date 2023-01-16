@@ -101,9 +101,9 @@ const YoptaEditorLib = ({
   }, [autoFocus]);
 
   const onChangeValue = useCallback(
-    (newValue: Descendant[]) => {
-      onChange(newValue);
-      setVal(newValue);
+    (data: Descendant[]) => {
+      onChange(data);
+      setVal(data);
 
       if (!options.shouldStoreInLocalStorage) return;
 
@@ -111,7 +111,7 @@ const YoptaEditorLib = ({
 
       if (hasChanges) {
         try {
-          const content = JSON.stringify(newValue);
+          const content = JSON.stringify(data);
           localStorage.setItem(storageName, content);
           // eslint-disable-next-line no-empty
         } catch (error) {}

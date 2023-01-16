@@ -6,8 +6,8 @@ import { v4 } from 'uuid';
 import { TextLeaf } from './TextLeaf/TextLeaf';
 import { RenderElement } from './RenderElement/RenderElement';
 import { Toolbar } from './Toolbar/Toolbar';
-import { capitalizeFirstLetter, getNodeByPath } from './utils';
-import { ELEMENT_TYPES_MAP, TEXT_ELEMENTS_LIST, VOID_ELEMENTS } from './constants';
+import { capitalizeFirstLetter, getNodeByPath, removeMarks } from './utils';
+import { ELEMENT_TYPES_MAP, TEXT_ELEMENTS_LIST } from './constants';
 import { SuggestionElementList } from './SuggestionElementList/SuggestionElementList';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionMenuContext/ActionMenuContext';
@@ -85,7 +85,7 @@ const EditorYopta = ({ editor, placeholder }: YoptaProps) => {
 
     const currentNode: any = getNodeByPath(editor);
     const isListItemNode = currentNode.type === ELEMENT_TYPES_MAP['list-item'];
-    const isVoidNode = VOID_ELEMENTS.includes(currentNode.type);
+    const isVoidNode = Editor.isVoid(editor, currentNode);
     const isTextNode = TEXT_ELEMENTS_LIST.includes(currentNode.type);
 
     const text = Editor.string(editor, selection.anchor.path);
@@ -141,7 +141,7 @@ const EditorYopta = ({ editor, placeholder }: YoptaProps) => {
         editor.insertText('\n');
       }
 
-      if (!event.shiftKey && !isListItemNode) {
+      if (!event.shiftKey) {
         if (currentNode.type === ELEMENT_TYPES_MAP.code) {
           event.preventDefault();
           editor.insertText('\n');
@@ -151,6 +151,7 @@ const EditorYopta = ({ editor, placeholder }: YoptaProps) => {
 
           Transforms.splitNodes(editor, { always: true });
           Transforms.setNodes(editor, lineParagraph);
+          removeMarks(editor);
           // [TODO] - add new line in case of void element (e.g. image)
         } else if (isVoidNode) {
           event.preventDefault();

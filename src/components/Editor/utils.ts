@@ -96,6 +96,21 @@ export const toggleMark = (editor: Editor, format: any) => {
   }
 };
 
+export const getMarks = (editor: Editor) => {
+  const marks = Object.keys(Editor.marks(editor) || {});
+  return marks;
+};
+
+export const removeMarks = (editor: Editor) => {
+  const marks = getMarks(editor);
+
+  if (marks.length > 0) {
+    marks.forEach((mark) => {
+      Editor.removeMark(editor, mark);
+    });
+  }
+};
+
 export const removeLinkNode = (editor: Editor) => {
   Transforms.unwrapNodes(editor, {
     match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === ELEMENT_TYPES_MAP.link,
@@ -167,6 +182,7 @@ export const KEYBOARD_SHORTCUTS = {
   h3: ELEMENT_TYPES_MAP['heading-three'],
 };
 
+// eslint-disable-next-line no-confusing-arrow
 export const capitalizeFirstLetter = (string?: string): string | undefined =>
   string ? string.charAt(0).toUpperCase() + string.slice(1) : undefined;
 
