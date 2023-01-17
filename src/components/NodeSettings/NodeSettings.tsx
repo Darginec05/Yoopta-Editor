@@ -58,6 +58,8 @@ const NodeSettings = ({ hoveredNode, element, isNodeSettingsOpen, nodeSettingsPo
 
   const settingsButtonDisable = isSuggesstionListOpen;
 
+  const isVoidElement = Editor.isVoid(editor, hoveredNode);
+
   return (
     <div className={cx(s.actionItems, { [s.actionItemsShow]: isHovered })} contentEditable={false}>
       <div>
@@ -90,8 +92,7 @@ const NodeSettings = ({ hoveredNode, element, isNodeSettingsOpen, nodeSettingsPo
                     <DuplicateIcon />
                     <span>Duplicate</span>
                   </button>
-                  {/* @ts-ignore */}
-                  {!hoveredNode.isVoid && (
+                  {!isVoidElement && (
                     <button
                       type="button"
                       onClick={showNodeToggler}

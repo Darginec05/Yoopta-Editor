@@ -208,6 +208,12 @@ const NodeSettingsProvider = ({ children }) => {
               match: (n) => Editor.isEditor(editor) && SlateElement.isElement(n),
             });
 
+            // [TODO] - delete text
+            // Transforms.delete(editor, {
+            //   at: [0, 0],
+            //   unit: 'line',
+            // });
+
             const focusTimeout = setTimeout(() => {
               Transforms.select(editor, { path: [0, 0], offset: 0 });
               ReactEditor.focus(editor);

@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode, useEffect, CSSProperties, useRef, createRef, useMemo } from 'react';
+import { forwardRef, ReactNode, useEffect, CSSProperties, useRef, useMemo, useState } from 'react';
 import cx from 'classnames';
 import ParagraphIcon from '../Toolbar/icons/paragraph.svg';
 import HeadingOneIcon from '../Toolbar/icons/heading_one.svg';
@@ -7,6 +7,7 @@ import HeadingThreeIcon from '../Toolbar/icons/heading_three.svg';
 import BulletedListIcon from '../Toolbar/icons/bulleted_list.svg';
 import NumberedListIcon from '../Toolbar/icons/numbered_list.svg';
 import BlockQuoteIcon from '../Toolbar/icons/blockquote.svg';
+import CodeIcon from '../Toolbar/icons/code.svg';
 import CalloutIcon from '../Toolbar/icons/callout.svg';
 import VideoIcon from '../../../icons/video.svg';
 import ImageIcon from '../../../icons/image.svg';
@@ -20,8 +21,6 @@ type Block = {
   icon: ReactNode;
   keywords: string;
 };
-
-const KEYS = ['Tab', 'ArrowUp', 'ArrowDown'];
 
 export const ELEMENT_TYPES: Block[] = [
   { icon: <ParagraphIcon />, keywords: 'text paragraph', name: 'Text', type: ELEMENT_TYPES_MAP.paragraph },
@@ -57,7 +56,7 @@ export const ELEMENT_TYPES: Block[] = [
   },
   { icon: <BlockQuoteIcon />, keywords: 'blockquote', name: 'Blockquote', type: ELEMENT_TYPES_MAP['block-quote'] },
   { icon: <CalloutIcon />, keywords: 'callout', name: 'Callout', type: ELEMENT_TYPES_MAP.callout },
-  { icon: <CalloutIcon />, keywords: 'code bug', name: 'Code', type: ELEMENT_TYPES_MAP.code },
+  { icon: <CodeIcon />, keywords: 'code bug', name: 'Code', type: ELEMENT_TYPES_MAP.code },
   { icon: <ImageIcon />, keywords: 'image picture', name: 'Image', type: ELEMENT_TYPES_MAP.image },
   { icon: <VideoIcon />, keywords: 'video', name: 'Video', type: ELEMENT_TYPES_MAP.video },
   { icon: <VideoIcon />, keywords: 'embed', name: 'Embed', type: ELEMENT_TYPES_MAP.embed },
@@ -75,18 +74,19 @@ type Props = {
 export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const [, { closeNodeSettings }] = useNodeSettingsContext();
   const { changeNodeType, selectedElementType, filterListCallback, style, onClose, isOpen } = props;
+  const [focusableElement, setFocusableElement] = useState(0);
 
   const elements = useMemo(
     () => (typeof filterListCallback === 'function' ? ELEMENT_TYPES.filter(filterListCallback) : ELEMENT_TYPES),
     [filterListCallback],
   );
 
-  // TODO - bug
-  const elementRefs = useRef<any[]>([]);
+  const elementListRef = useRef<HTMLOListElement>(null);
 
+  // eslint-disable-next-line no-confusing-arrow
   const isBlockActive = (elem: Block) =>
     // eslint-disable-next-line implicit-arrow-linebreak
-    (selectedElementType ? selectedElementType === elem.type : elements[0].type === elem.type);
+    selectedElementType ? selectedElementType === elem.type : elements[0].type === elem.type;
 
   const notFound = elements.length === 0;
 
@@ -110,69 +110,120 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
 
   useEffect(() => {
     if (!isOpen) {
-      return undefined;
+      setFocusableElement(0);
+    } else {
+      const firstListItemNode = elementListRef.current?.childNodes[0] as HTMLLIElement | undefined;
+      firstListItemNode?.scrollIntoView({
+        behavior: 'auto',
+        block: 'center',
+      });
     }
-
-    const focusableItem = 0;
-
-    const firstElement = elementRefs.current[focusableItem]?.current;
-
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        event.stopPropagation();
-        return onClose?.();
-      }
-
-      /** @ts-ignore */
-      const isChildFocused = ref?.current?.contains(document.activeElement);
-
-      if (!isChildFocused && KEYS.includes(event.key)) {
-        const selected: HTMLButtonElement | null = document.querySelector(`[data-type="${selectedElementType}"]`);
-        if (selected) selected.focus();
-        else firstElement?.focus();
-      }
-
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        const currentSelectedType = document.activeElement as HTMLButtonElement;
-        handleChangeNode(event, currentSelectedType?.dataset.type || ELEMENT_TYPES_MAP['heading-one']);
-        onClose?.();
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
   }, [isOpen]);
 
   useEffect(() => {
-    elementRefs.current = elements.map((_, index) => (elementRefs.current[index] = createRef()));
-  }, [elements]);
+    if (!isOpen) {
+      return undefined;
+    }
+
+    const listNodes = elementListRef.current?.childNodes;
+
+    const handleKeyDown = (event) => {
+      const isEscape = event.key === 'Escape';
+      const isEnter = event.key === 'Enter';
+      const isTab = event.key === 'Tab';
+      const isArrowDown = event.key === 'ArrowDown';
+      const isArrowUp = event.key === 'ArrowUp';
+
+      if (isTab) {
+        event.preventDefault();
+      }
+
+      if (isEscape) {
+        event.preventDefault();
+        return onClose?.();
+      }
+
+      if (isArrowDown) {
+        event.preventDefault();
+
+        const nextElementIndex = focusableElement + 1;
+        const focusableElementIndex = nextElementIndex > listNodes!.length - 1 ? 0 : nextElementIndex;
+        setFocusableElement(focusableElementIndex);
+
+        const selectedNodeEl = listNodes?.[focusableElementIndex] as HTMLLIElement | undefined;
+        selectedNodeEl?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+        return;
+      }
+
+      if (isArrowUp) {
+        event.preventDefault();
+
+        const prevElementIndex = focusableElement - 1;
+        const focusableElementIndex = prevElementIndex < 0 ? listNodes!.length - 1 : prevElementIndex;
+        setFocusableElement(focusableElementIndex);
+
+        const selectedNodeEl = listNodes?.[focusableElementIndex] as HTMLLIElement | undefined;
+        selectedNodeEl?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+        return;
+      }
+
+      if (isEnter) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const selectedNodeEl = elementListRef.current?.childNodes[focusableElement] as HTMLLIElement | undefined;
+        const dataType = selectedNodeEl?.dataset.type || 'paragraph';
+
+        changeNodeType(dataType);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown, { capture: true });
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown, { capture: true });
+    };
+
+    // [TODO] - rewrite with useRef
+  }, [isOpen, focusableElement]);
 
   return (
     <div className={cx(s.dropdown, 'yopta-suggesstion_list')} role="dialog" aria-modal="true" ref={ref} style={style}>
-      {elements.map((element, i) => (
-        <button
-          type="button"
-          key={element.type}
-          data-type={element.type}
-          onMouseDown={(e) => handleChangeNode(e, element.type)}
-          ref={elementRefs.current[i]}
-          className={cx(s.dropdownButton, isBlockActive(element) && s.__active)}
-        >
-          {element.icon}
-          {' '}
-          <span>{element.name}</span>
-        </button>
-      ))}
-      {notFound && (
-        <button type="button" className={cx(s.dropdownButton)}>
-          <span>Not found</span>
-        </button>
-      )}
+      <ul className={s.elementList} ref={elementListRef}>
+        {elements.map((element, i) => (
+          <li
+            key={element.type}
+            className={cx(s.elementListItem, {
+              [s.__active]: isBlockActive(element),
+              [s.hovered]: i === focusableElement,
+            })}
+            data-type={element.type}
+          >
+            <button
+              type="button"
+              onMouseDown={(e) => handleChangeNode(e, element.type)}
+              className={s.button}
+              aria-hidden
+            >
+              {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+              {element.icon} <span>{element.name}</span>
+            </button>
+          </li>
+        ))}
+        {notFound && (
+          <li className={s.elementListItem}>
+            <button type="button" className={s.button}>
+              <span>Not found</span>
+            </button>
+          </li>
+        )}
+      </ul>
     </div>
   );
 });

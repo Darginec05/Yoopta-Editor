@@ -22,11 +22,33 @@
   color: #fff;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 7px 10px;
-  border-radius: 10px;
   background: inherit;
-  // transition: background 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  padding: 8px 14px;
+  height: 100%;
+  border-radius: inherit;
+
+  span {
+    margin-left: 8px;
+  }
+}
+
+.elementList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.elementListItem {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: inherit;
+  padding: 0;
+  justify-content: flex-start;
+  margin: 1px 0;
+  border-radius: 10px;
 
   &:hover, &:focus {
     background: #383835;
@@ -41,9 +63,6 @@
   }
 }
 
-.dropdownButton {
-  composes: button;
-  padding: 8px 14px;
-  justify-content: flex-start;
-  margin: 1px 0;
+.hovered {
+  background: #383835;
 }
