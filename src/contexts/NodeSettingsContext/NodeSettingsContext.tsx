@@ -3,7 +3,7 @@ import copy from 'copy-to-clipboard';
 import { v4 } from 'uuid';
 import React, { CSSProperties, MouseEvent, useContext, useMemo, useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
-import { CustomElement } from '../../components/Editor/types';
+import { CustomElement, ParagraphElement } from '../../components/Editor/types';
 import { ELEMENT_TYPES_MAP, LIST_TYPES } from '../../components/Editor/constants';
 import { useScrollContext } from '../ScrollContext/ScrollContext';
 import { useDragDrop, DragDropValues, DragDropHandlers } from '../../hooks/useDragDrop';
@@ -182,17 +182,49 @@ const NodeSettingsProvider = ({ children }) => {
       },
 
       deleteNode: () => {
+        const isLastDeleted = editor.children.length === 1;
         if (!hoveredNode) return;
         const path = getNodePath(editor, hoveredNode);
 
-        Transforms.removeNodes(editor, {
-          at: path, // remove the whole node including inline nodes
-          match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
-          mode: 'lowest',
-        });
+        Editor.withoutNormalizing(editor, () => {
+          if (isLastDeleted) {
+            const lineParagraph: ParagraphElement = {
+              id: v4(),
+              type: 'paragraph',
+              children: [
+                {
+                  text: '',
+                },
+              ],
+            };
 
-        setHoveredNode(null);
-        handlers.closeNodeSettings();
+            Transforms.unwrapNodes(editor, {
+              match: (n) => Editor.isEditor(editor) && SlateElement.isElement(n) && n.type === 'list-item',
+            });
+
+            Transforms.setNodes(editor, lineParagraph, {
+              mode: 'lowest',
+              at: [0, 0],
+              match: (n) => Editor.isEditor(editor) && SlateElement.isElement(n),
+            });
+
+            const focusTimeout = setTimeout(() => {
+              Transforms.select(editor, { path: [0, 0], offset: 0 });
+              ReactEditor.focus(editor);
+
+              clearTimeout(focusTimeout);
+            }, 0);
+          } else {
+            Transforms.removeNodes(editor, {
+              at: path, // remove the whole node including inline nodes
+              match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
+              mode: 'lowest',
+            });
+          }
+
+          setHoveredNode(null);
+          handlers.closeNodeSettings();
+        });
       },
 
       duplicateNode: () => {
@@ -232,12 +264,12 @@ const NodeSettingsProvider = ({ children }) => {
 
       ...dragHandlers,
     }),
-    [hoveredNode, isNodeSettingsOpen, dragValues],
+    [hoveredNode, isNodeSettingsOpen, dragValues, editor.children],
   );
 
   const contextValue = useMemo<NodeSettingsContextType>(
     () => [values, handlers],
-    [hoveredNode, isNodeSettingsOpen, dragValues, editor.selection],
+    [hoveredNode, isNodeSettingsOpen, dragValues, editor.selection, editor.children],
   );
 
   return <NodeSettingsContext.Provider value={contextValue}>{children}</NodeSettingsContext.Provider>;
