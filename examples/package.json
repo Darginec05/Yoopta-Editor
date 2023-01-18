@@ -9,7 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "13.0.0"
+    "next": "13.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "slate": "^0.88.1",
+    "slate-react": "^0.88.2",
+    "yopta-editor": "^1.0.29"
   },
   "devDependencies": {
     "@types/node": "18.11.7",
