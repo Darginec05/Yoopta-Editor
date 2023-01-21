@@ -1,8 +1,8 @@
 import { Descendant } from 'slate';
-import { TextLeaf } from './components/Editor/TextLeaf/TextLeaf';
-import { ELEMENT_RENDER_ITEMS } from './components/Elements';
-import { useScrollToElement } from './hooks/useScrollToElement';
-import { Renderer } from './components/Renderer/Renderer';
+import { TextLeaf } from '../Editor/TextLeaf/TextLeaf';
+import { ELEMENT_RENDER_ITEMS } from '../Elements';
+import { useScrollToElement } from '../../hooks/useScrollToElement';
+import s from './Renderer.module.scss';
 
 type Props = {
   data: Descendant[];
@@ -42,22 +42,23 @@ const RenderElement = ({ element, fromChild }) => {
   if (fromChild) return node;
 
   return (
-    <section
-      key={id}
-      data-node-id={element.id}
-      data-node-type={element.type}
-      style={{ padding: '0 64px' }}
-      {...attributes}
-    >
+    <section key={id} data-node-id={element.id} data-node-type={element.type} className={s.node} {...attributes}>
       {node}
     </section>
   );
 };
 
-const YoptaRenderer = ({ data, wrapCls }: Props) => {
+const Renderer = ({ data, wrapCls }: Props) => {
   useScrollToElement();
 
-  return <Renderer data={data} wrapCls={wrapCls} />;
+  return (
+    <div className={wrapCls}>
+      {data.map((element) => (
+        /* @ts-ignore */
+        <RenderElement key={element.id} element={element} />
+      ))}
+    </div>
+  );
 };
 
-export { YoptaRenderer };
+export { Renderer };

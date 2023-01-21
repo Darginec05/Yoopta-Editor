@@ -10,6 +10,7 @@ const IGNORE_SETTINGS_ELEMENTS = [
   ELEMENT_TYPES_MAP.link,
 ];
 
+const NESTED_ELEMENTS = [ELEMENT_TYPES_MAP['list-item']];
 const INLINE_ELEMENTS = [ELEMENT_TYPES_MAP.link];
 const NESTED_OR_INLINE_ELEMENTS = [ELEMENT_TYPES_MAP['list-item'], ...INLINE_ELEMENTS];
 
@@ -24,7 +25,7 @@ const RenderElement: FC<Props> = ({ element, children, attributes }) => {
 
   if (!Component) return null;
 
-  const shouldIgnoreSettings = IGNORE_SETTINGS_ELEMENTS.includes(element.type);
+  const hideSettings = IGNORE_SETTINGS_ELEMENTS.includes(element.type);
   const isInlineNode = INLINE_ELEMENTS.includes(element.type);
 
   if (NESTED_OR_INLINE_ELEMENTS.includes(element.type)) {
@@ -33,8 +34,9 @@ const RenderElement: FC<Props> = ({ element, children, attributes }) => {
         <ElementHover
           element={element}
           attributes={attributes}
-          shouldIgnoreSettings={shouldIgnoreSettings}
+          hideSettings={hideSettings}
           isInlineNode={isInlineNode}
+          isNestedNode={NESTED_ELEMENTS.includes(element.type)}
         >
           {children}
         </ElementHover>
@@ -43,7 +45,7 @@ const RenderElement: FC<Props> = ({ element, children, attributes }) => {
   }
 
   return (
-    <ElementHover element={element} attributes={attributes} shouldIgnoreSettings={shouldIgnoreSettings}>
+    <ElementHover element={element} attributes={attributes} hideSettings={hideSettings}>
       <Component isEdit attributes={{}} element={element}>
         {children}
       </Component>

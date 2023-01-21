@@ -5,8 +5,8 @@ import { HoveredNode, NodeSettingsContextHandlers } from '../../contexts/NodeSet
 import { ActionMenuContextType } from '../../contexts/ActionMenuContext/ActionMenuContext';
 import PlusIcon from '../../icons/add.svg';
 import DragIcon from '../../icons/drag.svg';
-import s from './NodeSettingsActions.module.scss';
 import { getNodePath } from '../Editor/utils';
+import s from './NodeSettingsActions.module.scss';
 
 type Props = {
   element: HoveredNode;
@@ -43,7 +43,7 @@ export const NodeSettingsActions = ({ handlers, element, showSuggestionList }: P
   };
 
   return (
-    <div className={cx(s.actions, 'node-settings-actions')}>
+    <div className={s.actions}>
       <button
         type="button"
         onClick={handlePlusButton}

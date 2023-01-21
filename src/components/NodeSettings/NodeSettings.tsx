@@ -19,9 +19,18 @@ type Props = Pick<NodeSettingsContextValues, 'hoveredNode' | 'isNodeSettingsOpen
   handlers: NodeSettingsContextHandlers;
   editor: Editor;
   element: SlateElement;
+  isNestedNode: boolean;
 };
 
-const NodeSettings = ({ hoveredNode, element, isNodeSettingsOpen, nodeSettingsPos, handlers, editor }: Props) => {
+const NodeSettings = ({
+  editor,
+  element,
+  handlers,
+  hoveredNode,
+  isNestedNode,
+  nodeSettingsPos,
+  isNodeSettingsOpen,
+}: Props) => {
   const nodeSettingsRef = useRef<HTMLDivElement>(null);
   const isHovered = hoveredNode?.id === element.id;
   const { hideSuggestionList, showSuggestionList, isSuggesstionListOpen } = useActionMenuContext();
@@ -57,11 +66,16 @@ const NodeSettings = ({ hoveredNode, element, isNodeSettingsOpen, nodeSettingsPo
   };
 
   const settingsButtonDisable = isSuggesstionListOpen;
-
   const isVoidElement = Editor.isVoid(editor, hoveredNode);
 
   return (
-    <div className={cx(s.actionItems, { [s.actionItemsShow]: isHovered })} contentEditable={false}>
+    <div
+      className={cx(s.actionItems, 'node-settings-actions', {
+        [s.actionItemsShow]: isHovered,
+        [s.nestedItems]: isNestedNode,
+      })}
+      contentEditable={false}
+    >
       <div>
         <NodeSettingsActions element={element} handlers={handlers} showSuggestionList={showSuggestionList} />
         {isNodeSettingsOpen && isHovered && (

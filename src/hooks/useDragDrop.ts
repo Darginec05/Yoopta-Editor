@@ -73,9 +73,7 @@ export const useDragDrop = (editor: Editor): [DragDropValues, DragDropHandlers] 
     const editorEl = document.getElementById('yopta-contenteditable');
 
     if (editorEl) {
-      // @ts-ignore
       editorEl.ondragenter = onDragEnter;
-      // @ts-ignore
       editorEl.ondragover = (event) => {
         event.preventDefault();
         return false;

@@ -2,6 +2,11 @@
   width: 100%;
   height: auto;
   position: relative;
+  padding: 0 64px;
+}
+
+.noPadding {
+  padding: 0;
 }
 
 .isOver {
@@ -38,4 +43,9 @@
 
 .menuList {
   position: absolute;
+}
+
+.node {
+  width: auto;
+  position: relative;
 }

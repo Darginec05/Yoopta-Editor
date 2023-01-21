@@ -3,10 +3,17 @@ import { useSlate } from 'slate-react';
 import cx from 'classnames';
 import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { NodeSettings } from '../NodeSettings/NodeSettings';
-import s from './HoveredMenu.module.scss';
 import { getNodePath } from '../Editor/utils';
+import s from './HoveredMenu.module.scss';
 
-const ElementHover = ({ children, element, attributes, shouldIgnoreSettings = false, isInlineNode = false }) => {
+const ElementHover = ({
+  children,
+  element,
+  attributes,
+  hideSettings = false,
+  isInlineNode = false,
+  isNestedNode = false,
+}) => {
   const editor = useSlate();
 
   const [{ hoveredNode, isNodeSettingsOpen, nodeSettingsPos, dndState }, handlers] = useNodeSettingsContext();
@@ -46,10 +53,7 @@ const ElementHover = ({ children, element, attributes, shouldIgnoreSettings = fa
 
   return (
     <section
-      className={cx(s.hoverWrap, {
-        [s.isOver]: isOver,
-        [s.isOverSelf]: isOverSelf,
-      })}
+      className={cx(s.hoverWrap, { [s.noPadding]: isNestedNode })}
       data-node-id={element.id}
       data-node-type={element.type}
       onMouseEnter={onMouseEnter}
@@ -58,9 +62,10 @@ const ElementHover = ({ children, element, attributes, shouldIgnoreSettings = fa
       onDrop={onDrop}
       {...attributes}
     >
-      {!shouldIgnoreSettings && (
+      {!hideSettings && (
         <NodeSettings
           hoveredNode={hoveredNode}
+          isNestedNode={isNestedNode}
           isNodeSettingsOpen={isNodeSettingsOpen}
           nodeSettingsPos={nodeSettingsPos}
           handlers={handlers}
@@ -68,7 +73,14 @@ const ElementHover = ({ children, element, attributes, shouldIgnoreSettings = fa
           element={element}
         />
       )}
-      <div>{children}</div>
+      <div
+        className={cx(s.node, {
+          [s.isOver]: isOver,
+          [s.isOverSelf]: isOverSelf,
+        })}
+      >
+        {children}
+      </div>
     </section>
   );
 };

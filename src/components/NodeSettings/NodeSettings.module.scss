@@ -53,7 +53,7 @@
   display: flex;
   position: absolute;
   opacity: 0;
-  left: -64px;
+  left: 0;
   top: 2.5px;
   transition: opacity 0.18s cubic-bezier(0.4, 0, 0.2, 1);
   user-select: none;
@@ -61,4 +61,8 @@
 
 .actionItemsShow {
   opacity: 1;
+}
+
+.nestedItems {
+  left: -64px;
 }
