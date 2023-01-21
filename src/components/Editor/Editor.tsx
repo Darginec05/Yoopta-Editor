@@ -1,18 +1,16 @@
-import { Editor, Transforms, Range } from 'slate';
+import { Editor, Transforms, Range, Element } from 'slate';
 import { useCallback, KeyboardEvent, MouseEvent, useMemo } from 'react';
 import cx from 'classnames';
 import { Editable, ReactEditor } from 'slate-react';
-import { v4 } from 'uuid';
 import { TextLeaf } from './TextLeaf/TextLeaf';
 import { RenderElement } from './RenderElement/RenderElement';
 import { Toolbar } from './Toolbar/Toolbar';
-import { capitalizeFirstLetter, getNodeByPath, removeMarks } from './utils';
+import { capitalizeFirstLetter, getDefaultParagraphLine, getNodeByPath, removeMarks } from './utils';
 import { ELEMENT_TYPES_MAP, TEXT_ELEMENTS_LIST } from './constants';
 import { SuggestionElementList } from './SuggestionElementList/SuggestionElementList';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionMenuContext/ActionMenuContext';
 import { LibOptions, useSettings } from '../../contexts/SettingsContext/SettingsContext';
-import { ParagraphElement } from './types';
 import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { OutsideClick } from '../OutsideClick';
 import { codeDecorator } from '../Elements/Code/decorator';
@@ -85,6 +83,8 @@ const EditorYopta = ({ editor, placeholder }: YoptaProps) => {
 
     const currentNode: any = getNodeByPath(editor);
     const isListItemNode = currentNode.type === ELEMENT_TYPES_MAP['list-item'];
+    const isLastDeleted = editor.children.length === 1;
+
     const isVoidNode = Editor.isVoid(editor, currentNode);
     const isTextNode = TEXT_ELEMENTS_LIST.includes(currentNode.type);
 
@@ -95,6 +95,26 @@ const EditorYopta = ({ editor, placeholder }: YoptaProps) => {
 
     if (event.key === 'Meta' || (event.key === 'Backspace' && (text.length === 0 || text === SUGGESTION_TRIGGER))) {
       hideSuggestionList();
+    }
+
+    if (isBackspace && isVoidNode && isLastDeleted) {
+      event.preventDefault();
+      const lineParagraph = getDefaultParagraphLine();
+
+      Transforms.setNodes(editor, lineParagraph, {
+        mode: 'lowest',
+        at: [0, 0],
+        match: (n) => Editor.isEditor(editor) && Element.isElement(n),
+      });
+
+      const focusTimeout = setTimeout(() => {
+        Transforms.select(editor, { path: [0, 0], offset: 0 });
+        ReactEditor.focus(editor);
+
+        clearTimeout(focusTimeout);
+      }, 0);
+
+      return;
     }
 
     if (isEnter && currentNode.type === ELEMENT_TYPES_MAP.link) {
@@ -118,15 +138,7 @@ const EditorYopta = ({ editor, placeholder }: YoptaProps) => {
     }
 
     if (isEnter) {
-      const lineParagraph: ParagraphElement = {
-        id: v4(),
-        type: 'paragraph',
-        children: [
-          {
-            text: '',
-          },
-        ],
-      };
+      const lineParagraph = getDefaultParagraphLine();
 
       if (event.shiftKey) {
         if (currentNode.type === ELEMENT_TYPES_MAP.code) {
@@ -209,16 +221,7 @@ const EditorYopta = ({ editor, placeholder }: YoptaProps) => {
         return ReactEditor.focus(editor);
       }
 
-      const lineParagraph: ParagraphElement = {
-        id: v4(),
-        type: 'paragraph',
-        children: [
-          {
-            text: '',
-          },
-        ],
-      };
-
+      const lineParagraph = getDefaultParagraphLine();
       changeHoveredNode(lineParagraph);
 
       Transforms.insertNodes(editor, lineParagraph, {

@@ -169,11 +169,15 @@ export const withCopyPasting = (editor: Editor) => {
     const html = data.getData('text/html');
 
     if (html) {
-      const parsed = new DOMParser().parseFromString(html, 'text/html');
+      try {
+        const parsed = new DOMParser().parseFromString(html, 'text/html');
 
-      const fragment = deserializeHTML(parsed.body);
-      Transforms.insertFragment(editor, fragment);
-      return;
+        const fragment = deserializeHTML(parsed.body);
+        Transforms.insertFragment(editor, fragment);
+        return;
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     insertData(data);

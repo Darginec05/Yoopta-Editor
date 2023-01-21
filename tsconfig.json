@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -20,7 +16,7 @@
     "rootDir": "src",
     "noImplicitAny": false,
     "downlevelIteration": true,
-    "module": "ESNext",  
+    "module": "ESNext",
     "declaration": true,
     "declarationDir": "dist",
     "sourceMap": true,
@@ -28,16 +24,6 @@
     "allowSyntheticDefaultImports": true,
     "preserveSymlinks": false
   },
-  "include": [
-    "react-svg.d.ts",
-    "css-modules.d.ts",
-    "src",
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "src/**/*.test.tsx",
-    "src/**/*.stories.tsx",
-    "examples",
-  ],
+  "include": ["react-svg.d.ts", "css-modules.d.ts", "src"],
+  "exclude": ["node_modules", "dist", "src/**/*.test.tsx", "src/**/*.stories.tsx", "examples"]
 }

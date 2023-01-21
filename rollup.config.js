@@ -3,7 +3,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import sourceMaps from 'rollup-plugin-sourcemaps';
 import replace from '@rollup/plugin-replace';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 import svgr from '@svgr/rollup';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
@@ -62,7 +62,7 @@ const config = {
     isProd && terser(),
   ].filter(Boolean),
   cache: isDev,
-  external: [...Object.keys(pkg.peerDependencies), 'react/jsx-runtime'],
+  external: [...Object.keys(pkg.peerDependencies)],
 };
 
 export default config;

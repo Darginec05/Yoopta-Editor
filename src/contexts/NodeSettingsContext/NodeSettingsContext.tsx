@@ -3,11 +3,16 @@ import copy from 'copy-to-clipboard';
 import { v4 } from 'uuid';
 import React, { CSSProperties, MouseEvent, useContext, useMemo, useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
-import { CustomElement, ParagraphElement } from '../../components/Editor/types';
+import { CustomElement } from '../../components/Editor/types';
 import { ELEMENT_TYPES_MAP, LIST_TYPES } from '../../components/Editor/constants';
 import { useScrollContext } from '../ScrollContext/ScrollContext';
 import { useDragDrop, DragDropValues, DragDropHandlers } from '../../hooks/useDragDrop';
-import { getNodeByCurrentPath, getNodePath, getNodeByPath } from '../../components/Editor/utils';
+import {
+  getNodeByCurrentPath,
+  getNodePath,
+  getNodeByPath,
+  getDefaultParagraphLine,
+} from '../../components/Editor/utils';
 
 export type HoveredNode = CustomElement | null;
 
@@ -136,11 +141,7 @@ const NodeSettingsProvider = ({ children }) => {
           setHoveredNode(null);
 
           if (!isEmptyNode || isVoidNode) {
-            const lineParagraph: any = {
-              id: v4(),
-              type: ELEMENT_TYPES_MAP.paragraph,
-              children: [{ text: '' }],
-            };
+            const lineParagraph = getDefaultParagraphLine();
 
             Transforms.insertNodes(editor, lineParagraph, {
               at: afterPath,
@@ -188,15 +189,7 @@ const NodeSettingsProvider = ({ children }) => {
 
         Editor.withoutNormalizing(editor, () => {
           if (isLastDeleted) {
-            const lineParagraph: ParagraphElement = {
-              id: v4(),
-              type: 'paragraph',
-              children: [
-                {
-                  text: '',
-                },
-              ],
-            };
+            const lineParagraph = getDefaultParagraphLine();
 
             Transforms.unwrapNodes(editor, {
               match: (n) => Editor.isEditor(editor) && SlateElement.isElement(n) && n.type === 'list-item',

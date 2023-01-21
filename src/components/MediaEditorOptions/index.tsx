@@ -1,4 +1,5 @@
 import { FC, MouseEvent, useRef, useState } from 'react';
+import { OutsideClick } from '../OutsideClick';
 import s from './MediaEditorOptions.module.scss';
 
 type Props = {
@@ -26,14 +27,16 @@ const MediaEditorOptions: FC<Props> = ({ handleDelete, handleChangeUrl, hasUrl }
         <div className={s.dot} />
       </div>
       {isOptionsVisibile && (
-        <div className={s.modal}>
-          <button type="button" onClick={handleChangeUrl}>
-            {hasUrl ? 'Change link' : 'Add link'}
-          </button>
-          <button type="button" onClick={handleDelete}>
-            Delete
-          </button>
-        </div>
+        <OutsideClick onClose={() => setIsOptionsVisible(false)}>
+          <div className={s.modal}>
+            <button type="button" onClick={handleChangeUrl}>
+              {hasUrl ? 'Change link' : 'Add link'}
+            </button>
+            <button type="button" onClick={handleDelete}>
+              Delete
+            </button>
+          </div>
+        </OutsideClick>
       )}
     </div>
   );

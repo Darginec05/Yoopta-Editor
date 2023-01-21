@@ -32,7 +32,13 @@ const LinkInput = ({ onClose, linkUrl, onRemove, onAdd, placeholder }) => {
         <CloseIcon fill="#fff" width={30} height={30} />
       </button>
       <span className={s.line} />
-      <input className={s.input} value={url} onChange={onChange} placeholder={placeholder} />
+      <input
+        className={s.input}
+        value={url}
+        onChange={onChange}
+        placeholder={placeholder}
+        onPaste={(e) => e.stopPropagation()}
+      />
       <span className={s.line} />
       <button type="button" className={s.button} disabled={!isValidURL} onMouseDown={onAddLink}>
         <DoneIcon stroke={isValidURL ? '#29c059' : 'gray'} />

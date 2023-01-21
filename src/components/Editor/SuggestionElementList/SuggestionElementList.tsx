@@ -11,6 +11,7 @@ import CodeIcon from '../Toolbar/icons/code.svg';
 import CalloutIcon from '../Toolbar/icons/callout.svg';
 import VideoIcon from '../../../icons/video.svg';
 import ImageIcon from '../../../icons/image.svg';
+import EmbedIcon from '../../../icons/embed.svg';
 import { ELEMENT_TYPES_MAP } from '../constants';
 import { useNodeSettingsContext } from '../../../contexts/NodeSettingsContext/NodeSettingsContext';
 import s from './SuggestionElementList.module.scss';
@@ -59,7 +60,7 @@ export const ELEMENT_TYPES: Block[] = [
   { icon: <CodeIcon />, keywords: 'code bug', name: 'Code', type: ELEMENT_TYPES_MAP.code },
   { icon: <ImageIcon />, keywords: 'image picture', name: 'Image', type: ELEMENT_TYPES_MAP.image },
   { icon: <VideoIcon />, keywords: 'video', name: 'Video', type: ELEMENT_TYPES_MAP.video },
-  { icon: <VideoIcon />, keywords: 'embed', name: 'Embed', type: ELEMENT_TYPES_MAP.embed },
+  { icon: <EmbedIcon />, keywords: 'embed', name: 'Embed', type: ELEMENT_TYPES_MAP.embed },
 ];
 
 type Props = {
@@ -110,14 +111,14 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
 
   useEffect(() => {
     if (!isOpen) {
-      setFocusableElement(0);
-    } else {
-      const firstListItemNode = elementListRef.current?.childNodes[0] as HTMLLIElement | undefined;
-      firstListItemNode?.scrollIntoView({
-        behavior: 'auto',
-        block: 'center',
-      });
+      return setFocusableElement(0);
     }
+
+    const firstListItemDomElement = elementListRef.current?.childNodes[0] as HTMLLIElement | undefined;
+    firstListItemDomElement?.scrollIntoView({
+      behavior: 'auto',
+      block: 'center',
+    });
   }, [isOpen]);
 
   useEffect(() => {
@@ -126,6 +127,9 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
     }
 
     const listNodes = elementListRef.current?.childNodes;
+    if (listNodes && focusableElement > listNodes.length - 1) {
+      setFocusableElement(0);
+    }
 
     const handleKeyDown = (event) => {
       const isEscape = event.key === 'Escape';
@@ -191,7 +195,7 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
     };
 
     // [TODO] - rewrite with useRef
-  }, [isOpen, focusableElement]);
+  }, [isOpen, focusableElement, elements.length]);
 
   return (
     <div className={cx(s.dropdown, 'yopta-suggesstion_list')} role="dialog" aria-modal="true" ref={ref} style={style}>

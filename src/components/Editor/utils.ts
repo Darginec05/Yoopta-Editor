@@ -2,7 +2,7 @@ import { ReactEditor } from 'slate-react';
 import { Editor, Text, Element as SlateElement, Transforms, Range, Path } from 'slate';
 import { v4 } from 'uuid';
 import { jsx } from 'slate-hyperscript';
-import { LinkElement } from './types';
+import { LinkElement, ParagraphElement } from './types';
 import { ELEMENT_TYPES_MAP, LIST_TYPES } from './constants';
 
 export const getNodePath = (editor: Editor, node: any) => {
@@ -173,7 +173,7 @@ export const KEYBOARD_SHORTCUTS = {
   '1.': ELEMENT_TYPES_MAP['list-item'],
   '>': ELEMENT_TYPES_MAP['block-quote'],
   '<': ELEMENT_TYPES_MAP.callout,
-  hw: ELEMENT_TYPES_MAP.code,
+  bug: ELEMENT_TYPES_MAP.code,
   '#': ELEMENT_TYPES_MAP['heading-one'],
   h1: ELEMENT_TYPES_MAP['heading-one'],
   '##': ELEMENT_TYPES_MAP['heading-two'],
@@ -278,3 +278,13 @@ export const getNodeByCurrentPath = (editor: Editor) => {
 
   return rootNode.children[path[1]];
 };
+
+export const getDefaultParagraphLine = (): ParagraphElement => ({
+  id: v4(),
+  type: 'paragraph',
+  children: [
+    {
+      text: '',
+    },
+  ],
+});

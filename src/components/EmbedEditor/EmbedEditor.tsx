@@ -10,6 +10,7 @@ import { EmbedRender } from '../EmbedRender/EmbedRender';
 import { LinkInput } from '../LinkInput';
 import { Fade } from '../Fade';
 import { OutsideClick } from '../OutsideClick';
+import { getDefaultParagraphLine } from '../Editor/utils';
 import s from './EmbedEditor.module.scss';
 
 type Props = { element: EmbedElement; className: string; attributes: any; children: ReactNode };
@@ -38,15 +39,34 @@ const EmbedEditor: FC<Props> = ({ element, attributes, className, children }) =>
   };
 
   const onDelete = () => {
-    const path = ReactEditor.findPath(editor, element);
-    Transforms.removeNodes(editor, {
-      match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === ELEMENT_TYPES_MAP.embed,
-      at: path,
-    });
+    const isLastDeleted = editor.children.length === 1;
+
+    if (isLastDeleted) {
+      const lineParagraph = getDefaultParagraphLine();
+
+      Transforms.setNodes(editor, lineParagraph, {
+        mode: 'lowest',
+        at: [0, 0],
+        match: (n) => Editor.isEditor(editor) && SlateElement.isElement(n),
+      });
+
+      const focusTimeout = setTimeout(() => {
+        Transforms.select(editor, { path: [0, 0], offset: 0 });
+        ReactEditor.focus(editor);
+
+        clearTimeout(focusTimeout);
+      }, 0);
+    } else {
+      const path = ReactEditor.findPath(editor, element);
+      Transforms.removeNodes(editor, {
+        match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === ELEMENT_TYPES_MAP.embed,
+        at: path,
+      });
+    }
   };
 
   const linkNode = (
-    <Fade show={isLinkInputOpen} animationDelay={150}>
+    <Fade show={isLinkInputOpen} animationDelay={100}>
       <OutsideClick onClose={() => setIsLinkInputOpen(false)}>
         <LinkInput
           linkUrl={element.src || ''}

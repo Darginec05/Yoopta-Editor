@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { FC, ReactNode, useState } from 'react';
 import cx from 'classnames';
 import { ReactEditor, useFocused, useSelected, useSlate } from 'slate-react';
@@ -14,6 +13,7 @@ import { useSettings } from '../../contexts/SettingsContext/SettingsContext';
 import { OutsideClick } from '../OutsideClick';
 import { LinkInput } from '../LinkInput';
 import { Fade } from '../Fade';
+import { getDefaultParagraphLine } from '../Editor/utils';
 import s from './VideoEditor.module.scss';
 
 const toBase64 = (file: File): Promise<any> =>
@@ -78,11 +78,30 @@ const VideoEditor: FC<Props> = ({ element, attributes, className, children }) =>
   const dataSrc = element['data-src'];
 
   const onDelete = () => {
-    const path = ReactEditor.findPath(editor, element);
-    Transforms.removeNodes(editor, {
-      match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === ELEMENT_TYPES_MAP.video,
-      at: path,
-    });
+    const isLastDeleted = editor.children.length === 1;
+
+    if (isLastDeleted) {
+      const lineParagraph = getDefaultParagraphLine();
+
+      Transforms.setNodes(editor, lineParagraph, {
+        mode: 'lowest',
+        at: [0, 0],
+        match: (n) => Editor.isEditor(editor) && SlateElement.isElement(n),
+      });
+
+      const focusTimeout = setTimeout(() => {
+        Transforms.select(editor, { path: [0, 0], offset: 0 });
+        ReactEditor.focus(editor);
+
+        clearTimeout(focusTimeout);
+      }, 0);
+    } else {
+      const path = ReactEditor.findPath(editor, element);
+      Transforms.removeNodes(editor, {
+        match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === ELEMENT_TYPES_MAP.video,
+        at: path,
+      });
+    }
   };
 
   const handleChangeUrl = (url: string) => {
