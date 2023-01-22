@@ -4,8 +4,10 @@ import { ElementProps } from '../../Editor/types';
 import { getElementClassname } from '../../Editor/utils';
 import s from './Link.module.scss';
 
-const Link = memo<ElementProps>(({ attributes, element, children }) => {
+const Link = memo<ElementProps>(({ attributes, element, children, isEdit }) => {
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (isEdit) return;
+
     e.preventDefault();
     const url = new URL(element.url);
 

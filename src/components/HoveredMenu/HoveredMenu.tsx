@@ -53,7 +53,7 @@ const ElementHover = ({
 
   return (
     <section
-      className={(cx(s.hoverWrap, { [s.noPadding]: isNestedNode }), 'yopta-node')}
+      className={cx(s.hoverWrap, { [s.noPadding]: isNestedNode }, 'yopta-node')}
       data-node-id={element.id}
       data-node-type={element.type}
       onMouseEnter={onMouseEnter}
