@@ -13,6 +13,7 @@ import {
   getNodeByPath,
   getDefaultParagraphLine,
 } from '../../components/Editor/utils';
+import { useSettings } from '../SettingsContext/SettingsContext';
 
 export type HoveredNode = CustomElement | null;
 
@@ -89,6 +90,7 @@ const getInitialState = ({ children }: Editor): HoveredNode => {
 const NodeSettingsProvider = ({ children }) => {
   const editor = useSlate();
   const { disableScroll, enableScroll } = useScrollContext();
+  const { options: libOptions } = useSettings();
   const [dragValues, dragHandlers] = useDragDrop(editor);
 
   const [nodeSettingsPos, setNodeSettingsPos] = useState<CSSProperties>();
@@ -221,6 +223,8 @@ const NodeSettingsProvider = ({ children }) => {
             });
           }
 
+          libOptions.nodeSettings?.onDelete?.();
+
           setHoveredNode(null);
           handlers.closeNodeSettings();
         });
@@ -251,13 +255,20 @@ const NodeSettingsProvider = ({ children }) => {
             }, 0);
           }
 
+          libOptions.nodeSettings?.onDuplicate?.();
+
           setHoveredNode(null);
           handlers.closeNodeSettings();
         });
       },
 
       copyLinkNode: () => {
-        copy(`${window.location.href}#${hoveredNode?.id}`);
+        if (typeof libOptions.nodeSettings?.onCopy === 'function') {
+          libOptions.nodeSettings?.onCopy?.(hoveredNode?.id || '');
+        } else {
+          copy(`${window.location.href}#${hoveredNode?.id}`);
+        }
+
         handlers.closeNodeSettings();
       },
 

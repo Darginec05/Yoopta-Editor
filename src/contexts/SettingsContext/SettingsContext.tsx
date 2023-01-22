@@ -2,6 +2,12 @@ import React, { ReactNode, useContext, useMemo } from 'react';
 
 type MediaResponse = { url: string; options?: any };
 
+type NodeActions = {
+  onCopy?: (_elementId: string) => void;
+  onDuplicate?: () => void;
+  onDelete?: () => void;
+};
+
 type MediaProps = {
   imageProps?: {
     onChange: (_s: File) => Promise<MediaResponse>;
@@ -26,6 +32,7 @@ type LibOptions = {
   autoFocus?: boolean;
   placeholder?: string;
   media?: MediaProps;
+  nodeSettings?: NodeActions;
 };
 
 type Props = { children: ReactNode; options: LibOptions };

@@ -75,7 +75,7 @@ const exampleData = [
       },
       {
         type: 'link',
-        url: 'https://www.dropbox.com/paper',
+        url: 'http://localhost:3000/',
         id: 'fa60b1e7-3872-4259-9f2a-e6b6e7271c7c',
         children: [
           {
