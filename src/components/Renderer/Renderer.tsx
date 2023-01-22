@@ -1,4 +1,5 @@
 import { Descendant } from 'slate';
+import cx from 'classnames';
 import { TextLeaf } from '../Editor/TextLeaf/TextLeaf';
 import { ELEMENT_RENDER_ITEMS } from '../Elements';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
@@ -42,7 +43,13 @@ const RenderElement = ({ element, fromChild }) => {
   if (fromChild) return node;
 
   return (
-    <section key={id} data-node-id={element.id} data-node-type={element.type} className={s.node} {...attributes}>
+    <section
+      key={id}
+      data-node-id={element.id}
+      data-node-type={element.type}
+      className={cx(s.node, 'yopta-node')}
+      {...attributes}
+    >
       {node}
     </section>
   );
