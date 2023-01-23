@@ -38,6 +38,11 @@ export default function Home() {
           media={media}
           shouldStoreInLocalStorage={{ name: 'example-content' }}
           scrollElementSelector={`.${styles.main}`}
+          nodeSettings={{
+            onCopy(_elementId) {
+              console.log({ _elementId });
+            },
+          }}
         />
       </div>
     </div>

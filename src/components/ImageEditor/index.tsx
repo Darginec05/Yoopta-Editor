@@ -127,7 +127,7 @@ const ImageEditor: FC<Props> = ({ element, attributes, className, children }) =>
           onClose={() => setIsLinkInputOpen(false)}
           onRemove={() => {}}
           onAdd={handleChangeUrl}
-          placeholder="Paste embed url"
+          placeholder="Paste image url"
         />
       </OutsideClick>
     </Fade>

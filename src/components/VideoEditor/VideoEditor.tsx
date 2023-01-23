@@ -127,7 +127,7 @@ const VideoEditor: FC<Props> = ({ element, attributes, className, children }) =>
           onClose={() => setIsLinkInputOpen(false)}
           onRemove={() => {}}
           onAdd={handleChangeUrl}
-          placeholder="Paste embed url"
+          placeholder="Paste video url"
         />
       </OutsideClick>
     </Fade>
