@@ -7,7 +7,7 @@ import s from './Renderer.module.scss';
 
 type Props = {
   data: Descendant[];
-  wrapCls?: string;
+  className?: string;
 };
 
 const RenderChildren = ({ child }) => {
@@ -55,11 +55,11 @@ const RenderElement = ({ element, fromChild }) => {
   );
 };
 
-const Renderer = ({ data, wrapCls }: Props) => {
+const Renderer = ({ data, className }: Props) => {
   useScrollToElement();
 
   return (
-    <div className={wrapCls}>
+    <div className={className}>
       {data.map((element) => (
         /* @ts-ignore */
         <RenderElement key={element.id} element={element} />

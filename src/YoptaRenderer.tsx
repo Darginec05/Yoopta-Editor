@@ -6,7 +6,7 @@ import { Renderer } from './components/Renderer/Renderer';
 
 type Props = {
   data: Descendant[];
-  wrapCls?: string;
+  className?: string;
 };
 
 const RenderChildren = ({ child }) => {
@@ -54,10 +54,10 @@ const RenderElement = ({ element, fromChild }) => {
   );
 };
 
-const YoptaRenderer = ({ data, wrapCls }: Props) => {
+const YoptaRenderer = ({ data, className }: Props) => {
   useScrollToElement();
 
-  return <Renderer data={data} wrapCls={wrapCls} />;
+  return <Renderer data={data} className={className} />;
 };
 
 export { YoptaRenderer };

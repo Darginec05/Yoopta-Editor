@@ -26,8 +26,7 @@ type MediaProps = {
 };
 
 type LibOptions = {
-  wrapCls?: string;
-  contentCls?: string;
+  className?: string;
   shouldStoreInLocalStorage?: boolean | { name: string };
   autoFocus?: boolean;
   placeholder?: string;
@@ -38,8 +37,7 @@ type LibOptions = {
 type Props = { children: ReactNode; options: LibOptions };
 
 const DEFAULT_OPTIONS: LibOptions = {
-  wrapCls: undefined,
-  contentCls: undefined,
+  className: undefined,
   shouldStoreInLocalStorage: false,
   media: undefined,
 };

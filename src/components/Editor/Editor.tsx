@@ -241,10 +241,10 @@ const EditorYopta = ({ editor, placeholder }: YoptaProps) => {
     <main
       id="yopta-editor"
       aria-hidden
-      className={cx(s.editorContainer, options.wrapCls)}
+      className={cx(s.editorContainer, options.className)}
       onMouseDown={handleEmptyZoneClick}
     >
-      <div className={cx(s.editorContent, options.contentCls)} aria-hidden onMouseDown={stopPropagation}>
+      <div id="yopta-editor-content" className={s.editorContent} aria-hidden onMouseDown={stopPropagation}>
         <OutsideClick onClose={hideToolbarTools}>
           {/* @ts-ignore */}
           <Toolbar toolbarRef={toolbarRef} toolbarStyle={toolbarStyle} editor={editor} />
