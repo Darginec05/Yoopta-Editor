@@ -8,7 +8,7 @@ const SourceLink = ({ example }: { example: string }) => {
   return (
     <div className={s.sourceLink}>
       <a href={to} target="_blank">
-        View source
+        View source code
       </a>
     </div>
   );
