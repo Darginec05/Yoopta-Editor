@@ -1,10 +1,13 @@
 import Link from 'next/link';
 import s from './ExampleList.module.scss';
+import { useRouter } from 'next/router';
 
 const ExampleList = () => {
+  const router = useRouter();
+
   return (
     <div className={s.main}>
-      <h1>List of examples</h1>
+      <h1 style={{ color: router.asPath === '/styling' ? '#fff' : '#000' }}>List of examples</h1>
 
       <ul className={s.exampleList}>
         <li>

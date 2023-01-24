@@ -2,6 +2,9 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 
 import '../styles/globals.scss';
+import { SourceLink } from '../components/SourceLink/SourceLink';
+import { ExampleList } from '../components/ExampleList/ExampleList';
+import { SocialLinks } from '../components/SocialLinks/SocialLinks';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -42,7 +45,12 @@ export default function App({ Component, pageProps }: AppProps) {
           content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=5, viewport-fit=cover"
         />
       </Head>
-      <Component {...pageProps} />
+      <div>
+        <SourceLink />
+        <ExampleList />
+        <SocialLinks />
+        <Component {...pageProps} />
+      </div>
     </>
   );
 }

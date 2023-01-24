@@ -1,9 +1,11 @@
-import { YoptaRenderer } from 'yopta-editor';
+import { YoptaEditor, YoptaRenderer } from 'yopta-editor';
 
 import s from './styles.module.scss';
 import 'yopta-editor/dist/index.css';
+import { useState } from 'react';
+import { Descendant } from 'slate';
 
-const data = [
+const initialData = [
   {
     id: '663607d6-80c8-4d96-811a-1d7ad2aadcdd',
     type: 'heading-one',
@@ -27,10 +29,26 @@ const data = [
 ];
 
 const JustRenderExample = () => {
+  const [editorValue, setEditorValue] = useState<Descendant[]>(initialData);
+  const [mode, setMode] = useState<'render' | 'editor'>('render');
+
+  if (mode === 'editor') {
+    return (
+      <div className={s.container}>
+        <YoptaEditor value={editorValue} onChange={(data) => setEditorValue(data)} className={s.editor} autoFocus />
+        <button onClick={() => setMode('render')} className={s.button}>
+          Switch to render mode
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className={s.container}>
-      <YoptaRenderer data={data} className={s.editor} />
-      <button className={s.button}></button>
+      <YoptaRenderer data={editorValue} className={s.editor} />
+      <button className={s.button} onClick={() => setMode('editor')}>
+        Switch to edit mode
+      </button>
     </div>
   );
 };

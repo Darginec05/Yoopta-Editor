@@ -1,0 +1,23 @@
+.links {
+  position: fixed;
+  right: 15px;
+  top: 15px;
+  font-weight: 600;
+  display: flex;
+}
+
+.list {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+}
+
+.link {
+  background-color: #007aff;
+  padding: 6px 8px;
+  color: #fff;
+  border-radius: 7px;
+  margin: 0;
+  margin-left: 10px;
+  font-size: 14px;
+}

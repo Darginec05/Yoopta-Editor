@@ -13,5 +13,15 @@
 }
 
 .button {
-  
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%);
+  bottom: 30px;
+  background-color: #007aff;
+  color: #fff;
+  padding: 9px 7px;
+  font-weight: bold;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
 }
