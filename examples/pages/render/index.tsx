@@ -30,6 +30,7 @@ const JustRenderExample = () => {
   return (
     <div className={s.container}>
       <YoptaRenderer data={data} className={s.editor} />
+      <button className={s.button}></button>
     </div>
   );
 };

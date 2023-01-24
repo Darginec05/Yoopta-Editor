@@ -1,11 +1,11 @@
-import Head from 'next/head';
 import Link from 'next/link';
-import styles from '../styles/Home.module.scss';
+import s from '../styles/Home.module.scss';
+import { ExampleList } from '../components/ExampleList/ExampleList';
 
 export default function Home() {
   return (
-    <div className={styles.container}>
-      <div className={styles.main}>Checkout our examples</div>
+    <div className={s.container}>
+      <ExampleList />
     </div>
   );
 }
