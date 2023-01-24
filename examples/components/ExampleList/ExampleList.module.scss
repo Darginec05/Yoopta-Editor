@@ -20,11 +20,13 @@
 
   & li {
     padding: 0;
-    margin: 5px 0;
+    margin: 7px 0;
     font-size: 18px;
+    display: flex;
   }
 
   & a {
     color: blue;
+    margin-right: 7px;
   }
 }

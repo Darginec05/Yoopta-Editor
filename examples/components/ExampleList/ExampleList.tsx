@@ -1,40 +1,36 @@
 import Link from 'next/link';
 import s from './ExampleList.module.scss';
 import { useRouter } from 'next/router';
+import { SourceLink } from '../SourceLink/SourceLink';
+
+const examples = [
+  { path: '/basic', title: 'Basic' },
+  { path: '/offline', title: 'Offline' },
+  { path: '/media', title: 'Media' },
+  { path: '/render', title: 'Rendering' },
+  { path: '/styling', title: 'Styling' },
+];
 
 const ExampleList = () => {
   const router = useRouter();
 
+  const currentPath = router.asPath;
+
   return (
     <div className={s.main}>
-      <h1 style={{ color: router.asPath === '/styling' ? '#fff' : '#000' }}>List of examples</h1>
+      <h1 style={{ color: currentPath === '/styling' ? '#fff' : '#000' }}>List of examples</h1>
 
       <ul className={s.exampleList}>
-        <li>
-          <Link href="/basic" className={s.example}>
-            Basic
-          </Link>
-        </li>
-        <li>
-          <Link href="/offline" className={s.example}>
-            Offline
-          </Link>
-        </li>
-        <li>
-          <Link href="/media" className={s.example}>
-            Media
-          </Link>
-        </li>
-        <li>
-          <Link href="/render" className={s.example}>
-            Rendering
-          </Link>
-        </li>
-        <li>
-          <Link href="/styling" className={s.example}>
-            Styling
-          </Link>
-        </li>
+        {examples.map(({ path, title }) => {
+          return (
+            <li>
+              <Link href={path} className={s.example} shallow>
+                {title}
+              </Link>
+              {currentPath === path && <SourceLink example={path} />}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

@@ -1,10 +1,9 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-
-import '../styles/globals.scss';
-import { SourceLink } from '../components/SourceLink/SourceLink';
 import { ExampleList } from '../components/ExampleList/ExampleList';
 import { SocialLinks } from '../components/SocialLinks/SocialLinks';
+
+import '../styles/globals.scss';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -46,7 +45,6 @@ export default function App({ Component, pageProps }: AppProps) {
         />
       </Head>
       <div>
-        <SourceLink />
         <ExampleList />
         <SocialLinks />
         <Component {...pageProps} />
