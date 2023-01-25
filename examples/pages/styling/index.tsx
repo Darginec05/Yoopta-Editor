@@ -30,7 +30,7 @@ const initialValue = [
     id: 'b5c9722f-7367-4929-91c9-efe221472075',
     children: [
       {
-        text: 'I have provided some global class names for all elements and some tools.',
+        text: 'I have provided some global class names for all elements, leafs and some tools.',
       },
     ],
   },
@@ -39,7 +39,11 @@ const initialValue = [
     id: '4248b198-c595-4aeb-bf24-e8a1ef2a6ad1',
     children: [
       {
-        text: 'Elements classnames:',
+        text: 'Elements',
+        underline: true,
+      },
+      {
+        text: ' classnames:',
       },
     ],
   },
@@ -227,10 +231,130 @@ const initialValue = [
             text: 'yopta-embed',
             bold: true,
           },
+        ],
+      },
+    ],
+  },
+  {
+    type: 'paragraph',
+    id: 'b2e77479-13a6-4728-941f-53e93259b9b0',
+    children: [
+      {
+        text: '',
+      },
+    ],
+    isVoid: false,
+  },
+  {
+    type: 'paragraph',
+    id: 'e2bdad33-38cb-4f79-acdb-98dd80edfe9d',
+    children: [
+      {
+        text: 'Leafs',
+        underline: true,
+      },
+      {
+        text: ' classnames:',
+      },
+    ],
+  },
+  {
+    type: 'bulleted-list',
+    id: '59dca995-8807-412d-b680-535f3aae393a',
+    children: [
+      {
+        type: 'list-item',
+        id: '1b46f1b6-8989-400a-b560-704df6d6ea97',
+        children: [
           {
-            text: '\n',
+            text: 'Bold',
+            bold: true,
+          },
+          {
+            text: ' - ',
+          },
+          {
+            text: 'leaf-bold',
+            bold: true,
           },
         ],
+      },
+      {
+        type: 'list-item',
+        id: 'd0173bae-ede7-4fc5-a0d0-9a50534e3a5a',
+        children: [
+          {
+            text: 'Italic',
+            italic: true,
+          },
+          {
+            text: ' - ',
+          },
+          {
+            text: 'leaf-italic',
+            bold: true,
+          },
+        ],
+      },
+      {
+        type: 'list-item',
+        id: 'ecfb9b2f-a96e-4c38-86c4-662d29993a88',
+        children: [
+          {
+            text: 'Strike',
+            strike: true,
+          },
+          {
+            text: ' - ',
+          },
+          {
+            text: 'leaf-strike',
+            bold: true,
+          },
+        ],
+      },
+      {
+        type: 'list-item',
+        id: '5fbe8781-f6dd-4adc-bf95-4f1a5ff30d1d',
+        children: [
+          {
+            text: 'Underline',
+            underline: true,
+          },
+          {
+            text: ' - ',
+          },
+          {
+            text: 'leaf-underline',
+            bold: true,
+          },
+        ],
+      },
+      {
+        type: 'list-item',
+        id: 'f8a4068b-f283-4536-896a-8052662d365a',
+        children: [
+          {
+            text: 'Code',
+            code: true,
+          },
+          {
+            text: ' - ',
+          },
+          {
+            text: 'leaf-code',
+            bold: true,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    type: 'bulleted-list',
+    id: 'f9ffe339-b183-448c-b37b-5c7ea5c07772',
+    children: [
+      {
+        text: '',
       },
     ],
   },
@@ -239,7 +363,11 @@ const initialValue = [
     id: 'bd06c49b-8b22-4d5f-8d07-64603bd5b612',
     children: [
       {
-        text: 'Tools classnames: ',
+        text: 'Tools',
+        underline: true,
+      },
+      {
+        text: ' classnames: ',
       },
     ],
   },
@@ -314,16 +442,6 @@ const initialValue = [
       },
     ],
   },
-  {
-    type: 'paragraph',
-    id: 'ddc17f51-3310-4fa7-91e9-aec13ba6f519',
-    children: [
-      {
-        text: '',
-      },
-    ],
-    isVoid: false,
-  },
 ];
 
 const MediaExample = () => {
@@ -351,9 +469,6 @@ const MediaExample = () => {
         onChange={(val: Descendant[]) => setEditorValue(val)}
         className={s.editor}
         media={media}
-        shouldStoreInLocalStorage={{
-          name: 'yopta-example-styling',
-        }}
       />
     </div>
   );

@@ -29,8 +29,6 @@ const initialValue = [
 const BasicExample = () => {
   const [editorValue, setEditorValue] = useState<Descendant[]>(initialValue);
 
-  console.log(editorValue);
-
   return (
     <div className={s.container}>
       <YoptaEditor value={editorValue} onChange={(val: Descendant[]) => setEditorValue(val)} className={s.editor} />

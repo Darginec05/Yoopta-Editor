@@ -22,12 +22,15 @@ const ExampleList = () => {
 
       <ul className={s.exampleList}>
         {examples.map(({ path, title }) => {
+          const isCurrent = currentPath === path;
+          const styles = isCurrent ? { textDecoration: 'underline' } : undefined;
+
           return (
             <li>
-              <Link href={path} className={s.example} shallow>
+              <Link href={path} className={s.example} style={styles} shallow>
                 {title}
               </Link>
-              {currentPath === path && <SourceLink example={path} />}
+              {isCurrent && <SourceLink example={path} />}
             </li>
           );
         })}
