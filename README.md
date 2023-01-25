@@ -85,13 +85,10 @@ You can read more about this here <a target="_blank" rel="noopener noreferrer" h
 📝 This WYSIWYG editor build on top of <a target="_blank" rel="noopener noreferrer" href="https://github.com/ianstormtaylor/slate">Slate JS framework</a> <br>
 💙 SlateJS - is the best tool for building rich-text editors. It has beautiful design and great API
 </blockquote>
-<br>
 
 ## Donation.
 
 ### If you like this open source project and my work helps you, you can donate to me. You can support me using <a href="https://buy.stripe.com/9AQcQo6G57dyexGeUU">Stripe link</a> 💙
-
-<br>
 
 ### Used by
 
