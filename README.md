@@ -9,14 +9,12 @@
 </div>
 
 <p align="center">
-  <a href="https://yopage.co/blog/0zntIA46L4/W0epdDpnRa">Full docs</a> |
-  <a href="https://yopage.co/blog/0zntIA46L4/qOQqVaxxRZ">Get started</a> | 
-  <a href="https://yopage.co/blog/0zntIA46L4/kUoZ2DoHnG">API</a> |
-  <a href="https://yopage.co/blog/0zntIA46L4/qo9nK4lDG5">FAQs</a> |
-  <a href="https://yopta-editor.vercel.app/basic">Examples</a>
+  <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/W0epdDpnRa">Full docs</a> |
+  <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/qOQqVaxxRZ">Get started</a> | 
+  <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/kUoZ2DoHnG">API</a> |
+  <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/qo9nK4lDG5">FAQs</a> |
+  <a target="_blank" rel="noopener noreferrer" href="https://yopta-editor.vercel.app/basic">Examples</a>
 </p>
-
-<br>
 
 ### Features
 
@@ -69,21 +67,28 @@ function App() {
 
 ### Check out other examples 👇
 
-- <a href="https://yopta-editor.vercel.app/basic">Basic usage</a>
-- <a href="https://yopta-editor.vercel.app/offline">Offline mode</a>
-- <a href="https://yopta-editor.vercel.app/media">Working with media</a>
-- <a href="https://yopta-editor.vercel.app/render">Just rendering</a>
-- <a href="https://yopta-editor.vercel.app/styling">Custom styling</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://yopta-editor.vercel.app/basic">Basic usage</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://yopta-editor.vercel.app/offline">Offline mode</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://yopta-editor.vercel.app/media">Working with media</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://yopta-editor.vercel.app/render">Just rendering</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://yopta-editor.vercel.app/styling">Custom styling</a>
   <br>
   <br>
 
 <blockquote style="padding: 10px">❗ Yopta-Editor is on <span style="color: #007aff">BETA</span> version now. The core functionality works, but you may encounter some bugs.
 I have big plans for the v2 version with a lot of cool features and improvements.
 Let's build together the best open source editor ever ☝ <br>
-You can read more about this here <a href="https://yopage.co/blog/0zntIA46L4/5iK8VNiBI8">"What's next Lebovski?"</a>
+You can read more about this here <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/5iK8VNiBI8">"What's next Lebovski?"</a>
 </blockquote>
 
 <blockquote style="padding: 10px">
-📝 This WYSIWYG editor build on top of <a href="https://github.com/ianstormtaylor/slate">Slate JS framework</a> <br>
+📝 This WYSIWYG editor build on top of <a target="_blank" rel="noopener noreferrer" href="https://github.com/ianstormtaylor/slate">Slate JS framework</a> <br>
 💙 SlateJS - is the best tool for building rich-text editors. It has beautiful design and great API
 </blockquote>
+<br>
+
+### License
+
+MIT
+
+### Used by
