@@ -1,7 +1,7 @@
 <h2 align="center">Welcome to Yopta-Editor v1 🎉</h2>
 <p align="center">Yopta-Editor - is an open source notion-like editor 💥</p>
 <div align="center">
-<video src="https://res.cloudinary.com/dnlvhgawq/video/upload/v1674392138/cx8dllk8zjmjeuaawmsy.mp4" autoPlay muted controls> </video>
+<video controls autoplay muted src="https://user-images.githubusercontent.com/29093118/214577126-fce7214d-8ed1-49a9-bdff-007bf45b5ef9.mp4" />
 </div>
 
 <div align="center">
