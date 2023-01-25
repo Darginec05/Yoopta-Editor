@@ -87,8 +87,18 @@ You can read more about this here <a target="_blank" rel="noopener noreferrer" h
 </blockquote>
 <br>
 
-### License
+## Donation.
 
-MIT
+### If you like this open source project and my work helps you, you can donate to me. You can support me using <a href="https://buy.stripe.com/9AQcQo6G57dyexGeUU">Stripe link</a> 💙
+
+<br>
 
 ### Used by
+
+- <a href="https://tapflow.co/">Tapflow - The perfect tool for building and selling online courses</a>
+- <a href="https://equalize.team">Equalize.team</a>
+- <a href="https://yopage.co/">Yopage.co - blogging platform</a>
+
+### License
+
+MIT LICENSE
