@@ -88,7 +88,7 @@ You can read more about this here <a target="_blank" rel="noopener noreferrer" h
 
 ## Donation.
 
-### If you like this open source project and my work helps you, you can donate to me. You can support me using <a href="https://buy.stripe.com/9AQcQo6G57dyexGeUU">Stripe link</a> 💙
+### If you like this open source project and my work helps you, you can donate to me. Support me using <a href="https://buy.stripe.com/9AQcQo6G57dyexGeUU">Stripe link</a> 💙
 
 ### Used by
 
