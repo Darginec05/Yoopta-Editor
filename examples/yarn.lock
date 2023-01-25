@@ -2153,10 +2153,10 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-yopta-editor@^1.0.35:
-  version "1.0.35"
-  resolved "https://registry.yarnpkg.com/yopta-editor/-/yopta-editor-1.0.35.tgz#3b16493b257e3faae099659c3a9fbdb094fac261"
-  integrity sha512-HN89NTnhO8amUgImUQP0/5AU/Bnj+cm20MCELBTj0BterAX83w4BpaCN3Me22lFOiXE1PjEX3VwELQLcMWZ1pA==
+yopta-editor@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/yopta-editor/-/yopta-editor-1.1.0.tgz#3707dc141fa7c92dba0773a1882c56b71ea670c9"
+  integrity sha512-oVKoQakvY/qpjJlGqjvZch97lkKYCa6G/bkaFc9PNcK6QsNc4YhsHjRtHbz6MdZW4bmze/fAfHf/g3b1g2ewIw==
   dependencies:
     body-scroll-lock "^4.0.0-beta.0"
     classnames "^2.3.1"
