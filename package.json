@@ -76,5 +76,26 @@
     "react-dom": ">=17.0.2",
     "slate": ">=0.72.3",
     "slate-react": ">=0.72.4"
-  }
+  },
+  "keywords": [
+    "contenteditable",
+    "docs",
+    "document",
+    "edit",
+    "editor",
+    "editable",
+    "html",
+    "markdown",
+    "medium",
+    "paper",
+    "react",
+    "rich",
+    "richtext",
+    "richtext",
+    "slate",
+    "text",
+    "notion",
+    "wysiwyg",
+    "wysiwym"
+  ]
 }
