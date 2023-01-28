@@ -198,7 +198,7 @@ export const SuggestionElementList = forwardRef<HTMLDivElement, Props>((props, r
   }, [isOpen, focusableElement, elements.length]);
 
   return (
-    <div className={cx(s.dropdown, 'yopta-suggesstion_list')} role="dialog" aria-modal="true" ref={ref} style={style}>
+    <div className={cx(s.dropdown, 'yopta-suggestion_list')} role="dialog" aria-modal="true" ref={ref} style={style}>
       <ul className={s.elementList} ref={elementListRef}>
         {elements.map((element, i) => (
           <li
