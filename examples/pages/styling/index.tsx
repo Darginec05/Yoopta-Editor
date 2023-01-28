@@ -422,7 +422,7 @@ const initialValue = [
             text: 'Suggestion list - ',
           },
           {
-            text: 'yopta-suggesstion_list',
+            text: 'yopta-suggestion_list',
             bold: true,
           },
         ],
