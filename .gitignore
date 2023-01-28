@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 .rollup.cache
+/test-results/
+/playwright-report/
+/playwright/.cache/

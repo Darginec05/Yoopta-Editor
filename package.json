@@ -17,7 +17,8 @@
     "dev": "rm -rf dist && rollup -c -w --environment NODE_ENV:development --open",
     "coverage": "vitest run --coverage",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "test:integration": "playwright test"
   },
   "dependencies": {
     "body-scroll-lock": "^4.0.0-beta.0",
@@ -31,6 +32,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.30.0",
     "@rollup/plugin-alias": "^4.0.2",
     "@rollup/plugin-commonjs": "^23.0.2",
     "@rollup/plugin-node-resolve": "^15.0.1",
