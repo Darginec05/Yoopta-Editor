@@ -2,19 +2,11 @@
   "env": {
     "browser": true,
     "es2021": true,
-    "node": true
+    "node": true,
+    "vitest": true
   },
-  "ignorePatterns": [
-    "node_modules/*",
-    ".next/*",
-    ".out/*",
-    "!.prettierrc.js"
-  ],
-  "extends": [
-    "plugin:react/recommended",
-    "airbnb",
-    "eslint-config-next"
-  ],
+  "ignorePatterns": ["node_modules/*", ".next/*", ".out/*", "!.prettierrc.js"],
+  "extends": ["plugin:react/recommended", "airbnb", "eslint-config-next"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
@@ -23,10 +15,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": [
-    "react",
-    "@typescript-eslint"
-  ],
+  "plugins": ["react", "@typescript-eslint"],
   "rules": {
     "arrow-body-style": 0,
     "react/self-closing-comp": 0,
@@ -49,6 +38,7 @@
     "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "object-curly-spacing": 0,
     "implicit-arrow-linebreak": 0,
-    "jsx-a11y/click-events-have-key-events": 0
+    "jsx-a11y/click-events-have-key-events": 0,
+    "import/no-extraneous-dependencies": 0
   }
 }
