@@ -9,4 +9,12 @@
   letter-spacing: 0;
   color: rgba(41, 41, 41, 1);
   position: relative;
+
+  &:hover {
+    :global {
+      & .yopta-anchor-link {
+        opacity: 1;
+      }
+    }
+  }
 }

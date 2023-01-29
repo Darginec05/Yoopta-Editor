@@ -288,3 +288,18 @@ export const getDefaultParagraphLine = (): ParagraphElement => ({
     },
   ],
 });
+
+export const getHeadingAnchorFromSlateNode = (element: SlateElement, isEdit?: boolean): string | undefined => {
+  if (isEdit) return undefined;
+
+  let textString = '';
+  element.children.forEach((child: any) => {
+    if (typeof child.text === 'string') {
+      textString += child.text;
+    }
+  });
+
+  const validatedString = textString.toLowerCase().trim().replace(/\s/g, '-');
+
+  return validatedString;
+};

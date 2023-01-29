@@ -263,6 +263,9 @@ const NodeSettingsProvider = ({ children }) => {
       },
 
       copyLinkNode: () => {
+        console.log('libOptions.nodeSettings?.onCopy', libOptions.nodeSettings?.onCopy);
+        console.log('`${window.location.href}#${hoveredNode?.id}`', `${window.location.href}#${hoveredNode?.id}`);
+
         if (typeof libOptions.nodeSettings?.onCopy === 'function') {
           libOptions.nodeSettings?.onCopy?.(hoveredNode?.id || '');
         } else {

@@ -5,7 +5,8 @@ export const useScrollToElement = () => {
     const elementId = window.location.hash.length > 0 ? window.location.hash.replace('#', '') : null;
 
     if (elementId) {
-      const element = document.querySelector(`[data-node-id="${elementId}"]`);
+      const element = document.getElementById(elementId) || document.querySelector(`[data-node-id="${elementId}"]`);
+
       element?.scrollIntoView({ block: 'start', inline: 'start', behavior: 'smooth' });
     }
   }, []);

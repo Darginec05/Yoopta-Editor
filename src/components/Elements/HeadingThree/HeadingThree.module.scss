@@ -8,4 +8,12 @@
   color: rgba(41, 41, 41, 1);
   line-height: 1.3;
   position: relative;
+
+  &:hover {
+    :global {
+      & .yopta-anchor-link {
+        opacity: 1;
+      }
+    }
+  }
 }

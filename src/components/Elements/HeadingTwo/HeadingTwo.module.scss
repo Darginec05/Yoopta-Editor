@@ -8,4 +8,12 @@
   margin-bottom: -0.31em;
   color: rgba(41, 41, 41, 1);
   position: relative;
+
+  &:hover {
+    :global {
+      & .yopta-anchor-link {
+        opacity: 1;
+      }
+    }
+  }
 }
