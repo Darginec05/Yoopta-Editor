@@ -15,7 +15,7 @@
     "sass": "^1.57.1",
     "slate": "^0.88.1",
     "slate-react": "^0.88.2",
-    "yopta-editor": "^1.1.0"
+    "yopta-editor": "^1.1.1"
   },
   "devDependencies": {
     "@types/node": "18.11.7",
