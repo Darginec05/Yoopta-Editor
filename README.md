@@ -1,8 +1,9 @@
-<h2 align="center">Welcome to Yopta-Editor v1 🎉</h2>
+<h2 align="center">Yopta-Editor v1 🎉</h2>
 <p align="center">Yopta-Editor - is an open source notion-like editor 💥</p>
 <div align="center">
-<video controls autoplay muted src="https://user-images.githubusercontent.com/29093118/214577126-fce7214d-8ed1-49a9-bdff-007bf45b5ef9.mp4" />
+<img width="574" alt="Screen Shot 2023-01-25 at 16 04 29" src="https://user-images.githubusercontent.com/29093118/215324525-882bf403-646c-4267-bb5f-c0f37509ac09.png">
 </div>
+
 
 <div align="center">
 
