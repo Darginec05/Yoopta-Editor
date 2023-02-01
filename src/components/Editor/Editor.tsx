@@ -16,6 +16,7 @@ import { OutsideClick } from '../OutsideClick';
 import { codeDecorator } from '../Elements/Code/decorator';
 import { createListPlugin } from '../../plugins/list';
 import { createLinkPlugin } from '../../plugins/link';
+import { onCopyYoptaNodes } from '../../utils';
 import s from './Editor.module.scss';
 
 type YoptaProps = { editor: Editor; placeholder: LibOptions['placeholder'] };
@@ -268,6 +269,7 @@ const EditorYopta = ({ editor, placeholder }: YoptaProps) => {
           decorate={decorate}
           autoFocus
           id="yopta-contenteditable"
+          onCopy={onCopyYoptaNodes}
         />
       </div>
     </main>

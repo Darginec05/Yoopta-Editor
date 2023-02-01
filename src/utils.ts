@@ -1,3 +1,4 @@
+import { ClipboardEvent } from 'react';
 import { LIST_TYPES } from './components/Editor/constants';
 
 export function isValidYoptaNodes(nodes: any): boolean {
@@ -37,4 +38,22 @@ export function isValidYoptaNodes(nodes: any): boolean {
   }
 
   return true;
+}
+
+// copy function for parent <div /> of nodes
+export function onCopyYoptaNodes(e: ClipboardEvent) {
+  e.preventDefault();
+  e.stopPropagation();
+
+  const div = document.createElement('div');
+  div.innerHTML = e.currentTarget.innerHTML;
+
+  // [TODO] - add common classname to every tool for additional check
+  const yoptaTools = div.querySelectorAll('.node-settings-actions');
+
+  if (yoptaTools.length > 0) {
+    div.querySelectorAll('.node-settings-actions').forEach((el) => el?.remove());
+  }
+
+  e.clipboardData.setData('text/html', div.innerHTML);
 }
