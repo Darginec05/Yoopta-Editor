@@ -3,6 +3,7 @@ import cx from 'classnames';
 import { TextLeaf } from '../Editor/TextLeaf/TextLeaf';
 import { ELEMENT_RENDER_ITEMS } from '../Elements';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
+import { onCopyYoptaNodes } from '../../utils';
 import s from './Renderer.module.scss';
 
 type Props = {
@@ -59,7 +60,7 @@ const Renderer = ({ data, className }: Props) => {
   useScrollToElement();
 
   return (
-    <div className={className}>
+    <div className={className} onCopy={onCopyYoptaNodes}>
       {data.map((element) => (
         /* @ts-ignore */
         <RenderElement key={element.id} element={element} />
