@@ -2,7 +2,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "./site/out/$1",
+      "dest": "./examples/out/$1",
       "continue": true
     }
   ]
