@@ -1,6 +1,6 @@
 import { KeyboardEvent } from 'react';
 import { v4 } from 'uuid';
-import { Editor, Transforms } from 'slate';
+import { Editor, Element, Transforms } from 'slate';
 
 export const createLinkPlugin = (editor: Editor) => {
   return {
@@ -10,7 +10,7 @@ export const createLinkPlugin = (editor: Editor) => {
         const { anchor } = editor.selection;
 
         const inline = Editor.above(editor, {
-          match: (n) => Editor.isInline(editor, n),
+          match: (n) => Element.isElement(n) && Editor.isInline(editor, n),
           mode: 'highest',
         });
 

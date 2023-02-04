@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useState } from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
 import { Editor } from 'slate';
 import cx from 'classnames';
 import { isMarkActive, toggleMark, getMatchedNode, removeLinkNode, addLinkNode } from '../utils';
@@ -82,9 +82,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
           {selectedElement?.name}
         </button>
         <button type="button" className={cx(s.button, !!linkNode && s.__active)} onMouseDown={toggleLinkInput}>
-          <LinkIcon />
-          {' '}
-          <span>Link</span>
+          <LinkIcon /> <span>Link</span>
         </button>
         <button
           type="button"

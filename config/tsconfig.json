@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "esnext",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "jsx": "react",
+    "incremental": true,
+    "noImplicitAny": false,
+    "module": "ESNext"
+  }
+}

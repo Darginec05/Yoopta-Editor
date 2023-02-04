@@ -26,7 +26,7 @@ export const withShortcuts = (editor: Editor) => {
       const { anchor } = selection;
 
       const block: any = Editor.above(editor, {
-        match: (n) => Editor.isBlock(editor, n),
+        match: (n) => Element.isElement(n) && Editor.isBlock(editor, n),
       });
 
       if (block?.[0].type === ELEMENT_TYPES_MAP['list-item']) {
@@ -48,7 +48,7 @@ export const withShortcuts = (editor: Editor) => {
           editor,
           { type },
           {
-            match: (n) => Editor.isBlock(editor, n),
+            match: (n) => Element.isElement(n) && Editor.isBlock(editor, n),
           },
         );
 
@@ -112,7 +112,7 @@ export const withCorrectVoidBehavior = (editor: Editor) => {
     const selectedNodePath = Path.parent(editor.selection.anchor.path);
     const selectedNode = Node.get(editor, selectedNodePath);
 
-    if (Editor.isVoid(editor, selectedNode)) {
+    if (Element.isElement(selectedNode) && Editor.isVoid(editor, selectedNode)) {
       Editor.insertNode(editor, {
         id: v4(),
         type: 'paragraph',
@@ -137,7 +137,7 @@ export const withCorrectVoidBehavior = (editor: Editor) => {
     if (parentIsEmpty && Path.hasPrevious(parentPath)) {
       const prevNodePath = Path.previous(parentPath);
       const prevNode = Node.get(editor, prevNodePath);
-      if (Editor.isVoid(editor, prevNode)) {
+      if (Element.isElement(prevNode) && Editor.isVoid(editor, prevNode)) {
         Transforms.removeNodes(editor);
         return Transforms.select(editor, prevNodePath);
       }

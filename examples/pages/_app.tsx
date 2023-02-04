@@ -2,10 +2,14 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { ExampleList } from '../components/ExampleList/ExampleList';
 import { SocialLinks } from '../components/SocialLinks/SocialLinks';
+import 'yopta-editor/dist/index.css';
 
 import '../styles/globals.scss';
+import { useRouter } from 'next/router';
 
 export default function App({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+
   return (
     <>
       <Head>
@@ -45,8 +49,12 @@ export default function App({ Component, pageProps }: AppProps) {
         />
       </Head>
       <div>
-        <ExampleList />
-        <SocialLinks />
+        {router.asPath !== '/dev' && (
+          <>
+          <ExampleList />
+          <SocialLinks />
+          </>
+        )}
         <Component {...pageProps} />
       </div>
     </>

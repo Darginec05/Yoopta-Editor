@@ -66,7 +66,7 @@ const NodeSettings = ({
   };
 
   const settingsButtonDisable = isSuggesstionListOpen;
-  const isVoidElement = Editor.isVoid(editor, hoveredNode);
+  const isVoidElement = SlateElement.isElement(hoveredNode) && Editor.isVoid(editor, hoveredNode);
 
   return (
     <div

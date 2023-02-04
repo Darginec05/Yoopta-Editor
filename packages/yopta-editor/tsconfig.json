@@ -1,0 +1,11 @@
+{
+  "extends": "../../config/tsconfig.json",
+  "include": ["react-svg.d.ts", "css-modules.d.ts", "src"],
+  "exclude": ["node_modules", "dist", "src/**/*.test.tsx", "src/**/*.stories.tsx"],
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "jsx": "react-jsx"
+  },
+  "references": []
+}
