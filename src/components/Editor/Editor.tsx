@@ -118,6 +118,7 @@ const EditorYopta = ({ editor, placeholder }: YoptaProps) => {
       return;
     }
 
+    // [TODO] - rewrite after monorepo. Each element should have only event handlers: onKeyDown, onKeyUp etc.
     if (isEnter && currentNode.type === ELEMENT_TYPES_MAP.link) {
       LinkPlugin.handlers.onEnter(event);
       return;
