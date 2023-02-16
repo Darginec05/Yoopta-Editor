@@ -64,7 +64,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
     <div
       ref={toolbarRef}
       role="tooltip"
-      className={cx(s.menu, 'yopta-toolbar')}
+      className={cx(s.menu, 'yopta-toolbar yopta-tools')}
       style={toolbarStyle}
       contentEditable={false}
     >
@@ -82,9 +82,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
           {selectedElement?.name}
         </button>
         <button type="button" className={cx(s.button, !!linkNode && s.__active)} onMouseDown={toggleLinkInput}>
-          <LinkIcon />
-          {' '}
-          <span>Link</span>
+          <LinkIcon /> <span>Link</span>
         </button>
         <button
           type="button"

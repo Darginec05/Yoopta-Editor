@@ -70,7 +70,7 @@ const NodeSettings = ({
 
   return (
     <div
-      className={cx(s.actionItems, 'node-settings-actions', {
+      className={cx(s.actionItems, 'node-settings-actions yopta-tools', {
         [s.actionItemsShow]: isHovered,
         [s.nestedItems]: isNestedNode,
       })}
