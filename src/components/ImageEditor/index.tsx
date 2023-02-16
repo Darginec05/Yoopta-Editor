@@ -151,7 +151,7 @@ const ImageEditor: FC<Props> = ({ element, attributes, className, children }) =>
         {optimistic && dataSrc ? (
           loader
         ) : (
-          <div className={s.options}>
+          <div className={cx(s.options, 'yopta-tools')}>
             <MediaEditorOptions
               hasUrl={!!element.src}
               handleDelete={onDelete}

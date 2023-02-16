@@ -168,7 +168,7 @@ const VideoEditor: FC<Props> = ({ element, attributes, className, children }) =>
   return (
     <div draggable={false} {...attributes} contentEditable={false} className={className}>
       {linkNode}
-      <div className={s.options}>
+      <div className={cx(s.options, 'yopta-tools')}>
         <MediaEditorOptions
           hasUrl={!!element.src}
           handleDelete={onDelete}

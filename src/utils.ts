@@ -41,19 +41,23 @@ export function isValidYoptaNodes(nodes: any): boolean {
 }
 
 // copy function for parent <div /> of nodes
-export function onCopyYoptaNodes(e: ClipboardEvent) {
-  e.preventDefault();
-  e.stopPropagation();
+export function onCopyYoptaNodes(event: ClipboardEvent) {
+  event.preventDefault();
+  event.stopPropagation();
 
-  const div = document.createElement('div');
-  div.innerHTML = e.currentTarget.innerHTML;
+  const range = window.getSelection()!.getRangeAt(0);
+  const content = range.cloneContents();
 
-  // [TODO] - add common classname to every tool for additional check
-  const yoptaTools = div.querySelectorAll('.node-settings-actions');
+  const div = content?.ownerDocument.createElement('div');
+  div?.appendChild(content);
 
-  if (yoptaTools.length > 0) {
-    div.querySelectorAll('.node-settings-actions').forEach((el) => el?.remove());
+  const yoptaTools = div.querySelectorAll('.yopta-tools');
+
+  if (yoptaTools && yoptaTools.length > 0) {
+    yoptaTools.forEach((el) => el?.remove());
   }
 
-  e.clipboardData.setData('text/html', div.innerHTML);
+  event.clipboardData.setData('text/html', div.innerHTML);
+
+  return event.clipboardData;
 }
