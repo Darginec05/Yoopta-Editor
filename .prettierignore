@@ -4,6 +4,4 @@
 build/
 dist/
 node_modules/
-package.json
-examples/
 .yarn/
