@@ -27,6 +27,7 @@ type Props = {
   value?: Descendant[];
   key?: Key;
   scrollElementSelector?: string;
+  components: any;
 } & LibOptions;
 
 const DEFAULT_YOPTA_LS_NAME = 'yopta-content';
@@ -69,8 +70,11 @@ const YoptaEditorLib = ({
   placeholder,
   scrollElementSelector,
   autoFocus = true,
+  components,
   ...options
 }: Props) => {
+  console.log(components);
+
   const storageName = getStorageName(options.shouldStoreInLocalStorage);
   const [val, setVal] = useState(() => getInitialState(options.shouldStoreInLocalStorage, storageName, value));
 

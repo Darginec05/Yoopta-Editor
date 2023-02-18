@@ -26,7 +26,7 @@ const ExampleList = () => {
           const styles = isCurrent ? { textDecoration: 'underline' } : undefined;
 
           return (
-            <li>
+            <li key={path}>
               <Link href={path} className={s.example} style={styles} shallow>
                 {title}
               </Link>

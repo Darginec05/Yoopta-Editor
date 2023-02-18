@@ -1,4 +1,4 @@
 {
   "files": [],
-  "references": [{ "path": "./packages/yopta-editor" }]
+  "references": [{ "path": "./packages/yopta-editor" }, { "path": "./packages/blockquote" }]
 }
