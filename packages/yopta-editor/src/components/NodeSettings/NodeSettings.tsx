@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Transforms, Editor, Element as SlateElement } from 'slate';
+import { Transforms, Editor, Element as SlateElement, Element } from 'slate';
 import cx from 'classnames';
 import DeleteIcon from './icons/delete.svg';
 import DuplicateIcon from './icons/duplicate.svg';
@@ -66,7 +66,7 @@ const NodeSettings = ({
   };
 
   const settingsButtonDisable = isSuggesstionListOpen;
-  const isVoidElement = Editor.isVoid(editor, hoveredNode);
+  const isVoidElement = Element.isElement(hoveredNode) && Editor.isVoid(editor, hoveredNode);
 
   return (
     <div

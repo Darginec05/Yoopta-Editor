@@ -1,35 +1,22 @@
 {
-  "name": "yopta-editor",
+  "name": "root",
+  "workspaces": [
+    "packages/**"
+  ],
   "version": "1.1.4",
   "license": "MIT",
-  "private": false,
-  "type": "module",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist/"
-  ],
+  "private": true,
   "scripts": {
     "prebuild": "rm -rf dist",
     "build:rollup": "rollup -c",
     "build": "rollup -c --environment NODE_ENV:production",
-    "dev": "rm -rf dist && rollup -c -w --environment NODE_ENV:development --open",
+    "serve": "cd ./examples && next",
+    "dev": "rollup --config ./config/rollup.config.mjs --watch",
+    "start": "npm-run-all --parallel --print-label dev serve",
     "coverage": "vitest run --coverage",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:integration": "playwright test"
-  },
-  "dependencies": {
-    "body-scroll-lock": "^4.0.0-beta.0",
-    "classnames": "^2.3.1",
-    "copy-to-clipboard": "^3.3.2",
-    "is-hotkey": "^0.2.0",
-    "is-url": "^1.2.4",
-    "prismjs": "^1.29.0",
-    "slate-history": "^0.66.0",
-    "slate-hyperscript": "^0.77.0",
-    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.30.0",
@@ -61,8 +48,11 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "jsdom": "^21.1.0",
+    "lerna": "^6.5.1",
     "mini-css-extract-plugin": "^2.6.1",
+    "next": "^13.1.6",
     "node-sass": "^7.0.3",
+    "npm-run-all": "^4.1.5",
     "postcss": "^8.4.18",
     "prettier": "^2.7.1",
     "react": ">=17.0.2",
@@ -88,26 +78,5 @@
     "react-dom": ">=17.0.2",
     "slate": ">=0.72.3",
     "slate-react": ">=0.72.4"
-  },
-  "keywords": [
-    "contenteditable",
-    "docs",
-    "document",
-    "edit",
-    "editor",
-    "editable",
-    "html",
-    "markdown",
-    "medium",
-    "paper",
-    "react",
-    "rich",
-    "richtext",
-    "richtext",
-    "slate",
-    "text",
-    "notion",
-    "wysiwyg",
-    "wysiwym"
-  ]
+  }
 }
