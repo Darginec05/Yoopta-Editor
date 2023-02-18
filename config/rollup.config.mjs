@@ -9,7 +9,7 @@ import svgr from '@svgr/rollup';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import postcss from 'rollup-plugin-postcss';
 
-import pkg from './package.json' assert { type: 'json' };
+import pkg from '../packages/yopta-editor/package.json' assert { type: 'json' };
 
 const isProd = process.env.NODE_ENV === 'production';
 const isDev = process.env.NODE_ENV === 'development';
@@ -17,19 +17,15 @@ const isDev = process.env.NODE_ENV === 'development';
 /**
  * @type {import('rollup').RollupOptions}
  */
-const config = {
-  input: 'src/index.ts',
-  // input: {
-  //   YoptaEditor: 'src/YoptaEditor.tsx',
-  //   YoptaRender: 'src/YoptaRenderer.tsx',
-  // },
+const YoptaCoreConfig = {
+  input: `packages/${pkg.name}/src/index.ts`,
   output: [
     {
       format: 'esm',
-      dir: 'dist',
       sourcemap: isDev,
       globals: { react: 'React' },
-      entryFileNames: '[name].js',
+      file: `packages/${pkg.name}/${pkg.module}`,
+      exports: 'named',
     },
   ],
   plugins: [
@@ -52,6 +48,10 @@ const config = {
     typescript({
       clean: isProd,
       useTsconfigDeclarationDir: true,
+      abortOnError: false,
+      clean: true,
+      useTsconfigDeclarationDir: true,
+      tsconfig: `packages/${pkg.name}/tsconfig.json`,
     }),
     sourceMaps(),
     replace({
@@ -65,4 +65,4 @@ const config = {
   external: [...Object.keys(pkg.peerDependencies)],
 };
 
-export default config;
+export default [YoptaCoreConfig];

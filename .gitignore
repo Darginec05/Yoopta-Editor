@@ -42,3 +42,26 @@ yarn-error.log*
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+*.log
+.next/
+.idea/
+*.tsbuildinfo
+build/
+dist/
+lib/
+node_modules/
+packages/*/yarn.lock
+site/out/
+tmp/
+test-results/
+.DS_Store
+
+# Recommendation from https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored (not using Zero-installs)
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!/.yarn/sdks/
+!/.yarn/sdks/**/lib/
+!.yarn/versions
+.pnp.*

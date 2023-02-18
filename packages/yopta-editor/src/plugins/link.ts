@@ -1,6 +1,6 @@
 import { KeyboardEvent } from 'react';
 import { v4 } from 'uuid';
-import { Editor, Transforms } from 'slate';
+import { Editor, Element, Transforms } from 'slate';
 import { ELEMENT_TYPES_MAP } from '../components/Editor/constants';
 
 export const createLinkPlugin = (editor: Editor) => {
@@ -11,7 +11,7 @@ export const createLinkPlugin = (editor: Editor) => {
         const { anchor } = editor.selection;
 
         const inline = Editor.above(editor, {
-          match: (n) => Editor.isInline(editor, n) && n.type === ELEMENT_TYPES_MAP.link,
+          match: (n) => Element.isElement(n) && Editor.isInline(editor, n) && n.type === ELEMENT_TYPES_MAP.link,
           mode: 'highest',
         });
 
@@ -39,7 +39,7 @@ export const createLinkPlugin = (editor: Editor) => {
           Editor.insertBreak(editor);
           Transforms.setNodes(editor, { id: v4() });
           Transforms.removeNodes(editor, {
-            match: (n) => Editor.isInline(editor, n) && n.type === ELEMENT_TYPES_MAP.link,
+            match: (n) => Element.isElement(n) && Editor.isInline(editor, n) && n.type === ELEMENT_TYPES_MAP.link,
           });
 
           return;
@@ -52,7 +52,7 @@ export const createLinkPlugin = (editor: Editor) => {
           Transforms.setNodes(
             editor,
             { id: v4() },
-            { match: (n) => Editor.isInline(editor, n) && n.type === ELEMENT_TYPES_MAP.link },
+            { match: (n) => Element.isElement(n) && Editor.isInline(editor, n) && n.type === ELEMENT_TYPES_MAP.link },
           );
         }
       },
