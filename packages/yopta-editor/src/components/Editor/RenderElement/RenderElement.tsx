@@ -17,10 +17,31 @@ const NESTED_OR_INLINE_ELEMENTS = [ELEMENT_TYPES_MAP['list-item'], ...INLINE_ELE
 type Props = RenderElementProps & {
   attributes: any;
   children: ReactNode;
+  components: any;
   element: any;
 };
 
-const RenderElement: FC<Props> = ({ element, children, attributes }) => {
+const RenderElement: FC<Props> = ({ element, children, attributes, components }) => {
+  console.log(element.type);
+
+  const component = components[element.type];
+
+  console.log({ component });
+
+  if (component?.render) {
+    const ComponentRender = component?.render;
+
+    return (
+      <ElementHover element={element} attributes={attributes} hideSettings={false}>
+        <ComponentRender isEdit attributes={{}} element={element}>
+          {children}
+        </ComponentRender>
+      </ElementHover>
+    );
+  }
+
+  // return null;
+
   const Component = useMemo(() => ELEMENT_RENDER_ITEMS[element.type], [element.type]);
 
   if (!Component) return null;
