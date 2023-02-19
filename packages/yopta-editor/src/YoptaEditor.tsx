@@ -73,8 +73,6 @@ const YoptaEditorLib = ({
   components,
   ...options
 }: Props) => {
-  console.log(components);
-
   const storageName = getStorageName(options.shouldStoreInLocalStorage);
   const [val, setVal] = useState(() => getInitialState(options.shouldStoreInLocalStorage, storageName, value));
 
@@ -130,7 +128,7 @@ const YoptaEditorLib = ({
         <ScrollProvider scrollElementSelector={scrollElementSelector}>
           <ActionMenuProvider>
             <NodeSettingsProvider>
-              <EditorYopta editor={editor} placeholder={placeholder} />
+              <EditorYopta editor={editor} placeholder={placeholder} components={components} />
             </NodeSettingsProvider>
           </ActionMenuProvider>
         </ScrollProvider>

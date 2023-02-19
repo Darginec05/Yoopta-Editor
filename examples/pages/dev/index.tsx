@@ -1,9 +1,8 @@
 import { YoptaEditor } from 'yopta-editor';
 import Blockquote from 'yopta-blockquote';
-import { useState } from 'react';
+import Paragraph from 'yopta-paragraph';
+import { KeyboardEvent, ReactNode, useState } from 'react';
 import { Descendant } from 'slate';
-
-console.log('Blockquote', Blockquote);
 
 import s from './styles.module.scss';
 import 'yopta-editor/dist/index.css';
@@ -30,13 +29,27 @@ const initialValue = [
   },
 ];
 
-const components = {
+type YoptaTypes = 'block-quote' | 'image' | 'paragraph';
+
+type YoptaComponent = {
+  render?: ReactNode;
+  shortcut?: string;
+  handlers?: {
+    onKeyDown: (event: KeyboardEvent) => void;
+  };
+};
+
+type YoptaComponents = Record<YoptaTypes, YoptaComponent>;
+
+const components: YoptaComponents = {
   // blockquote: Blockquote.extend({
   //   render: (props) => <div></div>,
   //   handlers: {},
   //   nodeType: 'inline',
   // }),
-  blockquote: Blockquote,
+  'block-quote': Blockquote,
+  paragraph: Paragraph,
+  image: Blockquote,
 };
 
 const BasicExample = () => {

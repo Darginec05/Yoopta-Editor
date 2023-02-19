@@ -19,9 +19,9 @@ import { createLinkPlugin } from '../../plugins/link';
 import { onCopyYoptaNodes } from '../../utils';
 import s from './Editor.module.scss';
 
-type YoptaProps = { editor: Editor; placeholder: LibOptions['placeholder'] };
+type YoptaProps = { editor: Editor; placeholder: LibOptions['placeholder']; components?: any };
 
-const EditorYopta = ({ editor, placeholder }: YoptaProps) => {
+const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
   const { options } = useSettings();
   useScrollToElement();
   const [{ disableWhileDrag }, { changeHoveredNode }] = useNodeSettingsContext();
@@ -43,7 +43,10 @@ const EditorYopta = ({ editor, placeholder }: YoptaProps) => {
 
   const isReadOnly = disableWhileDrag;
 
-  const renderElement = useCallback((elemProps) => <RenderElement {...elemProps} />, []);
+  const renderElement = useCallback((elemProps) => {
+    return <RenderElement {...elemProps} components={components} />;
+  }, []);
+
   const renderLeaf = useCallback((leafProps) => {
     const nodePlaceholder =
       leafProps.children.props?.parent.type === ELEMENT_TYPES_MAP.paragraph
