@@ -3,6 +3,7 @@
   "references": [
     { "path": "./packages/yopta-editor" },
     { "path": "./packages/yopta-blockquote" },
-    { "path": "./packages/yopta-paragraph" }
+    { "path": "./packages/yopta-paragraph" },
+    { "path": "./packages/yopta-callout" }
   ]
 }

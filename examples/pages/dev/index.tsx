@@ -1,6 +1,7 @@
 import { YoptaEditor } from 'yopta-editor';
-import Blockquote from 'yopta-blockquote';
-import Paragraph from 'yopta-paragraph';
+import Blockquote from '@yopta/blockquote';
+import Paragraph from '@yopta/paragraph';
+import Callout from '@yopta/callout';
 import { KeyboardEvent, ReactNode, useState } from 'react';
 import { Descendant } from 'slate';
 
@@ -29,7 +30,7 @@ const initialValue = [
   },
 ];
 
-type YoptaTypes = 'block-quote' | 'image' | 'paragraph';
+type YoptaTypes = 'block-quote' | 'image' | 'paragraph' | 'callout';
 
 type YoptaComponent = {
   render?: ReactNode;
@@ -49,6 +50,7 @@ const components: YoptaComponents = {
   // }),
   'block-quote': Blockquote,
   paragraph: Paragraph,
+  callout: Callout,
   image: Blockquote,
 };
 

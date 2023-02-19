@@ -1,5 +1,5 @@
 {
-  "name": "@yopta/paragraph",
+  "name": "@yopta/callout",
   "version": "1.0.0",
   "description": "> TODO: description",
   "author": "Darginec05 <devopsbanda@gmail.com>",
@@ -28,7 +28,7 @@
     "url": "git+https://github.com/Darginec05/Editor-Yopta.git"
   },
   "scripts": {
-    "test": "node ./__tests__/@yopta/paragraph.test.js"
+    "test": "node ./__tests__/yopta-callout.test.js"
   },
   "bugs": {
     "url": "https://github.com/Darginec05/Editor-Yopta/issues"
