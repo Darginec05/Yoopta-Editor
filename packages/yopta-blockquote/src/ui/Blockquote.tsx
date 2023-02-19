@@ -1,5 +1,4 @@
 import { memo } from 'react';
-import cx from 'classnames';
 import s from './Blockquote.module.scss';
 
 const BlockquoteRender = memo<any>(({ attributes, children, element }) => {

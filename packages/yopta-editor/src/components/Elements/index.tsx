@@ -1,4 +1,3 @@
-import { Blockquote } from './Blockquote/Blockquote';
 import { HeadingOne } from './HeadingOne/HeadingOne';
 import { HeadingTwo } from './HeadingTwo/HeadingTwo';
 import { HeadingThree } from './HeadingThree/HeadingThree';
@@ -6,10 +5,8 @@ import { BulletedList } from './BulletedList/BulletedList';
 import { NumberedList } from './NumberedList/NumberedList';
 import { Image } from './Image/Image';
 import { Video } from './Video/Video';
-import { Callout } from './Callout/Callout';
 import { ListItem } from './ListItem/ListItem';
 import { Link } from './Link/Link';
-import { Paragraph } from './Paragraph/Paragraph';
 import { Embed } from './Embed/Embed';
 import { Code } from './Code/Code';
 import { ELEMENT_TYPES_MAP } from '../Editor/constants';
@@ -27,6 +24,5 @@ export const ELEMENT_RENDER_ITEMS = {
   // [ELEMENT_TYPES_MAP.callout]: Callout,
   // [ELEMENT_TYPES_MAP.code]: Code,
   // [ELEMENT_TYPES_MAP.video]: Video,
-  [ELEMENT_TYPES_MAP.paragraph]: Paragraph,
   // [ELEMENT_TYPES_MAP.embed]: Embed,
 };

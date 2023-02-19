@@ -163,7 +163,7 @@ const initialValue = [
             text: 'Blockquote - ',
           },
           {
-            text: 'yopta-blockquote',
+            text: '@yopta/blockquote',
             bold: true,
           },
         ],
