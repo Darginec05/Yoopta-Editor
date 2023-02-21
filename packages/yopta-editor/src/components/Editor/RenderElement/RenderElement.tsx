@@ -22,11 +22,7 @@ type Props = RenderElementProps & {
 };
 
 const RenderElement: FC<Props> = ({ element, children, attributes, components }) => {
-  console.log(element.type);
-
   const component = components[element.type];
-
-  console.log({ component });
 
   if (component?.render) {
     const ComponentRender = component?.render;

@@ -40,6 +40,15 @@ export function isValidYoptaNodes(nodes: any): boolean {
   return true;
 }
 
+export function createNode({ renderer: Component, shortcut, handlers, decorator }) {
+  return {
+    render: Component,
+    shortcut,
+    handlers,
+    decorator,
+  };
+}
+
 // copy function for parent <div /> of nodes
 export function onCopyYoptaNodes(event: ClipboardEvent) {
   event.preventDefault();

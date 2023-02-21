@@ -13,13 +13,14 @@ import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionM
 import { LibOptions, useSettings } from '../../contexts/SettingsContext/SettingsContext';
 import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { OutsideClick } from '../OutsideClick';
-import { codeDecorator } from '../Elements/Code/decorator';
 import { createListPlugin } from '../../plugins/list';
 import { createLinkPlugin } from '../../plugins/link';
 import { onCopyYoptaNodes } from '../../utils';
 import s from './Editor.module.scss';
 
 type YoptaProps = { editor: Editor; placeholder: LibOptions['placeholder']; components?: any };
+
+// text formaters
 
 const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
   const { options } = useSettings();
@@ -180,8 +181,27 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
     }
   }, []);
 
+  const decorators = useMemo(() => {
+    const map = {};
+
+    Object.keys(components).forEach((type) => {
+      const component = components[type];
+
+      if (typeof component.decorator === 'function') {
+        map[type] = component.decorator;
+      }
+    });
+
+    console.log('map', map);
+    return map;
+  }, [components]);
+
   const decorate = useCallback(([node, path]) => {
-    if (node.type === 'code') return codeDecorator([node, path]);
+    if (Element.isElement(node)) {
+      const decorateFn = decorators[node.type];
+
+      if (decorateFn) return decorateFn([node, path]);
+    }
 
     if (editor.selection) {
       if (
