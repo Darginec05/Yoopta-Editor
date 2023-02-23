@@ -1,4 +1,4 @@
-import { YoptaEditor } from 'yopta-editor';
+import { YoptaEditor } from '@yopta/editor';
 import Blockquote from '@yopta/blockquote';
 import Paragraph from '@yopta/paragraph';
 import Callout from '@yopta/callout';
@@ -7,7 +7,7 @@ import { KeyboardEvent, ReactNode, useState } from 'react';
 import { Descendant } from 'slate';
 
 import s from './styles.module.scss';
-import 'yopta-editor/dist/index.css';
+import '@yopta/editor/dist/index.css';
 import { uploadToCloudinary } from '../../utils';
 
 const initialValue = [

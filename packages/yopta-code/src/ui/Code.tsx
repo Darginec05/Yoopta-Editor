@@ -1,5 +1,4 @@
 import { KeyboardEvent, memo } from 'react';
-import { Ed } from 'yopta-editor';
 import { codeDecorator } from '../utils/decorator';
 import s from './Code.module.scss';
 

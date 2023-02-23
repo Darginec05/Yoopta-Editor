@@ -23,6 +23,7 @@ const aliases = {
   '@yopta/paragraph': 'yopta-paragraph',
   '@yopta/callout': 'yopta-callout',
   '@yopta/code': 'yopta-code',
+  '@yopta/editor': 'yopta-editor',
 };
 
 /**

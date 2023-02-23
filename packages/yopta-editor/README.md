@@ -4,7 +4,6 @@
 <img width="574" alt="Screen Shot 2023-01-25 at 16 04 29" src="https://user-images.githubusercontent.com/29093118/215324525-882bf403-646c-4267-bb5f-c0f37509ac09.png">
 </div>
 
-
 <div align="center">
 
 </div>
@@ -46,7 +45,7 @@
 ### Quickstart
 
 ```jsx
-import { YoptaEditor } from 'yopta-editor';
+import { YoptaEditor } from '@yopta/editor';
 import { useState } from 'react';
 
 import 'yopta-editor/dist/index.css';
