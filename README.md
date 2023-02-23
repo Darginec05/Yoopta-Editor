@@ -4,7 +4,6 @@
 <img width="574" alt="Screen Shot 2023-01-25 at 16 04 29" src="https://user-images.githubusercontent.com/29093118/215324525-882bf403-646c-4267-bb5f-c0f37509ac09.png">
 </div>
 
-
 <div align="center">
 
 </div>
@@ -14,7 +13,7 @@
   <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/qOQqVaxxRZ">Get started</a> | 
   <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/kUoZ2DoHnG">API</a> |
   <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/qo9nK4lDG5">FAQs</a> |
-  <a target="_blank" rel="noopener noreferrer" href="https://yopta-editor.vercel.app/basic">Examples</a>
+  <a target="_blank" rel="noopener noreferrer" href="https://@yopta/editor.vercel.app/basic">Examples</a>
 </p>
 
 ### Features
@@ -33,9 +32,9 @@
 
 ### Install
 
-    yarn add yopta-editor
+    yarn add @yopta/editor
     or
-    npm install yopta-editor
+    npm install @yopta/editor
 
 ### Peer dependencies
 
@@ -46,10 +45,10 @@
 ### Quickstart
 
 ```jsx
-import { YoptaEditor } from 'yopta-editor';
+import { YoptaEditor } from '@yopta/editor';
 import { useState } from 'react';
 
-import 'yopta-editor/dist/index.css';
+import '@yopta/editor/dist/index.css';
 
 function App() {
   const [editorValue, setEditorValue] = useState([]);
@@ -66,11 +65,11 @@ function App() {
 
 ### Check out other DEMO's 👇
 
-- <a target="_blank" rel="noopener noreferrer" href="https://yopta-editor.vercel.app/basic">Basic usage</a>
-- <a target="_blank" rel="noopener noreferrer" href="https://yopta-editor.vercel.app/offline">Offline mode</a>
-- <a target="_blank" rel="noopener noreferrer" href="https://yopta-editor.vercel.app/media">Working with media</a>
-- <a target="_blank" rel="noopener noreferrer" href="https://yopta-editor.vercel.app/render">Just rendering</a>
-- <a target="_blank" rel="noopener noreferrer" href="https://yopta-editor.vercel.app/styling">Custom styling</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://@yopta/editor.vercel.app/basic">Basic usage</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://@yopta/editor.vercel.app/offline">Offline mode</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://@yopta/editor.vercel.app/media">Working with media</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://@yopta/editor.vercel.app/render">Just rendering</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://@yopta/editor.vercel.app/styling">Custom styling</a>
   <br>
   <br>
 
