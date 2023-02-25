@@ -52,6 +52,10 @@ export const getNodeByPath = (editor: Editor, path?: Path, mode: 'all' | 'highes
 const Link = createYoptaComponent({
   type: 'link',
   renderer: (editor: Editor) => (props) => <LinkRender {...props} />,
+  element: {
+    type: 'inline',
+    isVoid: false,
+  },
   handlers: {
     onKeyDown:
       (editor, { hotkeys }) =>

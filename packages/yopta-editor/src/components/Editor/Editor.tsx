@@ -1,5 +1,5 @@
 import { Editor, Transforms, Range, Element, NodeEntry, createEditor } from 'slate';
-import { useCallback, KeyboardEvent, MouseEvent, useMemo } from 'react';
+import React, { useCallback, KeyboardEvent, MouseEvent, useMemo, ReactElement } from 'react';
 import cx from 'classnames';
 import { DefaultElement, Editable, ReactEditor, RenderElementProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
@@ -19,8 +19,9 @@ import { onCopyYoptaNodes } from '../../utils';
 import s from './Editor.module.scss';
 import { ElementHover } from '../HoveredMenu/HoveredMenu';
 import { HOTKEYS } from '../../utils/hotkeys';
+import { YoptaComponent } from '../../utils/component';
 
-type YoptaProps = { editor: Editor; placeholder: LibOptions['placeholder']; components?: any };
+type YoptaProps = { editor: Editor; placeholder: LibOptions['placeholder']; components: YoptaComponent[] };
 
 const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
   const { options } = useSettings();
@@ -49,11 +50,18 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
       for (let i = 0; i < components.length; i++) {
         const component = components[i];
         const renderFn = component.renderer(editor);
+        const isInline = component.element?.type === 'inline';
 
         if (typeof renderFn === 'function' && props.element.type === component.type) {
           return (
-            <ElementHover element={props.element} attributes={props.attributes} hideSettings={false}>
-              {renderFn(props)}
+            <ElementHover
+              element={props.element}
+              attributes={props.attributes}
+              hideSettings={false}
+              isInlineNode={isInline}
+              renderElement={() => renderFn(props)}
+            >
+              {props.children}
             </ElementHover>
           );
         }
@@ -88,7 +96,7 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
     events.forEach((eventType) => {
       eventHandlersMap[eventType] = function (event) {
         components.forEach((component) => {
-          if (Object.keys(component.handlers || {}).length > 0) {
+          if (component.handlers && Object.keys(component.handlers).length > 0) {
             component.handlers[eventType](editor, handlersOptions)(event);
           }
         });
@@ -97,10 +105,6 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
 
     return eventHandlersMap;
   }, [components, editor]);
-
-  // const renderElement = useCallback((elemProps) => {
-  //   return <RenderElement {...elemProps} components={components} />;
-  // }, []);
 
   const renderLeaf = useCallback((leafProps) => {
     const nodePlaceholder =
