@@ -14,16 +14,18 @@ import blockquotePkg from '../packages/yopta-blockquote/package.json' assert { t
 import paragraphPkg from '../packages/yopta-paragraph/package.json' assert { type: 'json' };
 import calloutPkg from '../packages/yopta-callout/package.json' assert { type: 'json' };
 import codePkg from '../packages/yopta-code/package.json' assert { type: 'json' };
+import linkPkg from '../packages/yopta-link/package.json' assert { type: 'json' };
 
 const isProd = process.env.NODE_ENV === 'production';
 const isDev = process.env.NODE_ENV === 'development';
 
 const aliases = {
+  '@yopta/editor': 'yopta-editor',
   '@yopta/blockquote': 'yopta-blockquote',
   '@yopta/paragraph': 'yopta-paragraph',
   '@yopta/callout': 'yopta-callout',
   '@yopta/code': 'yopta-code',
-  '@yopta/editor': 'yopta-editor',
+  '@yopta/link': 'yopta-link',
 };
 
 /**
@@ -87,5 +89,6 @@ const BlockquoteConfig = createConfig({ pkg: blockquotePkg, postcssConfig: { ext
 const ParagraphPkgConfig = createConfig({ pkg: paragraphPkg, postcssConfig: { extract: false } });
 const CalloutPkgConfig = createConfig({ pkg: calloutPkg, postcssConfig: { extract: false } });
 const CodePkgConfig = createConfig({ pkg: codePkg, postcssConfig: { extract: false } });
+const LinkPkgConfig = createConfig({ pkg: linkPkg, postcssConfig: { extract: false } });
 
-export default [CoreConfig, BlockquoteConfig, ParagraphPkgConfig, CalloutPkgConfig, CodePkgConfig];
+export default [CoreConfig, BlockquoteConfig, ParagraphPkgConfig, CalloutPkgConfig, CodePkgConfig, LinkPkgConfig];

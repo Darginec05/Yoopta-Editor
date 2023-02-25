@@ -5,6 +5,7 @@
     { "path": "./packages/yopta-blockquote" },
     { "path": "./packages/yopta-paragraph" },
     { "path": "./packages/yopta-callout" },
-    { "path": "./packages/yopta-code" }
+    { "path": "./packages/yopta-code" },
+    { "path": "./packages/yopta-link" }
   ]
 }

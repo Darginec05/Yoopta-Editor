@@ -1,3 +1,4 @@
+import { createYoptaComponent } from '@yopta/editor';
 import { memo } from 'react';
 import s from './Paragraph.module.scss';
 
@@ -11,16 +12,9 @@ const ParagraphRender = memo<any>(({ attributes, children, element }) => {
 
 ParagraphRender.displayName = 'Paragraph';
 
-const createNode = ({ renderer: Component, shortcut, handlers }) => ({
-  render: Component,
-  shortcut,
-  handlers,
-});
-
-const Paragraph = createNode({
-  renderer: ParagraphRender,
-  shortcut: undefined,
-  handlers: { onKeyDown: (event) => console.log(event) },
+const Paragraph = createYoptaComponent({
+  type: 'paragraph',
+  renderer: (editor) => (props) => <ParagraphRender {...props} />,
 });
 
 export { Paragraph };
