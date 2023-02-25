@@ -8,7 +8,6 @@ import { Video } from './Video/Video';
 import { ListItem } from './ListItem/ListItem';
 import { Link } from './Link/Link';
 import { Embed } from './Embed/Embed';
-import { Code } from './Code/Code';
 import { ELEMENT_TYPES_MAP } from '../Editor/constants';
 
 export const ELEMENT_RENDER_ITEMS = {

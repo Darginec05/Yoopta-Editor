@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { createYoptaComponent } from '@yopta/editor';
 import s from './Blockquote.module.scss';
 
 const BlockquoteRender = memo<any>(({ attributes, children, element }) => {
@@ -11,18 +12,10 @@ const BlockquoteRender = memo<any>(({ attributes, children, element }) => {
 
 BlockquoteRender.displayName = 'Blockquote';
 
-const createNode = function ({ renderer: Component, shortcut, handlers }) {
-  return {
-    render: Component,
-    shortcut,
-    handlers,
-  };
-};
-
-const Blockquote = createNode({
-  renderer: BlockquoteRender,
+const Blockquote = createYoptaComponent({
+  type: 'block-quote',
+  renderer: (editor) => (props) => <BlockquoteRender {...props} />,
   shortcut: '<',
-  handlers: { onKeyDown: (event) => console.log(event) },
 });
 
 export { Blockquote };

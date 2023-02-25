@@ -19,7 +19,7 @@ import NoSSR from './components/NoSsr/NoSsr';
 import type { LibOptions } from './contexts/SettingsContext/SettingsContext';
 import { CustomEditor } from './components/Editor/types';
 import { NodeSettingsProvider } from './contexts/NodeSettingsContext/NodeSettingsContext';
-import { isValidYoptaNodes } from './utils';
+import { isValidYoptaNodes } from './utils/validate';
 import { LIST_TYPES } from './components/Editor/constants';
 
 type Props = {

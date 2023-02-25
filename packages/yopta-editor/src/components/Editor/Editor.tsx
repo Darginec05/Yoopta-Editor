@@ -1,9 +1,9 @@
-import { Editor, Transforms, Range, Element } from 'slate';
+import { Editor, Transforms, Range, Element, NodeEntry, createEditor } from 'slate';
 import { useCallback, KeyboardEvent, MouseEvent, useMemo } from 'react';
 import cx from 'classnames';
-import { Editable, ReactEditor } from 'slate-react';
+import { DefaultElement, Editable, ReactEditor, RenderElementProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
-import { RenderElement } from './RenderElement/RenderElement';
+// import { RenderElement } from './RenderElement/RenderElement';
 import { Toolbar } from './Toolbar/Toolbar';
 import { capitalizeFirstLetter, getDefaultParagraphLine, getNodeByPath, removeMarks } from './utils';
 import { ELEMENT_TYPES_MAP, TEXT_ELEMENTS_LIST } from './constants';
@@ -17,10 +17,10 @@ import { createListPlugin } from '../../plugins/list';
 import { createLinkPlugin } from '../../plugins/link';
 import { onCopyYoptaNodes } from '../../utils';
 import s from './Editor.module.scss';
+import { ElementHover } from '../HoveredMenu/HoveredMenu';
+import { HOTKEYS } from '../../utils/hotkeys';
 
 type YoptaProps = { editor: Editor; placeholder: LibOptions['placeholder']; components?: any };
-
-// text formaters
 
 const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
   const { options } = useSettings();
@@ -44,9 +44,63 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
 
   const isReadOnly = disableWhileDrag;
 
-  const renderElement = useCallback((elemProps) => {
-    return <RenderElement {...elemProps} components={components} />;
-  }, []);
+  const renderElement = useMemo(() => {
+    return (props: RenderElementProps) => {
+      for (let i = 0; i < components.length; i++) {
+        const component = components[i];
+        const renderFn = component.renderer(editor);
+
+        if (typeof renderFn === 'function' && props.element.type === component.type) {
+          return (
+            <ElementHover element={props.element} attributes={props.attributes} hideSettings={false}>
+              {renderFn(props)}
+            </ElementHover>
+          );
+        }
+      }
+      return <DefaultElement {...props} />;
+    };
+  }, [components, editor]);
+
+  const decorate = useMemo(() => {
+    return (nodeEntry: NodeEntry) => {
+      let ranges: Range[] = [];
+      const [node] = nodeEntry;
+
+      for (let index = 0; index < components.length; index++) {
+        const component = components[index];
+        const decoratorFn = component.decorator;
+
+        if (typeof decoratorFn === 'function' && Element.isElement(node) && node.type === component.type) {
+          ranges.push(...decoratorFn(editor)(nodeEntry));
+        }
+      }
+
+      return ranges;
+    };
+  }, [components, editor]);
+
+  const eventHandlers = useMemo(() => {
+    const events = components.map((component) => Object.keys(component.handlers || {})).flat();
+    const eventHandlersMap = {};
+    const handlersOptions = { hotkeys: HOTKEYS, defaultComponent: getDefaultParagraphLine() };
+
+    events.forEach((eventType) => {
+      eventHandlersMap[eventType] = function (event) {
+        components.forEach((component) => {
+          if (Object.keys(component.handlers || {}).length > 0) {
+            component.handlers[eventType](editor, handlersOptions)(event);
+          }
+        });
+      };
+    });
+
+    return eventHandlersMap;
+  }, [components, editor]);
+
+  // const renderElement = useCallback((elemProps) => {
+  //   return <RenderElement {...elemProps} components={components} />;
+  // }, []);
 
   const renderLeaf = useCallback((leafProps) => {
     const nodePlaceholder =
@@ -147,23 +201,12 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
       const lineParagraph = getDefaultParagraphLine();
 
       if (event.shiftKey) {
-        if (currentNode.type === ELEMENT_TYPES_MAP.code) {
-          event.preventDefault();
-
-          Transforms.splitNodes(editor, { always: true });
-          Transforms.setNodes(editor, lineParagraph);
-          return;
-        }
-
         event.preventDefault();
         editor.insertText('\n');
       }
 
       if (!event.shiftKey) {
-        if (currentNode.type === ELEMENT_TYPES_MAP.code) {
-          event.preventDefault();
-          editor.insertText('\n');
-        } else if (isTextNode) {
+        if (isTextNode) {
           // [TODO] - change next element to paragraph
           event.preventDefault();
 
@@ -181,45 +224,30 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
     }
   }, []);
 
-  const decorators = useMemo(() => {
-    const map = {};
+  // const decorate = useCallback(([node, path]) => {
+  //   if (Element.isElement(node)) {
+  //     const decorateFn = decorators[node.type];
 
-    Object.keys(components).forEach((type) => {
-      const component = components[type];
+  //     if (decorateFn) return decorateFn([node, path]);
+  //   }
 
-      if (typeof component.decorator === 'function') {
-        map[type] = component.decorator;
-      }
-    });
-
-    console.log('map', map);
-    return map;
-  }, [components]);
-
-  const decorate = useCallback(([node, path]) => {
-    if (Element.isElement(node)) {
-      const decorateFn = decorators[node.type];
-
-      if (decorateFn) return decorateFn([node, path]);
-    }
-
-    if (editor.selection) {
-      if (
-        !Editor.isEditor(node) &&
-        Editor.string(editor, [path[0]]) === '' &&
-        Range.includes(editor.selection, path) &&
-        Range.isCollapsed(editor.selection)
-      ) {
-        return [
-          {
-            ...editor.selection,
-            placeholder: true,
-          },
-        ];
-      }
-    }
-    return [];
-  }, []);
+  //   if (editor.selection) {
+  //     if (
+  //       !Editor.isEditor(node) &&
+  //       Editor.string(editor, [path[0]]) === '' &&
+  //       Range.includes(editor.selection, path) &&
+  //       Range.isCollapsed(editor.selection)
+  //     ) {
+  //       return [
+  //         {
+  //           ...editor.selection,
+  //           placeholder: true,
+  //         },
+  //       ];
+  //     }
+  //   }
+  //   return [];
+  // }, []);
 
   const handleEmptyZoneClick = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -286,14 +314,17 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
         <Editable
           renderLeaf={renderLeaf}
           renderElement={renderElement}
+          // renderElement={renderElementFake}
           onKeyDown={onKeyDown}
           onKeyUp={onKeyUp}
           readOnly={isReadOnly}
           spellCheck
           decorate={decorate}
+          // decorate={decorateFake}
           autoFocus
           id="yopta-contenteditable"
           onCopy={onCopyYoptaNodes}
+          {...eventHandlers}
         />
       </div>
     </main>
