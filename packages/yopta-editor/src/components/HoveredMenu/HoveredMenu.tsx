@@ -13,6 +13,7 @@ const ElementHover = ({
   hideSettings = false,
   isInlineNode = false,
   isNestedNode = false,
+  renderElement: RenderElement,
 }) => {
   const editor = useSlate();
 
@@ -49,7 +50,9 @@ const ElementHover = ({
   const onMouseEnter = (e: MouseEvent<HTMLDivElement>) => hoverIn(e, element);
   const onMouseLeave = (e: MouseEvent<HTMLDivElement>) => hoverOut(e, element);
 
-  if (isInlineNode) return children;
+  if (isInlineNode) {
+    return <RenderElement>{children}</RenderElement>;
+  }
 
   return (
     <section
@@ -79,7 +82,7 @@ const ElementHover = ({
           [s.isOverSelf]: isOverSelf,
         })}
       >
-        {children}
+        <RenderElement>{children}</RenderElement>
       </div>
     </section>
   );

@@ -28,8 +28,10 @@ export const getNodeByPath = (editor: Editor, path?: Path, mode: 'all' | 'highes
   return editor.children[0];
 };
 
+const NODE_TYPE = 'code';
+
 const Code = createYoptaComponent({
-  type: 'code',
+  type: NODE_TYPE,
   renderer: (editor: Editor) => (props) => <CodeRender {...props} />,
   shortcut: '<',
   decorator: (editor: Editor) => codeDecorator,
@@ -39,7 +41,7 @@ const Code = createYoptaComponent({
 
       const node = getNodeByPath(editor, editor.selection.anchor.path);
 
-      if (node.type !== 'code') return;
+      if (node.type !== NODE_TYPE) return;
       const { hotkeys, defaultComponent } = options;
 
       if (hotkeys.isSoftBreak(event.nativeEvent)) {
