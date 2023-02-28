@@ -115,7 +115,7 @@ export type CustomElement =
   | VideoElement
   | EmbedElement;
 
-export type CustomNode = Node & { id: string, isVoid?: boolean, type: string };
+export type CustomNode = Node & { id: string; isVoid?: boolean; type: string };
 
 export type CustomEditor = BaseEditor & ReactEditor & HistoryEditor;
 

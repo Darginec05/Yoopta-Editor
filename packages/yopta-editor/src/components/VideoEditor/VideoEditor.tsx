@@ -2,7 +2,6 @@ import { FC, ReactNode, useState } from 'react';
 import cx from 'classnames';
 import { ReactEditor, useFocused, useSelected, useSlate } from 'slate-react';
 import { Editor, Transforms, Element as SlateElement } from 'slate';
-import { v4 } from 'uuid';
 import { MediaEditorLayout } from '../MediaEditorLayout';
 import { VideoElement } from '../Editor/types';
 import { VideoRender } from '../VideoRender/VideoRender';
@@ -15,6 +14,7 @@ import { LinkInput } from '../LinkInput';
 import { Fade } from '../Fade';
 import { getDefaultParagraphLine } from '../Editor/utils';
 import s from './VideoEditor.module.scss';
+import { generateId } from '../../utils/generateId';
 
 const toBase64 = (file: File): Promise<any> =>
   new Promise((resolve, reject) => {
@@ -46,7 +46,7 @@ const VideoEditor: FC<Props> = ({ element, attributes, className, children }) =>
       const dataSrc = await toBase64(file);
 
       video = {
-        id: v4(),
+        id: generateId(),
         type: 'video',
         children: [{ text: '' }],
         'data-src': dataSrc,

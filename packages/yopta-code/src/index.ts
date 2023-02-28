@@ -1,3 +1,3 @@
-import { Code } from './ui/Code';
-
+import { Code, CodeLine } from './Code';
 export default Code;
+export { CodeLine };

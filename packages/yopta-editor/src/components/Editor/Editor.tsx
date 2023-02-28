@@ -1,12 +1,11 @@
-import { Editor, Transforms, Range, Element, NodeEntry, createEditor } from 'slate';
-import React, { useCallback, KeyboardEvent, MouseEvent, useMemo, ReactElement } from 'react';
+import { Editor, Transforms, Range, Element, NodeEntry } from 'slate';
+import { useCallback, MouseEvent, useMemo } from 'react';
 import cx from 'classnames';
-import { DefaultElement, Editable, ReactEditor, RenderElementProps } from 'slate-react';
+import { DefaultElement, Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
-// import { RenderElement } from './RenderElement/RenderElement';
 import { Toolbar } from './Toolbar/Toolbar';
-import { capitalizeFirstLetter, getDefaultParagraphLine, getNodeByPath, removeMarks } from './utils';
-import { ELEMENT_TYPES_MAP, TEXT_ELEMENTS_LIST } from './constants';
+import { getDefaultParagraphLine } from './utils';
+import { ELEMENT_TYPES_MAP } from './constants';
 import { SuggestionElementList } from './SuggestionElementList/SuggestionElementList';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionMenuContext/ActionMenuContext';
@@ -14,14 +13,16 @@ import { LibOptions, useSettings } from '../../contexts/SettingsContext/Settings
 import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { OutsideClick } from '../OutsideClick';
 import { createListPlugin } from '../../plugins/list';
-import { createLinkPlugin } from '../../plugins/link';
-import { onCopyYoptaNodes } from '../../utils';
-import s from './Editor.module.scss';
+import { onCopyYoptaNodes } from '../../utils/copy';
 import { ElementHover } from '../HoveredMenu/HoveredMenu';
 import { HOTKEYS } from '../../utils/hotkeys';
 import { YoptaComponent } from '../../utils/component';
+import { getNodeByPath } from '../../utils/nodes';
+import s from './Editor.module.scss';
 
 type YoptaProps = { editor: Editor; placeholder: LibOptions['placeholder']; components: YoptaComponent[] };
+
+const DEFAULT_COMPONENT = getDefaultParagraphLine();
 
 const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
   const { options } = useSettings();
@@ -57,7 +58,7 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
             <ElementHover
               element={props.element}
               attributes={props.attributes}
-              hideSettings={false}
+              hideSettings={component.type === 'code-line'}
               isInlineNode={isInline}
               renderElement={() => renderFn(props)}
             >
@@ -72,7 +73,7 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
 
   const decorate = useMemo(() => {
     return (nodeEntry: NodeEntry) => {
-      let ranges: Range[] = [];
+      const ranges: Range[] = [];
       const [node] = nodeEntry;
 
       for (let index = 0; index < components.length; index++) {
@@ -91,13 +92,13 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
   const eventHandlers = useMemo(() => {
     const events = components.map((component) => Object.keys(component.handlers || {})).flat();
     const eventHandlersMap = {};
-    const handlersOptions = { hotkeys: HOTKEYS, defaultComponent: getDefaultParagraphLine() };
+    const handlersOptions = { hotkeys: HOTKEYS, defaultComponent: DEFAULT_COMPONENT };
 
     events.forEach((eventType) => {
       eventHandlersMap[eventType] = function (event) {
         components.forEach((component) => {
           if (component.handlers && Object.keys(component.handlers).length > 0) {
-            component.handlers[eventType](editor, handlersOptions)(event);
+            component.handlers[eventType]?.(editor, handlersOptions)?.(event);
           }
         });
       };
@@ -106,19 +107,24 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
     return eventHandlersMap;
   }, [components, editor]);
 
-  const renderLeaf = useCallback((leafProps) => {
-    const nodePlaceholder =
-      leafProps.children.props?.parent.type === ELEMENT_TYPES_MAP.paragraph
-        ? placeholder || ' Type / to open menu'
-        : ` ${capitalizeFirstLetter(leafProps.children.props?.parent.type)}`;
+  const renderLeaf = useMemo(() => {
+    return (leafProps: RenderLeafProps) => {
+      const props = { ...leafProps };
 
-    return <TextLeaf placeholder={nodePlaceholder} {...leafProps} />;
-  }, []);
+      components.forEach((component) => {
+        if (component.leaf) {
+          const leafChildren = component.leaf(editor)(props);
+          if (leafChildren) props.children = leafChildren;
+        }
+      });
 
-  const { ListPlugin, LinkPlugin } = useMemo(
+      return <TextLeaf {...props} />;
+    };
+  }, [components, editor]);
+
+  const { ListPlugin } = useMemo(
     () => ({
       ListPlugin: createListPlugin(editor),
-      LinkPlugin: createLinkPlugin(editor),
     }),
     [],
   );
@@ -140,117 +146,81 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
     [isSuggesstionListOpen],
   );
 
-  const onKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
-    const { selection } = editor;
-    if (!selection) return;
+  // const onKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
+  //   const { selection } = editor;
+  //   if (!selection) return;
 
-    const currentNode: any = getNodeByPath(editor);
-    const isListItemNode = currentNode.type === ELEMENT_TYPES_MAP['list-item'];
-    const isLastDeleted = editor.children.length === 1;
+  //   const currentNode: any = getNodeByPath(editor);
+  //   const isListItemNode = currentNode.type === ELEMENT_TYPES_MAP['list-item'];
+  //   const isLastDeleted = editor.children.length === 1;
 
-    const isVoidNode = Editor.isVoid(editor, currentNode);
-    const isTextNode = TEXT_ELEMENTS_LIST.includes(currentNode.type);
+  //   const isVoidNode = Editor.isVoid(editor, currentNode);
+  //   const isTextNode = TEXT_ELEMENTS_LIST.includes(currentNode.type);
 
-    const text = Editor.string(editor, selection.anchor.path);
-    const isEnter = event.key === 'Enter';
-    const isBackspace = event.key === 'Backspace';
-    const isSpace = event.code === 'Space';
+  //   const text = Editor.string(editor, selection.anchor.path);
+  //   const isEnter = event.key === 'Enter';
+  //   const isBackspace = event.key === 'Backspace';
+  //   const isSpace = event.code === 'Space';
 
-    if (event.key === 'Meta' || (event.key === 'Backspace' && (text.length === 0 || text === SUGGESTION_TRIGGER))) {
-      hideSuggestionList();
-    }
-
-    if (isBackspace && isVoidNode && isLastDeleted) {
-      event.preventDefault();
-      const lineParagraph = getDefaultParagraphLine();
-
-      Transforms.setNodes(editor, lineParagraph, {
-        mode: 'lowest',
-        at: [0, 0],
-        match: (n) => Editor.isEditor(editor) && Element.isElement(n),
-      });
-
-      const focusTimeout = setTimeout(() => {
-        Transforms.select(editor, { path: [0, 0], offset: 0 });
-        ReactEditor.focus(editor);
-
-        clearTimeout(focusTimeout);
-      }, 0);
-
-      return;
-    }
-
-    // [TODO] - rewrite after monorepo. Each element should have only event handlers: onKeyDown, onKeyUp etc.
-    if (isEnter && currentNode.type === ELEMENT_TYPES_MAP.link) {
-      LinkPlugin.handlers.onEnter(event);
-      return;
-    }
-
-    if (isSpace && currentNode.type === ELEMENT_TYPES_MAP.link) {
-      LinkPlugin.handlers.onSpace(event);
-      return;
-    }
-
-    if (isBackspace && isListItemNode) {
-      ListPlugin.handlers.onBackspace(event);
-      return;
-    }
-
-    if (isEnter && isListItemNode) {
-      ListPlugin.handlers.onEnter(event);
-      return;
-    }
-
-    if (isEnter) {
-      const lineParagraph = getDefaultParagraphLine();
-
-      if (event.shiftKey) {
-        event.preventDefault();
-        editor.insertText('\n');
-      }
-
-      if (!event.shiftKey) {
-        if (isTextNode) {
-          // [TODO] - change next element to paragraph
-          event.preventDefault();
-
-          Transforms.splitNodes(editor, { always: true });
-          Transforms.setNodes(editor, lineParagraph);
-          removeMarks(editor);
-          // [TODO] - add new line in case of void element (e.g. image)
-        } else if (isVoidNode) {
-          event.preventDefault();
-          Transforms.insertNodes(editor, lineParagraph);
-        }
-
-        changeHoveredNode(lineParagraph);
-      }
-    }
-  }, []);
-
-  // const decorate = useCallback(([node, path]) => {
-  //   if (Element.isElement(node)) {
-  //     const decorateFn = decorators[node.type];
-
-  //     if (decorateFn) return decorateFn([node, path]);
+  //   if (event.key === 'Meta' || (event.key === 'Backspace' && (text.length === 0 || text === SUGGESTION_TRIGGER))) {
+  //     hideSuggestionList();
   //   }
 
-  //   if (editor.selection) {
-  //     if (
-  //       !Editor.isEditor(node) &&
-  //       Editor.string(editor, [path[0]]) === '' &&
-  //       Range.includes(editor.selection, path) &&
-  //       Range.isCollapsed(editor.selection)
-  //     ) {
-  //       return [
-  //         {
-  //           ...editor.selection,
-  //           placeholder: true,
-  //         },
-  //       ];
+  //   if (isBackspace && isVoidNode && isLastDeleted) {
+  //     event.preventDefault();
+  //     const lineParagraph = getDefaultParagraphLine();
+
+  //     Transforms.setNodes(editor, lineParagraph, {
+  //       mode: 'lowest',
+  //       at: [0, 0],
+  //       match: (n) => Editor.isEditor(editor) && Element.isElement(n),
+  //     });
+
+  //     const focusTimeout = setTimeout(() => {
+  //       Transforms.select(editor, { path: [0, 0], offset: 0 });
+  //       ReactEditor.focus(editor);
+
+  //       clearTimeout(focusTimeout);
+  //     }, 0);
+
+  //     return;
+  //   }
+
+  //   if (isBackspace && isListItemNode) {
+  //     ListPlugin.handlers.onBackspace(event);
+  //     return;
+  //   }
+
+  //   if (isEnter && isListItemNode) {
+  //     ListPlugin.handlers.onEnter(event);
+  //     return;
+  //   }
+
+  //   if (isEnter) {
+  //     const lineParagraph = getDefaultParagraphLine();
+
+  //     if (event.shiftKey) {
+  //       event.preventDefault();
+  //       editor.insertText('\n');
+  //     }
+
+  //     if (!event.shiftKey) {
+  //       if (isTextNode) {
+  //         // [TODO] - change next element to paragraph
+  //         event.preventDefault();
+
+  //         Transforms.splitNodes(editor, { always: true });
+  //         Transforms.setNodes(editor, lineParagraph);
+  //         removeMarks(editor);
+  //         // [TODO] - add new line in case of void element (e.g. image)
+  //       } else if (isVoidNode) {
+  //         event.preventDefault();
+  //         Transforms.insertNodes(editor, lineParagraph);
+  //       }
+
+  //       changeHoveredNode(lineParagraph);
   //     }
   //   }
-  //   return [];
   // }, []);
 
   const handleEmptyZoneClick = (e: MouseEvent<HTMLDivElement>) => {
@@ -318,13 +288,10 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
         <Editable
           renderLeaf={renderLeaf}
           renderElement={renderElement}
-          // renderElement={renderElementFake}
-          onKeyDown={onKeyDown}
           onKeyUp={onKeyUp}
           readOnly={isReadOnly}
           spellCheck
           decorate={decorate}
-          // decorate={decorateFake}
           autoFocus
           id="yopta-contenteditable"
           onCopy={onCopyYoptaNodes}

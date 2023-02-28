@@ -4,6 +4,8 @@ export function isValidYoptaNodes(nodes: any): boolean {
   if (!Array.isArray(nodes)) return false;
   if (nodes.length === 0) return false;
 
+  return true;
+
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < nodes.length; i++) {
     const node = nodes[i];

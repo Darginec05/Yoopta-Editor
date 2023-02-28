@@ -47,8 +47,17 @@ const ElementHover = ({
     opacity: isDragging ? 0.4 : 1,
   };
 
-  const onMouseEnter = (e: MouseEvent<HTMLDivElement>) => hoverIn(e, element);
-  const onMouseLeave = (e: MouseEvent<HTMLDivElement>) => hoverOut(e, element);
+  const onMouseEnter = (e: MouseEvent<HTMLDivElement>) => {
+    if (hideSettings) return undefined;
+
+    hoverIn(e, element);
+  };
+
+  const onMouseLeave = (e: MouseEvent<HTMLDivElement>) => {
+    if (hideSettings) return undefined;
+
+    hoverOut(e, element);
+  };
 
   if (isInlineNode) {
     return <RenderElement>{children}</RenderElement>;
@@ -56,7 +65,7 @@ const ElementHover = ({
 
   return (
     <section
-      className={cx(s.hoverWrap, { [s.noPadding]: isNestedNode }, 'yopta-node')}
+      className={cx(s.hoverWrap, { [s.noPadding]: isNestedNode || hideSettings }, 'yopta-node')}
       data-node-id={element.id}
       data-node-type={element.type}
       onMouseEnter={onMouseEnter}

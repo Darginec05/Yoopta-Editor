@@ -1,6 +1,8 @@
 import { MouseEvent } from 'react';
 import { Editor, Element, Path, Transforms } from 'slate';
-import { createYoptaComponent, generateId } from '@yopta/editor';
+import { getNodeByPath, createYoptaComponent, generateId } from '@yopta/editor';
+import isUrl from 'is-url';
+import { addLinkNode } from '../utils/addLink';
 import s from './Link.module.scss';
 
 const LinkRender = ({ attributes, element, children }) => {
@@ -35,26 +37,39 @@ const LinkRender = ({ attributes, element, children }) => {
 
 LinkRender.displayName = 'Link';
 
-export const getNodeByPath = (editor: Editor, path?: Path, mode: 'all' | 'highest' | 'lowest' = 'lowest') => {
-  const nodeEntry = Array.from(
-    Editor.nodes(editor, {
-      match: (node) => Editor.isEditor(editor) && Element.isElement(node),
-      at: path || editor.selection?.anchor.path,
-      mode,
-    }),
-  )[0];
-
-  if (nodeEntry) return nodeEntry[0];
-
-  return editor.children[0];
-};
-
 const Link = createYoptaComponent({
   type: 'link',
   renderer: (editor: Editor) => (props) => <LinkRender {...props} />,
   element: {
     type: 'inline',
     isVoid: false,
+  },
+  extendEditor(editor) {
+    const { insertData, insertText, isInline } = editor;
+
+    editor.isInline = (element) => (element.type === 'link' ? true : isInline(element));
+
+    editor.insertText = (text: string) => {
+      if (text && isUrl(text)) {
+        addLinkNode(editor, text);
+      } else {
+        insertText(text);
+      }
+    };
+
+    editor.insertData = (data) => {
+      console.log('insertData', data);
+
+      const text = data.getData('text/plain');
+
+      if (text && isUrl(text)) {
+        addLinkNode(editor, text);
+      } else {
+        insertData(data);
+      }
+    };
+
+    return editor;
   },
   handlers: {
     onKeyDown:
@@ -66,7 +81,7 @@ const Link = createYoptaComponent({
         if (node.type !== 'link') return;
         const { anchor } = editor.selection;
 
-        if (hotkeys.isSplitBlock(event.nativeEvent)) {
+        if (hotkeys.isSplitBlock(event)) {
           const isEnd = Editor.isEnd(editor, anchor, anchor.path);
           const isStart = Editor.isStart(editor, anchor, anchor.path);
 
@@ -95,7 +110,7 @@ const Link = createYoptaComponent({
           return;
         }
 
-        if (hotkeys.isSpace(event.nativeEvent)) {
+        if (hotkeys.isSpace(event)) {
           const inline = Editor.above(editor, {
             match: (n) => Element.isElement(n) && Editor.isInline(editor, n) && n.type === 'link',
             mode: 'highest',

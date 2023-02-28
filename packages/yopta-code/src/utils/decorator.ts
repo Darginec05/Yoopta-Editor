@@ -1,99 +1,85 @@
-// import Prism from 'prismjs';
 import Prism from 'prismjs';
-import { Element, NodeEntry, Range } from 'slate';
+import { Editor, Element, Node, NodeEntry, Range } from 'slate';
+import { normalizeTokens } from './normalizeTokens';
 
-// import 'prismjs/components/prism-antlr4';
-// import 'prismjs/components/prism-bash';
-// import 'prismjs/components/prism-c';
-// import 'prismjs/components/prism-cmake';
-// import 'prismjs/components/prism-coffeescript';
-// import 'prismjs/components/prism-cpp';
-// import 'prismjs/components/prism-csharp';
-// import 'prismjs/components/prism-css';
-// import 'prismjs/components/prism-dart';
-// // import 'prismjs/components/prism-django';
-// import 'prismjs/components/prism-docker';
-// // import 'prismjs/components/prism-ejs';
-// import 'prismjs/components/prism-erlang';
-// import 'prismjs/components/prism-git';
-// import 'prismjs/components/prism-go';
-// import 'prismjs/components/prism-graphql';
-// import 'prismjs/components/prism-groovy';
-// import 'prismjs/components/prism-java';
-// import 'prismjs/components/prism-javascript';
-// import 'prismjs/components/prism-json';
-// import 'prismjs/components/prism-jsx';
-// import 'prismjs/components/prism-kotlin';
-// import 'prismjs/components/prism-latex';
-// import 'prismjs/components/prism-less';
-// import 'prismjs/components/prism-lua';
-// import 'prismjs/components/prism-makefile';
-// import 'prismjs/components/prism-markdown';
-// import 'prismjs/components/prism-matlab';
-// import 'prismjs/components/prism-objectivec';
-// import 'prismjs/components/prism-perl';
-// // import 'prismjs/components/prism-php';
-// import 'prismjs/components/prism-powershell';
-// import 'prismjs/components/prism-properties';
-// import 'prismjs/components/prism-protobuf';
-// import 'prismjs/components/prism-python';
-// import 'prismjs/components/prism-r';
-// import 'prismjs/components/prism-ruby';
-// import 'prismjs/components/prism-sass';
-// import 'prismjs/components/prism-scala';
-// import 'prismjs/components/prism-scheme';
-// import 'prismjs/components/prism-scss';
-// import 'prismjs/components/prism-sql';
-// import 'prismjs/components/prism-swift';
-// import 'prismjs/components/prism-tsx';
-// import 'prismjs/components/prism-typescript';
-// import 'prismjs/components/prism-wasm';
-// import 'prismjs/components/prism-yaml';
+const mergeMaps = <K, V>(...maps: Map<K, V>[]) => {
+  const map = new Map<K, V>();
 
-const getLength = (token) => {
-  if (typeof token === 'string') {
-    return token.length;
+  for (const m of maps) {
+    for (const item of m) {
+      map.set(...item);
+    }
   }
-  if (typeof token.content === 'string') {
-    return token.content.length;
-  }
-  return token.content.reduce((l, t) => l + getLength(t), 0);
+
+  return map;
 };
 
-export function codeDecorator([node, path]: NodeEntry): Range[] {
-  const ranges = [];
-  if (Element.isElement(node) && node.type === 'code') {
+const getChildNodeToDecorations = ([block, blockPath]: NodeEntry<any>) => {
+  const nodeToDecorations = new Map<Element, Range[]>();
+
+  const text = block.children.map((line) => Node.string(line)).join('\n');
+  const language = block.language;
+
+  const tokens = Prism.tokenize(text, Prism.languages.javascript);
+
+  const normalizedTokens = normalizeTokens(tokens); // make tokens flat and grouped by line
+
+  const blockChildren = block.children as Element[];
+
+  for (let index = 0; index < normalizedTokens.length; index++) {
+    const tokens = normalizedTokens[index];
+    const element = blockChildren[index];
+
+    if (!nodeToDecorations.has(element)) {
+      nodeToDecorations.set(element, []);
+    }
+
     let start = 0;
-
-    // @ts-ignore
-    const tokens = Prism.tokenize(node.children[0].text, Prism.languages.javascript);
-
     for (const token of tokens) {
-      const length = getLength(token);
+      const length = token.content.length;
+
+      if (!length) {
+        continue;
+      }
+
       const end = start + length;
 
-      if (typeof token !== 'string') {
-        // @ts-ignore
-        ranges.push({
-          token: token.type,
-          anchor: { path, offset: start },
-          focus: { path, offset: end },
-        });
-      }
+      const path = [...blockPath, index, 0];
+
+      const range = {
+        anchor: { path, offset: start },
+        focus: { path, offset: end },
+        token: true,
+        ...Object.fromEntries(token.types.map((type) => ['token_type', type])),
+      };
+
+      nodeToDecorations.get(element)!.push(range);
 
       start = end;
     }
   }
 
-  return ranges;
+  return nodeToDecorations;
+};
 
-  // // @ts-ignore
-  // const tokens = Prism.tokenize(node.children[0].text, Prism.languages.javascript);
-  // console.log('tokens', tokens);
+export const codeLineDecorator =
+  (editor: Editor) =>
+  ([node, path]: NodeEntry) => {
+    const blockEntries = Array.from(
+      Editor.nodes(editor, {
+        at: [],
+        mode: 'highest',
+        match: (n) => Element.isElement(n) && n.type === 'code',
+      }),
+    );
 
-  // let start = 0;
+    const nodeToDecorations = mergeMaps(...blockEntries.map(getChildNodeToDecorations));
 
-  // // eslint-disable-next-line no-restricted-syntax
+    if (Element.isElement(node) && node.type === 'code-line') {
+      const ranges = nodeToDecorations.get(node) || [];
 
-  // return ranges;
-}
+      return ranges;
+    }
+
+    return [];
+  };
