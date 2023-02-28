@@ -1,33 +1,27 @@
-import { useCallback, useEffect, useState, Key } from 'react';
+import { useCallback, useEffect, useState, Key, useMemo } from 'react';
 import { withHistory } from 'slate-history';
 import { v4 } from 'uuid';
 import { createEditor, Descendant, Transforms } from 'slate';
 import { ReactEditor, Slate, withReact } from 'slate-react';
 import { EditorYopta } from './components/Editor/Editor';
 import { ScrollProvider } from './contexts/ScrollContext/ScrollContext';
-import {
-  withShortcuts,
-  withInlines,
-  withVoidNodes,
-  withCorrectVoidBehavior,
-  withFixDeleteFragment,
-  withCopyPasting,
-} from './components/Editor/plugins';
+import { withShortcuts, withVoidNodes, withFixDeleteFragment, withCopyPasting } from './components/Editor/plugins';
 import { ActionMenuProvider } from './contexts/ActionMenuContext/ActionMenuContext';
 import { SettingsProvider } from './contexts/SettingsContext/SettingsContext';
 import NoSSR from './components/NoSsr/NoSsr';
 import type { LibOptions } from './contexts/SettingsContext/SettingsContext';
-import { CustomEditor } from './components/Editor/types';
 import { NodeSettingsProvider } from './contexts/NodeSettingsContext/NodeSettingsContext';
 import { isValidYoptaNodes } from './utils/validate';
 import { LIST_TYPES } from './components/Editor/constants';
+import { YoptaComponent } from './utils/component';
+import { generateId } from './utils/generateId';
 
 type Props = {
   onChange: (_value: Descendant[]) => void;
   value?: Descendant[];
   key?: Key;
   scrollElementSelector?: string;
-  components: any;
+  components: YoptaComponent[];
 } & LibOptions;
 
 const DEFAULT_YOPTA_LS_NAME = 'yopta-content';
@@ -45,7 +39,7 @@ const getInitialState = (
   storageName: string,
   value?: Descendant[],
 ): Descendant[] => {
-  const DEFAULT_STATE = [{ id: v4(), type: 'paragraph', children: [{ text: '' }] }] as Descendant[];
+  const DEFAULT_STATE = [{ id: generateId(), type: 'paragraph', children: [{ text: '' }] }] as Descendant[];
   const defaultValue = isValidYoptaNodes(value) ? value : DEFAULT_STATE;
 
   if (!shouldStoreInLocalStorage) {
@@ -76,15 +70,25 @@ const YoptaEditorLib = ({
   const storageName = getStorageName(options.shouldStoreInLocalStorage);
   const [val, setVal] = useState(() => getInitialState(options.shouldStoreInLocalStorage, storageName, value));
 
-  const [editor] = useState<CustomEditor>(() =>
-    withHistory(
-      withCopyPasting(
-        withFixDeleteFragment(
-          withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor()))))),
-        ),
-      ),
-    ),
-  );
+  const editor = useMemo(() => {
+    let editor = withHistory(withReact(createEditor()));
+
+    components.forEach((component) => {
+      editor = component.extendEditor?.(editor) || editor;
+    });
+
+    return editor;
+  }, [components]);
+
+  // const [editor] = useState<CustomEditor>(() =>
+  //   withHistory(
+  //     withCopyPasting(
+  //       withFixDeleteFragment(
+  //         withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor()))))),
+  //       ),
+  //     ),
+  //   ),
+  // );
 
   useEffect(() => {
     if (!autoFocus) return;

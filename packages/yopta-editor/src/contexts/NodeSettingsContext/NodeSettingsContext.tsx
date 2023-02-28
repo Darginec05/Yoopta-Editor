@@ -1,19 +1,15 @@
 import { Editor, Transforms, Element as SlateElement, Point, Path } from 'slate';
 import copy from 'copy-to-clipboard';
-import { v4 } from 'uuid';
 import React, { CSSProperties, MouseEvent, useContext, useMemo, useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
 import { CustomElement } from '../../components/Editor/types';
 import { ELEMENT_TYPES_MAP, LIST_TYPES } from '../../components/Editor/constants';
 import { useScrollContext } from '../ScrollContext/ScrollContext';
 import { useDragDrop, DragDropValues, DragDropHandlers } from '../../hooks/useDragDrop';
-import {
-  getNodeByCurrentPath,
-  getNodePath,
-  getNodeByPath,
-  getDefaultParagraphLine,
-} from '../../components/Editor/utils';
+import { getNodeByCurrentPath, getNodePath, getDefaultParagraphLine } from '../../components/Editor/utils';
 import { useSettings } from '../SettingsContext/SettingsContext';
+import { getNodeByPath } from '../../utils/nodes';
+import { generateId } from '../../utils/generateId';
 
 export type HoveredNode = CustomElement | null;
 
@@ -238,7 +234,7 @@ const NodeSettingsProvider = ({ children }) => {
 
           if (currentNode) {
             const duplicatedNode = structuredClone(currentNode);
-            duplicatedNode.id = v4();
+            duplicatedNode.id = generateId();
 
             Transforms.insertNodes(editor, duplicatedNode, {
               at: { offset: 0, path },

@@ -1,8 +1,6 @@
 import { isKeyHotkey } from 'is-hotkey';
+import { KeyboardEvent } from 'react';
 
-/**
- * Hotkey mappings for each platform.
- */
 const HOTKEYS_MAP = {
   bold: 'mod+b',
   compose: ['down', 'left', 'right', 'up', 'backspace', 'enter'],
@@ -19,6 +17,9 @@ const HOTKEYS_MAP = {
   splitBlock: 'enter',
   space: 'space',
   undo: 'mod+z',
+  select: 'mod+a',
+  outdent: 'shift+tab',
+  indent: 'tab',
 };
 
 const APPLE_HOTKEYS = {
@@ -86,6 +87,9 @@ export const HOTKEYS = {
   isTransposeCharacter: create('transposeCharacter'),
   isUndo: create('undo'),
   isSpace: create('space'),
+  isSelect: create('select'),
+  isIndent: create('indent'),
+  isOutdent: create('outdent'),
 };
 
 export type HOTKEYS_TYPE = {

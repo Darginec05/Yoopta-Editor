@@ -1,7 +1,7 @@
 import { KeyboardEvent } from 'react';
-import { v4 } from 'uuid';
 import { Editor, Transforms } from 'slate';
 import { getNodeByCurrentPath, toggleBlock } from '../components/Editor/utils';
+import { generateId } from '../utils/generateId';
 
 export const createListPlugin = (editor: Editor) => {
   return {
@@ -29,13 +29,13 @@ export const createListPlugin = (editor: Editor) => {
 
         if (!isEnd && !isStart) {
           Transforms.splitNodes(editor);
-          Transforms.setNodes(editor, { id: v4() });
+          Transforms.setNodes(editor, { id: generateId() });
           return;
         }
 
         const listItem = {
           ...currentRootLevelNode,
-          id: v4(),
+          id: generateId(),
           children: [
             {
               text: '',

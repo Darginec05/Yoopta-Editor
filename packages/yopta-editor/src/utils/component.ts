@@ -1,6 +1,6 @@
-import { ReactElement, ReactNode } from 'react';
-import { Editor, Element, NodeEntry, Range } from 'slate';
-import { RenderElementProps } from 'slate-react';
+import { Element, NodeEntry, Range } from 'slate';
+import { RenderElementProps, RenderLeafProps } from 'slate-react';
+import { CustomEditor } from '../components/Editor/types';
 import { YoptaEditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS_TYPE } from '../utils/hotkeys';
 
@@ -17,19 +17,21 @@ export type ElementType = {
 export type DecoratorFn = (nodeEntry: NodeEntry) => Range[];
 export type YoptaComponentHandlers = {
   [key in keyof YoptaEditorEventHandlers]: (
-    editor: Editor,
+    editor: CustomEditor,
     options: HandlersOptions,
   ) => YoptaEditorEventHandlers[key] | void;
 };
 
 export type YoptaComponent = {
   type: string;
-  // renderer: (editor: Editor) => (props: RenderElementProps) => ReactNode;
-  renderer: (editor: Editor) => (props: RenderElementProps) => any;
+  // renderer: (editor: CustomEditor) => (props: RenderElementProps) => ReactNode;
+  renderer: (editor: CustomEditor) => (props: RenderElementProps) => any;
   shortcut?: string;
-  decorator?: (editor: Editor) => DecoratorFn;
+  decorator?: (editor: CustomEditor) => DecoratorFn;
   handlers?: YoptaComponentHandlers;
   element?: ElementType;
+  extendEditor?: (editor: CustomEditor) => CustomEditor;
+  leaf?: (editor: CustomEditor) => (props: RenderLeafProps) => any;
 };
 
 export const createYoptaComponent = (component: YoptaComponent): YoptaComponent => {

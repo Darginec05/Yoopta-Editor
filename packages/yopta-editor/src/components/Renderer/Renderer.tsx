@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { TextLeaf } from '../Editor/TextLeaf/TextLeaf';
 import { ELEMENT_RENDER_ITEMS } from '../Elements';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
-import { onCopyYoptaNodes } from '../../utils';
+import { onCopyYoptaNodes } from '../../utils/copy';
 import s from './Renderer.module.scss';
 
 type Props = {

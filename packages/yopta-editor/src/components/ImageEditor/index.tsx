@@ -2,7 +2,6 @@ import { FC, ReactNode, useState } from 'react';
 import cx from 'classnames';
 import { ReactEditor, useFocused, useSelected, useSlate } from 'slate-react';
 import { Editor, Transforms, Element as SlateElement } from 'slate';
-import { v4 } from 'uuid';
 import { MediaEditorLayout } from '../MediaEditorLayout';
 import { ImageElement } from '../Editor/types';
 import { ImageRender } from '../ImageRender/ImageRender';
@@ -15,6 +14,7 @@ import { OutsideClick } from '../OutsideClick';
 import { LinkInput } from '../LinkInput';
 import { getDefaultParagraphLine } from '../Editor/utils';
 import s from './ImageEditor.module.scss';
+import { generateId } from '../../utils/generateId';
 
 const toBase64 = (file: File): Promise<string | ArrayBuffer | null> =>
   new Promise((resolve, reject) => {
@@ -46,7 +46,7 @@ const ImageEditor: FC<Props> = ({ element, attributes, className, children }) =>
       const dataSrc = await toBase64(file);
 
       image = {
-        id: v4(),
+        id: generateId(),
         type: 'image',
         children: [{ text: '' }],
         'data-src': dataSrc,

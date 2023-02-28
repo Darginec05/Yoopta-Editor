@@ -1,16 +1,57 @@
 /* eslint-disable no-param-reassign */
 import { Editor, Element, Range, Transforms, Node, Path } from 'slate';
-import { v4 } from 'uuid';
-import isUrl from 'is-url';
 import { BulletedListElement, NumberedListElement } from './types';
 import { KEYBOARD_SHORTCUTS, addLinkNode, deserializeHTML } from './utils';
 import { ELEMENT_TYPES_MAP, VOID_ELEMENTS } from './constants';
+import { generateId } from '../../utils/generateId';
 
 export const withVoidNodes = (editor: Editor) => {
-  const { isVoid } = editor;
+  const { isVoid, insertBreak, deleteBackward } = editor;
 
   editor.isVoid = (element: Element) => {
     return VOID_ELEMENTS.includes(element.type) ? true : isVoid(element);
+  };
+
+  editor.insertBreak = () => {
+    if (!editor.selection || !Range.isCollapsed(editor.selection)) {
+      return insertBreak();
+    }
+
+    const selectedNodePath = Path.parent(editor.selection.anchor.path);
+    const selectedNode = Node.get(editor, selectedNodePath);
+
+    if (Element.isElement(selectedNode) && Editor.isVoid(editor, selectedNode)) {
+      Editor.insertNode(editor, {
+        id: generateId(),
+        type: 'paragraph',
+        children: [{ text: '' }],
+      });
+      return undefined;
+    }
+
+    insertBreak();
+  };
+
+  // if prev node is a void node, remove the current node and select the void node
+  editor.deleteBackward = (unit: 'character' | 'word' | 'line' | 'block') => {
+    if (!editor.selection || !Range.isCollapsed(editor.selection) || editor.selection.anchor.offset !== 0) {
+      return deleteBackward(unit);
+    }
+
+    const parentPath = Path.parent(editor.selection.anchor.path);
+    const parentNode = Node.get(editor, parentPath);
+    const parentIsEmpty = Node.string(parentNode).length === 0;
+
+    if (parentIsEmpty && Path.hasPrevious(parentPath)) {
+      const prevNodePath = Path.previous(parentPath);
+      const prevNode = Node.get(editor, prevNodePath);
+      if (Element.isElement(prevNode) && Editor.isVoid(editor, prevNode)) {
+        Transforms.removeNodes(editor);
+        return Transforms.select(editor, prevNodePath);
+      }
+    }
+
+    deleteBackward(unit);
   };
 
   return editor;
@@ -54,7 +95,7 @@ export const withShortcuts = (editor: Editor) => {
 
         if (type === 'list-item') {
           const list: BulletedListElement | NumberedListElement = {
-            id: v4(),
+            id: generateId(),
             type: beforeText === '-' ? 'bulleted-list' : 'numbered-list',
             children: [],
           };
@@ -73,82 +114,6 @@ export const withShortcuts = (editor: Editor) => {
   return editor;
 };
 
-export const withInlines = (editor) => {
-  const { insertData, insertText, isInline } = editor;
-
-  editor.isInline = (element) => (element.type === 'link' ? true : isInline(element));
-
-  editor.insertText = (text: string) => {
-    if (text && isUrl(text)) {
-      addLinkNode(editor, text);
-    } else {
-      insertText(text);
-    }
-  };
-
-  editor.insertData = (data) => {
-    const text = data.getData('text/plain');
-
-    if (text && isUrl(text)) {
-      addLinkNode(editor, text);
-    } else {
-      insertData(data);
-    }
-  };
-
-  return editor;
-};
-
-export const withCorrectVoidBehavior = (editor: Editor) => {
-  const { deleteBackward, insertBreak } = editor;
-
-  // if current selection is void node, insert a default node below
-  // eslint-disable-next-line consistent-return
-  editor.insertBreak = () => {
-    if (!editor.selection || !Range.isCollapsed(editor.selection)) {
-      return insertBreak();
-    }
-
-    const selectedNodePath = Path.parent(editor.selection.anchor.path);
-    const selectedNode = Node.get(editor, selectedNodePath);
-
-    if (Element.isElement(selectedNode) && Editor.isVoid(editor, selectedNode)) {
-      Editor.insertNode(editor, {
-        id: v4(),
-        type: 'paragraph',
-        children: [{ text: '' }],
-      });
-      return undefined;
-    }
-
-    insertBreak();
-  };
-
-  // if prev node is a void node, remove the current node and select the void node
-  editor.deleteBackward = (unit: 'character' | 'word' | 'line' | 'block') => {
-    if (!editor.selection || !Range.isCollapsed(editor.selection) || editor.selection.anchor.offset !== 0) {
-      return deleteBackward(unit);
-    }
-
-    const parentPath = Path.parent(editor.selection.anchor.path);
-    const parentNode = Node.get(editor, parentPath);
-    const parentIsEmpty = Node.string(parentNode).length === 0;
-
-    if (parentIsEmpty && Path.hasPrevious(parentPath)) {
-      const prevNodePath = Path.previous(parentPath);
-      const prevNode = Node.get(editor, prevNodePath);
-      if (Element.isElement(prevNode) && Editor.isVoid(editor, prevNode)) {
-        Transforms.removeNodes(editor);
-        return Transforms.select(editor, prevNodePath);
-      }
-    }
-
-    deleteBackward(unit);
-  };
-
-  return editor;
-};
-
 export const withFixDeleteFragment = (editor: Editor) => {
   // Fixes https://github.com/ianstormtaylor/slate/issues/3605
   editor.deleteFragment = () => {
@@ -156,7 +121,7 @@ export const withFixDeleteFragment = (editor: Editor) => {
 
     if (selection && Range.isExpanded(selection)) {
       Transforms.delete(editor, { hanging: false });
-      // Transforms.setNodes(editor, { type: 'paragraph', id: v4() });
+      // Transforms.setNodes(editor, { type: 'paragraph', id: generateId() });
     }
   };
   return editor;

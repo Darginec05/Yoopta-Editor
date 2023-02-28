@@ -1,9 +1,9 @@
 import { ReactEditor } from 'slate-react';
 import { Editor, Text, Element as SlateElement, Transforms, Range, Path } from 'slate';
-import { v4 } from 'uuid';
 import { jsx } from 'slate-hyperscript';
 import { LinkElement, ParagraphElement } from './types';
 import { ELEMENT_TYPES_MAP, LIST_TYPES } from './constants';
+import { generateId } from '../../utils/generateId';
 
 export const getNodePath = (editor: Editor, node: any) => {
   // [TODO] - some when lost focus bug
@@ -14,20 +14,6 @@ export const getNodePath = (editor: Editor, node: any) => {
   if (isListItem) nodePath = [...nodePath, 0];
 
   return nodePath;
-};
-
-export const getNodeByPath = (editor: Editor, path?: Path, mode: 'all' | 'highest' | 'lowest' = 'lowest') => {
-  const nodeEntry = Array.from(
-    Editor.nodes(editor, {
-      match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
-      at: path || editor.selection?.anchor.path,
-      mode,
-    }),
-  )[0];
-
-  if (nodeEntry) return nodeEntry[0];
-
-  return editor.children[0];
 };
 
 export const isMarkActive = (editor: Editor, mark: any): boolean => {
@@ -58,7 +44,7 @@ export const toggleBlock = (editor: Editor, blockType: any, data: any = { isVoid
     const isActive = isBlockActive(editor, blockType);
     const isList = LIST_TYPES.includes(blockType);
     const node = {
-      id: v4(),
+      id: generateId(),
       // eslint-disable-next-line no-nested-ternary
       type: isActive ? 'paragraph' : isList ? 'list-item' : blockType,
       ...data,
@@ -78,7 +64,7 @@ export const toggleBlock = (editor: Editor, blockType: any, data: any = { isVoid
     });
 
     if (!isActive && isList) {
-      const block = { id: v4(), type: blockType, children: [{ text: '' }] };
+      const block = { id: generateId(), type: blockType, children: [{ text: '' }] };
       Transforms.wrapNodes(editor, block, {
         at: editor.selection?.anchor,
       });
@@ -125,7 +111,7 @@ export const addLinkNode = (editor: Editor, url: string) => {
   const { selection } = editor;
   const isCollapsed = selection && Range.isCollapsed(selection);
   const link: LinkElement = {
-    id: v4(),
+    id: generateId(),
     type: 'link',
     url,
     children: isCollapsed ? [{ text: url }] : [],
@@ -196,20 +182,20 @@ export const getMediaAspectRatio = (srcWidth: number, srcHeight: number, maxWidt
 };
 
 export const HTML_ELEMENT_TAGS = {
-  A: (el) => ({ type: ELEMENT_TYPES_MAP.link, url: el.getAttribute('href'), id: v4() }),
-  BLOCKQUOTE: () => ({ type: ELEMENT_TYPES_MAP['block-quote'], id: v4() }),
-  H1: () => ({ type: ELEMENT_TYPES_MAP['heading-one'], id: v4() }),
-  H2: () => ({ type: ELEMENT_TYPES_MAP['heading-two'], id: v4() }),
-  H3: () => ({ type: ELEMENT_TYPES_MAP['heading-three'], id: v4() }),
-  H4: () => ({ type: ELEMENT_TYPES_MAP['heading-three'], id: v4() }),
-  H5: () => ({ type: ELEMENT_TYPES_MAP['heading-three'], id: v4() }),
-  H6: () => ({ type: ELEMENT_TYPES_MAP['heading-three'], id: v4() }),
-  IMG: (el) => ({ type: 'image', url: el.getAttribute('src'), id: v4() }),
-  LI: () => ({ type: ELEMENT_TYPES_MAP['list-item'], id: v4() }),
-  OL: () => ({ type: ELEMENT_TYPES_MAP['numbered-list'], id: v4() }),
-  UL: () => ({ type: ELEMENT_TYPES_MAP['bulleted-list'], id: v4() }),
-  P: () => ({ type: ELEMENT_TYPES_MAP.paragraph, id: v4() }),
-  PRE: () => ({ type: ELEMENT_TYPES_MAP.code, id: v4() }),
+  A: (el) => ({ type: ELEMENT_TYPES_MAP.link, url: el.getAttribute('href'), id: generateId() }),
+  BLOCKQUOTE: () => ({ type: ELEMENT_TYPES_MAP['block-quote'], id: generateId() }),
+  H1: () => ({ type: ELEMENT_TYPES_MAP['heading-one'], id: generateId() }),
+  H2: () => ({ type: ELEMENT_TYPES_MAP['heading-two'], id: generateId() }),
+  H3: () => ({ type: ELEMENT_TYPES_MAP['heading-three'], id: generateId() }),
+  H4: () => ({ type: ELEMENT_TYPES_MAP['heading-three'], id: generateId() }),
+  H5: () => ({ type: ELEMENT_TYPES_MAP['heading-three'], id: generateId() }),
+  H6: () => ({ type: ELEMENT_TYPES_MAP['heading-three'], id: generateId() }),
+  IMG: (el) => ({ type: 'image', url: el.getAttribute('src'), id: generateId() }),
+  LI: () => ({ type: ELEMENT_TYPES_MAP['list-item'], id: generateId() }),
+  OL: () => ({ type: ELEMENT_TYPES_MAP['numbered-list'], id: generateId() }),
+  UL: () => ({ type: ELEMENT_TYPES_MAP['bulleted-list'], id: generateId() }),
+  P: () => ({ type: ELEMENT_TYPES_MAP.paragraph, id: generateId() }),
+  PRE: () => ({ type: ELEMENT_TYPES_MAP.code, id: generateId() }),
 };
 
 export const HTML_TEXT_TAGS = {
@@ -260,6 +246,8 @@ export const deserializeHTML = (el) => {
     return children.map((child) => jsx('text', attrs, child));
   }
 
+  console.log('children', children);
+
   return children;
 };
 
@@ -280,7 +268,7 @@ export const getNodeByCurrentPath = (editor: Editor) => {
 };
 
 export const getDefaultParagraphLine = (): ParagraphElement => ({
-  id: v4(),
+  id: generateId(),
   type: 'paragraph',
   children: [
     {
