@@ -50,6 +50,7 @@ const Link = createYoptaComponent({
     editor.isInline = (element) => (element.type === 'link' ? true : isInline(element));
 
     editor.insertText = (text: string) => {
+      console.log('LINK', editor.children);
       if (text && isUrl(text)) {
         addLinkNode(editor, text);
       } else {

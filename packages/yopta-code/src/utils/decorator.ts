@@ -20,7 +20,13 @@ const getChildNodeToDecorations = ([block, blockPath]: NodeEntry<any>) => {
   const text = block.children.map((line) => Node.string(line)).join('\n');
   const language = block.language;
 
-  const tokens = Prism.tokenize(text, Prism.languages.javascript);
+  let tokens;
+
+  try {
+    tokens = Prism.tokenize(text, Prism.languages[language]);
+  } catch (error) {
+    tokens = Prism.tokenize(text, Prism.languages.javascript);
+  }
 
   const normalizedTokens = normalizeTokens(tokens); // make tokens flat and grouped by line
 
@@ -73,6 +79,7 @@ export const codeLineDecorator =
       }),
     );
 
+    // TODO - optimize
     const nodeToDecorations = mergeMaps(...blockEntries.map(getChildNodeToDecorations));
 
     if (Element.isElement(node) && node.type === 'code-line') {

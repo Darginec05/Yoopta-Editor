@@ -1,9 +1,7 @@
-const CodeLineRender = ({ attributes, children }) => {
-  return (
-    <div {...attributes} style={{ position: 'relative' }}>
-      {children}
-    </div>
-  );
+const CodeLineRender = () => {
+  return function CodeLineRender({ attributes, children }) {
+    return <div {...attributes}>{children}</div>;
+  };
 };
 
 export { CodeLineRender };
