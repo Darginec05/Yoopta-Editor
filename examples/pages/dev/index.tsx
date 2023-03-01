@@ -10,44 +10,10 @@ import { Descendant } from 'slate';
 import s from './styles.module.scss';
 import '@yopta/editor/dist/index.css';
 
-const toChildren = (content: string) => [{ text: content }];
-const toCodeLines = (content: string): Element[] =>
-  content.split('\n').map((line) => ({ type: 'code-line', children: toChildren(line) }));
-
-const initialValue: Descendant[] = [
-  {
-    id: '1',
-    type: 'paragraph',
-    children: [{ text: 'Code element' }],
-  },
-  {
-    id: '2',
-    type: 'code',
-    language: 'jsx',
-    children: toCodeLines(`// Add the initial value.
-const initialValue = [
-  {
-    type: 'paragraph',
-    children: [{ text: 'A line of text in a paragraph.' }]
-  }
-]
-
-const App = () => {
-  const [editor] = useState(() => withReact(createEditor()))
-
-  return (
-    <Slate editor={editor} value={initialValue}>
-      <Editable />
-    </Slate>
-  )
-}`),
-  },
-];
-
 const components = [Paragraph, Blockquote, Callout, Code, Link, CodeLine];
 
 const BasicExample = () => {
-  const [editorValue, setEditorValue] = useState<Descendant[]>(initialValue);
+  const [editorValue, setEditorValue] = useState<Descendant[]>([]);
 
   return (
     <div className={s.container} style={{ display: 'block' }}>
