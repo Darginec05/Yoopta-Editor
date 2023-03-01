@@ -3102,7 +3102,7 @@ ci-info@^3.2.0:
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-3.8.0.tgz#81408265a5380c929f0bc665d62256628ce9ef91"
   integrity sha512-eXTggHWSooYhq49F2opQhuHWgzucfF2YgODK4e1566GQs5BIfP30B0oenwBJHfWxAs2fyPB1s7Mg949zLf61Yw==
 
-classnames@^2.3.1:
+classnames@^2.3.1, classnames@^2.3.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.2.tgz#351d813bf0137fcc6a76a16b88208d2560a0d924"
   integrity sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==
@@ -7655,6 +7655,11 @@ pretty-format@^29.0.0, pretty-format@^29.4.3:
     "@jest/schemas" "^29.4.3"
     ansi-styles "^5.0.0"
     react-is "^18.0.0"
+
+prism-material-themes@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/prism-material-themes/-/prism-material-themes-1.0.4.tgz#1384981fdd8318bc31b30d49c5ea69d82695b241"
+  integrity sha512-ydN2H7BJA65njkdJkyHFhZprJSH/r0hhksR65Ate5XrR3sGP1M+fYhWxXzRoonBmKmal3UaoGg1+OZYBrU9tGA==
 
 prismjs@^1.29.0:
   version "1.29.0"

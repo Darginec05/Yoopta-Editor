@@ -1,34 +1,23 @@
+import Prism from 'prismjs';
 import { Editor, Element, Transforms } from 'slate';
-import { createYoptaComponent } from '@yopta/editor';
+import { createYoptaComponent, getNodeByPath } from '@yopta/editor';
 import { CodeLeaf } from './ui/CodeLeaf';
 import { CodeRender } from './ui/CodeRender';
 import { CodeLineRender } from './ui/CodeLineRender';
 import { codeLineDecorator } from './utils/decorator';
 
-const NODE_TYPE = 'code';
+const CODE_NODE_TYPE = 'code';
 const CODE_LINE_NODE_TYPE = 'code-line';
 
 const Code = createYoptaComponent({
-  type: NODE_TYPE,
-  renderer: (editor: Editor) => (props) => <CodeRender {...props} />,
+  type: CODE_NODE_TYPE,
+  renderer: CodeRender,
   shortcut: '<',
-  extendEditor(editor) {
-    const { insertData } = editor;
-
-    editor.insertData = (data) => {
-      const html = data.getData('text/html');
-      const parsed = new DOMParser().parseFromString(html, 'text/html');
-
-      return;
-    };
-
-    return editor;
-  },
 });
 
 const CodeLine = createYoptaComponent({
   type: CODE_LINE_NODE_TYPE,
-  renderer: () => CodeLineRender,
+  renderer: CodeLineRender,
   leaf: () => CodeLeaf,
   decorator: codeLineDecorator,
   handlers: {
@@ -50,7 +39,7 @@ const CodeLine = createYoptaComponent({
 
           const codeEntry = Editor.above(editor, {
             at: editor.selection.anchor.path,
-            match: (n) => Element.isElement(n) && n.type === NODE_TYPE,
+            match: (n) => Element.isElement(n) && n.type === CODE_NODE_TYPE,
           });
 
           if (!codeEntry) return;

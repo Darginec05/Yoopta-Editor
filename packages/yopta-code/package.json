@@ -14,11 +14,11 @@
     "dist/"
   ],
   "peerDependencies": {
+    "@yopta/editor": "1.1.4",
     "react": ">=17.0.2",
     "react-dom": ">=17.0.2",
     "slate": ">=0.72.3",
-    "slate-react": ">=0.72.4",
-    "@yopta/editor": "1.1.4"
+    "slate-react": ">=0.72.4"
   },
   "publishConfig": {
     "registry": "https://registry.yarnpkg.com"
@@ -34,6 +34,8 @@
     "url": "https://github.com/Darginec05/Editor-Yopta/issues"
   },
   "dependencies": {
+    "classnames": "^2.3.2",
+    "prism-material-themes": "^1.0.4",
     "prismjs": "^1.29.0"
   }
 }
