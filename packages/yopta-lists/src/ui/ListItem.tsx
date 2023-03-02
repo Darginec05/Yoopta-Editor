@@ -43,6 +43,12 @@ const ListItemList = createYoptaComponent({
           const isEnd = Editor.isEnd(editor, anchor, listItemPath);
           const isStart = Editor.isStart(editor, anchor, listItemPath);
 
+          const currentDepth = listItemPath.length - 1;
+          const isMaxDepth = currentDepth === 2;
+          const isMinDepth = currentDepth === 1;
+
+          console.log({ currentDepth });
+
           if (hotkeys.isSoftBreak(event)) {
             event.preventDefault();
             editor.insertText('\n');
@@ -58,14 +64,17 @@ const ListItemList = createYoptaComponent({
                 split: true,
               });
 
-              Transforms.setNodes(editor, defaultComponent, {
+              const candidateNode =
+                currentDepth > 1
+                  ? { id: generateId(), type: LIST_ITEM_NODE_TYPE, children: [{ text: '' }] }
+                  : defaultComponent;
+
+              Transforms.setNodes(editor, candidateNode, {
                 at: editor.selection,
               });
 
               return;
             }
-
-            console.log({ isEnd, isStart, listItemPath, listItemNode, parentNode, parentPath });
 
             if (!isEnd && !isStart) {
               Transforms.splitNodes(editor);
@@ -115,6 +124,11 @@ const ListItemList = createYoptaComponent({
           if (hotkeys.isIndent(event)) {
             event.preventDefault();
 
+            if (isMaxDepth) return;
+
+            console.log('editor.selection.anchor.path', editor.selection.anchor.path);
+            console.log({ isEnd, isStart, listItemPath, listItemNode, parentNode, parentPath });
+
             const parentNestedNode = {
               id: generateId(),
               type: parentNode.type,
@@ -129,6 +143,9 @@ const ListItemList = createYoptaComponent({
           if (hotkeys.isOutdent(event)) {
             event.preventDefault();
             console.log('editor.selection.anchor.path', editor.selection.anchor.path);
+            console.log({ isEnd, isStart, listItemPath, listItemNode, parentNode, parentPath });
+
+            if (isMinDepth) return;
 
             Transforms.unwrapNodes(editor, {
               match: (n) => Element.isElement(n) && n.type === parentNode.type,
