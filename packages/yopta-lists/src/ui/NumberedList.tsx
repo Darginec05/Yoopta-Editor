@@ -13,6 +13,9 @@ const NUMBERED_LIST_NODE_TYPE = 'numbered-list';
 const NumberedList = createYoptaComponent({
   type: NUMBERED_LIST_NODE_TYPE,
   renderer: (editor) => NumberedListRender,
+  options: {
+    depth: 3,
+  },
 });
 
 export { NumberedList };

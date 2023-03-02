@@ -26,7 +26,14 @@ const CodeLine = createYoptaComponent({
       (event) => {
         if (!editor.selection) return;
 
+        // [TODO] - define this function in options
+        const node = getNodeByPath(editor, editor.selection.anchor.path, 'lowest');
+
+        if (node.type !== CODE_LINE_NODE_TYPE) return;
+
         if (hotkeys.isIndent(event)) {
+          console.log(event);
+
           event.preventDefault();
 
           const text = ' '.repeat(2);

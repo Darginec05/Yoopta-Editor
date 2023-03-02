@@ -22,6 +22,8 @@ export type YoptaComponentHandlers = {
   ) => YoptaEditorEventHandlers[key] | void;
 };
 
+type Options = Record<string, unknown>;
+
 export type YoptaComponent = {
   type: string;
   // renderer: (editor: CustomEditor) => (props: RenderElementProps) => ReactNode;
@@ -32,6 +34,7 @@ export type YoptaComponent = {
   element?: ElementType;
   extendEditor?: (editor: CustomEditor) => CustomEditor;
   leaf?: (editor: CustomEditor) => (props: RenderLeafProps) => any;
+  options?: Options;
 };
 
 export const createYoptaComponent = (component: YoptaComponent): YoptaComponent => {
