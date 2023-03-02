@@ -15,6 +15,7 @@ import paragraphPkg from '../packages/yopta-paragraph/package.json' assert { typ
 import calloutPkg from '../packages/yopta-callout/package.json' assert { type: 'json' };
 import codePkg from '../packages/yopta-code/package.json' assert { type: 'json' };
 import linkPkg from '../packages/yopta-link/package.json' assert { type: 'json' };
+import listsPkg from '../packages/yopta-lists/package.json' assert { type: 'json' };
 
 const isProd = process.env.NODE_ENV === 'production';
 const isDev = process.env.NODE_ENV === 'development';
@@ -26,6 +27,7 @@ const aliases = {
   '@yopta/callout': 'yopta-callout',
   '@yopta/code': 'yopta-code',
   '@yopta/link': 'yopta-link',
+  '@yopta/lists': 'yopta-lists',
 };
 
 /**
@@ -54,7 +56,7 @@ const createConfig = ({ pkg, postcssConfig }) => {
         typescript: true,
       }),
       postcss({
-        extract: true,
+        extract: false,
         modules: {
           generateScopedName: isProd ? '[hash:base64:8]' : '[name]_[local]',
         },
@@ -84,11 +86,20 @@ const createConfig = ({ pkg, postcssConfig }) => {
   };
 };
 
-const CoreConfig = createConfig({ pkg: corePkg });
-const BlockquoteConfig = createConfig({ pkg: blockquotePkg, postcssConfig: { extract: false } });
-const ParagraphPkgConfig = createConfig({ pkg: paragraphPkg, postcssConfig: { extract: false } });
-const CalloutPkgConfig = createConfig({ pkg: calloutPkg, postcssConfig: { extract: false } });
-const CodePkgConfig = createConfig({ pkg: codePkg, postcssConfig: { extract: false } });
-const LinkPkgConfig = createConfig({ pkg: linkPkg, postcssConfig: { extract: false } });
+const CoreConfig = createConfig({ pkg: corePkg, postcssConfig: { extract: true } });
+const BlockquoteConfig = createConfig({ pkg: blockquotePkg });
+const ParagraphPkgConfig = createConfig({ pkg: paragraphPkg });
+const CalloutPkgConfig = createConfig({ pkg: calloutPkg });
+const CodePkgConfig = createConfig({ pkg: codePkg });
+const LinkPkgConfig = createConfig({ pkg: linkPkg });
+const ListsPkgConfig = createConfig({ pkg: listsPkg });
 
-export default [CoreConfig, BlockquoteConfig, ParagraphPkgConfig, CalloutPkgConfig, CodePkgConfig, LinkPkgConfig];
+export default [
+  CoreConfig,
+  BlockquoteConfig,
+  ParagraphPkgConfig,
+  CalloutPkgConfig,
+  CodePkgConfig,
+  LinkPkgConfig,
+  ListsPkgConfig,
+];

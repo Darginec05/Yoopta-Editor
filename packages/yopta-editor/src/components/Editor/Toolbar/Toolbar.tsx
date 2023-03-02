@@ -1,7 +1,7 @@
 import { MouseEvent, useEffect, useState } from 'react';
 import { Editor } from 'slate';
 import cx from 'classnames';
-import { isMarkActive, toggleMark, getMatchedNode, removeLinkNode, addLinkNode } from '../utils';
+import { isMarkActive, toggleMark, getMatchedNode } from '../utils';
 import LinkIcon from './icons/link.svg';
 import BoldIcon from './icons/bold.svg';
 import ItalicIcon from './icons/italic.svg';
@@ -73,8 +73,10 @@ const Toolbar = ({ editor }: ToolbarProps) => {
           <LinkInput
             linkUrl={linkNode?.[0]?.url}
             onClose={() => setLinkOpen(false)}
-            onRemove={() => removeLinkNode(editor)}
-            onAdd={(url: string) => addLinkNode(editor, url)}
+            // onRemove={() => removeLinkNode(editor)}
+            onRemove={() => {}}
+            // onAdd={(url: string) => addLinkNode(editor, url)}
+            onAdd={(url: string) => undefined}
             placeholder="type link"
           />
         </Fade>
