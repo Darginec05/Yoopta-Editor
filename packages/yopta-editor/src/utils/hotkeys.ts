@@ -9,6 +9,7 @@ const HOTKEYS_MAP = {
   moveWordBackward: 'ctrl+left',
   moveWordForward: 'ctrl+right',
   deleteBackward: 'shift?+backspace',
+  backspace: 'backspace',
   deleteForward: 'shift?+delete',
   extendBackward: 'shift+left',
   extendForward: 'shift+right',
@@ -90,6 +91,7 @@ export const HOTKEYS = {
   isSelect: create('select'),
   isIndent: create('indent'),
   isOutdent: create('outdent'),
+  isBackspace: create('backspace'),
 };
 
 export type HOTKEYS_TYPE = {

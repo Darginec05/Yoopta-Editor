@@ -97,34 +97,6 @@ export const removeMarks = (editor: Editor) => {
   }
 };
 
-export const removeLinkNode = (editor: Editor) => {
-  Transforms.unwrapNodes(editor, {
-    match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === ELEMENT_TYPES_MAP.link,
-  });
-};
-
-export const addLinkNode = (editor: Editor, url: string) => {
-  if (isBlockActive(editor, ELEMENT_TYPES_MAP.link)) {
-    removeLinkNode(editor);
-  }
-
-  const { selection } = editor;
-  const isCollapsed = selection && Range.isCollapsed(selection);
-  const link: LinkElement = {
-    id: generateId(),
-    type: 'link',
-    url,
-    children: isCollapsed ? [{ text: url }] : [],
-  };
-
-  if (isCollapsed) {
-    Transforms.insertNodes(editor, link);
-  } else {
-    Transforms.wrapNodes(editor, link, { split: true });
-    Transforms.collapse(editor, { edge: 'end' });
-  }
-};
-
 export const getRectByCurrentSelection = (): DOMRect | undefined => {
   const domSelection = window.getSelection();
   if (!domSelection) return;

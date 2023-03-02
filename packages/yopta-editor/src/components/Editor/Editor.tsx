@@ -53,11 +53,13 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
         const renderFn = component.renderer(editor);
         const isInline = component.element?.type === 'inline';
 
-        if (typeof renderFn === 'function' && props.element.type === component.type) {
+        // [TODO] - add strong checker for renderFn
+        if (renderFn && props.element.type === component.type) {
           return (
             <ElementHover
               element={props.element}
               attributes={props.attributes}
+              // [TODO] - define options in every component
               hideSettings={component.type === 'code-line'}
               isInlineNode={isInline}
               renderElement={() => renderFn(props)}
@@ -92,6 +94,7 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
   const eventHandlers = useMemo(() => {
     const events = components.map((component) => Object.keys(component.handlers || {})).flat();
     const eventHandlersMap = {};
+    // [TODO] - defaultComponent move to common event handler to avoid repeated id's
     const handlersOptions = { hotkeys: HOTKEYS, defaultComponent: DEFAULT_COMPONENT };
 
     events.forEach((eventType) => {

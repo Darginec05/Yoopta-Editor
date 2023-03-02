@@ -6,6 +6,7 @@
     { "path": "./packages/yopta-paragraph" },
     { "path": "./packages/yopta-callout" },
     { "path": "./packages/yopta-code" },
+    { "path": "./packages/yopta-lists" },
     { "path": "./packages/yopta-link" }
   ]
 }
