@@ -21,6 +21,8 @@ const components = [
   Lists.NumberedList,
   Lists.BulletedList,
   Lists.ListItemList,
+  Lists.TodoList,
+  Lists.TodoListItem,
 ];
 
 const BasicExample = () => {

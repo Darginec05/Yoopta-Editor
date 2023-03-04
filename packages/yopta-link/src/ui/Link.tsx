@@ -37,8 +37,10 @@ const LinkRender = ({ attributes, element, children }) => {
 
 LinkRender.displayName = 'Link';
 
+const LINK_NODE_TYPE = 'link';
+
 const Link = createYoptaComponent({
-  type: 'link',
+  type: LINK_NODE_TYPE,
   renderer: (editor: Editor) => (props) => <LinkRender {...props} />,
   element: {
     type: 'inline',
@@ -47,10 +49,9 @@ const Link = createYoptaComponent({
   extendEditor(editor) {
     const { insertData, insertText, isInline } = editor;
 
-    editor.isInline = (element) => (element.type === 'link' ? true : isInline(element));
+    editor.isInline = (element) => (element.type === LINK_NODE_TYPE ? true : isInline(element));
 
     editor.insertText = (text: string) => {
-      console.log('LINK', editor.children);
       if (text && isUrl(text)) {
         addLinkNode(editor, text);
       } else {
@@ -59,8 +60,6 @@ const Link = createYoptaComponent({
     };
 
     editor.insertData = (data) => {
-      console.log('insertData', data);
-
       const text = data.getData('text/plain');
 
       if (text && isUrl(text)) {
@@ -79,7 +78,7 @@ const Link = createYoptaComponent({
         if (!editor.selection) return;
         const node = getNodeByPath(editor, editor.selection.anchor.path);
 
-        if (node.type !== 'link') return;
+        if (node.type !== LINK_NODE_TYPE) return;
         const { anchor } = editor.selection;
 
         if (hotkeys.isSplitBlock(event)) {
@@ -91,7 +90,7 @@ const Link = createYoptaComponent({
             Editor.insertBreak(editor);
             Transforms.setNodes(editor, { id: generateId() });
             Transforms.removeNodes(editor, {
-              match: (n) => Element.isElement(n) && Editor.isInline(editor, n) && n.type === 'link',
+              match: (n) => Element.isElement(n) && Editor.isInline(editor, n) && n.type === LINK_NODE_TYPE,
             });
 
             return;
@@ -104,7 +103,7 @@ const Link = createYoptaComponent({
             Transforms.setNodes(
               editor,
               { id: generateId() },
-              { match: (n) => Element.isElement(n) && Editor.isInline(editor, n) && n.type === 'link' },
+              { match: (n) => Element.isElement(n) && Editor.isInline(editor, n) && n.type === LINK_NODE_TYPE },
             );
           }
 
@@ -113,7 +112,7 @@ const Link = createYoptaComponent({
 
         if (hotkeys.isSpace(event)) {
           const inline = Editor.above(editor, {
-            match: (n) => Element.isElement(n) && Editor.isInline(editor, n) && n.type === 'link',
+            match: (n) => Element.isElement(n) && Editor.isInline(editor, n) && n.type === LINK_NODE_TYPE,
             mode: 'highest',
           });
 
