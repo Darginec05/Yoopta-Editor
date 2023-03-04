@@ -1,7 +1,8 @@
+import { ReactElement } from 'react';
 import { Element, NodeEntry, Range } from 'slate';
 import { RenderElementProps, RenderLeafProps } from 'slate-react';
 import { CustomEditor } from '../components/Editor/types';
-import { YoptaEditorEventHandlers } from '../types/eventHandlers';
+import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS_TYPE } from '../utils/hotkeys';
 
 export type HandlersOptions = {
@@ -16,10 +17,10 @@ export type ElementType = {
 
 export type DecoratorFn = (nodeEntry: NodeEntry) => Range[];
 export type YoptaComponentHandlers = {
-  [key in keyof YoptaEditorEventHandlers]: (
+  [key in keyof EditorEventHandlers]: (
     editor: CustomEditor,
     options: HandlersOptions,
-  ) => YoptaEditorEventHandlers[key] | void;
+  ) => EditorEventHandlers[key] | void;
 };
 
 type Options = Record<string, unknown>;
@@ -27,7 +28,7 @@ type Options = Record<string, unknown>;
 export type YoptaComponent = {
   type: string;
   // renderer: (editor: CustomEditor) => (props: RenderElementProps) => ReactNode;
-  renderer: (editor: CustomEditor) => (props: RenderElementProps) => any;
+  renderer: (editor: CustomEditor) => (props: RenderElementProps) => ReactElement;
   shortcut?: string;
   decorator?: (editor: CustomEditor) => DecoratorFn;
   handlers?: YoptaComponentHandlers;

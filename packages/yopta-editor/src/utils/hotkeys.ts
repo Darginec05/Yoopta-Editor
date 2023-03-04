@@ -21,6 +21,7 @@ const HOTKEYS_MAP = {
   select: 'mod+a',
   outdent: 'shift+tab',
   indent: 'tab',
+  cmdEnter: 'mod+enter',
 };
 
 const APPLE_HOTKEYS = {
@@ -92,6 +93,7 @@ export const HOTKEYS = {
   isIndent: create('indent'),
   isOutdent: create('outdent'),
   isBackspace: create('backspace'),
+  isCmdEnter: create('cmdEnter'),
 };
 
 export type HOTKEYS_TYPE = {

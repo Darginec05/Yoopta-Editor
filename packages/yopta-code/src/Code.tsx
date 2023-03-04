@@ -49,6 +49,8 @@ const CodeLine = createYoptaComponent({
             match: (n) => Element.isElement(n) && n.type === CODE_NODE_TYPE,
           });
 
+          console.log(codeEntry);
+
           if (!codeEntry) return;
           Transforms.select(editor, codeEntry[1]);
           return;

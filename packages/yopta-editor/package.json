@@ -25,11 +25,10 @@
     "classnames": "^2.3.1",
     "copy-to-clipboard": "^3.3.2",
     "is-hotkey": "^0.2.0",
-    "is-url": "^1.2.4",
+    "nanoid": "^4.0.1",
     "prismjs": "^1.29.0",
     "slate-history": "^0.66.0",
-    "slate-hyperscript": "^0.77.0",
-    "uuid": "^8.3.2"
+    "slate-hyperscript": "^0.77.0"
   },
   "peerDependencies": {
     "react": ">=17.0.2",
