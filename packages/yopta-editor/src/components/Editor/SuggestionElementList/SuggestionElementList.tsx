@@ -55,6 +55,12 @@ export const ELEMENT_TYPES: Block[] = [
     name: 'Numbered List',
     type: ELEMENT_TYPES_MAP['numbered-list'],
   },
+  {
+    icon: <NumberedListIcon />,
+    keywords: 'todo list',
+    name: 'Todo list',
+    type: 'todo-list',
+  },
   { icon: <BlockQuoteIcon />, keywords: 'blockquote', name: 'Blockquote', type: ELEMENT_TYPES_MAP['block-quote'] },
   { icon: <CalloutIcon />, keywords: 'callout', name: 'Callout', type: ELEMENT_TYPES_MAP.callout },
   { icon: <CodeIcon />, keywords: 'code bug', name: 'Code', type: ELEMENT_TYPES_MAP.code },

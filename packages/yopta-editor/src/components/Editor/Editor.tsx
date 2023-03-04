@@ -1,5 +1,5 @@
 import { Editor, Transforms, Range, Element, NodeEntry } from 'slate';
-import { useCallback, MouseEvent, useMemo } from 'react';
+import { useCallback, MouseEvent, useMemo, KeyboardEvent } from 'react';
 import cx from 'classnames';
 import { DefaultElement, Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
@@ -12,13 +12,13 @@ import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionM
 import { LibOptions, useSettings } from '../../contexts/SettingsContext/SettingsContext';
 import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { OutsideClick } from '../OutsideClick';
-import { createListPlugin } from '../../plugins/list';
 import { onCopyYoptaNodes } from '../../utils/copy';
-import { ElementHover } from '../HoveredMenu/HoveredMenu';
+import { ElementWrapper } from '../ElementWrapper/ElementWrapper';
 import { HOTKEYS } from '../../utils/hotkeys';
 import { YoptaComponent } from '../../utils/component';
 import { getNodeByPath } from '../../utils/nodes';
 import s from './Editor.module.scss';
+import { EditorEventHandlers } from '../../types/eventHandlers';
 
 type YoptaProps = { editor: Editor; placeholder: LibOptions['placeholder']; components: YoptaComponent[] };
 
@@ -51,22 +51,32 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
       for (let i = 0; i < components.length; i++) {
         const component = components[i];
         const renderFn = component.renderer(editor);
-        const isInline = component.element?.type === 'inline';
 
         // [TODO] - add strong checker for renderFn
-        if (renderFn && props.element.type === component.type) {
+        if (props.element.type === component.type) {
           return (
-            <ElementHover
+            <ElementWrapper
               element={props.element}
               attributes={props.attributes}
-              // [TODO] - define options in every component
-              hideSettings={component.type === 'code-line'}
-              isInlineNode={isInline}
-              renderElement={() => renderFn(props)}
+              component={component}
+              render={renderFn}
             >
               {props.children}
-            </ElementHover>
+            </ElementWrapper>
           );
+
+          // return (
+          //   <ElementHover
+          //     element={props.element}
+          //     attributes={props.attributes}
+          //     // [TODO] - define options in every component
+          //     hideSettings={component.type === 'code-line'}
+          //     isInlineNode={isInline}
+          //     renderElement={() => renderFn(props)}
+          //   >
+          //     {props.children}
+          //   </ElementHover>
+          // );
         }
       }
       return <DefaultElement {...props} />;
@@ -91,7 +101,7 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
     };
   }, [components, editor]);
 
-  const eventHandlers = useMemo(() => {
+  const eventHandlers = useMemo<EditorEventHandlers>(() => {
     const events = components.map((component) => Object.keys(component.handlers || {})).flat();
     const eventHandlersMap = {};
     // [TODO] - defaultComponent move to common event handler to avoid repeated id's
@@ -124,13 +134,6 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
       return <TextLeaf {...props} />;
     };
   }, [components, editor]);
-
-  const { ListPlugin } = useMemo(
-    () => ({
-      ListPlugin: createListPlugin(editor),
-    }),
-    [],
-  );
 
   const onKeyUp = useCallback(
     (event) => {

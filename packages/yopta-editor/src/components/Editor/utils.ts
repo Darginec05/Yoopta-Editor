@@ -54,8 +54,19 @@ export const toggleBlock = (editor: Editor, blockType: any, data: any = { isVoid
       node.type = blockType;
     }
 
+    if (blockType === 'code') {
+      node.type = 'code-line';
+    }
+
+    if (blockType === 'todo-list') {
+      node.type = 'todo-list-item';
+    }
+
     Transforms.unwrapNodes(editor, {
-      match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && LIST_TYPES.includes(n.type),
+      match: (n) =>
+        !Editor.isEditor(n) &&
+        SlateElement.isElement(n) &&
+        (LIST_TYPES.includes(n.type) || n.type === 'code' || n.type === 'todo-list-item'),
       split: true,
     });
 
@@ -63,11 +74,28 @@ export const toggleBlock = (editor: Editor, blockType: any, data: any = { isVoid
       at: editor.selection?.anchor,
     });
 
-    if (!isActive && isList) {
+    if (!isActive) {
       const block = { id: generateId(), type: blockType, children: [{ text: '' }] };
-      Transforms.wrapNodes(editor, block, {
-        at: editor.selection?.anchor,
-      });
+
+      if (isList) {
+        Transforms.wrapNodes(editor, block, {
+          at: editor.selection?.anchor,
+        });
+      }
+
+      if (blockType === 'code') {
+        block.language = 'javascript';
+
+        Transforms.wrapNodes(editor, block, {
+          at: editor.selection?.anchor,
+        });
+      }
+
+      if (blockType === 'todo-list') {
+        Transforms.wrapNodes(editor, block, {
+          at: editor.selection?.anchor,
+        });
+      }
     }
   });
 };
@@ -263,3 +291,18 @@ export const getHeadingAnchorFromSlateNode = (element: SlateElement, isEdit?: bo
 
   return validatedString;
 };
+
+const data = [
+  { id: 'let2nctx-cvat63', type: 'paragraph', children: [{ text: "It's title" }], isVoid: false },
+  {
+    id: 'lerh6n49-83hj1h',
+    type: 'numbered-list',
+    children: [{ id: 'lerh6n49-oq56yd', type: 'list-item', children: [{ text: 'asdasdsadas' }], isVoid: false }],
+  },
+  {
+    id: 'lerh6n49-83hasdj1h',
+    type: 'todo-list',
+    children: [{ id: 'lerh6n49-oqczm', children: [{ text: 'check list' }], isVoid: false }],
+  },
+  { id: 'let2nctx-cvat63', type: 'paragraph', children: [{ text: '' }], isVoid: false },
+];

@@ -1,4 +1,4 @@
-export type YoptaEditorEventHandlers = {
+export type EditorEventHandlers = {
   onDOMBeforeInput?: (event: InputEvent) => void;
 
   onCopy?: React.ClipboardEventHandler;

@@ -1,5 +1,5 @@
 import { useState, ChangeEvent, MouseEvent } from 'react';
-import isUrl from 'is-url';
+// import isUrl from 'is-url';
 import CloseIcon from '../../icons/close.svg';
 import DoneIcon from '../../icons/done.svg';
 import s from './LinkInput.module.scss';
@@ -7,7 +7,7 @@ import s from './LinkInput.module.scss';
 const LinkInput = ({ onClose, linkUrl, onRemove, onAdd, placeholder }) => {
   const hasLink = !!linkUrl;
   const [url, setUrl] = useState(hasLink ? linkUrl : '');
-  const isValidURL = isUrl(url);
+  // const isValidURL = isUrl(url);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => setUrl(e.target.value);
 
@@ -20,10 +20,10 @@ const LinkInput = ({ onClose, linkUrl, onRemove, onAdd, placeholder }) => {
 
   const onAddLink = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (isValidURL) {
-      onAdd(url);
-      onClose();
-    }
+    // if (isValidURL) {
+    //   onAdd(url);
+    //   onClose();
+    // }
   };
 
   return (
@@ -40,9 +40,9 @@ const LinkInput = ({ onClose, linkUrl, onRemove, onAdd, placeholder }) => {
         onPaste={(e) => e.stopPropagation()}
       />
       <span className={s.line} />
-      <button type="button" className={s.button} disabled={!isValidURL} onMouseDown={onAddLink}>
+      {/* <button type="button" className={s.button} disabled={!isValidURL} onMouseDown={onAddLink}>
         <DoneIcon stroke={isValidURL ? '#29c059' : 'gray'} />
-      </button>
+      </button> */}
     </div>
   );
 };
