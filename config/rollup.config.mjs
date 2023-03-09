@@ -16,6 +16,7 @@ import calloutPkg from '../packages/yopta-callout/package.json' assert { type: '
 import codePkg from '../packages/yopta-code/package.json' assert { type: 'json' };
 import linkPkg from '../packages/yopta-link/package.json' assert { type: 'json' };
 import listsPkg from '../packages/yopta-lists/package.json' assert { type: 'json' };
+import headingsPkg from '../packages/yopta-headings/package.json' assert { type: 'json' };
 
 const isProd = process.env.NODE_ENV === 'production';
 const isDev = process.env.NODE_ENV === 'development';
@@ -28,6 +29,7 @@ const aliases = {
   '@yopta/code': 'yopta-code',
   '@yopta/link': 'yopta-link',
   '@yopta/lists': 'yopta-lists',
+  '@yopta/headings': 'yopta-headings',
 };
 
 /**
@@ -93,6 +95,7 @@ const CalloutPkgConfig = createConfig({ pkg: calloutPkg });
 const CodePkgConfig = createConfig({ pkg: codePkg });
 const LinkPkgConfig = createConfig({ pkg: linkPkg });
 const ListsPkgConfig = createConfig({ pkg: listsPkg });
+const HeadingsPkgConfig = createConfig({ pkg: headingsPkg });
 
 export default [
   CoreConfig,
@@ -102,4 +105,5 @@ export default [
   CodePkgConfig,
   LinkPkgConfig,
   ListsPkgConfig,
+  HeadingsPkgConfig,
 ];

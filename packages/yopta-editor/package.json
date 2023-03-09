@@ -25,6 +25,7 @@
     "classnames": "^2.3.1",
     "copy-to-clipboard": "^3.3.2",
     "is-hotkey": "^0.2.0",
+    "lodash.uniqwith": "^4.5.0",
     "nanoid": "^4.0.1",
     "prismjs": "^1.29.0",
     "slate-history": "^0.66.0",
@@ -56,5 +57,8 @@
     "notion",
     "wysiwyg",
     "wysiwym"
-  ]
+  ],
+  "devDependencies": {
+    "@types/lodash.uniqwith": "^4.5.7"
+  }
 }

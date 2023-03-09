@@ -1,4 +1,4 @@
-import { createYoptaComponent, generateId, getNodeByPath } from '@yopta/editor';
+import { YoptaComponent, generateId, getNodeByPath } from '@yopta/editor';
 import { memo } from 'react';
 import { Editor, Element, Transforms } from 'slate';
 import { RenderElementProps } from 'slate-react';
@@ -14,7 +14,7 @@ const ParagraphRender = memo<RenderElementProps>(({ attributes, children, elemen
 
 ParagraphRender.displayName = 'Paragraph';
 
-const Paragraph = createYoptaComponent({
+const Paragraph = new YoptaComponent({
   type: 'paragraph',
   renderer: (editor) => (props) => <ParagraphRender {...props} />,
   handlers: {
@@ -50,6 +50,8 @@ const Paragraph = createYoptaComponent({
         }
 
         if (hotkeys.isSplitBlock(event)) {
+          console.log('paragraph');
+
           event.preventDefault();
 
           Transforms.splitNodes(editor, { always: true });

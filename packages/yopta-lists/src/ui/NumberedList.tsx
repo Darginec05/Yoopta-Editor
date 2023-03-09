@@ -1,4 +1,5 @@
-import { createYoptaComponent } from '@yopta/editor';
+import { YoptaComponent } from '@yopta/editor';
+import { ListItemList } from './ListItem';
 
 const NumberedListRender = ({ attributes, children }) => {
   return (
@@ -10,12 +11,10 @@ const NumberedListRender = ({ attributes, children }) => {
 
 const NUMBERED_LIST_NODE_TYPE = 'numbered-list';
 
-const NumberedList = createYoptaComponent({
+const NumberedList = new YoptaComponent({
   type: NUMBERED_LIST_NODE_TYPE,
   renderer: (editor) => NumberedListRender,
-  options: {
-    depth: 3,
-  },
+  children: ListItemList,
 });
 
 export { NumberedList };

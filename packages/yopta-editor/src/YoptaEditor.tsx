@@ -73,7 +73,8 @@ const YoptaEditorLib = ({
   const editor = useMemo(() => {
     let editor = withHistory(withReact(createEditor()));
 
-    components.forEach((component) => {
+    components.forEach((item) => {
+      const component = item.getProps;
       editor = component.extendEditor?.(editor) || editor;
     });
 

@@ -25,6 +25,10 @@
   word-wrap: break-word;
 }
 
+.code {
+  background-color: #aaa;
+}
+
 .placeholder:after {
   content: attr(data-placeholder);
   color: #aaa;

@@ -1,4 +1,4 @@
-import Lists, { BulletedList, NumberedList, ListItemList, TodoList, TodoListItem } from './Lists';
+import Lists, { BulletedList, NumberedList, TodoList } from './Lists';
 
 export default Lists;
-export { NumberedList, BulletedList, ListItemList, TodoList, TodoListItem };
+export { NumberedList, BulletedList, TodoList };

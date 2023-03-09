@@ -1,32 +1,37 @@
-import { YoptaEditor } from '@yopta/editor';
+import { YoptaComponent, YoptaEditor } from '@yopta/editor';
 import Blockquote from '@yopta/blockquote';
 import Paragraph from '@yopta/paragraph';
 import Callout from '@yopta/callout';
-import Code, { CodeLine } from '@yopta/code';
+import Code from '@yopta/code';
 import Link from '@yopta/link';
 import Lists from '@yopta/lists';
-import { useState } from 'react';
+import Headings from '@yopta/headings';
+import { useMemo, useState } from 'react';
 import { Descendant } from 'slate';
 
 import s from './styles.module.scss';
 import '@yopta/editor/dist/index.css';
 
-const components = [
-  Paragraph,
-  Blockquote,
-  Callout,
-  Code,
-  Link,
-  CodeLine,
-  Lists.NumberedList,
-  Lists.BulletedList,
-  Lists.ListItemList,
-  Lists.TodoList,
-  Lists.TodoListItem,
-];
-
 const BasicExample = () => {
   const [editorValue, setEditorValue] = useState<Descendant[]>([]);
+
+  const components = useMemo<YoptaComponent[]>(() => {
+    return [
+      Paragraph,
+      Blockquote,
+      // Blockquote.extend({ renderer: (editor) => (props) => <div {...props.attributes}>{props.children}</div> }),
+      Callout,
+      Code,
+      Link,
+      Lists.NumberedList,
+      Lists.BulletedList,
+      Lists.TodoList,
+      Headings.HeadingOne,
+      Headings.HeadingTwo,
+      Headings.HeadingThree,
+      Headings.HeadingThree,
+    ];
+  }, []);
 
   return (
     <div className={s.container}>

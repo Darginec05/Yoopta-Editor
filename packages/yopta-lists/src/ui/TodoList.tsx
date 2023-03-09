@@ -1,5 +1,6 @@
-import { createYoptaComponent } from '@yopta/editor';
+import { YoptaComponent } from '@yopta/editor';
 import s from './TodoList.module.scss';
+import { TodoListItem } from './TodoListItem';
 
 const TodoListRender = ({ attributes, children, element }) => {
   return (
@@ -11,9 +12,10 @@ const TodoListRender = ({ attributes, children, element }) => {
 
 const TODO_LIST_NODE_TYPE = 'todo-list';
 
-const TodoList = createYoptaComponent({
+const TodoList = new YoptaComponent({
   type: TODO_LIST_NODE_TYPE,
   renderer: (editor) => TodoListRender,
+  children: TodoListItem,
 });
 
 export { TodoList };
