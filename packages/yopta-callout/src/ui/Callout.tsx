@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { createYoptaComponent } from '@yopta/editor';
+import { YoptaComponent } from '@yopta/editor';
 import s from './Callout.module.scss';
 
 const CalloutRender = memo<any>(({ attributes, children, element }) => {
@@ -12,7 +12,7 @@ const CalloutRender = memo<any>(({ attributes, children, element }) => {
 
 CalloutRender.displayName = 'Callout';
 
-const Callout = createYoptaComponent({
+const Callout = new YoptaComponent({
   type: 'callout',
   renderer: (editor) => (props) => <CalloutRender {...props} />,
   shortcut: '<',

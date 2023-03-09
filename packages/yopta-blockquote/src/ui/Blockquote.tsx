@@ -1,8 +1,9 @@
 import { memo } from 'react';
-import { createYoptaComponent } from '@yopta/editor';
+import { YoptaComponent } from '@yopta/editor';
 import s from './Blockquote.module.scss';
+import { RenderElementProps } from 'slate-react';
 
-const BlockquoteRender = memo<any>(({ attributes, children, element }) => {
+const BlockquoteRender = memo<RenderElementProps>(({ attributes, children, element }) => {
   return (
     <blockquote draggable={false} className={s.blockquote} {...attributes}>
       {children}
@@ -12,7 +13,7 @@ const BlockquoteRender = memo<any>(({ attributes, children, element }) => {
 
 BlockquoteRender.displayName = 'Blockquote';
 
-const Blockquote = createYoptaComponent({
+const Blockquote = new YoptaComponent({
   type: 'block-quote',
   renderer: (editor) => (props) => <BlockquoteRender {...props} />,
   shortcut: '<',

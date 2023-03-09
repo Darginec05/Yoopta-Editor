@@ -1,3 +1,2 @@
-import { Code, CodeLine } from './Code';
+import { Code } from './Code';
 export default Code;
-export { CodeLine };

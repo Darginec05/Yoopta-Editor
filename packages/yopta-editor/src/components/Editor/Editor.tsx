@@ -1,6 +1,7 @@
 import { Editor, Transforms, Range, Element, NodeEntry } from 'slate';
 import { useCallback, MouseEvent, useMemo, KeyboardEvent } from 'react';
 import cx from 'classnames';
+import uniqWith from 'lodash.uniqwith';
 import { DefaultElement, Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
 import { Toolbar } from './Toolbar/Toolbar';
@@ -15,14 +16,12 @@ import { OutsideClick } from '../OutsideClick';
 import { onCopyYoptaNodes } from '../../utils/copy';
 import { ElementWrapper } from '../ElementWrapper/ElementWrapper';
 import { HOTKEYS } from '../../utils/hotkeys';
-import { YoptaComponent } from '../../utils/component';
+import { YoptaComponent, YoptaComponentType } from '../../utils/component';
 import { getNodeByPath } from '../../utils/nodes';
-import s from './Editor.module.scss';
 import { EditorEventHandlers } from '../../types/eventHandlers';
+import s from './Editor.module.scss';
 
 type YoptaProps = { editor: Editor; placeholder: LibOptions['placeholder']; components: YoptaComponent[] };
-
-const DEFAULT_COMPONENT = getDefaultParagraphLine();
 
 const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
   const { options } = useSettings();
@@ -46,12 +45,30 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
 
   const isReadOnly = disableWhileDrag;
 
+  const yoptaComponents = useMemo(() => {
+    const yoptaComponents: Omit<YoptaComponentType, 'children'>[] = components
+      .map((instance) => {
+        const component = instance.getProps;
+        const { children, ...restComponentProps } = component;
+
+        if (children) {
+          return [restComponentProps, children.getProps];
+        }
+
+        return component;
+      })
+      .flat();
+
+    const uniqueComponents = uniqWith(yoptaComponents, (a, b) => a.type === b.type);
+    return uniqueComponents;
+  }, [components, editor]);
+
   const renderElement = useMemo(() => {
     return (props: RenderElementProps) => {
-      for (let i = 0; i < components.length; i++) {
-        const component = components[i];
-        const renderFn = component.renderer(editor);
+      for (let i = 0; i < yoptaComponents.length; i++) {
+        const component = yoptaComponents[i];
 
+        const renderFn = component.renderer(editor);
         // [TODO] - add strong checker for renderFn
         if (props.element.type === component.type) {
           return (
@@ -64,67 +81,34 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
               {props.children}
             </ElementWrapper>
           );
-
-          // return (
-          //   <ElementHover
-          //     element={props.element}
-          //     attributes={props.attributes}
-          //     // [TODO] - define options in every component
-          //     hideSettings={component.type === 'code-line'}
-          //     isInlineNode={isInline}
-          //     renderElement={() => renderFn(props)}
-          //   >
-          //     {props.children}
-          //   </ElementHover>
-          // );
         }
       }
       return <DefaultElement {...props} />;
     };
-  }, [components, editor]);
+  }, [yoptaComponents, editor]);
 
   const decorate = useMemo(() => {
     return (nodeEntry: NodeEntry) => {
       const ranges: Range[] = [];
       const [node] = nodeEntry;
 
-      for (let index = 0; index < components.length; index++) {
-        const component = components[index];
+      for (let i = 0; i < yoptaComponents.length; i++) {
+        const component = yoptaComponents[i];
         const decoratorFn = component.decorator;
 
         if (typeof decoratorFn === 'function' && Element.isElement(node) && node.type === component.type) {
           ranges.push(...decoratorFn(editor)(nodeEntry));
         }
       }
-
       return ranges;
     };
-  }, [components, editor]);
-
-  const eventHandlers = useMemo<EditorEventHandlers>(() => {
-    const events = components.map((component) => Object.keys(component.handlers || {})).flat();
-    const eventHandlersMap = {};
-    // [TODO] - defaultComponent move to common event handler to avoid repeated id's
-    const handlersOptions = { hotkeys: HOTKEYS, defaultComponent: DEFAULT_COMPONENT };
-
-    events.forEach((eventType) => {
-      eventHandlersMap[eventType] = function (event) {
-        components.forEach((component) => {
-          if (component.handlers && Object.keys(component.handlers).length > 0) {
-            component.handlers[eventType]?.(editor, handlersOptions)?.(event);
-          }
-        });
-      };
-    });
-
-    return eventHandlersMap;
-  }, [components, editor]);
+  }, [yoptaComponents, editor]);
 
   const renderLeaf = useMemo(() => {
     return (leafProps: RenderLeafProps) => {
       const props = { ...leafProps };
 
-      components.forEach((component) => {
+      yoptaComponents.forEach((component) => {
         if (component.leaf) {
           const leafChildren = component.leaf(editor)(props);
           if (leafChildren) props.children = leafChildren;
@@ -133,7 +117,36 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
 
       return <TextLeaf {...props} />;
     };
-  }, [components, editor]);
+  }, [yoptaComponents, editor]);
+
+  // TODO - fix child event handlers!!!!
+  const eventHandlers = useMemo<EditorEventHandlers>(() => {
+    console.log('yoptaComponents', yoptaComponents);
+
+    // merge child handlers in map func
+    const events = yoptaComponents
+      .map((component) => Object.keys(component.handlers || {}))
+      .flat()
+      .filter((event, i, self) => self.indexOf(event) === i);
+
+    const eventHandlersMap = {};
+
+    // [TODO] - defaultComponent move to common event handler to avoid repeated id's
+    const handlersOptions = { hotkeys: HOTKEYS, defaultComponent: getDefaultParagraphLine() };
+
+    events.forEach((eventType) => {
+      eventHandlersMap[eventType] = function handler(event) {
+        yoptaComponents.forEach((component) => {
+          if (!!component.handlers && Object.keys(component.handlers).length > 0) {
+            const eventHandler = component.handlers[eventType](editor, handlersOptions);
+            eventHandler(event);
+          }
+        });
+      };
+    });
+
+    return eventHandlersMap;
+  }, [yoptaComponents, editor]);
 
   const onKeyUp = useCallback(
     (event) => {
@@ -301,6 +314,7 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
           autoFocus
           id="yopta-contenteditable"
           onCopy={onCopyYoptaNodes}
+          // onKeyDown={onKeyDown}
           {...eventHandlers}
         />
       </div>

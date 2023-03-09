@@ -1,6 +1,5 @@
-import Prism from 'prismjs';
-import { Editor, Element, Transforms } from 'slate';
-import { createYoptaComponent, getNodeByPath } from '@yopta/editor';
+import { Editor, Element, Range, Transforms } from 'slate';
+import { YoptaComponent, getNodeByPath } from '@yopta/editor';
 import { CodeLeaf } from './ui/CodeLeaf';
 import { CodeRender } from './ui/CodeRender';
 import { CodeLineRender } from './ui/CodeLineRender';
@@ -9,13 +8,7 @@ import { codeLineDecorator } from './utils/decorator';
 const CODE_NODE_TYPE = 'code';
 const CODE_LINE_NODE_TYPE = 'code-line';
 
-const Code = createYoptaComponent({
-  type: CODE_NODE_TYPE,
-  renderer: CodeRender,
-  shortcut: '<',
-});
-
-const CodeLine = createYoptaComponent({
+const CodeLine = new YoptaComponent({
   type: CODE_LINE_NODE_TYPE,
   renderer: CodeLineRender,
   leaf: () => CodeLeaf,
@@ -49,9 +42,13 @@ const CodeLine = createYoptaComponent({
             match: (n) => Element.isElement(n) && n.type === CODE_NODE_TYPE,
           });
 
-          console.log(codeEntry);
-
           if (!codeEntry) return;
+
+          if (Range.isExpanded(editor.selection)) {
+            Transforms.select(editor, []);
+            return;
+          }
+
           Transforms.select(editor, codeEntry[1]);
           return;
         }
@@ -65,6 +62,13 @@ const CodeLine = createYoptaComponent({
         // }
       },
   },
+});
+
+const Code = new YoptaComponent({
+  type: CODE_NODE_TYPE,
+  renderer: CodeRender,
+  shortcut: '<',
+  children: CodeLine,
 });
 
 export { Code, CodeLine };

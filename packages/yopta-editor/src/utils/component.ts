@@ -11,8 +11,8 @@ export type HandlersOptions = {
 };
 
 export type ElementType = {
-  type: 'block' | 'inline';
-  isVoid: boolean;
+  type?: 'block' | 'inline';
+  isVoid?: boolean;
 };
 
 export type DecoratorFn = (nodeEntry: NodeEntry) => Range[];
@@ -25,9 +25,8 @@ export type YoptaComponentHandlers = {
 
 type Options = Record<string, unknown>;
 
-export type YoptaComponent = {
+export type YoptaComponentType = {
   type: string;
-  // renderer: (editor: CustomEditor) => (props: RenderElementProps) => ReactNode;
   renderer: (editor: CustomEditor) => (props: RenderElementProps) => ReactElement;
   shortcut?: string;
   decorator?: (editor: CustomEditor) => DecoratorFn;
@@ -36,16 +35,23 @@ export type YoptaComponent = {
   extendEditor?: (editor: CustomEditor) => CustomEditor;
   leaf?: (editor: CustomEditor) => (props: RenderLeafProps) => any;
   options?: Options;
+  children?: YoptaComponent;
 };
 
-export const createYoptaComponent = (component: YoptaComponent): YoptaComponent => {
-  const { type = 'block', isVoid = false } = component.element || {};
+export class YoptaComponent {
+  #props: YoptaComponentType;
 
-  return {
-    ...component,
-    element: {
-      type,
-      isVoid,
-    },
-  };
-};
+  constructor(inputComponent: YoptaComponentType) {
+    this.#props = Object.freeze({ ...inputComponent });
+  }
+
+  extend(overrides: Partial<YoptaComponentType>) {
+    const updatedProps = Object.freeze({ ...this.#props, ...overrides });
+
+    return new YoptaComponent(updatedProps);
+  }
+
+  get getProps(): YoptaComponentType {
+    return this.#props;
+  }
+}
