@@ -94,17 +94,17 @@ const YoptaEditorLib = ({
   useEffect(() => {
     if (!autoFocus) return;
 
-    if (!editor.selection && editor.children.length > 0) {
-      const focusTimeout = setTimeout(() => {
-        const firstNode: any = editor.children[0];
-        const isList = LIST_TYPES.includes(firstNode.type);
+    // if (!editor.selection && editor.children.length > 0) {
+    //   const focusTimeout = setTimeout(() => {
+    //     const firstNode: any = editor.children[0];
+    //     const isList = LIST_TYPES.includes(firstNode.type);
 
-        Transforms.select(editor, { path: isList ? [0, 0, 0] : [0, 0], offset: 0 });
-        ReactEditor.focus(editor);
-      }, 0);
+    //     Transforms.select(editor, { path: isList ? [0, 0, 0] : [0, 0], offset: 0 });
+    //     ReactEditor.focus(editor);
+    //   }, 0);
 
-      return () => clearTimeout(focusTimeout);
-    }
+    //   return () => clearTimeout(focusTimeout);
+    // }
   }, [autoFocus]);
 
   const onChangeValue = useCallback(

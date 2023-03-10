@@ -1,5 +1,5 @@
 import { Editor, Transforms, Range, Element, NodeEntry } from 'slate';
-import { useCallback, MouseEvent, useMemo, KeyboardEvent } from 'react';
+import { useCallback, MouseEvent, useMemo } from 'react';
 import cx from 'classnames';
 import uniqWith from 'lodash.uniqwith';
 import { DefaultElement, Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
@@ -50,12 +50,7 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
       .map((instance) => {
         const component = instance.getProps;
         const { children, ...restComponentProps } = component;
-
-        if (children) {
-          return [restComponentProps, children.getProps];
-        }
-
-        return component;
+        return children ? [restComponentProps, children.getProps] : component;
       })
       .flat();
 
@@ -92,14 +87,14 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
       const ranges: Range[] = [];
       const [node] = nodeEntry;
 
-      for (let i = 0; i < yoptaComponents.length; i++) {
-        const component = yoptaComponents[i];
+      yoptaComponents.forEach((component) => {
         const decoratorFn = component.decorator;
 
         if (typeof decoratorFn === 'function' && Element.isElement(node) && node.type === component.type) {
           ranges.push(...decoratorFn(editor)(nodeEntry));
         }
-      }
+      });
+
       return ranges;
     };
   }, [yoptaComponents, editor]);
@@ -119,11 +114,7 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
     };
   }, [yoptaComponents, editor]);
 
-  // TODO - fix child event handlers!!!!
   const eventHandlers = useMemo<EditorEventHandlers>(() => {
-    console.log('yoptaComponents', yoptaComponents);
-
-    // merge child handlers in map func
     const events = yoptaComponents
       .map((component) => Object.keys(component.handlers || {}))
       .flat()
