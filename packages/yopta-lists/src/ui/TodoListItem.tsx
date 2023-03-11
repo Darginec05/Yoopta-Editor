@@ -39,6 +39,7 @@ const TodoListItemRender = (editor: Editor) => {
 const TodoListItem = new YoptaComponent({
   type: TODO_LIST_NODE_ITEM_TYPE,
   renderer: TodoListItemRender,
+  shortcut: '[]',
   handlers: {
     onKeyDown:
       (editor, { hotkeys, defaultComponent }) =>

@@ -15,6 +15,7 @@ HeadingRender.displayName = 'HeadingOne';
 const HeadingOne = new YoptaComponent({
   type: 'heading-one',
   renderer: (editor) => HeadingRender,
+  shortcut: 'h1',
 });
 
 export { HeadingOne };

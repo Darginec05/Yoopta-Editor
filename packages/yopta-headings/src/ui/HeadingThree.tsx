@@ -15,6 +15,7 @@ HeadingThreeRender.displayName = 'HeadingThree';
 const HeadingThree = new YoptaComponent({
   type: 'heading-three',
   renderer: (editor) => HeadingThreeRender,
+  shortcut: 'h3',
 });
 
 export { HeadingThree };

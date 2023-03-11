@@ -15,6 +15,7 @@ HeadingTwoRender.displayName = 'HeadingTwo';
 const HeadingTwo = new YoptaComponent({
   type: 'heading-two',
   renderer: (editor) => HeadingTwoRender,
+  shortcut: 'h2',
 });
 
 export { HeadingTwo };
