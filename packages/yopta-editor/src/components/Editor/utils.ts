@@ -152,22 +152,6 @@ export const getAbsPositionBySelection = (element) => {
   };
 };
 
-export const KEYBOARD_SHORTCUTS = {
-  '*': ELEMENT_TYPES_MAP['list-item'],
-  '-': ELEMENT_TYPES_MAP['list-item'],
-  '+': ELEMENT_TYPES_MAP['list-item'],
-  '1.': ELEMENT_TYPES_MAP['list-item'],
-  '>': ELEMENT_TYPES_MAP['block-quote'],
-  '<': ELEMENT_TYPES_MAP.callout,
-  bug: ELEMENT_TYPES_MAP.code,
-  '#': ELEMENT_TYPES_MAP['heading-one'],
-  h1: ELEMENT_TYPES_MAP['heading-one'],
-  '##': ELEMENT_TYPES_MAP['heading-two'],
-  h2: ELEMENT_TYPES_MAP['heading-two'],
-  '###': ELEMENT_TYPES_MAP['heading-three'],
-  h3: ELEMENT_TYPES_MAP['heading-three'],
-};
-
 // eslint-disable-next-line no-confusing-arrow
 export const capitalizeFirstLetter = (string?: string): string | undefined =>
   string ? string.charAt(0).toUpperCase() + string.slice(1) : undefined;

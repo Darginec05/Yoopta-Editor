@@ -1,8 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { Editor, Element, Range, Transforms, Node, Path } from 'slate';
-import { BulletedListElement, NumberedListElement } from './types';
-import { KEYBOARD_SHORTCUTS, addLinkNode, deserializeHTML } from './utils';
-import { ELEMENT_TYPES_MAP, VOID_ELEMENTS } from './constants';
+import { deserializeHTML } from './utils';
+import { VOID_ELEMENTS } from './constants';
 import { generateId } from '../../utils/generateId';
 
 export const withVoidNodes = (editor: Editor) => {
@@ -56,64 +55,6 @@ export const withVoidNodes = (editor: Editor) => {
 
   return editor;
 };
-
-export const withShortcuts = (editor: Editor) => {
-  const { insertText } = editor;
-
-  editor.insertText = (text: string) => {
-    const { selection } = editor;
-
-    if (text === ' ' && selection && Range.isCollapsed(selection)) {
-      const { anchor } = selection;
-
-      const block: any = Editor.above(editor, {
-        match: (n) => Element.isElement(n) && Editor.isBlock(editor, n),
-      });
-
-      if (block?.[0].type === ELEMENT_TYPES_MAP['list-item']) {
-        return insertText(text);
-      }
-
-      const path = block ? block[1] : [];
-      const start = Editor.start(editor, path);
-      const range = { anchor, focus: start };
-      const beforeText = Editor.string(editor, range);
-
-      const type = KEYBOARD_SHORTCUTS[beforeText];
-
-      if (type) {
-        Transforms.select(editor, range);
-        Transforms.delete(editor);
-
-        Transforms.setNodes<Element>(
-          editor,
-          { type },
-          {
-            match: (n) => Element.isElement(n) && Editor.isBlock(editor, n),
-          },
-        );
-
-        if (type === 'list-item') {
-          const list: BulletedListElement | NumberedListElement = {
-            id: generateId(),
-            type: beforeText === '-' ? 'bulleted-list' : 'numbered-list',
-            children: [],
-          };
-          Transforms.wrapNodes(editor, list, {
-            match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'list-item',
-          });
-        }
-
-        return;
-      }
-    }
-
-    insertText(text);
-  };
-
-  return editor;
-};
-
 export const withFixDeleteFragment = (editor: Editor) => {
   // Fixes https://github.com/ianstormtaylor/slate/issues/3605
   editor.deleteFragment = () => {

@@ -117,7 +117,7 @@ export type CustomElement =
 
 export type CustomNode = Node & { id: string; isVoid?: boolean; type: string };
 
-export type CustomEditor = BaseEditor & ReactEditor & HistoryEditor;
+export type CustomEditor = BaseEditor & ReactEditor & HistoryEditor & { shortcuts?: any };
 
 export type ElementProps = {
   attributes?: any;

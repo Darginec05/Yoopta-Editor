@@ -4,19 +4,19 @@ import { Editor, Element, Transforms } from 'slate';
 import { RenderElementProps } from 'slate-react';
 import s from './Paragraph.module.scss';
 
-const ParagraphRender = memo<RenderElementProps>(({ attributes, children, element }) => {
+const ParagraphRender = ({ attributes, children, element }) => {
   return (
     <p draggable={false} className={s.paragraph} {...attributes}>
       {children}
     </p>
   );
-});
+};
 
 ParagraphRender.displayName = 'Paragraph';
 
 const Paragraph = new YoptaComponent({
   type: 'paragraph',
-  renderer: (editor) => (props) => <ParagraphRender {...props} />,
+  renderer: (editor) => ParagraphRender,
   handlers: {
     onKeyDown:
       (editor, { hotkeys }) =>
@@ -35,29 +35,27 @@ const Paragraph = new YoptaComponent({
 
         const text = Editor.string(editor, paragraphEntry[1]);
 
-        if (hotkeys.isSelect(event)) {
-          event.preventDefault();
+        // if (hotkeys.isSelect(event)) {
+        //   event.preventDefault();
 
-          Transforms.select(editor, text.length === 0 ? [] : paragraphEntry[1]);
-          return;
-        }
+        //   Transforms.select(editor, text.length === 0 ? [] : paragraphEntry[1]);
+        //   return;
+        // }
 
-        if (hotkeys.isSoftBreak(event)) {
-          event.preventDefault();
+        // if (hotkeys.isSoftBreak(event)) {
+        //   event.preventDefault();
 
-          editor.insertText('\n');
-          return;
-        }
+        //   editor.insertText('\n');
+        //   return;
+        // }
 
-        if (hotkeys.isSplitBlock(event)) {
-          console.log('paragraph');
+        // if (hotkeys.isSplitBlock(event)) {
+        //   event.preventDefault();
 
-          event.preventDefault();
-
-          Transforms.splitNodes(editor, { always: true });
-          Transforms.setNodes(editor, { id: generateId() });
-          return;
-        }
+        //   Transforms.splitNodes(editor, { always: true });
+        //   Transforms.setNodes(editor, { id: generateId() });
+        //   return;
+        // }
       },
   },
 });

@@ -1,20 +1,19 @@
 import { useCallback, useEffect, useState, Key, useMemo } from 'react';
 import { withHistory } from 'slate-history';
-import { v4 } from 'uuid';
-import { createEditor, Descendant, Transforms } from 'slate';
-import { ReactEditor, Slate, withReact } from 'slate-react';
+import { createEditor, Descendant } from 'slate';
+import { Slate, withReact } from 'slate-react';
 import { EditorYopta } from './components/Editor/Editor';
 import { ScrollProvider } from './contexts/ScrollContext/ScrollContext';
-import { withShortcuts, withVoidNodes, withFixDeleteFragment, withCopyPasting } from './components/Editor/plugins';
+// import { withVoidNodes, withFixDeleteFragment, withCopyPasting } from './components/Editor/plugins';
 import { ActionMenuProvider } from './contexts/ActionMenuContext/ActionMenuContext';
 import { SettingsProvider } from './contexts/SettingsContext/SettingsContext';
 import NoSSR from './components/NoSsr/NoSsr';
 import type { LibOptions } from './contexts/SettingsContext/SettingsContext';
 import { NodeSettingsProvider } from './contexts/NodeSettingsContext/NodeSettingsContext';
-import { isValidYoptaNodes } from './utils/validate';
-import { LIST_TYPES } from './components/Editor/constants';
-import { YoptaComponent } from './utils/component';
-import { generateId } from './utils/generateId';
+import { YoptaComponent, YoptaComponentType } from './utils/component';
+import { getInitialState, getStorageName } from './utils/storage';
+import { withShortcuts } from './components/Editor/plugins/shortcuts';
+import uniqWith from 'lodash.uniqwith';
 
 type Props = {
   onChange: (_value: Descendant[]) => void;
@@ -22,40 +21,8 @@ type Props = {
   key?: Key;
   scrollElementSelector?: string;
   components: YoptaComponent[];
+  readOnly?: boolean;
 } & LibOptions;
-
-const DEFAULT_YOPTA_LS_NAME = 'yopta-content';
-
-const getStorageName = (shouldStoreInLocalStorage: LibOptions['shouldStoreInLocalStorage']) => {
-  if (typeof shouldStoreInLocalStorage === 'object' && shouldStoreInLocalStorage.name) {
-    return shouldStoreInLocalStorage.name;
-  }
-
-  return DEFAULT_YOPTA_LS_NAME;
-};
-
-const getInitialState = (
-  shouldStoreInLocalStorage: LibOptions['shouldStoreInLocalStorage'],
-  storageName: string,
-  value?: Descendant[],
-): Descendant[] => {
-  const DEFAULT_STATE = [{ id: generateId(), type: 'paragraph', children: [{ text: '' }] }] as Descendant[];
-  const defaultValue = isValidYoptaNodes(value) ? value : DEFAULT_STATE;
-
-  if (!shouldStoreInLocalStorage) {
-    localStorage.removeItem(storageName);
-    return defaultValue as Descendant[];
-  }
-
-  try {
-    const storedData = JSON.parse(localStorage.getItem(storageName) || '[]');
-
-    return isValidYoptaNodes(storedData) ? storedData : defaultValue;
-  } catch (error) {
-    localStorage.removeItem(storageName);
-    return DEFAULT_STATE;
-  }
-};
 
 const YoptaEditorLib = ({
   onChange,
@@ -65,21 +32,11 @@ const YoptaEditorLib = ({
   scrollElementSelector,
   autoFocus = true,
   components,
+  readOnly,
   ...options
 }: Props) => {
   const storageName = getStorageName(options.shouldStoreInLocalStorage);
   const [val, setVal] = useState(() => getInitialState(options.shouldStoreInLocalStorage, storageName, value));
-
-  const editor = useMemo(() => {
-    let editor = withHistory(withReact(createEditor()));
-
-    components.forEach((item) => {
-      const component = item.getProps;
-      editor = component.extendEditor?.(editor) || editor;
-    });
-
-    return editor;
-  }, [components]);
 
   // const [editor] = useState<CustomEditor>(() =>
   //   withHistory(
@@ -91,21 +48,21 @@ const YoptaEditorLib = ({
   //   ),
   // );
 
-  useEffect(() => {
-    if (!autoFocus) return;
+  // useEffect(() => {
+  //   if (!autoFocus) return;
 
-    // if (!editor.selection && editor.children.length > 0) {
-    //   const focusTimeout = setTimeout(() => {
-    //     const firstNode: any = editor.children[0];
-    //     const isList = LIST_TYPES.includes(firstNode.type);
+  // if (!editor.selection && editor.children.length > 0) {
+  //   const focusTimeout = setTimeout(() => {
+  //     const firstNode: any = editor.children[0];
+  //     const isList = LIST_TYPES.includes(firstNode.type);
 
-    //     Transforms.select(editor, { path: isList ? [0, 0, 0] : [0, 0], offset: 0 });
-    //     ReactEditor.focus(editor);
-    //   }, 0);
+  //     Transforms.select(editor, { path: isList ? [0, 0, 0] : [0, 0], offset: 0 });
+  //     ReactEditor.focus(editor);
+  //   }, 0);
 
-    //   return () => clearTimeout(focusTimeout);
-    // }
-  }, [autoFocus]);
+  //   return () => clearTimeout(focusTimeout);
+  // }
+  // }, [autoFocus]);
 
   const onChangeValue = useCallback(
     (data: Descendant[]) => {
@@ -127,13 +84,43 @@ const YoptaEditorLib = ({
     [options.shouldStoreInLocalStorage],
   );
 
+  const yoptaComponents = useMemo(() => {
+    const yoptaComponents: Omit<YoptaComponentType, 'children'>[] = components
+      .map((instance) => {
+        const component = instance.getProps;
+        const { children, ...restComponentProps } = component;
+        return children ? [restComponentProps, children.getProps] : component;
+      })
+      .flat();
+
+    const uniqueComponents = uniqWith(yoptaComponents, (a, b) => a.type === b.type);
+    return uniqueComponents;
+  }, [components]);
+
+  const editor = useMemo(() => {
+    let editor = withHistory(withShortcuts(withReact(createEditor())));
+
+    const shortcutMap = {};
+
+    yoptaComponents.forEach((component) => {
+      if (component.shortcut) {
+        shortcutMap[component.shortcut] = component.type;
+      }
+
+      editor = component.extendEditor?.(editor) || editor;
+    });
+
+    editor.shortcuts = shortcutMap;
+    return editor;
+  }, [components]);
+
   return (
     <Slate editor={editor} value={val} onChange={onChangeValue} key={key}>
       <SettingsProvider options={options}>
         <ScrollProvider scrollElementSelector={scrollElementSelector}>
           <ActionMenuProvider>
             <NodeSettingsProvider>
-              <EditorYopta editor={editor} placeholder={placeholder} components={components} />
+              <EditorYopta editor={editor} placeholder={placeholder} components={yoptaComponents} />
             </NodeSettingsProvider>
           </ActionMenuProvider>
         </ScrollProvider>
@@ -142,10 +129,16 @@ const YoptaEditorLib = ({
   );
 };
 
-const YoptaEditor = (props: Props) => (
-  <NoSSR>
-    <YoptaEditorLib {...props} />
-  </NoSSR>
-);
+const YoptaEditor = (props: Props) => {
+  if (props.readOnly) {
+    return <YoptaEditorLib {...props} />;
+  }
+
+  return (
+    <NoSSR>
+      <YoptaEditorLib {...props} />
+    </NoSSR>
+  );
+};
 
 export { YoptaEditor };
