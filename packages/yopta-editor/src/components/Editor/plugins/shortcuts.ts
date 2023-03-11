@@ -1,23 +1,6 @@
 import { Element } from 'slate';
 import { Editor, Range, Transforms } from 'slate';
 import { generateId } from '../../../utils/generateId';
-import { ELEMENT_TYPES_MAP } from '../constants';
-
-export const KEYBOARD_SHORTCUTS = {
-  '*': ELEMENT_TYPES_MAP['list-item'],
-  '-': ELEMENT_TYPES_MAP['list-item'],
-  '+': ELEMENT_TYPES_MAP['list-item'],
-  '1.': ELEMENT_TYPES_MAP['list-item'],
-  '>': ELEMENT_TYPES_MAP['block-quote'],
-  '<': ELEMENT_TYPES_MAP.callout,
-  bug: ELEMENT_TYPES_MAP.code,
-  '#': ELEMENT_TYPES_MAP['heading-one'],
-  h1: ELEMENT_TYPES_MAP['heading-one'],
-  '##': ELEMENT_TYPES_MAP['heading-two'],
-  h2: ELEMENT_TYPES_MAP['heading-two'],
-  '###': ELEMENT_TYPES_MAP['heading-three'],
-  h3: ELEMENT_TYPES_MAP['heading-three'],
-};
 
 export const withShortcuts = (editor: Editor) => {
   const { insertText } = editor;
