@@ -17,9 +17,9 @@ const BasicExample = () => {
 
   const components = useMemo<YoptaComponent[]>(() => {
     return [
+      // Blockquote.extend({ renderer: (editor) => (props) => <div {...props.attributes}>{props.children}</div> }),
       Paragraph,
       Blockquote,
-      // Blockquote.extend({ renderer: (editor) => (props) => <div {...props.attributes}>{props.children}</div> }),
       Callout,
       Code,
       Link,
@@ -28,7 +28,6 @@ const BasicExample = () => {
       Lists.TodoList,
       Headings.HeadingOne,
       Headings.HeadingTwo,
-      Headings.HeadingThree,
       Headings.HeadingThree,
     ];
   }, []);

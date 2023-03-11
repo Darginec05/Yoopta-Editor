@@ -1,7 +1,6 @@
 import { ChangeEvent, useEffect } from 'react';
 import { Element, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
-import cx from 'classnames';
 import { CustomEditor } from '@yopta/editor/dist/components/Editor/types';
 import s from './CodeRender.module.scss';
 
@@ -18,6 +17,7 @@ import 'prismjs/components/prism-java';
 import 'prism-material-themes/themes/material-default.css';
 
 import { LanguageSelect } from './LanguageSelect';
+import { cx } from '@yopta/editor';
 
 // [TODO] - make dynamic loading to reduce bundlesize of @yopta/code
 // function highlight(lang: string) {
@@ -46,6 +46,10 @@ const CodeRender = (editor: CustomEditor) => {
     return (
       <code className={s.code} {...attributes}>
         <pre className={cx(s.pre, `language-${element.language}`)}>
+          {/* [TODO] - it could needed feature */}
+          <span contentEditable={false} className={s.filename}>
+            /code/index.tsx
+          </span>
           {children}
           <LanguageSelect value={element.language} onChange={onChange} />
         </pre>

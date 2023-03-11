@@ -1,4 +1,6 @@
 import { YoptaComponent } from './utils/component';
+import classnames from 'classnames';
+export { classnames as cx };
 
 export { YoptaEditor } from './YoptaEditor';
 export { isValidYoptaNodes } from './utils/validate';

@@ -11,3 +11,12 @@
 .pre {
   padding: 34px 16px 32px 32px !important;
 }
+
+.filename {
+  position: absolute;
+  left: 16px;
+  top: 8px;
+  display: flex;
+  user-select: none;
+  font-size: 12px;
+}

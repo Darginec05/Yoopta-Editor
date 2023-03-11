@@ -24,9 +24,13 @@ const CodeLine = new YoptaComponent({
 
         if (node.type !== CODE_LINE_NODE_TYPE) return;
 
-        if (hotkeys.isIndent(event)) {
-          console.log(event);
+        if (hotkeys.isSplitBlock(event)) {
+          event.preventDefault();
+          Editor.insertBreak(editor);
+          return;
+        }
 
+        if (hotkeys.isIndent(event)) {
           event.preventDefault();
 
           const text = ' '.repeat(2);
@@ -53,13 +57,12 @@ const CodeLine = new YoptaComponent({
           return;
         }
 
-        // if (hotkeys.isSoftBreak(event)) {
-        //   event.preventDefault();
+        if (hotkeys.isSoftBreak(event)) {
+          event.preventDefault();
 
-        //   Transforms.splitNodes(editor, { always: true });
-        //   Transforms.setNodes(editor, defaultComponent);
-        //   return;
-        // }
+          // [TODO] go to next root node
+          return;
+        }
       },
   },
 });
@@ -67,7 +70,7 @@ const CodeLine = new YoptaComponent({
 const Code = new YoptaComponent({
   type: CODE_NODE_TYPE,
   renderer: CodeRender,
-  shortcut: '<',
+  shortcut: 'hw',
   children: CodeLine,
 });
 
