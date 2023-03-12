@@ -13,6 +13,7 @@ import { NodeSettingsProvider } from './contexts/NodeSettingsContext/NodeSetting
 import { YoptaComponent, YoptaComponentType } from './utils/component';
 import { getInitialState, getStorageName } from './utils/storage';
 import { withShortcuts } from './components/Editor/plugins/shortcuts';
+import { withVoidNodes } from './components/Editor/plugins/voids';
 import uniqWith from 'lodash.uniqwith';
 
 type Props = {
@@ -99,6 +100,7 @@ const YoptaEditorLib = ({
 
   const editor = useMemo(() => {
     let editor = withHistory(withShortcuts(withReact(createEditor())));
+    // let editor = withHistory(withVoidNodes(withShortcuts(withReact(createEditor()))));
 
     const shortcutMap = {};
 
