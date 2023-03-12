@@ -1,0 +1,105 @@
+.container {
+  position: fixed;
+  left: 64px;
+  position: fixed;
+  top: 120px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  min-width: 540px;
+  max-width: calc(100vw - 24px);
+  height: 100%;
+  max-height: 420px;
+  box-shadow: rgb(15 15 15 / 5%) 0px 0px 0px 1px, rgb(15 15 15 / 10%) 0px 3px 6px, rgb(15 15 15 / 20%) 0px 9px 24px;
+}
+
+.tabs {
+  width: 100%;
+  display: flex;
+  font-size: 14px;
+  width: 100%;
+  padding: 0 8px;
+  box-shadow: rgb(55 53 47 / 9%) 0px -1px 0px inset;
+  position: relative;
+  z-index: 1;
+  height: 40px;
+}
+
+.tab {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  white-space: nowrap;
+  min-width: 0px;
+  flex-shrink: 0;
+  color: rgb(55, 53, 47);
+  position: relative;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+  background-color: inherit;
+  transition: height 20ms ease-in 0s;
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.2;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.activeTab {
+  &::after {
+    bottom: 0;
+    content: "";
+    height: 2px;
+    position: absolute;
+    background-color: #37352f;
+    width: 100%;
+    left: 0;
+  }
+}
+
+.uploadContent {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-top: 4px;
+  display: flex;
+  justify-content: center;
+  margin-right: 12px;
+  margin-left: 12px;
+}
+
+.uploader {
+  user-select: none;
+  transition: background 20ms ease-in 0s;
+  white-space: nowrap;
+  border-radius: 4px;
+  height: 32px;
+  padding-left: 12px;
+  padding-right: 12px;
+  border: 1px solid rgba(55, 53, 47, 0.16);
+  width: 100%;
+  cursor: pointer;
+}
+
+.uploaderLabel {
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.uploaderInput {
+  position: absolute;
+  left: 0;
+  top: 0;
+  visibility: hidden;
+}

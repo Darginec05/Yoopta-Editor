@@ -8,6 +8,8 @@
     { "path": "./packages/yopta-code" },
     { "path": "./packages/yopta-lists" },
     { "path": "./packages/yopta-link" },
-    { "path": "./packages/yopta-headings" }
+    { "path": "./packages/yopta-headings" },
+    { "path": "./packages/yopta-video" },
+    { "path": "./packages/yopta-image" }
   ]
 }

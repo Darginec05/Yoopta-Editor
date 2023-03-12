@@ -1,0 +1,17 @@
+.img {
+  display: block;
+  object-fit: cover;
+  border-radius: 1px;
+  pointer-events: auto;
+  width: 100%;
+}
+
+.figure {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.caption {
+  font-size: 14px;
+}
