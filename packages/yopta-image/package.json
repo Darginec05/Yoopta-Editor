@@ -33,5 +33,7 @@
   "bugs": {
     "url": "https://github.com/Darginec05/Editor-Yopta/issues"
   },
-  "dependencies": {}
+  "dependencies": {
+    "re-resizable": "^6.9.9"
+  }
 }

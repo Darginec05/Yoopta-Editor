@@ -35,13 +35,9 @@ const Embed = () => {
   return <div></div>;
 };
 
-const EditorUploader = ({ activeTab = 'upload', onChangeTab, onClose }) => {
+const EditorUploader = ({ activeTab = 'upload', onChangeTab, onChange, onClose }) => {
   const isUploader = activeTab === 'upload';
   const isEmbed = activeTab === 'embed';
-
-  const onChange = (file) => {
-    console.log('onChange file', file);
-  };
 
   return (
     <Overlay onClose={onClose}>

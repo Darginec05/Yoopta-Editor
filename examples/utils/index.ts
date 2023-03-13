@@ -1,7 +1,7 @@
 export const CLOUDINARY = {
-  PRESET: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_PRESET!,
-  API: process.env.NEXT_PUBLIC_CLOUDINARY_API!,
-  CLOUD_NAME: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!,
+  PRESET: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_PRESET! || 'zxlncbgx',
+  API: process.env.NEXT_PUBLIC_CLOUDINARY_API! || 'https://api.cloudinary.com/v1_1/ench-app',
+  CLOUD_NAME: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME! || 'ench-app',
 };
 
 export const uploadToCloudinary = async (file: File, type = 'image'): Promise<{ data: any; url: string }> => {
