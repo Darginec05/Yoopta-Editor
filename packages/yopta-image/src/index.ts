@@ -4,9 +4,7 @@ import { ImageEditor } from './ui/ImageEditor';
 
 const Image = new YoptaComponent({
   type: 'image',
-  // renderer: (editor) => ImageRender,
-  renderer: (editor) => ImageEditor,
-  editorRenderer: (editor) => ImageEditor,
+  renderer: ImageEditor,
   extendEditor(editor) {
     const { isVoid } = editor;
 

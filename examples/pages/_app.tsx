@@ -5,6 +5,7 @@ import { ExampleList } from '../components/ExampleList/ExampleList';
 import { SocialLinks } from '../components/SocialLinks/SocialLinks';
 
 import '../styles/globals.scss';
+import '@yopta/editor/dist/index.css';
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();

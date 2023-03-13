@@ -54,8 +54,9 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
     return (props: RenderElementProps) => {
       for (let i = 0; i < components.length; i++) {
         const component = components[i];
+        const { type, options } = component;
 
-        const renderFn = component.renderer(editor);
+        const renderFn = component.renderer(editor, { type, options });
         // [TODO] - add strong checker for renderFn
         if (props.element.type === component.type) {
           return (

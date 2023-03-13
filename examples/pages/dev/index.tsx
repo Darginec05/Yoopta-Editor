@@ -12,7 +12,7 @@ import { useMemo, useState } from 'react';
 import { Descendant } from 'slate';
 
 import s from './styles.module.scss';
-import '@yopta/editor/dist/index.css';
+import { uploadToCloudinary } from '../../utils';
 
 const BasicExample = () => {
   const [editorValue, setEditorValue] = useState<Descendant[]>([]);
@@ -54,6 +54,8 @@ const BasicExample = () => {
       });
     });
 
+  const onChange = () => {};
+
   const components = useMemo<YoptaComponent[]>(() => {
     return [
       // Blockquote.extend({ renderer: (editor) => (props) => <div {...props.attributes}>{props.children}</div> }),
@@ -68,7 +70,16 @@ const BasicExample = () => {
       Headings.HeadingOne,
       Headings.HeadingTwo,
       Headings.HeadingThree,
-      Image.extend({}),
+      Image.extend({
+        options: {
+          onUpload: async (file: File) => {
+            console.log({ file });
+
+            const data = await uploadToCloudinary(file, 'image');
+            return data;
+          },
+        },
+      }),
       Video,
       // ChatGPT.extend({
       //   API_KEY: process.env.CHAT_GPT,
@@ -106,23 +117,9 @@ const BasicExample = () => {
       <YoptaEditor
         value={editorValue}
         onChange={(val: Descendant[]) => setEditorValue(val)}
-        components={[
-          Paragraph,
-          Blockquote,
-          Callout,
-          Code,
-          Link,
-          Lists.NumberedList,
-          Lists.BulletedList,
-          Lists.TodoList,
-          Headings.HeadingOne,
-          Headings.HeadingTwo,
-          Headings.HeadingThree,
-          Image.extend({
-            renderer: (editor) => (props) => <MyEnhancedImageComponent {...props} />,
-          }),
-          Video,
-        ]}
+        className={s.editor}
+        shouldStoreInLocalStorage={{ name: 'yopta-dev' }}
+        components={components}
       />
       <pre className={s.editor} style={{ display: 'block', padding: '0 64px', whiteSpace: 'pre-wrap' }}>
         {JSON.stringify(editorValue, null, 2)}

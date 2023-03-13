@@ -27,7 +27,10 @@ type Options = Record<string, unknown>;
 
 export type YoptaComponentType = {
   type: string;
-  renderer: (editor: CustomEditor) => (props: RenderElementProps) => ReactElement;
+  renderer: (
+    editor: CustomEditor,
+    component: Pick<YoptaComponentType, 'type' | 'options'>,
+  ) => (props: RenderElementProps) => ReactElement;
   shortcut?: string;
   decorator?: (editor: CustomEditor) => DecoratorFn;
   handlers?: YoptaComponentHandlers;
