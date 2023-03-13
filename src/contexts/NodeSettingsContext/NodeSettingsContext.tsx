@@ -27,7 +27,6 @@ export type NodeSettingsContextHandlers = DragDropHandlers & {
   openNodeSettings: (_dragRef: any, _node: HoveredNode) => void;
   closeNodeSettings: () => void;
   hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => void;
-  hoverOut: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => void;
   triggerPlusButton: (_onFocusCallback: () => void) => void;
   deleteNode: () => void;
   duplicateNode: () => void;
@@ -51,7 +50,6 @@ const NodeSettingsContext = React.createContext<NodeSettingsContextType>([
     openNodeSettings: (_dragRef: any, _node?: HoveredNode) => {},
     closeNodeSettings: () => {},
     hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => {},
-    hoverOut: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => {},
     triggerPlusButton: (_onFocusCallback: () => void) => {},
     deleteNode: () => {},
     duplicateNode: () => {},
@@ -109,11 +107,6 @@ const NodeSettingsProvider = ({ children }) => {
       hoverIn: (e: MouseEvent<HTMLDivElement>, node: CustomElement) => {
         if (isNodeSettingsOpen) return e.preventDefault();
         setHoveredNode(node);
-      },
-
-      hoverOut: (e: MouseEvent<HTMLDivElement>, node: CustomElement) => {
-        if (node.id === hoveredNode?.id || isNodeSettingsOpen) return e.preventDefault();
-        setHoveredNode(null);
       },
 
       changeHoveredNode: (hoverProps: HoveredNode) => setHoveredNode(hoverProps),
