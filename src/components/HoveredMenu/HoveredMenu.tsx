@@ -17,7 +17,7 @@ const ElementHover = ({
   const editor = useSlate();
 
   const [{ hoveredNode, isNodeSettingsOpen, nodeSettingsPos, dndState }, handlers] = useNodeSettingsContext();
-  const { hoverIn, hoverOut, onDrop } = handlers;
+  const { hoverIn, onDrop } = handlers;
 
   const dragState = useMemo(() => {
     if (dndState.fromPath === null || dndState.toPath === null) {
@@ -47,7 +47,6 @@ const ElementHover = ({
   };
 
   const onMouseEnter = (e: MouseEvent<HTMLDivElement>) => hoverIn(e, element);
-  const onMouseLeave = (e: MouseEvent<HTMLDivElement>) => hoverOut(e, element);
 
   if (isInlineNode) return children;
 
@@ -57,7 +56,6 @@ const ElementHover = ({
       data-node-id={element.id}
       data-node-type={element.type}
       onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
       style={styles}
       onDrop={onDrop}
       {...attributes}
