@@ -2,6 +2,7 @@ import { ReactEditor, RenderElementProps } from 'slate-react';
 import UploadIcon from './icons/upload.svg';
 import { useState } from 'react';
 import { EditorUploader } from './EditorUploader';
+import { getAspectRatio } from '../utils/aspect';
 import { Element, Transforms } from 'slate';
 import s from './EditorPlaceholder.module.scss';
 
@@ -15,29 +16,19 @@ const EditorPlaceholder = ({ element, attributes, children, editor, onUpload }: 
 
   const onChange = async (file) => {
     const response = await onUpload(file);
+    const { width, height } = getAspectRatio(response.data.width, response.data.height, 800, 900);
 
     Transforms.setNodes(
       editor,
       {
-        src: response.url,
-        options: { format: response.data.format, size: { width: response.data.width, height: response.data.height } },
+        url: response.url,
+        options: { format: response.data.format, size: { width, height } },
       },
       {
         at: ReactEditor.findPath(editor, element),
         match: (n) => Element.isElement(n) && n.type === 'image',
       },
     );
-
-    //   {
-    //     "width": 2880,
-    //     "height": 1800,
-    //     "format": "png",
-    //     "name": "Screen_Shot_2023-03-12_at_17.59.07_xh6uqv",
-    //     "id": "f2047df4e427c35a5ddcb5be74ccc45c",
-    //     "secure_url": "https://res.cloudinary.com/ench-app/image/upload/v1678651881/Screen_Shot_2023-03-12_at_17.59.07_xh6uqv.png"
-    // }
-
-    // console.log(data);
   };
 
   return (

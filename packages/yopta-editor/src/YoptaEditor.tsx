@@ -99,7 +99,7 @@ const YoptaEditorLib = ({
   }, [components]);
 
   const editor = useMemo(() => {
-    let editor = withHistory(withShortcuts(withReact(createEditor())));
+    let editor = withVoidNodes(withHistory(withShortcuts(withReact(createEditor()))));
     // let editor = withHistory(withVoidNodes(withShortcuts(withReact(createEditor()))));
 
     const shortcutMap = {};
