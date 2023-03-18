@@ -1,22 +1,24 @@
 import s from './Image.module.scss';
 
-const FALLBACK =
-  'https://www.shutterstock.com/image-illustration/military-robot-destroyed-city-future-260nw-1207217143.jpg';
-
 const Image = ({ attributes, element, children, size }) => {
+  const width = size?.width || element.options?.size?.width || '100%';
+  const height = size?.height || element.options?.size?.height || 400;
+
+  const caption = element.options.caption;
+
   return (
-    <div {...attributes} contentEditable={false}>
-      <figure className={s.figure}>
+    <div {...attributes} className={s.imgElement} contentEditable={false} draggable={false}>
+      <figure className={s.figure} onDragStart={(e) => e.preventDefault()}>
         <img
-          src={element.url || FALLBACK}
-          alt={element.alt}
-          width={size.width}
-          height={size.height}
+          src={element.url}
+          alt={caption}
+          width={width}
+          height={height}
           loading="lazy"
           decoding="async"
           className={s.img}
         />
-        <figcaption className={s.caption}>Fig.1 - Trulli, Puglia, Italy.</figcaption>
+        {caption && <figcaption className={s.caption}>{caption}</figcaption>}
       </figure>
       {children}
     </div>
