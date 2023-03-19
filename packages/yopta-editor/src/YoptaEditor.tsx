@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, Key, useMemo } from 'react';
+import { useCallback, useEffect, useState, Key, useMemo, ReactNode } from 'react';
 import { withHistory } from 'slate-history';
 import { createEditor, Descendant } from 'slate';
 import { Slate, withReact } from 'slate-react';
@@ -23,6 +23,7 @@ type Props = {
   scrollElementSelector?: string;
   components: YoptaComponent[];
   readOnly?: boolean;
+  children: ReactNode | ReactNode[];
 } & LibOptions;
 
 const YoptaEditorLib = ({
@@ -34,6 +35,7 @@ const YoptaEditorLib = ({
   autoFocus = true,
   components,
   readOnly,
+  children,
   ...options
 }: Props) => {
   const storageName = getStorageName(options.shouldStoreInLocalStorage);
@@ -99,8 +101,8 @@ const YoptaEditorLib = ({
   }, [components]);
 
   const editor = useMemo(() => {
-    let editor = withVoidNodes(withHistory(withShortcuts(withReact(createEditor()))));
-    // let editor = withHistory(withVoidNodes(withShortcuts(withReact(createEditor()))));
+    let slateEditor = withVoidNodes(withHistory(withShortcuts(withReact(createEditor()))));
+    // let slateEditor = withHistory(withVoidNodes(withShortcuts(withReact(createEditor()))));
 
     const shortcutMap = {};
 
@@ -109,12 +111,13 @@ const YoptaEditorLib = ({
         shortcutMap[component.shortcut] = component.type;
       }
 
-      editor = component.extendEditor?.(editor) || editor;
+      slateEditor = component.extendEditor?.(slateEditor) || slateEditor;
     });
 
-    editor.shortcuts = shortcutMap;
-    return editor;
-  }, [components]);
+    slateEditor.shortcuts = shortcutMap;
+
+    return slateEditor;
+  }, [yoptaComponents]);
 
   return (
     <Slate editor={editor} value={val} onChange={onChangeValue} key={key}>
@@ -122,7 +125,7 @@ const YoptaEditorLib = ({
         <ScrollProvider scrollElementSelector={scrollElementSelector}>
           <ActionMenuProvider>
             <NodeSettingsProvider>
-              <EditorYopta editor={editor} placeholder={placeholder} components={yoptaComponents} />
+              <EditorYopta editor={editor} placeholder={placeholder} components={yoptaComponents} children={children} />
             </NodeSettingsProvider>
           </ActionMenuProvider>
         </ScrollProvider>

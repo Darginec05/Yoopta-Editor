@@ -1,5 +1,5 @@
 import { Editor, Transforms, Range, Element, NodeEntry, Path } from 'slate';
-import { useCallback, MouseEvent, useMemo, KeyboardEvent, MouseEventHandler } from 'react';
+import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, MouseEventHandler, ReactNode } from 'react';
 import { DefaultElement, Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
 import { Toolbar } from './Toolbar/Toolbar';
@@ -23,12 +23,13 @@ type YoptaProps = {
   editor: Editor;
   placeholder: LibOptions['placeholder'];
   components: Omit<YoptaComponentType, 'children'>[];
+  children: ReactNode | ReactNode[];
 };
 
 // [TODO] - defaultComponent move to common event handler to avoid repeated id's
 const handlersOptions = { hotkeys: HOTKEYS, defaultComponent: getDefaultParagraphLine() };
 
-const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
+const EditorYopta = ({ editor, placeholder, children, components }: YoptaProps) => {
   const { options } = useSettings();
   useScrollToElement();
   const [{ disableWhileDrag }, { changeHoveredNode }] = useNodeSettingsContext();
@@ -258,9 +259,11 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
     stopPropagation(e);
   };
 
+  const hasEditorChildren = React.Children.count(children) > 0;
+
   return (
     <div id="yopta-editor" className={options.className} onMouseDown={handleEmptyZoneClick}>
-      <OutsideClick onClose={hideToolbarTools}>
+      {/* <OutsideClick onClose={hideToolbarTools}>
         <Toolbar toolbarRef={toolbarRef} toolbarStyle={toolbarStyle} editor={editor} />
       </OutsideClick>
       <SuggestionElementList
@@ -271,17 +274,26 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
         isOpen={isSuggesstionListOpen}
         changeNodeType={changeNodeType}
         ref={suggestionListRef}
-      />
+      /> */}
+      {hasEditorChildren &&
+        React.Children.map(children, (child) => {
+          if (!React.isValidElement(child)) return null;
+
+          return React.cloneElement(child, {
+            ...child.props,
+            editor,
+          });
+        })}
       <Editable
+        id="yopta-contenteditable"
         renderLeaf={renderLeaf}
         renderElement={renderElement}
         onKeyUp={onKeyUp}
         readOnly={isReadOnly}
-        spellCheck
         decorate={decorate}
-        autoFocus
-        id="yopta-contenteditable"
         onCopy={onCopyYoptaNodes}
+        autoFocus
+        spellCheck
         {...eventHandlers}
         onKeyDown={onKeyDown}
         onMouseDown={onMouseDown}
