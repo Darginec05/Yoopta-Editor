@@ -47,6 +47,7 @@ function ImageEditor(editor, component) {
           setSize({ width: ref.offsetWidth, height: ref.offsetHeight });
         },
         onResizeStop: (e, direction, ref) => {
+          console.log('image editor editor.children', editor.children);
           console.log('ReactEditor.findPath(editor, element)', ReactEditor.findPath(editor, element));
           console.log('element', element);
 
@@ -72,7 +73,7 @@ function ImageEditor(editor, component) {
           ),
         },
       }),
-      [size.width, size.height],
+      [size.width, size.height, editor],
     );
 
     if (!element.url) {

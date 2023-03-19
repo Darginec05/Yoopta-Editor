@@ -19,6 +19,7 @@ import listsPkg from '../packages/yopta-lists/package.json' assert { type: 'json
 import headingsPkg from '../packages/yopta-headings/package.json' assert { type: 'json' };
 import imagePkg from '../packages/yopta-image/package.json' assert { type: 'json' };
 import videoPkg from '../packages/yopta-video/package.json' assert { type: 'json' };
+import suggestionListPkg from '../packages/actionMenu/package.json' assert { type: 'json' };
 
 const isProd = process.env.NODE_ENV === 'production';
 const isDev = process.env.NODE_ENV === 'development';
@@ -34,6 +35,7 @@ const aliases = {
   '@yopta/headings': 'yopta-headings',
   '@yopta/image': 'yopta-image',
   '@yopta/video': 'yopta-video',
+  '@yopta/action-menu-list': 'actionMenu',
 };
 
 /**
@@ -102,6 +104,7 @@ const ListsPkgConfig = createConfig({ pkg: listsPkg });
 const HeadingsPkgConfig = createConfig({ pkg: headingsPkg });
 const ImagePkgConfig = createConfig({ pkg: imagePkg });
 const VideoPkgConfig = createConfig({ pkg: videoPkg });
+const SuggestionListPkgConfig = createConfig({ pkg: suggestionListPkg });
 
 export default [
   CoreConfig,
@@ -114,4 +117,5 @@ export default [
   HeadingsPkgConfig,
   ImagePkgConfig,
   VideoPkgConfig,
+  SuggestionListPkgConfig,
 ];

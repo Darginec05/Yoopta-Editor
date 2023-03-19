@@ -8,6 +8,7 @@ import Lists from '@yopta/lists';
 import Headings from '@yopta/headings';
 import Image from '@yopta/image';
 import Video from '@yopta/video';
+import ActionMenu from '@yopta/action-menu-list';
 import { useMemo, useState } from 'react';
 import { Descendant } from 'slate';
 
@@ -120,7 +121,14 @@ const BasicExample = () => {
         className={s.editor}
         shouldStoreInLocalStorage={{ name: 'yopta-dev' }}
         components={components}
-      />
+      >
+        <ActionMenu
+          items={components}
+          groupRender={(props) => <div>asdasdasd</div>}
+          itemRender={(props) => <div>asdasd</div>}
+          trigger="/"
+        />
+      </YoptaEditor>
       <pre className={s.editor} style={{ display: 'block', padding: '0 64px', whiteSpace: 'pre-wrap' }}>
         {JSON.stringify(editorValue, null, 2)}
       </pre>

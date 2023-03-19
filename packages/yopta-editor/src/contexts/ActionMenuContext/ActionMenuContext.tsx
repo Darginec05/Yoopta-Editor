@@ -94,16 +94,16 @@ const ActionMenuProvider = ({ children }) => {
     const suggesstionListRect = suggestionListRef.current?.getBoundingClientRect();
     if (!selectionRect) return;
 
-    const isOutViewport = selectionRect.top + suggesstionListRect!.height > window.innerHeight;
-    const top = isOutViewport ? 'auto' : selectionRect.top + selectionRect.height + 10;
-    const bottom = isOutViewport ? window.innerHeight - selectionRect.bottom + selectionRect!.height + 10 : 'auto';
+    // const isOutViewport = selectionRect.top + suggesstionListRect!.height > window.innerHeight;
+    // const top = isOutViewport ? 'auto' : selectionRect.top + selectionRect.height + 10;
+    // const bottom = isOutViewport ? window.innerHeight - selectionRect.bottom + selectionRect!.height + 10 : 'auto';
 
-    setSuggestionListProps({
-      open: true,
-      style: style || { left: selectionRect.left, top, bottom, opacity: 1 },
-      ...options,
-    });
-    disableScroll();
+    // setSuggestionListProps({
+    //   open: true,
+    //   style: style || { left: selectionRect.left, top, bottom, opacity: 1 },
+    //   ...options,
+    // });
+    // disableScroll();
   };
 
   const hideSuggestionList = () => {
@@ -144,9 +144,9 @@ const ActionMenuProvider = ({ children }) => {
   };
 
   const updateToolbarView = (style?: CSSProperties) => {
-    const { top, left } = getAbsPositionBySelection(toolbarRef.current);
-    setCurrentBlock();
-    setToolbarProps({ open: true, style: style || { top, left, opacity: 1 } });
+    // const { top, left } = getAbsPositionBySelection(toolbarRef.current);
+    // setCurrentBlock();
+    // setToolbarProps({ open: true, style: style || { top, left, opacity: 1 } });
   };
 
   const showToolbarTools = () => updateToolbarView();

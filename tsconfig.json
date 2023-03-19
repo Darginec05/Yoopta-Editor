@@ -10,6 +10,7 @@
     { "path": "./packages/yopta-link" },
     { "path": "./packages/yopta-headings" },
     { "path": "./packages/yopta-video" },
-    { "path": "./packages/yopta-image" }
+    { "path": "./packages/yopta-image" },
+    { "path": "./packages/actionMenu" }
   ]
 }
