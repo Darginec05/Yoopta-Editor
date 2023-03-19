@@ -118,7 +118,7 @@ const EditorYopta = ({ editor, placeholder, components }: YoptaProps) => {
     events.forEach((eventType) => {
       eventHandlersMap[eventType] = function handler(event) {
         components.forEach((component) => {
-          if (!!component.handlers && Object.keys(component.handlers).length > 0) {
+          if (component.handlers?.[eventType]) {
             const eventHandler = component.handlers[eventType](editor, handlersOptions);
             eventHandler(event);
           }

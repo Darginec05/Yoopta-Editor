@@ -4,7 +4,9 @@ const Image = ({ attributes, element, children, size }) => {
   const width = size?.width || element.options?.size?.width || '100%';
   const height = size?.height || element.options?.size?.height || 400;
 
-  const caption = element.options.caption;
+  const caption = element.options?.caption;
+
+  if (!element.url) return null;
 
   return (
     <div {...attributes} className={s.imgElement} contentEditable={false} draggable={false}>

@@ -28,7 +28,6 @@ const EmbedEditor: FC<Props> = ({ element, attributes, className, children }) =>
       children: [{ text: '' }],
       src: url,
       title: '',
-      isVoid: true,
     };
 
     Transforms.setNodes<EmbedElement>(editor, embed, { at: editor.selection?.anchor, voids: true });

@@ -39,7 +39,7 @@ export const getMatchedNode = (editor: Editor, type: any) => {
 export const isBlockActive = (editor: Editor, type: any) => !!getMatchedNode(editor, type);
 
 // [TODO] - fix deleting '/' after adding or toggling nodes
-export const toggleBlock = (editor: Editor, blockType: any, data: any = { isVoid: false }) => {
+export const toggleBlock = (editor: Editor, blockType: any, data: any) => {
   Editor.withoutNormalizing(editor, () => {
     const isActive = isBlockActive(editor, blockType);
     const isList = LIST_TYPES.includes(blockType);
@@ -49,10 +49,6 @@ export const toggleBlock = (editor: Editor, blockType: any, data: any = { isVoid
       type: isActive ? 'paragraph' : isList ? 'list-item' : blockType,
       ...data,
     };
-
-    if (data.isVoid) {
-      node.type = blockType;
-    }
 
     if (blockType === 'code') {
       node.type = 'code-line';
@@ -157,13 +153,6 @@ export const capitalizeFirstLetter = (string?: string): string | undefined =>
   string ? string.charAt(0).toUpperCase() + string.slice(1) : undefined;
 
 export const getElementClassname = (element) => `yopta-${element.type}`;
-
-export const getMediaAspectRatio = (srcWidth: number, srcHeight: number, maxWidth: number, maxHeight: number) => {
-  if (!srcWidth || !srcHeight) return {};
-  const ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
-
-  return { width: srcWidth * ratio, height: srcHeight * ratio };
-};
 
 export const HTML_ELEMENT_TAGS = {
   A: (el) => ({ type: ELEMENT_TYPES_MAP.link, url: el.getAttribute('href'), id: generateId() }),
@@ -275,18 +264,3 @@ export const getHeadingAnchorFromSlateNode = (element: SlateElement, isEdit?: bo
 
   return validatedString;
 };
-
-const data = [
-  { id: 'let2nctx-cvat63', type: 'paragraph', children: [{ text: "It's title" }], isVoid: false },
-  {
-    id: 'lerh6n49-83hj1h',
-    type: 'numbered-list',
-    children: [{ id: 'lerh6n49-oq56yd', type: 'list-item', children: [{ text: 'asdasdsadas' }], isVoid: false }],
-  },
-  {
-    id: 'lerh6n49-83hasdj1h',
-    type: 'todo-list',
-    children: [{ id: 'lerh6n49-oqczm', children: [{ text: 'check list' }], isVoid: false }],
-  },
-  { id: 'let2nctx-cvat63', type: 'paragraph', children: [{ text: '' }], isVoid: false },
-];

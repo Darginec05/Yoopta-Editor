@@ -3,7 +3,7 @@ import { Resizable, ResizableProps } from 're-resizable';
 import { ReactEditor, RenderElementProps, useFocused, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
 import { Image } from './Image';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { cx } from '@yopta/editor';
 import s from './ImageEditor.module.scss';
 
@@ -76,14 +76,14 @@ function ImageEditor(editor, component) {
     );
 
     if (!element.url) {
-      return <EditorPlaceholder {...props} editor={editor} onUpload={component.options.onUpload} />;
+      return <EditorPlaceholder {...props} editor={editor} onChange={component.options.onChange} />;
     }
 
     const hasCaption = !!element.options.caption;
 
     return (
       <div contentEditable={false} draggable={false} className={cx(s.root, { [s.extraMargin]: hasCaption })}>
-        <Resizable {...resizeProps} style={{ margin: '0 auto' }}>
+        <Resizable {...resizeProps} className={s.resizeLib}>
           <Image {...props} size={size} />
           <div className={cx(s.selectImg, { [s.selected]: selected })} />
         </Resizable>
