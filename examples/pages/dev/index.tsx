@@ -72,7 +72,7 @@ const BasicExample = () => {
       Headings.HeadingThree,
       Image.extend({
         options: {
-          onUpload: async (file: File) => {
+          onChange: async (file: File) => {
             console.log({ file });
 
             const data = await uploadToCloudinary(file, 'image');

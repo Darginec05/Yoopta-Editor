@@ -53,7 +53,6 @@ export type ImageElement = {
   'data-src'?: string | ArrayBuffer | null | any;
   children: EmptyText[];
   options: any;
-  isVoid: boolean;
 };
 
 export type LinkElement = { id: string; type: 'link'; url: string; children: Descendant[] };
@@ -78,7 +77,6 @@ export type VideoElement = {
   'data-src'?: string | ArrayBuffer | null | any;
   children: EmptyText[];
   options: any;
-  isVoid: boolean;
 };
 
 export type EmbedElement = {
@@ -87,7 +85,6 @@ export type EmbedElement = {
   src: string;
   title?: string;
   children: EmptyText[];
-  isVoid: boolean;
 };
 
 export type CodeElement = {
@@ -115,7 +112,7 @@ export type CustomElement =
   | VideoElement
   | EmbedElement;
 
-export type CustomNode = Node & { id: string; isVoid?: boolean; type: string };
+export type CustomNode = Node & { id: string; type: string };
 
 export type CustomEditor = BaseEditor & ReactEditor & HistoryEditor & { shortcuts?: any };
 

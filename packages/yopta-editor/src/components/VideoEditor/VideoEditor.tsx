@@ -51,7 +51,6 @@ const VideoEditor: FC<Props> = ({ element, attributes, className, children }) =>
         children: [{ text: '' }],
         'data-src': dataSrc,
         src: null,
-        isVoid: true,
       };
 
       Transforms.setNodes(editor, video, { at: editor.selection?.anchor });

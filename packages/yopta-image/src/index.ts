@@ -1,4 +1,5 @@
-import { YoptaComponent } from '@yopta/editor';
+import { getNodeByPath, YoptaComponent } from '@yopta/editor';
+import { Transforms } from 'slate';
 import { Image as ImageRender } from './ui/Image';
 import { ImageEditor } from './ui/ImageEditor';
 
@@ -18,6 +19,21 @@ const Image = new YoptaComponent({
   element: {
     isVoid: true,
     type: 'block',
+  },
+  handlers: {
+    onKeyDown:
+      (editor, { defaultComponent, hotkeys }) =>
+      (event) => {
+        const currentNode = getNodeByPath(editor, editor.selection?.anchor.path, 'highest');
+        if (currentNode.type !== 'image' || !editor.selection) return;
+
+        if (hotkeys.isSplitBlock(event)) {
+          event.preventDefault();
+
+          Transforms.insertNodes(editor, defaultComponent, { mode: 'highest' });
+          return;
+        }
+      },
   },
 });
 

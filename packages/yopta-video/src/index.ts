@@ -6,7 +6,7 @@ const Video = new YoptaComponent({
   type: 'video',
   // renderer: (editor) => VideoRender,
   renderer: (editor) => VideoEditor,
-  editorRenderer: (editor) => VideoEditor,
+  // editorRenderer: (editor) => VideoEditor,
   extendEditor(editor) {
     const { isVoid } = editor;
 
