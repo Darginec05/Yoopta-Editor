@@ -121,33 +121,6 @@ export const removeMarks = (editor: Editor) => {
   }
 };
 
-export const getRectByCurrentSelection = (): DOMRect | undefined => {
-  const domSelection = window.getSelection();
-  if (!domSelection) return;
-
-  try {
-    const domRange = domSelection.getRangeAt(0);
-    const rect = domRange.getBoundingClientRect();
-
-    return rect;
-  } catch (error) {}
-};
-
-export const getAbsPositionBySelection = (element) => {
-  if (!element) return { top: -10000, left: -10000 };
-
-  const selectionRect = getRectByCurrentSelection();
-
-  if (!selectionRect) return {};
-
-  const elementRect = element.getBoundingClientRect();
-
-  return {
-    top: selectionRect.top - elementRect.height,
-    left: selectionRect.left + window.pageXOffset - elementRect.width / 2 + selectionRect.width / 2,
-  };
-};
-
 // eslint-disable-next-line no-confusing-arrow
 export const capitalizeFirstLetter = (string?: string): string | undefined =>
   string ? string.charAt(0).toUpperCase() + string.slice(1) : undefined;

@@ -1,4 +1,5 @@
-import { YoptaComponent } from '@yopta/editor';
+import { generateId, YoptaComponent } from '@yopta/editor';
+import { Transforms } from 'slate';
 import { RenderElementProps } from 'slate-react';
 import s from './HeadingOne.module.scss';
 
@@ -16,6 +17,17 @@ const HeadingOne = new YoptaComponent({
   type: 'heading-one',
   renderer: (editor) => HeadingRender,
   shortcut: 'h1',
+  createNode: (editor, type, data) => {
+    const node = {
+      id: generateId(),
+      type,
+      ...data,
+    };
+
+    Transforms.setNodes(editor, node, {
+      at: editor.selection?.anchor,
+    });
+  },
 });
 
 export { HeadingOne };

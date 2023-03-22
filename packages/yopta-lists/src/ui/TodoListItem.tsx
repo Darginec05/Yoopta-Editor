@@ -66,13 +66,13 @@ const TodoListItem = new YoptaComponent({
         const isMaxDepth = currentDepth === 2;
         const isMinDepth = currentDepth === 1;
 
-        if (hotkeys.isSoftBreak(event)) {
+        if (hotkeys.isShiftEnter(event)) {
           event.preventDefault();
           editor.insertText('\n');
           return;
         }
 
-        if (hotkeys.isSplitBlock(event)) {
+        if (hotkeys.isEnter(event)) {
           event.preventDefault();
 
           if (text.trim() === '') {
@@ -140,7 +140,7 @@ const TodoListItem = new YoptaComponent({
           return;
         }
 
-        if (hotkeys.isIndent(event)) {
+        if (hotkeys.isTab(event)) {
           event.preventDefault();
 
           if (isMaxDepth) return;
@@ -155,7 +155,7 @@ const TodoListItem = new YoptaComponent({
           return;
         }
 
-        if (hotkeys.isOutdent(event)) {
+        if (hotkeys.isShiftTab(event)) {
           event.preventDefault();
           if (isMinDepth) return;
 

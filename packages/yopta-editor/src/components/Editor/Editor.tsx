@@ -14,7 +14,7 @@ import { OutsideClick } from '../OutsideClick';
 import { onCopyYoptaNodes } from '../../utils/copy';
 import { ElementWrapper } from '../ElementWrapper/ElementWrapper';
 import { HOTKEYS } from '../../utils/hotkeys';
-import { YoptaComponentType } from '../../utils/component';
+import { NormalizedYoptaComponent, YoptaComponentType } from '../../utils/component';
 import { getNodeByPath } from '../../utils/nodes';
 import { EditorEventHandlers } from '../../types/eventHandlers';
 import { generateId } from '../../utils/generateId';
@@ -22,7 +22,7 @@ import { generateId } from '../../utils/generateId';
 type YoptaProps = {
   editor: Editor;
   placeholder: LibOptions['placeholder'];
-  components: Omit<YoptaComponentType, 'children'>[];
+  components: NormalizedYoptaComponent[];
   children: ReactNode | ReactNode[];
 };
 
@@ -159,7 +159,7 @@ const EditorYopta = ({ editor, placeholder, children, components }: YoptaProps) 
         mode: 'lowest',
       });
 
-      if (HOTKEYS.isSplitBlock(event)) {
+      if (HOTKEYS.isEnter(event)) {
         if (event.isDefaultPrevented()) return;
         event.preventDefault();
 
@@ -183,7 +183,7 @@ const EditorYopta = ({ editor, placeholder, children, components }: YoptaProps) 
         return;
       }
 
-      if (HOTKEYS.isSoftBreak(event)) {
+      if (HOTKEYS.isShiftEnter(event)) {
         if (event.isDefaultPrevented()) return;
 
         event.preventDefault();
@@ -282,6 +282,7 @@ const EditorYopta = ({ editor, placeholder, children, components }: YoptaProps) 
           return React.cloneElement(child, {
             ...child.props,
             editor,
+            components,
           });
         })}
       <Editable

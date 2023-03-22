@@ -31,14 +31,14 @@ const EditorPlaceholder = ({ element, attributes, children, editor, onChange }: 
     const imageEditorRect = imageEditorRef.current?.getBoundingClientRect();
 
     if (imageEditorRect) {
-      const showInTop = imageEditorRect.top + imageEditorRect.height + UPLOADER_HEIGHT + 20 > window.innerHeight;
-      const showInBottom = !showInTop;
-      console.log({ showInTop, showInBottom });
+      const showAtTop = imageEditorRect.top + imageEditorRect.height + UPLOADER_HEIGHT + 20 > window.innerHeight;
+      const showAtBottom = !showAtTop;
+      console.log({ showAtTop, showAtBottom });
 
       disableBodyScroll(document.body, { reserveScrollBarGap: true });
       setUploaderPos({
         left: imageEditorRect.left,
-        top: showInTop ? imageEditorRect.top - UPLOADER_HEIGHT - 5 : imageEditorRect.top + imageEditorRect.height + 5,
+        top: showAtTop ? imageEditorRect.top - UPLOADER_HEIGHT - 5 : imageEditorRect.top + imageEditorRect.height + 5,
       });
     }
   };

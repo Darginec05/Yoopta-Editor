@@ -1,5 +1,5 @@
 import { Editor, Element, Range, Transforms } from 'slate';
-import { YoptaComponent, getNodeByPath } from '@yopta/editor';
+import { YoptaComponent, getNodeByPath, generateId } from '@yopta/editor';
 import { CodeLeaf } from './ui/CodeLeaf';
 import { CodeRender } from './ui/CodeRender';
 import { CodeLineRender } from './ui/CodeLineRender';
@@ -24,13 +24,13 @@ const CodeLine = new YoptaComponent({
 
         if (node.type !== CODE_LINE_NODE_TYPE) return;
 
-        if (hotkeys.isSplitBlock(event)) {
+        if (hotkeys.isEnter(event)) {
           event.preventDefault();
           Editor.insertBreak(editor);
           return;
         }
 
-        if (hotkeys.isIndent(event)) {
+        if (hotkeys.isTab(event)) {
           event.preventDefault();
 
           const text = ' '.repeat(2);
@@ -57,7 +57,7 @@ const CodeLine = new YoptaComponent({
           return;
         }
 
-        if (hotkeys.isSoftBreak(event)) {
+        if (hotkeys.isShiftEnter(event)) {
           event.preventDefault();
 
           // [TODO] go to next root node
@@ -72,6 +72,29 @@ const Code = new YoptaComponent({
   renderer: CodeRender,
   shortcut: 'hw',
   children: CodeLine,
+  createNode: (editor, type, data = {}) => {
+    const childNode = {
+      id: generateId(),
+      type: CODE_LINE_NODE_TYPE,
+      children: [{ text: '' }],
+      ...data,
+    };
+
+    Transforms.unwrapNodes(editor, {
+      match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'code',
+      split: true,
+    });
+
+    Transforms.setNodes(editor, childNode, {
+      at: editor.selection?.anchor,
+    });
+
+    const block = { id: generateId(), language: 'javascript', type: type, children: [{ text: '' }] };
+
+    Transforms.wrapNodes(editor, block, {
+      at: editor.selection?.anchor,
+    });
+  },
 });
 
 export { Code, CodeLine };

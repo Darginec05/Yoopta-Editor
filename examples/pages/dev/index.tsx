@@ -18,44 +18,44 @@ import { uploadToCloudinary } from '../../utils';
 const BasicExample = () => {
   const [editorValue, setEditorValue] = useState<Descendant[]>([]);
 
-  const uploadVideo = ({ uploadFile, title }) =>
-    new Promise((resolve, reject) => {
-      const upload = new tus.Upload(file, {
-        endpoint: 'https://video.bunnycdn.com/tusupload',
-        retryDelays: [0, 3000, 5000, 10000, 20000, 60000, 60000],
-        headers: {
-          AuthorizationSignature: '66e7cb0af0dbaa0b9e7fb72614cb3e0e3f095cd360af2df8625bbb291b4a4736',
-          AuthorizationExpire: 1672471001,
-          VideoId: '0103ac17-2355-4f7d-8e59-91d441721a04',
-          LibraryId: '71252',
-        },
-        metadata: {
-          filetype: uploadFile.type,
-          title, // file.title
-        },
-        onError: function (error) {
-          reject(error);
-        },
-        onProgress: function (bytesUploaded, bytesTotal) {},
-        onSuccess: function (data) {
-          console.log('success upload video', data);
-          resolve(data);
-          // Video.updateNode({ options: { loading: 15 } })
-        },
-      });
-      // Check if there are any previous uploads to continue.
-      upload.findPreviousUploads().then(function (previousUploads) {
-        // Found previous uploads so we select the first one.
-        if (previousUploads.length) {
-          upload.resumeFromPreviousUpload(previousUploads[0]);
-        }
+  // const uploadVideo = ({ uploadFile, title }) =>
+  //   new Promise((resolve, reject) => {
+  //     const upload = new tus.Upload(file, {
+  //       endpoint: 'https://video.bunnycdn.com/tusupload',
+  //       retryDelays: [0, 3000, 5000, 10000, 20000, 60000, 60000],
+  //       headers: {
+  //         AuthorizationSignature: '66e7cb0af0dbaa0b9e7fb72614cb3e0e3f095cd360af2df8625bbb291b4a4736',
+  //         AuthorizationExpire: 1672471001,
+  //         VideoId: '0103ac17-2355-4f7d-8e59-91d441721a04',
+  //         LibraryId: '71252',
+  //       },
+  //       metadata: {
+  //         filetype: uploadFile.type,
+  //         title, // file.title
+  //       },
+  //       onError: function (error) {
+  //         reject(error);
+  //       },
+  //       onProgress: function (bytesUploaded, bytesTotal) {},
+  //       onSuccess: function (data) {
+  //         console.log('success upload video', data);
+  //         resolve(data);
+  //         // Video.updateNode({ options: { loading: 15 } })
+  //       },
+  //     });
+  //     // Check if there are any previous uploads to continue.
+  //     upload.findPreviousUploads().then(function (previousUploads) {
+  //       // Found previous uploads so we select the first one.
+  //       if (previousUploads.length) {
+  //         upload.resumeFromPreviousUpload(previousUploads[0]);
+  //       }
 
-        // Start the upload
-        upload.start();
-      });
-    });
+  //       // Start the upload
+  //       upload.start();
+  //     });
+  //   });
 
-  const onChange = () => {};
+  // const onChange = () => {};
 
   const components = useMemo<YoptaComponent[]>(() => {
     return [
@@ -124,8 +124,13 @@ const BasicExample = () => {
       >
         <ActionMenu
           items={components}
-          groupRender={(props) => <div>asdasdasd</div>}
-          itemRender={(props) => <div>asdasd</div>}
+          render={(props) => (
+            <div>
+              {props.items((item) => {
+                return <div>{item}</div>;
+              })}
+            </div>
+          )}
           trigger="/"
         />
       </YoptaEditor>
