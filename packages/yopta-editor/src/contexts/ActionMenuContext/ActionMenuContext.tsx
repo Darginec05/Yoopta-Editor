@@ -3,13 +3,7 @@ import { Editor, Path, Range, Transforms } from 'slate';
 import { useSlate } from 'slate-react';
 import { ELEMENT_TYPES } from '../../components/Editor/SuggestionElementList/SuggestionElementList';
 import { ELEMENT_TYPES_MAP, TEXT_ELEMENTS_LIST } from '../../components/Editor/constants';
-import {
-  getAbsPositionBySelection,
-  getNodeByCurrentPath,
-  getRectByCurrentSelection,
-  isBlockActive,
-  toggleBlock,
-} from '../../components/Editor/utils';
+import { getNodeByCurrentPath, isBlockActive, toggleBlock } from '../../components/Editor/utils';
 import { useScrollContext } from '../ScrollContext/ScrollContext';
 
 type Block = {
@@ -90,7 +84,7 @@ const ActionMenuProvider = ({ children }) => {
   const isSuggesstionListOpen = suggestionListProps.open;
 
   const showSuggestionList = (style?: CSSProperties, options?: ShowSuggestionOptions) => {
-    const selectionRect = getRectByCurrentSelection();
+    const selectionRect = null;
     const suggesstionListRect = suggestionListRef.current?.getBoundingClientRect();
     if (!selectionRect) return;
 
@@ -144,7 +138,6 @@ const ActionMenuProvider = ({ children }) => {
   };
 
   const updateToolbarView = (style?: CSSProperties) => {
-    // const { top, left } = getAbsPositionBySelection(toolbarRef.current);
     // setCurrentBlock();
     // setToolbarProps({ open: true, style: style || { top, left, opacity: 1 } });
   };

@@ -14,11 +14,11 @@
     "dist/"
   ],
   "peerDependencies": {
+    "@yopta/editor": "1.1.4",
     "react": ">=17.0.2",
     "react-dom": ">=17.0.2",
     "slate": ">=0.72.3",
-    "slate-react": ">=0.72.4",
-    "@yopta/editor": "1.1.4"
+    "slate-react": ">=0.72.4"
   },
   "publishConfig": {
     "registry": "https://registry.yarnpkg.com"
@@ -32,5 +32,8 @@
   },
   "bugs": {
     "url": "https://github.com/Darginec05/Editor-Yopta/issues"
+  },
+  "dependencies": {
+    "body-scroll-lock": "^4.0.0-beta.0"
   }
 }

@@ -81,7 +81,7 @@ const Link = new YoptaComponent({
         if (node.type !== LINK_NODE_TYPE) return;
         const { anchor } = editor.selection;
 
-        if (hotkeys.isSplitBlock(event)) {
+        if (hotkeys.isEnter(event)) {
           const isEnd = Editor.isEnd(editor, anchor, anchor.path);
           const isStart = Editor.isStart(editor, anchor, anchor.path);
 

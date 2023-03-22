@@ -1,3 +1,4 @@
+import uniqWith from 'lodash.uniqwith';
 import { ReactElement } from 'react';
 import { Element, NodeEntry, Range } from 'slate';
 import { RenderElementProps, RenderLeafProps } from 'slate-react';
@@ -39,7 +40,10 @@ export type YoptaComponentType = {
   leaf?: (editor: CustomEditor) => (props: RenderLeafProps) => any;
   options?: Options;
   children?: YoptaComponent;
+  createNode?: (editor: CustomEditor, type: string, data?: any) => void;
 };
+
+export type NormalizedYoptaComponent = Omit<YoptaComponentType, 'children'>;
 
 export class YoptaComponent {
   #props: YoptaComponentType;
@@ -54,7 +58,20 @@ export class YoptaComponent {
     return new YoptaComponent(updatedProps);
   }
 
-  get getProps(): YoptaComponentType {
+  get getComponent(): YoptaComponentType {
     return this.#props;
   }
+}
+
+export function getNormalizedComponents(components: YoptaComponent[]) {
+  const items: NormalizedYoptaComponent[] = components
+    .map((instance) => {
+      const component = instance.getComponent;
+      const { children, ...restComponentProps } = component;
+      return children ? [restComponentProps, children.getComponent] : component;
+    })
+    .flat();
+
+  const uniqueComponents = uniqWith(items, (a, b) => a.type === b.type);
+  return uniqueComponents;
 }

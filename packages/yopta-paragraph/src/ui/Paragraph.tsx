@@ -42,14 +42,14 @@ const Paragraph = new YoptaComponent({
         //   return;
         // }
 
-        // if (hotkeys.isSoftBreak(event)) {
+        // if (hotkeys.isShiftEnter(event)) {
         //   event.preventDefault();
 
         //   editor.insertText('\n');
         //   return;
         // }
 
-        // if (hotkeys.isSplitBlock(event)) {
+        // if (hotkeys.isEnter(event)) {
         //   event.preventDefault();
 
         //   Transforms.splitNodes(editor, { always: true });
