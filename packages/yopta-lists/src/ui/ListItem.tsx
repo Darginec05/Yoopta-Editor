@@ -20,7 +20,7 @@ const ListItemList = new YoptaComponent({
   shortcut: '-',
   handlers: {
     onKeyDown:
-      (editor, { hotkeys, defaultComponent }) =>
+      (editor, { hotkeys, defaultNode }) =>
       (event) => {
         if (!editor.selection) return;
 
@@ -65,7 +65,7 @@ const ListItemList = new YoptaComponent({
             const candidateNode =
               currentDepth > 1
                 ? { id: generateId(), type: LIST_ITEM_NODE_TYPE, children: [{ text: '' }] }
-                : defaultComponent;
+                : defaultNode;
 
             Transforms.setNodes(editor, candidateNode, {
               at: editor.selection,
@@ -111,7 +111,7 @@ const ListItemList = new YoptaComponent({
               split: true,
             });
 
-            Transforms.setNodes(editor, defaultComponent, {
+            Transforms.setNodes(editor, defaultNode, {
               at: editor.selection,
             });
           }

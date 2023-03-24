@@ -15,6 +15,8 @@ export const withShortcuts = (editor: Editor) => {
         match: (n) => Element.isElement(n) && Editor.isBlock(editor, n),
       });
 
+      console.log('block', block);
+
       if (block?.[0].type === 'list-item') {
         return insertText(text);
       }

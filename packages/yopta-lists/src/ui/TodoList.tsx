@@ -26,7 +26,7 @@ const TodoList = new YoptaComponent({
     };
 
     Transforms.unwrapNodes(editor, {
-      match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'code',
+      match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.options?.depth >= 1,
       split: true,
     });
 
@@ -34,7 +34,7 @@ const TodoList = new YoptaComponent({
       at: editor.selection?.anchor,
     });
 
-    const block = { id: generateId(), type: type, children: [{ text: '' }] };
+    const block = { id: generateId(), type: type, children: [{ text: '' }], options: { depth: 1 } };
 
     Transforms.wrapNodes(editor, block, {
       at: editor.selection?.anchor,

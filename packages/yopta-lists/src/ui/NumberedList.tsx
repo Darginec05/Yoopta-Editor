@@ -16,6 +16,7 @@ const NumberedList = new YoptaComponent({
   type: NUMBERED_LIST_NODE_TYPE,
   renderer: (editor) => NumberedListRender,
   children: ListItemList,
+  shortcut: '1.',
   createNode: (editor, type, data = {}) => {
     const childNode = {
       id: generateId(),
@@ -25,7 +26,7 @@ const NumberedList = new YoptaComponent({
     };
 
     Transforms.unwrapNodes(editor, {
-      match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'code',
+      match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.options?.depth >= 1,
       split: true,
     });
 
@@ -33,7 +34,7 @@ const NumberedList = new YoptaComponent({
       at: editor.selection?.anchor,
     });
 
-    const block = { id: generateId(), type: type, children: [{ text: '' }] };
+    const block = { id: generateId(), type: type, children: [{ text: '' }], options: { depth: 1 } };
 
     Transforms.wrapNodes(editor, block, {
       at: editor.selection?.anchor,

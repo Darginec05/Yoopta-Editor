@@ -22,7 +22,7 @@ const Image = new YoptaComponent({
   },
   handlers: {
     onKeyDown:
-      (editor, { defaultComponent, hotkeys }) =>
+      (editor, { defaultNode, hotkeys }) =>
       (event) => {
         const currentNode = getNodeByPath(editor, editor.selection?.anchor.path, 'highest');
         if (currentNode.type !== 'image' || !editor.selection) return;
@@ -30,7 +30,7 @@ const Image = new YoptaComponent({
         if (hotkeys.isEnter(event)) {
           event.preventDefault();
 
-          Transforms.insertNodes(editor, defaultComponent, { mode: 'highest' });
+          Transforms.insertNodes(editor, defaultNode, { mode: 'highest' });
           return;
         }
       },

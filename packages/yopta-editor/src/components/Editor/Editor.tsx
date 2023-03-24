@@ -14,7 +14,7 @@ import { OutsideClick } from '../OutsideClick';
 import { onCopyYoptaNodes } from '../../utils/copy';
 import { ElementWrapper } from '../ElementWrapper/ElementWrapper';
 import { HOTKEYS } from '../../utils/hotkeys';
-import { NormalizedYoptaComponent, YoptaComponentType } from '../../utils/component';
+import { ParentYoptaComponent, YoptaComponentType } from '../../utils/component';
 import { getNodeByPath } from '../../utils/nodes';
 import { EditorEventHandlers } from '../../types/eventHandlers';
 import { generateId } from '../../utils/generateId';
@@ -22,12 +22,12 @@ import { generateId } from '../../utils/generateId';
 type YoptaProps = {
   editor: Editor;
   placeholder: LibOptions['placeholder'];
-  components: NormalizedYoptaComponent[];
+  components: ParentYoptaComponent[];
   children: ReactNode | ReactNode[];
 };
 
-// [TODO] - defaultComponent move to common event handler to avoid repeated id's
-const handlersOptions = { hotkeys: HOTKEYS, defaultComponent: getDefaultParagraphLine() };
+// [TODO] - defaultNode move to common event handler to avoid repeated id's
+const handlersOptions = { hotkeys: HOTKEYS, defaultNode: getDefaultParagraphLine() };
 
 const EditorYopta = ({ editor, placeholder, children, components }: YoptaProps) => {
   const { options } = useSettings();

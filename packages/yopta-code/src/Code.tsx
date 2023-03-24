@@ -1,4 +1,4 @@
-import { Editor, Element, Range, Transforms } from 'slate';
+import { Editor, Element, Path, Range, Transforms } from 'slate';
 import { YoptaComponent, getNodeByPath, generateId } from '@yopta/editor';
 import { CodeLeaf } from './ui/CodeLeaf';
 import { CodeRender } from './ui/CodeRender';
@@ -15,7 +15,7 @@ const CodeLine = new YoptaComponent({
   decorator: codeLineDecorator,
   handlers: {
     onKeyDown:
-      (editor, { hotkeys }) =>
+      (editor, { hotkeys, defaultNode }) =>
       (event) => {
         if (!editor.selection) return;
 
@@ -23,6 +23,11 @@ const CodeLine = new YoptaComponent({
         const node = getNodeByPath(editor, editor.selection.anchor.path, 'lowest');
 
         if (node.type !== CODE_LINE_NODE_TYPE) return;
+
+        const parentCodeEntry = Editor.above(editor, {
+          at: editor.selection.anchor.path,
+          match: (n) => Element.isElement(n) && n.type === CODE_NODE_TYPE,
+        });
 
         if (hotkeys.isEnter(event)) {
           event.preventDefault();
@@ -40,27 +45,34 @@ const CodeLine = new YoptaComponent({
 
         if (hotkeys.isSelect(event)) {
           event.preventDefault();
-
-          const codeEntry = Editor.above(editor, {
-            at: editor.selection.anchor.path,
-            match: (n) => Element.isElement(n) && n.type === CODE_NODE_TYPE,
-          });
-
-          if (!codeEntry) return;
+          if (!parentCodeEntry) return;
 
           if (Range.isExpanded(editor.selection)) {
             Transforms.select(editor, []);
             return;
           }
 
-          Transforms.select(editor, codeEntry[1]);
+          Transforms.select(editor, parentCodeEntry[1]);
           return;
         }
 
         if (hotkeys.isShiftEnter(event)) {
           event.preventDefault();
+          if (!parentCodeEntry) return;
 
-          // [TODO] go to next root node
+          const [, parentCodePath] = parentCodeEntry;
+
+          Transforms.insertNodes(
+            editor,
+            { ...defaultNode, id: generateId() },
+            {
+              at: Path.next(parentCodePath),
+              mode: 'highest',
+              match: (n) => Element.isElement(n),
+              select: true,
+            },
+          );
+
           return;
         }
       },
