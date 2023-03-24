@@ -5,7 +5,6 @@ import { Slate, withReact } from 'slate-react';
 import { EditorYopta } from './components/Editor/Editor';
 import { ScrollProvider } from './contexts/ScrollContext/ScrollContext';
 // import { withVoidNodes, withFixDeleteFragment, withCopyPasting } from './components/Editor/plugins';
-import { ActionMenuProvider } from './contexts/ActionMenuContext/ActionMenuContext';
 import { SettingsProvider } from './contexts/SettingsContext/SettingsContext';
 import NoSSR from './components/NoSsr/NoSsr';
 import type { LibOptions } from './contexts/SettingsContext/SettingsContext';
@@ -14,7 +13,6 @@ import { getParentComponents, YoptaComponent, YoptaComponentType } from './utils
 import { getInitialState, getStorageName } from './utils/storage';
 import { withShortcuts } from './components/Editor/plugins/shortcuts';
 import { withVoidNodes } from './components/Editor/plugins/voids';
-import uniqWith from 'lodash.uniqwith';
 
 type Props = {
   onChange: (_value: Descendant[]) => void;
@@ -112,11 +110,9 @@ const YoptaEditorLib = ({
     <Slate editor={editor} value={val} onChange={onChangeValue} key={key}>
       <SettingsProvider options={options}>
         <ScrollProvider scrollElementSelector={scrollElementSelector}>
-          <ActionMenuProvider>
-            <NodeSettingsProvider>
-              <EditorYopta editor={editor} placeholder={placeholder} components={yoptaComponents} children={children} />
-            </NodeSettingsProvider>
-          </ActionMenuProvider>
+          <NodeSettingsProvider>
+            <EditorYopta editor={editor} placeholder={placeholder} components={yoptaComponents} children={children} />
+          </NodeSettingsProvider>
         </ScrollProvider>
       </SettingsProvider>
     </Slate>

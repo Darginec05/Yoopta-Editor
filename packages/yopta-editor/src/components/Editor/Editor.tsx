@@ -2,15 +2,11 @@ import { Editor, Transforms, Range, Element, NodeEntry, Path } from 'slate';
 import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, MouseEventHandler, ReactNode } from 'react';
 import { DefaultElement, Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
-import { Toolbar } from './Toolbar/Toolbar';
 import { getDefaultParagraphLine } from './utils';
 import { ELEMENT_TYPES_MAP } from './constants';
-import { SuggestionElementList } from './SuggestionElementList/SuggestionElementList';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
-import { useActionMenuContext, SUGGESTION_TRIGGER } from '../../contexts/ActionMenuContext/ActionMenuContext';
 import { LibOptions, useSettings } from '../../contexts/SettingsContext/SettingsContext';
 import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
-import { OutsideClick } from '../OutsideClick';
 import { onCopyYoptaNodes } from '../../utils/copy';
 import { ElementWrapper } from '../ElementWrapper/ElementWrapper';
 import { HOTKEYS } from '../../utils/hotkeys';
@@ -33,21 +29,6 @@ const EditorYopta = ({ editor, placeholder, children, components }: YoptaProps) 
   const { options } = useSettings();
   useScrollToElement();
   const [{ disableWhileDrag }, { changeHoveredNode }] = useNodeSettingsContext();
-
-  const {
-    toolbarRef,
-    toolbarStyle,
-    selectedElement,
-    hideToolbarTools,
-    suggestionListRef,
-    showSuggestionList,
-    hideSuggestionList,
-    filterSuggestionList,
-    suggesstionListStyle,
-    isSuggesstionListOpen,
-    onChangeSuggestionFilterText,
-    changeNodeType,
-  } = useActionMenuContext();
 
   const isReadOnly = disableWhileDrag;
 
@@ -129,23 +110,6 @@ const EditorYopta = ({ editor, placeholder, children, components }: YoptaProps) 
 
     return eventHandlersMap;
   }, [components, editor]);
-
-  const onKeyUp = useCallback(
-    (event) => {
-      if (!editor.selection) return;
-      const text = Editor.string(editor, editor.selection.anchor.path);
-
-      // [TODO] - make trigger not only empty paragraph
-      if (!isSuggesstionListOpen && event.key === SUGGESTION_TRIGGER && text === SUGGESTION_TRIGGER) {
-        showSuggestionList(undefined, { triggeredBySuggestion: true });
-      }
-
-      if (isSuggesstionListOpen) {
-        onChangeSuggestionFilterText(text);
-      }
-    },
-    [isSuggesstionListOpen],
-  );
 
   const onKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
     Editor.withoutNormalizing(editor, () => {
@@ -265,16 +229,7 @@ const EditorYopta = ({ editor, placeholder, children, components }: YoptaProps) 
     <div id="yopta-editor" className={options.className} onMouseDown={handleEmptyZoneClick}>
       {/* <OutsideClick onClose={hideToolbarTools}>
         <Toolbar toolbarRef={toolbarRef} toolbarStyle={toolbarStyle} editor={editor} />
-      </OutsideClick>
-      <SuggestionElementList
-        filterListCallback={filterSuggestionList}
-        style={suggesstionListStyle}
-        onClose={hideSuggestionList}
-        selectedElementType={selectedElement?.type}
-        isOpen={isSuggesstionListOpen}
-        changeNodeType={changeNodeType}
-        ref={suggestionListRef}
-      /> */}
+      </OutsideClick> */}
       {hasEditorChildren &&
         React.Children.map(children, (child) => {
           if (!React.isValidElement(child)) return null;
@@ -289,7 +244,6 @@ const EditorYopta = ({ editor, placeholder, children, components }: YoptaProps) 
         id="yopta-contenteditable"
         renderLeaf={renderLeaf}
         renderElement={renderElement}
-        onKeyUp={onKeyUp}
         readOnly={isReadOnly}
         decorate={decorate}
         onCopy={onCopyYoptaNodes}
