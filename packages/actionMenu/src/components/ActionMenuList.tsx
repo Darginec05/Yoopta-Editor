@@ -1,16 +1,16 @@
-import { cx, NormalizedYoptaComponent, YoptaComponent, HOTKEYS } from '@yopta/editor';
+import { cx, ParentYoptaComponent, YoptaComponent, HOTKEYS } from '@yopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { Editor, Path, Point, Transforms } from 'slate';
+import { Element, Editor, Node, Path, Point, Transforms } from 'slate';
 import { useSlate } from 'slate-react';
 import { getRectByCurrentSelection } from '../utils/selectionRect';
 import s from './ActionMenuList.module.scss';
 
 type LibProps = {
   items?: YoptaComponent[];
-  render?: (props: { items: NormalizedYoptaComponent }) => ReactNode;
+  render?: (props: { items: ParentYoptaComponent }) => ReactNode;
   trigger?: string | null;
-  components: NormalizedYoptaComponent[];
+  components: ParentYoptaComponent[];
 };
 
 type Props = LibProps;
@@ -55,6 +55,14 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
     setMenuProps({ style: undefined, point: null });
     setSearchString('');
     setFocusableElement(0);
+
+    const childNodes = elementListRef.current?.childNodes;
+    const firstNodeEl = childNodes?.[0] as HTMLLIElement | undefined;
+
+    firstNodeEl?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
   };
 
   const isMenuOpen = menuProps.style !== undefined;
@@ -68,10 +76,12 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
     );
   };
 
-  const menuItems = useMemo<NormalizedYoptaComponent[]>(() => {
+  const menuItems = useMemo<ParentYoptaComponent[]>(() => {
     const menuList = items ? items.map((item) => item.getComponent) : components;
 
-    return menuList.filter(filterMenuList);
+    return menuList
+      .filter((item) => !Editor.isInline(editor, { type: item.type, children: [{}] }))
+      .filter(filterMenuList);
   }, [items, components, searchString]);
 
   const focusUp = () => {
@@ -90,6 +100,7 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
 
     setFocusableElement(nextElementIndex);
   };
+
   const focusDown = () => {
     const childNodes = elementListRef.current?.childNodes;
 
@@ -114,8 +125,8 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
 
     if (HOTKEYS.isEnter(event)) {
       const selectedNode = menuItems[focusableElement];
-      console.log({ isMenuOpen, selectedNode });
-      handleChangeNode(selectedNode);
+      if (selectedNode) handleChangeNode(selectedNode);
+
       event.preventDefault();
       event.stopPropagation();
       return;
@@ -159,29 +170,38 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
   }, [editor.selection, menuProps.point]);
 
   useEffect(() => {
+    if (focusableElement > menuItems.length - 1) setFocusableElement(0);
+
     const contentEditor = document.querySelector('#yopta-contenteditable');
     contentEditor?.addEventListener('keyup', handleKeyup);
 
     if (isMenuOpen) document.addEventListener('keydown', handleKeydown, true);
-
     return () => {
       contentEditor?.removeEventListener('keyup', handleKeyup);
       if (isMenuOpen) document.removeEventListener('keydown', handleKeydown, true);
     };
-  }, [editor, isMenuOpen, focusableElement]);
+  }, [editor, isMenuOpen, focusableElement, menuItems]);
 
-  const handleChangeNode = (menuItem: NormalizedYoptaComponent) => {
+  const handleChangeNode = (menuItem: ParentYoptaComponent) => {
     Editor.withoutNormalizing(editor, () => {
       if (!editor.selection) return;
 
       const { offset, path } = editor.selection.anchor;
-
       Transforms.delete(editor, {
         at: {
           anchor: { path, offset: 0 },
           focus: { path, offset },
         },
       });
+
+      const [parentNode, parentPath] = Editor.parent(editor, Path.parent(editor.selection.anchor.path));
+
+      if (Element.isElement(parentNode) && !Editor.isEditor(parentNode)) {
+        Transforms.unwrapNodes(editor, {
+          at: parentPath,
+          match: (n) => Element.isElement(parentNode) && n.type === parentNode.type,
+        });
+      }
 
       menuItem.createNode?.(editor, menuItem.type);
     });

@@ -42,7 +42,7 @@ const TodoListItem = new YoptaComponent({
   shortcut: '[]',
   handlers: {
     onKeyDown:
-      (editor, { hotkeys, defaultComponent }) =>
+      (editor, { hotkeys, defaultNode }) =>
       (event) => {
         if (!editor.selection) return;
 
@@ -84,7 +84,7 @@ const TodoListItem = new YoptaComponent({
             const candidateNode =
               currentDepth > 1
                 ? { id: generateId(), type: TODO_LIST_NODE_ITEM_TYPE, children: [{ text: '' }], checked: false }
-                : defaultComponent;
+                : defaultNode;
 
             Transforms.setNodes(editor, candidateNode, {
               at: editor.selection,
@@ -133,7 +133,7 @@ const TodoListItem = new YoptaComponent({
               split: true,
             });
 
-            Transforms.setNodes(editor, defaultComponent, {
+            Transforms.setNodes(editor, defaultNode, {
               at: editor.selection,
             });
           }

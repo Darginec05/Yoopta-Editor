@@ -18,6 +18,12 @@
   position: relative;
   cursor: pointer;
   border: none;
+  background-color: #efefef;
+  transition: background-color 100ms ease-in;
+
+  &:hover {
+    background-color: #e3e3e3;
+  }
 }
 
 .icon {

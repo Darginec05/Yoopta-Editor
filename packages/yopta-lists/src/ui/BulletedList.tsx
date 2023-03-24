@@ -15,6 +15,8 @@ const BULLETED_LIST_NODE_TYPE = 'bulleted-list';
 const BulletedList = new YoptaComponent({
   type: BULLETED_LIST_NODE_TYPE,
   renderer: (editor) => BulletedListRender,
+  // [TODO] - fix for nested items
+  shortcut: '-',
   children: ListItemList,
   createNode: (editor, type, data = {}) => {
     const childNode = {
@@ -25,7 +27,7 @@ const BulletedList = new YoptaComponent({
     };
 
     Transforms.unwrapNodes(editor, {
-      match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'code',
+      match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.options?.depth >= 1,
       split: true,
     });
 
@@ -33,7 +35,7 @@ const BulletedList = new YoptaComponent({
       at: editor.selection?.anchor,
     });
 
-    const block = { id: generateId(), type: type, children: [{ text: '' }] };
+    const block = { id: generateId(), type: type, children: [{ text: '' }], options: { depth: 1 } };
 
     Transforms.wrapNodes(editor, block, {
       at: editor.selection?.anchor,

@@ -8,7 +8,7 @@ import { HOTKEYS_TYPE } from '../utils/hotkeys';
 
 export type HandlersOptions = {
   hotkeys: HOTKEYS_TYPE;
-  defaultComponent: Element;
+  defaultNode: Element;
 };
 
 export type ElementType = {
@@ -43,7 +43,7 @@ export type YoptaComponentType = {
   createNode?: (editor: CustomEditor, type: string, data?: any) => void;
 };
 
-export type NormalizedYoptaComponent = Omit<YoptaComponentType, 'children'>;
+export type ParentYoptaComponent = Omit<YoptaComponentType, 'children'>;
 
 export class YoptaComponent {
   #props: YoptaComponentType;
@@ -63,8 +63,8 @@ export class YoptaComponent {
   }
 }
 
-export function getNormalizedComponents(components: YoptaComponent[]) {
-  const items: NormalizedYoptaComponent[] = components
+export function getParentComponents(components: YoptaComponent[]) {
+  const items: ParentYoptaComponent[] = components
     .map((instance) => {
       const component = instance.getComponent;
       const { children, ...restComponentProps } = component;

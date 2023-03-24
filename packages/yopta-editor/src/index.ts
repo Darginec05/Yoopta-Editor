@@ -1,4 +1,4 @@
-import { YoptaComponent, getNormalizedComponents } from './utils/component';
+import { YoptaComponent, getParentComponents } from './utils/component';
 import classnames from 'classnames';
 export { classnames as cx };
 
@@ -11,8 +11,8 @@ export type {
   YoptaComponentType,
   YoptaComponentHandlers,
   HandlersOptions,
-  NormalizedYoptaComponent,
+  ParentYoptaComponent,
 } from './utils/component';
 export type { CustomEditor as YoptaEditorType } from './components/Editor/types';
 
-export { YoptaComponent, getNormalizedComponents };
+export { YoptaComponent, getParentComponents };

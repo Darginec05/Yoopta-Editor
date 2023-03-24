@@ -10,7 +10,7 @@ import { SettingsProvider } from './contexts/SettingsContext/SettingsContext';
 import NoSSR from './components/NoSsr/NoSsr';
 import type { LibOptions } from './contexts/SettingsContext/SettingsContext';
 import { NodeSettingsProvider } from './contexts/NodeSettingsContext/NodeSettingsContext';
-import { getNormalizedComponents, YoptaComponent, YoptaComponentType } from './utils/component';
+import { getParentComponents, YoptaComponent, YoptaComponentType } from './utils/component';
 import { getInitialState, getStorageName } from './utils/storage';
 import { withShortcuts } from './components/Editor/plugins/shortcuts';
 import { withVoidNodes } from './components/Editor/plugins/voids';
@@ -87,7 +87,7 @@ const YoptaEditorLib = ({
     [options.shouldStoreInLocalStorage],
   );
 
-  const yoptaComponents = useMemo(() => getNormalizedComponents(components), [components]);
+  const yoptaComponents = useMemo(() => getParentComponents(components), [components]);
 
   const editor = useMemo(() => {
     let slateEditor = withVoidNodes(withHistory(withShortcuts(withReact(createEditor()))));
