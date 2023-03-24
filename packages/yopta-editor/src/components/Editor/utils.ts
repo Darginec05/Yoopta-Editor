@@ -38,64 +38,6 @@ export const getMatchedNode = (editor: Editor, type: any) => {
 
 export const isBlockActive = (editor: Editor, type: any) => !!getMatchedNode(editor, type);
 
-// [TODO] - fix deleting '/' after adding or toggling nodes
-export const toggleBlock = (editor: Editor, blockType: any, data: any) => {
-  Editor.withoutNormalizing(editor, () => {
-    const isActive = isBlockActive(editor, blockType);
-    const isList = LIST_TYPES.includes(blockType);
-    const node = {
-      id: generateId(),
-      // eslint-disable-next-line no-nested-ternary
-      type: isActive ? 'paragraph' : isList ? 'list-item' : blockType,
-      ...data,
-    };
-
-    if (blockType === 'code') {
-      node.type = 'code-line';
-    }
-
-    if (blockType === 'todo-list') {
-      node.type = 'todo-list-item';
-    }
-
-    Transforms.unwrapNodes(editor, {
-      match: (n) =>
-        !Editor.isEditor(n) &&
-        SlateElement.isElement(n) &&
-        (LIST_TYPES.includes(n.type) || n.type === 'code' || n.type === 'todo-list-item'),
-      split: true,
-    });
-
-    Transforms.setNodes(editor, node, {
-      at: editor.selection?.anchor,
-    });
-
-    if (!isActive) {
-      const block = { id: generateId(), type: blockType, children: [{ text: '' }] };
-
-      if (isList) {
-        Transforms.wrapNodes(editor, block, {
-          at: editor.selection?.anchor,
-        });
-      }
-
-      if (blockType === 'code') {
-        block.language = 'javascript';
-
-        Transforms.wrapNodes(editor, block, {
-          at: editor.selection?.anchor,
-        });
-      }
-
-      if (blockType === 'todo-list') {
-        Transforms.wrapNodes(editor, block, {
-          at: editor.selection?.anchor,
-        });
-      }
-    }
-  });
-};
-
 export const toggleMark = (editor: Editor, format: any) => {
   const isActive = isMarkActive(editor, format);
 
@@ -120,10 +62,6 @@ export const removeMarks = (editor: Editor) => {
     });
   }
 };
-
-// eslint-disable-next-line no-confusing-arrow
-export const capitalizeFirstLetter = (string?: string): string | undefined =>
-  string ? string.charAt(0).toUpperCase() + string.slice(1) : undefined;
 
 export const getElementClassname = (element) => `yopta-${element.type}`;
 
@@ -222,18 +160,3 @@ export const getDefaultParagraphLine = (): ParagraphElement => ({
     },
   ],
 });
-
-export const getHeadingAnchorFromSlateNode = (element: SlateElement, isEdit?: boolean): string | undefined => {
-  if (isEdit) return undefined;
-
-  let textString = '';
-  element.children.forEach((child: any) => {
-    if (typeof child.text === 'string') {
-      textString += child.text;
-    }
-  });
-
-  const validatedString = textString.toLowerCase().trim().replace(/\s/g, '-');
-
-  return validatedString;
-};
