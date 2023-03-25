@@ -1,23 +1,22 @@
-import { cx, ParentYoptaComponent, YoptaComponent, HOTKEYS } from '@yopta/editor';
+import { YoptaComponent, HOTKEYS, YoptaComponentType } from '@yopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Element, Editor, Node, Path, Point, Transforms } from 'slate';
 import { useSlate } from 'slate-react';
 import { getRectByCurrentSelection } from '../utils/selectionRect';
+import { ItemRender } from './ItemRender';
 import s from './ActionMenuList.module.scss';
+import { ActionMenuComponentItem, ActionMenuRenderItem, ActionRenderItemProps } from '../types';
 
-type LibProps = {
-  items?: YoptaComponent[];
-  render?: (props: { items: ParentYoptaComponent }) => ReactNode;
+type Props = {
+  items: ActionMenuComponentItem[];
+  render?: (props: ActionRenderItemProps) => ReactNode;
   trigger?: string | null;
-  components: ParentYoptaComponent[];
-};
-
-type Props = LibProps;
+} & ({ items: ActionMenuComponentItem[]; components?: never } | { components: YoptaComponentType[]; items?: never });
 
 type MenuProps = { style: undefined | CSSProperties; point: Point | null };
 
-const MENU_PROPS_VALUE: MenuProps = { style: undefined, point: null };
+const MENU_PROPS_VALUE: MenuProps = { style: { position: 'fixed' }, point: null };
 
 const filterBy = (item, text: string, field: string) => item[field]?.toLowerCase().indexOf(text) > -1;
 
@@ -28,6 +27,8 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
   const [menuProps, setMenuProps] = useState<MenuProps>(MENU_PROPS_VALUE);
   const [searchString, setSearchString] = useState('');
   const [focusableElement, setFocusableElement] = useState(0);
+
+  console.log('items', items);
 
   const showActionMenu = () => {
     if (!editor.selection) return;
@@ -45,6 +46,7 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
         left: selectionRect.left,
         top: showAtTop ? selectionRect.top - actionMenuHeight : selectionRect.top + selectionRect.height,
         opacity: 1,
+        position: 'fixed',
       },
       point: { path: parentPath, offset: editor.selection.anchor.offset },
     });
@@ -52,7 +54,7 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
 
   const hideActionMenu = () => {
     enableBodyScroll(document.body);
-    setMenuProps({ style: undefined, point: null });
+    setMenuProps(MENU_PROPS_VALUE);
     setSearchString('');
     setFocusableElement(0);
 
@@ -67,21 +69,29 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
 
   const isMenuOpen = menuProps.style !== undefined;
 
-  const filterMenuList = (item) => {
+  const filterInlineNodes = (item: ActionMenuRenderItem) => {
+    return !Editor.isInline(editor, { type: item.type, children: [{ text: '' }] });
+  };
+
+  const filterMenuList = (item: ActionMenuRenderItem) => {
     const filterText = searchString.replace(trigger || '', '');
     return (
-      // filterBy(item, filterText, 'name') ||
-      // filterBy(item, filterText, 'keywords') ||
-      filterBy(item, filterText, 'type')
+      filterBy(item, filterText, 'type') ||
+      filterBy(item, filterText, 'label') ||
+      filterBy(item, filterText, 'searchString')
     );
   };
 
-  const menuItems = useMemo<ParentYoptaComponent[]>(() => {
-    const menuList = items ? items.map((item) => item.getComponent) : components;
+  const renderMenuItems = useMemo<ActionMenuRenderItem[]>(() => {
+    let menuList: ActionMenuRenderItem[];
 
-    return menuList
-      .filter((item) => !Editor.isInline(editor, { type: item.type, children: [{}] }))
-      .filter(filterMenuList);
+    if (items) {
+      menuList = items.map(({ component, ...rest }) => ({ ...component.getComponent, ...rest }));
+    } else {
+      menuList = (components as unknown as YoptaComponentType[]).filter((item) => !item.isChild);
+    }
+
+    return menuList.filter(filterInlineNodes).filter(filterMenuList);
   }, [items, components, searchString]);
 
   const focusUp = () => {
@@ -124,8 +134,8 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
     }
 
     if (HOTKEYS.isEnter(event)) {
-      const selectedNode = menuItems[focusableElement];
-      if (selectedNode) handleChangeNode(selectedNode);
+      const selectedNode = renderMenuItems[focusableElement];
+      if (selectedNode) changeNode(selectedNode);
 
       event.preventDefault();
       event.stopPropagation();
@@ -169,20 +179,31 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
     }
   }, [editor.selection, menuProps.point]);
 
+  const isNotFound = renderMenuItems.length === 0;
+
   useEffect(() => {
-    if (focusableElement > menuItems.length - 1) setFocusableElement(0);
+    let timeout;
+
+    if (isNotFound) {
+      timeout = setTimeout(() => {
+        hideActionMenu();
+      }, 1500);
+    }
+
+    if (focusableElement > renderMenuItems.length - 1) setFocusableElement(0);
 
     const contentEditor = document.querySelector('#yopta-contenteditable');
     contentEditor?.addEventListener('keyup', handleKeyup);
 
     if (isMenuOpen) document.addEventListener('keydown', handleKeydown, true);
     return () => {
+      clearTimeout(timeout);
       contentEditor?.removeEventListener('keyup', handleKeyup);
       if (isMenuOpen) document.removeEventListener('keydown', handleKeydown, true);
     };
-  }, [editor, isMenuOpen, focusableElement, menuItems]);
+  }, [editor, isMenuOpen, focusableElement, renderMenuItems]);
 
-  const handleChangeNode = (menuItem: ParentYoptaComponent) => {
+  const changeNode = (menuItem: ActionMenuRenderItem) => {
     Editor.withoutNormalizing(editor, () => {
       if (!editor.selection) return;
 
@@ -207,30 +228,45 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
     });
   };
 
-  const isBlockActive = (type) => {
-    return false;
+  const rootProps = {
+    role: 'dialog',
+    'aria-modal': true,
+    ref: actionMenuRef,
+    style: menuProps.style,
   };
 
+  const listProps = {
+    ref: elementListRef,
+  };
+
+  const itemProps = {
+    ref: elementListRef,
+    // onMouseDown: () => changeNode(menuItem);
+  };
+
+  if (render) {
+    return render({ items: renderMenuItems, rootProps, listProps, itemProps });
+  }
+
   return (
-    <div className={s.dropdown} role="dialog" aria-modal="true" ref={actionMenuRef} style={menuProps.style}>
-      <ul className={s.elementList} ref={elementListRef}>
-        {menuItems?.map((menuItem, i) => {
+    <div className={s.dropdown} {...rootProps}>
+      <ul className={s.elementList} {...listProps}>
+        {renderMenuItems?.map((menuItem, i) => {
           return (
-            <li
+            <ItemRender
+              menuItem={menuItem}
+              onMouseDown={() => changeNode(menuItem)}
+              focusableElement={focusableElement}
+              index={i}
               key={menuItem.type}
-              className={cx(s.elementListItem, {
-                [s.__active]: isBlockActive(menuItem.type),
-                [s.hovered]: i === focusableElement,
-              })}
-              // aria-selected={isBlockActive(menuItem)}
-              data-type={menuItem.type}
-            >
-              <button type="button" tabIndex={0} onMouseDown={(e) => handleChangeNode(menuItem)} className={s.button}>
-                {menuItem.icon} <span>{menuItem.type}</span>
-              </button>
-            </li>
+            />
           );
         })}
+        {isNotFound && (
+          <ItemRender key="noResults" focusableElement={focusableElement} index={0}>
+            No results
+          </ItemRender>
+        )}
       </ul>
     </div>
   );

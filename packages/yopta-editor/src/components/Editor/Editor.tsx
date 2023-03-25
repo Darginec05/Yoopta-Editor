@@ -236,7 +236,6 @@ const EditorYopta = ({ editor, placeholder, children, components }: YoptaProps) 
 
           return React.cloneElement(child, {
             ...child.props,
-            editor,
             components,
           });
         })}

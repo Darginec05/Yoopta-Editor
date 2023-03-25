@@ -1,0 +1,45 @@
+
+.elementListItem {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: inherit;
+  padding: 0;
+  justify-content: flex-start;
+  margin: 1px 0;
+  border-radius: 10px;
+
+  &:hover, &:focus {
+    background: #383835;
+  }
+
+  span {
+    margin-left: 8px;
+  }
+
+  &.__active {
+    background: #007AFF;
+  }
+}
+
+.hovered {
+  background: #383835;
+}
+
+.button {
+  all: unset;
+  cursor: pointer;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  background: inherit;
+  width: 100%;
+  padding: 8px 14px;
+  height: 100%;
+  border-radius: inherit;
+
+  span {
+    margin-left: 8px;
+  }
+}
