@@ -1,15 +1,16 @@
-import { Element, Transforms } from 'slate';
+import { Editor, Element, Transforms } from 'slate';
 import { Resizable, ResizableProps } from 're-resizable';
-import { ReactEditor, RenderElementProps, useFocused, useSelected } from 'slate-react';
+import { ReactEditor, RenderElementProps, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
 import { Image } from './Image';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { cx } from '@yopta/editor';
+import { Loader } from '../components/Loader';
 import s from './ImageEditor.module.scss';
 
-type Props = RenderElementProps & {};
+type Props = RenderElementProps;
 
-function ImageEditor(editor, component) {
+function ImageEditor(editor: Editor, component) {
   return function ImageEditor(props: Props) {
     const { element } = props;
     const selected = useSelected();
@@ -76,17 +77,28 @@ function ImageEditor(editor, component) {
       [size.width, size.height, editor],
     );
 
-    if (!element.url) {
+    const hasCaption = !!element.options?.caption;
+    const isLoading = !!element['data-src'] && !element.url;
+
+    if (!element.url && !element['data-src']) {
       return <EditorPlaceholder {...props} editor={editor} onChange={component.options.onChange} />;
     }
 
-    const hasCaption = !!element.options.caption;
-
     return (
-      <div contentEditable={false} draggable={false} className={cx(s.root, { [s.extraMargin]: hasCaption })}>
+      <div
+        contentEditable={false}
+        draggable={false}
+        className={cx(s.root, { [s.extraMargin]: hasCaption, [s.loadingState]: isLoading })}
+        key={element.id}
+      >
         <Resizable {...resizeProps} className={s.resizeLib}>
           <Image {...props} size={size} />
           <div className={cx(s.selectImg, { [s.selected]: selected })} />
+          {isLoading && (
+            <div className={s.loader}>
+              <Loader />
+            </div>
+          )}
         </Resizable>
       </div>
     );

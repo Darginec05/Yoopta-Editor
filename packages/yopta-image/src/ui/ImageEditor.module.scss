@@ -10,6 +10,10 @@
   }
 }
 
+.loadingState {
+  pointer-events: none;
+}
+
 .extraMargin {
   margin: 20px 0 30px 0;
 }
@@ -69,4 +73,11 @@
   border-radius: 3px;
   opacity: 1;
   transition: opacity 150ms ease-in 0s;
+}
+
+.loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
