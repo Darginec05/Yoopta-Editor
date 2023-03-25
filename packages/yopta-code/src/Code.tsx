@@ -83,7 +83,7 @@ const Code = new YoptaComponent({
   type: CODE_NODE_TYPE,
   renderer: CodeRender,
   shortcut: 'hw',
-  children: CodeLine,
+  childComponent: CodeLine,
   createNode: (editor, type, data = {}) => {
     const childNode = {
       id: generateId(),

@@ -16,7 +16,7 @@ const TODO_LIST_NODE_TYPE = 'todo-list';
 const TodoList = new YoptaComponent({
   type: TODO_LIST_NODE_TYPE,
   renderer: (editor) => TodoListRender,
-  children: TodoListItem,
+  childComponent: TodoListItem,
   createNode: (editor, type, data = {}) => {
     const childNode = {
       id: generateId(),

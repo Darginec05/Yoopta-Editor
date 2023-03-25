@@ -17,7 +17,7 @@ const BulletedList = new YoptaComponent({
   renderer: (editor) => BulletedListRender,
   // [TODO] - fix for nested items
   shortcut: '-',
-  children: ListItemList,
+  childComponent: ListItemList,
   createNode: (editor, type, data = {}) => {
     const childNode = {
       id: generateId(),

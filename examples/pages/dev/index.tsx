@@ -8,7 +8,11 @@ import Lists from '@yopta/lists';
 import Headings from '@yopta/headings';
 import Image from '@yopta/image';
 import Video from '@yopta/video';
-import ActionMenu from '@yopta/action-menu-list';
+import ActionMenu, {
+  ActionMenuComponentItem,
+  ActionMenuRenderItem,
+  ActionRenderItemProps,
+} from '@yopta/action-menu-list';
 import { useMemo, useState } from 'react';
 import { Descendant } from 'slate';
 
@@ -113,6 +117,14 @@ const BasicExample = () => {
     ];
   }, []);
 
+  const actionItems: ActionMenuComponentItem[] = [
+    { component: Paragraph, icon: '', label: 'Text' },
+    { component: Blockquote, icon: '', label: 'Blockquote' },
+    { component: Callout, icon: '', label: 'Callout' },
+    { component: Code, icon: '', label: 'Super code', searchString: 'lol' },
+    { component: Lists.BulletedList, icon: '', label: 'Bulleted list' },
+  ];
+
   return (
     <div className={s.container}>
       <YoptaEditor
@@ -123,15 +135,24 @@ const BasicExample = () => {
         components={components}
       >
         <ActionMenu
-          items={components}
-          render={(props) => (
-            <div>
-              {props.items((item) => {
-                return <div>{item}</div>;
-              })}
-            </div>
-          )}
           trigger="/"
+          items={actionItems}
+          render={(props: ActionRenderItemProps) => {
+            console.log('props.rootProps', props.rootProps);
+
+            return (
+              <div
+                {...props.rootProps}
+                style={{ ...props.rootProps.style, width: 500, height: 300, backgroundColor: 'red', opacity: 0 }}
+              >
+                <div {...props.listProps}>
+                  {props.items.map((item) => {
+                    <div {...props.itemProps}>{item.label}</div>;
+                  })}
+                </div>
+              </div>
+            );
+          }}
         />
       </YoptaEditor>
       <pre className={s.editor} style={{ display: 'block', padding: '0 64px', whiteSpace: 'pre-wrap' }}>

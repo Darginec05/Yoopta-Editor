@@ -39,11 +39,12 @@ export type YoptaComponentType = {
   extendEditor?: (editor: CustomEditor) => CustomEditor;
   leaf?: (editor: CustomEditor) => (props: RenderLeafProps) => any;
   options?: Options;
-  children?: YoptaComponent;
+  childComponent?: YoptaComponent;
+  isChild?: boolean;
   createNode?: (editor: CustomEditor, type: string, data?: any) => void;
 };
 
-export type ParentYoptaComponent = Omit<YoptaComponentType, 'children'>;
+export type ParentYoptaComponent = Omit<YoptaComponentType, 'childComponent' | 'isChild'>;
 
 export class YoptaComponent {
   #props: YoptaComponentType;
@@ -63,12 +64,11 @@ export class YoptaComponent {
   }
 }
 
-export function getParentComponents(components: YoptaComponent[]) {
-  const items: ParentYoptaComponent[] = components
+export function mergeComponents(components: YoptaComponent[]): YoptaComponentType[] {
+  const items: YoptaComponentType[] = components
     .map((instance) => {
-      const component = instance.getComponent;
-      const { children, ...restComponentProps } = component;
-      return children ? [restComponentProps, children.getComponent] : component;
+      const { childComponent, ...componentProps } = instance.getComponent;
+      return childComponent ? [componentProps, { ...childComponent.getComponent, isChild: true }] : componentProps;
     })
     .flat();
 

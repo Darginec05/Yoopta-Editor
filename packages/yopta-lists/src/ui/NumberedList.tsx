@@ -15,7 +15,7 @@ const NUMBERED_LIST_NODE_TYPE = 'numbered-list';
 const NumberedList = new YoptaComponent({
   type: NUMBERED_LIST_NODE_TYPE,
   renderer: (editor) => NumberedListRender,
-  children: ListItemList,
+  childComponent: ListItemList,
   shortcut: '1.',
   createNode: (editor, type, data = {}) => {
     const childNode = {
