@@ -1,34 +1,44 @@
-import { YoptaComponent, HOTKEYS, YoptaComponentType } from '@yopta/editor';
+import { HOTKEYS, YoptaComponentType } from '@yopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { Element, Editor, Node, Path, Point, Transforms } from 'slate';
+import { CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
+import { Element, Editor, Path, Point, Transforms } from 'slate';
 import { useSlate } from 'slate-react';
 import { getRectByCurrentSelection } from '../utils/selectionRect';
-import { ItemRender } from './ItemRender';
-import s from './ActionMenuList.module.scss';
-import { ActionMenuComponentItem, ActionMenuRenderItem, ActionRenderItemProps } from '../types';
+import {
+  ActionMenuComponentItem,
+  ActionMenuRenderItem,
+  ActionMenuRenderRootProps,
+  ActionRenderItemProps,
+  ActionMenuRenderItemProps,
+  ActionMenuRenderListProps,
+} from '../types';
+import { DefaultMenuRender } from './DefaultMenuRender';
+
+const checkIsMenuOpen = (style: CSSProperties) => style.opacity === 1 && !!style.top && !!style.right;
 
 type Props = {
   items: ActionMenuComponentItem[];
-  render?: (props: ActionRenderItemProps) => ReactNode;
+  render?: (props: ActionRenderItemProps) => JSX.Element;
   trigger?: string | null;
 } & ({ items: ActionMenuComponentItem[]; components?: never } | { components: YoptaComponentType[]; items?: never });
 
-type MenuProps = { style: undefined | CSSProperties; point: Point | null };
+type MenuProps = { style: CSSProperties; point: Point | null };
 
-const MENU_PROPS_VALUE: MenuProps = { style: { position: 'fixed' }, point: null };
+const MENU_PROPS_VALUE: MenuProps = {
+  style: { position: 'fixed', opacity: 0, zIndex: 6, left: -1000, bottom: -1000 },
+  point: null,
+};
 
-const filterBy = (item, text: string, field: string) => item[field]?.toLowerCase().indexOf(text) > -1;
+const filterBy = (item: ActionMenuRenderItem, text: string, field: string) =>
+  item[field]?.toLowerCase().indexOf(text) > -1;
 
-const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => {
+const ActionMenuList = ({ items, render, components, trigger = '/' }: Props): JSX.Element => {
   const editor = useSlate();
   const actionMenuRef = useRef<HTMLDivElement>(null);
   const elementListRef = useRef<HTMLOListElement>(null);
   const [menuProps, setMenuProps] = useState<MenuProps>(MENU_PROPS_VALUE);
   const [searchString, setSearchString] = useState('');
   const [focusableElement, setFocusableElement] = useState(0);
-
-  console.log('items', items);
 
   const showActionMenu = () => {
     if (!editor.selection) return;
@@ -43,8 +53,11 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
 
     setMenuProps({
       style: {
+        ...menuProps.style,
         left: selectionRect.left,
         top: showAtTop ? selectionRect.top - actionMenuHeight : selectionRect.top + selectionRect.height,
+        right: 'auto',
+        bottom: 'auto',
         opacity: 1,
         position: 'fixed',
       },
@@ -61,13 +74,15 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
     const childNodes = elementListRef.current?.childNodes;
     const firstNodeEl = childNodes?.[0] as HTMLLIElement | undefined;
 
-    firstNodeEl?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
-    });
+    if (firstNodeEl?.nodeType === 1) {
+      firstNodeEl?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
   };
 
-  const isMenuOpen = menuProps.style !== undefined;
+  const isMenuOpen = checkIsMenuOpen(menuProps.style);
 
   const filterInlineNodes = (item: ActionMenuRenderItem) => {
     return !Editor.isInline(editor, { type: item.type, children: [{ text: '' }] });
@@ -94,7 +109,7 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
     return menuList.filter(filterInlineNodes).filter(filterMenuList);
   }, [items, components, searchString]);
 
-  const focusUp = () => {
+  const moveUp = () => {
     const childNodes = elementListRef.current?.childNodes;
 
     let nextElementIndex = focusableElement + 1;
@@ -103,15 +118,17 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
 
     const selectedNodeEl = childNodes?.[nextElementIndex] as HTMLLIElement | undefined;
 
-    selectedNodeEl?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
-    });
+    if (selectedNodeEl?.nodeType === 1) {
+      selectedNodeEl?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
 
     setFocusableElement(nextElementIndex);
   };
 
-  const focusDown = () => {
+  const moveDown = () => {
     const childNodes = elementListRef.current?.childNodes;
 
     let prevElementIndex = focusableElement - 1;
@@ -119,10 +136,12 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
     if (isFirst) prevElementIndex = childNodes!.length - 1;
     const selectedNodeEl = childNodes?.[prevElementIndex] as HTMLLIElement | undefined;
 
-    selectedNodeEl?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
-    });
+    if (selectedNodeEl?.nodeType === 1) {
+      selectedNodeEl?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
 
     setFocusableElement(prevElementIndex);
   };
@@ -144,12 +163,12 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
 
     if (HOTKEYS.isTab(event) || HOTKEYS.isArrowDown(event)) {
       event.preventDefault();
-      return focusUp();
+      return moveUp();
     }
 
     if (HOTKEYS.isShiftTab(event) || HOTKEYS.isArrowUp(event)) {
       event.preventDefault();
-      return focusDown();
+      return moveDown();
     }
   };
 
@@ -201,7 +220,7 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
       contentEditor?.removeEventListener('keyup', handleKeyup);
       if (isMenuOpen) document.removeEventListener('keydown', handleKeydown, true);
     };
-  }, [editor, isMenuOpen, focusableElement, renderMenuItems]);
+  }, [editor, isMenuOpen, focusableElement, renderMenuItems, render]);
 
   const changeNode = (menuItem: ActionMenuRenderItem) => {
     Editor.withoutNormalizing(editor, () => {
@@ -228,48 +247,31 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props) => 
     });
   };
 
-  const rootProps = {
+  const getRootProps = (): ActionMenuRenderRootProps => ({
     role: 'dialog',
     'aria-modal': true,
     ref: actionMenuRef,
     style: menuProps.style,
-  };
+  });
 
-  const listProps = {
+  const getListProps = (): ActionMenuRenderListProps => ({
     ref: elementListRef,
-  };
+  });
 
-  const itemProps = {
-    ref: elementListRef,
-    // onMouseDown: () => changeNode(menuItem);
-  };
+  const getItemsProps = (menuItem: ActionMenuRenderItem, index: number): ActionMenuRenderItemProps => ({
+    onMouseDown: () => changeNode(menuItem),
+    index,
+    focusableElement,
+    menuItem,
+  });
+
+  const renderProps = { items: renderMenuItems, getRootProps, getListProps, getItemsProps };
 
   if (render) {
-    return render({ items: renderMenuItems, rootProps, listProps, itemProps });
+    return render(renderProps);
   }
 
-  return (
-    <div className={s.dropdown} {...rootProps}>
-      <ul className={s.elementList} {...listProps}>
-        {renderMenuItems?.map((menuItem, i) => {
-          return (
-            <ItemRender
-              menuItem={menuItem}
-              onMouseDown={() => changeNode(menuItem)}
-              focusableElement={focusableElement}
-              index={i}
-              key={menuItem.type}
-            />
-          );
-        })}
-        {isNotFound && (
-          <ItemRender key="noResults" focusableElement={focusableElement} index={0}>
-            No results
-          </ItemRender>
-        )}
-      </ul>
-    </div>
-  );
+  return <DefaultMenuRender {...renderProps} />;
 };
 
 export { ActionMenuList };

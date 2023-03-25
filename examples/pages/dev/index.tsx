@@ -1,4 +1,4 @@
-import { YoptaComponent, YoptaEditor } from '@yopta/editor';
+import { cx, YoptaComponent, YoptaEditor } from '@yopta/editor';
 import Blockquote from '@yopta/blockquote';
 import Paragraph from '@yopta/paragraph';
 import Callout from '@yopta/callout';
@@ -8,16 +8,43 @@ import Lists from '@yopta/lists';
 import Headings from '@yopta/headings';
 import Image from '@yopta/image';
 import Video from '@yopta/video';
-import ActionMenu, {
-  ActionMenuComponentItem,
-  ActionMenuRenderItem,
-  ActionRenderItemProps,
-} from '@yopta/action-menu-list';
+import ActionMenu, { ActionMenuComponentItem, ActionRenderItemProps } from '@yopta/action-menu-list';
 import { useMemo, useState } from 'react';
+import EmbedIcon from './icons/embed.svg';
+import ImageIcon from './icons/image.svg';
+import VideoIcon from './icons/video.svg';
 import { Descendant } from 'slate';
+import { uploadToCloudinary } from '../../utils';
 
 import s from './styles.module.scss';
-import { uploadToCloudinary } from '../../utils';
+
+const CustomSuggestionList = (props: ActionRenderItemProps) => {
+  return (
+    <div {...props.getRootProps()} className={s.dropdown}>
+      <div {...props.getListProps()} className={s.elementList}>
+        {props.items.map((item, i) => {
+          const { focusableElement, menuItem, ...itemProps } = props.getItemsProps(item, i);
+          const isFocusable = i === focusableElement;
+
+          return (
+            <div
+              key={item.type}
+              {...itemProps}
+              className={cx(s.elementListItem, {
+                [s.hovered]: i === focusableElement,
+              })}
+            >
+              <button className={s.button}>
+                {item.icon} <span>{item.label || item.type}</span>
+              </button>
+            </div>
+          );
+        })}
+        {props.items.length === 0 && <div className={s.button}>Not found</div>}
+      </div>
+    </div>
+  );
+};
 
 const BasicExample = () => {
   const [editorValue, setEditorValue] = useState<Descendant[]>([]);
@@ -63,7 +90,6 @@ const BasicExample = () => {
 
   const components = useMemo<YoptaComponent[]>(() => {
     return [
-      // Blockquote.extend({ renderer: (editor) => (props) => <div {...props.attributes}>{props.children}</div> }),
       Paragraph,
       Blockquote,
       Callout,
@@ -118,11 +144,14 @@ const BasicExample = () => {
   }, []);
 
   const actionItems: ActionMenuComponentItem[] = [
-    { component: Paragraph, icon: '', label: 'Text' },
-    { component: Blockquote, icon: '', label: 'Blockquote' },
-    { component: Callout, icon: '', label: 'Callout' },
-    { component: Code, icon: '', label: 'Super code', searchString: 'lol' },
-    { component: Lists.BulletedList, icon: '', label: 'Bulleted list' },
+    { component: Paragraph, icon: <EmbedIcon />, label: 'Text' },
+    { component: Blockquote, icon: <VideoIcon />, label: 'Blockquote' },
+    { component: Callout, label: 'Callout' },
+    { component: Code, label: 'Super code', searchString: 'hello world' },
+    { component: Lists.BulletedList, label: 'Bulleted list' },
+    { component: Lists.NumberedList, label: 'Numbered list' },
+    { component: Lists.TodoList, label: 'Check list', searchString: 'todo check list' },
+    { component: Image, icon: <ImageIcon />, label: 'Image', searchString: 'image picture' },
   ];
 
   return (
@@ -134,26 +163,7 @@ const BasicExample = () => {
         shouldStoreInLocalStorage={{ name: 'yopta-dev' }}
         components={components}
       >
-        <ActionMenu
-          trigger="/"
-          items={actionItems}
-          render={(props: ActionRenderItemProps) => {
-            console.log('props.rootProps', props.rootProps);
-
-            return (
-              <div
-                {...props.rootProps}
-                style={{ ...props.rootProps.style, width: 500, height: 300, backgroundColor: 'red', opacity: 0 }}
-              >
-                <div {...props.listProps}>
-                  {props.items.map((item) => {
-                    <div {...props.itemProps}>{item.label}</div>;
-                  })}
-                </div>
-              </div>
-            );
-          }}
-        />
+        <ActionMenu trigger="/" items={actionItems} render={CustomSuggestionList} />
       </YoptaEditor>
       <pre className={s.editor} style={{ display: 'block', padding: '0 64px', whiteSpace: 'pre-wrap' }}>
         {JSON.stringify(editorValue, null, 2)}
