@@ -144,7 +144,7 @@ const BasicExample = () => {
   }, []);
 
   const actionItems: ActionMenuComponentItem[] = [
-    { component: Paragraph, icon: <EmbedIcon />, label: 'Text' },
+    { component: Paragraph, icon: <EmbedIcon />, label: 'Text', searchString: 'text paragraph' },
     { component: Blockquote, icon: <VideoIcon />, label: 'Blockquote' },
     { component: Callout, label: 'Callout' },
     { component: Code, label: 'Super code', searchString: 'hello world' },

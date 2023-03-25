@@ -29,8 +29,10 @@ const MENU_PROPS_VALUE: MenuProps = {
   point: null,
 };
 
-const filterBy = (item: ActionMenuRenderItem, text: string, field: string) =>
-  item[field]?.toLowerCase().indexOf(text) > -1;
+const filterBy = (item: ActionMenuRenderItem, text: string, field: string) => {
+  if (!item[field]) return false;
+  return item[field].toLowerCase().indexOf(text) > -1;
+};
 
 const ActionMenuList = ({ items, render, components, trigger = '/' }: Props): JSX.Element => {
   const editor = useSlate();
@@ -109,7 +111,7 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props): JS
     return menuList.filter(filterInlineNodes).filter(filterMenuList);
   }, [items, components, searchString]);
 
-  const moveUp = () => {
+  const moveDown = () => {
     const childNodes = elementListRef.current?.childNodes;
 
     let nextElementIndex = focusableElement + 1;
@@ -128,7 +130,7 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props): JS
     setFocusableElement(nextElementIndex);
   };
 
-  const moveDown = () => {
+  const moveUp = () => {
     const childNodes = elementListRef.current?.childNodes;
 
     let prevElementIndex = focusableElement - 1;
@@ -163,12 +165,12 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props): JS
 
     if (HOTKEYS.isTab(event) || HOTKEYS.isArrowDown(event)) {
       event.preventDefault();
-      return moveUp();
+      return moveDown();
     }
 
     if (HOTKEYS.isShiftTab(event) || HOTKEYS.isArrowUp(event)) {
       event.preventDefault();
-      return moveDown();
+      return moveUp();
     }
   };
 
