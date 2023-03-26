@@ -3,18 +3,23 @@ import { Resizable, ResizableProps } from 're-resizable';
 import { ReactEditor, RenderElementProps, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
 import { Image } from './Image';
-import { useEffect, useMemo, useState } from 'react';
+import { CSSProperties, MouseEvent, useEffect, useMemo, useState } from 'react';
 import { cx } from '@yopta/editor';
 import { Loader } from '../components/Loader';
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import { NodeOptions } from '../components/NodeOptions';
 import s from './ImageEditor.module.scss';
 
 type Props = RenderElementProps;
+
+const OPTIONS_WIDTH = 265;
 
 function ImageEditor(editor: Editor, component) {
   return function ImageEditor(props: Props) {
     const { element } = props;
     const selected = useSelected();
 
+    const [optionsPos, setOptionsPos] = useState<CSSProperties | null>(null);
     const [size, setSize] = useState({
       width: element.options?.size?.width || 800,
       height: element.options?.size?.height || 440,
@@ -80,8 +85,48 @@ function ImageEditor(editor: Editor, component) {
     const hasCaption = !!element.options?.caption;
     const isLoading = !!element['data-src'] && !element.url;
 
+    const toggleOptionsOpen = (e: MouseEvent) => {
+      e?.stopPropagation();
+
+      if (optionsPos !== null) {
+        enableBodyScroll(document.body);
+        setOptionsPos(null);
+        return;
+      }
+
+      const optionsButtonRect = e.currentTarget?.getBoundingClientRect();
+      const UPLOADER_HEIGHT = 164;
+
+      if (optionsButtonRect) {
+        const showAtTop = optionsButtonRect.top + optionsButtonRect.height + UPLOADER_HEIGHT + 20 > window.innerHeight;
+
+        disableBodyScroll(document.body, { reserveScrollBarGap: true });
+        setOptionsPos({
+          right: 10,
+          top: showAtTop
+            ? optionsButtonRect.top - UPLOADER_HEIGHT - 5
+            : optionsButtonRect.top + optionsButtonRect.height + 5,
+        });
+      }
+    };
+
     if (!element.url && !element['data-src']) {
-      return <EditorPlaceholder {...props} editor={editor} onChange={component.options.onChange} />;
+      return (
+        <div className={s.root} key={element.id}>
+          <EditorPlaceholder {...props} editor={editor} onChange={component.options.onChange}>
+            <div>
+              <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>
+                <span className={s.dot} />
+                <span className={s.dot} />
+                <span className={s.dot} />
+              </button>
+              {optionsPos !== null && (
+                <NodeOptions key={element.id} onClose={toggleOptionsOpen} style={optionsPos} element={element} />
+              )}
+            </div>
+          </EditorPlaceholder>
+        </div>
+      );
     }
 
     return (
@@ -99,6 +144,16 @@ function ImageEditor(editor: Editor, component) {
               <Loader />
             </div>
           )}
+          <div>
+            <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>
+              <span className={s.dot} />
+              <span className={s.dot} />
+              <span className={s.dot} />
+            </button>
+            {optionsPos !== null && (
+              <NodeOptions key={element.id} onClose={toggleOptionsOpen} style={optionsPos} element={element} />
+            )}
+          </div>
         </Resizable>
       </div>
     );

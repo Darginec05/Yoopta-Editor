@@ -1,8 +1,13 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import s from './Overlay.module.scss';
 
-const Overlay = ({ children, onClose }) => {
+type Props = {
+  onClose: () => void;
+  children: ReactNode;
+};
+
+const Overlay = ({ children, onClose }: Props) => {
   const [container] = useState(() => document.createElement('div'));
 
   useEffect(() => {

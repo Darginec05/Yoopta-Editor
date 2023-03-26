@@ -127,10 +127,22 @@ const EditorYopta = ({ editor, placeholder, children, components }: YoptaProps) 
         if (event.isDefaultPrevented()) return;
         event.preventDefault();
 
+        const parentPath = Path.parent(editor.selection.anchor.path);
+
+        const text = Editor.string(editor, parentPath);
+        const isDefaultNode = nodeEntry && nodeEntry[0].type !== defaultNode.type;
+
+        if (isDefaultNode && text.length === 0) {
+          Transforms.setNodes(editor, defaultNode, {
+            at: parentPath,
+          });
+
+          return;
+        }
+
         const isStart = Editor.isStart(editor, editor.selection.anchor, editor.selection.anchor.path);
 
-        if (isStart && nodeEntry && nodeEntry[0].type !== defaultNode.type) {
-          const parentPath = Path.parent(editor.selection.anchor.path);
+        if (isStart && isDefaultNode) {
           const [currentNode] = nodeEntry;
 
           Transforms.setNodes(editor, defaultNode, { at: parentPath });

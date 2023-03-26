@@ -1,6 +1,6 @@
 import { ReactEditor, RenderElementProps } from 'slate-react';
 import UploadIcon from './icons/upload.svg';
-import { useEffect, useRef, useState } from 'react';
+import { MouseEvent, useEffect, useRef, useState } from 'react';
 import { EditorUploader } from './EditorUploader';
 import { getAspectRatio } from '../utils/aspect';
 import { Editor, Element, Transforms } from 'slate';
@@ -25,7 +25,9 @@ const EditorPlaceholder = ({ element, attributes, children, editor, onChange }: 
   const [activeTab, setActiveTab] = useState('upload');
   const imageEditorRef = useRef<HTMLDivElement>(null);
 
-  const toggleUploaderOpen = () => {
+  const toggleUploaderOpen = (e: MouseEvent) => {
+    e.stopPropagation();
+
     if (uploaderPos !== null) {
       enableBodyScroll(document.body);
       setUploaderPos(null);
