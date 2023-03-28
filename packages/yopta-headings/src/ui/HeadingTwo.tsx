@@ -1,4 +1,4 @@
-import { generateId, YoptaComponent } from '@yopta/editor';
+import { generateId, YoptaPlugin } from '@yopta/editor';
 import { Transforms } from 'slate';
 import { RenderElementProps } from 'slate-react';
 import s from './HeadingTwo.module.scss';
@@ -13,7 +13,7 @@ const HeadingTwoRender = ({ attributes, children, element }: RenderElementProps)
 
 HeadingTwoRender.displayName = 'HeadingTwo';
 
-const HeadingTwo = new YoptaComponent({
+const HeadingTwo = new YoptaPlugin({
   type: 'heading-two',
   renderer: (editor) => HeadingTwoRender,
   shortcut: 'h2',

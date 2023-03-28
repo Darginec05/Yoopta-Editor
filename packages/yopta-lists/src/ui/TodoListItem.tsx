@@ -1,4 +1,4 @@
-import { YoptaComponent, generateId, getNodeByPath, cx } from '@yopta/editor';
+import { YoptaPlugin, generateId, getNodeByPath, cx } from '@yopta/editor';
 import { ChangeEvent } from 'react';
 import { Editor, Element, Path, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
@@ -36,7 +36,7 @@ const TodoListItemRender = (editor: Editor) => {
   };
 };
 
-const TodoListItem = new YoptaComponent({
+const TodoListItem = new YoptaPlugin({
   type: TODO_LIST_NODE_ITEM_TYPE,
   renderer: TodoListItemRender,
   shortcut: '[]',

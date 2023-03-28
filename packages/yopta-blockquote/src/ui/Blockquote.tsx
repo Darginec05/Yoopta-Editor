@@ -1,4 +1,4 @@
-import { generateId, YoptaComponent } from '@yopta/editor';
+import { generateId, YoptaPlugin } from '@yopta/editor';
 import { Transforms } from 'slate';
 import s from './Blockquote.module.scss';
 
@@ -12,7 +12,7 @@ const BlockquoteRender = ({ attributes, children, element }) => {
 
 BlockquoteRender.displayName = 'Blockquote';
 
-const Blockquote = new YoptaComponent({
+const Blockquote = new YoptaPlugin({
   type: 'block-quote',
   renderer: (editor) => BlockquoteRender,
   shortcut: '>',

@@ -1,4 +1,4 @@
-import { generateId, YoptaComponent } from '@yopta/editor';
+import { generateId, YoptaPlugin } from '@yopta/editor';
 import { Transforms } from 'slate';
 import s from './Callout.module.scss';
 
@@ -14,7 +14,7 @@ const CalloutRender = ({ attributes, children, element }) => {
 
 CalloutRender.displayName = 'Callout';
 
-const Callout = new YoptaComponent({
+const Callout = new YoptaPlugin({
   type: 'callout',
   renderer: (editor) => CalloutRender,
   shortcut: '<',

@@ -1,9 +1,9 @@
-import { generateId, getNodeByPath, YoptaComponent } from '@yopta/editor';
+import { generateId, getNodeByPath, YoptaPlugin } from '@yopta/editor';
 import { Transforms } from 'slate';
 import { Video as VideoRender } from './ui/Video';
 import { VideoEditor } from './ui/VideoEditor';
 
-const Video = new YoptaComponent({
+const Video = new YoptaPlugin({
   type: 'video',
   renderer: VideoEditor,
   // renderer: (editor) => VideoRender,

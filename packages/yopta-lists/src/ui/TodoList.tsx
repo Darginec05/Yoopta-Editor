@@ -1,4 +1,4 @@
-import { generateId, YoptaComponent } from '@yopta/editor';
+import { generateId, YoptaPlugin } from '@yopta/editor';
 import { Editor, Element, Transforms } from 'slate';
 import s from './TodoList.module.scss';
 import { TodoListItem } from './TodoListItem';
@@ -13,10 +13,10 @@ const TodoListRender = ({ attributes, children, element }) => {
 
 const TODO_LIST_NODE_TYPE = 'todo-list';
 
-const TodoList = new YoptaComponent({
+const TodoList = new YoptaPlugin({
   type: TODO_LIST_NODE_TYPE,
   renderer: (editor) => TodoListRender,
-  childComponent: TodoListItem,
+  childPlugin: TodoListItem,
   createNode: (editor, type, data = {}) => {
     const childNode = {
       id: generateId(),

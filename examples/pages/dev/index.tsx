@@ -1,4 +1,4 @@
-import { cx, YoptaComponent, YoptaEditor } from '@yopta/editor';
+import { cx, YoptaPlugin, YoptaEditor } from '@yopta/editor';
 import Blockquote from '@yopta/blockquote';
 import Paragraph from '@yopta/paragraph';
 import Callout from '@yopta/callout';
@@ -88,7 +88,7 @@ const BasicExample = () => {
 
   // const onChange = () => {};
 
-  const components = useMemo<YoptaComponent[]>(() => {
+  const plugins = useMemo<YoptaPlugin[]>(() => {
     return [
       Paragraph,
       Blockquote,
@@ -173,7 +173,7 @@ const BasicExample = () => {
         onChange={(val: Descendant[]) => setEditorValue(val)}
         className={s.editor}
         shouldStoreInLocalStorage={{ name: 'yopta-dev' }}
-        components={components}
+        plugins={plugins}
       >
         <ActionMenu trigger="/" items={actionItems} render={CustomSuggestionList} />
       </YoptaEditor>

@@ -1,4 +1,4 @@
-import { YoptaComponent, generateId, getNodeByPath, YoptaComponentType } from '@yopta/editor';
+import { YoptaPlugin, generateId, getNodeByPath, YoptaPluginType } from '@yopta/editor';
 import { Editor, Element, Path, Transforms } from 'slate';
 import s from './ListItem.module.scss';
 
@@ -14,7 +14,7 @@ ListItemRender.displayName = 'ListItem';
 
 const LIST_ITEM_NODE_TYPE = 'list-item';
 
-const ListItemList = new YoptaComponent({
+const ListItemList = new YoptaPlugin({
   type: LIST_ITEM_NODE_TYPE,
   renderer: (editor) => ListItemRender,
   shortcut: '-',

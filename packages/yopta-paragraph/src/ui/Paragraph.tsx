@@ -1,4 +1,4 @@
-import { YoptaComponent, generateId } from '@yopta/editor';
+import { YoptaPlugin, generateId } from '@yopta/editor';
 import { Transforms } from 'slate';
 import s from './Paragraph.module.scss';
 
@@ -12,7 +12,7 @@ const ParagraphRender = ({ attributes, children, element }) => {
 
 ParagraphRender.displayName = 'Paragraph';
 
-const Paragraph = new YoptaComponent({
+const Paragraph = new YoptaPlugin({
   type: 'paragraph',
   renderer: (editor) => ParagraphRender,
   createNode: (editor, type, data) => {

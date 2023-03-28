@@ -1,4 +1,4 @@
-import { generateId, YoptaComponent } from '@yopta/editor';
+import { generateId, YoptaPlugin } from '@yopta/editor';
 import { Transforms } from 'slate';
 import { RenderElementProps } from 'slate-react';
 import s from './HeadingThree.module.scss';
@@ -13,7 +13,7 @@ const HeadingThreeRender = ({ attributes, children, element }: RenderElementProp
 
 HeadingThreeRender.displayName = 'HeadingThree';
 
-const HeadingThree = new YoptaComponent({
+const HeadingThree = new YoptaPlugin({
   type: 'heading-three',
   renderer: (editor) => HeadingThreeRender,
   shortcut: 'h3',

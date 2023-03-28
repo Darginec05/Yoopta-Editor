@@ -24,7 +24,7 @@
 - Offline ready mode
 - Shortcuts
 - A cool representation of the data in JSON format, so you can easily save the content data to the database and validate
-  You can import two components from library: `<YoptaEditor />` and `<YoptaRender />`. <br>
+  You can import two plugins from library: `<YoptaEditor />` and `<YoptaRender />`. <br>
   `<YoptaEditor />` - it's for building beautiful content <br>
   `<YoptaRender />` - it's just for rendering from your saved data, without any editor tools and libraries, so it make you page loading faster
 - Custom styling

@@ -1,4 +1,4 @@
-import { generateId, YoptaComponent } from '@yopta/editor';
+import { generateId, YoptaPlugin } from '@yopta/editor';
 import { Editor, Element, Transforms } from 'slate';
 import { ListItemList } from './ListItem';
 
@@ -12,12 +12,12 @@ const BulletedListRender = ({ attributes, children, element }) => {
 
 const BULLETED_LIST_NODE_TYPE = 'bulleted-list';
 
-const BulletedList = new YoptaComponent({
+const BulletedList = new YoptaPlugin({
   type: BULLETED_LIST_NODE_TYPE,
   renderer: (editor) => BulletedListRender,
   // [TODO] - fix for nested items
   shortcut: '-',
-  childComponent: ListItemList,
+  childPlugin: ListItemList,
   createNode: (editor, type, data = {}) => {
     const childNode = {
       id: generateId(),

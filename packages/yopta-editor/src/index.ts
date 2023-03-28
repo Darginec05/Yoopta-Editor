@@ -1,4 +1,4 @@
-import { YoptaComponent, mergeComponents } from './utils/component';
+import { YoptaPlugin, mergeComponents } from './utils/plugins';
 import classnames from 'classnames';
 export { classnames as cx };
 
@@ -7,7 +7,7 @@ export { isValidYoptaNodes } from './utils/validate';
 export { generateId } from './utils/generateId';
 export { HOTKEYS } from './utils/hotkeys';
 export { isElementActive, getNodeByPath } from './utils/nodes';
-export type { YoptaComponentType, YoptaComponentHandlers, HandlersOptions } from './utils/component';
+export type { YoptaPluginType, YoptaPluginHandlers, HandlersOptions } from './utils/plugins';
 export type { CustomEditor as YoptaEditorType } from './components/Editor/types';
 
-export { YoptaComponent, mergeComponents };
+export { YoptaPlugin, mergeComponents };

@@ -1,9 +1,9 @@
-import { generateId, getNodeByPath, YoptaComponent } from '@yopta/editor';
+import { generateId, getNodeByPath, YoptaPlugin } from '@yopta/editor';
 import { Transforms } from 'slate';
 import { Image as ImageRender } from './ui/Image';
 import { ImageEditor } from './ui/ImageEditor';
 
-const Image = new YoptaComponent({
+const Image = new YoptaPlugin({
   type: 'image',
   renderer: ImageEditor,
   // renderer: (editor) => ImageRender,

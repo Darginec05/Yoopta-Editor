@@ -1,5 +1,5 @@
 import { Editor, Element, Path, Range, Transforms } from 'slate';
-import { YoptaComponent, getNodeByPath, generateId } from '@yopta/editor';
+import { YoptaPlugin, getNodeByPath, generateId } from '@yopta/editor';
 import { CodeLeaf } from './ui/CodeLeaf';
 import { CodeRender } from './ui/CodeRender';
 import { CodeLineRender } from './ui/CodeLineRender';
@@ -8,7 +8,7 @@ import { codeLineDecorator } from './utils/decorator';
 const CODE_NODE_TYPE = 'code';
 const CODE_LINE_NODE_TYPE = 'code-line';
 
-const CodeLine = new YoptaComponent({
+const CodeLine = new YoptaPlugin({
   type: CODE_LINE_NODE_TYPE,
   renderer: CodeLineRender,
   leaf: () => CodeLeaf,
@@ -79,11 +79,11 @@ const CodeLine = new YoptaComponent({
   },
 });
 
-const Code = new YoptaComponent({
+const Code = new YoptaPlugin({
   type: CODE_NODE_TYPE,
   renderer: CodeRender,
   shortcut: 'hw',
-  childComponent: CodeLine,
+  childPlugin: CodeLine,
   createNode: (editor, type, data = {}) => {
     const childNode = {
       id: generateId(),

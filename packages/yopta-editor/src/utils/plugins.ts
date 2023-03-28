@@ -4,7 +4,7 @@ import { Element, NodeEntry, Range } from 'slate';
 import { RenderElementProps, RenderLeafProps } from 'slate-react';
 import { CustomEditor } from '../components/Editor/types';
 import { EditorEventHandlers } from '../types/eventHandlers';
-import { HOTKEYS_TYPE } from '../utils/hotkeys';
+import { HOTKEYS_TYPE } from './hotkeys';
 
 export type HandlersOptions = {
   hotkeys: HOTKEYS_TYPE;
@@ -17,7 +17,7 @@ export type ElementType = {
 };
 
 export type DecoratorFn = (nodeEntry: NodeEntry) => Range[];
-export type YoptaComponentHandlers = {
+export type YoptaPluginHandlers = {
   [key in keyof EditorEventHandlers]: (
     editor: CustomEditor,
     options: HandlersOptions,
@@ -26,52 +26,54 @@ export type YoptaComponentHandlers = {
 
 type Options = Record<string, unknown>;
 
-export type YoptaComponentType = {
+export type YoptaPluginType = {
   type: string;
   renderer: (
     editor: CustomEditor,
-    component: Pick<YoptaComponentType, 'type' | 'options'>,
+    component: Pick<YoptaPluginType, 'type' | 'options'>,
   ) => (props: RenderElementProps) => ReactElement;
   shortcut?: string;
   decorator?: (editor: CustomEditor) => DecoratorFn;
-  handlers?: YoptaComponentHandlers;
+  handlers?: YoptaPluginHandlers;
   element?: ElementType;
   extendEditor?: (editor: CustomEditor) => CustomEditor;
   leaf?: (editor: CustomEditor) => (props: RenderLeafProps) => any;
   options?: Options;
-  childComponent?: YoptaComponent;
+  childPlugin?: YoptaPlugin;
   isChild?: boolean;
   createNode?: (editor: CustomEditor, type: string, data?: any) => void;
 };
 
-export type ParentYoptaComponent = Omit<YoptaComponentType, 'childComponent' | 'isChild'>;
+export type ParentYoptaPlugin = Omit<YoptaPluginType, 'childPlugin' | 'isChild'>;
 
-export class YoptaComponent {
-  #props: YoptaComponentType;
+export class YoptaPlugin {
+  #props: YoptaPluginType;
 
-  constructor(inputComponent: YoptaComponentType) {
-    this.#props = Object.freeze({ ...inputComponent });
+  constructor(inputPlugin: YoptaPluginType) {
+    this.#props = Object.freeze({ ...inputPlugin });
   }
 
-  extend(overrides: Partial<YoptaComponentType>) {
+  extend(overrides: Partial<YoptaPluginType>) {
     const updatedProps = Object.freeze({ ...this.#props, ...overrides });
 
-    return new YoptaComponent(updatedProps);
+    return new YoptaPlugin(updatedProps);
   }
 
-  get getComponent(): YoptaComponentType {
+  get getPlugin(): YoptaPluginType {
     return this.#props;
   }
 }
 
-export function mergeComponents(components: YoptaComponent[]): YoptaComponentType[] {
-  const items: YoptaComponentType[] = components
+export function mergeComponents(plugins: YoptaPlugin[]): YoptaPluginType[] {
+  console.log('plugins', plugins);
+
+  const items: YoptaPluginType[] = plugins
     .map((instance) => {
-      const { childComponent, ...componentProps } = instance.getComponent;
-      return childComponent ? [componentProps, { ...childComponent.getComponent, isChild: true }] : componentProps;
+      const { childPlugin, ...componentProps } = instance.getPlugin;
+      return childPlugin ? [componentProps, { ...childPlugin.getPlugin, isChild: true }] : componentProps;
     })
     .flat();
 
-  const uniqueComponents = uniqWith(items, (a, b) => a.type === b.type);
-  return uniqueComponents;
+  const uniquePlugins = uniqWith(items, (a, b) => a.type === b.type);
+  return uniquePlugins;
 }

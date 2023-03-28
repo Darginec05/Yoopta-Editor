@@ -9,7 +9,7 @@ import { SettingsProvider } from './contexts/SettingsContext/SettingsContext';
 import NoSSR from './components/NoSsr/NoSsr';
 import type { LibOptions } from './contexts/SettingsContext/SettingsContext';
 import { NodeSettingsProvider } from './contexts/NodeSettingsContext/NodeSettingsContext';
-import { mergeComponents, YoptaComponent } from './utils/component';
+import { mergeComponents, YoptaPlugin } from './utils/plugins';
 import { getInitialState, getStorageName } from './utils/storage';
 import { withShortcuts } from './components/Editor/plugins/shortcuts';
 import { withVoidNodes } from './components/Editor/plugins/voids';
@@ -19,7 +19,7 @@ type Props = {
   value?: Descendant[];
   key?: Key;
   scrollElementSelector?: string;
-  components: YoptaComponent[];
+  plugins: YoptaPlugin[];
   readOnly?: boolean;
   children: ReactNode | ReactNode[];
 } & LibOptions;
@@ -31,7 +31,7 @@ const YoptaEditorLib = ({
   placeholder,
   scrollElementSelector,
   autoFocus = true,
-  components,
+  plugins,
   readOnly,
   children,
   ...options
@@ -85,7 +85,9 @@ const YoptaEditorLib = ({
     [options.shouldStoreInLocalStorage],
   );
 
-  const yoptaComponents = useMemo(() => mergeComponents(components), [components]);
+  console.log('plugins', plugins);
+
+  const yoptaPlugins = useMemo(() => mergeComponents(plugins), [plugins]);
 
   const editor = useMemo(() => {
     let slateEditor = withVoidNodes(withHistory(withShortcuts(withReact(createEditor()))));
@@ -93,7 +95,7 @@ const YoptaEditorLib = ({
 
     const shortcutMap = {};
 
-    yoptaComponents.forEach((component) => {
+    yoptaPlugins.forEach((component) => {
       if (component.shortcut) {
         shortcutMap[component.shortcut] = component.type;
       }
@@ -104,14 +106,14 @@ const YoptaEditorLib = ({
     slateEditor.shortcuts = shortcutMap;
 
     return slateEditor;
-  }, [yoptaComponents]);
+  }, [yoptaPlugins]);
 
   return (
     <Slate editor={editor} value={val} onChange={onChangeValue} key={key}>
       <SettingsProvider options={options}>
         <ScrollProvider scrollElementSelector={scrollElementSelector}>
           <NodeSettingsProvider>
-            <EditorYopta editor={editor} placeholder={placeholder} components={yoptaComponents} children={children} />
+            <EditorYopta editor={editor} placeholder={placeholder} plugins={yoptaPlugins} children={children} />
           </NodeSettingsProvider>
         </ScrollProvider>
       </SettingsProvider>

@@ -1,4 +1,4 @@
-import { HOTKEYS, YoptaComponentType } from '@yopta/editor';
+import { HOTKEYS, YoptaPluginType } from '@yopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
 import { Element, Editor, Path, Point, Transforms } from 'slate';
@@ -20,7 +20,7 @@ type Props = {
   items: ActionMenuComponentItem[];
   render?: (props: ActionRenderItemProps) => JSX.Element;
   trigger?: string | null;
-} & ({ items: ActionMenuComponentItem[]; components?: never } | { components: YoptaComponentType[]; items?: never });
+} & ({ items: ActionMenuComponentItem[]; plugins?: never } | { plugins: YoptaPluginType[]; items?: never });
 
 type MenuProps = { style: CSSProperties; point: Point | null };
 
@@ -34,7 +34,7 @@ const filterBy = (item: ActionMenuRenderItem, text: string, field: string) => {
   return item[field].toLowerCase().indexOf(text) > -1;
 };
 
-const ActionMenuList = ({ items, render, components, trigger = '/' }: Props): JSX.Element => {
+const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.Element => {
   const editor = useSlate();
   const actionMenuRef = useRef<HTMLDivElement>(null);
   const elementListRef = useRef<HTMLOListElement>(null);
@@ -103,13 +103,13 @@ const ActionMenuList = ({ items, render, components, trigger = '/' }: Props): JS
     let menuList: ActionMenuRenderItem[];
 
     if (items) {
-      menuList = items.map(({ component, ...rest }) => ({ ...component.getComponent, ...rest }));
+      menuList = items.map(({ component, ...rest }) => ({ ...component.getPlugin, ...rest }));
     } else {
-      menuList = (components as unknown as YoptaComponentType[]).filter((item) => !item.isChild);
+      menuList = (plugins as unknown as YoptaPluginType[]).filter((item) => !item.isChild);
     }
 
     return menuList.filter(filterInlineNodes).filter(filterMenuList);
-  }, [items, components, searchString]);
+  }, [items, plugins, searchString]);
 
   const moveDown = () => {
     const childNodes = elementListRef.current?.childNodes;
