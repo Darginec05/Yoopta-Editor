@@ -22,8 +22,7 @@ const NodeOptions = ({ onClose, style, element }: Props) => {
 
   const handleDelete = () => {
     try {
-      let path = ReactEditor.findPath(editor, element);
-      if (editor.selection) path = Path.parent(editor.selection.anchor.path);
+      const path = ReactEditor.findPath(editor, element);
       if (!path) return;
 
       Transforms.removeNodes(editor, {
@@ -37,11 +36,8 @@ const NodeOptions = ({ onClose, style, element }: Props) => {
   };
 
   const handleDuplicate = () => {
-    console.log('element', element);
-
     Editor.withoutNormalizing(editor, () => {
-      let path = ReactEditor.findPath(editor, element);
-      if (!path && editor.selection) path = Path.parent(editor.selection.anchor.path);
+      const path = ReactEditor.findPath(editor, element);
       if (!path) return;
 
       const currentNodeEntry = Editor.node(editor, path);

@@ -85,8 +85,6 @@ const YoptaEditorLib = ({
     [options.shouldStoreInLocalStorage],
   );
 
-  console.log('plugins', plugins);
-
   const yoptaPlugins = useMemo(() => mergeComponents(plugins), [plugins]);
 
   const editor = useMemo(() => {

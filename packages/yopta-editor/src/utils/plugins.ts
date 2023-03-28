@@ -65,8 +65,6 @@ export class YoptaPlugin {
 }
 
 export function mergeComponents(plugins: YoptaPlugin[]): YoptaPluginType[] {
-  console.log('plugins', plugins);
-
   const items: YoptaPluginType[] = plugins
     .map((instance) => {
       const { childPlugin, ...componentProps } = instance.getPlugin;
