@@ -5,12 +5,10 @@ import { Slate, withReact } from 'slate-react';
 import { EditorYopta } from './components/Editor/Editor';
 import { ScrollProvider } from './contexts/ScrollContext/ScrollContext';
 // import { withVoidNodes, withFixDeleteFragment, withCopyPasting } from './components/Editor/plugins';
-import { SettingsProvider } from './contexts/SettingsContext/SettingsContext';
 import NoSSR from './components/NoSsr/NoSsr';
-import type { LibOptions } from './contexts/SettingsContext/SettingsContext';
 import { NodeSettingsProvider } from './contexts/NodeSettingsContext/NodeSettingsContext';
-import { mergeComponents, YoptaPlugin } from './utils/plugins';
-import { getInitialState, getStorageName } from './utils/storage';
+import { mergePlugins, YoptaPlugin } from './utils/plugins';
+import { getInitialState, getStorageName, LOCAL_STORAGE_NAME_TYPE } from './utils/storage';
 import { withShortcuts } from './components/Editor/plugins/shortcuts';
 import { withVoidNodes } from './components/Editor/plugins/voids';
 
@@ -19,25 +17,28 @@ type Props = {
   value?: Descendant[];
   key?: Key;
   scrollElementSelector?: string;
+  placeholder?: string;
   plugins: YoptaPlugin[];
-  readOnly?: boolean;
   children: ReactNode | ReactNode[];
-} & LibOptions;
+  readOnly?: boolean;
+  autoFocus?: boolean;
+  shouldStoreInLocalStorage?: LOCAL_STORAGE_NAME_TYPE;
+};
 
 const YoptaEditorLib = ({
   onChange,
   value,
   key,
-  placeholder,
   scrollElementSelector,
+  placeholder,
   autoFocus = true,
   plugins,
   readOnly,
   children,
-  ...options
+  shouldStoreInLocalStorage,
 }: Props) => {
-  const storageName = getStorageName(options.shouldStoreInLocalStorage);
-  const [val, setVal] = useState(() => getInitialState(options.shouldStoreInLocalStorage, storageName, value));
+  const storageName = getStorageName(shouldStoreInLocalStorage);
+  const [val, setVal] = useState(() => getInitialState(storageName, shouldStoreInLocalStorage, value));
 
   // const [editor] = useState<CustomEditor>(() =>
   //   withHistory(
@@ -70,7 +71,7 @@ const YoptaEditorLib = ({
       onChange(data);
       setVal(data);
 
-      if (!options.shouldStoreInLocalStorage) return;
+      if (!shouldStoreInLocalStorage) return;
 
       const hasChanges = editor.operations.some((op) => op.type !== 'set_selection');
 
@@ -82,10 +83,10 @@ const YoptaEditorLib = ({
         } catch (error) {}
       }
     },
-    [options.shouldStoreInLocalStorage],
+    [shouldStoreInLocalStorage],
   );
 
-  const yoptaPlugins = useMemo(() => mergeComponents(plugins), [plugins]);
+  const yoptaPlugins = useMemo(() => mergePlugins(plugins), [plugins]);
 
   const editor = useMemo(() => {
     let slateEditor = withVoidNodes(withHistory(withShortcuts(withReact(createEditor()))));
@@ -108,22 +109,22 @@ const YoptaEditorLib = ({
 
   return (
     <Slate editor={editor} value={val} onChange={onChangeValue} key={key}>
-      <SettingsProvider options={options}>
-        <ScrollProvider scrollElementSelector={scrollElementSelector}>
-          <NodeSettingsProvider>
-            <EditorYopta editor={editor} placeholder={placeholder} plugins={yoptaPlugins} children={children} />
-          </NodeSettingsProvider>
-        </ScrollProvider>
-      </SettingsProvider>
+      <ScrollProvider scrollElementSelector={scrollElementSelector}>
+        <NodeSettingsProvider>
+          <EditorYopta
+            editor={editor}
+            readOnly={readOnly}
+            placeholder={placeholder}
+            plugins={yoptaPlugins}
+            children={children}
+          />
+        </NodeSettingsProvider>
+      </ScrollProvider>
     </Slate>
   );
 };
 
 const YoptaEditor = (props: Props) => {
-  if (props.readOnly) {
-    return <YoptaEditorLib {...props} />;
-  }
-
   return (
     <NoSSR>
       <YoptaEditorLib {...props} />

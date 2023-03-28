@@ -3,7 +3,6 @@ import cx from 'classnames';
 import { ReactEditor, useFocused, useSelected, useSlate } from 'slate-react';
 import { Editor, Transforms, Element as SlateElement } from 'slate';
 import { EmbedElement } from '../Editor/types';
-import { MediaEditorOptions } from '../MediaEditorOptions';
 import { ELEMENT_TYPES_MAP } from '../Editor/constants';
 import { EmbedRender } from '../EmbedRender/EmbedRender';
 import { LinkInput } from '../LinkInput';
@@ -87,13 +86,7 @@ const EmbedEditor: FC<Props> = ({ element, attributes, className, children }) =>
         className={cx(className, { [s.selected]: selected && focused })}
       >
         {linkNode}
-        <div className={s.options}>
-          <MediaEditorOptions
-            hasUrl={!!element.src}
-            handleDelete={onDelete}
-            handleChangeUrl={() => setIsLinkInputOpen(true)}
-          />
-        </div>
+        <div className={s.options}></div>
         <EmbedRender src={element.src} title={element.title} />
         {children}
       </div>
@@ -111,13 +104,7 @@ const EmbedEditor: FC<Props> = ({ element, attributes, className, children }) =>
     >
       {linkNode}
       <span className={s.text}>Click to embed</span>
-      <div className={s.options}>
-        <MediaEditorOptions
-          hasUrl={!!element.src}
-          handleDelete={onDelete}
-          handleChangeUrl={() => setIsLinkInputOpen(true)}
-        />
-      </div>
+      <div className={s.options}></div>
       {children}
     </button>
   );

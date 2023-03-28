@@ -7,7 +7,6 @@ import { ELEMENT_TYPES_MAP, LIST_TYPES } from '../../components/Editor/constants
 import { useScrollContext } from '../ScrollContext/ScrollContext';
 import { useDragDrop, DragDropValues, DragDropHandlers } from '../../hooks/useDragDrop';
 import { getNodeByCurrentPath, getNodePath, getDefaultParagraphLine } from '../../components/Editor/utils';
-import { useSettings } from '../SettingsContext/SettingsContext';
 import { getNodeByPath } from '../../utils/nodes';
 import { generateId } from '../../utils/generateId';
 
@@ -86,7 +85,6 @@ const getInitialState = ({ children }: Editor): HoveredNode => {
 const NodeSettingsProvider = ({ children }) => {
   const editor = useSlate();
   const { disableScroll, enableScroll } = useScrollContext();
-  const { options: libOptions } = useSettings();
   const [dragValues, dragHandlers] = useDragDrop(editor);
 
   const [nodeSettingsPos, setNodeSettingsPos] = useState<CSSProperties>();
@@ -219,7 +217,7 @@ const NodeSettingsProvider = ({ children }) => {
             });
           }
 
-          libOptions.nodeSettings?.onDelete?.();
+          // libOptions.nodeSettings?.onDelete?.();
 
           setHoveredNode(null);
           handlers.closeNodeSettings();
@@ -251,7 +249,7 @@ const NodeSettingsProvider = ({ children }) => {
             }, 0);
           }
 
-          libOptions.nodeSettings?.onDuplicate?.();
+          // libOptions.nodeSettings?.onDuplicate?.();
 
           setHoveredNode(null);
           handlers.closeNodeSettings();
@@ -262,11 +260,11 @@ const NodeSettingsProvider = ({ children }) => {
         console.log('libOptions.nodeSettings?.onCopy', libOptions.nodeSettings?.onCopy);
         console.log('`${window.location.href}#${hoveredNode?.id}`', `${window.location.href}#${hoveredNode?.id}`);
 
-        if (typeof libOptions.nodeSettings?.onCopy === 'function') {
-          libOptions.nodeSettings?.onCopy?.(hoveredNode?.id || '');
-        } else {
-          copy(`${window.location.href}#${hoveredNode?.id}`);
-        }
+        // if (typeof libOptions.nodeSettings?.onCopy === 'function') {
+        //   libOptions.nodeSettings?.onCopy?.(hoveredNode?.id || '');
+        // } else {
+        //   copy(`${window.location.href}#${hoveredNode?.id}`);
+        // }
 
         handlers.closeNodeSettings();
       },

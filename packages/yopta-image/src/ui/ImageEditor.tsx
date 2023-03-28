@@ -14,7 +14,7 @@ type Props = RenderElementProps;
 
 const OPTIONS_WIDTH = 265;
 
-function ImageEditor(editor: Editor, component) {
+function ImageEditor(editor: Editor, plugin) {
   return function ImageEditor(props: Props) {
     const { element } = props;
     const selected = useSelected();
@@ -113,7 +113,7 @@ function ImageEditor(editor: Editor, component) {
     if (!element.url && !element['data-src']) {
       return (
         <div className={s.root} key={element.id}>
-          <EditorPlaceholder {...props} editor={editor} onChange={component.options.onChange}>
+          <EditorPlaceholder {...props} editor={editor} onChange={plugin.options.onChange}>
             <div>
               <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>
                 <span className={s.dot} />

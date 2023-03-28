@@ -1,11 +1,12 @@
 import { Descendant } from 'slate';
-import { LibOptions } from '../contexts/SettingsContext/SettingsContext';
 import { generateId } from './generateId';
 import { isValidYoptaNodes } from './validate';
 
 const DEFAULT_YOPTA_LS_NAME = 'yopta-content';
 
-export function getStorageName(shouldStoreInLocalStorage: LibOptions['shouldStoreInLocalStorage']) {
+export type LOCAL_STORAGE_NAME_TYPE = boolean | { name: string };
+
+export function getStorageName(shouldStoreInLocalStorage?: LOCAL_STORAGE_NAME_TYPE) {
   if (typeof shouldStoreInLocalStorage === 'object' && shouldStoreInLocalStorage.name) {
     return shouldStoreInLocalStorage.name;
   }
@@ -14,8 +15,8 @@ export function getStorageName(shouldStoreInLocalStorage: LibOptions['shouldStor
 }
 
 export function getInitialState(
-  shouldStoreInLocalStorage: LibOptions['shouldStoreInLocalStorage'],
   storageName: string,
+  shouldStoreInLocalStorage?: LOCAL_STORAGE_NAME_TYPE,
   value?: Descendant[],
 ): Descendant[] {
   const DEFAULT_STATE = [{ id: generateId(), type: 'paragraph', children: [{ text: '' }] }] as Descendant[];

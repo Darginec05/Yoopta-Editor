@@ -1,5 +1,5 @@
 import uniqWith from 'lodash.uniqwith';
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { Element, NodeEntry, Range } from 'slate';
 import { RenderElementProps, RenderLeafProps } from 'slate-react';
 import { CustomEditor } from '../components/Editor/types';
@@ -26,12 +26,23 @@ export type YoptaPluginHandlers = {
 
 type Options = Record<string, unknown>;
 
+export type YoptaRenderElementFunc = (
+  editor: CustomEditor,
+  plugin: Pick<YoptaPluginType, 'type' | 'options'>,
+) => (props: RenderElementProps) => ReactElement;
+
+export type YoptaRender = YoptaRenderElementFunc;
+
+export type ExtendedYoptaRender = {
+  editor: YoptaRenderElementFunc;
+  render?: YoptaRenderElementFunc;
+};
+
+export type YoptaRenderer = ExtendedYoptaRender | YoptaRender;
+
 export type YoptaPluginType = {
   type: string;
-  renderer: (
-    editor: CustomEditor,
-    component: Pick<YoptaPluginType, 'type' | 'options'>,
-  ) => (props: RenderElementProps) => ReactElement;
+  renderer: YoptaRenderer;
   shortcut?: string;
   decorator?: (editor: CustomEditor) => DecoratorFn;
   handlers?: YoptaPluginHandlers;
@@ -64,7 +75,7 @@ export class YoptaPlugin {
   }
 }
 
-export function mergeComponents(plugins: YoptaPlugin[]): YoptaPluginType[] {
+export function mergePlugins(plugins: YoptaPlugin[]): YoptaPluginType[] {
   const items: YoptaPluginType[] = plugins
     .map((instance) => {
       const { childPlugin, ...componentProps } = instance.getPlugin;

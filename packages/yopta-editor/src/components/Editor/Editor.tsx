@@ -5,32 +5,43 @@ import { TextLeaf } from './TextLeaf/TextLeaf';
 import { getDefaultParagraphLine } from './utils';
 import { ELEMENT_TYPES_MAP } from './constants';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
-import { LibOptions, useSettings } from '../../contexts/SettingsContext/SettingsContext';
 import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { onCopyYoptaNodes } from '../../utils/copy';
 import { ElementWrapper } from '../ElementWrapper/ElementWrapper';
 import { HOTKEYS } from '../../utils/hotkeys';
-import { ParentYoptaPlugin } from '../../utils/plugins';
+import { ParentYoptaPlugin, YoptaPluginType, YoptaRenderElementFunc } from '../../utils/plugins';
 import { getNodeByPath } from '../../utils/nodes';
 import { EditorEventHandlers } from '../../types/eventHandlers';
 import { generateId } from '../../utils/generateId';
 
 type YoptaProps = {
   editor: Editor;
-  placeholder: LibOptions['placeholder'];
+  placeholder?: string;
+  readOnly?: boolean;
   plugins: ParentYoptaPlugin[];
   children: ReactNode | ReactNode[];
+};
+
+const getRenderFunctionFactory = (plugin: YoptaPluginType, readOnly?: boolean): YoptaRenderElementFunc => {
+  if (typeof plugin.renderer === 'function') {
+    return plugin.renderer;
+  }
+
+  if (readOnly) {
+    return plugin.renderer.render || plugin.renderer.editor;
+  }
+
+  return plugin.renderer.editor;
 };
 
 // [TODO] - defaultNode move to common event handler to avoid repeated id's
 const handlersOptions = { hotkeys: HOTKEYS, defaultNode: getDefaultParagraphLine() };
 
-const EditorYopta = ({ editor, placeholder, children, plugins }: YoptaProps) => {
-  const { options } = useSettings();
+const EditorYopta = ({ editor, placeholder, readOnly, children, plugins }: YoptaProps) => {
   useScrollToElement();
   const [{ disableWhileDrag }, { changeHoveredNode }] = useNodeSettingsContext();
 
-  const isReadOnly = disableWhileDrag;
+  const isReadOnly = disableWhileDrag || readOnly;
 
   const renderElement = useMemo(() => {
     return (props: RenderElementProps) => {
@@ -38,11 +49,17 @@ const EditorYopta = ({ editor, placeholder, children, plugins }: YoptaProps) => 
         const plugin = plugins[i];
         const { type, options } = plugin;
 
-        const renderFn = plugin.renderer(editor, { type, options });
+        const renderFn = getRenderFunctionFactory(plugin, readOnly)(editor, { type, options });
+
         // [TODO] - add strong checker for renderFn
         if (props.element.type === plugin.type) {
           return (
-            <ElementWrapper element={props.element} attributes={props.attributes} plugin={plugin} render={renderFn}>
+            <ElementWrapper
+              element={props.element}
+              attributes={props.attributes}
+              type={plugin.element?.type}
+              render={renderFn}
+            >
               {props.children}
             </ElementWrapper>
           );
@@ -233,7 +250,7 @@ const EditorYopta = ({ editor, placeholder, children, plugins }: YoptaProps) => 
   const hasEditorChildren = React.Children.count(children) > 0;
 
   return (
-    <div id="yopta-editor" className={options.className} onMouseDown={handleEmptyZoneClick}>
+    <div id="yopta-editor" onMouseDown={handleEmptyZoneClick}>
       {/* <OutsideClick onClose={hideToolbarTools}>
         <Toolbar toolbarRef={toolbarRef} toolbarStyle={toolbarStyle} editor={editor} />
       </OutsideClick> */}

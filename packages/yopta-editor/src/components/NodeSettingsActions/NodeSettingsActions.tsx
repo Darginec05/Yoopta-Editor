@@ -2,7 +2,6 @@ import { useRef, MouseEvent } from 'react';
 import { useSlate } from 'slate-react';
 import cx from 'classnames';
 import { HoveredNode, NodeSettingsContextHandlers } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
-import { ActionMenuContextType } from '../../contexts/ActionMenuContext/ActionMenuContext';
 import PlusIcon from '../../icons/add.svg';
 import DragIcon from '../../icons/drag.svg';
 import { getNodePath } from '../Editor/utils';
@@ -11,7 +10,7 @@ import s from './NodeSettingsActions.module.scss';
 type Props = {
   element: HoveredNode;
   handlers: NodeSettingsContextHandlers;
-  showSuggestionList: ActionMenuContextType['showSuggestionList'];
+  showSuggestionList: any;
 };
 
 export const NodeSettingsActions = ({ handlers, element, showSuggestionList }: Props) => {

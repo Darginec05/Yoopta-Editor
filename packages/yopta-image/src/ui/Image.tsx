@@ -10,7 +10,7 @@ const Image = ({ attributes, element, children, size }: Props) => {
 
   const caption = element.options?.caption;
 
-  if (!element.url && !element['data-src']) return null;
+  if (!element.url && !element['data-src']) return <div />;
 
   return (
     <div {...attributes} className={s.imgElement} contentEditable={false} draggable={false}>

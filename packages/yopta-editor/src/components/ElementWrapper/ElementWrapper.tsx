@@ -1,15 +1,14 @@
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { RenderElementProps } from 'slate-react';
-import { YoptaPluginType } from '../../utils/plugins';
+import { ElementType } from '../../utils/plugins';
 
 type Props = RenderElementProps & {
-  isInline?: boolean;
-  plugin: YoptaPluginType;
+  type: ElementType['type'];
   render: (props: RenderElementProps) => ReactElement;
 };
 
-const ElementWrapper = ({ children, element, attributes, plugin, render }: Props) => {
-  const isInline = plugin.element?.type === 'inline';
+const ElementWrapper = ({ children, element, attributes, type, render }: Props) => {
+  const isInline = type === 'inline';
 
   if (isInline) return render({ attributes, element, children });
 

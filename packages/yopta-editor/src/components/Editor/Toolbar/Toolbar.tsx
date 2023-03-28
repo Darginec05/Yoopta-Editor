@@ -10,7 +10,6 @@ import StrikeIcon from './icons/strike.svg';
 import CodeIcon from './icons/code.svg';
 import { Fade } from '../../Fade';
 import { LinkInput } from '../../LinkInput';
-import { useActionMenuContext } from '../../../contexts/ActionMenuContext/ActionMenuContext';
 import s from './Toolbar.module.scss';
 
 type ToolbarProps = {
@@ -27,7 +26,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
     isSuggesstionListOpen,
     selectedElement,
     isToolbarActionOpen,
-  } = useActionMenuContext();
+  } = {};
 
   const toggleElementsListDropdown = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

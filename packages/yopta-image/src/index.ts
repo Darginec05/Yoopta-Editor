@@ -5,8 +5,10 @@ import { ImageEditor } from './ui/ImageEditor';
 
 const Image = new YoptaPlugin({
   type: 'image',
-  renderer: ImageEditor,
-  // renderer: (editor) => ImageRender,
+  renderer: {
+    editor: ImageEditor,
+    render: () => ImageRender,
+  },
   extendEditor(editor) {
     const { isVoid } = editor;
 

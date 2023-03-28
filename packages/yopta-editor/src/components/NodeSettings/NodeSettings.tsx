@@ -11,7 +11,6 @@ import {
   NodeSettingsContextHandlers,
   NodeSettingsContextValues,
 } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
-import { useActionMenuContext } from '../../contexts/ActionMenuContext/ActionMenuContext';
 import { getNodePath } from '../Editor/utils';
 import s from './NodeSettings.module.scss';
 
@@ -33,7 +32,7 @@ const NodeSettings = ({
 }: Props) => {
   const nodeSettingsRef = useRef<HTMLDivElement>(null);
   const isHovered = hoveredNode?.id === element.id;
-  const { hideSuggestionList, showSuggestionList, isSuggesstionListOpen } = useActionMenuContext();
+  const { hideSuggestionList, showSuggestionList, isSuggesstionListOpen } = {};
 
   /* @ts-ignore */
   const isVoidNode = hoveredNode?.isVoid;

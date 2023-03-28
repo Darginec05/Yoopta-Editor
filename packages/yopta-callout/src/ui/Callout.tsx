@@ -3,8 +3,6 @@ import { Transforms } from 'slate';
 import s from './Callout.module.scss';
 
 const CalloutRender = ({ attributes, children, element }) => {
-  console.log('element', element);
-
   return (
     <div draggable={false} className={s.callout} {...attributes}>
       {children}

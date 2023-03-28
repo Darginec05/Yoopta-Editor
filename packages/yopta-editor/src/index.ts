@@ -1,4 +1,4 @@
-import { YoptaPlugin, mergeComponents } from './utils/plugins';
+import { YoptaPlugin, mergePlugins } from './utils/plugins';
 import classnames from 'classnames';
 export { classnames as cx };
 
@@ -10,4 +10,4 @@ export { isElementActive, getNodeByPath } from './utils/nodes';
 export type { YoptaPluginType, YoptaPluginHandlers, HandlersOptions } from './utils/plugins';
 export type { CustomEditor as YoptaEditorType } from './components/Editor/types';
 
-export { YoptaPlugin, mergeComponents };
+export { YoptaPlugin, mergePlugins };

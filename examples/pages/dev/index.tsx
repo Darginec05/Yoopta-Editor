@@ -171,7 +171,6 @@ const BasicExample = () => {
       <YoptaEditor
         value={editorValue}
         onChange={(val: Descendant[]) => setEditorValue(val)}
-        className={s.editor}
         shouldStoreInLocalStorage={{ name: 'yopta-dev' }}
         plugins={plugins}
       >
