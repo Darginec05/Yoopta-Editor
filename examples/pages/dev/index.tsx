@@ -111,7 +111,16 @@ const BasicExample = () => {
           },
         },
       }),
-      Video,
+      Video.extend({
+        options: {
+          onChange: async (file: File) => {
+            console.log({ file });
+
+            const data = await uploadToCloudinary(file, 'video');
+            return data;
+          },
+        },
+      }),
       // ChatGPT.extend({
       //   API_KEY: process.env.CHAT_GPT,
       // }),
@@ -144,6 +153,8 @@ const BasicExample = () => {
   }, []);
 
   const actionItems: ActionMenuComponentItem[] = [
+    { component: Image, icon: <ImageIcon />, label: 'Image', searchString: 'image picture' },
+    { component: Video, icon: <VideoIcon />, label: 'Video', searchString: 'video media' },
     { component: Headings.HeadingOne, icon: <EmbedIcon />, label: 'Title', searchString: 'h1 title' },
     { component: Headings.HeadingTwo, icon: <EmbedIcon />, label: 'Subtitle', searchString: 'h2 subtitle' },
     { component: Paragraph, icon: <EmbedIcon />, label: 'Text', searchString: 'text paragraph' },
@@ -153,7 +164,6 @@ const BasicExample = () => {
     { component: Lists.BulletedList, label: 'Bulleted list' },
     { component: Lists.NumberedList, label: 'Numbered list' },
     { component: Lists.TodoList, label: 'Check list', searchString: 'todo check list' },
-    { component: Image, icon: <ImageIcon />, label: 'Image', searchString: 'image picture' },
   ];
 
   return (
