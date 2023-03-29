@@ -5,6 +5,8 @@ import { removeLinkNode } from './removeLink';
 type LinkElement = any;
 
 export const addLinkNode = (editor: Editor, url: string) => {
+  console.log(`isElementActive(editor, 'link')`, isElementActive(editor, 'link'));
+
   if (isElementActive(editor, 'link')) {
     removeLinkNode(editor);
   }

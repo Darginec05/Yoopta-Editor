@@ -173,6 +173,7 @@ const BasicExample = () => {
         onChange={(val: Descendant[]) => setEditorValue(val)}
         shouldStoreInLocalStorage={{ name: 'yopta-dev' }}
         plugins={plugins}
+        readOnly={false}
       >
         <ActionMenu trigger="/" items={actionItems} render={CustomSuggestionList} />
       </YoptaEditor>

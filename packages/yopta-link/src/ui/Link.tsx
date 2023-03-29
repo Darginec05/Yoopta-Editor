@@ -1,23 +1,21 @@
 import { MouseEvent } from 'react';
-import { Editor, Element, Path, Transforms } from 'slate';
+import { Editor, Element, Transforms } from 'slate';
 import { getNodeByPath, YoptaPlugin, generateId } from '@yopta/editor';
 import isUrl from 'is-url';
 import { addLinkNode } from '../utils/addLink';
+import { LinkEditor } from './LinkEditor';
 import s from './Link.module.scss';
 
 const LinkRender = ({ attributes, element, children }) => {
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
-    // if (isEdit) return;
-    return;
+    e.preventDefault();
+    const url = new URL(element.url);
 
-    // e.preventDefault();
-    // const url = new URL(element.url);
-
-    // if (url.host === window.location.host) {
-    //   window.open(element.url, '_self');
-    // } else {
-    //   window.open(element.url, '_blank');
-    // }
+    if (url.host === window.location.host) {
+      window.open(element.url, '_self');
+    } else {
+      window.open(element.url, '_blank');
+    }
   };
 
   return (
@@ -41,7 +39,10 @@ const LINK_NODE_TYPE = 'link';
 
 const Link = new YoptaPlugin({
   type: LINK_NODE_TYPE,
-  renderer: (editor: Editor) => (props) => <LinkRender {...props} />,
+  renderer: {
+    editor: () => LinkEditor,
+    render: () => LinkRender,
+  },
   element: {
     type: 'inline',
     isVoid: false,
@@ -52,6 +53,8 @@ const Link = new YoptaPlugin({
     editor.isInline = (element) => (element.type === LINK_NODE_TYPE ? true : isInline(element));
 
     editor.insertText = (text: string) => {
+      console.log({ text });
+
       if (text && isUrl(text)) {
         addLinkNode(editor, text);
       } else {
@@ -61,6 +64,8 @@ const Link = new YoptaPlugin({
 
     editor.insertData = (data) => {
       const text = data.getData('text/plain');
+
+      console.log('insertData', text, isUrl(text));
 
       if (text && isUrl(text)) {
         addLinkNode(editor, text);
