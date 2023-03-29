@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState, Key, useMemo, ReactNode } from 'react';
 import { withHistory } from 'slate-history';
-import { createEditor, Descendant } from 'slate';
-import { Slate, withReact } from 'slate-react';
+import { createEditor, Descendant, Editor, Transforms } from 'slate';
+import { ReactEditor, Slate, withReact } from 'slate-react';
 import { EditorYopta } from './components/Editor/Editor';
 import { ScrollProvider } from './contexts/ScrollContext/ScrollContext';
 // import { withVoidNodes, withFixDeleteFragment, withCopyPasting } from './components/Editor/plugins';
@@ -106,6 +106,18 @@ const YoptaEditorLib = ({
 
     return slateEditor;
   }, [yoptaPlugins]);
+
+  useEffect(() => {
+    if (!autoFocus) return;
+
+    const [, firstPath] = Editor.first(editor, [0]);
+    Transforms.select(editor, {
+      anchor: { path: firstPath, offset: 0 },
+      focus: { path: firstPath, offset: 0 },
+    });
+
+    ReactEditor.focus(editor);
+  }, [autoFocus, yoptaPlugins, editor]);
 
   return (
     <Slate editor={editor} value={val} onChange={onChangeValue} key={key}>
