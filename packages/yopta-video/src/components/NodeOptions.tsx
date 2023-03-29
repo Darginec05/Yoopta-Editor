@@ -6,7 +6,6 @@ import TrashIcon from './icons/trash.svg';
 import DuplicateIcon from './icons/duplicate.svg';
 import TurnIcon from './icons/turn.svg';
 import CopyIcon from './icons/copy.svg';
-import CaptionIcon from './icons/caption.svg';
 import { generateId } from '@yopta/editor';
 import s from './NodeOptions.module.scss';
 
@@ -117,15 +116,6 @@ const NodeOptions = ({ onClose, style, element }: Props) => {
               </div>
               <div className={s.text}>Copy link to block</div>
               <div className={s.hotkey}>⌥+Shift+L</div>
-            </button>
-          </div>
-          <div className={s.group}>
-            <button type="button" className={s.item} onClick={handleCopyLink}>
-              <div className={s.icon}>
-                <CaptionIcon />
-              </div>
-              <div className={s.text}>Caption</div>
-              <div className={s.hotkey}>+D</div>
             </button>
           </div>
         </div>

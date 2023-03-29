@@ -86,8 +86,6 @@ const BasicExample = () => {
   //     });
   //   });
 
-  // const onChange = () => {};
-
   const plugins = useMemo<YoptaPlugin[]>(() => {
     return [
       Paragraph,

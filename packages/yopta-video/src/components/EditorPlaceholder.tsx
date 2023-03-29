@@ -60,7 +60,7 @@ const EditorPlaceholder = ({ element, attributes, children, editor, onChange }: 
     const format = base64.substring('data:video/'.length, base64.indexOf(';base64'));
 
     const optimisticVideo = await getVideoSizes(base64);
-    const aspectSizes = getAspectRatio(optimisticVideo.width, optimisticVideo.height, 800, 900);
+    const aspectSizes = getAspectRatio(optimisticVideo.width, optimisticVideo.height, 750, 900);
 
     enableBodyScroll(document.body);
     setUploaderPos(null);
@@ -78,7 +78,7 @@ const EditorPlaceholder = ({ element, attributes, children, editor, onChange }: 
     });
 
     const response = await onChange(file);
-    const { width, height } = getAspectRatio(response.data.width, response.data.height, 800, 900);
+    const { width, height } = getAspectRatio(response.data.width, response.data.height, 750, 900);
 
     const updateVideoNode = {
       url: response.url,

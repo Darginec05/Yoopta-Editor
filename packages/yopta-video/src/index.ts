@@ -5,7 +5,10 @@ import { VideoEditor } from './ui/VideoEditor';
 
 const Video = new YoptaPlugin({
   type: 'video',
-  renderer: VideoEditor,
+  renderer: {
+    editor: VideoEditor,
+    render: () => VideoRender,
+  },
   // renderer: (editor) => VideoRender,
   extendEditor(editor) {
     const { isVoid } = editor;

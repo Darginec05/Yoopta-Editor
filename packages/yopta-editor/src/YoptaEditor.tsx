@@ -15,7 +15,6 @@ type Props = {
   onChange: (_value: Descendant[]) => void;
   value?: Descendant[];
   key?: Key;
-  scrollElementSelector?: string;
   placeholder?: string;
   plugins: YoptaPlugin[];
   children: ReactNode | ReactNode[];
@@ -25,29 +24,18 @@ type Props = {
 };
 
 const YoptaEditorLib = ({
-  onChange,
-  value,
   key,
-  scrollElementSelector,
-  placeholder,
-  autoFocus = true,
+  value,
   plugins,
   readOnly,
   children,
+  onChange,
+  placeholder,
+  autoFocus = true,
   shouldStoreInLocalStorage,
 }: Props) => {
   const storageName = getStorageName(shouldStoreInLocalStorage);
   const [val, setVal] = useState(() => getInitialState(storageName, shouldStoreInLocalStorage, value));
-
-  // const [editor] = useState<CustomEditor>(() =>
-  //   withHistory(
-  //     withCopyPasting(
-  //       withFixDeleteFragment(
-  //         withCorrectVoidBehavior(withVoidNodes(withInlines(withShortcuts(withReact(createEditor()))))),
-  //       ),
-  //     ),
-  //   ),
-  // );
 
   const onChangeValue = useCallback(
     (data: Descendant[]) => {
@@ -73,7 +61,6 @@ const YoptaEditorLib = ({
 
   const editor = useMemo(() => {
     let slateEditor = withVoidNodes(withHistory(withShortcuts(withReact(createEditor()))));
-
     const shortcutMap = {};
 
     yoptaPlugins.forEach((component) => {

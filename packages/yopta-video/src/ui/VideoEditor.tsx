@@ -21,14 +21,14 @@ function VideoEditor(editor: Editor, component) {
 
     const [optionsPos, setOptionsPos] = useState<CSSProperties | null>(null);
     const [size, setSize] = useState({
-      width: element.options?.size?.width || 800,
+      width: element.options?.size?.width || 750,
       height: element.options?.size?.height || 440,
     });
 
     useEffect(() => {
       if (element.options) {
         setSize({
-          width: element.options?.size?.width || 800,
+          width: element.options?.size?.width || 750,
           height: element.options?.size?.height || 440,
         });
       }
@@ -38,7 +38,7 @@ function VideoEditor(editor: Editor, component) {
       () => ({
         minWidth: 92,
         size: { width: size.width, height: size.height },
-        maxWidth: 800,
+        maxWidth: 750,
         lockAspectRatio: true,
         resizeRatio: 2,
         enable: {

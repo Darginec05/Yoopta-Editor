@@ -1,6 +1,6 @@
-import { ReactElement, ReactNode } from 'react';
-import { RenderElementProps } from 'slate-react';
-import { ElementType } from '../../utils/plugins';
+import type { ReactElement } from 'react';
+import type { RenderElementProps } from 'slate-react';
+import type { ElementType } from '../../utils/plugins';
 
 type Props = RenderElementProps & {
   type: ElementType['type'];

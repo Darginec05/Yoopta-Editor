@@ -64,7 +64,7 @@ const EditorPlaceholder = ({ element, attributes, children, editor, onChange }: 
     const format = base64.substring('data:image/'.length, base64.indexOf(';base64'));
 
     const optimisticImage = await getImageSizes(base64);
-    const aspectSizes = getAspectRatio(optimisticImage.width, optimisticImage.height, 800, 900);
+    const aspectSizes = getAspectRatio(optimisticImage.width, optimisticImage.height, 750, 900);
 
     enableBodyScroll(document.body);
     setUploaderPos(null);
@@ -82,7 +82,7 @@ const EditorPlaceholder = ({ element, attributes, children, editor, onChange }: 
     });
 
     const response = await onChange(file);
-    const { width, height } = getAspectRatio(response.data.width, response.data.height, 800, 900);
+    const { width, height } = getAspectRatio(response.data.width, response.data.height, 750, 900);
 
     const updateImageNode = {
       url: response.url,
