@@ -3,7 +3,6 @@ import { withHistory } from 'slate-history';
 import { createEditor, Descendant, Editor, Transforms } from 'slate';
 import { ReactEditor, Slate, withReact } from 'slate-react';
 import { EditorYopta } from './components/Editor/Editor';
-import { ScrollProvider } from './contexts/ScrollContext/ScrollContext';
 // import { withVoidNodes, withFixDeleteFragment, withCopyPasting } from './components/Editor/plugins';
 import NoSSR from './components/NoSsr/NoSsr';
 import { NodeSettingsProvider } from './contexts/NodeSettingsContext/NodeSettingsContext';
@@ -50,22 +49,6 @@ const YoptaEditorLib = ({
   //   ),
   // );
 
-  // useEffect(() => {
-  //   if (!autoFocus) return;
-
-  // if (!editor.selection && editor.children.length > 0) {
-  //   const focusTimeout = setTimeout(() => {
-  //     const firstNode: any = editor.children[0];
-  //     const isList = LIST_TYPES.includes(firstNode.type);
-
-  //     Transforms.select(editor, { path: isList ? [0, 0, 0] : [0, 0], offset: 0 });
-  //     ReactEditor.focus(editor);
-  //   }, 0);
-
-  //   return () => clearTimeout(focusTimeout);
-  // }
-  // }, [autoFocus]);
-
   const onChangeValue = useCallback(
     (data: Descendant[]) => {
       onChange(data);
@@ -90,7 +73,6 @@ const YoptaEditorLib = ({
 
   const editor = useMemo(() => {
     let slateEditor = withVoidNodes(withHistory(withShortcuts(withReact(createEditor()))));
-    // let slateEditor = withHistory(withVoidNodes(withShortcuts(withReact(createEditor()))));
 
     const shortcutMap = {};
 
@@ -117,21 +99,19 @@ const YoptaEditorLib = ({
     });
 
     ReactEditor.focus(editor);
-  }, [autoFocus, yoptaPlugins, editor]);
+  }, [autoFocus, editor]);
 
   return (
     <Slate editor={editor} value={val} onChange={onChangeValue} key={key}>
-      <ScrollProvider scrollElementSelector={scrollElementSelector}>
-        <NodeSettingsProvider>
-          <EditorYopta
-            editor={editor}
-            readOnly={readOnly}
-            placeholder={placeholder}
-            plugins={yoptaPlugins}
-            children={children}
-          />
-        </NodeSettingsProvider>
-      </ScrollProvider>
+      <NodeSettingsProvider>
+        <EditorYopta
+          editor={editor}
+          readOnly={readOnly}
+          placeholder={placeholder}
+          plugins={yoptaPlugins}
+          children={children}
+        />
+      </NodeSettingsProvider>
     </Slate>
   );
 };

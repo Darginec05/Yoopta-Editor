@@ -4,7 +4,6 @@ import React, { CSSProperties, MouseEvent, useContext, useMemo, useState } from 
 import { ReactEditor, useSlate } from 'slate-react';
 import { CustomElement } from '../../components/Editor/types';
 import { ELEMENT_TYPES_MAP, LIST_TYPES } from '../../components/Editor/constants';
-import { useScrollContext } from '../ScrollContext/ScrollContext';
 import { useDragDrop, DragDropValues, DragDropHandlers } from '../../hooks/useDragDrop';
 import { getNodeByCurrentPath, getNodePath, getDefaultParagraphLine } from '../../components/Editor/utils';
 import { getNodeByPath } from '../../utils/nodes';
@@ -84,7 +83,6 @@ const getInitialState = ({ children }: Editor): HoveredNode => {
 
 const NodeSettingsProvider = ({ children }) => {
   const editor = useSlate();
-  const { disableScroll, enableScroll } = useScrollContext();
   const [dragValues, dragHandlers] = useDragDrop(editor);
 
   const [nodeSettingsPos, setNodeSettingsPos] = useState<CSSProperties>();
@@ -160,7 +158,7 @@ const NodeSettingsProvider = ({ children }) => {
       },
 
       openNodeSettings: (dragRef, node) => {
-        disableScroll();
+        // disableScroll();
         setNodeSettingsOpen(true);
 
         const path = getNodePath(editor, node);
@@ -173,7 +171,7 @@ const NodeSettingsProvider = ({ children }) => {
       },
 
       closeNodeSettings: () => {
-        enableScroll();
+        // enableScroll();
         setNodeSettingsOpen(false);
         setNodeSettingsPos(undefined);
       },
@@ -257,7 +255,7 @@ const NodeSettingsProvider = ({ children }) => {
       },
 
       copyLinkNode: () => {
-        console.log('libOptions.nodeSettings?.onCopy', libOptions.nodeSettings?.onCopy);
+        // console.log('libOptions.nodeSettings?.onCopy', libOptions.nodeSettings?.onCopy);
         console.log('`${window.location.href}#${hoveredNode?.id}`', `${window.location.href}#${hoveredNode?.id}`);
 
         // if (typeof libOptions.nodeSettings?.onCopy === 'function') {

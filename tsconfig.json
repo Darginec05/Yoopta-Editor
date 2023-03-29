@@ -11,6 +11,7 @@
     { "path": "./packages/yopta-headings" },
     { "path": "./packages/yopta-video" },
     { "path": "./packages/yopta-image" },
-    { "path": "./packages/actionMenu" }
+    { "path": "./packages/actionMenu" },
+    { "path": "./packages/ui-helpers" }
   ]
 }
