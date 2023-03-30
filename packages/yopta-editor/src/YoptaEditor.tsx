@@ -79,13 +79,15 @@ const YoptaEditorLib = ({
   useEffect(() => {
     if (!autoFocus) return;
 
-    const [, firstPath] = Editor.first(editor, [0]);
-    Transforms.select(editor, {
-      anchor: { path: firstPath, offset: 0 },
-      focus: { path: firstPath, offset: 0 },
-    });
+    try {
+      const [, firstPath] = Editor.first(editor, [0]);
+      Transforms.select(editor, {
+        anchor: { path: firstPath, offset: 0 },
+        focus: { path: firstPath, offset: 0 },
+      });
 
-    ReactEditor.focus(editor);
+      ReactEditor.focus(editor);
+    } catch (error) {}
   }, [autoFocus, editor]);
 
   return (

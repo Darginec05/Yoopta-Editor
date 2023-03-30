@@ -7,10 +7,12 @@ import { Editor, Element, Transforms } from 'slate';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import s from './EditorPlaceholder.module.scss';
 import { toBase64 } from '../utils/base64';
+import { getImageSizes } from '../utils/imageSizes';
 
 type Props = RenderElementProps & {
   editor: Editor;
   onChange: (file: File) => Promise<void>;
+  maxSizes: { maxWidth: number; maxHeight: number };
 };
 
 type UploaderPosition = {
@@ -20,7 +22,7 @@ type UploaderPosition = {
 
 const UPLOADER_HEIGHT = 88;
 
-const EditorPlaceholder = ({ element, attributes, children, editor, onChange }: Props) => {
+const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, onChange }: Props) => {
   const [uploaderPos, setUploaderPos] = useState<null | UploaderPosition>(null);
   const [activeTab, setActiveTab] = useState('upload');
   const imageEditorRef = useRef<HTMLDivElement>(null);
@@ -49,22 +51,44 @@ const EditorPlaceholder = ({ element, attributes, children, editor, onChange }: 
     }
   };
 
-  function getImageSizes(base64): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = base64;
-      img.onload = () => {
-        return resolve({ width: img.width, height: img.height });
+  const onEmbed = async (src) => {
+    console.log({ src });
+
+    try {
+      const { width, height } = await getImageSizes(src);
+
+      enableBodyScroll(document.body);
+      setUploaderPos(null);
+
+      const updatedImageNode = {
+        url: src,
+        'data-src': undefined,
+        // [TODO] - check for format
+        options: { format: 'png', size: { width, height } },
       };
-    });
-  }
+
+      Transforms.setNodes(editor, updatedImageNode, {
+        at: ReactEditor.findPath(editor, element),
+        match: (n) => Element.isElement(n) && n.type === 'image',
+      });
+    } catch (error) {
+      enableBodyScroll(document.body);
+      setUploaderPos(null);
+    }
+  };
 
   const onChangeFile = async (file) => {
     const base64 = await toBase64(file);
     const format = base64.substring('data:image/'.length, base64.indexOf(';base64'));
 
     const optimisticImage = await getImageSizes(base64);
-    const aspectSizes = getAspectRatio(optimisticImage.width, optimisticImage.height, 750, 900);
+
+    const aspectSizes = getAspectRatio(
+      optimisticImage.width,
+      optimisticImage.height,
+      maxSizes.maxWidth,
+      maxSizes.maxHeight,
+    );
 
     enableBodyScroll(document.body);
     setUploaderPos(null);
@@ -82,15 +106,20 @@ const EditorPlaceholder = ({ element, attributes, children, editor, onChange }: 
     });
 
     const response = await onChange(file);
-    const { width, height } = getAspectRatio(response.data.width, response.data.height, 750, 900);
+    const { width, height } = getAspectRatio(
+      response.data.width,
+      response.data.height,
+      maxSizes.maxWidth,
+      maxSizes.maxHeight,
+    );
 
-    const updateImageNode = {
+    const updatedImageNode = {
       url: response.url,
       'data-src': undefined,
       options: { format: response.data.format, size: { width, height } },
     };
 
-    Transforms.setNodes(editor, updateImageNode, {
+    Transforms.setNodes(editor, updatedImageNode, {
       at: ReactEditor.findPath(editor, element),
       match: (n) => Element.isElement(n) && n.type === 'image',
     });
@@ -106,6 +135,7 @@ const EditorPlaceholder = ({ element, attributes, children, editor, onChange }: 
         {uploaderPos !== null && (
           <EditorUploader
             onChange={onChangeFile}
+            onEmbed={onEmbed}
             onClose={toggleUploaderOpen}
             activeTab={activeTab}
             switchTab={(tab) => setActiveTab(tab)}

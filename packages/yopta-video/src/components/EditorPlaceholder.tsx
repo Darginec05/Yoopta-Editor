@@ -11,6 +11,7 @@ import { toBase64 } from '../utils/base64';
 type Props = RenderElementProps & {
   editor: Editor;
   onChange: (file: File) => Promise<void>;
+  maxSizes: { maxWidth: number; maxHeight: number };
 };
 
 type UploaderPosition = {
@@ -20,7 +21,7 @@ type UploaderPosition = {
 
 const UPLOADER_HEIGHT = 88;
 
-const EditorPlaceholder = ({ element, attributes, children, editor, onChange }: Props) => {
+const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, onChange }: Props) => {
   const [uploaderPos, setUploaderPos] = useState<null | UploaderPosition>(null);
   const [activeTab, setActiveTab] = useState('upload');
   const videoEditorRef = useRef<HTMLDivElement>(null);
@@ -60,7 +61,12 @@ const EditorPlaceholder = ({ element, attributes, children, editor, onChange }: 
     const format = base64.substring('data:video/'.length, base64.indexOf(';base64'));
 
     const optimisticVideo = await getVideoSizes(base64);
-    const aspectSizes = getAspectRatio(optimisticVideo.width, optimisticVideo.height, 750, 900);
+    const aspectSizes = getAspectRatio(
+      optimisticVideo.width,
+      optimisticVideo.height,
+      maxSizes.maxWidth,
+      maxSizes.maxHeight,
+    );
 
     enableBodyScroll(document.body);
     setUploaderPos(null);
@@ -78,7 +84,12 @@ const EditorPlaceholder = ({ element, attributes, children, editor, onChange }: 
     });
 
     const response = await onChange(file);
-    const { width, height } = getAspectRatio(response.data.width, response.data.height, 750, 900);
+    const { width, height } = getAspectRatio(
+      response.data.width,
+      response.data.height,
+      maxSizes.maxWidth,
+      maxSizes.maxHeight,
+    );
 
     const updateVideoNode = {
       url: response.url,

@@ -101,9 +101,9 @@ const BasicExample = () => {
       Headings.HeadingThree,
       Image.extend({
         options: {
+          maxWidth: 750,
+          maxHeight: 800,
           onChange: async (file: File) => {
-            console.log({ file });
-
             const data = await uploadToCloudinary(file, 'image');
             return data;
           },
@@ -111,9 +111,9 @@ const BasicExample = () => {
       }),
       Video.extend({
         options: {
+          maxWidth: 750,
+          maxHeight: 800,
           onChange: async (file: File) => {
-            console.log({ file });
-
             const data = await uploadToCloudinary(file, 'video');
             return data;
           },

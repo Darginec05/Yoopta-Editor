@@ -38,7 +38,7 @@ function ImageEditor(editor: Editor, plugin) {
       () => ({
         minWidth: 92,
         size: { width: size.width, height: size.height },
-        maxWidth: 750,
+        maxWidth: plugin.options?.maxWidth,
         lockAspectRatio: true,
         resizeRatio: 2,
         enable: {
@@ -59,7 +59,7 @@ function ImageEditor(editor: Editor, plugin) {
 
           Transforms.setNodes(
             editor,
-            { options: { size: { width: ref.offsetWidth, height: ref.offsetHeight } } },
+            { options: { ...element.options, size: { width: ref.offsetWidth, height: ref.offsetHeight } } },
             {
               at: ReactEditor.findPath(editor, element),
               match: (n) => Element.isElement(n) && n.type === 'image',
@@ -85,7 +85,7 @@ function ImageEditor(editor: Editor, plugin) {
     const hasCaption = !!element.options?.caption;
     const isLoading = !!element['data-src'] && !element.url;
 
-    const toggleOptionsOpen = (e: MouseEvent) => {
+    const toggleOptionsOpen = (e?: MouseEvent) => {
       e?.stopPropagation();
 
       if (optionsPos !== null) {
@@ -94,7 +94,8 @@ function ImageEditor(editor: Editor, plugin) {
         return;
       }
 
-      const optionsButtonRect = e.currentTarget?.getBoundingClientRect();
+      const optionsButtonRect = e?.currentTarget?.getBoundingClientRect();
+
       const UPLOADER_HEIGHT = 164;
 
       if (optionsButtonRect) {
@@ -102,7 +103,7 @@ function ImageEditor(editor: Editor, plugin) {
 
         disableBodyScroll(document.body, { reserveScrollBarGap: true });
         setOptionsPos({
-          right: 10,
+          right: window.innerWidth - optionsButtonRect.right - OPTIONS_WIDTH + optionsButtonRect.width,
           top: showAtTop
             ? optionsButtonRect.top - UPLOADER_HEIGHT - 5
             : optionsButtonRect.top + optionsButtonRect.height + 5,
@@ -110,10 +111,19 @@ function ImageEditor(editor: Editor, plugin) {
       }
     };
 
+    console.log('plugin.options', plugin.options);
+
     if (!element.url && !element['data-src']) {
+      const { maxWidth = 750, maxHeight = 800 } = plugin.options || {};
       return (
         <div className={s.root} key={element.id}>
-          <EditorPlaceholder {...props} editor={editor} onChange={plugin.options.onChange}>
+          <EditorPlaceholder
+            {...props}
+            element={element}
+            editor={editor}
+            maxSizes={{ maxWidth, maxHeight }}
+            onChange={plugin.options?.onChange}
+          >
             <div>
               <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>
                 <span className={s.dot} />

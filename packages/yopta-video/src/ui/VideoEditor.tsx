@@ -38,7 +38,7 @@ function VideoEditor(editor: Editor, component) {
       () => ({
         minWidth: 92,
         size: { width: size.width, height: size.height },
-        maxWidth: 750,
+        maxWidth: plugin.options?.maxWidth,
         lockAspectRatio: true,
         resizeRatio: 2,
         enable: {
@@ -85,8 +85,10 @@ function VideoEditor(editor: Editor, component) {
     const hasCaption = !!element.options?.caption;
     const isLoading = !!element['data-src'] && !element.url;
 
-    const toggleOptionsOpen = (e: MouseEvent) => {
+    const toggleOptionsOpen = (e?: MouseEvent) => {
       e?.stopPropagation();
+
+      console.log('optionsPos', optionsPos);
 
       if (optionsPos !== null) {
         enableBodyScroll(document.body);
@@ -94,7 +96,7 @@ function VideoEditor(editor: Editor, component) {
         return;
       }
 
-      const optionsButtonRect = e.currentTarget?.getBoundingClientRect();
+      const optionsButtonRect = e?.currentTarget?.getBoundingClientRect();
       const UPLOADER_HEIGHT = 164;
 
       if (optionsButtonRect) {
@@ -102,7 +104,7 @@ function VideoEditor(editor: Editor, component) {
 
         disableBodyScroll(document.body, { reserveScrollBarGap: true });
         setOptionsPos({
-          right: 10,
+          right: window.innerWidth - optionsButtonRect.right - OPTIONS_WIDTH + optionsButtonRect.width,
           top: showAtTop
             ? optionsButtonRect.top - UPLOADER_HEIGHT - 5
             : optionsButtonRect.top + optionsButtonRect.height + 5,
@@ -111,9 +113,16 @@ function VideoEditor(editor: Editor, component) {
     };
 
     if (!element.url && !element['data-src']) {
+      const { maxWidth = 750, maxHeight = 800 } = plugin.options;
+
       return (
         <div className={s.root} key={element.id}>
-          <EditorPlaceholder {...props} editor={editor} onChange={component.options.onChange}>
+          <EditorPlaceholder
+            {...props}
+            editor={editor}
+            onChange={component.options.onChange}
+            maxSizes={{ maxWidth, maxHeight }}
+          >
             <div>
               <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>
                 <span className={s.dot} />

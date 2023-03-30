@@ -1,5 +1,5 @@
 import { Overlay } from './Overlay';
-import { CSSProperties } from 'react';
+import { CSSProperties, MouseEvent } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
 import { Editor, Element, Path, Transforms } from 'slate';
 import TrashIcon from './icons/trash.svg';
@@ -11,7 +11,7 @@ import s from './NodeOptions.module.scss';
 
 type Props = {
   style: CSSProperties | undefined;
-  onClose: () => void;
+  onClose: (e?: MouseEvent) => void;
   additionalFields?: any;
   element: any;
 };

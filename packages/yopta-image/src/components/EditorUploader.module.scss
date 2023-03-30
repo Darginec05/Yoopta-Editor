@@ -83,6 +83,15 @@
   cursor: pointer;
 }
 
+.embed {
+  composes: uploader;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  height: auto !important;
+  border: none !important;
+  cursor: pointer !important;
+}
+
 .uploaderLabel {
   font-size: 14px;
   line-height: 1.2;
@@ -100,4 +109,48 @@
   left: 0;
   top: 0;
   visibility: hidden;
+}
+
+.embedInput {
+  align-items: center;
+  background: hsla(45,13%,94%,.6);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px hsla(0,0%,6%,.1);
+  cursor: text;
+  display: flex;
+  font-size: 14px;
+  height: 32px;
+  line-height: 20px;
+  padding: 3px 6px;
+  position: relative;
+  width: 100%;
+  border: none;
+}
+
+.embedButton {
+  user-select: none;
+  transition: background 20ms ease-in 0s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  white-space: nowrap;
+  height: 28px;
+  border-radius: 4px;
+  box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px inset, rgba(15, 15, 15, 0.1) 0px 1px 2px;
+  background: rgb(35, 131, 226);
+  color: white;
+  fill: white;
+  line-height: 1.2;
+  padding-left: 12px;
+  padding-right: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  width: 100%;
+  max-width: 300px;
+  margin: auto;
+  border: none ;
+  margin-top: 12px;
+  margin-bottom: 6px;
 }
