@@ -4,6 +4,7 @@ import { CodeLeaf } from './ui/CodeLeaf';
 import { CodeRender } from './ui/CodeRender';
 import { CodeLineRender } from './ui/CodeLineRender';
 import { codeLineDecorator } from './utils/decorator';
+import { CodeEditor } from './ui/CodeEditor';
 
 const CODE_NODE_TYPE = 'code';
 const CODE_LINE_NODE_TYPE = 'code-line';
@@ -99,7 +100,10 @@ const CodeLine = new YoptaPlugin({
 
 const Code = new YoptaPlugin({
   type: CODE_NODE_TYPE,
-  renderer: CodeRender,
+  renderer: {
+    editor: CodeEditor,
+    render: () => CodeRender,
+  },
   shortcut: 'hw',
   childPlugin: CodeLine,
   extendEditor(editor) {

@@ -1,0 +1,58 @@
+.code {
+  min-height: 1em;
+  margin-top: 1.5em;
+  font-size: 16px;
+  line-height: 18px;
+  border-radius: 3px;
+  display: block;
+  position: relative;
+
+  &:hover {
+    & .tools {
+      opacity: 1;
+    }
+  }
+}
+
+.pre {
+  padding: 34px 16px 32px 32px !important;
+}
+
+.filename {
+  position: absolute;
+  left: 16px;
+  top: 8px;
+  display: flex;
+  user-select: none;
+  font-size: 12px;
+}
+
+.tools {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  opacity: 0;
+  display: flex;
+  transition: opacity 150ms ease-in 0s;
+}
+
+.dotsOptions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1;
+  background-color: #eee;
+  width: 22px;
+  height: 22px;
+  border: none;
+  cursor: pointer;
+  border-radius: 2px;
+  padding: 0 4px;
+}
+
+.dot {
+  min-width: 3px;
+  min-height: 3px;
+  background-color: gray;
+  border-radius: 50%;
+}

@@ -14,7 +14,7 @@ type Props = RenderElementProps;
 
 const OPTIONS_WIDTH = 265;
 
-function VideoEditor(editor: Editor, component) {
+function VideoEditor(editor: Editor, plugin) {
   return function VideoEditor(props: Props) {
     const { element } = props;
     const selected = useSelected();
@@ -120,7 +120,7 @@ function VideoEditor(editor: Editor, component) {
           <EditorPlaceholder
             {...props}
             editor={editor}
-            onChange={component.options.onChange}
+            onChange={plugin.options.onChange}
             maxSizes={{ maxWidth, maxHeight }}
           >
             <div>

@@ -53,8 +53,6 @@ const Link = new YoptaPlugin({
     editor.isInline = (element) => (element.type === LINK_NODE_TYPE ? true : isInline(element));
 
     editor.insertText = (text: string) => {
-      console.log({ text });
-
       if (text && isUrl(text)) {
         addLinkNode(editor, text);
       } else {
@@ -64,8 +62,6 @@ const Link = new YoptaPlugin({
 
     editor.insertData = (data) => {
       const text = data.getData('text/plain');
-
-      console.log('insertData', text, isUrl(text));
 
       if (text && isUrl(text)) {
         addLinkNode(editor, text);

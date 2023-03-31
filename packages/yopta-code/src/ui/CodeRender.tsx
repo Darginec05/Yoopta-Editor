@@ -1,72 +1,29 @@
-import { ChangeEvent, useEffect } from 'react';
-import { Element, Transforms } from 'slate';
-import { ReactEditor } from 'slate-react';
-import { CustomEditor } from '@yopta/editor/dist/components/Editor/types';
-import s from './CodeRender.module.scss';
-
+import { useEffect } from 'react';
 import Prism from 'prismjs';
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-go';
-import 'prismjs/components/prism-jsx';
-import 'prismjs/components/prism-kotlin';
-import 'prismjs/components/prism-typescript';
-import 'prismjs/components/prism-tsx';
-import 'prismjs/components/prism-markdown';
-import 'prismjs/components/prism-python';
-import 'prismjs/components/prism-php';
-import 'prismjs/components/prism-sql';
-import 'prismjs/components/prism-java';
-import 'prismjs/components/prism-csharp';
-import 'prismjs/components/prism-swift';
-import 'prismjs/components/prism-r';
-import 'prismjs/components/prism-ruby';
-import 'prismjs/components/prism-c';
-import 'prismjs/components/prism-cpp';
-import 'prismjs/components/prism-matlab';
-import 'prismjs/components/prism-scala';
-import 'prism-material-themes/themes/material-default.css';
-
-import { LanguageSelect } from './LanguageSelect';
 import { cx } from '@yopta/editor';
 
-// [TODO] - make dynamic loading to reduce bundlesize of @yopta/code
-// function highlight(lang: string) {
-//   import(`prismjs/components/prism-${lang}`).then(() => {
-//     Prism.highlightAll();
-//     console.log('imported');
-//   });
-// }
+import 'prism-material-themes/themes/material-default.css';
+import s from './CodeRender.module.scss';
 
-const CodeRender = (editor: CustomEditor) => {
-  return function CodeRender({ element, attributes, children }) {
-    useEffect(() => {
+function CodeRender({ element, attributes, children }) {
+  useEffect(() => {
+    import(`prismjs/components/prism-${element.language}`).then(() => {
       Prism.highlightAll();
-    }, []);
+      console.log('imported for: ', element.language);
+    });
+  }, [element.language]);
 
-    const onChange = (event: ChangeEvent<HTMLSelectElement>) => {
-      const nodePath = ReactEditor.findPath(editor, element);
-
-      Transforms.setNodes(
-        editor,
-        { language: event.target.value },
-        { at: nodePath, match: (n) => Element.isElement(n) && n.type === 'code' },
-      );
-    };
-
-    return (
-      <code className={s.code} {...attributes}>
-        <pre className={cx(s.pre, `language-${element.language}`)}>
-          {/* [TODO] - it could needed feature */}
-          <span contentEditable={false} className={s.filename}>
-            /code/index.tsx
-          </span>
-          {children}
-          <LanguageSelect value={element.language} onChange={onChange} />
-        </pre>
-      </code>
-    );
-  };
-};
+  return (
+    <code className={s.code} {...attributes}>
+      <pre className={cx(s.pre, `language-${element.language}`)}>
+        <span contentEditable={false} className={s.filename}>
+          {element.filename || '/code/index.tsx'}
+        </span>
+        {children}
+      </pre>
+    </code>
+  );
+}
 
 CodeRender.displayName = 'Code';
 
