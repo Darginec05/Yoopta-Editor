@@ -1,6 +1,7 @@
 import { YoptaPlugin, mergePlugins } from './utils/plugins';
 import classnames from 'classnames';
 export { classnames as cx };
+export { isKeyHotkey, isHotkey, isCodeHotkey } from 'is-hotkey';
 
 export { YoptaEditor } from './YoptaEditor';
 export { isValidYoptaNodes } from './utils/validate';

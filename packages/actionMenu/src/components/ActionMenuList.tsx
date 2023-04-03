@@ -175,18 +175,17 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
   };
 
   const handleKeyup = (event) => {
-    if (!editor.selection) return;
+    if (!editor.selection || !trigger) return;
 
     const parentPath = Path.parent(editor.selection.anchor.path);
-    if (!isMenuOpen && event.key === trigger) {
+    const string = Editor.string(editor, parentPath);
+
+    if (!isMenuOpen && string === trigger && string.includes(event.key)) {
       event.preventDefault();
       return showActionMenu();
     }
 
-    if (isMenuOpen) {
-      const string = Editor.string(editor, parentPath);
-      setSearchString(string);
-    }
+    if (isMenuOpen) return setSearchString(string);
   };
 
   useEffect(() => {
