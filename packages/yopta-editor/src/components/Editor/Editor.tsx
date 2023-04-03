@@ -146,6 +146,10 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
         if (event.isDefaultPrevented()) return;
         event.preventDefault();
 
+        const marks = Object.keys(Editor.marks(editor) || {});
+
+        if (marks.length > 0) marks.forEach((mark) => Editor.removeMark(editor, mark));
+
         const parentPath = Path.parent(editor.selection.anchor.path);
 
         const text = Editor.string(editor, parentPath);

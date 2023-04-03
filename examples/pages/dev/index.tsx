@@ -35,7 +35,7 @@
 //     });
 //   });
 
-import { cx, YoptaPlugin, YoptaEditor } from '@yopta/editor';
+import { YoptaPlugin, YoptaEditor } from '@yopta/editor';
 import Blockquote from '@yopta/blockquote';
 import Paragraph from '@yopta/paragraph';
 import Callout from '@yopta/callout';
@@ -47,44 +47,18 @@ import Image, { ImageOptions } from '@yopta/image';
 import Video from '@yopta/video';
 import Toolbar from '@yopta/toolbar';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yopta/marks';
-import ActionMenu, { ActionMenuComponentItem, ActionRenderItemProps } from '@yopta/action-menu-list';
+import ActionMenu from '@yopta/action-menu-list';
 import { useMemo, useState } from 'react';
-import EmbedIcon from './icons/embed.svg';
-import ImageIcon from './icons/image.svg';
-import VideoIcon from './icons/video.svg';
+
 import { Descendant } from 'slate';
+import EmbedIcon from '../../components/SuggestionList/icons/embed.svg';
+import ImageIcon from '../../components/SuggestionList/icons/image.svg';
+import VideoIcon from '../../components/SuggestionList/icons/video.svg';
 import { uploadToCloudinary } from '../../utils';
-import s from './styles.module.scss';
 import { NotionToolbar } from '../../components/Toolbars/NotionToolbar';
 import { MediumToolbar } from '../../components/Toolbars/MediumToolbar';
-
-const CustomSuggestionList = (props: ActionRenderItemProps) => {
-  return (
-    <div {...props.getRootProps()} className={s.dropdown}>
-      <div {...props.getListProps()} className={s.elementList}>
-        {props.items.map((item, i) => {
-          const { focusableElement, menuItem, ...itemProps } = props.getItemsProps(item, i);
-          const isFocusable = i === focusableElement;
-
-          return (
-            <div
-              key={item.type}
-              {...itemProps}
-              className={cx(s.elementListItem, {
-                [s.hovered]: i === focusableElement,
-              })}
-            >
-              <button className={s.button}>
-                {item.icon} <span>{item.label || item.type}</span>
-              </button>
-            </div>
-          );
-        })}
-        {props.items.length === 0 && <div className={s.button}>Not found</div>}
-      </div>
-    </div>
-  );
-};
+import { CustomSuggestionList } from '../../components/SuggestionList/SuggestionList';
+import s from './styles.module.scss';
 
 const BasicExample = () => {
   const [editorValue, setEditorValue] = useState<Descendant[]>([]);
@@ -125,7 +99,7 @@ const BasicExample = () => {
     ];
   }, []);
 
-  const actionItems: ActionMenuComponentItem[] = [
+  const actionItems = [
     { component: Image, icon: <ImageIcon />, label: 'Image', searchString: 'image picture' },
     { component: Video, icon: <VideoIcon />, label: 'Video', searchString: 'video media' },
     { component: Headings.HeadingOne, icon: <EmbedIcon />, label: 'Title', searchString: 'h1 title' },
@@ -149,7 +123,7 @@ const BasicExample = () => {
         shouldStoreInLocalStorage={{ name: 'yopta-dev' }}
         readOnly={false}
       >
-        <ActionMenu trigger="/" render={CustomSuggestionList} items={actionItems} />
+        <ActionMenu items={actionItems} trigger="/" render={CustomSuggestionList} />
         <Toolbar type="bubble">{MediumToolbar}</Toolbar>
       </YoptaEditor>
       <pre className={s.editor} style={{ display: 'block', padding: '0 64px', whiteSpace: 'pre-wrap' }}>

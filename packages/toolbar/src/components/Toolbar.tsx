@@ -45,6 +45,17 @@ const Toolbar = ({ type = 'bubble', style, marks, children }: Props) => {
 
   const isFixedToolbar = type === 'fixed';
 
+  const updateToolbarPosition = () => {
+    const selectionRect = getRectByCurrentSelection();
+
+    const top = selectionRect.top - toolbarRef.current!.offsetHeight - selectionRect.height / 4;
+    let left = selectionRect.left + window.pageXOffset - toolbarRef.current!.offsetWidth / 2 + selectionRect.width / 2;
+
+    left = left < 0 ? 10 : left;
+
+    setToolbarProps({ open: true, style: { top, left, opacity: 1 } });
+  };
+
   useEffect(() => {
     if (isFixedToolbar) return setToolbarProps({ open: true, style: {} });
     if (!editor.selection || !toolbarRef.current) return setToolbarProps({ open: false, style: {} });
@@ -52,14 +63,7 @@ const Toolbar = ({ type = 'bubble', style, marks, children }: Props) => {
     const isExpanded = Range.isExpanded(editor.selection) && Editor.string(editor, editor.selection).trim() !== '';
     if (!isExpanded) return setToolbarProps({ open: false, style: {} });
 
-    const selectionRect = getRectByCurrentSelection();
-
-    const top = selectionRect.top - toolbarRef.current.offsetHeight - selectionRect.height / 4;
-    let left = selectionRect.left + window.pageXOffset - toolbarRef.current.offsetWidth / 2 + selectionRect.width / 2;
-
-    left = left < 0 ? 10 : left;
-
-    setToolbarProps({ open: true, style: { top, left, opacity: 1 } });
+    updateToolbarPosition();
   }, [editor.selection]);
 
   const checkIsMarkActive = (mark) => {
@@ -85,22 +89,22 @@ const Toolbar = ({ type = 'bubble', style, marks, children }: Props) => {
     style: isFixedToolbar ? style : toolbarProps.style,
   });
 
-  const MARKS_TYPE = useMemo(() => {
-    const markMap: MarkMap = {};
+  const marksMap = useMemo(() => {
+    const mapper: MarkMap = {};
 
     marks.forEach((mark) => {
-      markMap[mark] = {
+      mapper[mark] = {
         toggle: (options) => toggleMark(mark, options?.only),
         isActive: checkIsMarkActive(mark),
       };
     });
 
-    return markMap;
+    return mapper;
   }, [marks]);
 
   const childrenProps: ToolbarProps = {
     getRootProps,
-    marks: MARKS_TYPE,
+    marks: marksMap,
   };
 
   if (typeof children === 'function') {
@@ -110,12 +114,6 @@ const Toolbar = ({ type = 'bubble', style, marks, children }: Props) => {
   return (
     <div {...getRootProps()}>
       <div className={s.toolbar}>
-        {/* <button className={s.group}>
-          <span className={s.text}>Ask ChatGTP</span>
-        </button>
-        <button className={s.group}>
-          <span className={s.text}>Lol</span>
-        </button> */}
         <div className={s.marks}>
           {marks?.map((mark) => {
             const marks = Editor.marks(editor);
