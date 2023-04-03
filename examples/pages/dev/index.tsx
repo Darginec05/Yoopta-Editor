@@ -1,3 +1,40 @@
+// const uploadVideo = ({ uploadFile, title }) =>
+//   new Promise((resolve, reject) => {
+//     const upload = new tus.Upload(file, {
+//       endpoint: 'https://video.bunnycdn.com/tusupload',
+//       retryDelays: [0, 3000, 5000, 10000, 20000, 60000, 60000],
+//       headers: {
+//         AuthorizationSignature: '66e7cb0af0dbaa0b9e7fb72614cb3e0e3f095cd360af2df8625bbb291b4a4736',
+//         AuthorizationExpire: 1672471001,
+//         VideoId: '0103ac17-2355-4f7d-8e59-91d441721a04',
+//         LibraryId: '71252',
+//       },
+//       metadata: {
+//         filetype: uploadFile.type,
+//         title, // file.title
+//       },
+//       onError: function (error) {
+//         reject(error);
+//       },
+//       onProgress: function (bytesUploaded, bytesTotal) {},
+//       onSuccess: function (data) {
+//         console.log('success upload video', data);
+//         resolve(data);
+//         // Video.updateNode({ options: { loading: 15 } })
+//       },
+//     });
+//     // Check if there are any previous uploads to continue.
+//     upload.findPreviousUploads().then(function (previousUploads) {
+//       // Found previous uploads so we select the first one.
+//       if (previousUploads.length) {
+//         upload.resumeFromPreviousUpload(previousUploads[0]);
+//       }
+
+//       // Start the upload
+//       upload.start();
+//     });
+//   });
+
 import { cx, YoptaPlugin, YoptaEditor } from '@yopta/editor';
 import Blockquote from '@yopta/blockquote';
 import Paragraph from '@yopta/paragraph';
@@ -6,8 +43,10 @@ import Code from '@yopta/code';
 import Link from '@yopta/link';
 import Lists from '@yopta/lists';
 import Headings from '@yopta/headings';
-import Image from '@yopta/image';
+import Image, { ImageOptions } from '@yopta/image';
 import Video from '@yopta/video';
+import Toolbar from '@yopta/toolbar';
+import { Bold, Italic, CodeMark, Underline, Strike } from '@yopta/marks';
 import ActionMenu, { ActionMenuComponentItem, ActionRenderItemProps } from '@yopta/action-menu-list';
 import { useMemo, useState } from 'react';
 import EmbedIcon from './icons/embed.svg';
@@ -15,8 +54,9 @@ import ImageIcon from './icons/image.svg';
 import VideoIcon from './icons/video.svg';
 import { Descendant } from 'slate';
 import { uploadToCloudinary } from '../../utils';
-
 import s from './styles.module.scss';
+import { NotionToolbar } from '../../components/Toolbars/NotionToolbar';
+import { MediumToolbar } from '../../components/Toolbars/MediumToolbar';
 
 const CustomSuggestionList = (props: ActionRenderItemProps) => {
   return (
@@ -49,43 +89,6 @@ const CustomSuggestionList = (props: ActionRenderItemProps) => {
 const BasicExample = () => {
   const [editorValue, setEditorValue] = useState<Descendant[]>([]);
 
-  // const uploadVideo = ({ uploadFile, title }) =>
-  //   new Promise((resolve, reject) => {
-  //     const upload = new tus.Upload(file, {
-  //       endpoint: 'https://video.bunnycdn.com/tusupload',
-  //       retryDelays: [0, 3000, 5000, 10000, 20000, 60000, 60000],
-  //       headers: {
-  //         AuthorizationSignature: '66e7cb0af0dbaa0b9e7fb72614cb3e0e3f095cd360af2df8625bbb291b4a4736',
-  //         AuthorizationExpire: 1672471001,
-  //         VideoId: '0103ac17-2355-4f7d-8e59-91d441721a04',
-  //         LibraryId: '71252',
-  //       },
-  //       metadata: {
-  //         filetype: uploadFile.type,
-  //         title, // file.title
-  //       },
-  //       onError: function (error) {
-  //         reject(error);
-  //       },
-  //       onProgress: function (bytesUploaded, bytesTotal) {},
-  //       onSuccess: function (data) {
-  //         console.log('success upload video', data);
-  //         resolve(data);
-  //         // Video.updateNode({ options: { loading: 15 } })
-  //       },
-  //     });
-  //     // Check if there are any previous uploads to continue.
-  //     upload.findPreviousUploads().then(function (previousUploads) {
-  //       // Found previous uploads so we select the first one.
-  //       if (previousUploads.length) {
-  //         upload.resumeFromPreviousUpload(previousUploads[0]);
-  //       }
-
-  //       // Start the upload
-  //       upload.start();
-  //     });
-  //   });
-
   const plugins = useMemo<YoptaPlugin[]>(() => {
     return [
       Paragraph,
@@ -99,7 +102,7 @@ const BasicExample = () => {
       Headings.HeadingOne,
       Headings.HeadingTwo,
       Headings.HeadingThree,
-      Image.extend({
+      Image.extend<ImageOptions>({
         options: {
           maxWidth: 750,
           maxHeight: 800,
@@ -119,34 +122,6 @@ const BasicExample = () => {
           },
         },
       }),
-      // ChatGPT.extend({
-      //   API_KEY: process.env.CHAT_GPT,
-      // }),
-      // // OverriredVideo,
-      // Video.extend({
-      //   API_KEY: '',
-      //   onChange: uploadVideo,
-      //   editorRenderer: (editor) => (props) => {
-      //     // { attrs, children, element } = props;
-      //     const onChange = () => {
-      //       return { url, 'adad' };
-      //     };
-
-      //     element.options.loading;
-      //     element.options.url;
-      //     element.options.error;
-
-      //     if (element.options.loading) {
-      //       return <div>{element.options.loading}</div>;
-      //     }
-
-      //     return (
-      //       <div>
-      //         <div>super video</div>
-      //       </div>
-      //     );
-      //   },
-      // }),
     ];
   }, []);
 
@@ -169,11 +144,13 @@ const BasicExample = () => {
       <YoptaEditor
         value={editorValue}
         onChange={(val: Descendant[]) => setEditorValue(val)}
-        shouldStoreInLocalStorage={{ name: 'yopta-dev' }}
         plugins={plugins}
+        marks={[Bold, Italic, CodeMark, Underline, Strike]}
+        shouldStoreInLocalStorage={{ name: 'yopta-dev' }}
         readOnly={false}
       >
-        <ActionMenu trigger="/" items={actionItems} render={CustomSuggestionList} />
+        <ActionMenu trigger="/" render={CustomSuggestionList} items={actionItems} />
+        <Toolbar type="bubble">{MediumToolbar}</Toolbar>
       </YoptaEditor>
       <pre className={s.editor} style={{ display: 'block', padding: '0 64px', whiteSpace: 'pre-wrap' }}>
         {JSON.stringify(editorValue, null, 2)}

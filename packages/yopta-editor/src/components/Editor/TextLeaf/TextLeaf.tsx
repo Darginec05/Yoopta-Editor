@@ -10,22 +10,14 @@ const TextLeaf = memo(({ attributes, children, placeholder, leaf }: LeafProps) =
     <span
       {...attributes}
       data-placeholder={placeholder}
-      className={cx(
-        s.leaf,
-        {
-          [s.bold]: leaf.bold,
-          [s.italic]: leaf.italic,
-          [s.strike]: leaf.strike,
-          [s.underline]: leaf.underline,
-          [s.code]: leaf.code,
-          [s.placeholder]: leaf.placeholder,
-        },
-        leaf.bold ? 'leaf-bold' : '',
-        leaf.italic ? 'leaf-italic' : '',
-        leaf.strike ? 'leaf-strike' : '',
-        leaf.underline ? 'leaf-underline' : '',
-        leaf.code ? 'leaf-code' : '',
-      )}
+      className={cx(s.leaf, {
+        // [s.bold]: leaf.bold,
+        // [s.italic]: leaf.italic,
+        // [s.strike]: leaf.strike,
+        // [s.underline]: leaf.underline,
+        // [s.code]: leaf.code,
+        [s.placeholder]: leaf.placeholder,
+      })}
     >
       {children}
     </span>

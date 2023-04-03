@@ -25,6 +25,7 @@ const HOTKEYS_MAP = {
   shiftTab: 'shift+tab',
   tab: 'tab',
   cmdEnter: 'mod+enter',
+  kekCeburek: 'mod+enter',
 };
 
 const APPLE_HOTKEYS = {
@@ -100,6 +101,7 @@ export const HOTKEYS = {
   isBackspace: create('backspace'),
   isCmdEnter: create('cmdEnter'),
   isEscape: create('escape'),
+  isKekceburek: create('kekCeburek'),
 };
 
 export type HOTKEYS_TYPE = {

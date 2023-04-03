@@ -40,7 +40,7 @@ export type ExtendedYoptaRender = {
 
 export type YoptaRenderer = ExtendedYoptaRender | YoptaRender;
 
-export type YoptaPluginType = {
+export type YoptaPluginType<O = Options> = {
   type: string;
   renderer: YoptaRenderer;
   shortcut?: string;
@@ -49,28 +49,28 @@ export type YoptaPluginType = {
   element?: ElementType;
   extendEditor?: (editor: CustomEditor) => CustomEditor;
   leaf?: (editor: CustomEditor) => (props: RenderLeafProps) => any;
-  options?: Options;
-  childPlugin?: YoptaPlugin;
+  options?: O;
+  childPlugin?: YoptaPlugin<O>;
   isChild?: boolean;
   createNode?: (editor: CustomEditor, type: string, data?: any) => void;
 };
 
-export type ParentYoptaPlugin = Omit<YoptaPluginType, 'childPlugin' | 'isChild'>;
+export type ParentYoptaPlugin<O = Options> = Omit<YoptaPluginType<O>, 'childPlugin' | 'isChild'>;
 
-export class YoptaPlugin {
-  #props: YoptaPluginType;
+export class YoptaPlugin<O = Options> {
+  #props: YoptaPluginType<O>;
 
-  constructor(inputPlugin: YoptaPluginType) {
+  constructor(inputPlugin: YoptaPluginType<O>) {
     this.#props = Object.freeze({ ...inputPlugin });
   }
 
-  extend(overrides: Partial<YoptaPluginType>) {
+  extend<P extends O>(overrides: Partial<YoptaPluginType<P>>) {
     const updatedProps = Object.freeze({ ...this.#props, ...overrides });
 
     return new YoptaPlugin(updatedProps);
   }
 
-  get getPlugin(): YoptaPluginType {
+  get getPlugin(): YoptaPluginType<O> {
     return this.#props;
   }
 }

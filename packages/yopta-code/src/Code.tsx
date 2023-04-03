@@ -30,8 +30,6 @@ const CodeLine = new YoptaPlugin({
           match: (n) => Element.isElement(n) && n.type === CODE_LINE_NODE_TYPE,
         });
 
-        console.log('codeLinkEntry', codeLinkEntry);
-
         const parentCodeEntry = Editor.above(editor, {
           at: editor.selection.anchor.path,
           match: (n) => Element.isElement(n) && n.type === CODE_NODE_TYPE,

@@ -3,7 +3,13 @@ import { Transforms } from 'slate';
 import { Image as ImageRender } from './ui/Image';
 import { ImageEditor } from './ui/ImageEditor';
 
-const Image = new YoptaPlugin({
+export type ImageOptions = {
+  maxWidth?: number;
+  maxHeight?: number;
+  onChange: (file: File) => Promise<any>;
+};
+
+const Image = new YoptaPlugin<ImageOptions>({
   type: 'image',
   renderer: {
     editor: ImageEditor,

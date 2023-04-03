@@ -111,8 +111,6 @@ function ImageEditor(editor: Editor, plugin) {
       }
     };
 
-    console.log('plugin.options', plugin.options);
-
     if (!element.url && !element['data-src']) {
       const { maxWidth = 750, maxHeight = 800 } = plugin.options || {};
       return (

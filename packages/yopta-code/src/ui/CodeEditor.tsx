@@ -58,12 +58,12 @@ const CodeEditor = (editor: CustomEditor) => {
         const showAtTop = optionsButtonRect.top + optionsButtonRect.height + UPLOADER_HEIGHT + 20 > window.innerHeight;
 
         disableBodyScroll(document.body, { reserveScrollBarGap: true });
-        setOptionsPos({
-          right: window.innerWidth - optionsButtonRect.right - OPTIONS_WIDTH + optionsButtonRect.width,
-          top: showAtTop
-            ? optionsButtonRect.top - UPLOADER_HEIGHT - 5
-            : optionsButtonRect.top + optionsButtonRect.height + 5,
-        });
+        const top = showAtTop
+          ? optionsButtonRect.top - UPLOADER_HEIGHT - 5
+          : optionsButtonRect.top + optionsButtonRect.height + 5;
+
+        const right = window.innerWidth - optionsButtonRect.right - OPTIONS_WIDTH + optionsButtonRect.width;
+        setOptionsPos({ right, top });
       }
     };
 
