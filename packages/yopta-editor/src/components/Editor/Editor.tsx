@@ -1,5 +1,5 @@
 import { Editor, Transforms, Range, Element, NodeEntry, Path } from 'slate';
-import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, MouseEventHandler, ReactNode } from 'react';
+import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, MouseEventHandler, ReactNode, useEffect } from 'react';
 import { DefaultElement, Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
 import { getDefaultParagraphLine } from './utils';
@@ -13,6 +13,7 @@ import { ParentYoptaPlugin, YoptaPluginType, YoptaRenderElementFunc } from '../.
 import { getNodeByPath } from '../../utils/nodes';
 import { EditorEventHandlers } from '../../types/eventHandlers';
 import { generateId } from '../../utils/generateId';
+import { YoptaMark } from '../../utils/marks';
 
 type YoptaProps = {
   editor: Editor;
@@ -20,6 +21,7 @@ type YoptaProps = {
   readOnly?: boolean;
   plugins: ParentYoptaPlugin[];
   children: ReactNode | ReactNode[];
+  marks: YoptaMark[];
 };
 
 const getRenderFunctionFactory = (plugin: YoptaPluginType, readOnly?: boolean): YoptaRenderElementFunc => {
@@ -37,10 +39,9 @@ const getRenderFunctionFactory = (plugin: YoptaPluginType, readOnly?: boolean): 
 // [TODO] - defaultNode move to common event handler to avoid repeated id's
 const handlersOptions = { hotkeys: HOTKEYS, defaultNode: getDefaultParagraphLine() };
 
-const EditorYopta = ({ editor, placeholder, readOnly, children, plugins }: YoptaProps) => {
+const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }: YoptaProps) => {
   useScrollToElement();
   const [{ disableWhileDrag }, { changeHoveredNode }] = useNodeSettingsContext();
-
   const isReadOnly = disableWhileDrag || readOnly;
 
   const renderElement = useMemo(() => {
@@ -94,6 +95,12 @@ const EditorYopta = ({ editor, placeholder, readOnly, children, plugins }: Yopta
         if (plugin.leaf) {
           const leafChildren = plugin.leaf(editor)(props);
           if (leafChildren) props.children = leafChildren;
+        }
+      });
+
+      marks.forEach((mark) => {
+        if (props.leaf[mark.type]) {
+          props.children = mark.render(props);
         }
       });
 
@@ -261,6 +268,7 @@ const EditorYopta = ({ editor, placeholder, readOnly, children, plugins }: Yopta
           return React.cloneElement(child, {
             ...child.props,
             plugins,
+            marks: marks.map((mark) => mark.type),
           });
         })}
       <Editable

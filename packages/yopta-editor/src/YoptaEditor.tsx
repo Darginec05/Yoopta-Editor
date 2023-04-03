@@ -10,6 +10,7 @@ import { mergePlugins, YoptaPlugin } from './utils/plugins';
 import { getInitialState, getStorageName, LOCAL_STORAGE_NAME_TYPE } from './utils/storage';
 import { withShortcuts } from './components/Editor/plugins/shortcuts';
 import { withVoidNodes } from './components/Editor/plugins/voids';
+import { YoptaMark } from './utils/marks';
 
 type Props = {
   onChange: (_value: Descendant[]) => void;
@@ -21,12 +22,14 @@ type Props = {
   readOnly?: boolean;
   autoFocus?: boolean;
   shouldStoreInLocalStorage?: LOCAL_STORAGE_NAME_TYPE;
+  marks: YoptaMark[];
 };
 
 const YoptaEditorLib = ({
   key,
   value,
   plugins,
+  marks,
   readOnly,
   children,
   onChange,
@@ -60,7 +63,7 @@ const YoptaEditorLib = ({
   const yoptaPlugins = useMemo(() => mergePlugins(plugins), [plugins]);
 
   const editor = useMemo(() => {
-    let slateEditor = withVoidNodes(withHistory(withShortcuts(withReact(createEditor()))));
+    let yoptaEditor = withVoidNodes(withHistory(withShortcuts(withReact(createEditor()))));
     const shortcutMap = {};
 
     yoptaPlugins.forEach((component) => {
@@ -68,12 +71,12 @@ const YoptaEditorLib = ({
         shortcutMap[component.shortcut] = component.type;
       }
 
-      slateEditor = component.extendEditor?.(slateEditor) || slateEditor;
+      yoptaEditor = component.extendEditor?.(yoptaEditor) || yoptaEditor;
     });
 
-    slateEditor.shortcuts = shortcutMap;
+    yoptaEditor.shortcuts = shortcutMap;
 
-    return slateEditor;
+    return yoptaEditor;
   }, [yoptaPlugins]);
 
   useEffect(() => {
@@ -99,6 +102,7 @@ const YoptaEditorLib = ({
           placeholder={placeholder}
           plugins={yoptaPlugins}
           children={children}
+          marks={marks}
         />
       </NodeSettingsProvider>
     </Slate>

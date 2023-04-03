@@ -23,6 +23,8 @@ const headingsPkg = require('../packages/yopta-headings/package.json');
 const imagePkg = require('../packages/yopta-image/package.json');
 const videoPkg = require('../packages/yopta-video/package.json');
 const suggestionListPkg = require('../packages/actionMenu/package.json');
+const toolbarListPkg = require('../packages/toolbar/package.json');
+const marksPkg = require('../packages/marks/package.json');
 // const UIHelpersPkg = require('../packages/ui-helpers/package.json');
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -40,6 +42,8 @@ const aliases = {
   '@yopta/image': 'yopta-image',
   '@yopta/video': 'yopta-video',
   '@yopta/action-menu-list': 'actionMenu',
+  '@yopta/toolbar': 'toolbar',
+  '@yopta/marks': 'marks',
   // '@yopta/ui': 'ui-helpers',
 };
 
@@ -114,6 +118,8 @@ const HeadingsPkgConfig = createConfig({ pkg: headingsPkg });
 const ImagePkgConfig = createConfig({ pkg: imagePkg });
 const VideoPkgConfig = createConfig({ pkg: videoPkg });
 const SuggestionListPkgConfig = createConfig({ pkg: suggestionListPkg });
+const ToolbarPkgConfig = createConfig({ pkg: toolbarListPkg });
+const MarksPkgConfig = createConfig({ pkg: marksPkg });
 // const UIHelpersPkgConfig = createConfig({ pkg: UIHelpersPkg });
 
 export default [
@@ -128,4 +134,6 @@ export default [
   ImagePkgConfig,
   VideoPkgConfig,
   SuggestionListPkgConfig,
+  ToolbarPkgConfig,
+  MarksPkgConfig,
 ];

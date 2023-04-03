@@ -65,3 +65,5 @@ test-results/
 !/.yarn/sdks/**/lib/
 !.yarn/versions
 .pnp.*
+
+.env

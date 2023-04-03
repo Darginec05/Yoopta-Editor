@@ -16,12 +16,6 @@ export const getNodePath = (editor: Editor, node: any) => {
   return nodePath;
 };
 
-export const isMarkActive = (editor: Editor, mark: any): boolean => {
-  const marks: Omit<Text, 'text'> | null = Editor.marks(editor);
-
-  return !!marks?.[mark];
-};
-
 export const getMatchedNode = (editor: Editor, type: any) => {
   const { selection } = editor;
   if (!selection) return false;
@@ -37,16 +31,6 @@ export const getMatchedNode = (editor: Editor, type: any) => {
 };
 
 export const isBlockActive = (editor: Editor, type: any) => !!getMatchedNode(editor, type);
-
-export const toggleMark = (editor: Editor, format: any) => {
-  const isActive = isMarkActive(editor, format);
-
-  if (isActive) {
-    Editor.removeMark(editor, format);
-  } else {
-    Editor.addMark(editor, format, true);
-  }
-};
 
 export const getMarks = (editor: Editor) => {
   const marks = Object.keys(Editor.marks(editor) || {});
