@@ -75,6 +75,10 @@ export class YoptaPlugin<O = Options> {
   }
 }
 
+export function createYoptaPlugin<O>(input: YoptaPluginType<O>) {
+  return new YoptaPlugin(input);
+}
+
 export function mergePlugins(plugins: YoptaPlugin[]): YoptaPluginType[] {
   const items: YoptaPluginType[] = plugins
     .map((instance) => {

@@ -1,4 +1,4 @@
-import { YoptaPlugin, mergePlugins } from './utils/plugins';
+import { YoptaPlugin, mergePlugins, createYoptaPlugin } from './utils/plugins';
 import classnames from 'classnames';
 export { classnames as cx };
 export { isKeyHotkey, isHotkey, isCodeHotkey } from 'is-hotkey';
@@ -13,4 +13,4 @@ export type { YoptaPluginType, YoptaPluginHandlers, HandlersOptions } from './ut
 export type { YoptaMarksConfig, YoptaMark } from './utils/marks';
 export type { CustomEditor as YoptaEditorType } from './components/Editor/types';
 
-export { YoptaPlugin, mergePlugins };
+export { YoptaPlugin, mergePlugins, createYoptaPlugin };

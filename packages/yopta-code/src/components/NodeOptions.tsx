@@ -1,12 +1,11 @@
 import { Overlay } from './Overlay';
 import { CSSProperties, MouseEvent } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
-import { Editor, Element, Path, Transforms } from 'slate';
+import { Editor, Element, Transforms } from 'slate';
 import TrashIcon from './icons/trash.svg';
 import DuplicateIcon from './icons/duplicate.svg';
 import TurnIcon from './icons/turn.svg';
 import CopyIcon from './icons/copy.svg';
-import CaptionIcon from './icons/caption.svg';
 import { generateId } from '@yopta/editor';
 import s from './NodeOptions.module.scss';
 
@@ -45,32 +44,24 @@ const NodeOptions = ({ onClose, style, element }: Props) => {
 
       const currentNode = currentNodeEntry?.[0];
 
-      console.log('currentNode', currentNode);
       if (currentNode && !Element.isElement(currentNode)) return;
-      console.log('curr path', path);
 
       const duplicatedNode = structuredClone(currentNode);
       duplicatedNode.id = generateId();
 
-      console.log('duplicatedNode', duplicatedNode);
-      console.log('after', after);
+      const nextPath = after ? [after.path[0]] : [path[0] + 1];
 
-      // Transforms.insertNodes(editor, duplicatedNode, {
-      //   at: { path: [path[0], 0], offset: 0 },
-      //   mode: 'highest',
-      //   select: true,
-      // });
+      Transforms.insertNodes(editor, duplicatedNode, {
+        at: nextPath,
+        mode: 'highest',
+        select: true,
+      });
 
-      // console.log('insertNodes success');
-      // console.log('after', after);
+      if (after) {
+        ReactEditor.focus(editor);
+      }
 
-      // Transforms.select(editor, after ? after : [path[0] + 1, 0]);
-
-      // if (after) {
-      //   ReactEditor.focus(editor);
-      // }
-
-      // onClose();
+      onClose();
     });
   };
 

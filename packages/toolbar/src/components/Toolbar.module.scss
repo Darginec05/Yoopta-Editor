@@ -6,7 +6,8 @@
   right: auto;
   top: -1000px;
   transition: opacity 50ms ease-in;
-  z-index: 99
+  z-index: 99;
+  pointer-events: auto;
 }
 
 .toolbar {

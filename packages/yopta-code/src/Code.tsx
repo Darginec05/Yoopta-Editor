@@ -1,5 +1,5 @@
 import { Editor, Element, Node, Path, Range, Transforms } from 'slate';
-import { YoptaPlugin, getNodeByPath, generateId } from '@yopta/editor';
+import { getNodeByPath, generateId, createYoptaPlugin } from '@yopta/editor';
 import { CodeLeaf } from './ui/CodeLeaf';
 import { CodeRender } from './ui/CodeRender';
 import { CodeLineRender } from './ui/CodeLineRender';
@@ -7,10 +7,14 @@ import { codeLineDecorator } from './utils/decorator';
 import { CodeEditor } from './ui/CodeEditor';
 
 const CODE_NODE_TYPE = 'code';
-const CODE_LINE_NODE_TYPE = 'code-line';
+const CODE_CHILD_NODE_TYPE = 'code-line';
 
-const CodeLine = new YoptaPlugin({
-  type: CODE_LINE_NODE_TYPE,
+type CodeOptions = {
+  language: string;
+};
+
+const CodeLine = createYoptaPlugin({
+  type: CODE_CHILD_NODE_TYPE,
   renderer: CodeLineRender,
   leaf: () => CodeLeaf,
   decorator: codeLineDecorator,
@@ -23,11 +27,11 @@ const CodeLine = new YoptaPlugin({
         // [TODO] - define this function in options
         const node = getNodeByPath(editor, editor.selection.anchor.path, 'lowest');
 
-        if (node.type !== CODE_LINE_NODE_TYPE) return;
+        if (node.type !== CODE_CHILD_NODE_TYPE) return;
 
         const codeLinkEntry = Editor.above(editor, {
           at: editor.selection?.anchor.path,
-          match: (n) => Element.isElement(n) && n.type === CODE_LINE_NODE_TYPE,
+          match: (n) => Element.isElement(n) && n.type === CODE_CHILD_NODE_TYPE,
         });
 
         const parentCodeEntry = Editor.above(editor, {
@@ -96,7 +100,7 @@ const CodeLine = new YoptaPlugin({
   },
 });
 
-const Code = new YoptaPlugin({
+const Code = createYoptaPlugin<CodeOptions>({
   type: CODE_NODE_TYPE,
   renderer: {
     editor: CodeEditor,
@@ -115,7 +119,7 @@ const Code = new YoptaPlugin({
           if (Element.isElement(childNode) && childNode.type !== 'code-line') {
             const childNode = {
               id: generateId(),
-              type: CODE_LINE_NODE_TYPE,
+              type: CODE_CHILD_NODE_TYPE,
               children: [{ text: '' }],
             };
 
@@ -134,7 +138,7 @@ const Code = new YoptaPlugin({
   createNode: (editor, type, data = {}) => {
     const childNode = {
       id: generateId(),
-      type: CODE_LINE_NODE_TYPE,
+      type: CODE_CHILD_NODE_TYPE,
       children: [{ text: '' }],
       ...data,
     };
@@ -148,11 +152,14 @@ const Code = new YoptaPlugin({
       at: editor.selection?.anchor,
     });
 
-    const block = { id: generateId(), language: 'javascript', type: type, children: [{ text: '' }] };
+    const block = { id: generateId(), options: { language: 'javascript' }, type: type, children: [{ text: '' }] };
 
     Transforms.wrapNodes(editor, block, {
       at: editor.selection?.anchor,
     });
+  },
+  options: {
+    language: 'javascript',
   },
 });
 
