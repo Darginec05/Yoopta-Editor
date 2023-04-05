@@ -262,9 +262,6 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
 
   return (
     <div id="yopta-editor" onMouseDown={handleEmptyZoneClick}>
-      {/* <OutsideClick onClose={hideToolbarTools}>
-        <Toolbar toolbarRef={toolbarRef} toolbarStyle={toolbarStyle} editor={editor} />
-      </OutsideClick> */}
       {hasEditorChildren &&
         React.Children.map(children, (child) => {
           if (!React.isValidElement(child)) return null;
