@@ -44,6 +44,10 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 
+  &:hover, &:focus {
+    background: #383835;
+  }
+
 }
 
 .item {

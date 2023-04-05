@@ -22,7 +22,7 @@ const MediumToolbar = (props: ToolbarProps) => {
         </button>
         <button type="button" className={s.button} onClick={() => marks.underline.toggle()}>
           <span style={marks.underline.isActive ? { color: '#b5e5a4' } : { color: '#fff' }} className={s.item}>
-            U
+            <u>U</u>
           </span>
         </button>
         <button type="button" className={s.button} onClick={() => marks.strike.toggle()}>

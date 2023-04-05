@@ -1,4 +1,4 @@
-import { generateId, getNodeByPath, YoptaPlugin } from '@yopta/editor';
+import { generateId, getNodeByPath, createYoptaPlugin } from '@yopta/editor';
 import { Transforms } from 'slate';
 import { Image as ImageRender } from './ui/Image';
 import { ImageEditor } from './ui/ImageEditor';
@@ -9,7 +9,7 @@ export type ImageOptions = {
   onChange: (file: File) => Promise<any>;
 };
 
-const Image = new YoptaPlugin<ImageOptions>({
+const Image = createYoptaPlugin<ImageOptions>({
   type: 'image',
   renderer: {
     editor: ImageEditor,

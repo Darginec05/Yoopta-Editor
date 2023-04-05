@@ -2,6 +2,7 @@ import { cx } from '@yopta/editor';
 import { CSSProperties, RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { Editor, Range } from 'slate';
 import { useSlate } from 'slate-react';
+// import { isInViewport } from '../utils/isInViewport';
 import { getRectByCurrentSelection } from '../utils/selectionRect';
 import s from './Toolbar.module.scss';
 
@@ -46,6 +47,7 @@ const Toolbar = ({ type = 'bubble', style, marks, children }: Props) => {
   const isFixedToolbar = type === 'fixed';
 
   const updateToolbarPosition = () => {
+    // if (toolbarProps.open && !isInViewport(toolbarRef.current)) return setToolbarProps({ open: false, style: {} });
     const selectionRect = getRectByCurrentSelection();
 
     const top = selectionRect.top - toolbarRef.current!.offsetHeight - selectionRect.height / 4;
@@ -65,6 +67,11 @@ const Toolbar = ({ type = 'bubble', style, marks, children }: Props) => {
 
     updateToolbarPosition();
   }, [editor.selection]);
+
+  useEffect(() => {
+    if (toolbarProps.open) window.addEventListener('scroll', updateToolbarPosition);
+    return () => window.removeEventListener('scroll', updateToolbarPosition);
+  }, [toolbarProps.open]);
 
   const checkIsMarkActive = (mark) => {
     const marks = Editor.marks(editor);
@@ -108,7 +115,7 @@ const Toolbar = ({ type = 'bubble', style, marks, children }: Props) => {
   };
 
   if (typeof children === 'function') {
-    return children(childrenProps);
+    return <div style={{ position: 'relative' }}>{children(childrenProps)}</div>;
   }
 
   return (
@@ -124,7 +131,7 @@ const Toolbar = ({ type = 'bubble', style, marks, children }: Props) => {
                 key={mark}
                 type="button"
                 className={cx(s.mark, { [s.active]: checkIsMarkActive })}
-                onClick={() => toggleMark(mark, checkIsMarkActive)}
+                onClick={() => toggleMark(mark)}
               >
                 {mark}
               </button>

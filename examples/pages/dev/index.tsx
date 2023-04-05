@@ -100,11 +100,11 @@ const BasicExample = () => {
   }, []);
 
   const actionItems = [
-    { component: Image, icon: <ImageIcon />, label: 'Image', searchString: 'image picture' },
-    { component: Video, icon: <VideoIcon />, label: 'Video', searchString: 'video media' },
+    { component: Paragraph, icon: <EmbedIcon />, label: 'Text', searchString: 'text paragraph' },
     { component: Headings.HeadingOne, icon: <EmbedIcon />, label: 'Title', searchString: 'h1 title' },
     { component: Headings.HeadingTwo, icon: <EmbedIcon />, label: 'Subtitle', searchString: 'h2 subtitle' },
-    { component: Paragraph, icon: <EmbedIcon />, label: 'Text', searchString: 'text paragraph' },
+    { component: Image, icon: <ImageIcon />, label: 'Image', searchString: 'image picture' },
+    { component: Video, icon: <VideoIcon />, label: 'Video', searchString: 'video media' },
     { component: Blockquote, icon: <VideoIcon />, label: 'Blockquote' },
     { component: Callout, label: 'Callout' },
     { component: Code, label: 'Super code', searchString: 'hello world' },
@@ -122,9 +122,10 @@ const BasicExample = () => {
         marks={[Bold, Italic, CodeMark, Underline, Strike]}
         shouldStoreInLocalStorage={{ name: 'yopta-dev' }}
         readOnly={false}
+        // readOnly
       >
         <ActionMenu items={actionItems} trigger="/" render={CustomSuggestionList} />
-        <Toolbar type="bubble">{MediumToolbar}</Toolbar>
+        <Toolbar type="bubble">{(props) => <MediumToolbar {...props} />}</Toolbar>
       </YoptaEditor>
       <pre className={s.editor} style={{ display: 'block', padding: '0 64px', whiteSpace: 'pre-wrap' }}>
         {JSON.stringify(editorValue, null, 2)}

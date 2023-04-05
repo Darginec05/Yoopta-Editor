@@ -1,4 +1,4 @@
-import { ChangeEvent, CSSProperties, MouseEvent, useEffect, useState } from 'react';
+import { ChangeEvent, ChangeEventHandler, CSSProperties, MouseEvent, useEffect, useState } from 'react';
 import { Element, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { CustomEditor } from '@yopta/editor/dist/components/Editor/types';
@@ -36,7 +36,6 @@ const OPTIONS_WIDTH = 265;
 const CodeEditor = (editor: CustomEditor) => {
   return function CodeEditor({ element, attributes, children }) {
     const [optionsPos, setOptionsPos] = useState<CSSProperties | null>(null);
-
     useEffect(() => {
       Prism.highlightAll();
     }, []);
@@ -72,31 +71,31 @@ const CodeEditor = (editor: CustomEditor) => {
 
       Transforms.setNodes(
         editor,
-        { language: event.target.value },
+        { options: { language: event.target.value } },
         { at: nodePath, match: (n) => Element.isElement(n) && n.type === 'code' },
       );
     };
 
     return (
       <code className={s.code} {...attributes}>
-        <pre className={cx(s.pre, `language-${element.language}`)}>
+        <pre className={cx(s.pre, `language-${element.options.language}`)}>
           {/* [TODO] - it could needed feature */}
-          <span contentEditable={false} className={s.filename}>
-            /code/index.tsx
-          </span>
           {children}
-          <div className={s.tools} contentEditable={false}>
-            <LanguageSelect value={element.language} onChange={onChange} />
-            {optionsPos !== null && (
-              <NodeOptions key={element.id} onClose={toggleOptionsOpen} style={optionsPos} element={element} />
-            )}
-            <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>
-              <span className={s.dot} />
-              <span className={s.dot} />
-              <span className={s.dot} />
-            </button>
-          </div>
         </pre>
+        <div className={s.tools} contentEditable={false}>
+          {/* <button type="button" className={s.copy}>
+            Copy
+          </button> */}
+          <LanguageSelect value={element.options.language} onChange={onChange} />
+          {optionsPos !== null && (
+            <NodeOptions key={element.id} onClose={toggleOptionsOpen} style={optionsPos} element={element} />
+          )}
+          <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>
+            <span className={s.dot} />
+            <span className={s.dot} />
+            <span className={s.dot} />
+          </button>
+        </div>
       </code>
     );
   };
