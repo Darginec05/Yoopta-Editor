@@ -1,5 +1,6 @@
-import { generateId, YoptaPlugin } from '@yopta/editor';
+import { createYoptaPlugin, generateId, YoptaPlugin } from '@yopta/editor';
 import { Editor, Element, Transforms } from 'slate';
+import type { BulletedList, ListChildItemElement, ListOptions } from '../types';
 import { ListItemList } from './ListItem';
 
 const BulletedListRender = ({ attributes, children, element }) => {
@@ -12,14 +13,14 @@ const BulletedListRender = ({ attributes, children, element }) => {
 
 const BULLETED_LIST_NODE_TYPE = 'bulleted-list';
 
-const BulletedList = new YoptaPlugin({
+const BulletedList = createYoptaPlugin<ListOptions, BulletedList>({
   type: BULLETED_LIST_NODE_TYPE,
   renderer: (editor) => BulletedListRender,
   // [TODO] - fix for nested items
   shortcut: '-',
   childPlugin: ListItemList,
   createNode: (editor, type, data = {}) => {
-    const childNode = {
+    const listItem: ListChildItemElement = {
       id: generateId(),
       type: 'list-item',
       children: [{ text: '' }],
@@ -27,17 +28,27 @@ const BulletedList = new YoptaPlugin({
     };
 
     Transforms.unwrapNodes(editor, {
-      match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.options?.depth >= 1,
+      match: (n) =>
+        !Editor.isEditor(n) &&
+        Element.isElement(n) &&
+        n.type !== 'list-item' &&
+        n.type !== 'todo-list-item' &&
+        n.options?.depth >= 1,
       split: true,
     });
 
-    Transforms.setNodes(editor, childNode, {
+    Transforms.setNodes(editor, listItem, {
       at: editor.selection?.anchor,
     });
 
-    const block = { id: generateId(), type: type, children: [{ text: '' }], options: { depth: 1 } };
+    const bulletedList: BulletedList = {
+      id: generateId(),
+      type: 'bulleted-list',
+      children: [listItem],
+      options: { depth: 1 },
+    };
 
-    Transforms.wrapNodes(editor, block, {
+    Transforms.wrapNodes(editor, bulletedList, {
       at: editor.selection?.anchor,
     });
   },

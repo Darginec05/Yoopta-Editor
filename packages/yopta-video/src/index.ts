@@ -1,4 +1,4 @@
-import { generateId, getNodeByPath, YoptaPlugin } from '@yopta/editor';
+import { generateId, getElementByPath, YoptaPlugin } from '@yopta/editor';
 import { Transforms } from 'slate';
 import { Video as VideoRender } from './ui/Video';
 import { VideoEditor } from './ui/VideoEditor';
@@ -27,7 +27,7 @@ const Video = new YoptaPlugin({
     onKeyDown:
       (editor, { defaultNode, hotkeys }) =>
       (event) => {
-        const currentNode = getNodeByPath(editor, editor.selection?.anchor.path, 'highest');
+        const currentNode = getElementByPath(editor, editor.selection?.anchor.path, 'highest');
         if (currentNode.type !== 'video' || !editor.selection) return;
 
         console.log('hotkeys.isEnter(event)', hotkeys.isEnter(event));

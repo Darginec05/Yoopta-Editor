@@ -11,12 +11,12 @@ import {
   NodeSettingsContextHandlers,
   NodeSettingsContextValues,
 } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
-import { getNodePath } from '../Editor/utils';
+import { YoEditor } from '../../types';
 import s from './NodeSettings.module.scss';
 
 type Props = Pick<NodeSettingsContextValues, 'hoveredNode' | 'isNodeSettingsOpen' | 'nodeSettingsPos'> & {
   handlers: NodeSettingsContextHandlers;
-  editor: Editor;
+  editor: YoEditor;
   element: SlateElement;
   isNestedNode: boolean;
 };
@@ -48,7 +48,7 @@ const NodeSettings = ({
       zIndex: 1400,
     };
 
-    const path = getNodePath(editor, hoveredNode);
+    const path = [];
 
     const options = {
       triggeredBySuggestion: false,

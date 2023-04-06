@@ -1,3 +1,4 @@
+import { YoEditor } from '@yopta/editor';
 import Prism from 'prismjs';
 import { Editor, Element, Node, NodeEntry, Range } from 'slate';
 import { normalizeTokens } from './normalizeTokens';
@@ -69,7 +70,7 @@ const getChildNodeToDecorations = ([block, blockPath]: NodeEntry<any>) => {
 };
 
 export const codeLineDecorator =
-  (editor: Editor) =>
+  (editor: YoEditor) =>
   ([node, path]: NodeEntry) => {
     const blockEntries = Array.from(
       Editor.nodes(editor, {

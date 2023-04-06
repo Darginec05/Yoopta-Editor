@@ -1,7 +1,8 @@
 import { Editor, Element, Range, Transforms, Node, Path } from 'slate';
 import { generateId } from '../../../utils/generateId';
+import { YoEditor } from '../../../types';
 
-export const withVoidNodes = (editor: Editor) => {
+export const withVoidNodes = (editor: YoEditor) => {
   const { insertBreak, deleteBackward } = editor;
 
   editor.insertBreak = () => {

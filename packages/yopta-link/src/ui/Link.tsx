@@ -1,6 +1,6 @@
 import { MouseEvent } from 'react';
 import { Editor, Element, Transforms } from 'slate';
-import { getNodeByPath, YoptaPlugin, generateId } from '@yopta/editor';
+import { getElementByPath, YoptaPlugin, generateId } from '@yopta/editor';
 import isUrl from 'is-url';
 import { addLinkNode } from '../utils/addLink';
 import { LinkEditor } from './LinkEditor';
@@ -77,7 +77,7 @@ const Link = new YoptaPlugin({
       (editor, { hotkeys }) =>
       (event) => {
         if (!editor.selection) return;
-        const node = getNodeByPath(editor, editor.selection.anchor.path);
+        const node = getElementByPath(editor, editor.selection.anchor.path);
 
         if (node.type !== LINK_NODE_TYPE) return;
         const { anchor } = editor.selection;

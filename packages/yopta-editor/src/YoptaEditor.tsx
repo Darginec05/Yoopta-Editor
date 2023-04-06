@@ -11,6 +11,7 @@ import { getInitialState, getStorageName, LOCAL_STORAGE_NAME_TYPE } from './util
 import { withShortcuts } from './components/Editor/plugins/shortcuts';
 import { withVoidNodes } from './components/Editor/plugins/voids';
 import { YoptaMark } from './utils/marks';
+import { YoEditor } from './types';
 
 type Props = {
   onChange: (_value: Descendant[]) => void;
@@ -62,7 +63,7 @@ const YoptaEditorLib = ({
 
   const yoptaPlugins = useMemo(() => mergePlugins(plugins), [plugins]);
 
-  const editor = useMemo(() => {
+  const editor = useMemo<YoEditor>(() => {
     let yoptaEditor = withVoidNodes(withHistory(withShortcuts(withReact(createEditor()))));
     const shortcutMap = {};
 

@@ -2,14 +2,14 @@ import { Editor, Transforms, Element as SlateElement, Point, Path } from 'slate'
 import copy from 'copy-to-clipboard';
 import React, { CSSProperties, MouseEvent, useContext, useMemo, useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
-import { CustomElement } from '../../components/Editor/types';
+import { YoElement } from '../../types';
 import { ELEMENT_TYPES_MAP, LIST_TYPES } from '../../components/Editor/constants';
 import { useDragDrop, DragDropValues, DragDropHandlers } from '../../hooks/useDragDrop';
-import { getNodeByCurrentPath, getNodePath, getDefaultParagraphLine } from '../../components/Editor/utils';
-import { getNodeByPath } from '../../utils/nodes';
+import { getNodeByCurrentPath } from '../../components/Editor/utils';
+import { getElementByPath } from '../../utils/nodes';
 import { generateId } from '../../utils/generateId';
 
-export type HoveredNode = CustomElement | null;
+export type HoveredNode = YoElement | null;
 
 export type NodeSettingsContextValues = DragDropValues & {
   hoveredNode: HoveredNode;
@@ -20,8 +20,8 @@ export type NodeSettingsContextValues = DragDropValues & {
 export type NodeSettingsContextHandlers = DragDropHandlers & {
   openNodeSettings: (_dragRef: any, _node: HoveredNode) => void;
   closeNodeSettings: () => void;
-  hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => void;
-  hoverOut: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => void;
+  hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: YoElement) => void;
+  hoverOut: (_e: MouseEvent<HTMLDivElement>, _node: YoElement) => void;
   triggerPlusButton: (_onFocusCallback: () => void) => void;
   deleteNode: () => void;
   duplicateNode: () => void;
@@ -44,8 +44,8 @@ const NodeSettingsContext = React.createContext<NodeSettingsContextType>([
   {
     openNodeSettings: (_dragRef: any, _node?: HoveredNode) => {},
     closeNodeSettings: () => {},
-    hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => {},
-    hoverOut: (_e: MouseEvent<HTMLDivElement>, _node: CustomElement) => {},
+    hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: YoElement) => {},
+    hoverOut: (_e: MouseEvent<HTMLDivElement>, _node: YoElement) => {},
     triggerPlusButton: (_onFocusCallback: () => void) => {},
     deleteNode: () => {},
     duplicateNode: () => {},
@@ -74,7 +74,7 @@ const getRootLevelNextNodePath = (currentPath: Path, nextPoint: Point | undefine
 
 const getInitialState = ({ children }: Editor): HoveredNode => {
   if (children.length === 1) {
-    const node = children[0] as CustomElement;
+    const node = children[0] as YoElement;
     return node;
   }
 
@@ -98,12 +98,12 @@ const NodeSettingsProvider = ({ children }) => {
 
   const handlers = useMemo<NodeSettingsContextHandlers>(
     () => ({
-      hoverIn: (e: MouseEvent<HTMLDivElement>, node: CustomElement) => {
+      hoverIn: (e: MouseEvent<HTMLDivElement>, node: YoElement) => {
         if (isNodeSettingsOpen) return e.preventDefault();
         setHoveredNode(node);
       },
 
-      hoverOut: (e: MouseEvent<HTMLDivElement>, node: CustomElement) => {
+      hoverOut: (e: MouseEvent<HTMLDivElement>, node: YoElement) => {
         if (node.id === hoveredNode?.id || isNodeSettingsOpen) return e.preventDefault();
         setHoveredNode(null);
       },
@@ -115,12 +115,12 @@ const NodeSettingsProvider = ({ children }) => {
         Editor.withoutNormalizing(editor, () => {
           if (!hoveredNode) return;
 
-          const path = getNodePath(editor, hoveredNode);
+          const path = [];
 
           // [TOOD] - getNodeByCurrentPath remove
           const currentNode: any = getNodeByCurrentPath(editor);
           const after = Editor.after(editor, path);
-          const nextNode: any = getNodeByPath(editor, after?.path, 'highest');
+          const nextNode: any = getElementByPath(editor, after?.path, 'highest');
 
           const isEmptyNode = Editor.string(editor, path).trim().length === 0;
           const isVoidNode = Editor.isVoid(editor, currentNode);
@@ -161,7 +161,7 @@ const NodeSettingsProvider = ({ children }) => {
         // disableScroll();
         setNodeSettingsOpen(true);
 
-        const path = getNodePath(editor, node);
+        const path = [];
         Transforms.setSelection(editor, { anchor: { path, offset: 0 }, focus: { path, offset: 0 } });
 
         if (dragRef.current) {
@@ -179,7 +179,7 @@ const NodeSettingsProvider = ({ children }) => {
       deleteNode: () => {
         const isLastDeleted = editor.children.length === 1;
         if (!hoveredNode) return;
-        const path = getNodePath(editor, hoveredNode);
+        const path = [];
 
         Editor.withoutNormalizing(editor, () => {
           if (isLastDeleted) {
@@ -225,8 +225,8 @@ const NodeSettingsProvider = ({ children }) => {
       duplicateNode: () => {
         Editor.withoutNormalizing(editor, () => {
           if (!hoveredNode) return;
-          const path = getNodePath(editor, hoveredNode);
-          const currentNode = getNodeByPath(editor);
+          const path = [];
+          const currentNode = getElementByPath(editor);
 
           if (currentNode) {
             const duplicatedNode = structuredClone(currentNode);

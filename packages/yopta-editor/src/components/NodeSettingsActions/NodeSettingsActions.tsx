@@ -4,7 +4,6 @@ import cx from 'classnames';
 import { HoveredNode, NodeSettingsContextHandlers } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import PlusIcon from '../../icons/add.svg';
 import DragIcon from '../../icons/drag.svg';
-import { getNodePath } from '../Editor/utils';
 import s from './NodeSettingsActions.module.scss';
 
 type Props = {
@@ -29,7 +28,7 @@ export const NodeSettingsActions = ({ handlers, element, showSuggestionList }: P
       target.setAttribute('draggable', 'true');
 
       target.ondragstart = (event) => {
-        onDragStart(event, getNodePath(editor, element));
+        onDragStart(event, []);
       };
       target.ondragend = onDragEnd;
     }

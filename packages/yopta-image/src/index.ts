@@ -1,4 +1,4 @@
-import { generateId, getNodeByPath, createYoptaPlugin } from '@yopta/editor';
+import { generateId, getElementByPath, createYoptaPlugin } from '@yopta/editor';
 import { Transforms } from 'slate';
 import { Image as ImageRender } from './ui/Image';
 import { ImageEditor } from './ui/ImageEditor';
@@ -32,7 +32,7 @@ const Image = createYoptaPlugin<ImageOptions>({
     onKeyDown:
       (editor, { defaultNode, hotkeys }) =>
       (event) => {
-        const currentNode = getNodeByPath(editor, editor.selection?.anchor.path, 'highest');
+        const currentNode = getElementByPath(editor, editor.selection?.anchor.path, 'highest');
         if (currentNode.type !== 'image' || !editor.selection) return;
 
         if (hotkeys.isEnter(event)) {

@@ -1,6 +1,7 @@
 import { DragEvent, useState } from 'react';
 import { Editor, Transforms, Element as SlateElement } from 'slate';
 import { ELEMENT_TYPES_MAP } from '../components/Editor/constants';
+import { YoEditor } from '../types';
 
 export type DndState = { fromPath: number[] | null; toPath: number[] | null };
 
@@ -16,7 +17,7 @@ export type DragDropHandlers = {
   onDragStart: (_e, _data?: any) => void;
 };
 
-export const useDragDrop = (editor: Editor): [DragDropValues, DragDropHandlers] => {
+export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers] => {
   const [disableWhileDrag, setIsDisableByDrag] = useState(false);
   const [dndState, setDndState] = useState<DndState>({ fromPath: null, toPath: null });
 

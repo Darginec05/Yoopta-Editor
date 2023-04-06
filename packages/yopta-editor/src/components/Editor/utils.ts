@@ -1,53 +1,7 @@
-import { ReactEditor } from 'slate-react';
-import { Editor, Text, Element as SlateElement, Transforms, Range, Path } from 'slate';
 import { jsx } from 'slate-hyperscript';
-import { LinkElement, ParagraphElement } from './types';
-import { ELEMENT_TYPES_MAP, LIST_TYPES } from './constants';
+import { ELEMENT_TYPES_MAP } from './constants';
 import { generateId } from '../../utils/generateId';
-
-export const getNodePath = (editor: Editor, node: any) => {
-  // [TODO] - some when lost focus bug
-  const path = ReactEditor.findPath(editor, node);
-  const isListItem = [ELEMENT_TYPES_MAP['list-item']].includes(node.type);
-
-  let nodePath = path.length === 1 ? [path[0], 0] : path;
-  if (isListItem) nodePath = [...nodePath, 0];
-
-  return nodePath;
-};
-
-export const getMatchedNode = (editor: Editor, type: any) => {
-  const { selection } = editor;
-  if (!selection) return false;
-
-  const [match] = Array.from(
-    Editor.nodes(editor, {
-      at: Editor.unhangRange(editor, selection),
-      match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === type,
-    }),
-  );
-
-  return match;
-};
-
-export const isBlockActive = (editor: Editor, type: any) => !!getMatchedNode(editor, type);
-
-export const getMarks = (editor: Editor) => {
-  const marks = Object.keys(Editor.marks(editor) || {});
-  return marks;
-};
-
-export const removeMarks = (editor: Editor) => {
-  const marks = getMarks(editor);
-
-  if (marks.length > 0) {
-    marks.forEach((mark) => {
-      Editor.removeMark(editor, mark);
-    });
-  }
-};
-
-export const getElementClassname = (element) => `yopta-${element.type}`;
+import { YoEditor } from '../../types';
 
 export const HTML_ELEMENT_TAGS = {
   A: (el) => ({ type: ELEMENT_TYPES_MAP.link, url: el.getAttribute('href'), id: generateId() }),
@@ -120,7 +74,7 @@ export const deserializeHTML = (el) => {
 };
 
 // Make recursive for deep nested items
-export const getNodeByCurrentPath = (editor: Editor) => {
+export const getNodeByCurrentPath = (editor: YoEditor) => {
   const { path } = editor.selection!.anchor;
   const level = path.length;
 
@@ -135,7 +89,7 @@ export const getNodeByCurrentPath = (editor: Editor) => {
   return rootNode.children[path[1]];
 };
 
-export const getDefaultParagraphLine = (): ParagraphElement => ({
+export const getDefaultParagraphLine = () => ({
   id: generateId(),
   type: 'paragraph',
   children: [
