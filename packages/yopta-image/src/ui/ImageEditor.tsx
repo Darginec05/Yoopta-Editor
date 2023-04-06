@@ -1,21 +1,20 @@
-import { Editor, Element, Transforms } from 'slate';
+import { Element, Transforms } from 'slate';
 import { Resizable, ResizableProps } from 're-resizable';
-import { ReactEditor, RenderElementProps, useSelected } from 'slate-react';
+import { ReactEditor, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
 import { Image } from './Image';
 import { CSSProperties, MouseEvent, useEffect, useMemo, useState } from 'react';
-import { cx, YoEditor } from '@yopta/editor';
+import { cx, RenderElementProps, YoEditor } from '@yopta/editor';
 import { Loader } from '../components/Loader';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { NodeOptions } from '../components/NodeOptions';
+import { ImageElement } from '../types';
 import s from './ImageEditor.module.scss';
-
-type Props = RenderElementProps;
 
 const OPTIONS_WIDTH = 265;
 
 function ImageEditor(editor: YoEditor, plugin) {
-  return function ImageEditor(props: Props) {
+  return function ImageEditor(props: RenderElementProps<ImageElement>) {
     const { element } = props;
     const selected = useSelected();
 
@@ -57,7 +56,7 @@ function ImageEditor(editor: YoEditor, plugin) {
           console.log('ReactEditor.findPath(editor, element)', ReactEditor.findPath(editor, element));
           console.log('element', element);
 
-          Transforms.setNodes(
+          Transforms.setNodes<ImageElement>(
             editor,
             { options: { ...element.options, size: { width: ref.offsetWidth, height: ref.offsetHeight } } },
             {

@@ -1,9 +1,17 @@
-import { generateId, getElementByPath, YoptaPlugin } from '@yopta/editor';
+import { createYoptaPlugin, generateId, getElementByPath, YoEditor, YoptaPlugin } from '@yopta/editor';
 import { Transforms } from 'slate';
+import { VideoElement } from './types';
 import { Video as VideoRender } from './ui/Video';
 import { VideoEditor } from './ui/VideoEditor';
 
-const Video = new YoptaPlugin({
+declare module 'slate' {
+  interface CustomTypes {
+    Editor: YoEditor;
+    Element: VideoElement;
+  }
+}
+
+const Video = createYoptaPlugin<any, VideoElement>({
   type: 'video',
   renderer: {
     editor: VideoEditor,

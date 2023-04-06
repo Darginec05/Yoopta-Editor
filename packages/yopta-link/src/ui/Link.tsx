@@ -1,14 +1,17 @@
 import { MouseEvent } from 'react';
 import { Editor, Element, Transforms } from 'slate';
-import { getElementByPath, YoptaPlugin, generateId } from '@yopta/editor';
+import { getElementByPath, YoptaPlugin, generateId, RenderElementProps, createYoptaPlugin } from '@yopta/editor';
 import isUrl from 'is-url';
 import { addLinkNode } from '../utils/addLink';
 import { LinkEditor } from './LinkEditor';
+import { LinkElement } from '../types';
 import s from './Link.module.scss';
 
-const LinkRender = ({ attributes, element, children }) => {
+const LinkRender = ({ attributes, element, children }: RenderElementProps<LinkElement>) => {
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+    if (!element.url) return;
+
     const url = new URL(element.url);
 
     if (url.host === window.location.host) {
@@ -22,7 +25,7 @@ const LinkRender = ({ attributes, element, children }) => {
     <a
       draggable={false}
       {...attributes}
-      href={element.url}
+      href={element.url || ''}
       rel="noreferrer"
       target="_blank"
       className={s.link}
@@ -37,7 +40,7 @@ LinkRender.displayName = 'Link';
 
 const LINK_NODE_TYPE = 'link';
 
-const Link = new YoptaPlugin({
+const Link = createYoptaPlugin<any, LinkElement>({
   type: LINK_NODE_TYPE,
   renderer: {
     editor: () => LinkEditor,

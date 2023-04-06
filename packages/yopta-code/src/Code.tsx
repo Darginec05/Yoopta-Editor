@@ -1,4 +1,4 @@
-import { Editor, Element, Node, Path, Range, Transforms } from 'slate';
+import { Editor, Element, Node, NodeEntry, Path, Range, Transforms } from 'slate';
 import { getElementByPath, generateId, createYoptaPlugin, YoEditor } from '@yopta/editor';
 import { CodeLeaf } from './ui/CodeLeaf';
 import { CodeRender } from './ui/CodeRender';
@@ -38,7 +38,7 @@ const CodeLine = createYoptaPlugin<any, CodeChildElement>({
           match: (n) => Element.isElement(n) && n.type === CODE_CHILD_NODE_TYPE,
         });
 
-        const parentCodeEntry = Editor.above(editor, {
+        const parentCodeEntry: NodeEntry<CodeElement> | undefined = Editor.above(editor, {
           at: editor.selection.anchor.path,
           match: (n) => Element.isElement(n) && n.type === CODE_NODE_TYPE,
         });

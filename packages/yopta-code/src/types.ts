@@ -1,13 +1,11 @@
+import { YoBaseElement } from '@yopta/editor';
+
 export type CodeOptions = {
   language: string;
+  filename?: string;
 };
 
-export type CodeElement = {
-  id: string;
-  type: 'code';
-  children: CodeChildElement[];
-  options: CodeOptions;
-};
+export type CodeElement = YoBaseElement<'code', CodeChildElement[]> & { options: CodeOptions };
 
 export type CodeChildElement = {
   id: string;

@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import Prism from 'prismjs';
-import { cx } from '@yopta/editor';
+import { cx, RenderElementProps } from '@yopta/editor';
 
 import 'prism-material-themes/themes/material-default.css';
+import { CodeElement } from '../types';
 import s from './CodeRender.module.scss';
 
-function CodeRender({ element, attributes, children }) {
+function CodeRender({ element, attributes, children }: RenderElementProps<CodeElement>) {
   useEffect(() => {
     import(`prismjs/components/prism-${element.options.language}`).then(() => {
       Prism.highlightAll();
@@ -18,7 +19,7 @@ function CodeRender({ element, attributes, children }) {
       {element.options.filename && <span className={s.filename}>{element.options.filename}</span>}
       <pre className={cx(s.pre, `language-${element.options.language}`)}>
         <span contentEditable={false} className={s.filename}>
-          {element.filename || '/code/index.tsx'}
+          {element.options.filename || '/code/index.tsx'}
         </span>
         {children}
       </pre>

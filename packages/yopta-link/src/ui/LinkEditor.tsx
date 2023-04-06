@@ -1,8 +1,9 @@
+import { RenderElementProps } from '@yopta/editor';
 import { MouseEvent } from 'react';
-import { RenderElementProps } from 'slate-react';
+import { LinkElement } from '../types';
 import s from './LinkEditor.module.scss';
 
-const LinkEditor = ({ attributes, element, children }: RenderElementProps) => {
+const LinkEditor = ({ attributes, element, children }: RenderElementProps<LinkElement>) => {
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     return e.preventDefault();
   };
@@ -11,7 +12,7 @@ const LinkEditor = ({ attributes, element, children }: RenderElementProps) => {
     <a
       draggable={false}
       {...attributes}
-      href={element.url}
+      href={element.url || ''}
       rel="noreferrer"
       target="_blank"
       className={s.link}
