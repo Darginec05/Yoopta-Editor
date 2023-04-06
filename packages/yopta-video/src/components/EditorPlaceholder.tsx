@@ -9,7 +9,7 @@ import s from './EditorPlaceholder.module.scss';
 import { toBase64 } from '../utils/base64';
 
 type Props = RenderElementProps & {
-  editor: Editor;
+  editor: YoEditor;
   onChange: (file: File) => Promise<void>;
   maxSizes: { maxWidth: number; maxHeight: number };
 };

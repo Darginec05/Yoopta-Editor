@@ -1,34 +1,41 @@
-import { YoptaPlugin, generateId, getNodeByPath, cx } from '@yopta/editor';
+import {
+  YoptaPlugin,
+  generateId,
+  getElementByPath,
+  cx,
+  YoEditor,
+  createYoptaPlugin,
+  RenderElementProps,
+} from '@yopta/editor';
 import { ChangeEvent } from 'react';
-import { Editor, Element, Path, Transforms } from 'slate';
+import { Editor, Element, NodeEntry, Path, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
+import { TodoList, TodoListChildItemElement, TodoListItemOptions } from '../types';
 import s from './TodoListItem.module.scss';
 
 const TODO_LIST_NODE_ITEM_TYPE = 'todo-list-item';
 
-const TodoListItemRender = (editor: Editor) => {
-  return function TodoListItemRender({ attributes, children, element }) {
+const TodoListItemRender = (editor: YoEditor) => {
+  return function TodoListItemRender({ attributes, children, element }: RenderElementProps<TodoListChildItemElement>) {
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
       const path = ReactEditor.findPath(editor, element);
 
-      Transforms.setNodes(
+      Transforms.setNodes<TodoListChildItemElement>(
         editor,
-        { checked: event.target.checked },
+        { options: { checked: event.target.checked } },
         {
           at: path,
-          match: (n) => {
-            return n.type === TODO_LIST_NODE_ITEM_TYPE;
-          },
+          match: (n) => Element.isElement(n) && n.type === TODO_LIST_NODE_ITEM_TYPE,
         },
       );
     };
 
-    const isChecked = element.checked;
+    const isChecked = element.options.checked;
 
     return (
       <div draggable={false} {...attributes} className={cx(s.todoListItem, { [s.checked]: isChecked })}>
         <label className={s.label} contentEditable={false} style={{ userSelect: 'none' }}>
-          <input type="checkbox" value={isChecked} checked={isChecked} className={s.input} onChange={onChange} />
+          <input type="checkbox" checked={isChecked} className={s.input} onChange={onChange} />
         </label>
         <span className={s.children}>{children}</span>
       </div>
@@ -36,7 +43,7 @@ const TodoListItemRender = (editor: Editor) => {
   };
 };
 
-const TodoListItem = new YoptaPlugin({
+const TodoListItem = createYoptaPlugin<TodoListItemOptions, TodoListChildItemElement>({
   type: TODO_LIST_NODE_ITEM_TYPE,
   renderer: TodoListItemRender,
   shortcut: '[]',
@@ -46,17 +53,17 @@ const TodoListItem = new YoptaPlugin({
       (event) => {
         if (!editor.selection) return;
 
-        const node = getNodeByPath(editor, editor.selection.anchor.path, 'lowest');
+        const node = getElementByPath(editor, editor.selection.anchor.path, 'lowest');
         if (node.type !== TODO_LIST_NODE_ITEM_TYPE) return;
 
-        const todoItemEntry = Editor.above(editor, {
+        const todoItemEntry = Editor.above<TodoListChildItemElement>(editor, {
           at: editor.selection?.anchor.path,
           match: (n) => Element.isElement(n) && n.type === TODO_LIST_NODE_ITEM_TYPE,
         });
 
         if (!todoItemEntry) return;
         const [todoItemNode, todoItemPath] = todoItemEntry;
-        const [parentNode, parentPath] = Editor.parent(editor, todoItemPath);
+        const [parentNode, parentPath] = Editor.parent(editor, todoItemPath) as NodeEntry<TodoList>;
 
         const text = Editor.string(editor, todoItemPath);
         const isEnd = Editor.isEnd(editor, editor.selection.anchor, todoItemPath);
@@ -83,7 +90,12 @@ const TodoListItem = new YoptaPlugin({
 
             const candidateNode =
               currentDepth > 1
-                ? { id: generateId(), type: TODO_LIST_NODE_ITEM_TYPE, children: [{ text: '' }], checked: false }
+                ? {
+                    id: generateId(),
+                    type: TODO_LIST_NODE_ITEM_TYPE,
+                    children: [{ text: '' }],
+                    options: { checked: false },
+                  }
                 : defaultNode;
 
             Transforms.setNodes(editor, candidateNode, {
@@ -95,19 +107,25 @@ const TodoListItem = new YoptaPlugin({
 
           if (!isEnd && !isStart) {
             Transforms.splitNodes(editor);
-            Transforms.setNodes(editor, { id: generateId(), checked: false });
+            Transforms.setNodes<TodoListChildItemElement>(
+              editor,
+              { id: generateId(), options: { checked: false } },
+              {
+                match: (n) => Element.isElement(n) && n.type === TODO_LIST_NODE_ITEM_TYPE,
+              },
+            );
             return;
           }
 
-          const todoListItem = {
+          const todoListItem: TodoListChildItemElement = {
             ...todoItemNode,
             id: generateId(),
-            checked: false,
             children: [
               {
                 text: '',
               },
             ],
+            options: { checked: false },
           };
 
           Transforms.insertNodes(editor, todoListItem, { select: true });
@@ -117,7 +135,11 @@ const TodoListItem = new YoptaPlugin({
         if (hotkeys.isCmdEnter(event)) {
           event.preventDefault();
 
-          Transforms.setNodes(editor, { checked: todoItemNode.checked ? false : true }, { at: todoItemPath });
+          Transforms.setNodes<TodoListChildItemElement>(
+            editor,
+            { options: { checked: todoItemNode.options.checked ? false : true } },
+            { at: todoItemPath, match: (n) => Element.isElement(n) && n.type === TODO_LIST_NODE_ITEM_TYPE },
+          );
           return;
         }
 
@@ -145,7 +167,7 @@ const TodoListItem = new YoptaPlugin({
 
           if (isMaxDepth) return;
 
-          const parentNestedNode = {
+          const parentNestedNode: TodoList = {
             id: generateId(),
             type: parentNode.type,
             children: [{ text: '' }],
@@ -167,6 +189,9 @@ const TodoListItem = new YoptaPlugin({
           return;
         }
       },
+  },
+  options: {
+    checked: false,
   },
 });
 

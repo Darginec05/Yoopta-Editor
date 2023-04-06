@@ -1,10 +1,10 @@
-import { generateId, isElementActive } from '@yopta/editor';
+import { generateId, isElementActive, YoEditor } from '@yopta/editor';
 import { Editor, Range, Transforms } from 'slate';
 import { removeLinkNode } from './removeLink';
 
 type LinkElement = any;
 
-export const addLinkNode = (editor: Editor, url: string) => {
+export const addLinkNode = (editor: YoEditor, url: string) => {
   console.log(`isElementActive(editor, 'link')`, isElementActive(editor, 'link'));
 
   if (isElementActive(editor, 'link')) {

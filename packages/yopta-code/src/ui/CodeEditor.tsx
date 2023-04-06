@@ -1,7 +1,7 @@
 import { ChangeEvent, ChangeEventHandler, CSSProperties, MouseEvent, useEffect, useState } from 'react';
 import { Element, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
-import { CustomEditor } from '@yopta/editor/dist/components/Editor/types';
+import { YoEditor } from '@yopta/editor/dist/components/Editor/types';
 import s from './CodeEditor.module.scss';
 
 import Prism from 'prismjs';
@@ -33,7 +33,7 @@ import { NodeOptions } from '../components/NodeOptions';
 
 const OPTIONS_WIDTH = 265;
 
-const CodeEditor = (editor: CustomEditor) => {
+const CodeEditor = (editor: YoEditor) => {
   return function CodeEditor({ element, attributes, children }) {
     const [optionsPos, setOptionsPos] = useState<CSSProperties | null>(null);
     useEffect(() => {

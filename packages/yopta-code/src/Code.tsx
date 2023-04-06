@@ -1,19 +1,23 @@
 import { Editor, Element, Node, Path, Range, Transforms } from 'slate';
-import { getNodeByPath, generateId, createYoptaPlugin } from '@yopta/editor';
+import { getElementByPath, generateId, createYoptaPlugin, YoEditor } from '@yopta/editor';
 import { CodeLeaf } from './ui/CodeLeaf';
 import { CodeRender } from './ui/CodeRender';
 import { CodeLineRender } from './ui/CodeLineRender';
 import { codeLineDecorator } from './utils/decorator';
 import { CodeEditor } from './ui/CodeEditor';
+import { CodeChildElement, CodeElement, CodeOptions } from './types';
 
 const CODE_NODE_TYPE = 'code';
 const CODE_CHILD_NODE_TYPE = 'code-line';
 
-type CodeOptions = {
-  language: string;
-};
+declare module 'slate' {
+  interface CustomTypes {
+    Editor: YoEditor;
+    Element: CodeElement | CodeChildElement;
+  }
+}
 
-const CodeLine = createYoptaPlugin({
+const CodeLine = createYoptaPlugin<any, CodeChildElement>({
   type: CODE_CHILD_NODE_TYPE,
   renderer: CodeLineRender,
   leaf: () => CodeLeaf,
@@ -25,11 +29,11 @@ const CodeLine = createYoptaPlugin({
         if (!editor.selection) return;
 
         // [TODO] - define this function in options
-        const node = getNodeByPath(editor, editor.selection.anchor.path, 'lowest');
+        const node = getElementByPath(editor, editor.selection.anchor.path, 'lowest');
 
         if (node.type !== CODE_CHILD_NODE_TYPE) return;
 
-        const codeLinkEntry = Editor.above(editor, {
+        const codeLineEntry = Editor.above(editor, {
           at: editor.selection?.anchor.path,
           match: (n) => Element.isElement(n) && n.type === CODE_CHILD_NODE_TYPE,
         });
@@ -67,12 +71,16 @@ const CodeLine = createYoptaPlugin({
         }
 
         if (hotkeys.isBackspace(event)) {
-          if (!parentCodeEntry || !codeLinkEntry) return;
+          if (!parentCodeEntry || !codeLineEntry) return;
 
           const [parentCodeNode] = parentCodeEntry;
-          const [, codeLinePath] = codeLinkEntry;
+          const [, codeLinePath] = codeLineEntry;
 
-          if (parentCodeNode.children.length === 1 && Editor.isStart(editor, editor.selection.anchor, codeLinePath)) {
+          if (
+            !Range.isExpanded(editor.selection) &&
+            parentCodeNode.children.length === 1 &&
+            Editor.isStart(editor, editor.selection.anchor, codeLinePath)
+          ) {
             return event.preventDefault();
           }
         }
@@ -100,7 +108,7 @@ const CodeLine = createYoptaPlugin({
   },
 });
 
-const Code = createYoptaPlugin<CodeOptions>({
+const Code = createYoptaPlugin<CodeOptions, CodeElement>({
   type: CODE_NODE_TYPE,
   renderer: {
     editor: CodeEditor,
@@ -136,11 +144,10 @@ const Code = createYoptaPlugin<CodeOptions>({
     return editor;
   },
   createNode: (editor, type, data = {}) => {
-    const childNode = {
+    const childNode: CodeChildElement = {
       id: generateId(),
       type: CODE_CHILD_NODE_TYPE,
       children: [{ text: '' }],
-      ...data,
     };
 
     Transforms.unwrapNodes(editor, {
@@ -152,9 +159,14 @@ const Code = createYoptaPlugin<CodeOptions>({
       at: editor.selection?.anchor,
     });
 
-    const block = { id: generateId(), options: { language: 'javascript' }, type: type, children: [{ text: '' }] };
+    const parentBlock: CodeElement = {
+      id: generateId(),
+      options: { language: 'javascript' },
+      type: 'code',
+      children: [childNode],
+    };
 
-    Transforms.wrapNodes(editor, block, {
+    Transforms.wrapNodes(editor, parentBlock, {
       at: editor.selection?.anchor,
     });
   },

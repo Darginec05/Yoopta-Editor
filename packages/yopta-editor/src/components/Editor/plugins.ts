@@ -1,7 +1,7 @@
 import { Editor, Range, Transforms } from 'slate';
 import { deserializeHTML } from './utils';
 
-export const withFixDeleteFragment = (editor: Editor) => {
+export const withFixDeleteFragment = (editor: YoEditor) => {
   // Fixes https://github.com/ianstormtaylor/slate/issues/3605
   editor.deleteFragment = () => {
     const { selection } = editor;
@@ -14,7 +14,7 @@ export const withFixDeleteFragment = (editor: Editor) => {
   return editor;
 };
 
-export const withCopyPasting = (editor: Editor) => {
+export const withCopyPasting = (editor: YoEditor) => {
   const { insertData } = editor;
 
   editor.insertData = (data: DataTransfer) => {

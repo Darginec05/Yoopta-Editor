@@ -2,7 +2,7 @@ import { Element } from 'slate';
 import { Editor, Range, Transforms } from 'slate';
 import { generateId } from '../../../utils/generateId';
 
-export const withShortcuts = (editor: Editor) => {
+export const withShortcuts = (editor: YoEditor) => {
   const { insertText } = editor;
 
   editor.insertText = (text: string) => {

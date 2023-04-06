@@ -8,9 +8,10 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import s from './EditorPlaceholder.module.scss';
 import { toBase64 } from '../utils/base64';
 import { getImageSizes } from '../utils/imageSizes';
+import { YoEditor } from '@yopta/editor';
 
 type Props = RenderElementProps & {
-  editor: Editor;
+  editor: YoEditor;
   onChange: (file: File) => Promise<void>;
   maxSizes: { maxWidth: number; maxHeight: number };
 };

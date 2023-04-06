@@ -4,7 +4,7 @@ import { ReactEditor, RenderElementProps, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
 import { Image } from './Image';
 import { CSSProperties, MouseEvent, useEffect, useMemo, useState } from 'react';
-import { cx } from '@yopta/editor';
+import { cx, YoEditor } from '@yopta/editor';
 import { Loader } from '../components/Loader';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { NodeOptions } from '../components/NodeOptions';
@@ -14,7 +14,7 @@ type Props = RenderElementProps;
 
 const OPTIONS_WIDTH = 265;
 
-function ImageEditor(editor: Editor, plugin) {
+function ImageEditor(editor: YoEditor, plugin) {
   return function ImageEditor(props: Props) {
     const { element } = props;
     const selected = useSelected();

@@ -1,5 +1,6 @@
-import { YoptaPlugin, generateId, getNodeByPath, YoptaPluginType } from '@yopta/editor';
+import { YoptaPlugin, generateId, getElementByPath, createYoptaPlugin } from '@yopta/editor';
 import { Editor, Element, Path, Transforms } from 'slate';
+import { ListChildItemElement } from '../types';
 import s from './ListItem.module.scss';
 
 const ListItemRender = ({ attributes, children }) => {
@@ -14,7 +15,7 @@ ListItemRender.displayName = 'ListItem';
 
 const LIST_ITEM_NODE_TYPE = 'list-item';
 
-const ListItemList = new YoptaPlugin({
+const ListItemList = createYoptaPlugin<any, ListChildItemElement>({
   type: LIST_ITEM_NODE_TYPE,
   renderer: (editor) => ListItemRender,
   shortcut: '-',
@@ -24,7 +25,7 @@ const ListItemList = new YoptaPlugin({
       (event) => {
         if (!editor.selection) return;
 
-        const currentNode = getNodeByPath(editor, editor.selection.anchor.path, 'lowest');
+        const currentNode = getElementByPath(editor, editor.selection.anchor.path, 'lowest');
         if (currentNode.type !== LIST_ITEM_NODE_TYPE) return;
 
         const nodeEntry = Editor.above(editor, {

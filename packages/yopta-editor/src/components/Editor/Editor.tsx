@@ -10,13 +10,14 @@ import { onCopyYoptaNodes } from '../../utils/copy';
 import { ElementWrapper } from '../ElementWrapper/ElementWrapper';
 import { HOTKEYS } from '../../utils/hotkeys';
 import { ParentYoptaPlugin, YoptaPluginType, YoptaRenderElementFunc } from '../../utils/plugins';
-import { getNodeByPath } from '../../utils/nodes';
+import { getElementByPath } from '../../utils/nodes';
 import { EditorEventHandlers } from '../../types/eventHandlers';
 import { generateId } from '../../utils/generateId';
 import { YoptaMark } from '../../utils/marks';
+import { YoEditor } from '../../types';
 
 type YoptaProps = {
-  editor: Editor;
+  editor: YoEditor;
   placeholder?: string;
   readOnly?: boolean;
   plugins: ParentYoptaPlugin[];
@@ -219,7 +220,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
 
     Editor.withoutNormalizing(editor, () => {
       const lastPath = [editor.children.length - 1, 0];
-      const lastNode: any = getNodeByPath(editor, lastPath, 'highest');
+      const lastNode: any = getElementByPath(editor, lastPath, 'highest');
       const lastNodeText = Editor.string(editor, lastPath);
 
       const location = {
