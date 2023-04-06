@@ -1,12 +1,4 @@
-import {
-  YoptaPlugin,
-  generateId,
-  getElementByPath,
-  cx,
-  YoEditor,
-  createYoptaPlugin,
-  RenderElementProps,
-} from '@yopta/editor';
+import { generateId, getElementByPath, cx, YoEditor, createYoptaPlugin, RenderElementProps } from '@yopta/editor';
 import { ChangeEvent } from 'react';
 import { Editor, Element, NodeEntry, Path, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';

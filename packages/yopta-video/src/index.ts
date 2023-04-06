@@ -1,4 +1,4 @@
-import { createYoptaPlugin, generateId, getElementByPath, YoEditor, YoptaPlugin } from '@yopta/editor';
+import { createYoptaPlugin, generateId, getElementByPath, YoEditor } from '@yopta/editor';
 import { Transforms } from 'slate';
 import { VideoElement } from './types';
 import { Video as VideoRender } from './ui/Video';

@@ -1,9 +1,9 @@
-import { generateId, YoptaPlugin } from '@yopta/editor';
+import { createYoptaPlugin, generateId, RenderElementProps } from '@yopta/editor';
 import { Transforms } from 'slate';
-import { RenderElementProps } from 'slate-react';
+import { HeadingOneElement } from '../types';
 import s from './HeadingOne.module.scss';
 
-const HeadingRender = ({ attributes, children, element }: RenderElementProps) => {
+const HeadingRender = ({ attributes, children, element }: RenderElementProps<HeadingOneElement>) => {
   return (
     <h1 draggable={false} className={s['heading-one']} {...attributes}>
       {children}
@@ -13,18 +13,18 @@ const HeadingRender = ({ attributes, children, element }: RenderElementProps) =>
 
 HeadingRender.displayName = 'HeadingOne';
 
-const HeadingOne = new YoptaPlugin({
+const HeadingOne = createYoptaPlugin<any, HeadingOneElement>({
   type: 'heading-one',
   renderer: (editor) => HeadingRender,
   shortcut: 'h1',
   createNode: (editor, type, data) => {
-    const node = {
+    const node: HeadingOneElement = {
       id: generateId(),
-      type,
-      ...data,
+      type: 'heading-one',
+      children: [{ text: '' }],
     };
 
-    Transforms.setNodes(editor, node, {
+    Transforms.setNodes<HeadingOneElement>(editor, node, {
       at: editor.selection?.anchor,
     });
   },

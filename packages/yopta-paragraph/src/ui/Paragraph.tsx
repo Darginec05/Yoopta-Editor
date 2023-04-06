@@ -17,10 +17,10 @@ const Paragraph = createYoptaPlugin<any, ParagraphElement>({
   type: 'paragraph',
   renderer: (editor) => ParagraphRender,
   createNode: (editor, type, data) => {
-    const node = {
+    const node: ParagraphElement = {
       id: generateId(),
-      type,
-      ...data,
+      type: 'paragraph',
+      children: [{ text: '' }],
     };
 
     Transforms.setNodes(editor, node, {

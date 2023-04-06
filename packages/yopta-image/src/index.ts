@@ -60,3 +60,4 @@ const Image = createYoptaPlugin<ImageOptions, ImageElement>({
 });
 
 export default Image;
+export { ImageElement, ImageOptions };

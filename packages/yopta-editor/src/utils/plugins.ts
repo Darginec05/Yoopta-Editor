@@ -61,10 +61,10 @@ export class YoptaPlugin<O extends Options, P extends BaseElement> {
     this.#props = Object.freeze({ ...inputPlugin });
   }
 
-  extend(overrides: Partial<YoptaPluginType<O, P>>) {
+  extend<TO extends Options, PO extends BaseElement>(overrides: Partial<YoptaPluginType<TO, PO>>) {
     const updatedProps = Object.freeze({ ...this.#props, ...overrides });
 
-    return new YoptaPlugin(updatedProps);
+    return new YoptaPlugin<TO, PO>(updatedProps);
   }
 
   get getPlugin(): YoptaPluginType<O, P> {

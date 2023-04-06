@@ -10,3 +10,5 @@ declare module 'slate' {
 }
 
 export default Paragraph;
+
+export { ParagraphElement };

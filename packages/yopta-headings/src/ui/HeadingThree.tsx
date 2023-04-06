@@ -1,9 +1,9 @@
-import { generateId, YoptaPlugin } from '@yopta/editor';
+import { generateId, createYoptaPlugin, RenderElementProps } from '@yopta/editor';
 import { Transforms } from 'slate';
-import { RenderElementProps } from 'slate-react';
+import { HeadingThreeElement } from '../types';
 import s from './HeadingThree.module.scss';
 
-const HeadingThreeRender = ({ attributes, children, element }: RenderElementProps) => {
+const HeadingThreeRender = ({ attributes, children, element }: RenderElementProps<HeadingThreeElement>) => {
   return (
     <h3 draggable={false} className={s['heading-three']} {...attributes}>
       {children}
@@ -13,15 +13,15 @@ const HeadingThreeRender = ({ attributes, children, element }: RenderElementProp
 
 HeadingThreeRender.displayName = 'HeadingThree';
 
-const HeadingThree = new YoptaPlugin({
+const HeadingThree = createYoptaPlugin<any, HeadingThreeElement>({
   type: 'heading-three',
   renderer: (editor) => HeadingThreeRender,
   shortcut: 'h3',
   createNode: (editor, type, data) => {
-    const node = {
+    const node: HeadingThreeElement = {
       id: generateId(),
-      type,
-      ...data,
+      type: 'heading-three',
+      children: [{ text: '' }],
     };
 
     Transforms.setNodes(editor, node, {

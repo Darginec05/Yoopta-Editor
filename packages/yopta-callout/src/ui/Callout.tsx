@@ -1,8 +1,9 @@
-import { generateId, YoptaPlugin } from '@yopta/editor';
+import { createYoptaPlugin, generateId, RenderElementProps } from '@yopta/editor';
 import { Transforms } from 'slate';
+import { CalloutElement } from '../types';
 import s from './Callout.module.scss';
 
-const CalloutRender = ({ attributes, children, element }) => {
+const CalloutRender = ({ attributes, children, element }: RenderElementProps<CalloutElement>) => {
   return (
     <div draggable={false} className={s.callout} {...attributes}>
       {children}
@@ -12,15 +13,15 @@ const CalloutRender = ({ attributes, children, element }) => {
 
 CalloutRender.displayName = 'Callout';
 
-const Callout = new YoptaPlugin({
+const Callout = createYoptaPlugin<any, CalloutElement>({
   type: 'callout',
   renderer: (editor) => CalloutRender,
   shortcut: '<',
   createNode: (editor, type, data) => {
-    const node = {
+    const node: CalloutElement = {
       id: generateId(),
-      type,
-      ...data,
+      type: 'callout',
+      children: [{ text: '' }],
     };
 
     Transforms.setNodes(editor, node, {

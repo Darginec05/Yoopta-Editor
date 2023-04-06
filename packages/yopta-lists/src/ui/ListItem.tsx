@@ -1,4 +1,4 @@
-import { YoptaPlugin, generateId, getElementByPath, createYoptaPlugin } from '@yopta/editor';
+import { generateId, getElementByPath, createYoptaPlugin } from '@yopta/editor';
 import { Editor, Element, Path, Transforms } from 'slate';
 import { ListChildItemElement } from '../types';
 import s from './ListItem.module.scss';
