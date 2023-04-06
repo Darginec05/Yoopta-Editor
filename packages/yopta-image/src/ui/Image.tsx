@@ -1,8 +1,9 @@
+import { RenderElementProps } from '@yopta/editor';
 import { ReactNode } from 'react';
-import { RenderElementProps } from 'slate-react';
+import { ImageElement } from '../types';
 import s from './Image.module.scss';
 
-type Props = RenderElementProps & { children?: ReactNode; size?: { width: number; height: number } };
+type Props = RenderElementProps<ImageElement> & { children?: ReactNode; size?: { width: number; height: number } };
 
 const Image = ({ attributes, element, children, size }: Props) => {
   const width = size?.width || element.options?.size?.width || '100%';
@@ -16,7 +17,7 @@ const Image = ({ attributes, element, children, size }: Props) => {
     <div {...attributes} className={s.imgElement} contentEditable={false} draggable={false}>
       <figure className={s.figure} onDragStart={(e) => e.preventDefault()}>
         <img
-          src={element.url || element['data-src']}
+          src={element.url || element['data-src'] || ''}
           alt={caption}
           width={width}
           height={height}

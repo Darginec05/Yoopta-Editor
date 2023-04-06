@@ -11,6 +11,6 @@ export { createYoptaMark } from './utils/marks';
 export { isElementActive, getElementByPath } from './utils/nodes';
 export type { YoptaPluginType, YoptaPluginHandlers, HandlersOptions } from './utils/plugins';
 export type { YoptaMarksConfig, YoptaMark } from './utils/marks';
-export type { YoEditor, RenderElementProps } from './types';
+export type { YoEditor, RenderElementProps, YoBaseElement } from './types';
 
 export { YoptaPlugin, mergePlugins, createYoptaPlugin };

@@ -1,15 +1,17 @@
-import { generateId, getElementByPath, createYoptaPlugin } from '@yopta/editor';
+import { generateId, getElementByPath, createYoptaPlugin, YoEditor } from '@yopta/editor';
 import { Transforms } from 'slate';
+import { ImageElement, ImageOptions } from './types';
 import { Image as ImageRender } from './ui/Image';
 import { ImageEditor } from './ui/ImageEditor';
 
-export type ImageOptions = {
-  maxWidth?: number;
-  maxHeight?: number;
-  onChange: (file: File) => Promise<any>;
-};
+declare module 'slate' {
+  interface CustomTypes {
+    Editor: YoEditor;
+    Element: ImageElement;
+  }
+}
 
-const Image = createYoptaPlugin<ImageOptions>({
+const Image = createYoptaPlugin<ImageOptions, ImageElement>({
   type: 'image',
   renderer: {
     editor: ImageEditor,

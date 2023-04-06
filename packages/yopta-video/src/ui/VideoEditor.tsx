@@ -1,21 +1,20 @@
 import { Editor, Element, Transforms } from 'slate';
 import { Resizable, ResizableProps } from 're-resizable';
-import { ReactEditor, RenderElementProps, useSelected } from 'slate-react';
+import { ReactEditor, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
 import { Video } from './Video';
 import { CSSProperties, MouseEvent, useEffect, useMemo, useState } from 'react';
-import { cx, YoEditor } from '@yopta/editor';
+import { cx, RenderElementProps, YoEditor } from '@yopta/editor';
 import { Loader } from '../components/Loader';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { NodeOptions } from '../components/NodeOptions';
 import s from './VideoEditor.module.scss';
-
-type Props = RenderElementProps;
+import { VideoElement } from '../types';
 
 const OPTIONS_WIDTH = 265;
 
 function VideoEditor(editor: YoEditor, plugin) {
-  return function VideoEditor(props: Props) {
+  return function VideoEditor(props: RenderElementProps<VideoElement>) {
     const { element } = props;
     const selected = useSelected();
 
@@ -57,7 +56,7 @@ function VideoEditor(editor: YoEditor, plugin) {
           console.log('ReactEditor.findPath(editor, element)', ReactEditor.findPath(editor, element));
           console.log('element', element);
 
-          Transforms.setNodes(
+          Transforms.setNodes<VideoElement>(
             editor,
             { options: { size: { width: ref.offsetWidth, height: ref.offsetHeight } } },
             {
