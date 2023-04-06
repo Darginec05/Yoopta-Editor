@@ -1,3 +1,4 @@
+import { createYoptaMark } from '@yopta/editor';
 import { ToolbarProps } from '@yopta/toolbar';
 import BoldIcon from './icons/medium/Bold.svg';
 import ItalicIcon from './icons/medium/Italic.svg';

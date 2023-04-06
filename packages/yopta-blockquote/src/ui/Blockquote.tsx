@@ -1,8 +1,9 @@
-import { generateId, YoptaPlugin } from '@yopta/editor';
+import { createYoptaPlugin, generateId, RenderElementProps } from '@yopta/editor';
 import { Transforms } from 'slate';
+import { BlockquoteElement } from '../types';
 import s from './Blockquote.module.scss';
 
-const BlockquoteRender = ({ attributes, children, element }) => {
+const BlockquoteRender = ({ attributes, children, element }: RenderElementProps<BlockquoteElement>) => {
   return (
     <blockquote draggable={false} className={s.blockquote} {...attributes}>
       {children}
@@ -12,18 +13,18 @@ const BlockquoteRender = ({ attributes, children, element }) => {
 
 BlockquoteRender.displayName = 'Blockquote';
 
-const Blockquote = new YoptaPlugin({
+const Blockquote = createYoptaPlugin<any, BlockquoteElement>({
   type: 'block-quote',
   renderer: (editor) => BlockquoteRender,
   shortcut: '>',
   createNode: (editor, type, data) => {
-    const node = {
+    const node: BlockquoteElement = {
       id: generateId(),
-      type,
-      ...data,
+      type: 'blockquote',
+      children: [{ text: '' }],
     };
 
-    Transforms.setNodes(editor, node, {
+    Transforms.setNodes<BlockquoteElement>(editor, node, {
       at: editor.selection?.anchor,
     });
   },

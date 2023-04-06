@@ -1,6 +1,6 @@
 import { MouseEvent } from 'react';
 import { Editor, Element, Transforms } from 'slate';
-import { getElementByPath, YoptaPlugin, generateId, RenderElementProps, createYoptaPlugin } from '@yopta/editor';
+import { getElementByPath, generateId, RenderElementProps, createYoptaPlugin } from '@yopta/editor';
 import isUrl from 'is-url';
 import { addLinkNode } from '../utils/addLink';
 import { LinkEditor } from './LinkEditor';

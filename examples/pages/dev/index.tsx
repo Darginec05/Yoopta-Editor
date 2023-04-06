@@ -124,7 +124,7 @@ const BasicExample = () => {
         readOnly={false}
         // readOnly
       >
-        <ActionMenu items={actionItems} trigger="/" render={CustomSuggestionList} />
+        <ActionMenu trigger="/" items={actionItems} render={CustomSuggestionList} />
         <Toolbar type="bubble">{(props) => <MediumToolbar {...props} />}</Toolbar>
       </YoptaEditor>
       <pre className={s.editor} style={{ display: 'block', padding: '0 64px', whiteSpace: 'pre-wrap' }}>

@@ -1,4 +1,4 @@
-import { HOTKEYS, YoptaPluginType } from '@yopta/editor';
+import { HOTKEYS, YoEditor, YoptaPluginType } from '@yopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
 import { Element, Editor, Path, Point, Transforms } from 'slate';
@@ -35,7 +35,7 @@ const filterBy = (item: ActionMenuRenderItem, text: string, field: string) => {
 };
 
 const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.Element => {
-  const editor = useSlate();
+  const editor = useSlate() as YoEditor;
   const actionMenuRef = useRef<HTMLDivElement>(null);
   const elementListRef = useRef<HTMLOListElement>(null);
   const [menuProps, setMenuProps] = useState<MenuProps>(MENU_PROPS_VALUE);
