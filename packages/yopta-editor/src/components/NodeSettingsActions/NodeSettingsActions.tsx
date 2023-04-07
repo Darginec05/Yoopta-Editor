@@ -8,12 +8,12 @@ import s from './NodeSettingsActions.module.scss';
 
 type Props = {
   element: HoveredNode;
-  handlers: NodeSettingsContextHandlers;
+  events: NodeSettingsContextHandlers;
   showSuggestionList: any;
 };
 
-export const NodeSettingsActions = ({ handlers, element, showSuggestionList }: Props) => {
-  const { openNodeSettings, triggerPlusButton, onDragEnd, onDragStart } = handlers;
+export const NodeSettingsActions = ({ events, element, showSuggestionList }: Props) => {
+  const { openNodeSettings, triggerPlusButton, onDragEnd, onDragStart } = events;
   const editor = useSlate();
   const dragRef = useRef<HTMLButtonElement>(null);
 

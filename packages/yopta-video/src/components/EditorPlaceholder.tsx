@@ -7,6 +7,7 @@ import { Editor, Element, Transforms } from 'slate';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import s from './EditorPlaceholder.module.scss';
 import { toBase64 } from '../utils/base64';
+import { YoEditor } from '@yopta/editor';
 
 type Props = RenderElementProps & {
   editor: YoEditor;

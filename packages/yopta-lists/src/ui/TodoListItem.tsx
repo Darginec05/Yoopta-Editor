@@ -39,7 +39,7 @@ const TodoListItem = createYoptaPlugin<TodoListItemOptions, TodoListChildItemEle
   type: TODO_LIST_NODE_ITEM_TYPE,
   renderer: TodoListItemRender,
   shortcut: '[]',
-  handlers: {
+  events: {
     onKeyDown:
       (editor, { hotkeys, defaultNode }) =>
       (event) => {

@@ -111,7 +111,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
 
   const eventHandlers = useMemo<EditorEventHandlers>(() => {
     const events = plugins
-      .map((plugin) => Object.keys(plugin.handlers || {}))
+      .map((plugin) => Object.keys(plugin.events || {}))
       .flat()
       .filter((event, i, self) => self.indexOf(event) === i);
 
@@ -120,8 +120,8 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
     events.forEach((eventType) => {
       eventHandlersMap[eventType] = function handler(event) {
         plugins.forEach((plugin) => {
-          if (plugin.handlers?.[eventType]) {
-            const eventHandler = plugin.handlers[eventType](editor, handlersOptions);
+          if (plugin.events?.[eventType]) {
+            const eventHandler = plugin.events[eventType](editor, handlersOptions);
             eventHandler(event);
           }
         });

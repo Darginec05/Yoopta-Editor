@@ -75,7 +75,7 @@ const Link = createYoptaPlugin<any, LinkElement>({
 
     return editor;
   },
-  handlers: {
+  events: {
     onKeyDown:
       (editor, { hotkeys }) =>
       (event) => {
@@ -139,4 +139,4 @@ const Link = createYoptaPlugin<any, LinkElement>({
   },
 });
 
-export { Link };
+export { Link, LinkElement };

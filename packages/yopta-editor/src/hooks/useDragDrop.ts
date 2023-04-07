@@ -84,12 +84,12 @@ export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers
   };
 
   const values = { dndState, disableWhileDrag };
-  const handlers = {
+  const events = {
     onDrop,
     onDragEnd,
     onDragEnter,
     onDragStart,
   };
 
-  return [values, handlers];
+  return [values, events];
 };

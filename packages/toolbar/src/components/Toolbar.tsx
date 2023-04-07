@@ -35,7 +35,7 @@ type Props =
   | FixedProps
   | {
       style: CSSProperties;
-      type: 'bubble' | 'fixed' | 'floating';
+      type: 'bubble';
       children: (props: ToolbarProps) => JSX.Element;
     };
 
@@ -43,6 +43,8 @@ const Toolbar = ({ type = 'bubble', style, marks, children }: Props) => {
   const editor = useSlate();
   const toolbarRef = useRef<HTMLDivElement>(null);
   const [toolbarProps, setToolbarProps] = useState({ open: false, style: {} });
+
+  console.log('marks', marks);
 
   const isFixedToolbar = type === 'fixed';
 
@@ -79,7 +81,7 @@ const Toolbar = ({ type = 'bubble', style, marks, children }: Props) => {
     return checkIsMarkActive;
   };
 
-  const toggleMark = (mark: string, only: boolean = false) => {
+  const toggleMark = (mark: any, only: boolean = false) => {
     if (only) {
       Object.keys(Editor.marks(editor) || {}).forEach((activeMark) => {
         Editor.removeMark(editor, activeMark);
