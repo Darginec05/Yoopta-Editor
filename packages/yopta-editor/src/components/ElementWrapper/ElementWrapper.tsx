@@ -1,14 +1,14 @@
 import type { ReactElement } from 'react';
 import type { RenderElementProps } from 'slate-react';
-import type { ElementType } from '../../utils/plugins';
+import { YoptaElementConfig } from '../../types';
 
 type Props = RenderElementProps & {
-  type: ElementType['type'];
+  nodeType: YoptaElementConfig['nodeType'];
   render: (props: RenderElementProps) => ReactElement;
 };
 
-const ElementWrapper = ({ children, element, attributes, type, render }: Props) => {
-  const isInline = type === 'inline';
+const ElementWrapper = ({ children, element, attributes, nodeType, render }: Props) => {
+  const isInline = nodeType === 'inline';
 
   if (isInline) return render({ attributes, element, children });
 

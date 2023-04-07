@@ -8,18 +8,18 @@ import s from './CodeRender.module.scss';
 
 function CodeRender({ element, attributes, children }: RenderElementProps<CodeElement>) {
   useEffect(() => {
-    import(`prismjs/components/prism-${element.options.language}`).then(() => {
+    import(`prismjs/components/prism-${element.data.language}`).then(() => {
       Prism.highlightAll();
-      console.log('imported for: ', element.options.language);
+      console.log('imported for: ', element.data.language);
     });
-  }, [element.options.language]);
+  }, [element.data.language]);
 
   return (
     <code className={s.code} {...attributes}>
-      {element.options.filename && <span className={s.filename}>{element.options.filename}</span>}
-      <pre className={cx(s.pre, `language-${element.options.language}`)}>
+      {element.data.filename && <span className={s.filename}>{element.data.filename}</span>}
+      <pre className={cx(s.pre, `language-${element.data.language}`)}>
         <span contentEditable={false} className={s.filename}>
-          {element.options.filename || '/code/index.tsx'}
+          {element.data.filename || '/code/index.tsx'}
         </span>
         {children}
       </pre>

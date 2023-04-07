@@ -26,10 +26,6 @@ const Image = createYoptaPlugin<ImageOptions, ImageElement>({
 
     return editor;
   },
-  element: {
-    isVoid: true,
-    type: 'block',
-  },
   events: {
     onKeyDown:
       (editor, { defaultNode, hotkeys }) =>
@@ -45,13 +41,15 @@ const Image = createYoptaPlugin<ImageOptions, ImageElement>({
         }
       },
   },
-  createNode: (editor, type, data) => {
-    const node = {
-      id: generateId(),
-      type,
-      url: null,
-      ...data,
-    };
+  getElement: (): ImageElement => ({
+    id: generateId(),
+    type: 'image',
+    nodeType: 'void',
+    data: { url: null, size: { width: 400, height: 400 } },
+    children: [{ text: '' }],
+  }),
+  createElement: function (editor) {
+    const node = this.getElement();
 
     Transforms.setNodes(editor, node, {
       at: editor.selection?.anchor,

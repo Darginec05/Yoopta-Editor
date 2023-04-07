@@ -1,5 +1,3 @@
-export type CalloutElement = {
-  id: string;
-  type: 'callout';
-  children: [{ text: '' }];
-};
+import { YoptaBaseElement } from '@yopta/editor';
+
+export type CalloutElement = YoptaBaseElement<'callout'>;

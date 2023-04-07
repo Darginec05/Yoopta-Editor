@@ -1,4 +1,4 @@
-import { ReactEditor, RenderElementProps } from 'slate-react';
+import { ReactEditor } from 'slate-react';
 import UploadIcon from './icons/upload.svg';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 import { EditorUploader } from './EditorUploader';
@@ -8,9 +8,10 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import s from './EditorPlaceholder.module.scss';
 import { toBase64 } from '../utils/base64';
 import { getImageSizes } from '../utils/imageSizes';
-import { YoEditor } from '@yopta/editor';
+import { RenderElementProps, YoEditor } from '@yopta/editor';
+import { ImageElement } from '../types';
 
-type Props = RenderElementProps & {
+type Props = RenderElementProps<ImageElement> & {
   editor: YoEditor;
   onChange: (file: File) => Promise<void>;
   maxSizes: { maxWidth: number; maxHeight: number };
@@ -61,11 +62,13 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
       enableBodyScroll(document.body);
       setUploaderPos(null);
 
-      const updatedImageNode = {
-        url: src,
-        'data-src': undefined,
-        // [TODO] - check for format
-        options: { format: 'png', size: { width, height } },
+      const updatedImageNode: Partial<ImageElement> = {
+        data: {
+          ...element.data,
+          url: src,
+          'data-src': undefined,
+          size: { width, height },
+        },
       };
 
       Transforms.setNodes(editor, updatedImageNode, {
@@ -94,9 +97,15 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
     enableBodyScroll(document.body);
     setUploaderPos(null);
 
-    const imageNode = {
-      'data-src': base64,
-      options: { format, size: { width: aspectSizes.width, height: aspectSizes.height } },
+    const imageNode: Partial<ImageElement> = {
+      data: {
+        ...element.data,
+        'data-src': base64,
+        size: {
+          width: aspectSizes.width || element.data.size.width,
+          height: aspectSizes.height || element.data.size.height,
+        },
+      },
     };
 
     console.log('optimistic image uploader', ReactEditor.findPath(editor, element));
@@ -114,10 +123,13 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
       maxSizes.maxHeight,
     );
 
-    const updatedImageNode = {
-      url: response.url,
-      'data-src': undefined,
-      options: { format: response.data.format, size: { width, height } },
+    const updatedImageNode: Partial<ImageElement> = {
+      data: {
+        ...element.data,
+        url: response.url,
+        'data-src': undefined,
+        size: { width: width || element.data.size.width, height: height || element.data.size.height },
+      },
     };
 
     Transforms.setNodes(editor, updatedImageNode, {

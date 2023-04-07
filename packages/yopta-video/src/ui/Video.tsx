@@ -6,10 +6,10 @@ import s from './Video.module.scss';
 type Props = RenderElementProps<VideoElement> & { children?: ReactNode; size?: { width: number; height: number } };
 
 const Video = ({ attributes, element, children, size }: Props) => {
-  const width = size?.width || element.options?.size?.width || '100%';
-  const height = size?.height || element.options?.size?.height || 400;
+  const width = size?.width || element.data?.size?.width || '100%';
+  const height = size?.height || element.data?.size?.height || 400;
 
-  if (!element.url && !element['data-src']) return <div />;
+  if (!element.data.url && !element.data['data-src']) return <div />;
 
   return (
     <div {...attributes} className={s.videoElement} contentEditable={false} draggable={false}>
@@ -17,7 +17,7 @@ const Video = ({ attributes, element, children, size }: Props) => {
         controls
         preload="metadata"
         playsInline
-        src={element.url || element['data-src'] || ''}
+        src={element.data.url || element.data['data-src'] || ''}
         width={width}
         height={height}
         className={s.video}

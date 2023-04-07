@@ -1,9 +1,5 @@
-export type HeadingElement<T extends 'one' | 'two' | 'three'> = {
-  id: string;
-  type: `heading-${T}`;
-  children: [{ text: '' }];
-};
+import { YoptaBaseElement } from '@yopta/editor';
 
-export type HeadingOneElement = HeadingElement<'one'>;
-export type HeadingTwoElement = HeadingElement<'two'>;
-export type HeadingThreeElement = HeadingElement<'three'>;
+export type HeadingOneElement = YoptaBaseElement<'heading-one'>;
+export type HeadingTwoElement = YoptaBaseElement<'heading-two'>;
+export type HeadingThreeElement = YoptaBaseElement<'heading-three'>;

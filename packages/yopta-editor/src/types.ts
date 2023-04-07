@@ -6,19 +6,13 @@ export type EmptyText = {
   text: string;
 };
 
-type ExtendedType<T, K> =
-  | K
-  | {
-      [key in keyof T]: T[key];
-    };
+export type YoptaElementConfig = {
+  nodeType: 'block' | 'inline' | 'void';
+};
 
-export type YoElement<T extends Record<string, unknown> = Record<string, unknown>> = ExtendedType<T, BaseElement>;
+export type Modify<T, R> = Omit<T, keyof R> & R;
 
-export type YoBaseElement<T extends string, C extends BaseElement['children'] = BaseElement['children']> = YoElement<{
-  id: string;
-  type: T;
-  children: C;
-}>;
+export type YoptaBaseElement<T> = { id: string; type: T; children: BaseElement['children'] } & YoptaElementConfig;
 
 export type RenderElementProps<T extends BaseElement = BaseElement> = ElementProps & { element: T };
 

@@ -1,5 +1,6 @@
 import { Element } from 'slate';
 import { Editor, Range, Transforms } from 'slate';
+import { YoEditor } from '../../../types';
 import { generateId } from '../../../utils/generateId';
 
 export const withShortcuts = (editor: YoEditor) => {

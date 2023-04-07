@@ -20,18 +20,18 @@ function VideoEditor(editor: YoEditor, plugin) {
 
     const [optionsPos, setOptionsPos] = useState<CSSProperties | null>(null);
     const [size, setSize] = useState({
-      width: element.options?.size?.width || 750,
-      height: element.options?.size?.height || 440,
+      width: element.data?.size?.width || 750,
+      height: element.data?.size?.height || 440,
     });
 
     useEffect(() => {
-      if (element.options) {
+      if (element.data) {
         setSize({
-          width: element.options?.size?.width || 750,
-          height: element.options?.size?.height || 440,
+          width: element.data?.size?.width || 750,
+          height: element.data?.size?.height || 440,
         });
       }
-    }, [element.options?.size]);
+    }, [element.data?.size]);
 
     const resizeProps: ResizableProps = useMemo(
       () => ({
@@ -58,7 +58,7 @@ function VideoEditor(editor: YoEditor, plugin) {
 
           Transforms.setNodes<VideoElement>(
             editor,
-            { options: { size: { width: ref.offsetWidth, height: ref.offsetHeight } } },
+            { data: { ...element.data, size: { width: ref.offsetWidth, height: ref.offsetHeight } } },
             {
               at: ReactEditor.findPath(editor, element),
               match: (n) => Element.isElement(n) && n.type === 'video',
@@ -81,13 +81,11 @@ function VideoEditor(editor: YoEditor, plugin) {
       [size.width, size.height, editor],
     );
 
-    const hasCaption = !!element.options?.caption;
-    const isLoading = !!element['data-src'] && !element.url;
+    const hasCaption = !!element.data?.caption;
+    const isLoading = !!element.data['data-src'] && !element.data.url;
 
     const toggleOptionsOpen = (e?: MouseEvent) => {
       e?.stopPropagation();
-
-      console.log('optionsPos', optionsPos);
 
       if (optionsPos !== null) {
         enableBodyScroll(document.body);
@@ -111,7 +109,7 @@ function VideoEditor(editor: YoEditor, plugin) {
       }
     };
 
-    if (!element.url && !element['data-src']) {
+    if (!element.data.url && !element.data['data-src']) {
       const { maxWidth = 750, maxHeight = 800 } = plugin.options;
 
       return (

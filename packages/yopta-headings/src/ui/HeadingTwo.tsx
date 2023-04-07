@@ -1,10 +1,9 @@
-import { createYoptaPlugin, generateId } from '@yopta/editor';
+import { createYoptaPlugin, generateId, RenderElementProps } from '@yopta/editor';
 import { Transforms } from 'slate';
-import { RenderElementProps } from 'slate-react';
 import { HeadingTwoElement } from '../types';
 import s from './HeadingTwo.module.scss';
 
-const HeadingTwoRender = ({ attributes, children, element }: RenderElementProps) => {
+const HeadingTwoRender = ({ attributes, children, element }: RenderElementProps<HeadingTwoElement>) => {
   return (
     <h2 draggable={false} className={s['heading-two']} {...attributes}>
       {children}
@@ -18,14 +17,16 @@ const HeadingTwo = createYoptaPlugin<any, HeadingTwoElement>({
   type: 'heading-two',
   renderer: (editor) => HeadingTwoRender,
   shortcut: 'h2',
-  createNode: (editor, type, data = null) => {
-    const node: HeadingTwoElement = {
-      id: generateId(),
-      type: 'heading-two',
-      children: [{ text: '' }],
-    };
+  getElement: (): HeadingTwoElement => ({
+    id: generateId(),
+    type: 'heading-two',
+    children: [{ text: '' }],
+    nodeType: 'block',
+  }),
+  createElement: function (editor, type, data) {
+    const node: HeadingTwoElement = this.getElement();
 
-    Transforms.setNodes(editor, node, {
+    Transforms.setNodes<HeadingTwoElement>(editor, node, {
       at: editor.selection?.anchor,
     });
   },

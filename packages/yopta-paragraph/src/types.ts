@@ -1,5 +1,3 @@
-export type ParagraphElement = {
-  id: string;
-  type: 'paragraph';
-  children: [{ text: '' }];
-};
+import { YoptaBaseElement } from '@yopta/editor';
+
+export type ParagraphElement = YoptaBaseElement<'paragraph'>;

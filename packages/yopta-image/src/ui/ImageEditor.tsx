@@ -20,18 +20,18 @@ function ImageEditor(editor: YoEditor, plugin) {
 
     const [optionsPos, setOptionsPos] = useState<CSSProperties | null>(null);
     const [size, setSize] = useState({
-      width: element.options?.size?.width || 750,
-      height: element.options?.size?.height || 440,
+      width: element.data?.size?.width || 750,
+      height: element.data?.size?.height || 440,
     });
 
     useEffect(() => {
-      if (element.options) {
+      if (element.data) {
         setSize({
-          width: element.options?.size?.width || 750,
-          height: element.options?.size?.height || 440,
+          width: element.data?.size?.width || 750,
+          height: element.data?.size?.height || 440,
         });
       }
-    }, [element.options?.size]);
+    }, [element.data?.size]);
 
     const resizeProps: ResizableProps = useMemo(
       () => ({
@@ -58,7 +58,7 @@ function ImageEditor(editor: YoEditor, plugin) {
 
           Transforms.setNodes<ImageElement>(
             editor,
-            { options: { ...element.options, size: { width: ref.offsetWidth, height: ref.offsetHeight } } },
+            { data: { ...element.data, size: { width: ref.offsetWidth, height: ref.offsetHeight } } },
             {
               at: ReactEditor.findPath(editor, element),
               match: (n) => Element.isElement(n) && n.type === 'image',
@@ -81,8 +81,8 @@ function ImageEditor(editor: YoEditor, plugin) {
       [size.width, size.height, editor],
     );
 
-    const hasCaption = !!element.options?.caption;
-    const isLoading = !!element['data-src'] && !element.url;
+    const hasCaption = !!element.data?.caption;
+    const isLoading = !!element.data['data-src'] && !element.data.url;
 
     const toggleOptionsOpen = (e?: MouseEvent) => {
       e?.stopPropagation();
@@ -110,7 +110,7 @@ function ImageEditor(editor: YoEditor, plugin) {
       }
     };
 
-    if (!element.url && !element['data-src']) {
+    if (!element.data.url && !element.data['data-src']) {
       const { maxWidth = 750, maxHeight = 800 } = plugin.options || {};
       return (
         <div className={s.root} key={element.id}>

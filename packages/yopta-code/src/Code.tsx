@@ -22,6 +22,12 @@ const CodeLine = createYoptaPlugin<any, CodeChildElement>({
   renderer: CodeLineRender,
   leaf: () => CodeLeaf,
   decorator: codeLineDecorator,
+  getElement: (): CodeChildElement => ({
+    id: generateId(),
+    type: 'code-line',
+    children: [{ text: '' }],
+    nodeType: 'block',
+  }),
   events: {
     onKeyDown:
       (editor, { hotkeys, defaultNode }) =>
@@ -46,6 +52,13 @@ const CodeLine = createYoptaPlugin<any, CodeChildElement>({
         if (hotkeys.isEnter(event)) {
           event.preventDefault();
           Editor.insertBreak(editor);
+          Transforms.setNodes<CodeChildElement>(
+            editor,
+            { id: generateId() },
+            {
+              at: codeLineEntry?.[1] || editor.selection.anchor.path,
+            },
+          );
           return;
         }
 
@@ -125,10 +138,11 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
       if (Element.isElement(node) && node.type === 'code') {
         for (const [childNode, childPath] of Node.children(editor, path)) {
           if (Element.isElement(childNode) && childNode.type !== 'code-line') {
-            const childNode = {
+            const childNode: CodeChildElement = {
               id: generateId(),
               type: CODE_CHILD_NODE_TYPE,
               children: [{ text: '' }],
+              nodeType: 'block',
             };
 
             Transforms.setNodes(editor, childNode, { at: childPath });
@@ -143,12 +157,15 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
 
     return editor;
   },
-  createNode: (editor, type, data = {}) => {
-    const childNode: CodeChildElement = {
-      id: generateId(),
-      type: CODE_CHILD_NODE_TYPE,
-      children: [{ text: '' }],
-    };
+  getElement: (): CodeElement => ({
+    id: generateId(),
+    type: 'code',
+    children: [CodeLine.getPlugin.getElement()],
+    nodeType: 'block',
+    data: { language: 'javascript' },
+  }),
+  createElement: function (editor, type, data = {}) {
+    const childNode: CodeChildElement = CodeLine.getPlugin.getElement();
 
     Transforms.unwrapNodes(editor, {
       match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'code',
@@ -159,19 +176,11 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
       at: editor.selection?.anchor,
     });
 
-    const parentBlock: CodeElement = {
-      id: generateId(),
-      options: { language: 'javascript' },
-      type: 'code',
-      children: [childNode],
-    };
+    const parentBlock: CodeElement = this.getElement();
 
     Transforms.wrapNodes(editor, parentBlock, {
       at: editor.selection?.anchor,
     });
-  },
-  options: {
-    language: 'javascript',
   },
 });
 
