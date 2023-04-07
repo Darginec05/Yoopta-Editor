@@ -16,12 +16,12 @@ export const withVoidNodes = (editor: YoEditor) => {
     if (Element.isElement(selectedNode) && Editor.isVoid(editor, selectedNode)) {
       Editor.insertNode(editor, {
         id: generateId(),
-        // [TODO] - default node
         type: 'paragraph',
         children: [{ text: '' }],
+        nodeType: 'block',
       });
 
-      return undefined;
+      return;
     }
 
     insertBreak();

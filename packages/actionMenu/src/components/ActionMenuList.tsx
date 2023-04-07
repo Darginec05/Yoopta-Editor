@@ -46,8 +46,6 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
   const [searchString, setSearchString] = useState('');
   const [focusableElement, setFocusableElement] = useState(0);
 
-  console.log('plugins', plugins);
-
   const showActionMenu = () => {
     if (!editor.selection) return;
 
@@ -116,8 +114,6 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
 
     return menuList.filter(filterInlineNodes).filter(filterMenuList);
   }, [items, plugins, searchString]);
-
-  console.log('renderMenuItems', renderMenuItems);
 
   const moveDown = () => {
     const childNodes = elementListRef.current?.childNodes;
@@ -252,7 +248,7 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
         });
       }
 
-      menuItem.createNode?.(editor, menuItem.type);
+      menuItem.createElement?.(editor, menuItem.type);
     });
   };
 

@@ -14,7 +14,7 @@ import { getElementByPath } from '../../utils/nodes';
 import { EditorEventHandlers } from '../../types/eventHandlers';
 import { generateId } from '../../utils/generateId';
 import { YoptaMark } from '../../utils/marks';
-import { YoEditor } from '../../types';
+import { YoEditor, YoptaBaseElement } from '../../types';
 
 type YoptaProps = {
   editor: YoEditor;
@@ -53,13 +53,15 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
 
         const renderFn = getRenderFunctionFactory(plugin, readOnly)(editor, { type, options });
 
+        console.log('props.element', props.element);
+
         // [TODO] - add strong checker for renderFn
         if (props.element.type === plugin.type) {
           return (
             <ElementWrapper
               element={props.element}
               attributes={props.attributes}
-              type={plugin.element?.type}
+              nodeType={props.element.nodeType}
               render={renderFn}
             >
               {props.children}
@@ -138,7 +140,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
       if (!editor.selection) return;
 
       const defaultNode = { ...getDefaultParagraphLine(), id: generateId() };
-      const nodeEntry = Editor.above(editor, {
+      const nodeEntry = Editor.above<YoptaBaseElement<string>>(editor, {
         match: (n) => !Editor.isEditor(n),
         mode: 'lowest',
       });
@@ -238,7 +240,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
         return ReactEditor.focus(editor);
       }
 
-      const lineParagraph = getDefaultParagraphLine();
+      const lineParagraph: YoptaBaseElement<'paragraph'> = getDefaultParagraphLine();
       changeHoveredNode(lineParagraph);
 
       Transforms.insertNodes(editor, lineParagraph, {

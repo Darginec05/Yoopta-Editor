@@ -17,12 +17,14 @@ const Callout = createYoptaPlugin<any, CalloutElement>({
   type: 'callout',
   renderer: (editor) => CalloutRender,
   shortcut: '<',
-  createNode: (editor, type, data) => {
-    const node: CalloutElement = {
-      id: generateId(),
-      type: 'callout',
-      children: [{ text: '' }],
-    };
+  getElement: () => ({
+    id: generateId(),
+    type: 'callout',
+    children: [{ text: '' }],
+    nodeType: 'block',
+  }),
+  createElement: function (editor, type, data) {
+    const node: CalloutElement = this.getElement();
 
     Transforms.setNodes(editor, node, {
       at: editor.selection?.anchor,

@@ -67,12 +67,12 @@ const YoptaEditorLib = ({
     let yoptaEditor = withVoidNodes(withHistory(withShortcuts(withReact(createEditor()))));
     const shortcutMap = {};
 
-    yoptaPlugins.forEach((component) => {
-      if (component.shortcut) {
-        shortcutMap[component.shortcut] = component.type;
+    yoptaPlugins.forEach((plugin) => {
+      if (plugin.shortcut) {
+        shortcutMap[plugin.shortcut] = plugin.type;
       }
 
-      yoptaEditor = component.extendEditor?.(yoptaEditor) || yoptaEditor;
+      yoptaEditor = plugin.extendEditor?.(yoptaEditor) || yoptaEditor;
     });
 
     yoptaEditor.shortcuts = shortcutMap;

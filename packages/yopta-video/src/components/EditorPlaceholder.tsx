@@ -1,4 +1,4 @@
-import { ReactEditor, RenderElementProps } from 'slate-react';
+import { ReactEditor } from 'slate-react';
 import UploadIcon from './icons/upload.svg';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 import { EditorUploader } from './EditorUploader';
@@ -7,9 +7,10 @@ import { Editor, Element, Transforms } from 'slate';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import s from './EditorPlaceholder.module.scss';
 import { toBase64 } from '../utils/base64';
-import { YoEditor } from '@yopta/editor';
+import { RenderElementProps, YoEditor } from '@yopta/editor';
+import { VideoElement } from '../types';
 
-type Props = RenderElementProps & {
+type Props = RenderElementProps<VideoElement> & {
   editor: YoEditor;
   onChange: (file: File) => Promise<void>;
   maxSizes: { maxWidth: number; maxHeight: number };
@@ -72,14 +73,20 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
     enableBodyScroll(document.body);
     setUploaderPos(null);
 
-    const videoNode = {
-      'data-src': base64,
-      options: { format, size: { width: aspectSizes.width, height: aspectSizes.height } },
+    const videoNode: Partial<VideoElement> = {
+      data: {
+        ...element.data,
+        'data-src': base64,
+        size: {
+          width: aspectSizes.width || element.data.size.width,
+          height: aspectSizes.height || element.data.size.height,
+        },
+      },
     };
 
     console.log('optimistic video uploader', ReactEditor.findPath(editor, element));
 
-    Transforms.setNodes(editor, videoNode, {
+    Transforms.setNodes<VideoElement>(editor, videoNode, {
       at: ReactEditor.findPath(editor, element),
       match: (n) => Element.isElement(n) && n.type === 'video',
     });
@@ -92,13 +99,15 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
       maxSizes.maxHeight,
     );
 
-    const updateVideoNode = {
-      url: response.url,
-      'data-src': undefined,
-      options: { format: response.data.format, size: { width, height } },
+    const updateVideoNode: Partial<VideoElement> = {
+      data: {
+        url: response.url,
+        'data-src': undefined,
+        size: { width: width || element.data.size.width, height: height || element.data.size.height },
+      },
     };
 
-    Transforms.setNodes(editor, updateVideoNode, {
+    Transforms.setNodes<VideoElement>(editor, updateVideoNode, {
       at: ReactEditor.findPath(editor, element),
       match: (n) => Element.isElement(n) && n.type === 'video',
     });

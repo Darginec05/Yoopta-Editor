@@ -10,14 +10,14 @@ import s from './Link.module.scss';
 const LinkRender = ({ attributes, element, children }: RenderElementProps<LinkElement>) => {
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    if (!element.url) return;
+    if (!element.data.url) return;
 
-    const url = new URL(element.url);
+    const url = new URL(element.data.url);
 
     if (url.host === window.location.host) {
-      window.open(element.url, '_self');
+      window.open(element.data.url, '_self');
     } else {
-      window.open(element.url, '_blank');
+      window.open(element.data.url, '_blank');
     }
   };
 
@@ -25,7 +25,7 @@ const LinkRender = ({ attributes, element, children }: RenderElementProps<LinkEl
     <a
       draggable={false}
       {...attributes}
-      href={element.url || ''}
+      href={element.data.url || ''}
       rel="noreferrer"
       target="_blank"
       className={s.link}
@@ -46,10 +46,13 @@ const Link = createYoptaPlugin<any, LinkElement>({
     editor: () => LinkEditor,
     render: () => LinkRender,
   },
-  element: {
-    type: 'inline',
-    isVoid: false,
-  },
+  getElement: (): LinkElement => ({
+    id: generateId(),
+    type: 'link',
+    children: [{ text: '' }],
+    nodeType: 'inline',
+    data: { url: null },
+  }),
   extendEditor(editor) {
     const { insertData, insertText, isInline } = editor;
 

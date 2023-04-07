@@ -1,14 +1,10 @@
-import { YoBaseElement } from '@yopta/editor';
+import { Modify, YoptaBaseElement } from '@yopta/editor';
 
 export type CodeOptions = {
   language: string;
   filename?: string;
 };
 
-export type CodeElement = YoBaseElement<'code', CodeChildElement[]> & { options: CodeOptions };
+export type CodeElement = Modify<YoptaBaseElement<'code'>, { data: CodeOptions; children: CodeChildElement[] }>;
 
-export type CodeChildElement = {
-  id: string;
-  type: 'code-line';
-  children: [{ text: '' }];
-};
+export type CodeChildElement = YoptaBaseElement<'code-line'>;

@@ -1,6 +1,6 @@
 import { generateId, getElementByPath, createYoptaPlugin } from '@yopta/editor';
-import { Editor, Element, Path, Transforms } from 'slate';
-import { ListChildItemElement } from '../types';
+import { Editor, Element, NodeEntry, Path, Transforms } from 'slate';
+import { BulletedList, ListChildItemElement, NumberedList } from '../types';
 import s from './ListItem.module.scss';
 
 const ListItemRender = ({ attributes, children }) => {
@@ -19,6 +19,12 @@ const ListItemList = createYoptaPlugin<any, ListChildItemElement>({
   type: LIST_ITEM_NODE_TYPE,
   renderer: (editor) => ListItemRender,
   shortcut: '-',
+  getElement: (): ListChildItemElement => ({
+    id: generateId(),
+    type: 'list-item',
+    children: [{ text: '' }],
+    nodeType: 'block',
+  }),
   events: {
     onKeyDown:
       (editor, { hotkeys, defaultNode }) =>
@@ -28,7 +34,7 @@ const ListItemList = createYoptaPlugin<any, ListChildItemElement>({
         const currentNode = getElementByPath(editor, editor.selection.anchor.path, 'lowest');
         if (currentNode.type !== LIST_ITEM_NODE_TYPE) return;
 
-        const nodeEntry = Editor.above(editor, {
+        const nodeEntry = Editor.above<ListChildItemElement>(editor, {
           at: editor.selection.anchor,
           match: (n) => Element.isElement(n) && n.type === LIST_ITEM_NODE_TYPE,
         });
@@ -37,7 +43,7 @@ const ListItemList = createYoptaPlugin<any, ListChildItemElement>({
 
         const { anchor } = editor.selection;
         const [listItemNode, listItemPath] = nodeEntry;
-        const [parentNode, parentPath] = Editor.parent(editor, listItemPath);
+        const [parentNode, parentPath] = Editor.parent(editor, listItemPath) as NodeEntry<BulletedList | NumberedList>;
 
         const text = Editor.string(editor, listItemPath);
         const isEnd = Editor.isEnd(editor, anchor, listItemPath);
@@ -59,7 +65,7 @@ const ListItemList = createYoptaPlugin<any, ListChildItemElement>({
 
           if (text.trim() === '') {
             Transforms.unwrapNodes(editor, {
-              match: (n) => Element.isElement(n) && n.type === parentNode.type,
+              match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === parentNode.type,
               split: true,
             });
 
@@ -126,16 +132,17 @@ const ListItemList = createYoptaPlugin<any, ListChildItemElement>({
 
           if (isMaxDepth) return;
 
-          const parentNestedNode = {
+          const parentNestedNode: BulletedList | NumberedList = {
+            ...parentNode,
             id: generateId(),
             type: parentNode.type,
-            children: [{ text: '' }],
+            children: [ListItemList.getPlugin.getElement()],
           };
 
           Transforms.wrapNodes(editor, parentNestedNode, { at: listItemPath });
-          Transforms.setNodes(
+          Transforms.setNodes<BulletedList | NumberedList>(
             editor,
-            { options: { depth: currentDepth + 1 } },
+            { data: { depth: currentDepth + 1 } },
             {
               match: (n) => Element.isElement(n) && n.type === parentNode.type,
             },
@@ -154,9 +161,9 @@ const ListItemList = createYoptaPlugin<any, ListChildItemElement>({
             split: true,
           });
 
-          Transforms.setNodes(
+          Transforms.setNodes<BulletedList | NumberedList>(
             editor,
-            { options: { depth: currentDepth - 1 } },
+            { data: { depth: currentDepth - 1 } },
             {
               match: (n) => Element.isElement(n) && n.type === parentNode.type,
             },

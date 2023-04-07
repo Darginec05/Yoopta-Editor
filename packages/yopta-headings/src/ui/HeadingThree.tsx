@@ -17,12 +17,14 @@ const HeadingThree = createYoptaPlugin<any, HeadingThreeElement>({
   type: 'heading-three',
   renderer: (editor) => HeadingThreeRender,
   shortcut: 'h3',
-  createNode: (editor, type, data) => {
-    const node: HeadingThreeElement = {
-      id: generateId(),
-      type: 'heading-three',
-      children: [{ text: '' }],
-    };
+  getElement: (): HeadingThreeElement => ({
+    id: generateId(),
+    type: 'heading-three',
+    children: [{ text: '' }],
+    nodeType: 'block',
+  }),
+  createElement: function (editor, type, data) {
+    const node: HeadingThreeElement = this.getElement();
 
     Transforms.setNodes(editor, node, {
       at: editor.selection?.anchor,

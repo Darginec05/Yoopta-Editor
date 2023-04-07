@@ -14,7 +14,7 @@ const TodoListItemRender = (editor: YoEditor) => {
 
       Transforms.setNodes<TodoListChildItemElement>(
         editor,
-        { options: { checked: event.target.checked } },
+        { data: { checked: event.target.checked } },
         {
           at: path,
           match: (n) => Element.isElement(n) && n.type === TODO_LIST_NODE_ITEM_TYPE,
@@ -22,7 +22,7 @@ const TodoListItemRender = (editor: YoEditor) => {
       );
     };
 
-    const isChecked = element.options.checked;
+    const isChecked = element.data.checked;
 
     return (
       <div draggable={false} {...attributes} className={cx(s.todoListItem, { [s.checked]: isChecked })}>
@@ -39,6 +39,13 @@ const TodoListItem = createYoptaPlugin<TodoListItemOptions, TodoListChildItemEle
   type: TODO_LIST_NODE_ITEM_TYPE,
   renderer: TodoListItemRender,
   shortcut: '[]',
+  getElement: () => ({
+    id: generateId(),
+    type: 'todo-list-item',
+    children: [{ text: '' }],
+    nodeType: 'block',
+    data: { checked: false },
+  }),
   events: {
     onKeyDown:
       (editor, { hotkeys, defaultNode }) =>
@@ -101,7 +108,7 @@ const TodoListItem = createYoptaPlugin<TodoListItemOptions, TodoListChildItemEle
             Transforms.splitNodes(editor);
             Transforms.setNodes<TodoListChildItemElement>(
               editor,
-              { id: generateId(), options: { checked: false } },
+              { id: generateId(), data: { checked: false } },
               {
                 match: (n) => Element.isElement(n) && n.type === TODO_LIST_NODE_ITEM_TYPE,
               },
@@ -117,7 +124,7 @@ const TodoListItem = createYoptaPlugin<TodoListItemOptions, TodoListChildItemEle
                 text: '',
               },
             ],
-            options: { checked: false },
+            data: { checked: false },
           };
 
           Transforms.insertNodes(editor, todoListItem, { select: true });
@@ -129,7 +136,7 @@ const TodoListItem = createYoptaPlugin<TodoListItemOptions, TodoListChildItemEle
 
           Transforms.setNodes<TodoListChildItemElement>(
             editor,
-            { options: { checked: todoItemNode.options.checked ? false : true } },
+            { data: { checked: todoItemNode.data.checked ? false : true } },
             { at: todoItemPath, match: (n) => Element.isElement(n) && n.type === TODO_LIST_NODE_ITEM_TYPE },
           );
           return;
@@ -160,9 +167,10 @@ const TodoListItem = createYoptaPlugin<TodoListItemOptions, TodoListChildItemEle
           if (isMaxDepth) return;
 
           const parentNestedNode: TodoList = {
+            ...parentNode,
             id: generateId(),
             type: parentNode.type,
-            children: [{ text: '' }],
+            children: [TodoListItem.getPlugin.getElement()],
           };
 
           Transforms.wrapNodes(editor, parentNestedNode, { at: todoItemPath });

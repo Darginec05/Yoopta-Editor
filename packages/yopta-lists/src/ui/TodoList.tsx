@@ -18,13 +18,15 @@ const TodoList = createYoptaPlugin<ListOptions, TodoList>({
   type: TODO_LIST_NODE_TYPE,
   renderer: (editor) => TodoListRender,
   childPlugin: TodoListItem,
-  createNode: (editor, type, data = {}) => {
-    const todoListItemElement: TodoListChildItemElement = {
-      id: generateId(),
-      type: 'todo-list-item',
-      children: [{ text: '' }],
-      options: { checked: false },
-    };
+  getElement: () => ({
+    id: generateId(),
+    type: 'todo-list',
+    children: [TodoListItem.getPlugin.getElement()],
+    nodeType: 'block',
+    data: { depth: 1 },
+  }),
+  createElement: (editor, type, data = {}) => {
+    const todoListItemElement: TodoListChildItemElement = TodoListItem.getPlugin.getElement();
 
     Transforms.unwrapNodes(editor, {
       match: (n) =>
@@ -32,7 +34,7 @@ const TodoList = createYoptaPlugin<ListOptions, TodoList>({
         Element.isElement(n) &&
         n.type !== 'list-item' &&
         n.type !== 'todo-list-item' &&
-        n.options?.depth >= 1,
+        n.data?.depth >= 1,
       split: true,
     });
 
@@ -40,12 +42,7 @@ const TodoList = createYoptaPlugin<ListOptions, TodoList>({
       at: editor.selection?.anchor,
     });
 
-    const todoList: TodoList = {
-      id: generateId(),
-      type: 'todo-list',
-      children: [todoListItemElement],
-      options: { depth: 1 },
-    };
+    const todoList: TodoList = TodoList.getPlugin.getElement();
 
     Transforms.wrapNodes(editor, todoList, {
       at: editor.selection?.anchor,

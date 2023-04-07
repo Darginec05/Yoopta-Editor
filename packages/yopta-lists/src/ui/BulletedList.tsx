@@ -1,9 +1,9 @@
-import { createYoptaPlugin, generateId, YoptaPlugin } from '@yopta/editor';
+import { createYoptaPlugin, generateId, RenderElementProps, YoptaPlugin } from '@yopta/editor';
 import { Editor, Element, Transforms } from 'slate';
 import type { BulletedList, ListChildItemElement, ListOptions } from '../types';
 import { ListItemList } from './ListItem';
 
-const BulletedListRender = ({ attributes, children, element }) => {
+const BulletedListRender = ({ attributes, children, element }: RenderElementProps<BulletedList>) => {
   return (
     <ul draggable={false} {...attributes}>
       {children}
@@ -19,13 +19,15 @@ const BulletedList = createYoptaPlugin<ListOptions, BulletedList>({
   // [TODO] - fix for nested items
   shortcut: '-',
   childPlugin: ListItemList,
-  createNode: (editor, type, data = {}) => {
-    const listItem: ListChildItemElement = {
-      id: generateId(),
-      type: 'list-item',
-      children: [{ text: '' }],
-      ...data,
-    };
+  getElement: () => ({
+    id: generateId(),
+    type: 'bulleted-list',
+    children: [ListItemList.getPlugin.getElement()],
+    nodeType: 'block',
+    data: { depth: 1 },
+  }),
+  createElement: (editor, type, data = {}) => {
+    const listItem: ListChildItemElement = ListItemList.getPlugin.getElement();
 
     Transforms.unwrapNodes(editor, {
       match: (n) =>
@@ -33,7 +35,7 @@ const BulletedList = createYoptaPlugin<ListOptions, BulletedList>({
         Element.isElement(n) &&
         n.type !== 'list-item' &&
         n.type !== 'todo-list-item' &&
-        n.options?.depth >= 1,
+        n.data?.depth >= 1,
       split: true,
     });
 
@@ -41,13 +43,7 @@ const BulletedList = createYoptaPlugin<ListOptions, BulletedList>({
       at: editor.selection?.anchor,
     });
 
-    const bulletedList: BulletedList = {
-      id: generateId(),
-      type: 'bulleted-list',
-      children: [listItem],
-      options: { depth: 1 },
-    };
-
+    const bulletedList: BulletedList = BulletedList.getPlugin.getElement();
     Transforms.wrapNodes(editor, bulletedList, {
       at: editor.selection?.anchor,
     });

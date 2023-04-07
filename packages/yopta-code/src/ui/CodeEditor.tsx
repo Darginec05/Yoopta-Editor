@@ -70,16 +70,16 @@ const CodeEditor = (editor: YoEditor) => {
     const onChange = (event: ChangeEvent<HTMLSelectElement>) => {
       const nodePath = ReactEditor.findPath(editor, element);
 
-      Transforms.setNodes(
+      Transforms.setNodes<CodeElement>(
         editor,
-        { options: { language: event.target.value } },
+        { data: { language: event.target.value } },
         { at: nodePath, match: (n) => Element.isElement(n) && n.type === 'code' },
       );
     };
 
     return (
       <code className={s.code} {...attributes}>
-        <pre className={cx(s.pre, `language-${element.options.language}`)}>
+        <pre className={cx(s.pre, `language-${element.data.language}`)}>
           {/* [TODO] - it could needed feature */}
           {children}
         </pre>
@@ -87,7 +87,7 @@ const CodeEditor = (editor: YoEditor) => {
           {/* <button type="button" className={s.copy}>
             Copy
           </button> */}
-          <LanguageSelect value={element.options.language} onChange={onChange} />
+          <LanguageSelect value={element.data.language} onChange={onChange} />
           {optionsPos !== null && (
             <NodeOptions key={element.id} onClose={toggleOptionsOpen} style={optionsPos} element={element} />
           )}

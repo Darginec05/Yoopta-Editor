@@ -17,12 +17,14 @@ const HeadingOne = createYoptaPlugin<any, HeadingOneElement>({
   type: 'heading-one',
   renderer: (editor) => HeadingRender,
   shortcut: 'h1',
-  createNode: (editor, type, data) => {
-    const node: HeadingOneElement = {
-      id: generateId(),
-      type: 'heading-one',
-      children: [{ text: '' }],
-    };
+  getElement: (): HeadingOneElement => ({
+    id: generateId(),
+    type: 'heading-one',
+    children: [{ text: '' }],
+    nodeType: 'block',
+  }),
+  createElement: function (editor, type, data) {
+    const node: HeadingOneElement = this.getElement();
 
     Transforms.setNodes<HeadingOneElement>(editor, node, {
       at: editor.selection?.anchor,

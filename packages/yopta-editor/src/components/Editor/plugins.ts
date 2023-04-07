@@ -1,4 +1,5 @@
 import { Editor, Range, Transforms } from 'slate';
+import { YoEditor } from '../../types';
 import { deserializeHTML } from './utils';
 
 export const withFixDeleteFragment = (editor: YoEditor) => {

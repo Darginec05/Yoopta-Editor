@@ -12,7 +12,7 @@ const LinkEditor = ({ attributes, element, children }: RenderElementProps<LinkEl
     <a
       draggable={false}
       {...attributes}
-      href={element.url || ''}
+      href={element.data.url || ''}
       rel="noreferrer"
       target="_blank"
       className={s.link}

@@ -1,5 +1,3 @@
-export type BlockquoteElement = {
-  id: string;
-  type: 'blockquote';
-  children: [{ text: '' }];
-};
+import { YoptaBaseElement } from '@yopta/editor';
+
+export type BlockquoteElement = YoptaBaseElement<'blockquote'>;

@@ -1,22 +1,20 @@
-type ListElement<K extends string, V extends any[], O = ListOptions> = {
-  id: string;
-  type: K;
-  options: O;
-  children: V;
-};
-
-type ListChildElement<K extends string> = {
-  id: string;
-  type: K;
-  children: [{ text: '' }];
-};
+import { Modify, YoptaBaseElement } from '@yopta/editor';
 
 export type ListOptions = { depth: number };
 export type TodoListItemOptions = { checked: boolean };
 
-export type ListChildItemElement = ListChildElement<'list-item'>;
-export type TodoListChildItemElement = ListChildElement<'todo-list-item'> & { options: TodoListItemOptions };
+export type ListChildItemElement = YoptaBaseElement<'list-item'>;
+export type TodoListChildItemElement = Modify<YoptaBaseElement<'todo-list-item'>, { data: TodoListItemOptions }>;
 
-export type BulletedList = ListElement<'bulleted-list', ListChildItemElement[]>;
-export type NumberedList = ListElement<'numbered-list', ListChildItemElement[]>;
-export type TodoList = ListElement<'todo-list', TodoListChildItemElement[]>;
+export type TodoList = Modify<
+  YoptaBaseElement<'todo-list'>,
+  { children: TodoListChildItemElement[]; data: ListOptions }
+>;
+export type BulletedList = Modify<
+  YoptaBaseElement<'bulleted-list'>,
+  { children: ListChildItemElement[]; data: ListOptions }
+>;
+export type NumberedList = Modify<
+  YoptaBaseElement<'numbered-list'>,
+  { children: ListChildItemElement[]; data: ListOptions }
+>;

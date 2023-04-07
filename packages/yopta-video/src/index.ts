@@ -27,10 +27,6 @@ const Video = createYoptaPlugin<any, VideoElement>({
 
     return editor;
   },
-  element: {
-    isVoid: true,
-    type: 'block',
-  },
   events: {
     onKeyDown:
       (editor, { defaultNode, hotkeys }) =>
@@ -48,15 +44,15 @@ const Video = createYoptaPlugin<any, VideoElement>({
         }
       },
   },
-  createNode: (editor, type, data) => {
-    const node = {
-      id: generateId(),
-      type,
-      url: null,
-      ...data,
-    };
-
-    Transforms.setNodes(editor, node, {
+  getElement: (): VideoElement => ({
+    id: generateId(),
+    type: 'video',
+    nodeType: 'void',
+    data: { url: null, size: { width: 400, height: 400 } },
+    children: [{ text: '' }],
+  }),
+  createElement: function (editor, type, data) {
+    Transforms.setNodes(editor, this.getElement(), {
       at: editor.selection?.anchor,
     });
   },

@@ -1,7 +1,7 @@
 import { jsx } from 'slate-hyperscript';
 import { ELEMENT_TYPES_MAP } from './constants';
 import { generateId } from '../../utils/generateId';
-import { YoEditor } from '../../types';
+import { YoEditor, YoptaBaseElement } from '../../types';
 
 export const HTML_ELEMENT_TAGS = {
   A: (el) => ({ type: ELEMENT_TYPES_MAP.link, url: el.getAttribute('href'), id: generateId() }),
@@ -89,12 +89,9 @@ export const getNodeByCurrentPath = (editor: YoEditor) => {
   return rootNode.children[path[1]];
 };
 
-export const getDefaultParagraphLine = () => ({
+export const getDefaultParagraphLine = (): YoptaBaseElement<'paragraph'> => ({
   id: generateId(),
   type: 'paragraph',
-  children: [
-    {
-      text: '',
-    },
-  ],
+  nodeType: 'block',
+  children: [{ text: '' }],
 });
