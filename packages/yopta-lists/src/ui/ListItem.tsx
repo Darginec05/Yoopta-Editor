@@ -19,7 +19,7 @@ const ListItemList = createYoptaPlugin<any, ListChildItemElement>({
   type: LIST_ITEM_NODE_TYPE,
   renderer: (editor) => ListItemRender,
   shortcut: '-',
-  handlers: {
+  events: {
     onKeyDown:
       (editor, { hotkeys, defaultNode }) =>
       (event) => {

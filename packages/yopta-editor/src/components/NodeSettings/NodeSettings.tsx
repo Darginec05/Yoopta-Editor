@@ -15,7 +15,7 @@ import { YoEditor } from '../../types';
 import s from './NodeSettings.module.scss';
 
 type Props = Pick<NodeSettingsContextValues, 'hoveredNode' | 'isNodeSettingsOpen' | 'nodeSettingsPos'> & {
-  handlers: NodeSettingsContextHandlers;
+  events: NodeSettingsContextHandlers;
   editor: YoEditor;
   element: SlateElement;
   isNestedNode: boolean;
@@ -24,7 +24,7 @@ type Props = Pick<NodeSettingsContextValues, 'hoveredNode' | 'isNodeSettingsOpen
 const NodeSettings = ({
   editor,
   element,
-  handlers,
+  events,
   hoveredNode,
   isNestedNode,
   nodeSettingsPos,
@@ -61,7 +61,7 @@ const NodeSettings = ({
 
   const handleClose = () => {
     if (isSuggesstionListOpen) hideSuggestionList();
-    handlers.closeNodeSettings();
+    events.closeNodeSettings();
   };
 
   const settingsButtonDisable = isSuggesstionListOpen;
@@ -76,7 +76,7 @@ const NodeSettings = ({
       contentEditable={false}
     >
       <div>
-        <NodeSettingsActions element={element} handlers={handlers} showSuggestionList={showSuggestionList} />
+        <NodeSettingsActions element={element} events={events} showSuggestionList={showSuggestionList} />
         {isNodeSettingsOpen && isHovered && (
           <Modal onClose={handleClose} style={nodeSettingsPos} className="yopta-node_settings">
             <div
@@ -90,7 +90,7 @@ const NodeSettings = ({
                   <button
                     type="button"
                     disabled={settingsButtonDisable}
-                    onClick={handlers.deleteNode}
+                    onClick={events.deleteNode}
                     className={cx(s.settingsButton, { [s.settingsButtonDisable]: settingsButtonDisable })}
                   >
                     <DeleteIcon />
@@ -99,7 +99,7 @@ const NodeSettings = ({
                   <button
                     type="button"
                     disabled={settingsButtonDisable}
-                    onClick={handlers.duplicateNode}
+                    onClick={events.duplicateNode}
                     className={cx(s.settingsButton, { [s.settingsButtonDisable]: settingsButtonDisable })}
                   >
                     <DuplicateIcon />
@@ -121,7 +121,7 @@ const NodeSettings = ({
                   <button
                     type="button"
                     disabled={settingsButtonDisable}
-                    onClick={handlers.copyLinkNode}
+                    onClick={events.copyLinkNode}
                     className={cx(s.settingsButton, { [s.settingsButtonDisable]: settingsButtonDisable })}
                   >
                     <CopyIcon />

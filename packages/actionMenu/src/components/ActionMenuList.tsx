@@ -1,6 +1,6 @@
 import { HOTKEYS, YoEditor, YoptaPluginType } from '@yopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import { CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
+import { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Element, Editor, Path, Point, Transforms } from 'slate';
 import { useSlate } from 'slate-react';
 import { getRectByCurrentSelection } from '../utils/selectionRect';
@@ -20,7 +20,11 @@ type Props = {
   items: ActionMenuComponentItem[];
   render?: (props: ActionRenderItemProps) => JSX.Element;
   trigger?: string | null;
-} & ({ items: ActionMenuComponentItem[]; plugins?: never } | { plugins: YoptaPluginType[]; items?: never });
+  children?: (props: any) => ReactNode;
+} & (
+  | { items: ActionMenuComponentItem[]; children?: (props: any) => ReactNode; plugins?: never }
+  | { plugins: YoptaPluginType[]; items?: never; children?: (props: any) => ReactNode }
+);
 
 type MenuProps = { style: CSSProperties; point: Point | null };
 
@@ -34,13 +38,15 @@ const filterBy = (item: ActionMenuRenderItem, text: string, field: string) => {
   return item[field].toLowerCase().indexOf(text) > -1;
 };
 
-const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.Element => {
+const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Props): JSX.Element => {
   const editor = useSlate() as YoEditor;
   const actionMenuRef = useRef<HTMLDivElement>(null);
   const elementListRef = useRef<HTMLOListElement>(null);
   const [menuProps, setMenuProps] = useState<MenuProps>(MENU_PROPS_VALUE);
   const [searchString, setSearchString] = useState('');
   const [focusableElement, setFocusableElement] = useState(0);
+
+  console.log('plugins', plugins);
 
   const showActionMenu = () => {
     if (!editor.selection) return;
@@ -103,13 +109,15 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
     let menuList: ActionMenuRenderItem[];
 
     if (items) {
-      menuList = items.map(({ component, ...rest }) => ({ ...component.getPlugin, ...rest }));
+      menuList = items.map(({ plugin, ...rest }) => ({ ...plugin.getPlugin, ...rest }));
     } else {
       menuList = (plugins as unknown as YoptaPluginType[]).filter((item) => !item.isChild);
     }
 
     return menuList.filter(filterInlineNodes).filter(filterMenuList);
   }, [items, plugins, searchString]);
+
+  console.log('renderMenuItems', renderMenuItems);
 
   const moveDown = () => {
     const childNodes = elementListRef.current?.childNodes;
@@ -221,7 +229,7 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
       contentEditor?.removeEventListener('keyup', handleKeyup);
       if (isMenuOpen) document.removeEventListener('keydown', handleKeydown, true);
     };
-  }, [editor, isMenuOpen, focusableElement, renderMenuItems, render]);
+  }, [editor, isMenuOpen, focusableElement, renderMenuItems]);
 
   const changeNode = (menuItem: ActionMenuRenderItem) => {
     Editor.withoutNormalizing(editor, () => {
@@ -268,8 +276,8 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
 
   const renderProps = { items: renderMenuItems, getRootProps, getListProps, getItemsProps };
 
-  if (render) {
-    return render(renderProps);
+  if (children) {
+    return children(renderProps);
   }
 
   return <DefaultMenuRender {...renderProps} />;

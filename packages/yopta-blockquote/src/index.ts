@@ -10,3 +10,4 @@ declare module 'slate' {
 }
 
 export default Blockquote;
+export { BlockquoteElement };

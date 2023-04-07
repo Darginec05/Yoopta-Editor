@@ -2,14 +2,14 @@ import { YoptaPlugin, YoptaPluginType } from '@yopta/editor';
 import { CSSProperties, MouseEvent, ReactNode } from 'react';
 
 export type ActionMenuComponentItem = {
-  component: YoptaPlugin;
+  plugin: YoptaPlugin;
   icon?: ReactNode;
   label?: string;
   searchString?: string;
 };
 
 export type ActionMenuRenderItem = Omit<YoptaPluginType, 'childPlugin' | 'isChild'> &
-  Omit<ActionMenuComponentItem, 'component'>;
+  Omit<ActionMenuComponentItem, 'plugin'>;
 
 export type ActionMenuRenderRootProps = {
   role: string;

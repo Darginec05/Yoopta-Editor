@@ -36,15 +36,15 @@
 //   });
 
 import { YoptaPlugin, YoptaEditor } from '@yopta/editor';
-import Blockquote from '@yopta/blockquote';
-import Paragraph from '@yopta/paragraph';
-import Callout from '@yopta/callout';
-import Code from '@yopta/code';
-import Link from '@yopta/link';
+import Blockquote, { BlockquoteElement } from '@yopta/blockquote';
+import Paragraph, { ParagraphElement } from '@yopta/paragraph';
+import Callout, { CalloutElement } from '@yopta/callout';
+import Code, { CodeElement } from '@yopta/code';
+import Link, { LinkElement } from '@yopta/link';
 import Lists from '@yopta/lists';
-import Headings from '@yopta/headings';
-import Image, { ImageOptions } from '@yopta/image';
-import Video from '@yopta/video';
+import Headings, { HeadingOneElement, HeadingThreeElement, HeadingTwoElement } from '@yopta/headings';
+import Image, { ImageElement, ImageOptions } from '@yopta/image';
+import Video, { VideoElement } from '@yopta/video';
 import Toolbar from '@yopta/toolbar';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yopta/marks';
 import ActionMenu from '@yopta/action-menu-list';
@@ -59,11 +59,25 @@ import { NotionToolbar } from '../../components/Toolbars/NotionToolbar';
 import { MediumToolbar } from '../../components/Toolbars/MediumToolbar';
 import { CustomSuggestionList } from '../../components/SuggestionList/SuggestionList';
 import s from './styles.module.scss';
+import { NotionActionMenu } from '../../components/SuggestionList/NotionActionMenu';
+
+type PluginOptions = ImageOptions | Record<string, unknown>;
+type PluginElements =
+  | ParagraphElement
+  | BlockquoteElement
+  | CalloutElement
+  // | CodeElement
+  | LinkElement
+  | HeadingOneElement
+  | HeadingTwoElement
+  | HeadingThreeElement
+  | ImageElement
+  | VideoElement;
 
 const BasicExample = () => {
   const [editorValue, setEditorValue] = useState<Descendant[]>([]);
 
-  const plugins = useMemo<YoptaPlugin[]>(() => {
+  const plugins = useMemo<YoptaPlugin<PluginOptions, PluginElements>[]>(() => {
     return [
       Paragraph,
       Blockquote,
@@ -76,7 +90,7 @@ const BasicExample = () => {
       Headings.HeadingOne,
       Headings.HeadingTwo,
       Headings.HeadingThree,
-      Image.extend<ImageOptions>({
+      Image.extend({
         options: {
           maxWidth: 750,
           maxHeight: 800,
@@ -100,17 +114,17 @@ const BasicExample = () => {
   }, []);
 
   const actionItems = [
-    { component: Paragraph, icon: <EmbedIcon />, label: 'Text', searchString: 'text paragraph' },
-    { component: Headings.HeadingOne, icon: <EmbedIcon />, label: 'Title', searchString: 'h1 title' },
-    { component: Headings.HeadingTwo, icon: <EmbedIcon />, label: 'Subtitle', searchString: 'h2 subtitle' },
-    { component: Image, icon: <ImageIcon />, label: 'Image', searchString: 'image picture' },
-    { component: Video, icon: <VideoIcon />, label: 'Video', searchString: 'video media' },
-    { component: Blockquote, icon: <VideoIcon />, label: 'Blockquote' },
-    { component: Callout, label: 'Callout' },
-    { component: Code, label: 'Super code', searchString: 'hello world' },
-    { component: Lists.BulletedList, label: 'Bulleted list' },
-    { component: Lists.NumberedList, label: 'Numbered list' },
-    { component: Lists.TodoList, label: 'Check list', searchString: 'todo check list' },
+    { plugin: Paragraph, searchString: 'text paragraph' },
+    { plugin: Headings.HeadingOne, searchString: 'h1 title' },
+    { plugin: Headings.HeadingTwo, searchString: 'h2 subtitle' },
+    { plugin: Image, searchString: 'image picture' },
+    { plugin: Video, searchString: 'video media' },
+    { plugin: Blockquote },
+    { plugin: Callout },
+    { plugin: Code, searchString: 'hello world' },
+    { plugin: Lists.BulletedList },
+    { plugin: Lists.NumberedList },
+    { plugin: Lists.TodoList, searchString: 'todo check list' },
   ];
 
   return (
@@ -124,7 +138,7 @@ const BasicExample = () => {
         readOnly={false}
         // readOnly
       >
-        <ActionMenu trigger="/" items={actionItems} render={CustomSuggestionList} />
+        <ActionMenu trigger="/" items={actionItems} />
         <Toolbar type="bubble">{(props) => <MediumToolbar {...props} />}</Toolbar>
       </YoptaEditor>
       <pre className={s.editor} style={{ display: 'block', padding: '0 64px', whiteSpace: 'pre-wrap' }}>

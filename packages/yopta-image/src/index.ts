@@ -30,7 +30,7 @@ const Image = createYoptaPlugin<ImageOptions, ImageElement>({
     isVoid: true,
     type: 'block',
   },
-  handlers: {
+  events: {
     onKeyDown:
       (editor, { defaultNode, hotkeys }) =>
       (event) => {

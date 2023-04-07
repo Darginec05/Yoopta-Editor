@@ -22,7 +22,7 @@ const CodeLine = createYoptaPlugin<any, CodeChildElement>({
   renderer: CodeLineRender,
   leaf: () => CodeLeaf,
   decorator: codeLineDecorator,
-  handlers: {
+  events: {
     onKeyDown:
       (editor, { hotkeys, defaultNode }) =>
       (event) => {
@@ -175,4 +175,4 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
   },
 });
 
-export { Code, CodeLine };
+export { Code, CodeLine, CodeElement, CodeChildElement };

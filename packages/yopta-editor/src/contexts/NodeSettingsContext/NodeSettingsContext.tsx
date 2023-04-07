@@ -96,7 +96,7 @@ const NodeSettingsProvider = ({ children }) => {
     ...dragValues,
   };
 
-  const handlers = useMemo<NodeSettingsContextHandlers>(
+  const events = useMemo<NodeSettingsContextHandlers>(
     () => ({
       hoverIn: (e: MouseEvent<HTMLDivElement>, node: YoElement) => {
         if (isNodeSettingsOpen) return e.preventDefault();
@@ -218,7 +218,7 @@ const NodeSettingsProvider = ({ children }) => {
           // libOptions.nodeSettings?.onDelete?.();
 
           setHoveredNode(null);
-          handlers.closeNodeSettings();
+          events.closeNodeSettings();
         });
       },
 
@@ -250,7 +250,7 @@ const NodeSettingsProvider = ({ children }) => {
           // libOptions.nodeSettings?.onDuplicate?.();
 
           setHoveredNode(null);
-          handlers.closeNodeSettings();
+          events.closeNodeSettings();
         });
       },
 
@@ -264,7 +264,7 @@ const NodeSettingsProvider = ({ children }) => {
         //   copy(`${window.location.href}#${hoveredNode?.id}`);
         // }
 
-        handlers.closeNodeSettings();
+        events.closeNodeSettings();
       },
 
       ...dragHandlers,
@@ -273,7 +273,7 @@ const NodeSettingsProvider = ({ children }) => {
   );
 
   const contextValue = useMemo<NodeSettingsContextType>(
-    () => [values, handlers],
+    () => [values, events],
     [hoveredNode, isNodeSettingsOpen, dragValues, editor.selection, editor.children],
   );
 

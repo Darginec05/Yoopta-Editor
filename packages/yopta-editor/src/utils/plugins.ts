@@ -11,13 +11,8 @@ export type HandlersOptions = {
   defaultNode: Element;
 };
 
-export type ElementType = {
-  type?: 'block' | 'inline';
-  isVoid?: boolean;
-};
-
 export type DecoratorFn = (nodeEntry: NodeEntry) => Range[];
-export type YoptaPluginHandlers = {
+export type YoptaPluginEventHandlers = {
   [key in keyof EditorEventHandlers]: (editor: YoEditor, options: HandlersOptions) => EditorEventHandlers[key] | void;
 };
 
@@ -42,8 +37,7 @@ export type YoptaPluginType<O = Options, P extends BaseElement = BaseElement> = 
   renderer: YoptaRenderer<P>;
   shortcut?: string;
   decorator?: (editor: YoEditor) => DecoratorFn;
-  handlers?: YoptaPluginHandlers;
-  element?: ElementType;
+  events?: YoptaPluginEventHandlers;
   extendEditor?: (editor: YoEditor) => YoEditor;
   leaf?: (editor: YoEditor) => (props: RenderLeafProps) => any;
   options?: O;

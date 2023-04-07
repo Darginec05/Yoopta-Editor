@@ -31,7 +31,7 @@ const Video = createYoptaPlugin<any, VideoElement>({
     isVoid: true,
     type: 'block',
   },
-  handlers: {
+  events: {
     onKeyDown:
       (editor, { defaultNode, hotkeys }) =>
       (event) => {
@@ -63,3 +63,4 @@ const Video = createYoptaPlugin<any, VideoElement>({
 });
 
 export default Video;
+export { VideoElement };
