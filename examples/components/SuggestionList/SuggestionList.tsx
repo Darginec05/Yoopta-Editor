@@ -7,7 +7,7 @@ import VideoIcon from './icons/video.svg';
 
 const CustomSuggestionList = (props: ActionRenderItemProps) => {
   return (
-    <div {...props.getRootProps()} className={s.dropdown}>
+    <div className={s.dropdown} {...props.getRootProps()}>
       <div {...props.getListProps()} className={s.elementList}>
         {props.items.map((item, i) => {
           const { focusableElement, menuItem, ...itemProps } = props.getItemsProps(item, i);

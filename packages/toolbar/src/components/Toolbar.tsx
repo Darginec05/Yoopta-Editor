@@ -44,8 +44,6 @@ const Toolbar = ({ type = 'bubble', style, marks, children }: Props) => {
   const toolbarRef = useRef<HTMLDivElement>(null);
   const [toolbarProps, setToolbarProps] = useState({ open: false, style: {} });
 
-  console.log('marks', marks);
-
   const isFixedToolbar = type === 'fixed';
 
   const updateToolbarPosition = () => {

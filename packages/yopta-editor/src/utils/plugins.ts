@@ -1,8 +1,8 @@
 import uniqWith from 'lodash.uniqwith';
 import { ReactElement } from 'react';
-import { BaseElement, Element, NodeEntry, Range } from 'slate';
+import { Element, NodeEntry, Range } from 'slate';
 import { RenderLeafProps } from 'slate-react';
-import { YoEditor, RenderElementProps } from '../types';
+import { YoEditor, RenderElementProps, YoptaBaseElement } from '../types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS_TYPE } from './hotkeys';
 
@@ -18,21 +18,21 @@ export type YoptaPluginEventHandlers = {
 
 type Options = Record<string, unknown>;
 
-export type YoptaRenderElementFunc<P extends BaseElement> = (
+export type YoptaRenderElementFunc<P extends YoptaBaseElement<string> = YoptaBaseElement<string>> = (
   editor: YoEditor,
-  plugin: Pick<YoptaPluginType, 'type' | 'options'>,
+  plugin: YoptaPluginType,
 ) => (props: RenderElementProps<P>) => ReactElement;
 
-export type YoptaRender<P extends BaseElement> = YoptaRenderElementFunc<P>;
+export type YoptaRender<P extends YoptaBaseElement<string>> = YoptaRenderElementFunc<P>;
 
-export type ExtendedYoptaRender<P extends BaseElement> = {
+export type ExtendedYoptaRender<P extends YoptaBaseElement<string>> = {
   editor: YoptaRenderElementFunc<P>;
   render?: YoptaRenderElementFunc<P>;
 };
 
-export type YoptaRenderer<P extends BaseElement> = ExtendedYoptaRender<P> | YoptaRender<P>;
+export type YoptaRenderer<P extends YoptaBaseElement<string>> = ExtendedYoptaRender<P> | YoptaRender<P>;
 
-export type YoptaPluginType<O = Options, P extends BaseElement = BaseElement> = {
+export type YoptaPluginType<O = Options, P extends YoptaBaseElement<string> = YoptaBaseElement<string>> = {
   type: string;
   renderer: YoptaRenderer<P>;
   shortcut?: string;
@@ -49,14 +49,14 @@ export type YoptaPluginType<O = Options, P extends BaseElement = BaseElement> = 
 
 export type ParentYoptaPlugin<O = Options> = Omit<YoptaPluginType<O>, 'childPlugin' | 'isChild'>;
 
-export class YoptaPlugin<O extends Options, P extends BaseElement> {
+export class YoptaPlugin<O extends Options, P extends YoptaBaseElement<string>> {
   #props: YoptaPluginType<O, P>;
 
   constructor(inputPlugin: YoptaPluginType<O, P>) {
     this.#props = Object.freeze({ ...inputPlugin });
   }
 
-  extend<TO extends Options, PO extends BaseElement>(overrides: Partial<YoptaPluginType<TO, PO>>) {
+  extend<TO extends Options, PO extends YoptaBaseElement<string>>(overrides: Partial<YoptaPluginType<TO, PO>>) {
     const updatedProps = Object.freeze({ ...this.#props, ...overrides });
 
     return new YoptaPlugin<TO, PO>(updatedProps);
@@ -67,11 +67,11 @@ export class YoptaPlugin<O extends Options, P extends BaseElement> {
   }
 }
 
-export function createYoptaPlugin<O extends Options, P extends BaseElement>(input: YoptaPluginType<O, P>) {
+export function createYoptaPlugin<O extends Options, P extends YoptaBaseElement<string>>(input: YoptaPluginType<O, P>) {
   return new YoptaPlugin<O, P>(input);
 }
 
-export function mergePlugins<O extends Options, P extends BaseElement>(
+export function mergePlugins<O extends Options, P extends YoptaBaseElement<string>>(
   plugins: YoptaPlugin<O, P>[],
 ): YoptaPluginType<O, P>[] {
   const items: YoptaPluginType<O, P>[] = plugins

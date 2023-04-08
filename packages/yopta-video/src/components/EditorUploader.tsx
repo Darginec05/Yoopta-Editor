@@ -1,5 +1,5 @@
 import { cx } from '@yopta/editor';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 import s from './EditorUploader.module.scss';
 import { Overlay } from './Overlay';
 
@@ -31,11 +31,23 @@ const Uploader = ({ onChange }) => {
   );
 };
 
-const Embed = () => {
-  return <div></div>;
+const EmbedLink = ({ onEmbed }) => {
+  const [value, setValue] = useState('');
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value);
+  const onEmbedLink = () => onEmbed(value);
+
+  return (
+    <div className={s.embed}>
+      <input type="text" placeholder="Paste video link" value={value} className={s.embedInput} onChange={onChange} />
+      <button type="button" className={s.embedButton} onClick={onEmbedLink}>
+        Embed video
+      </button>
+    </div>
+  );
 };
 
-const EditorUploader = ({ activeTab = 'upload', style, switchTab, onChange, onClose }) => {
+const EditorUploader = ({ activeTab = 'upload', style, switchTab, onChange, onClose, onEmbed }) => {
   const isUploader = activeTab === 'upload';
   const isEmbed = activeTab === 'embed';
 
@@ -57,7 +69,7 @@ const EditorUploader = ({ activeTab = 'upload', style, switchTab, onChange, onCl
           </div>
           <div className={s.uploadContent}>
             {isUploader && <Uploader onChange={onChange} />}
-            {isEmbed && <Embed />}
+            {isEmbed && <EmbedLink onEmbed={onEmbed} />}
           </div>
         </div>
       </div>

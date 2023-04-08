@@ -43,7 +43,7 @@ import Code, { CodeElement } from '@yopta/code';
 import Link, { LinkElement } from '@yopta/link';
 import Lists from '@yopta/lists';
 import Headings, { HeadingOneElement, HeadingThreeElement, HeadingTwoElement } from '@yopta/headings';
-import Image, { ImageElement, ImageOptions } from '@yopta/image';
+import Image, { ImageElement, ImageElementData, ImagePluginOptions } from '@yopta/image';
 import Video, { VideoElement } from '@yopta/video';
 import Toolbar from '@yopta/toolbar';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yopta/marks';
@@ -58,10 +58,10 @@ import { uploadToCloudinary } from '../../utils';
 import { NotionToolbar } from '../../components/Toolbars/NotionToolbar';
 import { MediumToolbar } from '../../components/Toolbars/MediumToolbar';
 import { CustomSuggestionList } from '../../components/SuggestionList/SuggestionList';
-import s from './styles.module.scss';
 import { NotionActionMenu } from '../../components/SuggestionList/NotionActionMenu';
+import s from './styles.module.scss';
 
-type PluginOptions = ImageOptions | Record<string, unknown>;
+type PluginOptions = ImagePluginOptions | Record<string, unknown>;
 type PluginElements =
   | ParagraphElement
   | BlockquoteElement
@@ -77,7 +77,7 @@ type PluginElements =
 const BasicExample = () => {
   const [editorValue, setEditorValue] = useState<Descendant[]>([]);
 
-  const plugins = useMemo<YoptaPlugin<PluginOptions, PluginElements>[]>(() => {
+  const plugins = useMemo(() => {
     return [
       Paragraph,
       Blockquote,
@@ -94,9 +94,9 @@ const BasicExample = () => {
         options: {
           maxWidth: 750,
           maxHeight: 800,
-          onChange: async (file: File) => {
-            const data = await uploadToCloudinary(file, 'image');
-            return data;
+          onUpload: async (file: File) => {
+            const response = await uploadToCloudinary(file, 'image');
+            return { url: response.url, width: response.data.width, height: response.data.height };
           },
         },
       }),
@@ -104,9 +104,9 @@ const BasicExample = () => {
         options: {
           maxWidth: 750,
           maxHeight: 800,
-          onChange: async (file: File) => {
-            const data = await uploadToCloudinary(file, 'video');
-            return data;
+          onUpload: async (file: File) => {
+            const response = await uploadToCloudinary(file, 'video');
+            return { url: response.url, width: response.data.width, height: response.data.height };
           },
         },
       }),
@@ -138,7 +138,9 @@ const BasicExample = () => {
         readOnly={false}
         // readOnly
       >
-        <ActionMenu trigger="/" items={actionItems} />
+        <ActionMenu trigger="/" items={actionItems}>
+          {CustomSuggestionList}
+        </ActionMenu>
         <Toolbar type="bubble">{(props) => <MediumToolbar {...props} />}</Toolbar>
       </YoptaEditor>
       <pre className={s.editor} style={{ display: 'block', padding: '0 64px', whiteSpace: 'pre-wrap' }}>

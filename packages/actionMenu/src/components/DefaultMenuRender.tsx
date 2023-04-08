@@ -2,7 +2,7 @@ import { ActionRenderItemProps } from '../types';
 import { ItemRender } from './ItemRender';
 import s from './DefaultMenuRender.module.scss';
 
-const DefaultMenuRender = ({ items, getListProps, getRootProps, getItemsProps }: ActionRenderItemProps) => {
+const DefaultMenuRender = ({ items, getListProps, getItemsProps, getRootProps }: ActionRenderItemProps) => {
   const isNotFound = items.length === 0;
 
   return (

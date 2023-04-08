@@ -14,7 +14,7 @@ const BlockquoteRender = ({ attributes, children, element }: RenderElementProps<
 BlockquoteRender.displayName = 'Blockquote';
 
 const Blockquote = createYoptaPlugin<any, BlockquoteElement>({
-  type: 'block-quote',
+  type: 'blockquote',
   renderer: (editor) => BlockquoteRender,
   shortcut: '>',
   getElement: (): BlockquoteElement => ({
@@ -23,8 +23,8 @@ const Blockquote = createYoptaPlugin<any, BlockquoteElement>({
     children: [{ text: '' }],
     nodeType: 'block',
   }),
-  createElement: function (editor, type, data) {
-    const node: BlockquoteElement = this.getElement();
+  createElement: (editor) => {
+    const node: BlockquoteElement = Blockquote.getPlugin.getElement();
 
     Transforms.setNodes<BlockquoteElement>(editor, node, {
       at: editor.selection?.anchor,

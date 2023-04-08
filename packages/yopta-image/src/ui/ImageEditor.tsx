@@ -4,17 +4,19 @@ import { ReactEditor, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
 import { Image } from './Image';
 import { CSSProperties, MouseEvent, useEffect, useMemo, useState } from 'react';
-import { cx, RenderElementProps, YoEditor } from '@yopta/editor';
+import { cx, RenderElementProps, YoEditor, YoptaPluginType } from '@yopta/editor';
 import { Loader } from '../components/Loader';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { NodeOptions } from '../components/NodeOptions';
-import { ImageElement } from '../types';
+import { ImageElement, ImagePluginOptions } from '../types';
 import s from './ImageEditor.module.scss';
 
 const OPTIONS_WIDTH = 265;
 
 function ImageEditor(editor: YoEditor, plugin) {
   return function ImageEditor(props: RenderElementProps<ImageElement>) {
+    console.log(ReactEditor.findPath(editor, props.element));
+
     const { element } = props;
     const selected = useSelected();
 
@@ -119,7 +121,7 @@ function ImageEditor(editor: YoEditor, plugin) {
             element={element}
             editor={editor}
             maxSizes={{ maxWidth, maxHeight }}
-            onChange={plugin.options?.onChange}
+            onUpload={plugin.options?.onUpload}
           >
             <div>
               <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>

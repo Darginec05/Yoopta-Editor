@@ -1,6 +1,6 @@
 import { createYoptaPlugin, generateId, getElementByPath, YoEditor } from '@yopta/editor';
 import { Transforms } from 'slate';
-import { VideoElement } from './types';
+import { VideoElement, VideoPluginOptions } from './types';
 import { Video as VideoRender } from './ui/Video';
 import { VideoEditor } from './ui/VideoEditor';
 
@@ -11,13 +11,12 @@ declare module 'slate' {
   }
 }
 
-const Video = createYoptaPlugin<any, VideoElement>({
+const Video = createYoptaPlugin<VideoPluginOptions, VideoElement>({
   type: 'video',
   renderer: {
     editor: VideoEditor,
     render: () => VideoRender,
   },
-  // renderer: (editor) => VideoRender,
   extendEditor(editor) {
     const { isVoid } = editor;
 
@@ -48,7 +47,7 @@ const Video = createYoptaPlugin<any, VideoElement>({
     id: generateId(),
     type: 'video',
     nodeType: 'void',
-    data: { url: null, size: { width: 400, height: 400 } },
+    data: { url: null, size: { width: 'auto', height: 'auto' } },
     children: [{ text: '' }],
   }),
   createElement: function (editor, type, data) {

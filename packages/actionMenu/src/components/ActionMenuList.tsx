@@ -13,6 +13,7 @@ import {
   ActionMenuRenderListProps,
 } from '../types';
 import { DefaultMenuRender } from './DefaultMenuRender';
+import s from './DefaultMenuRender.module.scss';
 
 const checkIsMenuOpen = (style: CSSProperties) => style.opacity === 1 && !!style.top && !!style.right;
 
@@ -26,10 +27,11 @@ type Props = {
   | { plugins: YoptaPluginType[]; items?: never; children?: (props: any) => ReactNode }
 );
 
-type MenuProps = { style: CSSProperties; point: Point | null };
+type MenuProps = { fixedStyle: CSSProperties; absoluteStyle: CSSProperties; point: Point | null };
 
 const MENU_PROPS_VALUE: MenuProps = {
-  style: { position: 'fixed', opacity: 0, zIndex: 6, left: -1000, bottom: -1000 },
+  fixedStyle: { position: 'fixed', opacity: 0, zIndex: 6, left: -1000, bottom: -1000 },
+  absoluteStyle: { left: 0, bottom: 0, top: 'auto', right: 'auto' },
   point: null,
 };
 
@@ -57,11 +59,16 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
     disableBodyScroll(document.body, { reserveScrollBarGap: true });
     const parentPath = Path.parent(editor.selection.anchor.path);
 
+    const absoluteStyle = showAtTop
+      ? { left: 0, bottom: 5, top: 'auto', right: 'auto' }
+      : { left: 0, bottom: 'auto', top: selectionRect.height + 5, right: 'auto' };
+
     setMenuProps({
-      style: {
-        ...menuProps.style,
+      absoluteStyle,
+      fixedStyle: {
+        ...menuProps.fixedStyle,
         left: selectionRect.left,
-        top: showAtTop ? selectionRect.top - actionMenuHeight : selectionRect.top + selectionRect.height,
+        top: selectionRect.top,
         right: 'auto',
         bottom: 'auto',
         opacity: 1,
@@ -88,7 +95,7 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
     }
   };
 
-  const isMenuOpen = checkIsMenuOpen(menuProps.style);
+  const isMenuOpen = checkIsMenuOpen(menuProps.fixedStyle);
 
   const filterInlineNodes = (item: ActionMenuRenderItem) => {
     return !Editor.isInline(editor, { type: item.type, children: [{ text: '' }] });
@@ -253,10 +260,7 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
   };
 
   const getRootProps = (): ActionMenuRenderRootProps => ({
-    role: 'dialog',
-    'aria-modal': true,
     ref: actionMenuRef,
-    style: menuProps.style,
   });
 
   const getListProps = (): ActionMenuRenderListProps => ({
@@ -273,10 +277,26 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
   const renderProps = { items: renderMenuItems, getRootProps, getListProps, getItemsProps };
 
   if (children) {
-    return children(renderProps);
+    return (
+      <div role={'dialog'} aria-modal style={menuProps.fixedStyle}>
+        <div className={s.relative}>
+          <div className={s.absolute} style={menuProps.absoluteStyle}>
+            {children(renderProps)}
+          </div>
+        </div>
+      </div>
+    );
   }
 
-  return <DefaultMenuRender {...renderProps} />;
+  return (
+    <div role={'dialog'} aria-modal style={menuProps.fixedStyle}>
+      <div className={s.relative}>
+        <div className={s.absolute} style={menuProps.absoluteStyle}>
+          <DefaultMenuRender {...renderProps} />
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export { ActionMenuList };

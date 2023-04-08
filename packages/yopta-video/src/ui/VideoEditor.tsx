@@ -4,12 +4,12 @@ import { ReactEditor, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
 import { Video } from './Video';
 import { CSSProperties, MouseEvent, useEffect, useMemo, useState } from 'react';
-import { cx, RenderElementProps, YoEditor } from '@yopta/editor';
+import { cx, RenderElementProps, YoEditor, YoptaPluginType } from '@yopta/editor';
 import { Loader } from '../components/Loader';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { NodeOptions } from '../components/NodeOptions';
 import s from './VideoEditor.module.scss';
-import { VideoElement } from '../types';
+import { VideoElement, VideoPluginOptions } from '../types';
 
 const OPTIONS_WIDTH = 265;
 
@@ -20,15 +20,15 @@ function VideoEditor(editor: YoEditor, plugin) {
 
     const [optionsPos, setOptionsPos] = useState<CSSProperties | null>(null);
     const [size, setSize] = useState({
-      width: element.data?.size?.width || 750,
-      height: element.data?.size?.height || 440,
+      width: element.data?.size?.width || 'auto',
+      height: element.data?.size?.height || 'auto',
     });
 
     useEffect(() => {
       if (element.data) {
         setSize({
-          width: element.data?.size?.width || 750,
-          height: element.data?.size?.height || 440,
+          width: element.data?.size?.width || 'auto',
+          height: element.data?.size?.height || 'auto',
         });
       }
     }, [element.data?.size]);
@@ -110,14 +110,14 @@ function VideoEditor(editor: YoEditor, plugin) {
     };
 
     if (!element.data.url && !element.data['data-src']) {
-      const { maxWidth = 750, maxHeight = 800 } = plugin.options;
+      const { maxWidth = 750, maxHeight = 800 } = plugin.options || {};
 
       return (
         <div className={s.root} key={element.id}>
           <EditorPlaceholder
             {...props}
             editor={editor}
-            onChange={plugin.options.onChange}
+            onUpload={plugin.options?.onUpload}
             maxSizes={{ maxWidth, maxHeight }}
           >
             <div>
