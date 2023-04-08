@@ -9,11 +9,11 @@ import s from './EditorPlaceholder.module.scss';
 import { toBase64 } from '../utils/base64';
 import { getImageSizes } from '../utils/imageSizes';
 import { RenderElementProps, YoEditor } from '@yopta/editor';
-import { ImageElement } from '../types';
+import { ImageElement, ImagePluginOptions } from '../types';
 
 type Props = RenderElementProps<ImageElement> & {
   editor: YoEditor;
-  onChange: (file: File) => Promise<void>;
+  onUpload?: ImagePluginOptions['onUpload'];
   maxSizes: { maxWidth: number; maxHeight: number };
 };
 
@@ -24,7 +24,7 @@ type UploaderPosition = {
 
 const UPLOADER_HEIGHT = 88;
 
-const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, onChange }: Props) => {
+const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, onUpload }: Props) => {
   const [uploaderPos, setUploaderPos] = useState<null | UploaderPosition>(null);
   const [activeTab, setActiveTab] = useState('upload');
   const imageEditorRef = useRef<HTMLDivElement>(null);
@@ -54,8 +54,6 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
   };
 
   const onEmbed = async (src) => {
-    console.log({ src });
-
     try {
       const { width, height } = await getImageSizes(src);
 
@@ -115,13 +113,10 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
       match: (n) => Element.isElement(n) && n.type === 'image',
     });
 
-    const response = await onChange(file);
-    const { width, height } = getAspectRatio(
-      response.data.width,
-      response.data.height,
-      maxSizes.maxWidth,
-      maxSizes.maxHeight,
-    );
+    if (!onUpload) return console.error('Provide `onUpload` handler in Image options');
+
+    const response = await onUpload(file);
+    const { width, height } = getAspectRatio(response.width, response.height, maxSizes.maxWidth, maxSizes.maxHeight);
 
     const updatedImageNode: Partial<ImageElement> = {
       data: {

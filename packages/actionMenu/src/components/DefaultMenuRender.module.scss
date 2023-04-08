@@ -1,16 +1,21 @@
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+  opacity: 1;
+}
+
 .dropdown {
   width: auto;
   min-width: 200px;
   padding: 5px;
-  position: fixed;
   background: linear-gradient(to right,rgba(49,49,47,.99),#262625);
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   z-index: 6;
-  left: -1000px;
-  top: -1000px;
-  opacity: 0;
   transition: opacity 0.18s cubic-bezier(0.4, 0, 0.2, 1);
   max-height: 304px;
   overflow: auto;

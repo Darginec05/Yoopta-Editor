@@ -12,10 +12,7 @@ export type ActionMenuRenderItem = Omit<YoptaPluginType, 'childPlugin' | 'isChil
   Omit<ActionMenuComponentItem, 'plugin'>;
 
 export type ActionMenuRenderRootProps = {
-  role: string;
-  'aria-modal': boolean;
   ref: any;
-  style: CSSProperties;
 };
 
 export type ActionMenuRenderListProps = {

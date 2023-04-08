@@ -1,6 +1,6 @@
-import { Element } from 'slate';
+import { Element, Text } from 'slate';
 import { Editor, Range, Transforms } from 'slate';
-import { YoEditor } from '../../../types';
+import { YoEditor, YoptaBaseElement } from '../../../types';
 import { generateId } from '../../../utils/generateId';
 
 export const withShortcuts = (editor: YoEditor) => {
@@ -14,13 +14,16 @@ export const withShortcuts = (editor: YoEditor) => {
 
       const block: any = Editor.above(editor, {
         match: (n) => Element.isElement(n) && Editor.isBlock(editor, n),
+        mode: 'lowest',
       });
 
-      console.log('block', block);
+      const parentBlock = Editor.parent(editor, block[1]);
 
-      if (block?.[0].type === 'list-item') {
-        return insertText(text);
-      }
+      console.log('block', block);
+      console.log('parentBlock', parentBlock);
+      console.log('Text.isText(parentBlock[0].children[0])', Text.isText(parentBlock[0].children[0]));
+
+      if (Element.isElement(parentBlock) && !Text.isText(parentBlock[0].children[0])) return insertText(text);
 
       const path = block ? block[1] : [];
       const start = Editor.start(editor, path);
@@ -29,11 +32,13 @@ export const withShortcuts = (editor: YoEditor) => {
 
       const type = editor.shortcuts?.[beforeText];
 
+      console.log({ type });
+
       if (type) {
         Transforms.select(editor, range);
         Transforms.delete(editor);
 
-        Transforms.setNodes<Element>(
+        Transforms.setNodes<YoptaBaseElement<string>>(
           editor,
           { type },
           {

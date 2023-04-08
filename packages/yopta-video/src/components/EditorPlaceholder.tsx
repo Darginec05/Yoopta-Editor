@@ -5,14 +5,14 @@ import { EditorUploader } from './EditorUploader';
 import { getAspectRatio } from '../utils/aspect';
 import { Editor, Element, Transforms } from 'slate';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import s from './EditorPlaceholder.module.scss';
 import { toBase64 } from '../utils/base64';
 import { RenderElementProps, YoEditor } from '@yopta/editor';
-import { VideoElement } from '../types';
+import { VideoElement, VideoPluginOptions } from '../types';
+import s from './EditorPlaceholder.module.scss';
 
 type Props = RenderElementProps<VideoElement> & {
   editor: YoEditor;
-  onChange: (file: File) => Promise<void>;
+  onUpload?: VideoPluginOptions['onUpload'];
   maxSizes: { maxWidth: number; maxHeight: number };
 };
 
@@ -23,7 +23,7 @@ type UploaderPosition = {
 
 const UPLOADER_HEIGHT = 88;
 
-const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, onChange }: Props) => {
+const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, onUpload }: Props) => {
   const [uploaderPos, setUploaderPos] = useState<null | UploaderPosition>(null);
   const [activeTab, setActiveTab] = useState('upload');
   const videoEditorRef = useRef<HTMLDivElement>(null);
@@ -58,6 +58,44 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
     });
   }
 
+  const onEmbed = async (src) => {
+    console.log({ src });
+
+    if (src.length === 0) return;
+
+    const url = new URL(src);
+    const videoId = url.searchParams.get('v');
+    const youtubeUrl = `https://www.youtube.com/embed/${videoId}`;
+
+    const vimeourl = new URL('https://vimeo.com/789332765/7a19230334');
+    const vimeovideoId = vimeourl.pathname.split('/')[1];
+    const vimeoembedUrl = `https://player.vimeo.com/video/${vimeovideoId}?byline=1&badge=0&portrait=0&title=1`;
+    console.log(`Vimeo embed URL: ${vimeoembedUrl}`);
+
+    try {
+      enableBodyScroll(document.body);
+      setUploaderPos(null);
+
+      const updatedVideoNode: Partial<VideoElement> = {
+        data: {
+          ...element.data,
+          url: youtubeUrl,
+          'data-src': undefined,
+          size: { width: element.data.size.width, height: element.data.size.height },
+          provider: 'youtube',
+        },
+      };
+
+      Transforms.setNodes<VideoElement>(editor, updatedVideoNode, {
+        at: ReactEditor.findPath(editor, element),
+        match: (n) => Element.isElement(n) && n.type === 'video',
+      });
+    } catch (error) {
+      enableBodyScroll(document.body);
+      setUploaderPos(null);
+    }
+  };
+
   const onChangeFile = async (file) => {
     const base64 = await toBase64(file);
     const format = base64.substring('data:video/'.length, base64.indexOf(';base64'));
@@ -91,13 +129,10 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
       match: (n) => Element.isElement(n) && n.type === 'video',
     });
 
-    const response = await onChange(file);
-    const { width, height } = getAspectRatio(
-      response.data.width,
-      response.data.height,
-      maxSizes.maxWidth,
-      maxSizes.maxHeight,
-    );
+    if (!onUpload) return console.error('Provide `onUpload` props in Video options');
+
+    const response = await onUpload(file);
+    const { width, height } = getAspectRatio(response.width, response.height, maxSizes.maxWidth, maxSizes.maxHeight);
 
     const updateVideoNode: Partial<VideoElement> = {
       data: {
@@ -127,6 +162,7 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
             activeTab={activeTab}
             switchTab={(tab) => setActiveTab(tab)}
             style={uploaderPos}
+            onEmbed={onEmbed}
           />
         )}
       </div>

@@ -1,6 +1,6 @@
 import { generateId, getElementByPath, createYoptaPlugin, YoEditor } from '@yopta/editor';
 import { Transforms } from 'slate';
-import { ImageElement, ImageOptions } from './types';
+import { ImageElement, ImageElementData, ImagePluginOptions } from './types';
 import { Image as ImageRender } from './ui/Image';
 import { ImageEditor } from './ui/ImageEditor';
 
@@ -11,7 +11,7 @@ declare module 'slate' {
   }
 }
 
-const Image = createYoptaPlugin<ImageOptions, ImageElement>({
+const Image = createYoptaPlugin<ImagePluginOptions, ImageElement>({
   type: 'image',
   renderer: {
     editor: ImageEditor,
@@ -45,7 +45,7 @@ const Image = createYoptaPlugin<ImageOptions, ImageElement>({
     id: generateId(),
     type: 'image',
     nodeType: 'void',
-    data: { url: null, size: { width: 400, height: 400 } },
+    data: { url: null, size: { width: 'auto', height: 'auto' } },
     children: [{ text: '' }],
   }),
   createElement: function (editor) {
@@ -58,4 +58,4 @@ const Image = createYoptaPlugin<ImageOptions, ImageElement>({
 });
 
 export default Image;
-export { ImageElement, ImageOptions };
+export { ImageElement, ImageElementData, ImagePluginOptions };

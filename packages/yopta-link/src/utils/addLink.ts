@@ -1,12 +1,9 @@
 import { generateId, isElementActive, YoEditor } from '@yopta/editor';
 import { Editor, Range, Transforms } from 'slate';
+import { LinkElement } from '../types';
 import { removeLinkNode } from './removeLink';
 
-type LinkElement = any;
-
 export const addLinkNode = (editor: YoEditor, url: string) => {
-  console.log(`isElementActive(editor, 'link')`, isElementActive(editor, 'link'));
-
   if (isElementActive(editor, 'link')) {
     removeLinkNode(editor);
   }
@@ -16,8 +13,9 @@ export const addLinkNode = (editor: YoEditor, url: string) => {
   const link: LinkElement = {
     id: generateId(),
     type: 'link',
-    url,
+    data: { url },
     children: isCollapsed ? [{ text: url }] : [],
+    nodeType: 'inline',
   };
 
   if (isCollapsed) {

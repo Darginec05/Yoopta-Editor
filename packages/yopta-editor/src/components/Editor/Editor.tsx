@@ -53,8 +53,6 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
 
         const renderFn = getRenderFunctionFactory(plugin, readOnly)(editor, { type, options });
 
-        console.log('props.element', props.element);
-
         // [TODO] - add strong checker for renderFn
         if (props.element.type === plugin.type) {
           return (
