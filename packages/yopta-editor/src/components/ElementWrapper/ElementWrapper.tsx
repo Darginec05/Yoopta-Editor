@@ -13,7 +13,7 @@ const ElementWrapper = ({ children, element, attributes, nodeType, render }: Pro
   if (isInline) return render({ attributes, element, children });
 
   return (
-    <div data-node-id={element.id} data-node-type={element.type} {...attributes}>
+    <div data-element-id={element.id} data-element-type={element.type} {...attributes}>
       {render({ attributes, element, children })}
     </div>
   );

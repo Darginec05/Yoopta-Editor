@@ -1,0 +1,3 @@
+const Renderer = () => {};
+
+export { Renderer };

@@ -35,7 +35,7 @@
 //     });
 //   });
 
-import { YoptaPlugin, YoptaEditor } from '@yopta/editor';
+import { YoptaPlugin, YoptaEditor, createYoptaPlugin } from '@yopta/editor';
 import Blockquote, { BlockquoteElement } from '@yopta/blockquote';
 import Paragraph, { ParagraphElement } from '@yopta/paragraph';
 import Callout, { CalloutElement } from '@yopta/callout';
@@ -112,6 +112,8 @@ const BasicExample = () => {
       }),
     ];
   }, []);
+
+  // const plugins: YoptaPlugin[] = []
 
   const actionItems = [
     {
@@ -194,8 +196,8 @@ const BasicExample = () => {
         plugins={plugins}
         marks={[Bold, Italic, CodeMark, Underline, Strike]}
         shouldStoreInLocalStorage={{ name: 'yopta-dev' }}
-        readOnly={false}
-        // readOnly
+        // readOnly={false}
+        readOnly
       >
         {/* <ActionMenu trigger="/" items={actionItems} /> */}
         <ActionMenu trigger="/" items={actionItems}>

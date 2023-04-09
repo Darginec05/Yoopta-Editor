@@ -1,0 +1,38 @@
+{
+  "name": "@yopta/renderer",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "Darginec05 <devopsbanda@gmail.com>",
+  "homepage": "https://github.com/Darginec05/Editor-Yopta#readme",
+  "license": "MIT",
+  "private": false,
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "peerDependencies": {
+    "react": ">=17.0.2",
+    "react-dom": ">=17.0.2"
+  },
+  "publishConfig": {
+    "registry": "https://registry.yarnpkg.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Darginec05/Editor-Yopta.git"
+  },
+  "scripts": {
+    "test": "node ./__tests__/yopta-code.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/Darginec05/Editor-Yopta/issues"
+  },
+  "dependencies": {
+    "classnames": "^2.3.2",
+    "prism-material-themes": "^1.0.4",
+    "prismjs": "^1.29.0"
+  }
+}

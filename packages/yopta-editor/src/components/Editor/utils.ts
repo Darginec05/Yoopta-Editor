@@ -2,6 +2,7 @@ import { jsx } from 'slate-hyperscript';
 import { ELEMENT_TYPES_MAP } from './constants';
 import { generateId } from '../../utils/generateId';
 import { YoEditor, YoptaBaseElement } from '../../types';
+import { YoptaPluginType, YoptaRenderElementFunc } from '../../utils/plugins';
 
 export const HTML_ELEMENT_TAGS = {
   A: (el) => ({ type: ELEMENT_TYPES_MAP.link, url: el.getAttribute('href'), id: generateId() }),
@@ -95,3 +96,15 @@ export const getDefaultParagraphLine = (): YoptaBaseElement<'paragraph'> => ({
   nodeType: 'block',
   children: [{ text: '' }],
 });
+
+export function getRenderFunctionFactory(plugin: YoptaPluginType, readOnly?: boolean): YoptaRenderElementFunc {
+  if (typeof plugin.renderer === 'function') {
+    return plugin.renderer;
+  }
+
+  if (readOnly) {
+    return plugin.renderer.render || plugin.renderer.editor;
+  }
+
+  return plugin.renderer.editor;
+}
