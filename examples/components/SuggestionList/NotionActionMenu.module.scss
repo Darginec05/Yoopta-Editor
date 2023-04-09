@@ -56,8 +56,8 @@
   transition: background 20ms ease-in 0s;
   cursor: pointer;
   width: calc(100% - 8px);
-  margin-left: 4px;
-  margin-right: 4px;
+  // margin-left: 4px;
+  // margin-right: 4px;
   border-radius: 3px;
   display: flex;
   align-items: center;
@@ -66,8 +66,18 @@
   user-select: none;
   min-height: 45px;
   font-size: 14px;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  width: 100%;
+  border: none;
+  padding: 4px 0;
+  background-color: inherit;
+
+  &[aria-selected="true"]{
+    background-color: rgba(55, 53, 47, 0.08);
+  }
+
+  &:hover {
+    background-color: rgba(55, 53, 47, 0.08);
+  }
 }
 
 .itemLeft {
@@ -97,6 +107,7 @@
   margin-right: 12px;
   min-width: 0px;
   flex: 1 1 auto;
+  text-align: left;
 }
 
 .rightTitle {

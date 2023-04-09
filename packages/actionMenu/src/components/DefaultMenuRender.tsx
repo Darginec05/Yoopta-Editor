@@ -2,20 +2,14 @@ import { ActionRenderItemProps } from '../types';
 import { ItemRender } from './ItemRender';
 import s from './DefaultMenuRender.module.scss';
 
-const DefaultMenuRender = ({ items, getListProps, getItemsProps, getRootProps }: ActionRenderItemProps) => {
-  const isNotFound = items.length === 0;
-
+const DefaultMenuRender = ({ items, isNotFound, getItemProps, getRootProps }: ActionRenderItemProps) => {
   return (
     <div className={s.dropdown} {...getRootProps()}>
-      <ul className={s.elementList} {...getListProps()}>
-        {items?.map((menuItem, i) => {
-          return <ItemRender key={menuItem.type} {...getItemsProps(menuItem, i)} />;
+      <ul className={s.elementList}>
+        {items?.map((menuItem) => {
+          return <ItemRender key={menuItem.type} {...getItemProps(menuItem.type)} {...menuItem} />;
         })}
-        {isNotFound && (
-          <ItemRender key="noResults" focusableElement={0} index={0}>
-            No results
-          </ItemRender>
-        )}
+        {isNotFound && <ItemRender key="noResults">No results</ItemRender>}
       </ul>
     </div>
   );

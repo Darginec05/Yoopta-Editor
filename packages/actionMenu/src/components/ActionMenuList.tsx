@@ -1,4 +1,4 @@
-import { HOTKEYS, YoEditor, YoptaPluginType } from '@yopta/editor';
+import { HOTKEYS, YoEditor, YoptaBaseElement, YoptaPluginType } from '@yopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Element, Editor, Path, Point, Transforms } from 'slate';
@@ -10,7 +10,8 @@ import {
   ActionMenuRenderRootProps,
   ActionRenderItemProps,
   ActionMenuRenderItemProps,
-  ActionMenuRenderListProps,
+  ActionMenuRenderPlugin,
+  Groups,
 } from '../types';
 import { DefaultMenuRender } from './DefaultMenuRender';
 import s from './DefaultMenuRender.module.scss';
@@ -23,7 +24,7 @@ type Props = {
   trigger?: string | null;
   children?: (props: any) => ReactNode;
 } & (
-  | { items: ActionMenuComponentItem[]; children?: (props: any) => ReactNode; plugins?: never }
+  | { items: ActionMenuComponentItem[]; children?: (props: any) => ReactNode; plugins?: YoptaPluginType[] }
   | { plugins: YoptaPluginType[]; items?: never; children?: (props: any) => ReactNode }
 );
 
@@ -37,13 +38,14 @@ const MENU_PROPS_VALUE: MenuProps = {
 
 const filterBy = (item: ActionMenuRenderItem, text: string, field: string) => {
   if (!item[field]) return false;
-  return item[field].toLowerCase().indexOf(text) > -1;
+  return (item[field] as string).toLowerCase().indexOf(text) > -1;
 };
+
+const ACTION_MENU_ITEM_DATA_ATTR = 'data-action-menu-item';
 
 const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Props): JSX.Element => {
   const editor = useSlate() as YoEditor;
   const actionMenuRef = useRef<HTMLDivElement>(null);
-  const elementListRef = useRef<HTMLOListElement>(null);
   const [menuProps, setMenuProps] = useState<MenuProps>(MENU_PROPS_VALUE);
   const [searchString, setSearchString] = useState('');
   const [focusableElement, setFocusableElement] = useState(0);
@@ -84,8 +86,11 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
     setSearchString('');
     setFocusableElement(0);
 
-    const childNodes = elementListRef.current?.childNodes;
+    const childNodes = document.querySelectorAll(`[${ACTION_MENU_ITEM_DATA_ATTR}]`);
+    childNodes.forEach((childNode) => childNode?.setAttribute('aria-selected', 'false'));
+
     const firstNodeEl = childNodes?.[0] as HTMLLIElement | undefined;
+    firstNodeEl?.setAttribute('aria-selected', 'true');
 
     if (firstNodeEl?.nodeType === 1) {
       firstNodeEl?.scrollIntoView({
@@ -97,10 +102,6 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
 
   const isMenuOpen = checkIsMenuOpen(menuProps.fixedStyle);
 
-  const filterInlineNodes = (item: ActionMenuRenderItem) => {
-    return !Editor.isInline(editor, { type: item.type, children: [{ text: '' }] });
-  };
-
   const filterMenuList = (item: ActionMenuRenderItem) => {
     const filterText = searchString.replace(trigger || '', '');
     return (
@@ -110,20 +111,44 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
     );
   };
 
+  const mapCustomMenuItems = (item: ActionMenuComponentItem) => {
+    const { plugin, ...rest } = item;
+    const { type, createElement, getElement } = plugin.getPlugin;
+
+    return { ...rest, type, createElement, getElement };
+  };
+
   const renderMenuItems = useMemo<ActionMenuRenderItem[]>(() => {
     let menuList: ActionMenuRenderItem[];
 
     if (items) {
-      menuList = items.map(({ plugin, ...rest }) => ({ ...plugin.getPlugin, ...rest }));
+      menuList = items.map(mapCustomMenuItems);
     } else {
-      menuList = (plugins as unknown as YoptaPluginType[]).filter((item) => !item.isChild);
+      menuList = (plugins as unknown as YoptaPluginType[])
+        .filter((item) => !item.isChild)
+        .map((item) => ({ type: item.type, createElement: item.createElement, getElement: item.getElement }));
     }
 
-    return menuList.filter(filterInlineNodes).filter(filterMenuList);
+    return menuList.filter(filterMenuList);
   }, [items, plugins, searchString]);
 
+  const groupRenderItems = useMemo<Groups>(() => {
+    const groups: Groups = { texts: [], voids: [], inlines: [] };
+
+    renderMenuItems.forEach((plugin) => {
+      const element = plugin.getElement();
+      if (editor.isVoid(element)) groups.voids.push(plugin);
+      else if (editor.isInline(element)) groups.inlines.push(plugin);
+      else groups.texts.push(plugin);
+    });
+
+    return groups;
+  }, [renderMenuItems]);
+
   const moveDown = () => {
-    const childNodes = elementListRef.current?.childNodes;
+    const childNodes = document.querySelectorAll(`[${ACTION_MENU_ITEM_DATA_ATTR}]`);
+    const currentNodeEl = childNodes?.[focusableElement] as HTMLLIElement | undefined;
+    currentNodeEl?.setAttribute('aria-selected', 'false');
 
     let nextElementIndex = focusableElement + 1;
     const isLast = nextElementIndex === childNodes?.length;
@@ -138,14 +163,18 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
       });
     }
 
+    selectedNodeEl?.setAttribute('aria-selected', 'true');
     setFocusableElement(nextElementIndex);
   };
 
   const moveUp = () => {
-    const childNodes = elementListRef.current?.childNodes;
+    const childNodes = document.querySelectorAll(`[${ACTION_MENU_ITEM_DATA_ATTR}]`);
+    const currentNodeEl = childNodes?.[focusableElement] as HTMLLIElement | undefined;
+    currentNodeEl?.setAttribute('aria-selected', 'false');
 
     let prevElementIndex = focusableElement - 1;
     const isFirst = focusableElement === 0;
+
     if (isFirst) prevElementIndex = childNodes!.length - 1;
     const selectedNodeEl = childNodes?.[prevElementIndex] as HTMLLIElement | undefined;
 
@@ -156,6 +185,7 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
       });
     }
 
+    selectedNodeEl?.setAttribute('aria-selected', 'true');
     setFocusableElement(prevElementIndex);
   };
 
@@ -166,8 +196,10 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
     }
 
     if (HOTKEYS.isEnter(event)) {
-      const selectedNode = renderMenuItems[focusableElement];
-      if (selectedNode) changeNode(selectedNode);
+      const childNodes = document.querySelectorAll(`[${ACTION_MENU_ITEM_DATA_ATTR}]`);
+      const selectedType = childNodes[focusableElement].getAttribute('data-element-type') as string;
+
+      toggleNode(selectedType);
 
       event.preventDefault();
       event.stopPropagation();
@@ -234,7 +266,10 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
     };
   }, [editor, isMenuOpen, focusableElement, renderMenuItems]);
 
-  const changeNode = (menuItem: ActionMenuRenderItem) => {
+  const toggleNode = (type: string) => {
+    const menuItem = renderMenuItems.find((item) => item.type === type);
+    if (!menuItem) return;
+
     Editor.withoutNormalizing(editor, () => {
       if (!editor.selection) return;
 
@@ -263,20 +298,33 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
     ref: actionMenuRef,
   });
 
-  const getListProps = (): ActionMenuRenderListProps => ({
-    ref: elementListRef,
+  const getItemProps = (type: string): ActionMenuRenderItemProps => ({
+    onClick: () => toggleNode(type),
+    [ACTION_MENU_ITEM_DATA_ATTR]: true,
+    'aria-selected': false,
+    'data-element-type': type,
   });
 
-  const getItemsProps = (menuItem: ActionMenuRenderItem, index: number): ActionMenuRenderItemProps => ({
-    onMouseDown: () => changeNode(menuItem),
-    index,
-    focusableElement,
-    menuItem,
-  });
+  const plugingMap = useMemo<ActionMenuRenderPlugin>(() => {
+    const map: ActionMenuRenderPlugin = {};
 
-  const renderProps = { items: renderMenuItems, getRootProps, getListProps, getItemsProps };
+    renderMenuItems.map((item) => {
+      map[item.type] = { methods: { toggle: () => toggleNode(item.type) } };
+    });
 
-  if (children) {
+    return map;
+  }, [renderMenuItems]);
+
+  const renderProps: ActionRenderItemProps = {
+    items: renderMenuItems,
+    groups: groupRenderItems,
+    isNotFound,
+    getRootProps,
+    getItemProps,
+    plugins: plugingMap,
+  };
+
+  if (typeof children === 'function') {
     return (
       <div role={'dialog'} aria-modal style={menuProps.fixedStyle}>
         <div className={s.relative}>

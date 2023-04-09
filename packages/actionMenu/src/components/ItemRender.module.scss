@@ -21,6 +21,10 @@
   &.__active {
     background: #007AFF;
   }
+
+  &[aria-selected="true"]{
+    background: #383835;
+  }
 }
 
 .hovered {
