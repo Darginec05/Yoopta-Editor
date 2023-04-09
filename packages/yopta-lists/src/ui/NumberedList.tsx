@@ -1,9 +1,9 @@
-import { createYoptaPlugin, generateId } from '@yopta/editor';
+import { createYoptaPlugin, generateId, RenderElementProps } from '@yopta/editor';
 import { Editor, Element, Transforms } from 'slate';
 import type { ListChildItemElement, ListOptions, NumberedList } from '../types';
 import { ListItemList } from './ListItem';
 
-const NumberedListRender = ({ attributes, children }) => {
+const NumberedListRender = ({ attributes, children }: RenderElementProps<NumberedList>) => {
   return (
     <ol draggable={false} {...attributes}>
       {children}
