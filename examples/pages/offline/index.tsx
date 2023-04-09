@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Descendant } from 'slate';
 
 import s from './styles.module.scss';
-import '@yopta/editor/dist/index.css';
+// import '@yopta/editor/dist/index.css';
 
 const initialValue = [
   {

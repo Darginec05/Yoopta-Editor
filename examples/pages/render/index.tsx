@@ -1,10 +1,10 @@
-import { YoptaEditor, YoptaRenderer } from '@yopta/editor';
+import { YoptaEditor } from '@yopta/editor';
 
 import { useState } from 'react';
 import { Descendant } from 'slate';
 import { uploadToCloudinary } from '../../utils';
 
-import '@yopta/editor/dist/index.css';
+// import '@yopta/editor/dist/index.css';
 import s from './styles.module.scss';
 
 const initialData = [
@@ -122,7 +122,7 @@ const JustRenderExample = () => {
 
   return (
     <div className={s.container}>
-      <YoptaRenderer data={editorValue} className={s.editor} />
+      {/* <YoptaRenderer data={editorValue} className={s.editor} /> */}
       <button className={s.button} onClick={() => setMode('editor')}>
         Switch to edit mode
       </button>

@@ -1,7 +1,7 @@
 import { HOTKEYS, YoEditor, YoptaBaseElement, YoptaPluginType } from '@yopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { Element, Editor, Path, Point, Transforms } from 'slate';
+import { Element, Editor, Path, Point, Transforms, Text } from 'slate';
 import { useSlate } from 'slate-react';
 import { getRectByCurrentSelection } from '../utils/selectionRect';
 import {
@@ -286,7 +286,8 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
       if (Element.isElement(parentNode) && !Editor.isEditor(parentNode)) {
         Transforms.unwrapNodes(editor, {
           at: parentPath,
-          match: (n) => Element.isElement(parentNode) && n.type === parentNode.type,
+          match: (n) =>
+            !Editor.isEditor(n) && !Text.isText(n) && Element.isElement(parentNode) && n.type === parentNode.type,
         });
       }
 
