@@ -56,10 +56,10 @@ export class YoptaPlugin<O extends Options, P extends YoptaBaseElement<string>> 
     this.#props = Object.freeze({ ...inputPlugin });
   }
 
-  extend<TO extends Options, PO extends YoptaBaseElement<string>>(overrides: Partial<YoptaPluginType<TO, PO>>) {
+  extend(overrides: Partial<YoptaPluginType<O, P>>) {
     const updatedProps = Object.freeze({ ...this.#props, ...overrides });
 
-    return new YoptaPlugin<TO, PO>(updatedProps);
+    return new YoptaPlugin<O, P>(updatedProps);
   }
 
   get getPlugin(): YoptaPluginType<O, P> {
@@ -70,6 +70,21 @@ export class YoptaPlugin<O extends Options, P extends YoptaBaseElement<string>> 
 export function createYoptaPlugin<O extends Options, P extends YoptaBaseElement<string>>(input: YoptaPluginType<O, P>) {
   return new YoptaPlugin<O, P>(input);
 }
+
+type SuperPluginOptions = {
+  max: number;
+  min: number;
+};
+
+// const SuperPlugin = createYoptaPlugin<SuperPluginOptions, any>({
+//   type: 'superplugin',
+//   renderer: (editor) => (props) => null,
+//   getElement: () => ({ type: 'superplugin' }),
+//   options: {
+//     max: 19,
+//     min: 19,
+//   },
+// });
 
 export function mergePlugins<O extends Options, P extends YoptaBaseElement<string>>(
   plugins: YoptaPlugin<O, P>[],

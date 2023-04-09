@@ -1,7 +1,6 @@
 import { ChangeEvent, CSSProperties, MouseEvent, useEffect, useState } from 'react';
 import { Element, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
-import { YoEditor } from '@yopta/editor/dist/components/Editor/types';
 import s from './CodeEditor.module.scss';
 
 import Prism from 'prismjs';
@@ -27,7 +26,7 @@ import 'prismjs/components/prism-scala';
 import 'prism-material-themes/themes/material-default.css';
 
 import { LanguageSelect } from './LanguageSelect';
-import { cx, RenderElementProps } from '@yopta/editor';
+import { cx, RenderElementProps, YoEditor } from '@yopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { NodeOptions } from '../components/NodeOptions';
 import { CodeElement } from '../types';

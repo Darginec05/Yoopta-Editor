@@ -1,8 +1,8 @@
 import { Editor, Transforms, Range, Element, NodeEntry, Path } from 'slate';
-import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, MouseEventHandler, ReactNode, useEffect } from 'react';
+import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, ReactNode } from 'react';
 import { DefaultElement, Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
-import { getDefaultParagraphLine } from './utils';
+import { getDefaultParagraphLine, getRenderFunctionFactory } from './utils';
 import { ELEMENT_TYPES_MAP } from './constants';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
@@ -25,18 +25,6 @@ type YoptaProps = {
   marks: YoptaMark[];
 };
 
-const getRenderFunctionFactory = (plugin: YoptaPluginType, readOnly?: boolean): YoptaRenderElementFunc => {
-  if (typeof plugin.renderer === 'function') {
-    return plugin.renderer;
-  }
-
-  if (readOnly) {
-    return plugin.renderer.render || plugin.renderer.editor;
-  }
-
-  return plugin.renderer.editor;
-};
-
 // [TODO] - defaultNode move to common event handler to avoid repeated id's
 const handlersOptions = { hotkeys: HOTKEYS, defaultNode: getDefaultParagraphLine() };
 
@@ -49,9 +37,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
     return (props: RenderElementProps) => {
       for (let i = 0; i < plugins.length; i++) {
         const plugin = plugins[i];
-        const { type, options } = plugin;
-
-        const renderFn = getRenderFunctionFactory(plugin, readOnly)(editor, { type, options });
+        const renderFn = getRenderFunctionFactory(plugin, readOnly)(editor, plugin);
 
         // [TODO] - add strong checker for renderFn
         if (props.element.type === plugin.type) {
