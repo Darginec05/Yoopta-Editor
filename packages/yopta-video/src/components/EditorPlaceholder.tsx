@@ -67,10 +67,12 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
     const videoId = url.searchParams.get('v');
     const youtubeUrl = `https://www.youtube.com/embed/${videoId}`;
 
-    const vimeourl = new URL('https://vimeo.com/789332765/7a19230334');
-    const vimeovideoId = vimeourl.pathname.split('/')[1];
-    const vimeoembedUrl = `https://player.vimeo.com/video/${vimeovideoId}?byline=1&badge=0&portrait=0&title=1`;
-    console.log(`Vimeo embed URL: ${vimeoembedUrl}`);
+    // const vimeourl = new URL('https://vimeo.com/789332765/7a19230334');
+    // const vimeovideoId = vimeourl.pathname.split('/')[1];
+    // const vimeoembedUrl = `https://player.vimeo.com/video/${vimeovideoId}?byline=1&badge=0&portrait=0&title=1`;
+    // console.log(`Vimeo embed URL: ${vimeoembedUrl}`);
+
+    console.log({ youtubeUrl });
 
     try {
       enableBodyScroll(document.body);
