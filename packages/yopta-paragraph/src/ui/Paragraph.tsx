@@ -16,14 +16,14 @@ ParagraphRender.displayName = 'Paragraph';
 const Paragraph = createYoptaPlugin<any, ParagraphElement>({
   type: 'paragraph',
   renderer: (editor) => ParagraphRender,
-  getElement: (): ParagraphElement => ({
+  defineElement: (): ParagraphElement => ({
     id: generateId(),
     type: 'paragraph',
     children: [{ text: '' }],
     nodeType: 'block',
   }),
   createElement: function (editor, type, data) {
-    const node: ParagraphElement = this.getElement();
+    const node: ParagraphElement = this.defineElement();
 
     Transforms.setNodes(editor, node, {
       at: editor.selection?.anchor,

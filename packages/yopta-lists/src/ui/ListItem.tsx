@@ -19,7 +19,7 @@ const ListItemList = createYoptaPlugin<any, ListChildItemElement>({
   type: LIST_ITEM_NODE_TYPE,
   renderer: (editor) => ListItemRender,
   shortcut: '-',
-  getElement: (): ListChildItemElement => ({
+  defineElement: (): ListChildItemElement => ({
     id: generateId(),
     type: 'list-item',
     children: [{ text: '' }],
@@ -136,7 +136,7 @@ const ListItemList = createYoptaPlugin<any, ListChildItemElement>({
             ...parentNode,
             id: generateId(),
             type: parentNode.type,
-            children: [ListItemList.getPlugin.getElement()],
+            children: [ListItemList.getPlugin.defineElement()],
           };
 
           Transforms.wrapNodes(editor, parentNestedNode, { at: listItemPath });

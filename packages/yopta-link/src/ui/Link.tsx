@@ -46,7 +46,7 @@ const Link = createYoptaPlugin<any, LinkElement>({
     editor: () => LinkEditor,
     render: () => LinkRender,
   },
-  getElement: (): LinkElement => ({
+  defineElement: (): LinkElement => ({
     id: generateId(),
     type: 'link',
     children: [{ text: '' }],

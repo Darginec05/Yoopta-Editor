@@ -113,9 +113,9 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
 
   const mapCustomMenuItems = (item: ActionMenuComponentItem) => {
     const { plugin, ...rest } = item;
-    const { type, createElement, getElement } = plugin.getPlugin;
+    const { type, createElement, defineElement } = plugin.getPlugin;
 
-    return { ...rest, type, createElement, getElement };
+    return { ...rest, type, createElement, defineElement };
   };
 
   const renderMenuItems = useMemo<ActionMenuRenderItem[]>(() => {
@@ -126,7 +126,7 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
     } else {
       menuList = (plugins as unknown as YoptaPluginType[])
         .filter((item) => !item.isChild)
-        .map((item) => ({ type: item.type, createElement: item.createElement, getElement: item.getElement }));
+        .map((item) => ({ type: item.type, createElement: item.createElement, defineElement: item.defineElement }));
     }
 
     return menuList.filter(filterMenuList);
@@ -136,7 +136,7 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
     const groups: Groups = { texts: [], voids: [], inlines: [] };
 
     renderMenuItems.forEach((plugin) => {
-      const element = plugin.getElement();
+      const element = plugin.defineElement();
       if (editor.isVoid(element)) groups.voids.push(plugin);
       else if (editor.isInline(element)) groups.inlines.push(plugin);
       else groups.texts.push(plugin);

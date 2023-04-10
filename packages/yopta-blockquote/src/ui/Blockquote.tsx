@@ -17,14 +17,14 @@ const Blockquote = createYoptaPlugin<any, BlockquoteElement>({
   type: 'blockquote',
   renderer: (editor) => BlockquoteRender,
   shortcut: '>',
-  getElement: (): BlockquoteElement => ({
+  defineElement: (): BlockquoteElement => ({
     id: generateId(),
     type: 'blockquote',
     children: [{ text: '' }],
     nodeType: 'block',
   }),
   createElement: (editor) => {
-    const node: BlockquoteElement = Blockquote.getPlugin.getElement();
+    const node: BlockquoteElement = Blockquote.getPlugin.defineElement();
 
     Transforms.setNodes<BlockquoteElement>(editor, node, {
       at: editor.selection?.anchor,

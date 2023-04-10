@@ -6,7 +6,7 @@ export type ActionMenuComponentItem = {
   searchString?: string;
 } & Record<string, unknown>;
 
-export type ActionMenuRenderItem = Pick<YoptaPluginType, 'type' | 'createElement' | 'getElement'> &
+export type ActionMenuRenderItem = Pick<YoptaPluginType, 'type' | 'createElement' | 'defineElement'> &
   Omit<ActionMenuComponentItem, 'plugin'>;
 
 export type ActionMenuRenderRootProps = {

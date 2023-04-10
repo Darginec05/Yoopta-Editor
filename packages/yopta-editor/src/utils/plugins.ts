@@ -44,7 +44,7 @@ export type YoptaPluginType<O = Options, P extends YoptaBaseElement<string> = Yo
   childPlugin?: YoptaPlugin<any, any>;
   isChild?: boolean;
   createElement?: (editor: YoEditor, type: string, data?: any) => void;
-  getElement: () => P;
+  defineElement: () => P;
 };
 
 export type ParentYoptaPlugin<O = Options> = Omit<YoptaPluginType<O>, 'childPlugin' | 'isChild'>;
@@ -79,7 +79,7 @@ type SuperPluginOptions = {
 // const SuperPlugin = createYoptaPlugin<SuperPluginOptions, any>({
 //   type: 'superplugin',
 //   renderer: (editor) => (props) => null,
-//   getElement: () => ({ type: 'superplugin' }),
+//   defineElement: () => ({ type: 'superplugin' }),
 //   options: {
 //     max: 19,
 //     min: 19,

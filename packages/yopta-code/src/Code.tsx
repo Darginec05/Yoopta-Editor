@@ -22,7 +22,7 @@ const CodeLine = createYoptaPlugin<any, CodeChildElement>({
   renderer: CodeLineRender,
   leaf: () => CodeLeaf,
   decorator: codeLineDecorator,
-  getElement: (): CodeChildElement => ({
+  defineElement: (): CodeChildElement => ({
     id: generateId(),
     type: 'code-line',
     children: [{ text: '' }],
@@ -157,15 +157,15 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
 
     return editor;
   },
-  getElement: (): CodeElement => ({
+  defineElement: (): CodeElement => ({
     id: generateId(),
     type: 'code',
-    children: [CodeLine.getPlugin.getElement()],
+    children: [CodeLine.getPlugin.defineElement()],
     nodeType: 'block',
     data: { language: 'javascript' },
   }),
   createElement: function (editor, type, data = {}) {
-    const childNode: CodeChildElement = CodeLine.getPlugin.getElement();
+    const childNode: CodeChildElement = CodeLine.getPlugin.defineElement();
 
     Transforms.unwrapNodes(editor, {
       match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'code',
@@ -176,7 +176,7 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
       at: editor.selection?.anchor,
     });
 
-    const parentBlock: CodeElement = this.getElement();
+    const parentBlock: CodeElement = this.defineElement();
 
     Transforms.wrapNodes(editor, parentBlock, {
       at: editor.selection?.anchor,
