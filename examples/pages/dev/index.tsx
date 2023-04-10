@@ -193,9 +193,9 @@ const BasicExample = () => {
 
   return (
     <div className={s.container}>
-      {/* <button type="button" onClick={() => toggleMode(isEdit ? 'render' : 'edit')}>
+      <button type="button" onClick={() => toggleMode(isEdit ? 'render' : 'edit')}>
         Switch to {isEdit ? 'render' : 'edit'}
-      </button> */}
+      </button>
       {isEdit ? (
         <YoptaEditor
           value={editorValue}

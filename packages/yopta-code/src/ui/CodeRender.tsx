@@ -17,12 +17,7 @@ function CodeRender({ element, attributes, children }: RenderElementProps<CodeEl
   return (
     <code className={s.code} {...attributes}>
       {element.data.filename && <span className={s.filename}>{element.data.filename}</span>}
-      <pre className={cx(s.pre, `language-${element.data.language}`)}>
-        <span contentEditable={false} className={s.filename}>
-          {element.data.filename || '/code/index.tsx'}
-        </span>
-        {children}
-      </pre>
+      <pre className={cx(s.pre, `language-${element.data.language}`)}>{children}</pre>
     </code>
   );
 }
