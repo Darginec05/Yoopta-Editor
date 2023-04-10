@@ -1,2 +1,2 @@
-import { Renderer } from './Renderer';
-export default Renderer;
+import { YoptaRenderer } from './YoptaRenderer';
+export default YoptaRenderer;

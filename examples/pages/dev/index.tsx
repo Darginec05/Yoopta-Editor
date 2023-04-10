@@ -35,7 +35,7 @@
 //     });
 //   });
 
-import { YoptaPlugin, YoptaEditor, createYoptaPlugin } from '@yopta/editor';
+import { YoptaEditor } from '@yopta/editor';
 import Blockquote, { BlockquoteElement } from '@yopta/blockquote';
 import Paragraph, { ParagraphElement } from '@yopta/paragraph';
 import Callout, { CalloutElement } from '@yopta/callout';
@@ -46,6 +46,7 @@ import Headings, { HeadingOneElement, HeadingThreeElement, HeadingTwoElement } f
 import Image, { ImageElement, ImageElementData, ImagePluginOptions } from '@yopta/image';
 import Video, { VideoElement } from '@yopta/video';
 import Toolbar from '@yopta/toolbar';
+import YoptaRenderer from '@yopta/renderer';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yopta/marks';
 import ActionMenu, { ActionMenuComponentItem } from '@yopta/action-menu-list';
 import { useMemo, useState } from 'react';
@@ -76,6 +77,7 @@ type PluginElements =
 
 const BasicExample = () => {
   const [editorValue, setEditorValue] = useState<Descendant[]>([]);
+  const [mode, toggleMode] = useState<'render' | 'edit'>('edit');
 
   const plugins = useMemo(() => {
     return [
@@ -112,8 +114,6 @@ const BasicExample = () => {
       }),
     ];
   }, []);
-
-  // const plugins: YoptaPlugin[] = []
 
   const actionItems = [
     {
@@ -188,23 +188,31 @@ const BasicExample = () => {
     },
   ];
 
+  const marks = [Bold, Italic, CodeMark, Underline, Strike];
+  const isEdit = mode === 'edit';
+
   return (
     <div className={s.container}>
-      <YoptaEditor
-        value={editorValue}
-        onChange={(val: Descendant[]) => setEditorValue(val)}
-        plugins={plugins}
-        marks={[Bold, Italic, CodeMark, Underline, Strike]}
-        shouldStoreInLocalStorage={{ name: 'yopta-dev' }}
-        // readOnly={false}
-        readOnly
-      >
-        {/* <ActionMenu trigger="/" items={actionItems} /> */}
-        <ActionMenu trigger="/" items={actionItems}>
-          {NotionActionMenu}
-        </ActionMenu>
-        <Toolbar type="bubble">{(props) => <MediumToolbar {...props} />}</Toolbar>
-      </YoptaEditor>
+      {/* <button type="button" onClick={() => toggleMode(isEdit ? 'render' : 'edit')}>
+        Switch to {isEdit ? 'render' : 'edit'}
+      </button> */}
+      {isEdit ? (
+        <YoptaEditor
+          value={editorValue}
+          onChange={(val: Descendant[]) => setEditorValue(val)}
+          plugins={plugins}
+          marks={marks}
+          shouldStoreInLocalStorage={{ name: 'yopta-dev' }}
+          key="edit"
+        >
+          <ActionMenu trigger="/" items={actionItems}>
+            {NotionActionMenu}
+          </ActionMenu>
+          <Toolbar type="bubble">{(props) => <MediumToolbar {...props} />}</Toolbar>
+        </YoptaEditor>
+      ) : (
+        <YoptaRenderer key="render" plugins={plugins} marks={marks} data={editorValue} />
+      )}
       <pre className={s.editor} style={{ display: 'block', padding: '0 64px', whiteSpace: 'pre-wrap' }}>
         {JSON.stringify(editorValue, null, 2)}
       </pre>

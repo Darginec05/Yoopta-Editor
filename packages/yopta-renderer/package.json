@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "classnames": "^2.3.2",
+    "lodash.uniqwith": "^4.5.0",
     "prism-material-themes": "^1.0.4",
     "prismjs": "^1.29.0"
   }

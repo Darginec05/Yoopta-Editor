@@ -7,6 +7,7 @@ export { YoptaEditor } from './YoptaEditor';
 export { isValidYoptaNodes } from './utils/validate';
 export { generateId } from './utils/generateId';
 export { HOTKEYS } from './utils/hotkeys';
+export { deepClone } from './utils/deepClone';
 export { createYoptaMark } from './utils/marks';
 export { isElementActive, getElementByPath } from './utils/nodes';
 export type { YoptaPluginType, YoptaPluginEventHandlers, HandlersOptions } from './utils/plugins';

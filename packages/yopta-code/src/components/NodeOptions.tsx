@@ -46,7 +46,7 @@ const NodeOptions = ({ onClose, style, element }: Props) => {
 
       if (currentNode && !Element.isElement(currentNode)) return;
 
-      const duplicatedNode = structuredClone(currentNode);
+      const duplicatedNode = deepClone(currentNode);
       duplicatedNode.id = generateId();
 
       const nextPath = after ? [after.path[0]] : [path[0] + 1];
