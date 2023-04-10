@@ -19,15 +19,15 @@ const BulletedList = createYoptaPlugin<ListOptions, BulletedList>({
   // [TODO] - fix for nested items
   shortcut: '-',
   childPlugin: ListItemList,
-  getElement: () => ({
+  defineElement: () => ({
     id: generateId(),
     type: 'bulleted-list',
-    children: [ListItemList.getPlugin.getElement()],
+    children: [ListItemList.getPlugin.defineElement()],
     nodeType: 'block',
     data: { depth: 1 },
   }),
   createElement: (editor, type, data = {}) => {
-    const listItem: ListChildItemElement = ListItemList.getPlugin.getElement();
+    const listItem: ListChildItemElement = ListItemList.getPlugin.defineElement();
 
     Transforms.unwrapNodes(editor, {
       match: (n) =>
@@ -43,7 +43,7 @@ const BulletedList = createYoptaPlugin<ListOptions, BulletedList>({
       at: editor.selection?.anchor,
     });
 
-    const bulletedList: BulletedList = BulletedList.getPlugin.getElement();
+    const bulletedList: BulletedList = BulletedList.getPlugin.defineElement();
     Transforms.wrapNodes(editor, bulletedList, {
       at: editor.selection?.anchor,
     });

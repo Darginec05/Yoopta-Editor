@@ -18,15 +18,15 @@ const TodoList = createYoptaPlugin<ListOptions, TodoList>({
   type: TODO_LIST_NODE_TYPE,
   renderer: (editor) => TodoListRender,
   childPlugin: TodoListItem,
-  getElement: () => ({
+  defineElement: () => ({
     id: generateId(),
     type: 'todo-list',
-    children: [TodoListItem.getPlugin.getElement()],
+    children: [TodoListItem.getPlugin.defineElement()],
     nodeType: 'block',
     data: { depth: 1 },
   }),
   createElement: (editor, type, data = {}) => {
-    const todoListItemElement: TodoListChildItemElement = TodoListItem.getPlugin.getElement();
+    const todoListItemElement: TodoListChildItemElement = TodoListItem.getPlugin.defineElement();
 
     Transforms.unwrapNodes(editor, {
       match: (n) =>
@@ -42,7 +42,7 @@ const TodoList = createYoptaPlugin<ListOptions, TodoList>({
       at: editor.selection?.anchor,
     });
 
-    const todoList: TodoList = TodoList.getPlugin.getElement();
+    const todoList: TodoList = TodoList.getPlugin.defineElement();
 
     Transforms.wrapNodes(editor, todoList, {
       at: editor.selection?.anchor,

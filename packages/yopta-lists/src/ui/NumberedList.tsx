@@ -18,15 +18,15 @@ const NumberedList = createYoptaPlugin<ListOptions, NumberedList>({
   renderer: (editor) => NumberedListRender,
   childPlugin: ListItemList,
   shortcut: '1.',
-  getElement: () => ({
+  defineElement: () => ({
     id: generateId(),
     type: 'numbered-list',
-    children: [ListItemList.getPlugin.getElement()],
+    children: [ListItemList.getPlugin.defineElement()],
     nodeType: 'block',
     data: { depth: 1 },
   }),
   createElement: (editor) => {
-    const listItem: ListChildItemElement = ListItemList.getPlugin.getElement();
+    const listItem: ListChildItemElement = ListItemList.getPlugin.defineElement();
 
     Transforms.unwrapNodes(editor, {
       match: (n) =>
@@ -42,7 +42,7 @@ const NumberedList = createYoptaPlugin<ListOptions, NumberedList>({
       at: editor.selection?.anchor,
     });
 
-    const numberedList: NumberedList = NumberedList.getPlugin.getElement();
+    const numberedList: NumberedList = NumberedList.getPlugin.defineElement();
 
     Transforms.wrapNodes(editor, numberedList, {
       at: editor.selection?.anchor,

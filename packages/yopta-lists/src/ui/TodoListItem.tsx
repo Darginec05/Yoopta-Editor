@@ -39,7 +39,7 @@ const TodoListItem = createYoptaPlugin<TodoListItemOptions, TodoListChildItemEle
   type: TODO_LIST_NODE_ITEM_TYPE,
   renderer: TodoListItemRender,
   shortcut: '[]',
-  getElement: () => ({
+  defineElement: () => ({
     id: generateId(),
     type: 'todo-list-item',
     children: [{ text: '' }],
@@ -170,7 +170,7 @@ const TodoListItem = createYoptaPlugin<TodoListItemOptions, TodoListChildItemEle
             ...parentNode,
             id: generateId(),
             type: parentNode.type,
-            children: [TodoListItem.getPlugin.getElement()],
+            children: [TodoListItem.getPlugin.defineElement()],
           };
 
           Transforms.wrapNodes(editor, parentNestedNode, { at: todoItemPath });
