@@ -1,15 +1,15 @@
 import { Editor, Transforms, Element as SlateElement, Point, Path } from 'slate';
-import copy from 'copy-to-clipboard';
 import React, { CSSProperties, MouseEvent, useContext, useMemo, useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
-import { YoElement } from '../../types';
+import { YoptaBaseElement } from '../../types';
 import { ELEMENT_TYPES_MAP, LIST_TYPES } from '../../components/Editor/constants';
 import { useDragDrop, DragDropValues, DragDropHandlers } from '../../hooks/useDragDrop';
-import { getNodeByCurrentPath } from '../../components/Editor/utils';
+import { getDefaultParagraphLine, getNodeByCurrentPath } from '../../components/Editor/utils';
 import { getElementByPath } from '../../utils/nodes';
 import { generateId } from '../../utils/generateId';
+import { deepClone } from '../../utils/deepClone';
 
-export type HoveredNode = YoElement | null;
+export type HoveredNode = YoptaBaseElement<string> | null;
 
 export type NodeSettingsContextValues = DragDropValues & {
   hoveredNode: HoveredNode;
@@ -20,8 +20,8 @@ export type NodeSettingsContextValues = DragDropValues & {
 export type NodeSettingsContextHandlers = DragDropHandlers & {
   openNodeSettings: (_dragRef: any, _node: HoveredNode) => void;
   closeNodeSettings: () => void;
-  hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: YoElement) => void;
-  hoverOut: (_e: MouseEvent<HTMLDivElement>, _node: YoElement) => void;
+  hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: YoptaBaseElement<string>) => void;
+  hoverOut: (_e: MouseEvent<HTMLDivElement>, _node: YoptaBaseElement<string>) => void;
   triggerPlusButton: (_onFocusCallback: () => void) => void;
   deleteNode: () => void;
   duplicateNode: () => void;
@@ -44,8 +44,8 @@ const NodeSettingsContext = React.createContext<NodeSettingsContextType>([
   {
     openNodeSettings: (_dragRef: any, _node?: HoveredNode) => {},
     closeNodeSettings: () => {},
-    hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: YoElement) => {},
-    hoverOut: (_e: MouseEvent<HTMLDivElement>, _node: YoElement) => {},
+    hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: YoptaBaseElement<string>) => {},
+    hoverOut: (_e: MouseEvent<HTMLDivElement>, _node: YoptaBaseElement<string>) => {},
     triggerPlusButton: (_onFocusCallback: () => void) => {},
     deleteNode: () => {},
     duplicateNode: () => {},
@@ -74,7 +74,7 @@ const getRootLevelNextNodePath = (currentPath: Path, nextPoint: Point | undefine
 
 const getInitialState = ({ children }: Editor): HoveredNode => {
   if (children.length === 1) {
-    const node = children[0] as YoElement;
+    const node = children[0] as YoptaBaseElement<string>;
     return node;
   }
 
@@ -98,12 +98,12 @@ const NodeSettingsProvider = ({ children }) => {
 
   const events = useMemo<NodeSettingsContextHandlers>(
     () => ({
-      hoverIn: (e: MouseEvent<HTMLDivElement>, node: YoElement) => {
+      hoverIn: (e: MouseEvent<HTMLDivElement>, node: YoptaBaseElement<string>) => {
         if (isNodeSettingsOpen) return e.preventDefault();
         setHoveredNode(node);
       },
 
-      hoverOut: (e: MouseEvent<HTMLDivElement>, node: YoElement) => {
+      hoverOut: (e: MouseEvent<HTMLDivElement>, node: YoptaBaseElement<string>) => {
         if (node.id === hoveredNode?.id || isNodeSettingsOpen) return e.preventDefault();
         setHoveredNode(null);
       },
@@ -229,7 +229,7 @@ const NodeSettingsProvider = ({ children }) => {
           const currentNode = getElementByPath(editor);
 
           if (currentNode) {
-            const duplicatedNode = structuredClone(currentNode);
+            const duplicatedNode = deepClone(currentNode);
             duplicatedNode.id = generateId();
 
             Transforms.insertNodes(editor, duplicatedNode, {

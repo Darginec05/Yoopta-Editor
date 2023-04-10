@@ -12,6 +12,7 @@
     { "path": "./packages/yopta-video" },
     { "path": "./packages/yopta-image" },
     { "path": "./packages/actionMenu" },
-    { "path": "./packages/marks" }
+    { "path": "./packages/marks" },
+    { "path": "./packages/yopta-renderer" }
   ]
 }

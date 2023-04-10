@@ -9,12 +9,13 @@ import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeS
 import { onCopyYoptaNodes } from '../../utils/copy';
 import { ElementWrapper } from '../ElementWrapper/ElementWrapper';
 import { HOTKEYS } from '../../utils/hotkeys';
-import { ParentYoptaPlugin, YoptaPluginType, YoptaRenderElementFunc } from '../../utils/plugins';
+import { ParentYoptaPlugin } from '../../utils/plugins';
 import { getElementByPath } from '../../utils/nodes';
 import { EditorEventHandlers } from '../../types/eventHandlers';
 import { generateId } from '../../utils/generateId';
 import { YoptaMark } from '../../utils/marks';
 import { YoEditor, YoptaBaseElement } from '../../types';
+import { deepClone } from '../../utils/deepClone';
 
 type YoptaProps = {
   editor: YoEditor;
@@ -37,7 +38,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
     return (props: RenderElementProps) => {
       for (let i = 0; i < plugins.length; i++) {
         const plugin = plugins[i];
-        const renderFn = getRenderFunctionFactory(plugin, readOnly)(editor, plugin);
+        const renderFn = getRenderFunctionFactory(plugin)(editor, plugin);
 
         // [TODO] - add strong checker for renderFn
         if (props.element.type === plugin.type) {
@@ -157,7 +158,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
 
           Transforms.setNodes(editor, defaultNode, { at: parentPath });
           Transforms.delete(editor, { unit: 'block' });
-          Transforms.insertNodes(editor, structuredClone(currentNode), { at: Path.next(parentPath) });
+          Transforms.insertNodes(editor, deepClone(currentNode), { at: Path.next(parentPath) });
 
           Transforms.select(editor, { path: [Path.next(editor.selection.anchor.path)[0] + 1, 0], offset: 0 });
           return;

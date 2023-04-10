@@ -6,7 +6,7 @@ import TrashIcon from './icons/trash.svg';
 import DuplicateIcon from './icons/duplicate.svg';
 import TurnIcon from './icons/turn.svg';
 import CopyIcon from './icons/copy.svg';
-import { generateId } from '@yopta/editor';
+import { deepClone, generateId } from '@yopta/editor';
 import s from './NodeOptions.module.scss';
 
 type Props = {
@@ -46,11 +46,9 @@ const NodeOptions = ({ onClose, style, element }: Props) => {
 
       const currentNode = currentNodeEntry?.[0];
 
-      console.log('currentNode', currentNode);
       if (currentNode && !Element.isElement(currentNode)) return;
-      console.log('curr path', path);
 
-      const duplicatedNode = structuredClone(currentNode);
+      const duplicatedNode = deepClone(currentNode);
       duplicatedNode.id = generateId();
 
       console.log('duplicatedNode', duplicatedNode);

@@ -97,13 +97,9 @@ export const getDefaultParagraphLine = (): YoptaBaseElement<'paragraph'> => ({
   children: [{ text: '' }],
 });
 
-export function getRenderFunctionFactory(plugin: YoptaPluginType, readOnly?: boolean): YoptaRenderElementFunc {
+export function getRenderFunctionFactory(plugin: YoptaPluginType): YoptaRenderElementFunc {
   if (typeof plugin.renderer === 'function') {
     return plugin.renderer;
-  }
-
-  if (readOnly) {
-    return plugin.renderer.render || plugin.renderer.editor;
   }
 
   return plugin.renderer.editor;
