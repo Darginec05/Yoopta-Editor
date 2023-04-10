@@ -15,7 +15,7 @@ const Video = createYoptaPlugin<VideoPluginOptions, VideoElement>({
   type: 'video',
   renderer: {
     editor: VideoEditor,
-    render: () => VideoRender,
+    render: VideoRender,
   },
   extendEditor(editor) {
     const { isVoid } = editor;

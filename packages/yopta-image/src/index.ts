@@ -15,7 +15,7 @@ const Image = createYoptaPlugin<ImagePluginOptions, ImageElement>({
   type: 'image',
   renderer: {
     editor: ImageEditor,
-    render: () => ImageRender,
+    render: ImageRender,
   },
   extendEditor(editor) {
     const { isVoid } = editor;

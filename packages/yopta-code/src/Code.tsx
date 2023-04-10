@@ -125,7 +125,7 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
   type: CODE_NODE_TYPE,
   renderer: {
     editor: CodeEditor,
-    render: () => CodeRender,
+    render: CodeRender,
   },
   shortcut: 'hw',
   childPlugin: CodeLine,

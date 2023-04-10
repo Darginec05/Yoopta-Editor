@@ -3,7 +3,6 @@ import { Descendant } from 'slate';
 import type { YoptaMark } from '@yopta/editor';
 import { getChildren } from './components/RenderElement';
 import uniqWith from 'lodash.uniqwith';
-import { isElement } from './utils';
 
 type Props = {
   className?: string;
@@ -53,7 +52,7 @@ const YoptaRenderer = (props: Props) => {
     return (props) => {
       for (let i = 0; i < yoptaPlugins.length; i++) {
         const plugin = yoptaPlugins[i];
-        const renderFn = plugin.renderer.render ? plugin.renderer.render() : plugin.renderer(null);
+        const renderFn = plugin.renderer.render ? plugin.renderer.render : plugin.renderer(null);
 
         if (props.element.type === plugin.type) {
           return (

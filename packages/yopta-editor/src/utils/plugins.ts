@@ -27,7 +27,7 @@ export type YoptaRender<P extends YoptaBaseElement<string>> = YoptaRenderElement
 
 export type ExtendedYoptaRender<P extends YoptaBaseElement<string>> = {
   editor: YoptaRenderElementFunc<P>;
-  render?: YoptaRenderElementFunc<P>;
+  render: (props: RenderElementProps<P>) => ReactElement;
 };
 
 export type YoptaRenderer<P extends YoptaBaseElement<string>> = ExtendedYoptaRender<P> | YoptaRender<P>;
@@ -70,21 +70,6 @@ export class YoptaPlugin<O extends Options, P extends YoptaBaseElement<string>> 
 export function createYoptaPlugin<O extends Options, P extends YoptaBaseElement<string>>(input: YoptaPluginType<O, P>) {
   return new YoptaPlugin<O, P>(input);
 }
-
-type SuperPluginOptions = {
-  max: number;
-  min: number;
-};
-
-// const SuperPlugin = createYoptaPlugin<SuperPluginOptions, any>({
-//   type: 'superplugin',
-//   renderer: (editor) => (props) => null,
-//   defineElement: () => ({ type: 'superplugin' }),
-//   options: {
-//     max: 19,
-//     min: 19,
-//   },
-// });
 
 export function mergePlugins<O extends Options, P extends YoptaBaseElement<string>>(
   plugins: YoptaPlugin<O, P>[],
