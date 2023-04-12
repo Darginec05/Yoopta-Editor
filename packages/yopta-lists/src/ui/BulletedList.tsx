@@ -2,10 +2,11 @@ import { createYoptaPlugin, generateId, RenderElementProps, YoptaPlugin } from '
 import { Editor, Element, Transforms } from 'slate';
 import type { BulletedList, ListChildItemElement, ListOptions } from '../types';
 import { ListItemList } from './ListItem';
+import s from './BulletedList.module.scss';
 
 const BulletedListRender = ({ attributes, children, element }: RenderElementProps<BulletedList>) => {
   return (
-    <ul draggable={false} {...attributes}>
+    <ul draggable={false} {...attributes} className={s.list}>
       {children}
     </ul>
   );

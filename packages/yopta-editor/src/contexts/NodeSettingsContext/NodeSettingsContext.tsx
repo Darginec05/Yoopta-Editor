@@ -3,7 +3,7 @@ import React, { CSSProperties, MouseEvent, useContext, useMemo, useState } from 
 import { ReactEditor, useSlate } from 'slate-react';
 import { YoptaBaseElement } from '../../types';
 import { ELEMENT_TYPES_MAP, LIST_TYPES } from '../../components/Editor/constants';
-import { useDragDrop, DragDropValues, DragDropHandlers } from '../../hooks/useDragDrop';
+import { useDragDrop, DragDropValues, DragDropHandlers, DEFAULT_DRAG_STATE } from '../../hooks/useDragDrop';
 import { getDefaultParagraphLine, getNodeByCurrentPath } from '../../components/Editor/utils';
 import { getElementByPath } from '../../utils/nodes';
 import { generateId } from '../../utils/generateId';
@@ -35,8 +35,9 @@ const defaultValues: NodeSettingsContextValues = {
   hoveredNode: null,
   isNodeSettingsOpen: false,
   nodeSettingsPos: undefined,
-  dndState: { fromPath: null, toPath: null },
+  dndState: DEFAULT_DRAG_STATE,
   disableWhileDrag: false,
+  DRAG_MAP: new Map(),
 };
 
 const NodeSettingsContext = React.createContext<NodeSettingsContextType>([
@@ -100,6 +101,14 @@ const NodeSettingsProvider = ({ children }) => {
     () => ({
       hoverIn: (e: MouseEvent<HTMLDivElement>, node: YoptaBaseElement<string>) => {
         if (isNodeSettingsOpen) return e.preventDefault();
+
+        const pathNode = ReactEditor.findPath(editor, node);
+        const parentEntry = Editor.parent(editor, pathNode);
+        const parentNode = parentEntry[0];
+
+        // [TODO] - add draggable props to element
+        if (!!node?.data?.depth) return;
+
         setHoveredNode(node);
       },
 

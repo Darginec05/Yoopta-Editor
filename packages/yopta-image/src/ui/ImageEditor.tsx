@@ -15,8 +15,6 @@ const OPTIONS_WIDTH = 265;
 
 function ImageEditor(editor: YoEditor, plugin) {
   return function ImageEditor(props: RenderElementProps<ImageElement>) {
-    console.log(ReactEditor.findPath(editor, props.element));
-
     const { element } = props;
     const selected = useSelected();
 

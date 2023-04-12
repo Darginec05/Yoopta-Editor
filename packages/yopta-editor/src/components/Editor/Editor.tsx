@@ -31,7 +31,8 @@ const handlersOptions = { hotkeys: HOTKEYS, defaultNode: getDefaultParagraphLine
 
 const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }: YoptaProps) => {
   useScrollToElement();
-  const [{ disableWhileDrag }, { changeHoveredNode }] = useNodeSettingsContext();
+  const [{ disableWhileDrag }, { changeHoveredNode, onDrop }] = useNodeSettingsContext();
+
   const isReadOnly = disableWhileDrag || readOnly;
 
   const renderElement = useMemo(() => {
@@ -272,6 +273,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
         {...eventHandlers}
         onKeyDown={onKeyDown}
         onMouseDown={onMouseDown}
+        // onDrop={onDrop}
       />
     </div>
   );

@@ -1,6 +1,10 @@
-import type { ReactElement } from 'react';
-import type { RenderElementProps } from 'slate-react';
+import { MouseEvent, ReactElement, useMemo } from 'react';
+import { RenderElementProps, useSlate } from 'slate-react';
+import cx from 'classnames';
 import { YoptaElementConfig } from '../../types';
+import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
+import { NodeActions } from './NodeActions';
+import s from './ElementWrapper.module.scss';
 
 type Props = RenderElementProps & {
   nodeType: YoptaElementConfig['nodeType'];
@@ -8,12 +12,53 @@ type Props = RenderElementProps & {
 };
 
 const ElementWrapper = ({ children, element, attributes, nodeType, render }: Props) => {
+  const editor = useSlate();
   const isInline = nodeType === 'inline';
+  const [values, handlers] = useNodeSettingsContext();
+  const { hoverIn, onDrop } = handlers;
+  const { dndState, DRAG_MAP } = values;
+
+  const onMouseEnter = (e: MouseEvent<HTMLDivElement>) => hoverIn(e, element);
+
+  const dragState = useMemo(() => {
+    if (dndState.from.element === null || dndState.to.element === null) {
+      return {
+        isDragging: false,
+        isDragOver: false,
+        isDragSelf: false,
+      };
+    }
+
+    const isDragging = values.dndState.from.element?.id === element.id;
+    const isDragOver = values.dndState.to.element?.id === element.id;
+    const isDragSelf = isDragging && isDragOver;
+
+    return {
+      isDragging,
+      isDragOver,
+      isDragSelf,
+    };
+  }, [values.dndState.from, values.dndState.to]);
+
+  const { isDragging, isDragOver, isDragSelf } = dragState;
+
+  const styles = { opacity: isDragging ? 0.7 : 1 };
+
+  DRAG_MAP.set(element.id, element);
 
   if (isInline) return render({ attributes, element, children });
 
   return (
-    <div data-element-id={element.id} data-element-type={element.type} {...attributes}>
+    <div
+      data-element-id={element.id}
+      data-element-type={element.type}
+      onMouseEnter={onMouseEnter}
+      onDrop={onDrop}
+      className={cx(s.elementWrapper, { [s.isDragOver]: isDragOver, [s.isDragSelf]: isDragSelf })}
+      style={styles}
+      {...attributes}
+    >
+      <NodeActions editor={editor} element={element} handlers={handlers} values={values} />
       {render({ attributes, element, children })}
     </div>
   );
