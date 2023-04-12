@@ -109,7 +109,7 @@ const createConfig = ({ pkg, postcssConfig }) => {
   };
 };
 
-const CoreConfig = createConfig({ pkg: corePkg, postcssConfig: { extract: true } });
+const CoreConfig = createConfig({ pkg: corePkg });
 const BlockquoteConfig = createConfig({ pkg: blockquotePkg });
 const ParagraphPkgConfig = createConfig({ pkg: paragraphPkg });
 const CalloutPkgConfig = createConfig({ pkg: calloutPkg });

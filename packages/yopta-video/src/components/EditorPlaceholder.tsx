@@ -99,37 +99,15 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
   };
 
   const onChangeFile = async (file) => {
-    const base64 = await toBase64(file);
-    const format = base64.substring('data:video/'.length, base64.indexOf(';base64'));
-
-    const optimisticVideo = await getVideoSizes(base64);
-    const aspectSizes = getAspectRatio(
-      optimisticVideo.width,
-      optimisticVideo.height,
-      maxSizes.maxWidth,
-      maxSizes.maxHeight,
-    );
-
     enableBodyScroll(document.body);
     setUploaderPos(null);
 
-    const videoNode: Partial<VideoElement> = {
-      data: {
-        ...element.data,
-        'data-src': base64,
-        size: {
-          width: aspectSizes.width || element.data.size.width,
-          height: aspectSizes.height || element.data.size.height,
-        },
-      },
-    };
+    // console.log('optimistic video uploader', ReactEditor.findPath(editor, element));
 
-    console.log('optimistic video uploader', ReactEditor.findPath(editor, element));
-
-    Transforms.setNodes<VideoElement>(editor, videoNode, {
-      at: ReactEditor.findPath(editor, element),
-      match: (n) => Element.isElement(n) && n.type === 'video',
-    });
+    // Transforms.setNodes<VideoElement>(editor, videoNode, {
+    //   at: ReactEditor.findPath(editor, element),
+    //   match: (n) => Element.isElement(n) && n.type === 'video',
+    // });
 
     if (!onUpload) return console.error('Provide `onUpload` props in Video options');
 
