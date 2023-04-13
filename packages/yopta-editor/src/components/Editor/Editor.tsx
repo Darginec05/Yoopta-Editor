@@ -1,5 +1,5 @@
 import { Editor, Transforms, Range, Element, NodeEntry, Path } from 'slate';
-import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, ReactNode, useRef } from 'react';
+import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, ReactNode, useRef, useEffect } from 'react';
 import { DefaultElement, Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
 import { getDefaultParagraphLine, getRenderFunctionFactory } from './utils';
@@ -32,7 +32,7 @@ const handlersOptions = { hotkeys: HOTKEYS, defaultNode: getDefaultParagraphLine
 const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }: YoptaProps) => {
   useScrollToElement();
   const editorRef = useRef<HTMLDivElement>(null);
-  const [{ disableWhileDrag }, { changeHoveredNode, onDrop }] = useNodeSettingsContext();
+  const [{ disableWhileDrag }, { changeHoveredNode }] = useNodeSettingsContext();
 
   const isReadOnly = disableWhileDrag || readOnly;
 
@@ -168,6 +168,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
 
         Transforms.splitNodes(editor, { always: true });
         Transforms.setNodes(editor, defaultNode);
+        changeHoveredNode(defaultNode);
 
         return;
       }

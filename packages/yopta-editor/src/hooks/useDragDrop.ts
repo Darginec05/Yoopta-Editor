@@ -91,52 +91,68 @@ export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers
   };
 
   const onDrop = (e: DragEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-    if (dndState.from.element?.id === dndState.to.element?.id) return;
+    try {
+      Editor.withoutNormalizing(editor, () => {
+        e.stopPropagation();
+        if (dndState.from.element?.id === dndState.to.element?.id) return;
 
-    const fromPath = dndState.from.path;
+        const fromPath = dndState.from.path;
 
-    const toNodeElement = DRAG_MAP.get(dndState.to.element!.id);
-    let toPath: Path | null = ReactEditor.findPath(editor, toNodeElement);
+        const toNodeElement = DRAG_MAP.get(dndState.to.element!.id);
+        let toPath: Path | null = ReactEditor.findPath(editor, toNodeElement);
 
-    if (!fromPath || !toPath) return;
+        if (!fromPath || !toPath) return;
 
-    const [fromElementNode, fromElementPath] = Editor.node(editor, fromPath);
-    console.log('fromPath', fromPath);
-    console.log('toPath', toPath);
-    console.log('toPath next', Path.next(toPath));
-    console.log('fromElementNode', fromElementNode);
-    console.log('fromElementNode parent', Editor.parent(editor, fromElementPath));
-    console.log('DRAG_MAP', DRAG_MAP);
+        const [fromElementNode, fromElementPath] = Editor.node(editor, fromPath);
+        const [parentElementNode, parentElementPath] = Editor.parent(editor, fromElementPath);
 
-    if (toPath.length > 1) {
-      // if (toPath.length === fromPath.length) {
-      Transforms.removeNodes(editor, {
-        at: fromPath,
-        match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.id === dndState.from.element?.id,
+        // [TODO] - bug with list
+        if (parentElementNode.children.length === 1 && Element.isElement(parentElementNode.children[0])) {
+          Transforms.removeNodes(editor, {
+            at: parentElementPath,
+            match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.id === parentElementNode.id,
+          });
+        }
+
+        console.log('fromPath', fromPath);
+        console.log('toPath', toPath);
+        console.log('toPath next', Path.next(toPath));
+        console.log('fromElementNode', fromElementNode);
+        console.log('parentElementNode', parentElementNode);
+        console.log('DRAG_MAP', DRAG_MAP);
+
+        if (toPath.length > 1) {
+          // if (toPath.length === fromPath.length) {
+          Transforms.removeNodes(editor, {
+            at: fromPath,
+            match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.id === dndState.from.element?.id,
+          });
+
+          Transforms.insertNodes(editor, fromElementNode, {
+            // [TODO] - check if current parent item is the same
+            at: toPath.length === fromPath.length ? toPath : Path.next(toPath),
+            // at: Path.next(toPath),
+            match: (n) => !Editor.isEditor(n) && Element.isElement(n),
+            mode: 'lowest',
+          });
+          // } else {
+          //   console.log('just FUCK YOU with diff length');
+          // }
+        } else {
+          Transforms.moveNodes(editor, {
+            at: fromPath,
+            to: toPath,
+            match: (node) => Editor.isEditor(editor) && Element.isElement(node),
+            mode: 'highest',
+          });
+        }
+
+        e.dataTransfer.clearData();
+        DRAG_MAP.clear();
       });
-
-      Transforms.insertNodes(editor, fromElementNode, {
-        // [TODO] - check if current parent item is the same
-        at: toPath.length === fromPath.length ? toPath : Path.next(toPath),
-        // at: Path.next(toPath),
-        match: (n) => !Editor.isEditor(n) && Element.isElement(n),
-        mode: 'lowest',
-      });
-      // } else {
-      //   console.log('just FUCK YOU with diff length');
-      // }
-    } else {
-      Transforms.moveNodes(editor, {
-        at: fromPath,
-        to: toPath,
-        match: (node) => Editor.isEditor(editor) && Element.isElement(node),
-        mode: 'highest',
-      });
+    } catch (error) {
+      console.error(error);
     }
-
-    e.dataTransfer.clearData();
-    DRAG_MAP.clear();
   };
 
   const onDragStart = (e: DragEvent<HTMLDivElement>, from: DraggedNode) => {
