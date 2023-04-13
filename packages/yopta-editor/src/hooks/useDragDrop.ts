@@ -2,7 +2,13 @@ import { DragEvent, useEffect, useState } from 'react';
 import { Element, Node, Path } from 'slate';
 import { Editor, Transforms, Element as SlateElement } from 'slate';
 import { ReactEditor } from 'slate-react';
+// import { markdown, html } from '@yopta/exports';
 import { YoEditor, YoptaBaseElement } from '../types';
+
+// markdown.deserialize();
+// markdown.serialize();
+// html.serialize();
+// html.deserialize();
 
 export type DraggedNode = { path: number[] | null; element: Pick<YoptaBaseElement<string>, 'id' | 'type'> | null };
 
@@ -52,8 +58,13 @@ export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers
   const [dndState, setDndState] = useState<DndState>(DEFAULT_DRAG_STATE);
   const [DRAG_MAP] = useState(() => new Map());
 
-  const onDragEnter = (e) => {
+  const onDragEnter = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     const target: HTMLDivElement = e.target.closest('[data-element-id]');
+
+    console.log(e.target!.closest('[data-element-id]'));
 
     if (target) {
       const { elementId, elementType } = target.dataset;
@@ -80,24 +91,44 @@ export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers
   };
 
   const onDrop = (e: DragEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     if (dndState.from.element?.id === dndState.to.element?.id) return;
 
-    let toPath: Path | null = ReactEditor.findPath(editor, DRAG_MAP.get(dndState.to.element!.id));
+    const fromPath = dndState.from.path;
 
-    if (!dndState.from.path || !toPath) return;
+    const toNodeElement = DRAG_MAP.get(dndState.to.element!.id);
+    let toPath: Path | null = ReactEditor.findPath(editor, toNodeElement);
 
-    console.log('dndState.from.path', dndState.from.path);
+    if (!fromPath || !toPath) return;
+
+    const [fromElementNode, fromElementPath] = Editor.node(editor, fromPath);
+    console.log('fromPath', fromPath);
     console.log('toPath', toPath);
+    console.log('toPath next', Path.next(toPath));
+    console.log('fromElementNode', fromElementNode);
+    console.log('fromElementNode parent', Editor.parent(editor, fromElementPath));
+    console.log('DRAG_MAP', DRAG_MAP);
 
     if (toPath.length > 1) {
-      if (toPath.length === dndState.from.path.length) {
-        console.log('SWAP FUCK YOU with same length');
-      } else {
-        console.log('just FUCK YOU with diff length');
-      }
+      // if (toPath.length === fromPath.length) {
+      Transforms.removeNodes(editor, {
+        at: fromPath,
+        match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.id === dndState.from.element?.id,
+      });
+
+      Transforms.insertNodes(editor, fromElementNode, {
+        // [TODO] - check if current parent item is the same
+        at: toPath.length === fromPath.length ? toPath : Path.next(toPath),
+        // at: Path.next(toPath),
+        match: (n) => !Editor.isEditor(n) && Element.isElement(n),
+        mode: 'lowest',
+      });
+      // } else {
+      //   console.log('just FUCK YOU with diff length');
+      // }
     } else {
       Transforms.moveNodes(editor, {
-        at: dndState.from.path,
+        at: fromPath,
         to: toPath,
         match: (node) => Editor.isEditor(editor) && Element.isElement(node),
         mode: 'highest',
@@ -105,6 +136,7 @@ export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers
     }
 
     e.dataTransfer.clearData();
+    DRAG_MAP.clear();
   };
 
   const onDragStart = (e: DragEvent<HTMLDivElement>, from: DraggedNode) => {
