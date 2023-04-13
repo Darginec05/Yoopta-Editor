@@ -1,5 +1,5 @@
 import { Editor, Transforms, Range, Element, NodeEntry, Path } from 'slate';
-import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, ReactNode } from 'react';
+import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, ReactNode, useRef } from 'react';
 import { DefaultElement, Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
 import { getDefaultParagraphLine, getRenderFunctionFactory } from './utils';
@@ -31,6 +31,7 @@ const handlersOptions = { hotkeys: HOTKEYS, defaultNode: getDefaultParagraphLine
 
 const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }: YoptaProps) => {
   useScrollToElement();
+  const editorRef = useRef<HTMLDivElement>(null);
   const [{ disableWhileDrag }, { changeHoveredNode, onDrop }] = useNodeSettingsContext();
 
   const isReadOnly = disableWhileDrag || readOnly;
@@ -250,7 +251,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
   const hasEditorChildren = React.Children.count(children) > 0;
 
   return (
-    <div id="yopta-editor" onMouseDown={handleEmptyZoneClick}>
+    <div id="yopta-editor" ref={editorRef} onMouseDown={handleEmptyZoneClick}>
       {hasEditorChildren &&
         React.Children.map(children, (child) => {
           if (!React.isValidElement(child)) return null;
@@ -259,6 +260,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
             ...child.props,
             plugins,
             marks: marks.map((mark) => mark.type),
+            editorRef,
           });
         })}
       <Editable
@@ -273,6 +275,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
         {...eventHandlers}
         onKeyDown={onKeyDown}
         onMouseDown={onMouseDown}
+        // onBlur={() => console.log('BLURRED')}
         // onDrop={onDrop}
       />
     </div>

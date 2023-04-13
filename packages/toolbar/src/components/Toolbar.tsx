@@ -39,12 +39,16 @@ type Props =
       children: (props: ToolbarProps) => JSX.Element;
     };
 
-const Toolbar = ({ type = 'bubble', style, marks, children }: Props) => {
+const Toolbar = ({ type = 'bubble', style, marks, children, editorRef }: Props) => {
   const editor = useSlate();
   const toolbarRef = useRef<HTMLDivElement>(null);
   const [toolbarProps, setToolbarProps] = useState({ open: false, style: {} });
 
   const isFixedToolbar = type === 'fixed';
+
+  const hideToolbar = () => {
+    setToolbarProps({ open: false, style: {} });
+  };
 
   const updateToolbarPosition = () => {
     // if (toolbarProps.open && !isInViewport(toolbarRef.current)) return setToolbarProps({ open: false, style: {} });
@@ -60,18 +64,26 @@ const Toolbar = ({ type = 'bubble', style, marks, children }: Props) => {
 
   useEffect(() => {
     if (isFixedToolbar) return setToolbarProps({ open: true, style: {} });
-    if (!editor.selection || !toolbarRef.current) return setToolbarProps({ open: false, style: {} });
+    if (!editor.selection || !toolbarRef.current) return hideToolbar();
 
     const isExpanded = Range.isExpanded(editor.selection) && Editor.string(editor, editor.selection).trim() !== '';
-    if (!isExpanded) return setToolbarProps({ open: false, style: {} });
+    if (!isExpanded) return hideToolbar();
 
     updateToolbarPosition();
   }, [editor.selection]);
 
   useEffect(() => {
-    if (toolbarProps.open) window.addEventListener('scroll', updateToolbarPosition);
-    return () => window.removeEventListener('scroll', updateToolbarPosition);
-  }, [toolbarProps.open]);
+    const editorEl = document.getElementById('yopta-contenteditable');
+
+    if (toolbarProps.open) {
+      editorEl!.addEventListener('blur', hideToolbar);
+      window.addEventListener('scroll', updateToolbarPosition);
+    }
+    return () => {
+      window.removeEventListener('scroll', updateToolbarPosition);
+      editorEl!.removeEventListener('blur', hideToolbar);
+    };
+  }, [toolbarProps.open, editorRef.current]);
 
   const checkIsMarkActive = (mark) => {
     const marks = Editor.marks(editor);
