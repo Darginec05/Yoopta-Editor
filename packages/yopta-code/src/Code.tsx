@@ -139,15 +139,8 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
       if (Element.isElement(node) && node.type === 'code') {
         for (const [childNode, childPath] of Node.children(editor, path)) {
           if (Element.isElement(childNode) && childNode.type !== 'code-line') {
-            const childNode: CodeChildElement = {
-              id: generateId(),
-              type: CODE_CHILD_NODE_TYPE,
-              children: [{ text: '' }],
-              nodeType: 'block',
-            };
-
+            const childNode: CodeChildElement = CodeLine.getPlugin.defineElement();
             Transforms.setNodes(editor, childNode, { at: childPath });
-
             return;
           }
         }
@@ -177,7 +170,7 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
       at: editor.selection?.anchor,
     });
 
-    const parentBlock: CodeElement = this.defineElement();
+    const parentBlock: CodeElement = Code.getPlugin.defineElement();
 
     Transforms.wrapNodes(editor, parentBlock, {
       at: editor.selection?.anchor,

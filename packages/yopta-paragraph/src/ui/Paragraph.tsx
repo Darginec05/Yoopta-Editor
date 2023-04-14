@@ -23,7 +23,7 @@ const Paragraph = createYoptaPlugin<any, ParagraphElement>({
     nodeType: 'block',
   }),
   createElement: function (editor, type, data) {
-    const node: ParagraphElement = this.defineElement();
+    const node: ParagraphElement = Paragraph.getPlugin.defineElement();
 
     Transforms.setNodes(editor, node, {
       at: editor.selection?.anchor,
