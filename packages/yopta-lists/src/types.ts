@@ -1,6 +1,6 @@
 import { Modify, YoptaBaseElement } from '@yopta/editor';
 
-export type ListOptions = { depth: number };
+export type ListOptions = { depth: number; skipDrag: boolean };
 export type TodoListItemOptions = { checked: boolean };
 
 export type ListChildItemElement = YoptaBaseElement<'list-item'>;

@@ -3,6 +3,7 @@ import { Element, Node, NodeEntry, Path } from 'slate';
 import { Editor, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { YoEditor, YoptaBaseElement } from '../types';
+import { deepClone } from '../utils/deepClone';
 
 export type DraggedNode = {
   path: number[] | null;
@@ -44,17 +45,14 @@ export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers
 
     const target: HTMLDivElement = e.target.closest('[data-element-id]');
 
-    console.log(e.target!.closest('[data-element-id]'));
-
     if (target) {
       const { elementId, elementType } = target.dataset;
       if (!elementId || !elementType) return;
-      let path: Path | null = null;
 
       const toNodeElement = DRAG_MAP.get(elementId);
+      if (toNodeElement.data?.skipDrag) return;
+
       const toNodePath = ReactEditor.findPath(editor, toNodeElement);
-      const parentNode = Editor.parent(editor, toNodePath);
-      console.log('parentNode', parentNode?.[0]);
 
       setDndState((prevDragState) => ({
         from: prevDragState.from,
@@ -90,44 +88,55 @@ export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers
         const [fromElementNode, fromElementPath] = Editor.node(editor, fromPath);
         const [parentElementNode, parentElementPath] = Editor.parent(editor, fromElementPath);
 
-        // [TODO] - bug with list
-        if (parentElementNode.children.length === 1 && Element.isElement(parentElementNode.children[0])) {
-          Transforms.removeNodes(editor, {
-            at: parentElementPath,
-            match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.id === parentElementNode.id,
-          });
-        }
-
-        // console.log('fromPath', fromPath);
-        // console.log('toPath', toPath);
-        // console.log('toPath next', Path.next(toPath));
-        // console.log('fromElementNode', fromElementNode);
-        // console.log('parentElementNode', parentElementNode);
-        // console.log('DRAG_MAP', DRAG_MAP);
+        console.log('fromPath', fromPath);
+        console.log('fromElementPath', fromElementPath);
+        console.log('toPath', toPath);
+        console.log('toPath next', Path.next(toPath));
+        console.log('fromElementNode', fromElementNode);
 
         if (toPath.length > 1) {
-          // if (toPath.length === fromPath.length) {
-          Transforms.removeNodes(editor, {
-            at: fromPath,
-            match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.id === dndState.from.element?.id,
-          });
+          const draggedElement = deepClone(fromElementNode);
+          const deeper = toPath.length > fromPath.length;
 
-          Transforms.insertNodes(editor, fromElementNode, {
-            // [TODO] - check if current parent item is the same
-            at: toPath.length === fromPath.length ? toPath : Path.next(toPath),
-            // at: Path.next(toPath),
-            match: (n) => !Editor.isEditor(n) && Element.isElement(n),
-            mode: 'lowest',
-          });
-          // } else {
-          //   console.log('just FUCK YOU with diff length');
-          // }
+          // [TODO] - strange behaviour of slate
+          if (deeper) {
+            Transforms.insertNodes(editor, draggedElement, {
+              at: toPath.length === fromPath.length ? toPath : Path.next(toPath),
+              match: (n) => Element.isElement(n),
+              mode: 'lowest',
+            });
+            Transforms.removeNodes(editor, {
+              at: fromPath,
+              match: (n) => Element.isElement(n) && n.id === draggedElement?.id,
+              mode: 'lowest',
+            });
+          } else {
+            Transforms.removeNodes(editor, {
+              at: fromPath,
+              match: (n) => Element.isElement(n) && n.id === draggedElement?.id,
+              mode: 'lowest',
+            });
+
+            Transforms.insertNodes(editor, draggedElement, {
+              at: toPath.length === fromPath.length ? toPath : Path.next(toPath),
+              match: (n) => Element.isElement(n),
+              mode: 'lowest',
+            });
+          }
+
+          if (parentElementNode.children.length === 1 && Element.isElement(parentElementNode.children[0])) {
+            Transforms.removeNodes(editor, {
+              at: parentElementPath,
+              match: (n) => Element.isElement(n) && parentElementNode.id === n.id,
+              mode: 'lowest',
+            });
+          }
         } else {
           Transforms.moveNodes(editor, {
             at: fromPath,
             to: toPath,
-            match: (node) => Editor.isEditor(editor) && Element.isElement(node),
-            mode: 'highest',
+            match: (node) => Element.isElement(node),
+            mode: 'lowest',
           });
         }
 
@@ -150,6 +159,7 @@ export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers
     if (editorEl) {
       editorEl.ondragenter = (e) => onDragEnter(e);
       editorEl.ondragover = (event) => {
+        event.stopPropagation();
         event.preventDefault();
         return false;
       };
