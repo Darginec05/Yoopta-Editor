@@ -1,16 +1,14 @@
 import { DragEvent, useEffect, useState } from 'react';
-import { Element, Node, Path } from 'slate';
-import { Editor, Transforms, Element as SlateElement } from 'slate';
+import { Element, Node, NodeEntry, Path } from 'slate';
+import { Editor, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
-// import { markdown, html } from '@yopta/exports';
 import { YoEditor, YoptaBaseElement } from '../types';
 
-// markdown.deserialize();
-// markdown.serialize();
-// html.serialize();
-// html.deserialize();
-
-export type DraggedNode = { path: number[] | null; element: Pick<YoptaBaseElement<string>, 'id' | 'type'> | null };
+export type DraggedNode = {
+  path: number[] | null;
+  element: Pick<YoptaBaseElement<string>, 'id' | 'type'> | null;
+  parent: NodeEntry<Node> | null;
+};
 
 export type DndState = {
   from: DraggedNode;
@@ -30,9 +28,9 @@ export type DragDropHandlers = {
   onDragStart: (_e, from: DraggedNode) => void;
 };
 
-export const DEFAULT_DRAG_STATE = {
-  from: { path: null, element: null },
-  to: { path: null, element: null },
+export const DEFAULT_DRAG_STATE: DndState = {
+  from: { path: null, element: null, parent: null },
+  to: { path: null, element: null, parent: null },
 };
 
 export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers] => {
@@ -46,19 +44,21 @@ export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers
 
     const target: HTMLDivElement = e.target.closest('[data-element-id]');
 
-    console.log('target', target);
-
     console.log(e.target!.closest('[data-element-id]'));
 
     if (target) {
       const { elementId, elementType } = target.dataset;
       if (!elementId || !elementType) return;
-
       let path: Path | null = null;
+
+      const toNodeElement = DRAG_MAP.get(elementId);
+      const toNodePath = ReactEditor.findPath(editor, toNodeElement);
+      const parentNode = Editor.parent(editor, toNodePath);
+      console.log('parentNode', parentNode?.[0]);
 
       setDndState((prevDragState) => ({
         from: prevDragState.from,
-        to: { path: path, element: { id: elementId, type: elementType } },
+        to: { path: toNodePath, element: { id: elementId, type: elementType }, parent: null },
       }));
     }
   };
@@ -98,12 +98,12 @@ export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers
           });
         }
 
-        console.log('fromPath', fromPath);
-        console.log('toPath', toPath);
-        console.log('toPath next', Path.next(toPath));
-        console.log('fromElementNode', fromElementNode);
-        console.log('parentElementNode', parentElementNode);
-        console.log('DRAG_MAP', DRAG_MAP);
+        // console.log('fromPath', fromPath);
+        // console.log('toPath', toPath);
+        // console.log('toPath next', Path.next(toPath));
+        // console.log('fromElementNode', fromElementNode);
+        // console.log('parentElementNode', parentElementNode);
+        // console.log('DRAG_MAP', DRAG_MAP);
 
         if (toPath.length > 1) {
           // if (toPath.length === fromPath.length) {

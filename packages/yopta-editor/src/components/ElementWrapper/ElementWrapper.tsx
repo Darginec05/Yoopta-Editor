@@ -1,9 +1,9 @@
 import { MouseEvent, ReactElement, useMemo } from 'react';
-import { RenderElementProps, useSlate } from 'slate-react';
+import { RenderElementProps, useReadOnly, useSlate } from 'slate-react';
 import cx from 'classnames';
 import { YoptaElementConfig } from '../../types';
-import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
-import { NodeActions } from './NodeActions';
+import { useElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
+import { ElementActions } from './ElementActions';
 import s from './ElementWrapper.module.scss';
 
 type Props = RenderElementProps & {
@@ -13,14 +13,14 @@ type Props = RenderElementProps & {
 
 const ElementWrapper = ({ children, element, attributes, nodeType, render }: Props) => {
   const editor = useSlate();
+  const [values, handlers] = useElementSettings();
+  const readOnly = useReadOnly();
+
   const isInline = nodeType === 'inline';
-  const [values, handlers] = useNodeSettingsContext();
   const { hoverIn, onDrop } = handlers;
   const { dndState, DRAG_MAP } = values;
 
   const skipSettings = element.data?.skipSettings;
-
-  if (skipSettings) console.log(element);
 
   const onMouseEnter = (e: MouseEvent<HTMLDivElement>) => {
     if (skipSettings) return;
@@ -65,7 +65,7 @@ const ElementWrapper = ({ children, element, attributes, nodeType, render }: Pro
       style={styles}
       {...attributes}
     >
-      {!skipSettings && <NodeActions editor={editor} element={element} handlers={handlers} values={values} />}
+      {!skipSettings && <ElementActions editor={editor} element={element} handlers={handlers} values={values} />}
       {render({ attributes, element, children })}
     </div>
   );

@@ -1,10 +1,6 @@
-import { cx } from '@yopta/editor';
+import { cx, UI_HELPERS } from '@yopta/editor';
 import { ChangeEvent, useState } from 'react';
-import { Element, Transforms } from 'slate';
-import { ReactEditor } from 'slate-react';
-import { getImageSizes } from '../utils/imageSizes';
 import s from './EditorUploader.module.scss';
-import { Overlay } from './Overlay';
 
 type Props = {};
 
@@ -55,7 +51,7 @@ const EditorUploader = ({ activeTab = 'upload', style, switchTab, onChange, onEm
   const isEmbed = activeTab === 'embed';
 
   return (
-    <Overlay onClose={onClose}>
+    <UI_HELPERS.Overlay onClose={onClose}>
       <div className={s.container} style={style}>
         <div className={s.content}>
           <div className={s.tabs}>
@@ -77,7 +73,7 @@ const EditorUploader = ({ activeTab = 'upload', style, switchTab, onChange, onEm
         </div>
       </div>
       <div></div>
-    </Overlay>
+    </UI_HELPERS.Overlay>
   );
 };
 

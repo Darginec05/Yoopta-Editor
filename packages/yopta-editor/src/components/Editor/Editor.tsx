@@ -5,7 +5,7 @@ import { TextLeaf } from './TextLeaf/TextLeaf';
 import { getDefaultParagraphLine, getRenderFunctionFactory } from './utils';
 import { ELEMENT_TYPES_MAP } from './constants';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
-import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
+import { useElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { onCopyYoptaNodes } from '../../utils/copy';
 import { ElementWrapper } from '../ElementWrapper/ElementWrapper';
 import { HOTKEYS } from '../../utils/hotkeys';
@@ -32,7 +32,7 @@ const handlersOptions = { hotkeys: HOTKEYS, defaultNode: getDefaultParagraphLine
 const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }: YoptaProps) => {
   useScrollToElement();
   const editorRef = useRef<HTMLDivElement>(null);
-  const [{ disableWhileDrag }, { changeHoveredNode }] = useNodeSettingsContext();
+  const [{ disableWhileDrag }, { changeHoveredNode }] = useElementSettings();
 
   const isReadOnly = disableWhileDrag || readOnly;
 
@@ -204,6 +204,8 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
   }, []);
 
   const handleEmptyZoneClick = (e: MouseEvent<HTMLDivElement>) => {
+    if (readOnly) return;
+
     e.preventDefault();
 
     if (e.currentTarget !== e.target || !editor.selection) return;
@@ -276,8 +278,6 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
         {...eventHandlers}
         onKeyDown={onKeyDown}
         onMouseDown={onMouseDown}
-        // onBlur={() => console.log('BLURRED')}
-        // onDrop={onDrop}
       />
     </div>
   );

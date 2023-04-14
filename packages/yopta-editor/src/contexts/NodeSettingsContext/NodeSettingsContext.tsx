@@ -9,13 +9,14 @@ import { getElementByPath } from '../../utils/nodes';
 import { generateId } from '../../utils/generateId';
 import { deepClone } from '../../utils/deepClone';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import copy from 'copy-to-clipboard';
 
 export type HoveredElement = YoptaBaseElement<string> | null;
 
 export type NodeSettingsContextValues = DragDropValues & {
   hoveredElement: HoveredElement;
-  isNodeSettingsOpen: boolean;
-  nodeSettingsPos?: CSSProperties;
+  isElementOptionsOpen: boolean;
+  nodeSettingsPos?: CSSProperties | null;
 };
 
 export type NodeSettingsContextHandlers = DragDropHandlers & {
@@ -34,8 +35,8 @@ export type NodeSettingsContextType = [NodeSettingsContextValues, NodeSettingsCo
 
 const defaultValues: NodeSettingsContextValues = {
   hoveredElement: null,
-  isNodeSettingsOpen: false,
-  nodeSettingsPos: undefined,
+  isElementOptionsOpen: false,
+  nodeSettingsPos: null,
   dndState: DEFAULT_DRAG_STATE,
   disableWhileDrag: false,
   DRAG_MAP: new Map(),
@@ -87,13 +88,13 @@ const NodeSettingsProvider = ({ children }) => {
   const editor = useSlate();
   const [dragValues, dragHandlers] = useDragDrop(editor);
 
-  const [nodeSettingsPos, setNodeSettingsPos] = useState<CSSProperties>();
+  const [nodeSettingsPos, setNodeSettingsPos] = useState<CSSProperties | null>(null);
   const [hoveredElement, setHoveredElement] = useState<HoveredElement>(() => getInitialState(editor));
-  const [isNodeSettingsOpen, setNodeSettingsOpen] = useState<boolean>(false);
+  const [isElementOptionsOpen, setNodeSettingsOpen] = useState<boolean>(false);
 
   const values: NodeSettingsContextValues = {
     hoveredElement,
-    isNodeSettingsOpen,
+    isElementOptionsOpen,
     nodeSettingsPos,
     ...dragValues,
   };
@@ -101,7 +102,7 @@ const NodeSettingsProvider = ({ children }) => {
   const events = useMemo<NodeSettingsContextHandlers>(
     () => ({
       hoverIn: (e: MouseEvent<HTMLDivElement>, node: YoptaBaseElement<string>) => {
-        if (isNodeSettingsOpen) return e.preventDefault();
+        if (isElementOptionsOpen) return e.preventDefault();
 
         const pathNode = ReactEditor.findPath(editor, node);
         const parentEntry = Editor.parent(editor, pathNode);
@@ -114,7 +115,7 @@ const NodeSettingsProvider = ({ children }) => {
       },
 
       hoverOut: (e: MouseEvent<HTMLDivElement>, node: YoptaBaseElement<string>) => {
-        if (node.id === hoveredElement?.id || isNodeSettingsOpen) return e.preventDefault();
+        if (node.id === hoveredElement?.id || isElementOptionsOpen) return e.preventDefault();
         setHoveredElement(null);
       },
 
@@ -172,12 +173,23 @@ const NodeSettingsProvider = ({ children }) => {
         setNodeSettingsOpen(true);
 
         const elementPath = ReactEditor.findPath(editor, element!);
-        console.log('elementPath', elementPath);
 
-        Transforms.setSelection(editor, {
-          anchor: { path: elementPath.concat(0), offset: 0 },
-          focus: { path: elementPath.concat(0), offset: 0 },
-        });
+        // console.log('element?.children', element?.children);
+
+        // console.log('elementPath', elementPath);
+        // console.log(
+        //   'editro node',
+        //   Editor.above(editor, {
+        //     at: elementPath,
+        //   }),
+        // );
+
+        // console.log('dragRef, element', dragRef, element);
+
+        // Transforms.setSelection(editor, {
+        //   anchor: { path: elementPath.concat(0), offset: 0 },
+        //   focus: { path: elementPath.concat(0), offset: 0 },
+        // });
 
         if (dragRef.current) {
           const dragRect = dragRef.current!.getBoundingClientRect();
@@ -188,92 +200,74 @@ const NodeSettingsProvider = ({ children }) => {
       closeNodeSettings: () => {
         enableBodyScroll(document.body);
         setNodeSettingsOpen(false);
-        setNodeSettingsPos(undefined);
+        setNodeSettingsPos(null);
       },
 
       deleteNode: () => {
-        const isLastDeleted = editor.children.length === 1;
         if (!hoveredElement) return;
-        const path = [];
 
-        Editor.withoutNormalizing(editor, () => {
-          if (isLastDeleted) {
-            const lineParagraph = getDefaultParagraphLine();
+        try {
+          Editor.withoutNormalizing(editor, () => {
+            const path = ReactEditor.findPath(editor, hoveredElement);
+            const [parentNode, parentNodePath] = Editor.parent(editor, path);
 
-            Transforms.unwrapNodes(editor, {
-              match: (n) => Editor.isEditor(editor) && SlateElement.isElement(n) && n.type === 'list-item',
-            });
+            if (!path) return;
 
-            Transforms.setNodes(editor, lineParagraph, {
-              mode: 'lowest',
-              at: [0, 0],
-              match: (n) => Editor.isEditor(editor) && SlateElement.isElement(n),
-            });
+            let mode: 'highest' | 'lowest' | undefined = 'highest';
 
-            // [TODO] - delete text
-            // Transforms.delete(editor, {
-            //   at: [0, 0],
-            //   unit: 'line',
-            // });
+            if (Element.isElement(parentNode)) {
+              if (parentNode.children.length === 1 && Element.isElement(parentNode.children[0])) {
+                Transforms.removeNodes(editor, {
+                  at: parentNodePath,
+                  match: (node) => Element.isElement(node) && node.id === parentNode.id,
+                  mode: 'highest',
+                });
 
-            const focusTimeout = setTimeout(() => {
-              Transforms.select(editor, { path: [0, 0], offset: 0 });
-              ReactEditor.focus(editor);
+                setHoveredElement(null);
+                events.closeNodeSettings();
+                return;
+              }
 
-              clearTimeout(focusTimeout);
-            }, 0);
-          } else {
+              if (parentNode.data?.depth > 0) {
+                mode = 'lowest';
+              }
+            }
+
+            console.log('parent of hoveredElement', Editor.parent(editor, path));
+            console.log({ path, mode });
+
             Transforms.removeNodes(editor, {
               at: path, // remove the whole node including inline nodes
-              match: (node) => Editor.isEditor(editor) && SlateElement.isElement(node),
-              mode: 'lowest',
+              match: (node) => Element.isElement(node),
+              mode: mode,
             });
-          }
 
-          // libOptions.nodeSettings?.onDelete?.();
-
-          setHoveredElement(null);
-          events.closeNodeSettings();
-        });
+            setHoveredElement(null);
+            events.closeNodeSettings();
+          });
+        } catch (error) {
+          console.log({ error });
+        }
       },
 
       duplicateNode: () => {
         Editor.withoutNormalizing(editor, () => {
           if (!hoveredElement) return;
 
-          const elementPath = ReactEditor.findPath(editor, hoveredElement!);
-          const pathWithText = elementPath.concat(0);
+          const path = ReactEditor.findPath(editor, hoveredElement!);
+          const afterPath = Path.next(path);
 
-          console.log({ pathWithText });
-
-          const [currentNode, currentNodePath] = Editor.node(editor, elementPath);
-          const after = Editor.after(editor, elementPath);
-
-          if (currentNode && !Element.isElement(currentNode)) return;
-
-          const [parentNode, parentNodePath] = Editor.parent(editor, currentNodePath);
-
-          if (!Editor.isEditor(parentNode) && Element.isElement(parentNode)) {
-            console.log('parentNode', parentNode);
-          }
-
-          const duplicatedNode = deepClone(currentNode);
+          const duplicatedNode = deepClone(hoveredElement);
           duplicatedNode.id = generateId();
 
-          console.log('duplicatedNode', duplicatedNode);
-          console.log('after', after);
-
           Transforms.insertNodes(editor, duplicatedNode, {
-            at: { path: pathWithText, offset: 0 },
+            at: afterPath,
+            match: (n) => Element.isElement(n),
             mode: 'highest',
             select: true,
           });
 
-          // Transforms.select(editor, after ? after : [path[0] + 1, 0]);
-
-          // if (after) {
-          //   ReactEditor.focus(editor);
-          // }
+          ReactEditor.focus(editor);
 
           setHoveredElement(null);
           events.closeNodeSettings();
@@ -281,31 +275,28 @@ const NodeSettingsProvider = ({ children }) => {
       },
 
       copyLinkNode: () => {
-        // console.log('libOptions.nodeSettings?.onCopy', libOptions.nodeSettings?.onCopy);
-        console.log('`${window.location.href}#${hoveredElement?.id}`', `${window.location.href}#${hoveredElement?.id}`);
-
-        // if (typeof libOptions.nodeSettings?.onCopy === 'function') {
-        //   libOptions.nodeSettings?.onCopy?.(hoveredElement?.id || '');
-        // } else {
-        //   copy(`${window.location.href}#${hoveredElement?.id}`);
-        // }
+        if (window.location.hash.length === 0) {
+          copy(`${window.location.href}#${hoveredElement?.id}`);
+        } else {
+          copy(`${window.location.href.split('#')[0]}#${hoveredElement?.id}`);
+        }
 
         events.closeNodeSettings();
       },
 
       ...dragHandlers,
     }),
-    [hoveredElement, isNodeSettingsOpen, dragValues, editor.children],
+    [hoveredElement, isElementOptionsOpen, dragValues, editor.children],
   );
 
   const contextValue = useMemo<NodeSettingsContextType>(
     () => [values, events],
-    [hoveredElement, isNodeSettingsOpen, dragValues, editor.selection, editor.children],
+    [hoveredElement, isElementOptionsOpen, dragValues, editor.selection, editor.children],
   );
 
   return <NodeSettingsContext.Provider value={contextValue}>{children}</NodeSettingsContext.Provider>;
 };
 
-const useNodeSettingsContext = () => useContext<NodeSettingsContextType>(NodeSettingsContext);
+const useElementSettings = () => useContext<NodeSettingsContextType>(NodeSettingsContext);
 
-export { NodeSettingsProvider, useNodeSettingsContext };
+export { NodeSettingsProvider, useElementSettings };

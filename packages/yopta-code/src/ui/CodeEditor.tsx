@@ -26,9 +26,8 @@ import 'prismjs/components/prism-scala';
 import 'prism-material-themes/themes/material-default.css';
 
 import { LanguageSelect } from './LanguageSelect';
-import { cx, RenderElementProps, YoEditor } from '@yopta/editor';
+import { cx, RenderElementProps, YoEditor, UI_HELPERS } from '@yopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import { NodeOptions } from '../components/NodeOptions';
 import { CodeElement } from '../types';
 
 const OPTIONS_WIDTH = 265;
@@ -88,7 +87,12 @@ const CodeEditor = (editor: YoEditor) => {
           </button> */}
           <LanguageSelect value={element.data.language} onChange={onChange} />
           {optionsPos !== null && (
-            <NodeOptions key={element.id} onClose={toggleOptionsOpen} style={optionsPos} element={element} />
+            <UI_HELPERS.ElementOptions
+              key={element.id}
+              onClose={toggleOptionsOpen}
+              style={optionsPos}
+              element={element}
+            />
           )}
           <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>
             <span className={s.dot} />

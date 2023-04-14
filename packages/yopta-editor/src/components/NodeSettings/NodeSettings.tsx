@@ -14,7 +14,7 @@ import {
 import { YoEditor } from '../../types';
 import s from './NodeSettings.module.scss';
 
-type Props = Pick<NodeSettingsContextValues, 'hoveredElement' | 'isNodeSettingsOpen' | 'nodeSettingsPos'> & {
+type Props = Pick<NodeSettingsContextValues, 'hoveredElement' | 'isElementOptionsOpen' | 'nodeSettingsPos'> & {
   events: NodeSettingsContextHandlers;
   editor: YoEditor;
   element: SlateElement;
@@ -28,7 +28,7 @@ const NodeSettings = ({
   hoveredElement,
   isNestedNode,
   nodeSettingsPos,
-  isNodeSettingsOpen,
+  isElementOptionsOpen,
 }: Props) => {
   const nodeSettingsRef = useRef<HTMLDivElement>(null);
   const isHovered = hoveredElement?.id === element.id;
@@ -77,7 +77,7 @@ const NodeSettings = ({
     >
       <div>
         <NodeSettingsActions element={element} events={events} showSuggestionList={showSuggestionList} />
-        {isNodeSettingsOpen && isHovered && (
+        {isElementOptionsOpen && isHovered && (
           <Modal onClose={handleClose} style={nodeSettingsPos} className="yopta-node_settings">
             <div
               className={cx(s.root, 'yopta-element_settings')}

@@ -1,15 +1,14 @@
 import { Editor, Element, Transforms } from 'slate';
 import { Resizable, ResizableProps } from 're-resizable';
-import { ReactEditor, useSelected } from 'slate-react';
+import { ReactEditor, useReadOnly, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
 import { Video } from './Video';
 import { CSSProperties, MouseEvent, useEffect, useMemo, useState } from 'react';
-import { cx, RenderElementProps, YoEditor, YoptaPluginType } from '@yopta/editor';
+import { cx, RenderElementProps, YoEditor, UI_HELPERS } from '@yopta/editor';
 import { Loader } from '../components/Loader';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import { NodeOptions } from '../components/NodeOptions';
-import s from './VideoEditor.module.scss';
 import { VideoElement, VideoPluginOptions } from '../types';
+import s from './VideoEditor.module.scss';
 
 const OPTIONS_WIDTH = 265;
 
@@ -17,6 +16,7 @@ function VideoEditor(editor: YoEditor, plugin) {
   return function VideoEditor(props: RenderElementProps<VideoElement>) {
     const { element } = props;
     const selected = useSelected();
+    const readOnly = useReadOnly();
 
     const [optionsPos, setOptionsPos] = useState<CSSProperties | null>(null);
     const [size, setSize] = useState({
@@ -41,8 +41,8 @@ function VideoEditor(editor: YoEditor, plugin) {
         lockAspectRatio: true,
         resizeRatio: 2,
         enable: {
-          left: true,
-          right: true,
+          left: !readOnly,
+          right: !readOnly,
         },
         handleStyles: {
           left: { left: 0 },
@@ -113,24 +113,34 @@ function VideoEditor(editor: YoEditor, plugin) {
       const { maxWidth = 750, maxHeight = 800 } = plugin.options || {};
 
       return (
-        <div className={s.root} key={element.id}>
+        <div className={s.root} key={element.id} contentEditable={false}>
+          <div className={cx(s.selectImg, { [s.selected]: selected })} />
           <EditorPlaceholder
-            {...props}
+            attributes={props.attributes}
+            element={props.element}
             editor={editor}
             onUpload={plugin.options?.onUpload}
             maxSizes={{ maxWidth, maxHeight }}
           >
-            <div>
-              <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>
-                <span className={s.dot} />
-                <span className={s.dot} />
-                <span className={s.dot} />
-              </button>
-              {optionsPos !== null && (
-                <NodeOptions key={element.id} onClose={toggleOptionsOpen} style={optionsPos} element={element} />
-              )}
-            </div>
+            {!readOnly && (
+              <div>
+                <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>
+                  <span className={s.dot} />
+                  <span className={s.dot} />
+                  <span className={s.dot} />
+                </button>
+                {optionsPos !== null && (
+                  <UI_HELPERS.ElementOptions
+                    key={element.id}
+                    onClose={toggleOptionsOpen}
+                    style={optionsPos}
+                    element={element}
+                  />
+                )}
+              </div>
+            )}
           </EditorPlaceholder>
+          {props.children}
         </div>
       );
     }
@@ -150,16 +160,23 @@ function VideoEditor(editor: YoEditor, plugin) {
               <Loader />
             </div>
           )}
-          <div>
-            <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>
-              <span className={s.dot} />
-              <span className={s.dot} />
-              <span className={s.dot} />
-            </button>
-            {optionsPos !== null && (
-              <NodeOptions key={element.id} onClose={toggleOptionsOpen} style={optionsPos} element={element} />
-            )}
-          </div>
+          {!readOnly && (
+            <div>
+              <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>
+                <span className={s.dot} />
+                <span className={s.dot} />
+                <span className={s.dot} />
+              </button>
+              {optionsPos !== null && (
+                <UI_HELPERS.ElementOptions
+                  key={element.id}
+                  onClose={toggleOptionsOpen}
+                  style={optionsPos}
+                  element={element}
+                />
+              )}
+            </div>
+          )}
         </Resizable>
       </div>
     );
