@@ -197,7 +197,9 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
 
     if (HOTKEYS.isEnter(event)) {
       const childNodes = document.querySelectorAll(`[${ACTION_MENU_ITEM_DATA_ATTR}]`);
-      const selectedType = childNodes[focusableElement].getAttribute('data-element-type') as string;
+      const selectedType = childNodes[focusableElement]?.getAttribute('data-element-type') as string;
+
+      if (!selectedType) return;
 
       toggleNode(selectedType);
 

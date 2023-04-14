@@ -1,19 +1,6 @@
-import { Editor, Range, Transforms } from 'slate';
+import { Transforms } from 'slate';
 import { YoEditor } from '../../types';
 import { deserializeHTML } from './utils';
-
-export const withFixDeleteFragment = (editor: YoEditor) => {
-  // Fixes https://github.com/ianstormtaylor/slate/issues/3605
-  editor.deleteFragment = () => {
-    const { selection } = editor;
-
-    if (selection && Range.isExpanded(selection)) {
-      Transforms.delete(editor, { hanging: false });
-      // Transforms.setNodes(editor, { type: 'paragraph', id: generateId() });
-    }
-  };
-  return editor;
-};
 
 export const withCopyPasting = (editor: YoEditor) => {
   const { insertData } = editor;

@@ -146,7 +146,7 @@ const NodeSettingsProvider = ({ children }) => {
           setHoveredElement(null);
 
           if (!isEmptyNode || isVoidNode) {
-            const lineParagraph = getDefaultParagraphLine();
+            const lineParagraph = getDefaultParagraphLine(generateId());
 
             Transforms.insertNodes(editor, lineParagraph, {
               at: afterPath,

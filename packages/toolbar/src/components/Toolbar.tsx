@@ -39,6 +39,8 @@ type Props =
       children: (props: ToolbarProps) => JSX.Element;
     };
 
+const STYLES: CSSProperties = { position: 'relative' };
+
 const Toolbar = ({ type = 'bubble', style, marks, children, editorRef }: Props) => {
   const editor = useSlate();
   const toolbarRef = useRef<HTMLDivElement>(null);
@@ -127,7 +129,7 @@ const Toolbar = ({ type = 'bubble', style, marks, children, editorRef }: Props) 
   };
 
   if (typeof children === 'function') {
-    return <div style={{ position: 'relative' }}>{children(childrenProps)}</div>;
+    return <div style={STYLES}>{children(childrenProps)}</div>;
   }
 
   return (

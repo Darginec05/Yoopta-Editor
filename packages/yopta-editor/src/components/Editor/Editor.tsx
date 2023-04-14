@@ -27,7 +27,7 @@ type YoptaProps = {
 };
 
 // [TODO] - defaultNode move to common event handler to avoid repeated id's
-const handlersOptions = { hotkeys: HOTKEYS, defaultNode: getDefaultParagraphLine() };
+const handlersOptions = { hotkeys: HOTKEYS, defaultNode: getDefaultParagraphLine(generateId()) };
 
 const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }: YoptaProps) => {
   useScrollToElement();
@@ -126,7 +126,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
 
       if (!editor.selection) return;
 
-      const defaultNode = { ...getDefaultParagraphLine(), id: generateId() };
+      const defaultNode = getDefaultParagraphLine(generateId());
       const nodeEntry = Editor.above<YoptaBaseElement<string>>(editor, {
         match: (n) => !Editor.isEditor(n),
         mode: 'lowest',
@@ -230,7 +230,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
         return ReactEditor.focus(editor);
       }
 
-      const lineParagraph: YoptaBaseElement<'paragraph'> = getDefaultParagraphLine();
+      const lineParagraph: YoptaBaseElement<'paragraph'> = getDefaultParagraphLine(generateId());
       changeHoveredNode(lineParagraph);
 
       Transforms.insertNodes(editor, lineParagraph, {

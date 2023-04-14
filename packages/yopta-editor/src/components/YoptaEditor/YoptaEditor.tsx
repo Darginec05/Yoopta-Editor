@@ -10,6 +10,8 @@ import { NodeSettingsProvider } from '../../contexts/NodeSettingsContext/NodeSet
 import { EditorYopta } from '../Editor/Editor';
 import { withVoidNodes } from '../Editor/plugins/voids';
 import { withShortcuts } from '../Editor/plugins/shortcuts';
+import { withNonEmptyEditor } from '../Editor/plugins/nonEmptyEditor';
+import { withDeleteFragment } from '../Editor/plugins/deleteFragment';
 
 type Props = {
   onChange: (_value: Descendant[]) => void;
@@ -62,7 +64,9 @@ const YoptaEditor = ({
   const yoptaPlugins = useMemo(() => mergePlugins(plugins), [plugins]);
 
   const editor = useMemo<YoEditor>(() => {
-    let yoptaEditor = withVoidNodes(withHistory(withShortcuts(withReact(createEditor()))));
+    let yoptaEditor = withDeleteFragment(
+      withNonEmptyEditor(withVoidNodes(withHistory(withShortcuts(withReact(createEditor()))))),
+    );
     const shortcutMap = {};
 
     yoptaPlugins.forEach((plugin) => {

@@ -90,8 +90,8 @@ export const getNodeByCurrentPath = (editor: YoEditor) => {
   return rootNode.children[path[1]];
 };
 
-export const getDefaultParagraphLine = (): YoptaBaseElement<'paragraph'> => ({
-  id: generateId(),
+export const getDefaultParagraphLine = (id: string): YoptaBaseElement<'paragraph'> => ({
+  id,
   type: 'paragraph',
   nodeType: 'block',
   children: [{ text: '' }],
