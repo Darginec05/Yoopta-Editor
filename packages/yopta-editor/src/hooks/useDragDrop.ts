@@ -35,24 +35,6 @@ export const DEFAULT_DRAG_STATE = {
   to: { path: null, element: null },
 };
 
-const findNodeBy = ({ nodes, value, by = 'id' }) => {
-  let foundElement;
-
-  for (let i = 0; i < nodes.length; i++) {
-    const element = nodes[i];
-
-    if (Element.isElement(element)) {
-      if (element.id === value) {
-        console.log('element.id === value element', element);
-        foundElement = element;
-        break;
-      } else findNodeBy({ nodes: element.children, value, by });
-    }
-  }
-
-  if (foundElement) return foundElement;
-};
-
 export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers] => {
   const [disableWhileDrag, setIsDisableByDrag] = useState(false);
   const [dndState, setDndState] = useState<DndState>(DEFAULT_DRAG_STATE);
@@ -63,6 +45,8 @@ export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers
     e.stopPropagation();
 
     const target: HTMLDivElement = e.target.closest('[data-element-id]');
+
+    console.log('target', target);
 
     console.log(e.target!.closest('[data-element-id]'));
 

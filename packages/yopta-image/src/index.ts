@@ -21,7 +21,7 @@ const Image = createYoptaPlugin<ImagePluginOptions, ImageElement>({
     const { isVoid } = editor;
 
     editor.isVoid = (element) => {
-      return element.type === this.type ? true : isVoid(element);
+      return element.type === Image.getPlugin.type ? true : isVoid(element);
     };
 
     return editor;

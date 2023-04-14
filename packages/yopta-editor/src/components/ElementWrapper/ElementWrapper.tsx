@@ -18,7 +18,14 @@ const ElementWrapper = ({ children, element, attributes, nodeType, render }: Pro
   const { hoverIn, onDrop } = handlers;
   const { dndState, DRAG_MAP } = values;
 
-  const onMouseEnter = (e: MouseEvent<HTMLDivElement>) => hoverIn(e, element);
+  const skipSettings = element.data?.skipSettings;
+
+  if (skipSettings) console.log(element);
+
+  const onMouseEnter = (e: MouseEvent<HTMLDivElement>) => {
+    if (skipSettings) return;
+    hoverIn(e, element);
+  };
 
   const dragState = useMemo(() => {
     if (dndState.from.element === null || dndState.to.element === null) {
@@ -58,7 +65,7 @@ const ElementWrapper = ({ children, element, attributes, nodeType, render }: Pro
       style={styles}
       {...attributes}
     >
-      <NodeActions editor={editor} element={element} handlers={handlers} values={values} />
+      {!skipSettings && <NodeActions editor={editor} element={element} handlers={handlers} values={values} />}
       {render({ attributes, element, children })}
     </div>
   );

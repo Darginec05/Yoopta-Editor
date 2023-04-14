@@ -2,15 +2,15 @@ import DragIcon from './icons/drag.svg';
 import {
   NodeSettingsContextHandlers,
   NodeSettingsContextValues,
-  useNodeSettingsContext,
 } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
-import { CSSProperties, MouseEvent, useRef } from 'react';
+import { MouseEvent, useRef } from 'react';
 import { ReactEditor } from 'slate-react';
 import { Editor, Element } from 'slate';
 import cx from 'classnames';
 import { DraggedNode } from '../../hooks/useDragDrop';
 import { YoptaBaseElement } from '../../types';
 import s from './ElementWrapper.module.scss';
+import { NodeOptions } from '../ElementOptions/NodeOptions';
 
 type Props = {
   editor: Editor;
@@ -21,8 +21,8 @@ type Props = {
 
 const NodeActions = ({ element, editor, values, handlers }: Props) => {
   const dragRef = useRef<HTMLButtonElement>(null);
-  const { hoveredNode } = values;
-  const { onDragEnd, onDragStart } = handlers;
+  const { hoveredElement, isNodeSettingsOpen, nodeSettingsPos } = values;
+  const { onDragEnd, onDragStart, openNodeSettings, closeNodeSettings } = handlers;
 
   const onMouseDown = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -48,9 +48,20 @@ const NodeActions = ({ element, editor, values, handlers }: Props) => {
     }
   };
 
+  const isElementHovered = hoveredElement?.id === element.id;
+
   return (
-    <div contentEditable={false} className={cx(s.actions, { [s.hovered]: element.id === hoveredNode?.id })}>
-      <button type="button" onMouseDown={onMouseDown} className={s.actionButton} onClick={() => {}} ref={dragRef}>
+    <div contentEditable={false} className={cx(s.actions, { [s.hovered]: isElementHovered })}>
+      {isElementHovered && isNodeSettingsOpen && (
+        <NodeOptions element={element} style={nodeSettingsPos} onClose={closeNodeSettings} />
+      )}
+      <button
+        type="button"
+        onMouseDown={onMouseDown}
+        className={s.actionButton}
+        onClick={() => openNodeSettings(dragRef, element)}
+        ref={dragRef}
+      >
         <DragIcon />
       </button>
     </div>

@@ -27,6 +27,7 @@ const CodeLine = createYoptaPlugin<any, CodeChildElement>({
     type: 'code-line',
     children: [{ text: '' }],
     nodeType: 'block',
+    data: { skipSettings: true },
   }),
   events: {
     onKeyDown:
