@@ -21,7 +21,7 @@ const Video = createYoptaPlugin<VideoPluginOptions, VideoElement>({
     const { isVoid } = editor;
 
     editor.isVoid = (element) => {
-      return element.type === this.type ? true : isVoid(element);
+      return element.type === Video.getPlugin.type ? true : isVoid(element);
     };
 
     return editor;

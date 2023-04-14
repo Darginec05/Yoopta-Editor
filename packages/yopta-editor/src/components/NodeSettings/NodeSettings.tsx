@@ -14,7 +14,7 @@ import {
 import { YoEditor } from '../../types';
 import s from './NodeSettings.module.scss';
 
-type Props = Pick<NodeSettingsContextValues, 'hoveredNode' | 'isNodeSettingsOpen' | 'nodeSettingsPos'> & {
+type Props = Pick<NodeSettingsContextValues, 'hoveredElement' | 'isNodeSettingsOpen' | 'nodeSettingsPos'> & {
   events: NodeSettingsContextHandlers;
   editor: YoEditor;
   element: SlateElement;
@@ -25,20 +25,20 @@ const NodeSettings = ({
   editor,
   element,
   events,
-  hoveredNode,
+  hoveredElement,
   isNestedNode,
   nodeSettingsPos,
   isNodeSettingsOpen,
 }: Props) => {
   const nodeSettingsRef = useRef<HTMLDivElement>(null);
-  const isHovered = hoveredNode?.id === element.id;
+  const isHovered = hoveredElement?.id === element.id;
   const { hideSuggestionList, showSuggestionList, isSuggesstionListOpen } = {};
 
   /* @ts-ignore */
-  const isVoidNode = hoveredNode?.isVoid;
+  const isVoidNode = hoveredElement?.isVoid;
 
   const showNodeToggler = () => {
-    if (!nodeSettingsRef.current || isVoidNode || !hoveredNode) return;
+    if (!nodeSettingsRef.current || isVoidNode || !hoveredElement) return;
     const settingsRect = nodeSettingsRef.current.getBoundingClientRect();
     const styles = {
       left: settingsRect.left + settingsRect.width + 10,
@@ -65,7 +65,7 @@ const NodeSettings = ({
   };
 
   const settingsButtonDisable = isSuggesstionListOpen;
-  const isVoidElement = Element.isElement(hoveredNode) && Editor.isVoid(editor, hoveredNode);
+  const isVoidElement = Element.isElement(hoveredElement) && Editor.isVoid(editor, hoveredElement);
 
   return (
     <div

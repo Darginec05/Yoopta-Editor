@@ -1,13 +1,13 @@
 import { useRef, MouseEvent } from 'react';
 import { useSlate } from 'slate-react';
 import cx from 'classnames';
-import { HoveredNode, NodeSettingsContextHandlers } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
+import { HoveredElement, NodeSettingsContextHandlers } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import PlusIcon from '../../icons/add.svg';
 import DragIcon from '../../icons/drag.svg';
 import s from './NodeSettingsActions.module.scss';
 
 type Props = {
-  element: HoveredNode;
+  element: HoveredElement;
   events: NodeSettingsContextHandlers;
   showSuggestionList: any;
 };
