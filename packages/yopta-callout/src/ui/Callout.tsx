@@ -24,7 +24,7 @@ const Callout = createYoptaPlugin<any, CalloutElement>({
     nodeType: 'block',
   }),
   createElement: function (editor, type, data) {
-    const node: CalloutElement = this.defineElement();
+    const node: CalloutElement = Callout.getPlugin.defineElement();
 
     Transforms.setNodes(editor, node, {
       at: editor.selection?.anchor,

@@ -98,7 +98,7 @@ export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers
           const draggedElement = deepClone(fromElementNode);
           const deeper = toPath.length > fromPath.length;
 
-          // [TODO] - strange behaviour of slate
+          // [TODO] - strange behaviour of slate or of me
           if (deeper) {
             Transforms.insertNodes(editor, draggedElement, {
               at: toPath.length === fromPath.length ? toPath : Path.next(toPath),

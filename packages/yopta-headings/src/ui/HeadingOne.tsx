@@ -24,7 +24,7 @@ const HeadingOne = createYoptaPlugin<any, HeadingOneElement>({
     nodeType: 'block',
   }),
   createElement: function (editor, type, data) {
-    const node: HeadingOneElement = this.defineElement();
+    const node: HeadingOneElement = HeadingOne.getPlugin.defineElement();
 
     Transforms.setNodes<HeadingOneElement>(editor, node, {
       at: editor.selection?.anchor,

@@ -49,7 +49,7 @@ const Image = createYoptaPlugin<ImagePluginOptions, ImageElement>({
     children: [{ text: '' }],
   }),
   createElement: function (editor) {
-    const node = this.defineElement();
+    const node = Image.getPlugin.defineElement();
 
     Transforms.setNodes(editor, node, {
       at: editor.selection?.anchor,
