@@ -19,8 +19,7 @@ const getChildNodeToDecorations = ([block, blockPath]: NodeEntry<any>) => {
   const nodeToDecorations = new Map<Element, Range[]>();
 
   const text = block.children.map((line) => Node.string(line)).join('\n');
-  const language = block.language;
-
+  const language = block.data.language;
   let tokens;
 
   try {

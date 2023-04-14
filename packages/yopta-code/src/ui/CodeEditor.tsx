@@ -36,8 +36,8 @@ const CodeEditor = (editor: YoEditor) => {
   return function CodeEditor({ element, attributes, children }: RenderElementProps<CodeElement>) {
     const [optionsPos, setOptionsPos] = useState<CSSProperties | null>(null);
     useEffect(() => {
-      Prism.highlightAll();
-    }, []);
+      Prism.highlightAll(true);
+    }, [element.data.language]);
 
     const toggleOptionsOpen = (e?: MouseEvent) => {
       e?.stopPropagation();
