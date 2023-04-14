@@ -142,7 +142,7 @@ const ListItemList = createYoptaPlugin<any, ListChildItemElement>({
           Transforms.wrapNodes(editor, parentNestedNode, { at: listItemPath });
           Transforms.setNodes<BulletedList | NumberedList>(
             editor,
-            { data: { depth: currentDepth + 1 } },
+            { data: { depth: currentDepth + 1, skipDrag: true } },
             {
               match: (n) => Element.isElement(n) && n.type === parentNode.type,
             },
@@ -163,7 +163,7 @@ const ListItemList = createYoptaPlugin<any, ListChildItemElement>({
 
           Transforms.setNodes<BulletedList | NumberedList>(
             editor,
-            { data: { depth: currentDepth - 1 } },
+            { data: { depth: currentDepth - 1, skipDrag: true } },
             {
               match: (n) => Element.isElement(n) && n.type === parentNode.type,
             },

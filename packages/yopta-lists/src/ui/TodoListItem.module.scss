@@ -1,16 +1,18 @@
 .todoListItem {
   color: #292929;
   letter-spacing: -.003em;
-  line-height: 30px;
-  margin-bottom: -0.46em;
-  margin-top: 0.56em;
-  font-size: 21px;
+  line-height: 24px;
+  margin-bottom: 1px;
+  margin-top: 1px;
+  font-size: 16px;
   display: flex;
   align-items: flex-start;
   width: 100%;
   padding-left: 2px;
   color: inherit;
   fill: inherit;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 .checked {
@@ -26,7 +28,7 @@
   justify-content: center;
   flex-grow: 0;
   flex-shrink: 0;
-  min-height: calc(1.5em + 3px + 3px);
+  min-height: 30px;
 }
 
 .label + .label {
