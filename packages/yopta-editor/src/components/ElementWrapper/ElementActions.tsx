@@ -9,8 +9,8 @@ import { Editor, Element } from 'slate';
 import cx from 'classnames';
 import { DraggedNode } from '../../hooks/useDragDrop';
 import { YoptaBaseElement } from '../../types';
+import { ElementOptions } from '../ElementOptions/ElementOptions';
 import s from './ElementWrapper.module.scss';
-import { NodeOptions } from '../ElementOptions/NodeOptions';
 
 type Props = {
   editor: Editor;
@@ -19,15 +19,16 @@ type Props = {
   handlers: NodeSettingsContextHandlers;
 };
 
-const NodeActions = ({ element, editor, values, handlers }: Props) => {
+const ElementActions = ({ element, editor, values, handlers }: Props) => {
   const dragRef = useRef<HTMLButtonElement>(null);
-  const { hoveredElement, isNodeSettingsOpen, nodeSettingsPos } = values;
+  const { hoveredElement, isElementOptionsOpen, nodeSettingsPos } = values;
   const { onDragEnd, onDragStart, openNodeSettings, closeNodeSettings } = handlers;
 
   const onMouseDown = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
     const handler = dragRef.current;
+
     const targetNode = document.querySelector<HTMLDivElement>(`[data-element-id="${element?.id}"]`);
     const pathNode = ReactEditor.findPath(editor, element);
     const parentNode = Editor.parent(editor, pathNode);
@@ -41,7 +42,11 @@ const NodeActions = ({ element, editor, values, handlers }: Props) => {
 
       targetNode.ondragstart = (event) => {
         // handler!.style.cursor = 'grabbing';
-        const from: DraggedNode = { path: pathNode, element: { id: element.id, type: element.type } };
+        const from: DraggedNode = {
+          path: pathNode,
+          element: { id: element.id, type: element.type },
+          parent: parentNode,
+        };
         onDragStart(event, from);
       };
       targetNode.ondragend = onDragEnd;
@@ -52,8 +57,8 @@ const NodeActions = ({ element, editor, values, handlers }: Props) => {
 
   return (
     <div contentEditable={false} className={cx(s.actions, { [s.hovered]: isElementHovered })}>
-      {isElementHovered && isNodeSettingsOpen && (
-        <NodeOptions element={element} style={nodeSettingsPos} onClose={closeNodeSettings} />
+      {isElementHovered && isElementOptionsOpen && (
+        <ElementOptions element={element} style={nodeSettingsPos || undefined} onClose={closeNodeSettings} />
       )}
       <button
         type="button"
@@ -68,4 +73,4 @@ const NodeActions = ({ element, editor, values, handlers }: Props) => {
   );
 };
 
-export { NodeActions };
+export { ElementActions };

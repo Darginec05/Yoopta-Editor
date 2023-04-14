@@ -1,13 +1,12 @@
 import { Element, Transforms } from 'slate';
 import { Resizable, ResizableProps } from 're-resizable';
-import { ReactEditor, useSelected } from 'slate-react';
+import { ReactEditor, useReadOnly, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
 import { Image } from './Image';
 import { CSSProperties, MouseEvent, useEffect, useMemo, useState } from 'react';
-import { cx, RenderElementProps, YoEditor, YoptaPluginType } from '@yopta/editor';
+import { cx, RenderElementProps, UI_HELPERS, YoEditor, YoptaPluginType } from '@yopta/editor';
 import { Loader } from '../components/Loader';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import { NodeOptions } from '../components/NodeOptions';
 import { ImageElement, ImagePluginOptions } from '../types';
 import s from './ImageEditor.module.scss';
 
@@ -17,6 +16,7 @@ function ImageEditor(editor: YoEditor, plugin) {
   return function ImageEditor(props: RenderElementProps<ImageElement>) {
     const { element } = props;
     const selected = useSelected();
+    const readOnly = useReadOnly();
 
     const [optionsPos, setOptionsPos] = useState<CSSProperties | null>(null);
     const [size, setSize] = useState({
@@ -38,11 +38,12 @@ function ImageEditor(editor: YoEditor, plugin) {
         minWidth: 92,
         size: { width: size.width, height: size.height },
         maxWidth: plugin.options?.maxWidth,
+        maxHeight: plugin.options?.maxHeight,
         lockAspectRatio: true,
         resizeRatio: 2,
         enable: {
-          left: true,
-          right: true,
+          left: !readOnly,
+          right: !readOnly,
         },
         handleStyles: {
           left: { left: 0 },
@@ -113,25 +114,34 @@ function ImageEditor(editor: YoEditor, plugin) {
     if (!element.data.url && !element.data['data-src']) {
       const { maxWidth = 750, maxHeight = 800 } = plugin.options || {};
       return (
-        <div className={s.root} key={element.id}>
+        <div className={s.root} key={element.id} contentEditable={false} draggable={false}>
+          <div className={cx(s.selectImg, { [s.selected]: selected })} />
           <EditorPlaceholder
-            {...props}
+            attributes={props.attributes}
             element={element}
             editor={editor}
             maxSizes={{ maxWidth, maxHeight }}
             onUpload={plugin.options?.onUpload}
           >
-            <div>
-              <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>
-                <span className={s.dot} />
-                <span className={s.dot} />
-                <span className={s.dot} />
-              </button>
-              {optionsPos !== null && (
-                <NodeOptions key={element.id} onClose={toggleOptionsOpen} style={optionsPos} element={element} />
-              )}
-            </div>
+            {!readOnly && (
+              <div>
+                <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>
+                  <span className={s.dot} />
+                  <span className={s.dot} />
+                  <span className={s.dot} />
+                </button>
+                {optionsPos !== null && (
+                  <UI_HELPERS.ElementOptions
+                    key={element.id}
+                    onClose={toggleOptionsOpen}
+                    style={optionsPos}
+                    element={element}
+                  />
+                )}
+              </div>
+            )}
           </EditorPlaceholder>
+          {props.children}
         </div>
       );
     }
@@ -151,16 +161,23 @@ function ImageEditor(editor: YoEditor, plugin) {
               <Loader />
             </div>
           )}
-          <div>
-            <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>
-              <span className={s.dot} />
-              <span className={s.dot} />
-              <span className={s.dot} />
-            </button>
-            {optionsPos !== null && (
-              <NodeOptions key={element.id} onClose={toggleOptionsOpen} style={optionsPos} element={element} />
-            )}
-          </div>
+          {!readOnly && (
+            <div>
+              <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>
+                <span className={s.dot} />
+                <span className={s.dot} />
+                <span className={s.dot} />
+              </button>
+              {optionsPos !== null && (
+                <UI_HELPERS.ElementOptions
+                  key={element.id}
+                  onClose={toggleOptionsOpen}
+                  style={optionsPos}
+                  element={element}
+                />
+              )}
+            </div>
+          )}
         </Resizable>
       </div>
     );

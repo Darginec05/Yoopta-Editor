@@ -49,7 +49,7 @@ export default function App({ Component, pageProps }: AppProps) {
         />
       </Head>
       <div>
-        {router.asPath !== '/dev' && (
+        {!router.asPath.startsWith('/dev') && (
           <>
             <ExampleList />
             <SocialLinks />

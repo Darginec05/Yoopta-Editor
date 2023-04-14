@@ -9,8 +9,8 @@ import CopyIcon from './icons/copy.svg';
 import CaptionIcon from './icons/caption.svg';
 import { deepClone } from '../../utils/deepClone';
 import { generateId } from '../../utils/generateId';
-import s from './NodeOptions.module.scss';
-import { useNodeSettingsContext } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
+import { useElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
+import s from './ElementOptions.module.scss';
 
 type Props = {
   style: CSSProperties | undefined;
@@ -19,59 +19,9 @@ type Props = {
   element: any;
 };
 
-const NodeOptions = ({ onClose, style, element }: Props) => {
+const ElementOptions = ({ onClose, style, element }: Props) => {
   const editor = useSlate();
-  const [, handlers] = useNodeSettingsContext();
-
-  const handleDelete = () => {
-    try {
-      const path = ReactEditor.findPath(editor, element);
-      if (!path) return;
-
-      Transforms.removeNodes(editor, {
-        at: path, // remove the whole node including inline nodes
-        match: (node) => Editor.isEditor(editor) && Element.isElement(node),
-        mode: 'highest',
-      });
-
-      onClose();
-    } catch (error) {}
-  };
-
-  const handleDuplicate = () => {
-    Editor.withoutNormalizing(editor, () => {
-      const path = ReactEditor.findPath(editor, element);
-      if (!path) return;
-
-      const currentNodeEntry = Editor.node(editor, path);
-      const after = Editor.after(editor, path);
-
-      const currentNode = currentNodeEntry?.[0];
-      if (currentNode && !Element.isElement(currentNode)) return;
-
-      const duplicatedNode = deepClone(currentNode);
-      duplicatedNode.id = generateId();
-
-      console.log('duplicatedNode', duplicatedNode);
-
-      Transforms.insertNodes(editor, duplicatedNode, {
-        at: { path: [path[0], 0], offset: 0 },
-        mode: 'highest',
-        select: true,
-      });
-
-      console.log('insertNodes success');
-      console.log('after', after);
-
-      Transforms.select(editor, after ? after : [path[0] + 1, 0]);
-
-      if (after) {
-        ReactEditor.focus(editor);
-      }
-
-      onClose();
-    });
-  };
+  const [, handlers] = useElementSettings();
 
   const handleTurnInto = () => {};
 
@@ -128,4 +78,4 @@ const NodeOptions = ({ onClose, style, element }: Props) => {
   );
 };
 
-export { NodeOptions };
+export { ElementOptions };

@@ -24,7 +24,7 @@ type Props = {
 const YoptaEditor = (props: Props) => {
   return (
     <NoSSR>
-      <Editor {...props} />
+      <Editor {...props} value={props.value} onChange={props.onChange} />
     </NoSSR>
   );
 };

@@ -1,5 +1,8 @@
 import { YoptaPlugin, mergePlugins, createYoptaPlugin } from './utils/plugins';
 import classnames from 'classnames';
+import { ElementOptions } from './components/ElementOptions/ElementOptions';
+import { Overlay } from './components/ElementOptions/Overlay';
+import { useElementSettings } from './contexts/NodeSettingsContext/NodeSettingsContext';
 export { classnames as cx };
 export { isKeyHotkey, isHotkey, isCodeHotkey } from 'is-hotkey';
 
@@ -14,4 +17,6 @@ export type { YoptaPluginType, YoptaPluginEventHandlers, HandlersOptions } from 
 export type { YoptaMarksConfig, YoptaMark } from './utils/marks';
 export type { YoEditor, RenderElementProps, YoptaBaseElement, Modify } from './types';
 
-export { YoptaPlugin, mergePlugins, createYoptaPlugin };
+const UI_HELPERS = { ElementOptions, Overlay };
+
+export { YoptaPlugin, mergePlugins, createYoptaPlugin, useElementSettings, UI_HELPERS };
