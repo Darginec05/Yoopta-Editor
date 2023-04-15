@@ -27,7 +27,7 @@ const BulletedList = createYoptaPlugin<ListOptions, BulletedList>({
     nodeType: 'block',
     data: { depth: 1, skipDrag: true },
   }),
-  createElement: (editor, type, data = {}) => {
+  createElement: (editor) => {
     const listItem: ListChildItemElement = ListItemList.getPlugin.defineElement();
 
     Transforms.unwrapNodes(editor, {

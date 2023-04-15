@@ -13,6 +13,7 @@ declare module 'slate' {
 
 const Image = createYoptaPlugin<ImagePluginOptions, ImageElement>({
   type: 'image',
+  shortcut: 'image',
   renderer: {
     editor: ImageEditor,
     render: ImageRender,

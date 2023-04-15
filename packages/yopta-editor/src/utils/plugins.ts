@@ -44,7 +44,7 @@ export type YoptaPluginType<O = Options, P extends YoptaBaseElement<string> = Yo
   options?: O;
   childPlugin?: YoptaPlugin<any, any>;
   isChild?: boolean;
-  createElement?: (editor: YoEditor, type: string, data?: any) => void;
+  createElement?: (editor: YoEditor) => void;
   defineElement: () => P;
 };
 
