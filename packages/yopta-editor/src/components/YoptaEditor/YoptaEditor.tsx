@@ -76,17 +76,15 @@ const YoptaEditor = ({
     );
 
     const shortcutMap = {};
-
     yoptaPlugins.forEach((plugin) => {
       if (plugin.shortcut) {
-        shortcutMap[plugin.shortcut] = plugin.type;
+        shortcutMap[plugin.shortcut] = plugin;
       }
 
       yoptaEditor = plugin.extendEditor?.(yoptaEditor) || yoptaEditor;
     });
 
     yoptaEditor.shortcuts = shortcutMap;
-
     return yoptaEditor;
   }, [yoptaPlugins]);
 

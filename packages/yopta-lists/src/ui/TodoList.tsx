@@ -25,7 +25,7 @@ const TodoList = createYoptaPlugin<ListOptions, TodoList>({
     nodeType: 'block',
     data: { depth: 1, skipDrag: true },
   }),
-  createElement: (editor, type, data = {}) => {
+  createElement: (editor) => {
     const todoListItemElement: TodoListChildItemElement = TodoListItem.getPlugin.defineElement();
 
     Transforms.unwrapNodes(editor, {

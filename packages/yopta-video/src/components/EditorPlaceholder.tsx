@@ -62,8 +62,6 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
     else if (provider === 'vimeo') videoId = getVimeoId(src);
     else if (provider === 'dailymotion') videoId = getDailymotionId(src);
 
-    console.log({ provider, videoId });
-
     if (!videoId) return;
 
     try {

@@ -149,7 +149,7 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
     editor: CodeEditor,
     render: CodeRender,
   },
-  shortcut: 'hw',
+  shortcut: 'code',
   childPlugin: CodeLine,
   extendEditor(editor) {
     const { normalizeNode } = editor;
@@ -193,7 +193,7 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
     nodeType: 'block',
     data: { language: 'javascript' },
   }),
-  createElement: function (editor, type, data = {}) {
+  createElement: function (editor) {
     const childNode: CodeChildElement = CodeLine.getPlugin.defineElement();
 
     Transforms.unwrapNodes(editor, {
