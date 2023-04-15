@@ -1,5 +1,7 @@
 import { CSSProperties, memo } from 'react';
 import { RenderLeafProps } from 'slate-react';
+import cx from 'classnames';
+import s from './TextLeaf.module.scss';
 
 type LeafProps = RenderLeafProps & { placeholder?: string; leaf: any };
 
@@ -13,9 +15,14 @@ const leafStyle: CSSProperties = {
   fontWeight: 'inherit',
 };
 
-const TextLeaf = memo(({ attributes, children, placeholder, leaf }: LeafProps) => {
+const TextLeaf = memo(({ attributes, children, placeholder }: LeafProps) => {
   return (
-    <span {...attributes} data-placeholder={placeholder} style={leafStyle}>
+    <span
+      {...attributes}
+      data-placeholder={placeholder}
+      style={leafStyle}
+      className={cx({ [s.placeholder]: placeholder })}
+    >
       {children}
     </span>
   );

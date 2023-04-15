@@ -3,7 +3,7 @@ import { getElementByPath, generateId, createYoptaPlugin, YoEditor } from '@yopt
 import { CodeLeaf } from './ui/CodeLeaf';
 import { CodeRender } from './ui/CodeRender';
 import { CodeLineRender } from './ui/CodeLineRender';
-import { codeLineDecorator } from './utils/decorator';
+import { codeLineDecorator, getChildNodeToDecorations, mergeMaps } from './utils/decorator';
 import { CodeEditor } from './ui/CodeEditor';
 import { CodeChildElement, CodeElement, CodeOptions } from './types';
 
@@ -27,6 +27,7 @@ const CodeLine = createYoptaPlugin<any, CodeChildElement>({
     type: 'code-line',
     children: [{ text: '' }],
     nodeType: 'block',
+    // [TODO] - move it to render options
     data: { skipSettings: true },
   }),
   extendEditor(editor) {
@@ -37,7 +38,7 @@ const CodeLine = createYoptaPlugin<any, CodeChildElement>({
 
       if (Element.isElement(node) && node.type === 'code-line') {
         const [parentNode] = Editor.parent(editor, path);
-        if (parentNode.type !== 'code') {
+        if ((parentNode as CodeElement).type !== 'code') {
           Transforms.removeNodes(editor, { at: path, match: (n) => Element.isElement(n) && n.type === 'code-line' });
           return;
         }
@@ -151,6 +152,19 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
   childPlugin: CodeLine,
   extendEditor(editor) {
     const { normalizeNode } = editor;
+
+    (editor as YoEditor & { nodeToDecorations: (n: Element) => any }).nodeToDecorations = (node) => {
+      const blockEntries = Array.from(
+        Editor.nodes(editor, {
+          at: [],
+          mode: 'highest',
+          match: (n) => Element.isElement(n) && n.type === 'code',
+        }),
+      );
+
+      const nodeToDecorations = mergeMaps(...blockEntries.map(getChildNodeToDecorations));
+      return nodeToDecorations.get(node);
+    };
 
     editor.normalizeNode = (entry) => {
       const [node, path] = entry;

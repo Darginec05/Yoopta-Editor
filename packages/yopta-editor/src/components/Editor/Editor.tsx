@@ -1,9 +1,8 @@
-import { Editor, Transforms, Range, Element, NodeEntry, Path } from 'slate';
+import { Editor, Transforms, Range, Element, NodeEntry, Path, Text } from 'slate';
 import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, ReactNode, useRef, useEffect } from 'react';
 import { DefaultElement, Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
 import { getDefaultParagraphLine, getRenderFunctionFactory } from './utils';
-import { ELEMENT_TYPES_MAP } from './constants';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { onCopyYoptaNodes } from '../../utils/copy';
@@ -94,7 +93,18 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
         }
       });
 
-      return <TextLeaf {...props} />;
+      // props.children.props?.parent.type === ELEMENT_TYPES_MAP.paragraph
+      // ? placeholder || ' Type / to open menu'
+      // : ` ${capitalizeFirstLetter(props.children.props?.parent.type)}`;
+
+      if (props.text.text.trim().length === 0) {
+        console.log('props text', props.text);
+        console.log('props', props);
+      }
+
+      const placeholder = props.text.text.trim().length === 0 ? 'Type / to open menu' : undefined;
+
+      return <TextLeaf {...props} placeholder={placeholder} />;
     };
   }, [plugins, editor]);
 
@@ -220,7 +230,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
         focus: { path: lastPath, offset: 0 },
       };
 
-      if (lastNode.type === ELEMENT_TYPES_MAP.paragraph && lastNodeText.length === 0) {
+      if (lastNode.type === 'paragraph' && lastNodeText.length === 0) {
         Transforms.select(editor, {
           path: location.anchor.path,
           offset: 0,
@@ -278,6 +288,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
         {...eventHandlers}
         onKeyDown={onKeyDown}
         onMouseDown={onMouseDown}
+        placeholder="LOL_KEK"
       />
     </div>
   );

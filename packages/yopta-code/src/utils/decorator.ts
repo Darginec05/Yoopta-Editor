@@ -1,9 +1,10 @@
 import { YoEditor } from '@yopta/editor';
 import Prism from 'prismjs';
 import { Editor, Element, Node, NodeEntry, Range } from 'slate';
+import { CodeChildElement } from '../types';
 import { normalizeTokens } from './normalizeTokens';
 
-const mergeMaps = <K, V>(...maps: Map<K, V>[]) => {
+export const mergeMaps = <K, V>(...maps: Map<K, V>[]) => {
   const map = new Map<K, V>();
 
   for (const m of maps) {
@@ -15,7 +16,7 @@ const mergeMaps = <K, V>(...maps: Map<K, V>[]) => {
   return map;
 };
 
-const getChildNodeToDecorations = ([block, blockPath]: NodeEntry<any>) => {
+export const getChildNodeToDecorations = ([block, blockPath]: NodeEntry<any>) => {
   const nodeToDecorations = new Map<Element, Range[]>();
 
   const text = block.children.map((line) => Node.string(line)).join('\n');
@@ -71,20 +72,9 @@ const getChildNodeToDecorations = ([block, blockPath]: NodeEntry<any>) => {
 export const codeLineDecorator =
   (editor: YoEditor) =>
   ([node, path]: NodeEntry) => {
-    const blockEntries = Array.from(
-      Editor.nodes(editor, {
-        at: [],
-        mode: 'highest',
-        match: (n) => Element.isElement(n) && n.type === 'code',
-      }),
-    );
-
-    // TODO - optimize
-    const nodeToDecorations = mergeMaps(...blockEntries.map(getChildNodeToDecorations));
-
     if (Element.isElement(node) && node.type === 'code-line') {
-      const ranges = nodeToDecorations.get(node) || [];
-
+      const ranges =
+        (editor as YoEditor & { nodeToDecorations: (n: Element) => Range[] }).nodeToDecorations(node) || [];
       return ranges;
     }
 

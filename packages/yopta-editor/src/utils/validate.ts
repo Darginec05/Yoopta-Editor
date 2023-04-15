@@ -1,5 +1,3 @@
-import { LIST_TYPES } from '../components/Editor/constants';
-
 export function isValidYoptaNodes(nodes: any): boolean {
   if (!Array.isArray(nodes)) return false;
   if (nodes.length === 0) return false;
@@ -10,8 +8,6 @@ export function isValidYoptaNodes(nodes: any): boolean {
   for (let i = 0; i < nodes.length; i++) {
     const node = nodes[i];
     const nodeChild = node.children;
-
-    const isNested = LIST_TYPES.includes(node.type);
 
     if (isNested) {
       return isValidYoptaNodes(nodeChild);

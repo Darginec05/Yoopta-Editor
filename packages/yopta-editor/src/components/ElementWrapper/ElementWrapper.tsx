@@ -1,10 +1,11 @@
 import { MouseEvent, ReactElement, useMemo } from 'react';
-import { RenderElementProps, useReadOnly, useSlate } from 'slate-react';
+import { ReactEditor, RenderElementProps, useReadOnly, useSlate } from 'slate-react';
 import cx from 'classnames';
 import { YoptaElementConfig } from '../../types';
 import { useElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { ElementActions } from './ElementActions';
 import s from './ElementWrapper.module.scss';
+import { Editor } from 'slate';
 
 type Props = RenderElementProps & {
   nodeType: YoptaElementConfig['nodeType'];
@@ -14,7 +15,6 @@ type Props = RenderElementProps & {
 const ElementWrapper = ({ children, element, attributes, nodeType, render }: Props) => {
   const editor = useSlate();
   const [values, handlers] = useElementSettings();
-  const readOnly = useReadOnly();
 
   const isInline = nodeType === 'inline';
   const { hoverIn, onDrop } = handlers;

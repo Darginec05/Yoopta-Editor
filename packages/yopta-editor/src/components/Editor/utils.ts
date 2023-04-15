@@ -1,7 +1,7 @@
 import { jsx } from 'slate-hyperscript';
 import { ELEMENT_TYPES_MAP } from './constants';
 import { generateId } from '../../utils/generateId';
-import { YoEditor, YoptaBaseElement } from '../../types';
+import { YoptaBaseElement } from '../../types';
 import { YoptaPluginType, YoptaRenderElementFunc } from '../../utils/plugins';
 
 export const HTML_ELEMENT_TAGS = {
@@ -72,22 +72,6 @@ export const deserializeHTML = (el) => {
   console.log('children', children);
 
   return children;
-};
-
-// Make recursive for deep nested items
-export const getNodeByCurrentPath = (editor: YoEditor) => {
-  const { path } = editor.selection!.anchor;
-  const level = path.length;
-
-  const isNestedLevel = level > 2;
-  const isRootLevel = !isNestedLevel;
-  const rootNode: any = editor.children[path[0] || 0];
-
-  if (isRootLevel) {
-    return rootNode;
-  }
-
-  return rootNode.children[path[1]];
 };
 
 export const getDefaultParagraphLine = (id: string): YoptaBaseElement<'paragraph'> => ({
