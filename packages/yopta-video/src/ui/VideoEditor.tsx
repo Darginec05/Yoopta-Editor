@@ -109,7 +109,7 @@ function VideoEditor(editor: YoEditor, plugin) {
       }
     };
 
-    if (!element.data.url && !element.data['data-src']) {
+    if (!element.data.url && !element.data['data-src'] && !element.data.videoId) {
       const { maxWidth = 750, maxHeight = 800 } = plugin.options || {};
 
       return (

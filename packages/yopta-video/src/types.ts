@@ -18,7 +18,10 @@ export type VideoElementData = {
   caption?: string;
   url: string | null | undefined;
   'data-src'?: string | null | undefined;
-  provider?: null | string;
+  provider?: VideoProviders | null;
+  videoId?: string | null;
 };
 
 export type VideoElement = Modify<YoptaBaseElement<'video'>, { data: VideoElementData }>;
+
+export type VideoProviders = 'youtube' | 'vimeo' | 'dailymotion';

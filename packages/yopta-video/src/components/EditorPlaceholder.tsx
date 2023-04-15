@@ -3,11 +3,11 @@ import UploadIcon from './icons/upload.svg';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 import { EditorUploader } from './EditorUploader';
 import { getAspectRatio } from '../utils/aspect';
-import { Editor, Element, Transforms } from 'slate';
+import { Element, Transforms } from 'slate';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import { toBase64 } from '../utils/base64';
 import { RenderElementProps, YoEditor } from '@yopta/editor';
-import { VideoElement, VideoPluginOptions } from '../types';
+import { VideoElement, VideoPluginOptions, VideoProviders } from '../types';
+import { getDailymotionId, getProvider, getVimeoId, getYoutubeId } from '../utils/parsers';
 import s from './EditorPlaceholder.module.scss';
 
 type Props = RenderElementProps<VideoElement> & {
@@ -52,27 +52,19 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
     }
   };
 
-  function getVideoSizes(base64): Promise<any> {
-    return new Promise((resolve, reject) => {
-      return resolve({ width: 400, height: 300 });
-    });
-  }
-
   const onEmbed = async (src) => {
-    console.log({ src });
-
     if (src.length === 0) return;
 
-    const url = new URL(src);
-    const videoId = url.searchParams.get('v');
-    const youtubeUrl = `https://www.youtube.com/embed/${videoId}`;
+    const provider = getProvider(src);
+    let videoId: string | null = null;
 
-    // const vimeourl = new URL('https://vimeo.com/789332765/7a19230334');
-    // const vimeovideoId = vimeourl.pathname.split('/')[1];
-    // const vimeoembedUrl = `https://player.vimeo.com/video/${vimeovideoId}?byline=1&badge=0&portrait=0&title=1`;
-    // console.log(`Vimeo embed URL: ${vimeoembedUrl}`);
+    if (provider === 'youtube') videoId = getYoutubeId(src);
+    else if (provider === 'vimeo') videoId = getVimeoId(src);
+    else if (provider === 'dailymotion') videoId = getDailymotionId(src);
 
-    console.log({ youtubeUrl });
+    console.log({ provider, videoId });
+
+    if (!videoId) return;
 
     try {
       enableBodyScroll(document.body);
@@ -81,10 +73,11 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
       const updatedVideoNode: Partial<VideoElement> = {
         data: {
           ...element.data,
-          url: youtubeUrl,
+          url: null,
           'data-src': undefined,
           size: { width: element.data.size.width, height: element.data.size.height },
-          provider: 'youtube',
+          provider: provider,
+          videoId,
         },
       };
 
@@ -101,13 +94,6 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
   const onChangeFile = async (file) => {
     enableBodyScroll(document.body);
     setUploaderPos(null);
-
-    // console.log('optimistic video uploader', ReactEditor.findPath(editor, element));
-
-    // Transforms.setNodes<VideoElement>(editor, videoNode, {
-    //   at: ReactEditor.findPath(editor, element),
-    //   match: (n) => Element.isElement(n) && n.type === 'video',
-    // });
 
     if (!onUpload) return console.error('Provide `onUpload` props in Video options');
 
