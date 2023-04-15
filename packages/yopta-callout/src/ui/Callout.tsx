@@ -23,7 +23,7 @@ const Callout = createYoptaPlugin<any, CalloutElement>({
     children: [{ text: '' }],
     nodeType: 'block',
   }),
-  createElement: function (editor, type, data) {
+  createElement: function (editor) {
     const node: CalloutElement = Callout.getPlugin.defineElement();
 
     Transforms.setNodes(editor, node, {
