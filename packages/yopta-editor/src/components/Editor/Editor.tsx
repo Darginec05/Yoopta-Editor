@@ -94,17 +94,10 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
         }
       });
 
-      // props.children.props?.parent.type === ELEMENT_TYPES_MAP.paragraph
-      // ? placeholder || ' Type / to open menu'
-      // : ` ${capitalizeFirstLetter(props.children.props?.parent.type)}`;
-
       let textPlaceholder: YoptaPluginType['placeholder'];
 
       if (props.text.text.trim().length === 0) {
         const parentElement = props.children.props?.parent;
-        console.log('parentElement', parentElement);
-        console.log('props', props);
-
         const parentPlugin = PLUGINS_MAP[parentElement?.type];
         textPlaceholder = parentPlugin?.placeholder === null ? null : parentPlugin?.placeholder || placeholder;
       }
