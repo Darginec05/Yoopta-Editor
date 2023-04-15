@@ -8,7 +8,7 @@ import { useElementSettings } from '../../contexts/NodeSettingsContext/NodeSetti
 import { onCopyYoptaNodes } from '../../utils/copy';
 import { ElementWrapper } from '../ElementWrapper/ElementWrapper';
 import { HOTKEYS } from '../../utils/hotkeys';
-import { ParentYoptaPlugin } from '../../utils/plugins';
+import { ParentYoptaPlugin, YoptaPluginType } from '../../utils/plugins';
 import { getElementByPath } from '../../utils/nodes';
 import { EditorEventHandlers } from '../../types/eventHandlers';
 import { generateId } from '../../utils/generateId';
@@ -23,12 +23,13 @@ type YoptaProps = {
   plugins: ParentYoptaPlugin[];
   children: ReactNode | ReactNode[];
   marks: YoptaMark[];
+  PLUGINS_MAP: Record<YoptaBaseElement<string>['type'], YoptaPluginType<any, YoptaBaseElement<string>>>;
 };
 
 // [TODO] - defaultNode move to common event handler to avoid repeated id's
 const handlersOptions = { hotkeys: HOTKEYS, defaultNode: getDefaultParagraphLine(generateId()) };
 
-const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }: YoptaProps) => {
+const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, PLUGINS_MAP }: YoptaProps) => {
   useScrollToElement();
   const editorRef = useRef<HTMLDivElement>(null);
   const [{ disableWhileDrag }, { changeHoveredNode }] = useElementSettings();
@@ -97,14 +98,18 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins }
       // ? placeholder || ' Type / to open menu'
       // : ` ${capitalizeFirstLetter(props.children.props?.parent.type)}`;
 
+      let textPlaceholder: YoptaPluginType['placeholder'];
+
       if (props.text.text.trim().length === 0) {
-        console.log('props text', props.text);
+        const parentElement = props.children.props?.parent;
+        console.log('parentElement', parentElement);
         console.log('props', props);
+
+        const parentPlugin = PLUGINS_MAP[parentElement?.type];
+        textPlaceholder = parentPlugin?.placeholder === null ? null : parentPlugin?.placeholder || placeholder;
       }
 
-      const placeholder = props.text.text.trim().length === 0 ? 'Type / to open menu' : undefined;
-
-      return <TextLeaf {...props} placeholder={placeholder} />;
+      return <TextLeaf {...props} placeholder={textPlaceholder} />;
     };
   }, [plugins, editor]);
 

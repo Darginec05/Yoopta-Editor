@@ -19,10 +19,6 @@ export const withShortcuts = (editor: YoEditor) => {
 
       const parentBlock = Editor.parent(editor, block[1]);
 
-      console.log('block', block);
-      console.log('parentBlock', parentBlock);
-      console.log('Text.isText(parentBlock[0].children[0])', Text.isText(parentBlock[0].children[0]));
-
       if (Element.isElement(parentBlock) && !Text.isText(parentBlock[0].children[0])) return insertText(text);
 
       const path = block ? block[1] : [];

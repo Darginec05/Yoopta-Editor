@@ -4,7 +4,7 @@ import { createEditor, Descendant, Editor, Transforms } from 'slate';
 import { ReactEditor, Slate, withReact } from 'slate-react';
 import { YoEditor, YoptaBaseElement } from '../../types';
 import { YoptaMark } from '../../utils/marks';
-import { mergePlugins, YoptaPlugin } from '../../utils/plugins';
+import { mergePlugins, mergePluginTypesToMap, YoptaPlugin } from '../../utils/plugins';
 import { getInitialState, getStorageName, LOCAL_STORAGE_NAME_TYPE } from '../../utils/storage';
 import { NodeSettingsProvider } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { EditorYopta } from '../Editor/Editor';
@@ -61,12 +61,20 @@ const YoptaEditor = ({
     [shouldStoreInLocalStorage],
   );
 
-  const yoptaPlugins = useMemo(() => mergePlugins(plugins), [plugins]);
+  const yoptaEditorPlugins = useMemo(() => {
+    const yoptaPlugins = mergePlugins(plugins);
+    const PLUGINS_MAP = mergePluginTypesToMap(yoptaPlugins);
+
+    return { yoptaPlugins, PLUGINS_MAP };
+  }, [plugins]);
+
+  const { yoptaPlugins, PLUGINS_MAP } = yoptaEditorPlugins;
 
   const editor = useMemo<YoEditor>(() => {
     let yoptaEditor = withDeleteFragment(
       withNonEmptyEditor(withVoidNodes(withHistory(withShortcuts(withReact(createEditor()))))),
     );
+
     const shortcutMap = {};
 
     yoptaPlugins.forEach((plugin) => {
@@ -106,6 +114,7 @@ const YoptaEditor = ({
           plugins={yoptaPlugins}
           children={children}
           marks={marks}
+          PLUGINS_MAP={PLUGINS_MAP}
         />
       </NodeSettingsProvider>
     </Slate>

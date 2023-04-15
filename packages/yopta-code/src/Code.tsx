@@ -22,6 +22,7 @@ const CodeLine = createYoptaPlugin<any, CodeChildElement>({
   renderer: CodeLineRender,
   leaf: () => CodeLeaf,
   decorator: codeLineDecorator,
+  placeholder: null,
   defineElement: (): CodeChildElement => ({
     id: generateId(),
     type: 'code-line',
@@ -184,6 +185,7 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
 
     return editor;
   },
+  placeholder: 'Write bugs',
   defineElement: (): CodeElement => ({
     id: generateId(),
     type: 'code',

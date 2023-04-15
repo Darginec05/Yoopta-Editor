@@ -9,3 +9,17 @@
   padding-top: 2px;
   padding-bottom: 2px;
 }
+
+.dot {
+  min-width: 28px;
+  padding: 0px 6px 0px 4px;
+  flex-shrink: 0;
+  font-size: 16px;
+  font-weight: 400;
+  font-style: normal;
+  display: inline;
+  line-height: 24px;
+  word-break: break-word;
+  box-sizing: border-box;
+  color: #000;
+}

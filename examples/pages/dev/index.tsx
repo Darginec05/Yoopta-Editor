@@ -204,6 +204,7 @@ const BasicExample = () => {
           marks={marks}
           shouldStoreInLocalStorage={{ name: 'yopta-dev' }}
           key="edit"
+          placeholder="Type / to open menu"
         >
           <ActionMenu trigger="/" items={actionItems}>
             {NotionActionMenu}

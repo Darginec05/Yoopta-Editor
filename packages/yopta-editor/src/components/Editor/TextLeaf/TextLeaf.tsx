@@ -1,9 +1,10 @@
 import { CSSProperties, memo } from 'react';
-import { RenderLeafProps } from 'slate-react';
+import { RenderLeafProps, useSelected } from 'slate-react';
 import cx from 'classnames';
 import s from './TextLeaf.module.scss';
+import { YoptaPluginType } from '../../../utils/plugins';
 
-type LeafProps = RenderLeafProps & { placeholder?: string; leaf: any };
+type LeafProps = RenderLeafProps & { placeholder?: YoptaPluginType['placeholder']; leaf: any };
 
 const leafStyle: CSSProperties = {
   margin: '1px 0',
@@ -15,13 +16,15 @@ const leafStyle: CSSProperties = {
   fontWeight: 'inherit',
 };
 
-const TextLeaf = memo(({ attributes, children, placeholder }: LeafProps) => {
+const TextLeaf = memo(({ attributes, children, placeholder, leaf }: LeafProps) => {
+  const selected = useSelected();
+
   return (
     <span
       {...attributes}
       data-placeholder={placeholder}
       style={leafStyle}
-      className={cx({ [s.placeholder]: placeholder })}
+      className={cx({ [s.placeholder]: placeholder && selected })}
     >
       {children}
     </span>

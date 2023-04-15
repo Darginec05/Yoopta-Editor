@@ -17,6 +17,7 @@ const HeadingTwo = createYoptaPlugin<any, HeadingTwoElement>({
   type: 'heading-two',
   renderer: (editor) => HeadingTwoRender,
   shortcut: 'h2',
+  placeholder: 'Heading 2',
   defineElement: (): HeadingTwoElement => ({
     id: generateId(),
     type: 'heading-two',

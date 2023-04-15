@@ -17,6 +17,7 @@ const HeadingOne = createYoptaPlugin<any, HeadingOneElement>({
   type: 'heading-one',
   renderer: (editor) => HeadingRender,
   shortcut: 'h1',
+  placeholder: 'Heading 1',
   defineElement: (): HeadingOneElement => ({
     id: generateId(),
     type: 'heading-one',

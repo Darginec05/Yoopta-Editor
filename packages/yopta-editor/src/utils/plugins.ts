@@ -40,6 +40,7 @@ export type YoptaPluginType<O = Options, P extends YoptaBaseElement<string> = Yo
   events?: YoptaPluginEventHandlers;
   extendEditor?: (editor: YoEditor) => YoEditor;
   leaf?: (editor: YoEditor) => (props: RenderLeafProps) => any;
+  placeholder?: string | null;
   options?: O;
   childPlugin?: YoptaPlugin<any, any>;
   isChild?: boolean;
@@ -83,4 +84,12 @@ export function mergePlugins<O extends Options, P extends YoptaBaseElement<strin
 
   const uniquePlugins = uniqWith(items, (a, b) => a.type === b.type);
   return uniquePlugins;
+}
+
+export function mergePluginTypesToMap(
+  plugins: YoptaPluginType<any, YoptaBaseElement<string>>[],
+): Record<YoptaBaseElement<string>['type'], YoptaPluginType<any, YoptaBaseElement<string>>> {
+  const PLUGINS_MAP = {};
+  plugins.forEach((plugin) => (PLUGINS_MAP[plugin.type] = plugin));
+  return PLUGINS_MAP;
 }
