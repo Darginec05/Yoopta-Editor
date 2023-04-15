@@ -50,7 +50,7 @@ const Video = createYoptaPlugin<VideoPluginOptions, VideoElement>({
     data: { url: null, size: { width: 'auto', height: 'auto' } },
     children: [{ text: '' }],
   }),
-  createElement: function (editor, type, data) {
+  createElement: function (editor) {
     Transforms.setNodes(editor, Video.getPlugin.defineElement(), {
       at: editor.selection?.anchor,
     });

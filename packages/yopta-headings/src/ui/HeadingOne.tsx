@@ -16,7 +16,7 @@ HeadingRender.displayName = 'HeadingOne';
 const HeadingOne = createYoptaPlugin<any, HeadingOneElement>({
   type: 'heading-one',
   renderer: (editor) => HeadingRender,
-  shortcut: 'h1',
+  shortcut: 'title',
   placeholder: 'Heading 1',
   defineElement: (): HeadingOneElement => ({
     id: generateId(),
@@ -24,7 +24,7 @@ const HeadingOne = createYoptaPlugin<any, HeadingOneElement>({
     children: [{ text: '' }],
     nodeType: 'block',
   }),
-  createElement: function (editor, type, data) {
+  createElement: function (editor) {
     const node: HeadingOneElement = HeadingOne.getPlugin.defineElement();
 
     Transforms.setNodes<HeadingOneElement>(editor, node, {
