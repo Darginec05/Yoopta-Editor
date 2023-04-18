@@ -19,7 +19,7 @@ export function mergePlugins(plugins) {
     })
     .flat();
 
-  const uniquePlugins = uniqWith(items, (a, b) => a.type === b.type);
+  const uniquePlugins = uniqWith(items, (a: any, b: any) => a.type === b.type);
   return uniquePlugins;
 }
 

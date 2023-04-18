@@ -293,7 +293,7 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
         });
       }
 
-      menuItem.createElement?.(editor, menuItem.type);
+      menuItem.createElement?.(editor);
     });
   };
 

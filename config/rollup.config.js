@@ -26,6 +26,7 @@ const suggestionListPkg = require('../packages/actionMenu/package.json');
 const toolbarListPkg = require('../packages/toolbar/package.json');
 const marksPkg = require('../packages/marks/package.json');
 const rendererPkg = require('../packages/yopta-renderer/package.json');
+const chatGPTPkg = require('../packages/yopta-chatGPT/package.json');
 // const UIHelpersPkg = require('../packages/ui-helpers/package.json');
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -46,6 +47,7 @@ const aliases = {
   '@yopta/toolbar': 'toolbar',
   '@yopta/marks': 'marks',
   '@yopta/renderer': 'yopta-renderer',
+  '@yopta/chat-gpt': 'yopta-chatGPT',
   // '@yopta/ui': 'ui-helpers',
 };
 
@@ -123,6 +125,7 @@ const SuggestionListPkgConfig = createConfig({ pkg: suggestionListPkg });
 const ToolbarPkgConfig = createConfig({ pkg: toolbarListPkg });
 const MarksPkgConfig = createConfig({ pkg: marksPkg });
 const RendererPkgConfig = createConfig({ pkg: rendererPkg });
+const ChatGPTPkgConfig = createConfig({ pkg: chatGPTPkg });
 // const UIHelpersPkgConfig = createConfig({ pkg: UIHelpersPkg });
 
 export default [
@@ -140,4 +143,5 @@ export default [
   ToolbarPkgConfig,
   MarksPkgConfig,
   RendererPkgConfig,
+  ChatGPTPkgConfig,
 ];
