@@ -1,0 +1,59 @@
+.root {
+  border-radius: 6px;
+  background: white;
+  box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
+  overflow: hidden;
+  isolation: isolate;
+  position: relative;
+  z-index: 2;
+}
+
+.content {
+  width: 100%;
+  min-height: 36px;
+  padding: 2px 12px 2px 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.body {
+  display: flex;
+  align-items: center;
+  border: none;
+  padding: 4px 0px;
+  width: 100%;
+  background: transparent;
+  font-size: inherit;
+  line-height: inherit;
+  min-height: 28px;
+}
+
+.textarea {
+  overflow: hidden;
+  font-size: inherit;
+  line-height: inherit;
+  border: none;
+  background: none;
+  width: 100%;
+  display: block;
+  resize: none;
+  padding: 5px 3px;
+  color: inherit;
+  font: inherit;
+  margin: 0;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.flight {
+  height: auto;
+  cursor: pointer;
+  border: none;
+  background-color: inherit;
+  padding: 0;
+  margin: 0;
+}

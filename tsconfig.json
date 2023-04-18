@@ -14,6 +14,6 @@
     { "path": "./packages/actionMenu" },
     { "path": "./packages/marks" },
     { "path": "./packages/yopta-renderer" },
-    { "path": "./packages/yopta-chatGPT" }
+    { "path": "./packages/yopta-chatGPT-assistant" }
   ]
 }

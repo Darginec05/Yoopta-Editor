@@ -272,6 +272,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
             plugins,
             marks: marks.map((mark) => mark.type),
             editorRef,
+            PLUGINS_MAP,
           });
         })}
       <Editable

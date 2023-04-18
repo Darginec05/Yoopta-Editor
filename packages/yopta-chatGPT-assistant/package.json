@@ -1,5 +1,5 @@
 {
-  "name": "@yopta/chat-gpt",
+  "name": "@yopta/chat-gpt-assistant",
   "version": "1.0.0",
   "description": "> TODO: description",
   "author": "Darginec05 <devopsbanda@gmail.com>",
@@ -32,5 +32,6 @@
   },
   "bugs": {
     "url": "https://github.com/Darginec05/Editor-Yopta/issues"
-  }
+  },
+  "dependencies": {}
 }
