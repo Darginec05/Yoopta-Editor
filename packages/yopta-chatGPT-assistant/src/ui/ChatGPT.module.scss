@@ -1,0 +1,23 @@
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+  opacity: 1;
+}
+
+.elementList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.root {
+  width: 100%;
+}
+
+.content {
+  width: 100%;
+  min-width: 500px;
+}

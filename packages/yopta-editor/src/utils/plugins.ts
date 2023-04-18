@@ -93,3 +93,16 @@ export function mergePluginTypesToMap(
   plugins.forEach((plugin) => (PLUGINS_MAP[plugin.type] = plugin));
   return PLUGINS_MAP;
 }
+
+// const YoptaPlugin: YoptaPlugin = (props) => {
+//   const frozenProps = Object.freeze({ ...props });
+
+//   const extend = (overrides: Partial<YoptaPluginType>) => YoptaPlugin(Object.freeze({ ...frozenProps, ...overrides }));
+
+//   const getPlugin = () => frozenProps;
+
+//   return {
+//     extend,
+//     getPlugin,
+//   };
+// };

@@ -38,7 +38,13 @@ const EmbedLink = ({ onEmbed }) => {
 
   return (
     <div className={s.embed}>
-      <input type="text" placeholder="Paste video link" value={value} className={s.embedInput} onChange={onChange} />
+      <input
+        type="text"
+        placeholder="Paste video link (Youtube, Vimeo, Dailymotion)"
+        value={value}
+        className={s.embedInput}
+        onChange={onChange}
+      />
       <button type="button" className={s.embedButton} onClick={onEmbedLink}>
         Embed video
       </button>
