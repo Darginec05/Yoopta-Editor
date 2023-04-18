@@ -47,6 +47,7 @@ import Image, { ImageElement, ImageElementData, ImagePluginOptions } from '@yopt
 import Video, { VideoElement } from '@yopta/video';
 import Toolbar from '@yopta/toolbar';
 import YoptaRenderer from '@yopta/renderer';
+import ChatGPT from '@yopta/chat-gpt';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yopta/marks';
 import ActionMenu, { ActionMenuComponentItem } from '@yopta/action-menu-list';
 import { useMemo, useState } from 'react';
@@ -92,6 +93,7 @@ const BasicExample = () => {
       Headings.HeadingOne,
       Headings.HeadingTwo,
       Headings.HeadingThree,
+      ChatGPT,
       Image.extend({
         options: {
           maxWidth: 750,
@@ -116,6 +118,13 @@ const BasicExample = () => {
   }, []);
 
   const actionItems = [
+    {
+      plugin: ChatGPT,
+      searchString: 'asisstant',
+      label: 'Ask GPT',
+      description: 'Ask anything',
+      icon: '/text.png',
+    },
     {
       plugin: Paragraph,
       searchString: 'text paragraph',
