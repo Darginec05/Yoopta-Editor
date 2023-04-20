@@ -7,4 +7,7 @@ export type CodeOptions = {
 
 export type CodeElement = Modify<YoptaBaseElement<'code'>, { data: CodeOptions; children: CodeChildElement[] }>;
 
-export type CodeChildElement = Modify<YoptaBaseElement<'code-line'>, { data: { skipSettings: boolean } }>;
+export type CodeChildElement = Modify<
+  YoptaBaseElement<'code-line'>,
+  { data: { skipSettings: boolean; skipDrag: boolean } }
+>;

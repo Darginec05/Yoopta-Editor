@@ -24,7 +24,7 @@ const TextLeaf = memo(({ attributes, children, placeholder, leaf }: LeafProps) =
       {...attributes}
       data-placeholder={placeholder}
       style={leafStyle}
-      className={cx({ [s.placeholder]: placeholder && selected })}
+      className={cx({ [s.placeholder]: leaf.withPlaceholder && placeholder && selected })}
     >
       {children}
     </span>

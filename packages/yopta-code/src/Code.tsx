@@ -29,7 +29,7 @@ const CodeLine = createYoptaPlugin<any, CodeChildElement>({
     children: [{ text: '' }],
     nodeType: 'block',
     // [TODO] - move it to render options
-    data: { skipSettings: true },
+    data: { skipSettings: true, skipDrag: true },
   }),
   extendEditor(editor) {
     const { normalizeNode } = editor;

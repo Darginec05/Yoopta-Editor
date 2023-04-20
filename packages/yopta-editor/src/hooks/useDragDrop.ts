@@ -93,6 +93,7 @@ export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers
         console.log('toPath', toPath);
         console.log('toPath next', Path.next(toPath));
         console.log('fromElementNode', fromElementNode);
+        console.log('parentElementNode', parentElementNode);
 
         if (toPath.length > 1) {
           const draggedElement = deepClone(fromElementNode);
@@ -135,7 +136,8 @@ export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers
           Transforms.moveNodes(editor, {
             at: fromPath,
             to: toPath,
-            match: (node) => Element.isElement(node),
+            match: (node) =>
+              Element.isElement(node) && Element.isElement(fromElementNode) && fromElementNode.type === node.type,
             mode: 'lowest',
           });
         }

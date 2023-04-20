@@ -18,7 +18,7 @@ const TodoList = createYoptaPlugin<ListOptions, TodoList>({
   type: TODO_LIST_NODE_TYPE,
   renderer: (editor) => TodoListRender,
   childPlugin: TodoListItem,
-  shortcut: '[',
+  shortcut: '[]',
   defineElement: () => ({
     id: generateId(),
     type: 'todo-list',

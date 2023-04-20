@@ -1,5 +1,5 @@
 import { generateId, isElementActive, YoEditor } from '@yopta/editor';
-import { Editor, Range, Transforms } from 'slate';
+import { Range, Transforms } from 'slate';
 import { LinkElement } from '../types';
 import { removeLinkNode } from './removeLink';
 

@@ -2,7 +2,7 @@ import { Editor, Transforms, Range, Element, NodeEntry, Path, Text } from 'slate
 import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, ReactNode, useRef, useEffect } from 'react';
 import { DefaultElement, Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
-import { getDefaultParagraphLine, getRenderFunctionFactory } from './utils';
+import { getDefaultParagraphLine, getRenderFunctionFactory, isElementHasText } from './utils';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { onCopyYoptaNodes } from '../../utils/copy';
@@ -62,8 +62,9 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
 
   const decorate = useMemo(() => {
     return (nodeEntry: NodeEntry) => {
-      const ranges: Range[] = [];
-      const [node] = nodeEntry;
+      // [TODO] - fix types
+      const ranges: any[] = [];
+      const [node, path] = nodeEntry;
 
       plugins.forEach((plugin) => {
         const decoratorFn = plugin.decorator;
@@ -72,6 +73,20 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
           ranges.push(...decoratorFn(editor)(nodeEntry));
         }
       });
+
+      if (editor.selection) {
+        if (
+          !Editor.isEditor(node) &&
+          Editor.string(editor, [path[0]]) === '' &&
+          Range.includes(editor.selection, path) &&
+          Range.isCollapsed(editor.selection)
+        ) {
+          ranges.push({
+            ...editor.selection,
+            withPlaceholder: true,
+          });
+        }
+      }
 
       return ranges;
     };
@@ -95,9 +110,9 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
       });
 
       let textPlaceholder: YoptaPluginType['placeholder'];
+      const parentElement = props.children.props?.parent;
 
-      if (props.text.text.trim().length === 0) {
-        const parentElement = props.children.props?.parent;
+      if (!isElementHasText(parentElement)) {
         const parentPlugin = PLUGINS_MAP[parentElement?.type];
         textPlaceholder = parentPlugin?.placeholder === null ? null : parentPlugin?.placeholder || placeholder;
       }
@@ -130,11 +145,26 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
 
   const onKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
     Editor.withoutNormalizing(editor, () => {
+      if (!editor.selection) return;
+      const defaultNode = getDefaultParagraphLine(generateId());
+
+      // // Check if all selected nodes should be deleted
+      // if (HOTKEYS.isBackspace(event)) {
+      //   const [, firstElementPath] = Editor.first(editor, [0]);
+      //   const [, lastElementPath] = Editor.last(editor, [editor.children.length - 1]);
+
+      //   const fullRange = Editor.range(editor, firstElementPath, lastElementPath);
+      //   const isAllNodesSelected = Range.equals(editor.selection, fullRange);
+
+      //   if (isAllNodesSelected) {
+      //     event.preventDefault();
+      //     // Editor.deleteFragment(editor);
+      //     return;
+      //   }
+      // }
+
       eventHandlers.onKeyDown?.(event);
 
-      if (!editor.selection) return;
-
-      const defaultNode = getDefaultParagraphLine(generateId());
       const nodeEntry = Editor.above<YoptaBaseElement<string>>(editor, {
         match: (n) => !Editor.isEditor(n),
         mode: 'lowest',
@@ -223,6 +253,9 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
       const lastNode: any = getElementByPath(editor, lastPath, 'highest');
       const lastNodeText = Editor.string(editor, lastPath);
 
+      console.log('lastNode', lastNode);
+      console.log('lastNodeText', lastNodeText);
+
       const location = {
         anchor: { path: lastPath, offset: 0 },
         focus: { path: lastPath, offset: 0 },
@@ -287,7 +320,6 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
         {...eventHandlers}
         onKeyDown={onKeyDown}
         onMouseDown={onMouseDown}
-        placeholder="LOL_KEK"
       />
     </div>
   );

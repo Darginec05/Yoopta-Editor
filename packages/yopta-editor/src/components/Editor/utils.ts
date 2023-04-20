@@ -3,6 +3,7 @@ import { ELEMENT_TYPES_MAP } from './constants';
 import { generateId } from '../../utils/generateId';
 import { YoptaBaseElement } from '../../types';
 import { YoptaPluginType, YoptaRenderElementFunc } from '../../utils/plugins';
+import { Element } from 'slate';
 
 export const HTML_ELEMENT_TAGS = {
   A: (el) => ({ type: ELEMENT_TYPES_MAP.link, url: el.getAttribute('href'), id: generateId() }),
@@ -87,4 +88,10 @@ export function getRenderFunctionFactory(plugin: YoptaPluginType): YoptaRenderEl
   }
 
   return plugin.renderer.editor;
+}
+
+export function isElementHasText(element: YoptaBaseElement<string>): boolean {
+  if (element?.children?.length === 1 && element?.children[0]?.text.length === 0) return false;
+
+  return true;
 }

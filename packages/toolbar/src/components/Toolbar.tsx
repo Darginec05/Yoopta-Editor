@@ -68,8 +68,14 @@ const Toolbar = ({ type = 'bubble', style, marks, children, editorRef }: Props) 
     if (isFixedToolbar) return setToolbarProps({ open: true, style: {} });
     if (!editor.selection || !toolbarRef.current) return hideToolbar();
 
+    const [, firstElementPath] = Editor.first(editor, [0]);
+    const [, lastElementPath] = Editor.last(editor, [editor.children.length - 1]);
+
+    const fullRange = Editor.range(editor, firstElementPath, lastElementPath);
+    const isAllNodesSelected = Range.equals(editor.selection, fullRange);
+
     const isExpanded = Range.isExpanded(editor.selection) && Editor.string(editor, editor.selection).trim() !== '';
-    if (!isExpanded) return hideToolbar();
+    if (!isExpanded || (isAllNodesSelected && editor.children.length > 1)) return hideToolbar();
 
     updateToolbarPosition();
   }, [editor.selection]);

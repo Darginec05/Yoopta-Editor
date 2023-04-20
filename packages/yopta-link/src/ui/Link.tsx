@@ -1,5 +1,5 @@
 import { MouseEvent } from 'react';
-import { Editor, Element, Transforms } from 'slate';
+import { Editor, Element, Node, NodeEntry, Path, Transforms } from 'slate';
 import { getElementByPath, generateId, RenderElementProps, createYoptaPlugin } from '@yopta/editor';
 import isUrl from 'is-url';
 import { addLinkNode } from '../utils/addLink';
@@ -54,9 +54,24 @@ const Link = createYoptaPlugin<any, LinkElement>({
     data: { url: null },
   }),
   extendEditor(editor) {
-    const { insertData, insertText, isInline } = editor;
+    const { insertData, insertText, isInline, normalizeNode } = editor;
 
     editor.isInline = (element) => (element.type === LINK_NODE_TYPE ? true : isInline(element));
+
+    editor.normalizeNode = (entry) => {
+      const [node] = entry;
+
+      if (Element.isElement(node) && node.type === LINK_NODE_TYPE) {
+        if (Node.child(node, 0)?.text.length === 0) {
+          Transforms.removeNodes(editor, {
+            at: entry[1],
+            match: (n) => Element.isElement(n) && n.type === LINK_NODE_TYPE,
+          });
+        }
+      }
+
+      normalizeNode(entry);
+    };
 
     editor.insertText = (text: string) => {
       if (text && isUrl(text)) {
@@ -91,6 +106,39 @@ const Link = createYoptaPlugin<any, LinkElement>({
         if (hotkeys.isEnter(event)) {
           const isEnd = Editor.isEnd(editor, anchor, anchor.path);
           const isStart = Editor.isStart(editor, anchor, anchor.path);
+
+          console.log({ isStart });
+
+          if (isStart) {
+            event.preventDefault();
+            const linkEntry: NodeEntry<LinkElement> | undefined = Editor.above(editor, {
+              match: (n) => Element.isElement(n) && n.type === LINK_NODE_TYPE,
+            });
+
+            if (!linkEntry) return;
+            const [, linkElementPath] = linkEntry;
+            const parentEntry = Editor.parent(editor, linkElementPath);
+
+            const [, parentElementPath] = parentEntry;
+
+            Transforms.splitNodes(editor, {
+              match: (n) => Element.isElement(n),
+              mode: 'highest',
+              always: true,
+            });
+
+            Transforms.setNodes(
+              editor,
+              { id: generateId() },
+              {
+                at: parentElementPath,
+                match: (n) => Element.isElement(n),
+                mode: 'highest',
+              },
+            );
+
+            return;
+          }
 
           if (isEnd) {
             event.preventDefault();
