@@ -6,6 +6,12 @@
   isolation: isolate;
   position: relative;
   z-index: 2;
+  opacity: 1;
+  transition: opacity 80ms ease-in;
+}
+
+.loading {
+  opacity: 0.6;
 }
 
 .content {
