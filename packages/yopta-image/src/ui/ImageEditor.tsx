@@ -35,7 +35,7 @@ function ImageEditor(editor: YoEditor, plugin) {
 
     const resizeProps: ResizableProps = useMemo(
       () => ({
-        minWidth: 92,
+        minWidth: 300,
         size: { width: size.width, height: size.height },
         maxWidth: plugin.options?.maxWidth,
         maxHeight: plugin.options?.maxHeight,
