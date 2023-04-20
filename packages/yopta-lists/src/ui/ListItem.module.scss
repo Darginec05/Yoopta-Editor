@@ -10,6 +10,18 @@
   padding-bottom: 2px;
 }
 
+.dotWrapper {
+  user-select: none;
+    margin-right: 2px;
+    width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 0;
+    flex-shrink: 0;
+    min-height: calc(1.5em + 3px + 3px);
+}
+
 .dot {
   min-width: 28px;
   padding: 0px 6px 0px 4px;

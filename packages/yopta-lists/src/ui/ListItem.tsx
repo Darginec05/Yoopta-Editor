@@ -25,6 +25,7 @@ const ListItemList = createYoptaPlugin<any, ListChildItemElement>({
     children: [{ text: '' }],
     nodeType: 'block',
   }),
+  placeholder: null,
   events: {
     onKeyDown:
       (editor, { hotkeys, defaultNode }) =>
@@ -127,8 +128,6 @@ const ListItemList = createYoptaPlugin<any, ListChildItemElement>({
 
         if (hotkeys.isTab(event)) {
           event.preventDefault();
-
-          console.log({ currentDepth });
 
           if (isMaxDepth) return;
 

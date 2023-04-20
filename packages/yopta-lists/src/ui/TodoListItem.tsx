@@ -38,6 +38,7 @@ const TodoListItemRender = (editor: YoEditor) => {
 const TodoListItem = createYoptaPlugin<TodoListItemOptions, TodoListChildItemElement>({
   type: TODO_LIST_NODE_ITEM_TYPE,
   renderer: TodoListItemRender,
+  placeholder: null,
   defineElement: () => ({
     id: generateId(),
     type: 'todo-list-item',
