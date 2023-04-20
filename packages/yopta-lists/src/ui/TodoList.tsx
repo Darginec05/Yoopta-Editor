@@ -1,5 +1,5 @@
 import { createYoptaPlugin, generateId, RenderElementProps } from '@yopta/editor';
-import { Editor, Element, Transforms } from 'slate';
+import { Editor, Element, Node, Transforms } from 'slate';
 import { ListOptions, TodoList, TodoListChildItemElement } from '../types';
 import s from './TodoList.module.scss';
 import { TodoListItem } from './TodoListItem';
@@ -26,6 +26,27 @@ const TodoList = createYoptaPlugin<ListOptions, TodoList>({
     nodeType: 'block',
     data: { depth: 1, skipDrag: true },
   }),
+  // extendEditor(editor) {
+  //   const { normalizeNode } = editor;
+
+  //   editor.normalizeNode = (entry) => {
+  //     const [node, path] = entry;
+
+  //     if (Element.isElement(node) && node.type === TODO_LIST_NODE_TYPE) {
+  //       if (!Element.isElement(Node.child(node, 0))) {
+  //         Transforms.removeNodes(editor, {
+  //           at: entry[1],
+  //           match: (n) => Element.isElement(n) && n.type === TODO_LIST_NODE_TYPE,
+  //           mode: 'lowest',
+  //         });
+  //       }
+  //     }
+
+  //     normalizeNode(entry);
+  //   };
+
+  //   return editor;
+  // },
   createElement: (editor) => {
     const todoListItemElement: TodoListChildItemElement = TodoListItem.getPlugin.defineElement();
 

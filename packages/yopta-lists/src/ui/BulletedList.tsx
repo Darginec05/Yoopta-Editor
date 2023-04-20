@@ -1,5 +1,5 @@
 import { createYoptaPlugin, generateId, RenderElementProps, YoptaPlugin } from '@yopta/editor';
-import { Editor, Element, Transforms } from 'slate';
+import { Editor, Element, Node, Transforms } from 'slate';
 import type { BulletedList, ListChildItemElement, ListOptions } from '../types';
 import { ListItemList } from './ListItem';
 import s from './BulletedList.module.scss';
@@ -27,6 +27,27 @@ const BulletedList = createYoptaPlugin<ListOptions, BulletedList>({
     nodeType: 'block',
     data: { depth: 1, skipDrag: true },
   }),
+  // extendEditor(editor) {
+  //   const { normalizeNode } = editor;
+
+  //   editor.normalizeNode = (entry) => {
+  //     const [node] = entry;
+
+  //     if (Element.isElement(node) && node.type === BULLETED_LIST_NODE_TYPE) {
+  //       // console.log('Node.child(node, 0)', Node.child(node, 0));
+  //       // if (Node.child(node, 0)?.text.length === 0) {
+  //       //   Transforms.removeNodes(editor, {
+  //       //     at: entry[1],
+  //       //     match: (n) => Element.isElement(n) && n.type === BULLETED_LIST_NODE_TYPE,
+  //       //   });
+  //       // }
+  //     }
+
+  //     normalizeNode(entry);
+  //   };
+
+  //   return editor;
+  // },
   createElement: (editor) => {
     const listItem: ListChildItemElement = ListItemList.getPlugin.defineElement();
 
