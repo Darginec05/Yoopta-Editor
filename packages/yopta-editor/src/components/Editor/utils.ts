@@ -3,10 +3,9 @@ import { ELEMENT_TYPES_MAP } from './constants';
 import { generateId } from '../../utils/generateId';
 import { YoptaBaseElement } from '../../types';
 import { YoptaPluginType, YoptaRenderElementFunc } from '../../utils/plugins';
-import { Element } from 'slate';
 
 export const HTML_ELEMENT_TAGS = {
-  A: (el) => ({ type: ELEMENT_TYPES_MAP.link, url: el.getAttribute('href'), id: generateId() }),
+  A: (el) => ({ type: ELEMENT_TYPES_MAP.link, data: { url: el.getAttribute('href') }, id: generateId() }),
   BLOCKQUOTE: () => ({ type: ELEMENT_TYPES_MAP['block-quote'], id: generateId() }),
   H1: () => ({ type: ELEMENT_TYPES_MAP['heading-one'], id: generateId() }),
   H2: () => ({ type: ELEMENT_TYPES_MAP['heading-two'], id: generateId() }),
@@ -14,7 +13,7 @@ export const HTML_ELEMENT_TAGS = {
   H4: () => ({ type: ELEMENT_TYPES_MAP['heading-three'], id: generateId() }),
   H5: () => ({ type: ELEMENT_TYPES_MAP['heading-three'], id: generateId() }),
   H6: () => ({ type: ELEMENT_TYPES_MAP['heading-three'], id: generateId() }),
-  IMG: (el) => ({ type: 'image', url: el.getAttribute('src'), id: generateId() }),
+  IMG: (el) => ({ type: 'image', data: { url: el.getAttribute('src') }, id: generateId() }),
   LI: () => ({ type: ELEMENT_TYPES_MAP['list-item'], id: generateId() }),
   OL: () => ({ type: ELEMENT_TYPES_MAP['numbered-list'], id: generateId() }),
   UL: () => ({ type: ELEMENT_TYPES_MAP['bulleted-list'], id: generateId() }),
@@ -32,7 +31,7 @@ export const HTML_TEXT_TAGS = {
   U: () => ({ underline: true }),
 };
 
-export const deserializeHTML = (el) => {
+export const deserializeHTML = (el, plugins) => {
   if (el.nodeType === 3) {
     return el.textContent;
   }
@@ -50,7 +49,9 @@ export const deserializeHTML = (el) => {
     // eslint-disable-next-line prefer-destructuring
     parent = el.childNodes[0];
   }
-  let children = Array.from(parent.childNodes).map(deserializeHTML).flat();
+  let children = Array.from(parent.childNodes)
+    .map((node) => deserializeHTML(node, plugins))
+    .flat();
 
   if (children.length === 0) {
     children = [{ text: '' }];
@@ -62,6 +63,10 @@ export const deserializeHTML = (el) => {
 
   if (HTML_ELEMENT_TAGS[nodeName]) {
     const attrs = HTML_ELEMENT_TAGS[nodeName](el);
+    console.log(`${nodeName}`, attrs);
+
+    const plugin = plugins[attrs?.type];
+
     return jsx('element', attrs, children);
   }
 
@@ -69,8 +74,6 @@ export const deserializeHTML = (el) => {
     const attrs = HTML_TEXT_TAGS[nodeName](el);
     return children.map((child) => jsx('text', attrs, child));
   }
-
-  console.log('children', children);
 
   return children;
 };

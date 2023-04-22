@@ -47,19 +47,20 @@ import Image, { ImageElement, ImageElementData, ImagePluginOptions } from '@yopt
 import Video, { VideoElement } from '@yopta/video';
 import Toolbar from '@yopta/toolbar';
 import YoptaRenderer from '@yopta/renderer';
+import yoptaExports from '@yopta/exports';
 import ChatGPT from '@yopta/chat-gpt-assistant';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yopta/marks';
 import ActionMenu, { ActionMenuComponentItem } from '@yopta/action-menu-list';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { Descendant } from 'slate';
-import EmbedIcon from '../../components/SuggestionList/icons/embed.svg';
-import ImageIcon from '../../components/SuggestionList/icons/image.svg';
-import VideoIcon from '../../components/SuggestionList/icons/video.svg';
+// import EmbedIcon from '../../components/SuggestionList/icons/embed.svg';
+// import ImageIcon from '../../components/SuggestionList/icons/image.svg';
+// import VideoIcon from '../../components/SuggestionList/icons/video.svg';
 import { uploadToCloudinary } from '../../utils';
-import { NotionToolbar } from '../../components/Toolbars/NotionToolbar';
+// import { NotionToolbar } from '../../components/Toolbars/NotionToolbar';
 import { MediumToolbar } from '../../components/Toolbars/MediumToolbar';
-import { CustomSuggestionList } from '../../components/SuggestionList/SuggestionList';
+// import { CustomSuggestionList } from '../../components/SuggestionList/SuggestionList';
 import { NotionActionMenu } from '../../components/SuggestionList/NotionActionMenu';
 import s from './styles.module.scss';
 
@@ -198,6 +199,13 @@ const BasicExample = () => {
 
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
   const isEdit = mode === 'edit';
+
+  // useEffect(() => {
+  //   console.log(yoptaExports.html.serialize(editorValue, plugins));
+  //   if (document.getElementById('yopta-contenteditable')) {
+  //     console.log(yoptaExports.html.deserialize(document.getElementById('yopta-contenteditable')?.innerHTML, plugins));
+  //   }
+  // }, [editorValue, plugins]);
 
   return (
     <div className={s.container}>

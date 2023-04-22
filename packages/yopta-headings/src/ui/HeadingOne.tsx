@@ -1,5 +1,5 @@
 import { createYoptaPlugin, generateId, RenderElementProps } from '@yopta/editor';
-import { Transforms } from 'slate';
+import { Text, Transforms } from 'slate';
 import { HeadingOneElement } from '../types';
 import s from './HeadingOne.module.scss';
 
@@ -18,6 +18,7 @@ const HeadingOne = createYoptaPlugin<any, HeadingOneElement>({
   renderer: (editor) => HeadingRender,
   shortcut: 'title',
   placeholder: 'Heading 1',
+
   defineElement: (): HeadingOneElement => ({
     id: generateId(),
     type: 'heading-one',
@@ -30,6 +31,16 @@ const HeadingOne = createYoptaPlugin<any, HeadingOneElement>({
     Transforms.setNodes<HeadingOneElement>(editor, node, {
       at: editor.selection?.anchor,
     });
+  },
+  exports: {
+    markdown: {
+      serialize: (node, text) => `# ${text}`,
+      deserialize: (node) => '',
+    },
+    html: {
+      serialize: (node) => 'lolkek',
+      deserialize: (node) => '',
+    },
   },
 });
 

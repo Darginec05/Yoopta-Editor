@@ -27,6 +27,18 @@ const Image = createYoptaPlugin<ImagePluginOptions, ImageElement>({
 
     return editor;
   },
+  exports: {
+    markdown: {
+      serialize: (node, text) => {
+        return `![${node.data.caption || ''}](${node.data.url})`;
+      },
+      deserialize: (node) => '',
+    },
+    html: {
+      serialize: (node) => 'lolkek',
+      deserialize: (node) => '',
+    },
+  },
   events: {
     onKeyDown:
       (editor, { defaultNode, hotkeys }) =>

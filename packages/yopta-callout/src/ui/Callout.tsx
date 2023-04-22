@@ -30,6 +30,16 @@ const Callout = createYoptaPlugin<any, CalloutElement>({
       at: editor.selection?.anchor,
     });
   },
+  exports: {
+    markdown: {
+      serialize: (node, text) => `> ${text}`,
+      deserialize: (node) => '',
+    },
+    html: {
+      serialize: (node) => 'lolkek',
+      deserialize: (node) => '',
+    },
+  },
 });
 
 export { Callout };
