@@ -7,7 +7,7 @@ import { CSSProperties, MouseEvent, useEffect, useMemo, useState } from 'react';
 import { cx, RenderElementProps, UI_HELPERS, YoEditor, YoptaPluginType } from '@yopta/editor';
 import { Loader } from '../components/Loader';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import { ImageElement, ImagePluginOptions } from '../types';
+import { ImageElement } from '../types';
 import s from './ImageEditor.module.scss';
 
 const OPTIONS_WIDTH = 265;
@@ -38,7 +38,7 @@ function ImageEditor(editor: YoEditor, plugin) {
         minWidth: 300,
         size: { width: size.width, height: size.height },
         maxWidth: plugin.options?.maxWidth,
-        maxHeight: plugin.options?.maxHeight,
+        maxHeight: plugin.options?.maxHeight || 720,
         lockAspectRatio: true,
         resizeRatio: 2,
         enable: {

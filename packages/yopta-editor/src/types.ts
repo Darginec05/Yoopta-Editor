@@ -19,4 +19,5 @@ export type RenderElementProps<T extends BaseElement = BaseElement> = ElementPro
 
 export interface YoEditor extends BaseEditor, ReactEditor, HistoryEditor {
   shortcuts: Record<string, YoptaPluginType<string>>;
+  plugins: Record<YoptaBaseElement<string>['type'], YoptaPluginType<any, YoptaBaseElement<string>>>;
 }

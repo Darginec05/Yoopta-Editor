@@ -1,8 +1,8 @@
-import { Editor, Transforms, Range, Element, NodeEntry, Path, Text } from 'slate';
-import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, ReactNode, useRef, useEffect } from 'react';
+import { Editor, Transforms, Range, Element, NodeEntry, Path } from 'slate';
+import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, ReactNode, useRef } from 'react';
 import { DefaultElement, Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
-import { getDefaultParagraphLine, getRenderFunctionFactory, isElementHasText } from './utils';
+import { deserializeHTML, getDefaultParagraphLine, getRenderFunctionFactory, isElementHasText } from './utils';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { onCopyYoptaNodes } from '../../utils/copy';
@@ -320,6 +320,16 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
         {...eventHandlers}
         onKeyDown={onKeyDown}
         onMouseDown={onMouseDown}
+        onPaste={(event: any) => {
+          const data = event.clipboardData;
+          const html = data.getData('text/html');
+          const parsed = new DOMParser().parseFromString(html, 'text/html');
+
+          console.log('parsed', parsed);
+
+          const fragment = deserializeHTML(parsed.body, editor.plugins);
+          console.log('fragment', fragment);
+        }}
       />
     </div>
   );

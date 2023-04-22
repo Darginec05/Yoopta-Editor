@@ -211,6 +211,18 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
       at: editor.selection?.anchor,
     });
   },
+  exports: {
+    markdown: {
+      serialize: (node, text) => {
+        return ` \`\`\`${text}\`\`\``;
+      },
+      deserialize: (node) => '',
+    },
+    html: {
+      serialize: (node) => 'lolkek',
+      deserialize: (node) => '',
+    },
+  },
 });
 
 export { Code, CodeLine, CodeElement, CodeChildElement };

@@ -75,6 +75,8 @@ const YoptaEditor = ({
       withNonEmptyEditor(withVoidNodes(withHistory(withShortcuts(withReact(createEditor()))))),
     );
 
+    yoptaEditor.plugins = PLUGINS_MAP;
+
     const shortcutMap = {};
     yoptaPlugins.forEach((plugin) => {
       if (plugin.shortcut) {
