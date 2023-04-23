@@ -6,9 +6,6 @@ import TrashIcon from './icons/trash.svg';
 import DuplicateIcon from './icons/duplicate.svg';
 import TurnIcon from './icons/turn.svg';
 import CopyIcon from './icons/copy.svg';
-import CaptionIcon from './icons/caption.svg';
-import { deepClone } from '../../utils/deepClone';
-import { generateId } from '../../utils/generateId';
 import { useElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import s from './ElementOptions.module.scss';
 
@@ -17,9 +14,12 @@ type Props = {
   onClose: (e?: MouseEvent) => void;
   additionalFields?: any;
   element: any;
+  onDelete?: () => void;
+  onDuplicate?: () => void;
+  onCopy?: () => void;
 };
 
-const ElementOptions = ({ onClose, style, element }: Props) => {
+const ElementOptions = ({ onClose, style, element, ...props }: Props) => {
   const editor = useSlate();
   const [, handlers] = useElementSettings();
 
@@ -27,19 +27,35 @@ const ElementOptions = ({ onClose, style, element }: Props) => {
 
   const isVoid = Editor.isVoid(editor, element);
 
+  const onDelete = () => {
+    handlers.deleteNode();
+    props.onDelete?.();
+  };
+
+  const onDuplicate = () => {
+    handlers.duplicateNode();
+    props.onDuplicate?.();
+  };
+
+  const onCopy = () => {
+    console.log('props', props);
+    handlers.copyLinkNode();
+    props.onCopy?.();
+  };
+
   return (
     <Overlay onClose={onClose}>
       <div style={style} className={s.root}>
         <div className={s.content}>
           <div className={s.group}>
-            <button type="button" className={s.item} onClick={handlers.deleteNode}>
+            <button type="button" className={s.item} onClick={onDelete}>
               <div className={s.icon}>
                 <TrashIcon />
               </div>
               <div className={s.text}>Delete</div>
               <div className={s.hotkey}>Del or Ctrl+D</div>
             </button>
-            <button type="button" className={s.item} onClick={handlers.duplicateNode}>
+            <button type="button" className={s.item} onClick={onDuplicate}>
               <div className={s.icon}>
                 <DuplicateIcon />
               </div>
@@ -55,7 +71,7 @@ const ElementOptions = ({ onClose, style, element }: Props) => {
                 <div className={s.hotkey}>{'>'}</div>
               </button>
             )}
-            <button type="button" className={s.item} onClick={handlers.copyLinkNode}>
+            <button type="button" className={s.item} onClick={onCopy}>
               <div className={s.icon}>
                 <CopyIcon />
               </div>
@@ -63,15 +79,13 @@ const ElementOptions = ({ onClose, style, element }: Props) => {
               <div className={s.hotkey}>⌥+Shift+L</div>
             </button>
           </div>
-          {/* <div className={s.group}>
-            <button type="button" className={s.item} onClick={handleCopyLink}>
-              <div className={s.icon}>
-                <CaptionIcon />
-              </div>
+          <div className={s.group}>
+            <button type="button" className={s.item}>
+              <div className={s.icon}>{/* <CaptionIcon /> */}</div>
               <div className={s.text}>Caption</div>
               <div className={s.hotkey}>+D</div>
             </button>
-          </div> */}
+          </div>
         </div>
       </div>
     </Overlay>

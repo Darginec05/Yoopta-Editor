@@ -85,13 +85,18 @@ function ImageEditor(editor: YoEditor, plugin) {
     const hasCaption = !!element.data?.caption;
     const isLoading = !!element.data['data-src'] && !element.data.url;
 
+    const closeOptions = () => {
+      console.log('closeOptions');
+
+      enableBodyScroll(document.body);
+      setOptionsPos(null);
+    };
+
     const toggleOptionsOpen = (e?: MouseEvent) => {
       e?.stopPropagation();
 
       if (optionsPos !== null) {
-        enableBodyScroll(document.body);
-        setOptionsPos(null);
-        return;
+        return closeOptions();
       }
 
       const optionsButtonRect = e?.currentTarget?.getBoundingClientRect();
@@ -103,7 +108,10 @@ function ImageEditor(editor: YoEditor, plugin) {
 
         disableBodyScroll(document.body, { reserveScrollBarGap: true });
         setOptionsPos({
-          right: window.innerWidth - optionsButtonRect.right - OPTIONS_WIDTH + optionsButtonRect.width,
+          left:
+            optionsButtonRect.right - optionsButtonRect.width + OPTIONS_WIDTH > window.innerWidth
+              ? window.innerWidth - OPTIONS_WIDTH - optionsButtonRect.width
+              : optionsButtonRect.right - optionsButtonRect.width,
           top: showAtTop
             ? optionsButtonRect.top - UPLOADER_HEIGHT - 5
             : optionsButtonRect.top + optionsButtonRect.height + 5,
@@ -133,9 +141,12 @@ function ImageEditor(editor: YoEditor, plugin) {
                 {optionsPos !== null && (
                   <UI_HELPERS.ElementOptions
                     key={element.id}
-                    onClose={toggleOptionsOpen}
+                    onClose={closeOptions}
                     style={optionsPos}
                     element={element}
+                    onCopy={closeOptions}
+                    onDelete={closeOptions}
+                    onDuplicate={closeOptions}
                   />
                 )}
               </div>
@@ -171,9 +182,12 @@ function ImageEditor(editor: YoEditor, plugin) {
               {optionsPos !== null && (
                 <UI_HELPERS.ElementOptions
                   key={element.id}
-                  onClose={toggleOptionsOpen}
+                  onClose={closeOptions}
                   style={optionsPos}
                   element={element}
+                  onCopy={closeOptions}
+                  onDelete={closeOptions}
+                  onDuplicate={closeOptions}
                 />
               )}
             </div>

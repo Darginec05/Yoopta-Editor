@@ -12,6 +12,7 @@ import { withVoidNodes } from '../Editor/plugins/voids';
 import { withShortcuts } from '../Editor/plugins/shortcuts';
 import { withNonEmptyEditor } from '../Editor/plugins/nonEmptyEditor';
 import { withDeleteFragment } from '../Editor/plugins/deleteFragment';
+import { withHtml } from '../Editor/plugins/pasteHtml';
 
 type Props = {
   onChange: (_value: Descendant[]) => void;
@@ -71,8 +72,8 @@ const YoptaEditor = ({
   const { yoptaPlugins, PLUGINS_MAP } = yoptaEditorPlugins;
 
   const editor = useMemo<YoEditor>(() => {
-    let yoptaEditor = withDeleteFragment(
-      withNonEmptyEditor(withVoidNodes(withHistory(withShortcuts(withReact(createEditor()))))),
+    let yoptaEditor = withHtml(
+      withDeleteFragment(withNonEmptyEditor(withVoidNodes(withHistory(withShortcuts(withReact(createEditor())))))),
     );
 
     yoptaEditor.plugins = PLUGINS_MAP;
@@ -80,7 +81,9 @@ const YoptaEditor = ({
     const shortcutMap = {};
     yoptaPlugins.forEach((plugin) => {
       if (plugin.shortcut) {
-        shortcutMap[plugin.shortcut] = plugin;
+        if (Array.isArray(plugin.shortcut)) {
+          plugin.shortcut.forEach((shortcut) => (shortcutMap[shortcut] = plugin));
+        } else shortcutMap[plugin.shortcut] = plugin;
       }
 
       yoptaEditor = plugin.extendEditor?.(yoptaEditor) || yoptaEditor;

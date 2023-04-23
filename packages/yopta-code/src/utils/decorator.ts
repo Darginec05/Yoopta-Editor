@@ -1,10 +1,11 @@
 import { YoEditor } from '@yopta/editor';
 import Prism from 'prismjs';
-import { Editor, Element, Node, NodeEntry, Range } from 'slate';
-import { CodeChildElement } from '../types';
+import { Element, Node, NodeEntry, Range } from 'slate';
 import { normalizeTokens } from './normalizeTokens';
 
 export const mergeMaps = <K, V>(...maps: Map<K, V>[]) => {
+  console.log('mergeMaps ');
+
   const map = new Map<K, V>();
 
   for (const m of maps) {

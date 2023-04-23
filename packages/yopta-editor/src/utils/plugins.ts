@@ -45,7 +45,7 @@ type Exports = {
 export type YoptaPluginType<O = Options, P extends YoptaBaseElement<string> = YoptaBaseElement<string>> = {
   type: string;
   renderer: YoptaRenderer<P>;
-  shortcut?: string;
+  shortcut?: string | string[];
   decorator?: (editor: YoEditor) => DecoratorFn;
   events?: YoptaPluginEventHandlers;
   extendEditor?: (editor: YoEditor) => YoEditor;

@@ -3,6 +3,7 @@ import { KeyboardEvent } from 'react';
 
 const HOTKEYS_MAP = {
   bold: 'mod+b',
+  italic: 'mod+i',
   compose: ['down', 'left', 'right', 'up', 'backspace', 'enter'],
   arrowLeft: 'left',
   arrowUp: 'up',
@@ -16,7 +17,6 @@ const HOTKEYS_MAP = {
   deleteForward: 'shift?+delete',
   extendBackward: 'shift+left',
   extendForward: 'shift+right',
-  italic: 'mod+i',
   shiftEnter: 'shift+enter',
   enter: 'enter',
   space: 'space',
