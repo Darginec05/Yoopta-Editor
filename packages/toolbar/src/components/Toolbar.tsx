@@ -53,7 +53,6 @@ const Toolbar = ({ type = 'bubble', style, marks, children, editorRef }: Props) 
   };
 
   const updateToolbarPosition = () => {
-    // if (toolbarProps.open && !isInViewport(toolbarRef.current)) return setToolbarProps({ open: false, style: {} });
     const selectionRect = getRectByCurrentSelection();
 
     const top = selectionRect.top - toolbarRef.current!.offsetHeight - selectionRect.height / 4;
@@ -144,6 +143,7 @@ const Toolbar = ({ type = 'bubble', style, marks, children, editorRef }: Props) 
         <div className={s.marks}>
           {marks?.map((mark) => {
             const marks = Editor.marks(editor);
+            console.log({ marks, mark });
             const checkIsMarkActive = !!marks?.[mark];
 
             return (

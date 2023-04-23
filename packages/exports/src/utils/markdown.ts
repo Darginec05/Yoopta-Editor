@@ -1,8 +1,8 @@
 import { Text } from 'slate';
 import { mergePluginTypesToMap } from './mergePlugins';
 import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remark2react from 'remark-react';
+// import remarkParse from 'remark-parse';
+// import remark2react from 'remark-react';
 
 function serializeMakdown(node, PLUGINS_MAP) {
   if (Text.isText(node)) {
@@ -34,22 +34,22 @@ export const markdown = {
 };
 
 function deserializeMarkdownToSlate(markdown) {
-  const tree = unified().use(remarkParse).parse(markdown);
-  const reactOutput = remark2react({
-    createElement: (type, props, children) => {
-      if (typeof type === 'string') {
-        return {
-          type,
-          props,
-          children,
-        };
-      } else {
-        return type(props);
-      }
-    },
-  });
+  // const tree = unified().use(remarkParse).parse(markdown);
+  // const reactOutput = remark2react({
+  //   createElement: (type, props, children) => {
+  //     if (typeof type === 'string') {
+  //       return {
+  //         type,
+  //         props,
+  //         children,
+  //       };
+  //     } else {
+  //       return type(props);
+  //     }
+  //   },
+  // });
 
-  const slateNodes = reactOutput.props.children;
+  const slateNodes = [];
 
   return convertReactToSlate(slateNodes);
 }

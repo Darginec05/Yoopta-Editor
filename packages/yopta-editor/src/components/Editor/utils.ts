@@ -3,6 +3,7 @@ import { ELEMENT_TYPES_MAP } from './constants';
 import { generateId } from '../../utils/generateId';
 import { YoptaBaseElement } from '../../types';
 import { YoptaPluginType, YoptaRenderElementFunc } from '../../utils/plugins';
+import { Editor } from 'slate';
 
 export const HTML_ELEMENT_TAGS = {
   A: (el) => ({ type: ELEMENT_TYPES_MAP.link, data: { url: el.getAttribute('href') }, id: generateId() }),
@@ -18,11 +19,11 @@ export const HTML_ELEMENT_TAGS = {
   OL: () => ({ type: ELEMENT_TYPES_MAP['numbered-list'], id: generateId() }),
   UL: () => ({ type: ELEMENT_TYPES_MAP['bulleted-list'], id: generateId() }),
   P: () => ({ type: ELEMENT_TYPES_MAP.paragraph, id: generateId() }),
-  PRE: () => ({ type: ELEMENT_TYPES_MAP.code, id: generateId() }),
+  // PRE: () => ({ type: ELEMENT_TYPES_MAP.code, id: generateId() }),
 };
 
 export const HTML_TEXT_TAGS = {
-  CODE: () => ({ code: true }),
+  // CODE: () => ({ code: true }),
   DEL: () => ({ strikethrough: true }),
   EM: () => ({ italic: true }),
   I: () => ({ italic: true }),
@@ -46,9 +47,9 @@ export const deserializeHTML = (el, plugins) => {
   let parent = el;
 
   if (nodeName === 'PRE' && el.childNodes[0] && el.childNodes[0].nodeName === 'CODE') {
-    // eslint-disable-next-line prefer-destructuring
     parent = el.childNodes[0];
   }
+
   let children = Array.from(parent.childNodes)
     .map((node) => deserializeHTML(node, plugins))
     .flat();
@@ -97,4 +98,21 @@ export function isElementHasText(element: YoptaBaseElement<string>): boolean {
   if (element?.children?.length === 1 && element?.children[0]?.text.length === 0) return false;
 
   return true;
+}
+
+function checkIsMarkActive(editor, mark) {
+  const marks = Editor.marks(editor);
+  const checkIsMarkActive = !!marks?.[mark];
+  return checkIsMarkActive;
+}
+
+export function toggleMark(editor, mark: any, only: boolean = false) {
+  if (only) {
+    Object.keys(Editor.marks(editor) || {}).forEach((activeMark) => {
+      Editor.removeMark(editor, activeMark);
+    });
+  }
+
+  if (!checkIsMarkActive(editor, mark)) Editor.addMark(editor, mark, true);
+  else Editor.removeMark(editor, mark);
 }

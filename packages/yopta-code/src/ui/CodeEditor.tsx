@@ -39,13 +39,16 @@ const CodeEditor = (editor: YoEditor) => {
       Prism.highlightAll(true);
     }, [element.data.language]);
 
+    const closeOptions = () => {
+      enableBodyScroll(document.body);
+      setOptionsPos(null);
+    };
+
     const toggleOptionsOpen = (e?: MouseEvent) => {
       e?.stopPropagation();
 
       if (optionsPos !== null) {
-        enableBodyScroll(document.body);
-        setOptionsPos(null);
-        return;
+        return closeOptions();
       }
 
       const optionsButtonRect = e?.currentTarget?.getBoundingClientRect();
@@ -56,12 +59,16 @@ const CodeEditor = (editor: YoEditor) => {
         const showAtTop = optionsButtonRect.top + optionsButtonRect.height + UPLOADER_HEIGHT + 20 > window.innerHeight;
 
         disableBodyScroll(document.body, { reserveScrollBarGap: true });
-        const top = showAtTop
-          ? optionsButtonRect.top - UPLOADER_HEIGHT - 5
-          : optionsButtonRect.top + optionsButtonRect.height + 5;
 
-        const right = window.innerWidth - optionsButtonRect.right - OPTIONS_WIDTH + optionsButtonRect.width;
-        setOptionsPos({ right, top });
+        setOptionsPos({
+          left:
+            optionsButtonRect.right - optionsButtonRect.width + OPTIONS_WIDTH > window.innerWidth
+              ? window.innerWidth - OPTIONS_WIDTH - optionsButtonRect.width
+              : optionsButtonRect.right - optionsButtonRect.width,
+          top: showAtTop
+            ? optionsButtonRect.top - UPLOADER_HEIGHT - 5
+            : optionsButtonRect.top + optionsButtonRect.height + 5,
+        });
       }
     };
 
@@ -89,9 +96,12 @@ const CodeEditor = (editor: YoEditor) => {
           {optionsPos !== null && (
             <UI_HELPERS.ElementOptions
               key={element.id}
-              onClose={toggleOptionsOpen}
+              onClose={closeOptions}
               style={optionsPos}
               element={element}
+              onCopy={closeOptions}
+              onDelete={closeOptions}
+              onDuplicate={closeOptions}
             />
           )}
           <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>

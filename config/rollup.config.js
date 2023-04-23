@@ -128,7 +128,7 @@ const ToolbarPkgConfig = createConfig({ pkg: toolbarListPkg });
 const MarksPkgConfig = createConfig({ pkg: marksPkg });
 const RendererPkgConfig = createConfig({ pkg: rendererPkg });
 const ChatGPTPkgConfig = createConfig({ pkg: chatGPTPkg });
-const ExportsConfig = createConfig({ pkg: exportsPkg });
+// const ExportsConfig = createConfig({ pkg: exportsPkg });
 // const UIHelpersPkgConfig = createConfig({ pkg: UIHelpersPkg });
 
 export default [
@@ -147,5 +147,5 @@ export default [
   MarksPkgConfig,
   RendererPkgConfig,
   ChatGPTPkgConfig,
-  ExportsConfig,
+  // ExportsConfig,
 ];

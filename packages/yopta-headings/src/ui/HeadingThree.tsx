@@ -16,7 +16,7 @@ HeadingThreeRender.displayName = 'HeadingThree';
 const HeadingThree = createYoptaPlugin<any, HeadingThreeElement>({
   type: 'heading-three',
   renderer: (editor) => HeadingThreeRender,
-  shortcut: 'h3',
+  shortcut: ['h3', 'subsubtitle', '###'],
   placeholder: 'Heading 3',
   defineElement: (): HeadingThreeElement => ({
     id: generateId(),

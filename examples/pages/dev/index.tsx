@@ -47,7 +47,7 @@ import Image, { ImageElement, ImageElementData, ImagePluginOptions } from '@yopt
 import Video, { VideoElement } from '@yopta/video';
 import Toolbar from '@yopta/toolbar';
 import YoptaRenderer from '@yopta/renderer';
-import yoptaExports from '@yopta/exports';
+// import yoptaExports from '@yopta/exports';
 import ChatGPT from '@yopta/chat-gpt-assistant';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yopta/marks';
 import ActionMenu, { ActionMenuComponentItem } from '@yopta/action-menu-list';
@@ -197,15 +197,8 @@ const BasicExample = () => {
     },
   ];
 
-  const marks = [Bold, Italic, CodeMark, Underline, Strike];
   const isEdit = mode === 'edit';
-
-  // useEffect(() => {
-  //   console.log(yoptaExports.html.serialize(editorValue, plugins));
-  //   if (document.getElementById('yopta-contenteditable')) {
-  //     console.log(yoptaExports.html.deserialize(document.getElementById('yopta-contenteditable')?.innerHTML, plugins));
-  //   }
-  // }, [editorValue, plugins]);
+  const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
   return (
     <div className={s.container}>
@@ -221,6 +214,17 @@ const BasicExample = () => {
           shouldStoreInLocalStorage={{ name: 'yopta-dev' }}
           key="edit"
           placeholder="Type / to open menu"
+          nodeElementSettings={{
+            options: {
+              drag: false,
+              handlers: {
+                onCopy: () => console.log('do something'),
+                onDelete: () => console.log('do somenthing'),
+                onDuplicate: () => console.log('do something'),
+              },
+            },
+            plus: {},
+          }}
         >
           <ActionMenu trigger="/" items={actionItems}>
             {NotionActionMenu}

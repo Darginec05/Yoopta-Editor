@@ -2,7 +2,13 @@ import { Editor, Transforms, Range, Element, NodeEntry, Path } from 'slate';
 import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, ReactNode, useRef } from 'react';
 import { DefaultElement, Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
-import { deserializeHTML, getDefaultParagraphLine, getRenderFunctionFactory, isElementHasText } from './utils';
+import {
+  deserializeHTML,
+  getDefaultParagraphLine,
+  getRenderFunctionFactory,
+  isElementHasText,
+  toggleMark,
+} from './utils';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { onCopyYoptaNodes } from '../../utils/copy';
@@ -15,6 +21,7 @@ import { generateId } from '../../utils/generateId';
 import { YoptaMark } from '../../utils/marks';
 import { YoEditor, YoptaBaseElement } from '../../types';
 import { deepClone } from '../../utils/deepClone';
+import { isKeyHotkey } from 'is-hotkey';
 
 type YoptaProps = {
   editor: YoEditor;
@@ -163,6 +170,13 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
       //   }
       // }
 
+      marks?.forEach((mark) => {
+        if (mark.hotkey && isKeyHotkey(mark.hotkey)(event)) {
+          event.preventDefault();
+          toggleMark(editor, mark.type, false);
+        }
+      });
+
       eventHandlers.onKeyDown?.(event);
 
       const nodeEntry = Editor.above<YoptaBaseElement<string>>(editor, {
@@ -292,22 +306,28 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
     stopPropagation(e);
   };
 
-  const hasEditorChildren = React.Children.count(children) > 0;
+  const childs = useMemo(() => {
+    console.log('childs');
+
+    const hasEditorChildren = React.Children.count(children) > 0;
+    if (!hasEditorChildren) return null;
+
+    return React.Children.map(children, (child) => {
+      if (!React.isValidElement(child)) return null;
+
+      return React.cloneElement(child, {
+        ...child.props,
+        plugins,
+        marks: marks.map((mark) => mark.type),
+        editorRef,
+        PLUGINS_MAP,
+      });
+    });
+  }, [plugins, marks, editorRef.current]);
 
   return (
     <div id="yopta-editor" ref={editorRef} onMouseDown={handleEmptyZoneClick}>
-      {hasEditorChildren &&
-        React.Children.map(children, (child) => {
-          if (!React.isValidElement(child)) return null;
-
-          return React.cloneElement(child, {
-            ...child.props,
-            plugins,
-            marks: marks.map((mark) => mark.type),
-            editorRef,
-            PLUGINS_MAP,
-          });
-        })}
+      {childs}
       <Editable
         id="yopta-contenteditable"
         renderLeaf={renderLeaf}
@@ -320,16 +340,18 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
         {...eventHandlers}
         onKeyDown={onKeyDown}
         onMouseDown={onMouseDown}
-        onPaste={(event: any) => {
-          const data = event.clipboardData;
-          const html = data.getData('text/html');
-          const parsed = new DOMParser().parseFromString(html, 'text/html');
+        // onPaste={(event: any) => {
+        //   event.preventDefault();
+        //   const data = event.clipboardData;
+        //   const html = data.getData('text/html');
+        //   const parsed = new DOMParser().parseFromString(html, 'text/html');
 
-          console.log('parsed', parsed);
+        //   console.log('parsed', parsed);
 
-          const fragment = deserializeHTML(parsed.body, editor.plugins);
-          console.log('fragment', fragment);
-        }}
+        //   const fragment = deserializeHTML(parsed.body, editor.plugins);
+        //   Transforms.insertFragment(editor, fragment);
+        //   console.log('fragment', fragment);
+        // }}
       />
     </div>
   );

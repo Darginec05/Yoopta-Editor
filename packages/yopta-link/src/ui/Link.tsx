@@ -51,7 +51,7 @@ const Link = createYoptaPlugin<any, LinkElement>({
     type: 'link',
     children: [{ text: '' }],
     nodeType: 'inline',
-    data: { url: null },
+    data: { url: null, skipDrag: true },
   }),
   extendEditor(editor) {
     const { insertData, insertText, isInline, normalizeNode } = editor;
