@@ -54,13 +54,8 @@ import ActionMenu, { ActionMenuComponentItem } from '@yopta/action-menu-list';
 import { useEffect, useMemo, useState } from 'react';
 
 import { Descendant } from 'slate';
-// import EmbedIcon from '../../components/SuggestionList/icons/embed.svg';
-// import ImageIcon from '../../components/SuggestionList/icons/image.svg';
-// import VideoIcon from '../../components/SuggestionList/icons/video.svg';
 import { uploadToCloudinary } from '../../utils';
-// import { NotionToolbar } from '../../components/Toolbars/NotionToolbar';
 import { MediumToolbar } from '../../components/Toolbars/MediumToolbar';
-// import { CustomSuggestionList } from '../../components/SuggestionList/SuggestionList';
 import { NotionActionMenu } from '../../components/SuggestionList/NotionActionMenu';
 import s from './styles.module.scss';
 
@@ -229,7 +224,7 @@ const BasicExample = () => {
           <ActionMenu trigger="/" items={actionItems}>
             {NotionActionMenu}
           </ActionMenu>
-          <Toolbar type="bubble">{(props) => <MediumToolbar {...props} />}</Toolbar>
+          <Toolbar type="bubble" />
           <ChatGPT />
         </YoptaEditor>
       ) : (

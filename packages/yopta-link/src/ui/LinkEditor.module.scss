@@ -4,4 +4,9 @@
   text-decoration-line: underline;
   color: #007AFF;
   position: relative;
+  cursor: text;
+}
+
+.clickable {
+  cursor: pointer;
 }

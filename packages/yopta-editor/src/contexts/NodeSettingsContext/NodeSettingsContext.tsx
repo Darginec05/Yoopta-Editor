@@ -7,6 +7,7 @@ import { generateId } from '../../utils/generateId';
 import { deepClone } from '../../utils/deepClone';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import copy from 'copy-to-clipboard';
+import { getDefaultParagraphLine } from '../../components/Editor/utils';
 
 export type HoveredElement = YoptaBaseElement<string> | null;
 
@@ -20,8 +21,7 @@ export type NodeSettingsContextHandlers = DragDropHandlers & {
   openNodeSettings: (_dragRef: any, _node: HoveredElement) => void;
   closeNodeSettings: () => void;
   hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: YoptaBaseElement<string>) => void;
-  hoverOut: (_e: MouseEvent<HTMLDivElement>, _node: YoptaBaseElement<string>) => void;
-  triggerPlusButton: (_onFocusCallback: () => void) => void;
+  triggerPlusButton: (_node: HoveredElement) => void;
   deleteNode: () => void;
   duplicateNode: () => void;
   copyLinkNode: () => void;
@@ -45,8 +45,7 @@ const NodeSettingsContext = React.createContext<NodeSettingsContextType>([
     openNodeSettings: (_dragRef: any, _node?: HoveredElement) => {},
     closeNodeSettings: () => {},
     hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: YoptaBaseElement<string>) => {},
-    hoverOut: (_e: MouseEvent<HTMLDivElement>, _node: YoptaBaseElement<string>) => {},
-    triggerPlusButton: (_onFocusCallback: () => void) => {},
+    triggerPlusButton: (_node: HoveredElement) => {},
     deleteNode: () => {},
     duplicateNode: () => {},
     copyLinkNode: () => {},
@@ -87,92 +86,34 @@ const NodeSettingsProvider = ({ children }) => {
       hoverIn: (e: MouseEvent<HTMLDivElement>, node: YoptaBaseElement<string>) => {
         if (isElementOptionsOpen) return e.preventDefault();
 
-        const pathNode = ReactEditor.findPath(editor, node);
-        const parentEntry = Editor.parent(editor, pathNode);
-        const parentNode = parentEntry[0];
-
-        // [TODO] - add draggable props to element
-        if (!!node?.data?.depth) return;
-
+        if (!!node?.data?.skipSettings) return;
         setHoveredElement(node);
-      },
-
-      hoverOut: (e: MouseEvent<HTMLDivElement>, node: YoptaBaseElement<string>) => {
-        if (node.id === hoveredElement?.id || isElementOptionsOpen) return e.preventDefault();
-        setHoveredElement(null);
       },
 
       changeHoveredNode: (hoverProps: HoveredElement) => setHoveredElement(hoverProps),
 
       // [TODO] - write function to get path: [10], [10, 1], [12, 3, 4]
-      triggerPlusButton: (onFocusCallback: any) => {
+      triggerPlusButton: (elementNode) => {
         Editor.withoutNormalizing(editor, () => {
-          if (!hoveredElement) return;
+          if (!editor.selection || !elementNode) return;
 
-          // const path = [];
+          const elementPath = ReactEditor.findPath(editor, elementNode!);
+          const nextTopLevelPath = Path.next([elementPath[0]]);
+          const defaultNode = getDefaultParagraphLine(generateId());
 
-          // // [TOOD] - getNodeByCurrentPath remove
-          // const currentNode: any = getNodeByCurrentPath(editor);
-          // const after = Editor.after(editor, path);
-          // const nextNode: any = getElementByPath(editor, after?.path, 'highest');
+          Transforms.insertNodes(editor, defaultNode, {
+            at: nextTopLevelPath,
+            select: true,
+            voids: true,
+          });
 
-          // const isEmptyNode = Editor.string(editor, path).trim().length === 0;
-          // const isVoidNode = Editor.isVoid(editor, currentNode);
-          // const isListItemNode = hoveredElement.type === ELEMENT_TYPES_MAP['list-item'];
-          // const isNextListNode = LIST_TYPES.includes(nextNode.type);
-
-          // // if after node is empty we need add to root [path], overwise add [path1, path2]
-          // const shouldAddToRoot =
-          //   !after || (!!after?.path[1] && after?.path[1] > 0) || isListItemNode || isNextListNode;
-          // const afterPath = shouldAddToRoot ? [path[0] + 1] : getRootLevelNextNodePath(path, after);
-
-          // setHoveredElement(null);
-
-          // if (!isEmptyNode || isVoidNode) {
-          //   const lineParagraph = getDefaultParagraphLine(generateId());
-
-          //   Transforms.insertNodes(editor, lineParagraph, {
-          //     at: afterPath,
-          //     match: (n) => SlateElement.isElement(n),
-          //   });
-          // }
-
-          // const focusTimeout = setTimeout(() => {
-          //   Transforms.select(editor, isEmptyNode && !isVoidNode ? path : afterPath);
-          //   ReactEditor.focus(editor);
-
-          //   const selectionTimeout = setTimeout(() => {
-          //     onFocusCallback();
-          //     clearTimeout(selectionTimeout);
-          //   }, 0);
-
-          //   clearTimeout(focusTimeout);
-          // }, 0);
+          setHoveredElement(defaultNode);
         });
       },
 
       openNodeSettings: (dragRef, element) => {
         disableBodyScroll(document.body, { reserveScrollBarGap: true });
         setNodeSettingsOpen(true);
-
-        const elementPath = ReactEditor.findPath(editor, element!);
-
-        // console.log('element?.children', element?.children);
-
-        // console.log('elementPath', elementPath);
-        // console.log(
-        //   'editro node',
-        //   Editor.above(editor, {
-        //     at: elementPath,
-        //   }),
-        // );
-
-        // console.log('dragRef, element', dragRef, element);
-
-        // Transforms.setSelection(editor, {
-        //   anchor: { path: elementPath.concat(0), offset: 0 },
-        //   focus: { path: elementPath.concat(0), offset: 0 },
-        // });
 
         if (dragRef.current) {
           const dragRect = dragRef.current!.getBoundingClientRect();
@@ -215,9 +156,6 @@ const NodeSettingsProvider = ({ children }) => {
                 mode = 'lowest';
               }
             }
-
-            console.log('parent of hoveredElement', Editor.parent(editor, path));
-            console.log({ path, mode });
 
             Transforms.removeNodes(editor, {
               at: path, // remove the whole node including inline nodes

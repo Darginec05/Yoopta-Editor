@@ -1,4 +1,5 @@
 import DragIcon from './icons/drag.svg';
+import PlusIcon from './icons/plus.svg';
 import {
   NodeSettingsContextHandlers,
   NodeSettingsContextValues,
@@ -22,7 +23,7 @@ type Props = {
 const ElementActions = ({ element, editor, values, handlers }: Props) => {
   const dragRef = useRef<HTMLButtonElement>(null);
   const { hoveredElement, isElementOptionsOpen, nodeSettingsPos } = values;
-  const { onDragEnd, onDragStart, openNodeSettings, closeNodeSettings } = handlers;
+  const { onDragEnd, onDragStart, openNodeSettings, closeNodeSettings, triggerPlusButton } = handlers;
 
   const onMouseDown = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -60,6 +61,14 @@ const ElementActions = ({ element, editor, values, handlers }: Props) => {
       {isElementHovered && isElementOptionsOpen && (
         <ElementOptions element={element} style={nodeSettingsPos || undefined} onClose={closeNodeSettings} />
       )}
+      <button
+        type="button"
+        onMouseDown={onMouseDown}
+        className={cx(s.actionButton, s.plusButton)}
+        onClick={() => triggerPlusButton(element)}
+      >
+        <PlusIcon />
+      </button>
       <button
         type="button"
         onMouseDown={onMouseDown}

@@ -65,7 +65,7 @@ const ElementWrapper = ({ children, element, attributes, nodeType, render }: Pro
       style={styles}
       {...attributes}
     >
-      {!skipSettings && <ElementActions editor={editor} element={element} handlers={handlers} values={values} />}
+      {skipSettings ? null : <ElementActions editor={editor} element={element} handlers={handlers} values={values} />}
       {render({ attributes, element, children })}
     </div>
   );

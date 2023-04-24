@@ -143,7 +143,6 @@ const Toolbar = ({ type = 'bubble', style, marks, children, editorRef }: Props) 
         <div className={s.marks}>
           {marks?.map((mark) => {
             const marks = Editor.marks(editor);
-            console.log({ marks, mark });
             const checkIsMarkActive = !!marks?.[mark];
 
             return (

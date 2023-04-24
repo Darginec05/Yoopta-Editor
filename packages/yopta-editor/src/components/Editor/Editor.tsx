@@ -307,8 +307,6 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
   };
 
   const childs = useMemo(() => {
-    console.log('childs');
-
     const hasEditorChildren = React.Children.count(children) > 0;
     if (!hasEditorChildren) return null;
 

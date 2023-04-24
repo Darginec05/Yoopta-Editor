@@ -1,6 +1,6 @@
 import { YoEditor } from '@yopta/editor';
 import Prism from 'prismjs';
-import { Element, Node, NodeEntry, Range } from 'slate';
+import { Element, Node, NodeEntry, Range, Transforms } from 'slate';
 import { normalizeTokens } from './normalizeTokens';
 
 export const mergeMaps = <K, V>(...maps: Map<K, V>[]) => {

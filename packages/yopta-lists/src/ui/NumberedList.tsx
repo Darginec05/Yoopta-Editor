@@ -24,7 +24,7 @@ const NumberedList = createYoptaPlugin<ListOptions, NumberedList>({
     type: 'numbered-list',
     children: [ListItemList.getPlugin.defineElement()],
     nodeType: 'block',
-    data: { depth: 1, skipDrag: true },
+    data: { depth: 1, skipDrag: true, skipSettings: true },
   }),
   createElement: (editor) => {
     const listItem: ListChildItemElement = ListItemList.getPlugin.defineElement();

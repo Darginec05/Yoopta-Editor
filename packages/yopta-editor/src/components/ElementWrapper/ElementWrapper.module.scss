@@ -2,7 +2,7 @@
   display: flex;
   position: absolute;
   position: absolute;
-  left: -25px;
+  left: -50px;
   top: 2px;
   opacity: 0;
   transition: opacity 180ms ease-in,
@@ -28,12 +28,17 @@
   width: 18px;
   padding: 0;
   color: rgba(55, 53, 47, 0.35);
+  margin: 0 1px;
 
   &:hover,
   &:focus,
   &:active {
     background-color: rgba(55, 54, 47, 0.08);
   }
+}
+
+.plusButton {
+  width: 24px;
 }
 
 .elementWrapper {

@@ -24,7 +24,7 @@ const TodoList = createYoptaPlugin<ListOptions, TodoList>({
     type: 'todo-list',
     children: [TodoListItem.getPlugin.defineElement()],
     nodeType: 'block',
-    data: { depth: 1, skipDrag: true },
+    data: { depth: 1, skipDrag: true, skipSettings: true },
   }),
   extendEditor(editor) {
     const { normalizeNode } = editor;

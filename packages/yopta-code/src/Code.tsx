@@ -149,7 +149,7 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
     editor: CodeEditor,
     render: CodeRender,
   },
-  shortcut: 'code',
+  shortcut: ['code', '```'],
   childPlugin: CodeLine,
   extendEditor(editor) {
     const { normalizeNode } = editor;
