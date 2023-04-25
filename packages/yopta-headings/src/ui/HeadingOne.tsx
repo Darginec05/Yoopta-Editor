@@ -1,21 +1,21 @@
 import { createYoptaPlugin, generateId, RenderElementProps } from '@yopta/editor';
 import { Text, Transforms } from 'slate';
-import { HeadingOneElement } from '../types';
+import { HeadingOneElement, HeadingOptions } from '../types';
 import s from './HeadingOne.module.scss';
 
-const HeadingRender = ({ attributes, children, element }: RenderElementProps<HeadingOneElement>) => {
+const HeadingOneRender = ({ attributes, children, element }: RenderElementProps<HeadingOneElement>) => {
   return (
-    <h1 draggable={false} className={s['heading-one']} {...attributes}>
+    <h1 id={element.id} draggable={false} className={s['heading-one']} {...attributes}>
       {children}
     </h1>
   );
 };
 
-HeadingRender.displayName = 'HeadingOne';
+HeadingOneRender.displayName = 'HeadingOne';
 
-const HeadingOne = createYoptaPlugin<any, HeadingOneElement>({
+const HeadingOne = createYoptaPlugin<HeadingOptions, HeadingOneElement>({
   type: 'heading-one',
-  renderer: (editor) => HeadingRender,
+  renderer: (editor) => HeadingOneRender,
   shortcut: ['title', 'h1', 'heading one', '#'],
   placeholder: 'Heading 1',
   defineElement: (): HeadingOneElement => ({
@@ -40,6 +40,9 @@ const HeadingOne = createYoptaPlugin<any, HeadingOneElement>({
       serialize: (node) => 'lolkek',
       deserialize: (node) => '',
     },
+  },
+  options: {
+    anchor: '#',
   },
 });
 

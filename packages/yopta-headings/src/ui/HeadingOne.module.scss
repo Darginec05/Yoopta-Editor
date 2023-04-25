@@ -11,4 +11,27 @@
   position: relative;
   padding-top: 2px;
   padding-bottom: 2px;
+
+  &:hover {
+    .hashLink {
+      opacity: 1;
+    }
+  }
+}
+
+.hashLink {
+  display: inline-flex;
+  align-items: center;
+  padding-left: .5rem;
+  color: #007aff;
+  cursor: pointer;
+  opacity: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &::before {
+    content: "#";
+  }
 }

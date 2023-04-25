@@ -1,11 +1,11 @@
 import { createYoptaPlugin, generateId, RenderElementProps } from '@yopta/editor';
 import { Transforms } from 'slate';
-import { HeadingTwoElement } from '../types';
+import { HeadingOptions, HeadingTwoElement } from '../types';
 import s from './HeadingTwo.module.scss';
 
 const HeadingTwoRender = ({ attributes, children, element }: RenderElementProps<HeadingTwoElement>) => {
   return (
-    <h2 draggable={false} className={s['heading-two']} {...attributes}>
+    <h2 id={element.id} draggable={false} className={s['heading-two']} {...attributes}>
       {children}
     </h2>
   );
@@ -13,7 +13,7 @@ const HeadingTwoRender = ({ attributes, children, element }: RenderElementProps<
 
 HeadingTwoRender.displayName = 'HeadingTwo';
 
-const HeadingTwo = createYoptaPlugin<any, HeadingTwoElement>({
+const HeadingTwo = createYoptaPlugin<HeadingOptions, HeadingTwoElement>({
   type: 'heading-two',
   renderer: (editor) => HeadingTwoRender,
   shortcut: ['h2', 'subtitle', '##'],
@@ -40,6 +40,9 @@ const HeadingTwo = createYoptaPlugin<any, HeadingTwoElement>({
       serialize: (node) => 'lolkek',
       deserialize: (node) => '',
     },
+  },
+  options: {
+    anchor: '#',
   },
 });
 

@@ -10,4 +10,26 @@
   position: relative;
   padding-top: 2px;
   padding-bottom: 2px;
+
+  &:hover {
+    .hashLink {
+      opacity: 1;
+    }
+  }
+}
+
+.hashLink {
+  opacity: 0;
+  padding-left: 0.5rem;
+  transition: opacity 200ms;
+  user-select: none;
+  color: #007aff;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &::before {
+    content: "#";
+  }
 }

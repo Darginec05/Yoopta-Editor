@@ -221,9 +221,7 @@ const BasicExample = () => {
             plus: {},
           }}
         >
-          <ActionMenu trigger="/" items={actionItems}>
-            {NotionActionMenu}
-          </ActionMenu>
+          <ActionMenu items={actionItems}>{NotionActionMenu}</ActionMenu>
           <Toolbar type="bubble" />
           <ChatGPT />
         </YoptaEditor>

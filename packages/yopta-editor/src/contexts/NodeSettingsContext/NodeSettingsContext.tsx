@@ -104,7 +104,6 @@ const NodeSettingsProvider = ({ children }) => {
           Transforms.insertNodes(editor, defaultNode, {
             at: nextTopLevelPath,
             select: true,
-            voids: true,
           });
 
           setHoveredElement(defaultNode);

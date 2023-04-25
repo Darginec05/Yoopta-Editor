@@ -1,11 +1,11 @@
 import { generateId, createYoptaPlugin, RenderElementProps } from '@yopta/editor';
 import { Transforms } from 'slate';
-import { HeadingThreeElement } from '../types';
+import { HeadingOptions, HeadingThreeElement } from '../types';
 import s from './HeadingThree.module.scss';
 
 const HeadingThreeRender = ({ attributes, children, element }: RenderElementProps<HeadingThreeElement>) => {
   return (
-    <h3 draggable={false} className={s['heading-three']} {...attributes}>
+    <h3 id={element.id} draggable={false} className={s['heading-three']} {...attributes}>
       {children}
     </h3>
   );
@@ -13,7 +13,7 @@ const HeadingThreeRender = ({ attributes, children, element }: RenderElementProp
 
 HeadingThreeRender.displayName = 'HeadingThree';
 
-const HeadingThree = createYoptaPlugin<any, HeadingThreeElement>({
+const HeadingThree = createYoptaPlugin<HeadingOptions, HeadingThreeElement>({
   type: 'heading-three',
   renderer: (editor) => HeadingThreeRender,
   shortcut: ['h3', 'subsubtitle', '###'],
@@ -40,6 +40,9 @@ const HeadingThree = createYoptaPlugin<any, HeadingThreeElement>({
       serialize: (node) => 'lolkek',
       deserialize: (node) => '',
     },
+  },
+  options: {
+    anchor: '#',
   },
 });
 
