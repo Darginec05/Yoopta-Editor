@@ -3,6 +3,7 @@ import { Descendant } from 'slate';
 import type { YoptaMark } from '@yopta/editor';
 import { getChildren } from './components/RenderElement';
 import uniqWith from 'lodash.uniqwith';
+import { useScrollToElement } from './utils';
 
 type Props = {
   className?: string;
@@ -44,8 +45,9 @@ const TextLeaf = ({ attributes, children, placeholder, leaf }) => {
 };
 
 const YoptaRenderer = (props: Props) => {
-  const { className, data, plugins, marks } = props;
+  useScrollToElement();
 
+  const { className, data, plugins, marks } = props;
   const yoptaPlugins: any[] = useMemo(() => mergePlugins(plugins), [plugins]);
 
   const renderElement = useMemo(() => {

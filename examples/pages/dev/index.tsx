@@ -35,7 +35,7 @@
 //     });
 //   });
 
-import { YoptaEditor } from '@yopta/editor';
+import { createYoptaMark, YoptaEditor } from '@yopta/editor';
 import Blockquote, { BlockquoteElement } from '@yopta/blockquote';
 import Paragraph, { ParagraphElement } from '@yopta/paragraph';
 import Callout, { CalloutElement } from '@yopta/callout';
@@ -71,6 +71,13 @@ type PluginElements =
   | HeadingThreeElement
   | ImageElement
   | VideoElement;
+
+const StrikeMark = createYoptaMark({
+  type: 'strike',
+  className: s.editor,
+});
+
+const AlignTransform = createYoptaMark;
 
 const BasicExample = () => {
   const [editorValue, setEditorValue] = useState<Descendant[]>([]);
@@ -193,7 +200,7 @@ const BasicExample = () => {
   ];
 
   const isEdit = mode === 'edit';
-  const marks = [Bold, Italic, CodeMark, Underline, Strike];
+  const marks = [Bold, Italic, CodeMark, Underline, Strike, StrikeMark];
 
   return (
     <div className={s.container}>
@@ -222,7 +229,7 @@ const BasicExample = () => {
           }}
         >
           <ActionMenu items={actionItems}>{NotionActionMenu}</ActionMenu>
-          <Toolbar type="bubble" />
+          <Toolbar type="bubble">{MediumToolbar}</Toolbar>
           <ChatGPT />
         </YoptaEditor>
       ) : (
