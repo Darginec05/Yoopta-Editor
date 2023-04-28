@@ -1,43 +1,46 @@
-import { Editor, Element, Transforms } from 'slate';
+import { Element, Transforms } from 'slate';
 import { Resizable, ResizableProps } from 're-resizable';
 import { ReactEditor, useReadOnly, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
-import { Video } from './Video';
+import { Embed } from './Embed';
 import { CSSProperties, MouseEvent, useEffect, useMemo, useState } from 'react';
-import { cx, RenderElementProps, YoEditor, UI_HELPERS } from '@yopta/editor';
+import { cx, RenderElementProps, UI_HELPERS, YoEditor, YoptaPluginType } from '@yopta/editor';
 import { Loader } from '../components/Loader';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import { VideoElement, VideoPluginOptions } from '../types';
-import s from './VideoEditor.module.scss';
+import { EmbedElement, EmbedElementData } from '../types';
+import s from './EmbedEditor.module.scss';
 
 const OPTIONS_WIDTH = 265;
 
-function VideoEditor(editor: YoEditor, plugin) {
-  return function VideoEditor(props: RenderElementProps<VideoElement>) {
+function EmbedEditor(editor: YoEditor, plugin) {
+  return function EmbedEditor(props: RenderElementProps<EmbedElement>) {
     const { element } = props;
     const selected = useSelected();
     const readOnly = useReadOnly();
 
     const [optionsPos, setOptionsPos] = useState<CSSProperties | null>(null);
     const [size, setSize] = useState({
-      width: element.data?.size?.width || 'auto',
-      height: element.data?.size?.height || 'auto',
+      width: element.data?.size?.width || 750,
+      height: element.data?.size?.height || 440,
     });
+
+    const updateSize = (updatedSize: Partial<EmbedElementData['size']>) => setSize({ ...size, ...updatedSize });
 
     useEffect(() => {
       if (element.data) {
-        setSize({
-          width: element.data?.size?.width || 'auto',
-          height: element.data?.size?.height || 'auto',
+        updateSize({
+          width: element.data?.size?.width || 750,
+          height: element.data?.size?.height || 440,
         });
       }
     }, [element.data?.size]);
 
     const resizeProps: ResizableProps = useMemo(
       () => ({
-        minWidth: 92,
+        minWidth: 300,
         size: { width: size.width, height: size.height },
         maxWidth: plugin.options?.maxWidth || 800,
+        maxHeight: plugin.options?.maxHeight || 720,
         lockAspectRatio: true,
         resizeRatio: 2,
         enable: {
@@ -49,19 +52,19 @@ function VideoEditor(editor: YoEditor, plugin) {
           right: { right: 0 },
         },
         onResize: (e, direction, ref) => {
-          setSize({ width: ref.offsetWidth, height: ref.offsetHeight });
+          updateSize({ width: ref.offsetWidth, height: ref.offsetHeight });
         },
         onResizeStop: (e, direction, ref) => {
-          console.log('video editor editor.children', editor.children);
+          console.log('image editor editor.children', editor.children);
           console.log('ReactEditor.findPath(editor, element)', ReactEditor.findPath(editor, element));
           console.log('element', element);
 
-          Transforms.setNodes<VideoElement>(
+          Transforms.setNodes<EmbedElement>(
             editor,
             { data: { ...element.data, size: { width: ref.offsetWidth, height: ref.offsetHeight } } },
             {
               at: ReactEditor.findPath(editor, element),
-              match: (n) => Element.isElement(n) && n.type === 'video',
+              match: (n) => Element.isElement(n) && n.type === 'embed',
             },
           );
         },
@@ -81,7 +84,6 @@ function VideoEditor(editor: YoEditor, plugin) {
       [size.width, size.height, editor],
     );
 
-    const hasCaption = !!element.data?.caption;
     const isLoading = !!element.data['data-src'] && !element.data.url;
 
     const closeOptions = () => {
@@ -97,6 +99,7 @@ function VideoEditor(editor: YoEditor, plugin) {
       }
 
       const optionsButtonRect = e?.currentTarget?.getBoundingClientRect();
+
       const UPLOADER_HEIGHT = 164;
 
       if (optionsButtonRect) {
@@ -115,17 +118,15 @@ function VideoEditor(editor: YoEditor, plugin) {
       }
     };
 
-    if (!element.data.url && !element.data['data-src'] && !element.data.videoId) {
+    if (!element.data.url && !element.data['data-src']) {
       const { maxWidth = 750, maxHeight = 800 } = plugin.options || {};
-
       return (
-        <div className={s.root} key={element.id} contentEditable={false}>
+        <div className={s.root} key={element.id} contentEditable={false} draggable={false}>
           <div className={cx(s.selectImg, { [s.selected]: selected })} />
           <EditorPlaceholder
             attributes={props.attributes}
-            element={props.element}
+            element={element}
             editor={editor}
-            onUpload={plugin.options?.onUpload}
             maxSizes={{ maxWidth, maxHeight }}
           >
             {!readOnly && (
@@ -158,11 +159,11 @@ function VideoEditor(editor: YoEditor, plugin) {
       <div
         contentEditable={false}
         draggable={false}
-        className={cx(s.root, { [s.extraMargin]: hasCaption, [s.loadingState]: isLoading })}
+        className={cx(s.root, { [s.loadingState]: isLoading })}
         key={element.id}
       >
         <Resizable {...resizeProps} className={s.resizeLib}>
-          <Video {...props} size={size} />
+          <Embed {...props} size={size} updateSize={updateSize} />
           <div className={cx(s.selectImg, { [s.selected]: selected })} />
           {isLoading && (
             <div className={s.loader}>
@@ -195,4 +196,4 @@ function VideoEditor(editor: YoEditor, plugin) {
   };
 }
 
-export { VideoEditor };
+export { EmbedEditor };

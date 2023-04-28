@@ -45,6 +45,7 @@ import Lists from '@yopta/lists';
 import Headings, { HeadingOneElement, HeadingThreeElement, HeadingTwoElement } from '@yopta/headings';
 import Image, { ImageElement, ImageElementData, ImagePluginOptions } from '@yopta/image';
 import Video, { VideoElement } from '@yopta/video';
+import Embed, { EmbedElement } from '@yopta/embed';
 import Toolbar from '@yopta/toolbar';
 import YoptaRenderer from '@yopta/renderer';
 // import yoptaExports from '@yopta/exports';
@@ -70,7 +71,8 @@ type PluginElements =
   | HeadingTwoElement
   | HeadingThreeElement
   | ImageElement
-  | VideoElement;
+  | VideoElement
+  | EmbedElement;
 
 const StrikeMark = createYoptaMark({
   type: 'strike',
@@ -96,6 +98,12 @@ const BasicExample = () => {
       Headings.HeadingOne,
       Headings.HeadingTwo,
       Headings.HeadingThree,
+      Embed.extend({
+        options: {
+          maxWidth: 800,
+          maxHeight: 750,
+        },
+      }),
       Image.extend({
         options: {
           maxWidth: 750,
@@ -166,6 +174,13 @@ const BasicExample = () => {
       plugin: Video,
       searchString: 'video media',
       label: 'Video',
+      description: 'Embed from YouTube, Vimeo...',
+      icon: '/video.png',
+    },
+    {
+      plugin: Embed,
+      searchString: 'Embed media',
+      label: 'Embed',
       description: 'Embed from YouTube, Vimeo...',
       icon: '/video.png',
     },

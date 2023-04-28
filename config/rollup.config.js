@@ -28,6 +28,7 @@ const marksPkg = require('../packages/marks/package.json');
 const rendererPkg = require('../packages/yopta-renderer/package.json');
 const chatGPTPkg = require('../packages/yopta-chatGPT-assistant/package.json');
 const exportsPkg = require('../packages/exports/package.json');
+const embedPkg = require('../packages/yopta-embed/package.json');
 // const UIHelpersPkg = require('../packages/ui-helpers/package.json');
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -44,6 +45,7 @@ const aliases = {
   '@yopta/headings': 'yopta-headings',
   '@yopta/image': 'yopta-image',
   '@yopta/video': 'yopta-video',
+  '@yopta/embed': 'yopta-embed',
   '@yopta/action-menu-list': 'actionMenu',
   '@yopta/toolbar': 'toolbar',
   '@yopta/marks': 'marks',
@@ -123,6 +125,7 @@ const ListsPkgConfig = createConfig({ pkg: listsPkg });
 const HeadingsPkgConfig = createConfig({ pkg: headingsPkg });
 const ImagePkgConfig = createConfig({ pkg: imagePkg });
 const VideoPkgConfig = createConfig({ pkg: videoPkg });
+const EmbedPkgConfig = createConfig({ pkg: embedPkg });
 const SuggestionListPkgConfig = createConfig({ pkg: suggestionListPkg });
 const ToolbarPkgConfig = createConfig({ pkg: toolbarListPkg });
 const MarksPkgConfig = createConfig({ pkg: marksPkg });
@@ -147,5 +150,6 @@ export default [
   MarksPkgConfig,
   RendererPkgConfig,
   ChatGPTPkgConfig,
+  EmbedPkgConfig,
   // ExportsConfig,
 ];

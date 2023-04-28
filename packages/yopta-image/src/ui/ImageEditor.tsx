@@ -37,7 +37,7 @@ function ImageEditor(editor: YoEditor, plugin) {
       () => ({
         minWidth: 300,
         size: { width: size.width, height: size.height },
-        maxWidth: plugin.options?.maxWidth,
+        maxWidth: plugin.options?.maxWidth || 800,
         maxHeight: plugin.options?.maxHeight || 720,
         lockAspectRatio: true,
         resizeRatio: 2,
