@@ -62,6 +62,8 @@ export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers
   };
 
   const onDragEnd = (e) => {
+    e.stopPropagation();
+
     e.target.removeAttribute('draggable');
     e.target.ondragstart = null;
     e.target.ondragend = null;
@@ -75,6 +77,7 @@ export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers
   const onDrop = (e: DragEvent<HTMLDivElement>) => {
     try {
       Editor.withoutNormalizing(editor, () => {
+        e.preventDefault();
         e.stopPropagation();
         if (dndState.from.element?.id === dndState.to.element?.id) return;
 
