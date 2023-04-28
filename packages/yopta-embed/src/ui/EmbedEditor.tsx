@@ -4,8 +4,7 @@ import { ReactEditor, useReadOnly, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
 import { Embed } from './Embed';
 import { CSSProperties, MouseEvent, useEffect, useMemo, useState } from 'react';
-import { cx, RenderElementProps, UI_HELPERS, YoEditor, YoptaPluginType } from '@yopta/editor';
-import { Loader } from '../components/Loader';
+import { cx, RenderElementProps, UI_HELPERS, YoEditor } from '@yopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { EmbedElement, EmbedElementData } from '../types';
 import s from './EmbedEditor.module.scss';
@@ -84,8 +83,6 @@ function EmbedEditor(editor: YoEditor, plugin) {
       [size.width, size.height, editor],
     );
 
-    const isLoading = !!element.data['data-src'] && !element.data.url;
-
     const closeOptions = () => {
       enableBodyScroll(document.body);
       setOptionsPos(null);
@@ -156,20 +153,11 @@ function EmbedEditor(editor: YoEditor, plugin) {
     }
 
     return (
-      <div
-        contentEditable={false}
-        draggable={false}
-        className={cx(s.root, { [s.loadingState]: isLoading })}
-        key={element.id}
-      >
+      <div contentEditable={false} draggable={false} className={s.root} key={element.id}>
         <Resizable {...resizeProps} className={s.resizeLib}>
           <Embed {...props} size={size} updateSize={updateSize} />
           <div className={cx(s.selectImg, { [s.selected]: selected })} />
-          {isLoading && (
-            <div className={s.loader}>
-              <Loader />
-            </div>
-          )}
+
           {!readOnly && (
             <div>
               <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>
