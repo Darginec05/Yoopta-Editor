@@ -35,7 +35,7 @@
 //     });
 //   });
 
-import { createYoptaMark, YoptaEditor } from '@yopta/editor';
+import { createYoptaMark, YoptaEditor, UI_HELPERS } from '@yopta/editor';
 import Blockquote, { BlockquoteElement } from '@yopta/blockquote';
 import Paragraph, { ParagraphElement } from '@yopta/paragraph';
 import Callout, { CalloutElement } from '@yopta/callout';
@@ -73,13 +73,6 @@ type PluginElements =
   | ImageElement
   | VideoElement
   | EmbedElement;
-
-const StrikeMark = createYoptaMark({
-  type: 'strike',
-  className: s.editor,
-});
-
-const AlignTransform = createYoptaMark;
 
 const BasicExample = () => {
   const [editorValue, setEditorValue] = useState<Descendant[]>([]);
@@ -215,7 +208,7 @@ const BasicExample = () => {
   ];
 
   const isEdit = mode === 'edit';
-  const marks = [Bold, Italic, CodeMark, Underline, Strike, StrikeMark];
+  const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
   return (
     <div className={s.container}>
@@ -233,19 +226,20 @@ const BasicExample = () => {
           placeholder="Type / to open menu"
           nodeElementSettings={{
             options: {
-              drag: false,
               handlers: {
                 onCopy: () => console.log('do something'),
                 onDelete: () => console.log('do somenthing'),
                 onDuplicate: () => console.log('do something'),
               },
             },
-            plus: {},
+            drag: false,
+            plus: false,
           }}
         >
-          <ActionMenu items={actionItems}>{NotionActionMenu}</ActionMenu>
-          <Toolbar type="bubble">{MediumToolbar}</Toolbar>
-          <ChatGPT />
+          <ActionMenu items={actionItems} render={NotionActionMenu} />
+          {/* <Toolbar type="bubble" /> */}
+          <Toolbar type="bubble" render={MediumToolbar} />
+          {/* <ChatGPT /> */}
         </YoptaEditor>
       ) : (
         <YoptaRenderer key="render" plugins={plugins} marks={marks} data={editorValue} />

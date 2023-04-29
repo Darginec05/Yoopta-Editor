@@ -22,11 +22,7 @@ type Props = {
   items: ActionMenuComponentItem[];
   render?: (props: ActionRenderItemProps) => JSX.Element;
   trigger?: string | null;
-  children?: (props: any) => ReactNode;
-} & (
-  | { items: ActionMenuComponentItem[]; children?: (props: any) => ReactNode; plugins?: YoptaPluginType[] }
-  | { plugins: YoptaPluginType[]; items?: never; children?: (props: any) => ReactNode }
-);
+} & ({ items: ActionMenuComponentItem[]; plugins?: YoptaPluginType[] } | { plugins: YoptaPluginType[]; items?: never });
 
 type MenuProps = { fixedStyle: CSSProperties; absoluteStyle: CSSProperties; point: Point | null };
 
@@ -43,7 +39,7 @@ const filterBy = (item: ActionMenuRenderItem, text: string, field: string) => {
 
 const ACTION_MENU_ITEM_DATA_ATTR = 'data-action-menu-item';
 
-const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Props): JSX.Element => {
+const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.Element => {
   const editor = useSlate() as YoEditor;
   const actionMenuRef = useRef<HTMLDivElement>(null);
   const [menuProps, setMenuProps] = useState<MenuProps>(MENU_PROPS_VALUE);
@@ -327,12 +323,12 @@ const ActionMenuList = ({ items, render, children, plugins, trigger = '/' }: Pro
     plugins: plugingMap,
   };
 
-  if (typeof children === 'function') {
+  if (typeof render === 'function') {
     return (
       <div role={'dialog'} aria-modal style={menuProps.fixedStyle}>
         <div className={s.relative}>
           <div className={s.absolute} style={menuProps.absoluteStyle}>
-            {children(renderProps)}
+            {render(renderProps)}
           </div>
         </div>
       </div>

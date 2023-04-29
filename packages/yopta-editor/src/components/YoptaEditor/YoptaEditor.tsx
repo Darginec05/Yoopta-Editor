@@ -14,20 +14,33 @@ import { withNonEmptyEditor } from '../Editor/plugins/nonEmptyEditor';
 import { withDeleteFragment } from '../Editor/plugins/deleteFragment';
 import { withHtml } from '../Editor/plugins/pasteHtml';
 
-type Props = {
+export type YoptaNodeElementSettings = {
+  options?: {
+    handlers?: {
+      onCopy?: () => void;
+      onDelete?: () => void;
+      onDuplicate?: () => void;
+    };
+  };
+  drag?: boolean;
+  plus?: boolean;
+};
+
+export type YoptaEditorProps<O, T> = {
   onChange: (_value: Descendant[]) => void;
   value: Descendant[];
   key?: Key;
   placeholder?: string;
-  plugins: YoptaPlugin<any, YoptaBaseElement<string>>[];
+  plugins: YoptaPlugin<O, T>[];
   children: ReactNode | ReactNode[];
   readOnly?: boolean;
   autoFocus?: boolean;
   shouldStoreInLocalStorage?: LOCAL_STORAGE_NAME_TYPE;
   marks: YoptaMark[];
+  nodeElementSettings: YoptaNodeElementSettings;
 };
 
-const YoptaEditor = ({
+const YoptaEditor = <O, T>({
   key,
   value,
   plugins,
@@ -38,7 +51,7 @@ const YoptaEditor = ({
   placeholder,
   autoFocus = true,
   shouldStoreInLocalStorage,
-}: Props) => {
+}: YoptaEditorProps<O, T>) => {
   const storageName = getStorageName(shouldStoreInLocalStorage);
   const [val, setVal] = useState(() => getInitialState(storageName, shouldStoreInLocalStorage, value));
 
@@ -97,10 +110,10 @@ const YoptaEditor = ({
     if (!autoFocus) return;
 
     try {
-      const [, firstPath] = Editor.first(editor, [0]);
+      const [, path] = Editor.first(editor, [0]);
       Transforms.select(editor, {
-        anchor: { path: firstPath, offset: 0 },
-        focus: { path: firstPath, offset: 0 },
+        anchor: { path, offset: 0 },
+        focus: { path, offset: 0 },
       });
 
       ReactEditor.focus(editor);

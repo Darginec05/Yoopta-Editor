@@ -1,5 +1,5 @@
 import { Overlay } from './Overlay';
-import { CSSProperties, MouseEvent } from 'react';
+import { CSSProperties, MouseEvent, ReactNode } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
 import { Editor, Element, Path, Transforms } from 'slate';
 import TrashIcon from './icons/trash.svg';
@@ -9,17 +9,24 @@ import CopyIcon from './icons/copy.svg';
 import { useElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import s from './ElementOptions.module.scss';
 
+type RenderProps = {
+  handleDelete?: () => void;
+  handleDuplicate?: () => void;
+  handleCopy?: () => void;
+};
+
 type Props = {
   style: CSSProperties | undefined;
   onClose: (e?: MouseEvent) => void;
   additionalFields?: any;
   element: any;
+  render?: (props: RenderProps) => ReactNode;
   onDelete?: () => void;
   onDuplicate?: () => void;
   onCopy?: () => void;
 };
 
-const ElementOptions = ({ onClose, style, element, ...props }: Props) => {
+const ElementOptions = ({ onClose, style, element, render, ...props }: Props) => {
   const editor = useSlate();
   const [, handlers] = useElementSettings();
 
@@ -38,10 +45,19 @@ const ElementOptions = ({ onClose, style, element, ...props }: Props) => {
   };
 
   const onCopy = () => {
-    console.log('props', props);
     handlers.copyLinkNode();
     props.onCopy?.();
   };
+
+  if (render) {
+    return (
+      <Overlay onClose={onClose}>
+        <div style={style} className={s.root}>
+          {render({ handleDelete: onDelete, handleDuplicate: onDuplicate, handleCopy: onCopy })}
+        </div>
+      </Overlay>
+    );
+  }
 
   return (
     <Overlay onClose={onClose}>

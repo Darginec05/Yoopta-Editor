@@ -34,7 +34,7 @@ type YoptaProps = {
 };
 
 // [TODO] - defaultNode move to common event handler to avoid repeated id's
-const handlersOptions = { hotkeys: HOTKEYS, defaultNode: getDefaultParagraphLine(generateId()) };
+const eventHandlersOptions = { hotkeys: HOTKEYS, defaultNode: getDefaultParagraphLine(generateId()) };
 
 const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, PLUGINS_MAP }: YoptaProps) => {
   useScrollToElement();
@@ -140,7 +140,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
       eventHandlersMap[eventType] = function handler(event) {
         plugins.forEach((plugin) => {
           if (plugin.events?.[eventType]) {
-            const eventHandler = plugin.events[eventType](editor, handlersOptions);
+            const eventHandler = plugin.events[eventType](editor, eventHandlersOptions);
             eventHandler(event);
           }
         });

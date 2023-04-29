@@ -1,5 +1,5 @@
 import { Editor, Transforms, Path, Element } from 'slate';
-import React, { CSSProperties, MouseEvent, useContext, useMemo, useState } from 'react';
+import React, { CSSProperties, MouseEvent, ReactNode, useContext, useMemo, useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
 import { YoptaBaseElement } from '../../types';
 import { useDragDrop, DragDropValues, DragDropHandlers, DEFAULT_DRAG_STATE } from '../../hooks/useDragDrop';
@@ -66,7 +66,11 @@ const getInitialState = ({ children }: Editor): HoveredElement => {
   return null;
 };
 
-const NodeSettingsProvider = ({ children }) => {
+type NodeSettingsProps = {
+  children: ReactNode;
+};
+
+const NodeSettingsProvider = ({ children }: NodeSettingsProps) => {
   const editor = useSlate();
   const [dragValues, dragHandlers] = useDragDrop(editor);
 

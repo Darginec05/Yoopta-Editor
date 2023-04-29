@@ -86,8 +86,6 @@ function ImageEditor(editor: YoEditor, plugin) {
     const isLoading = !!element.data['data-src'] && !element.data.url;
 
     const closeOptions = () => {
-      console.log('closeOptions');
-
       enableBodyScroll(document.body);
       setOptionsPos(null);
     };

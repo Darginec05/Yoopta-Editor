@@ -36,12 +36,12 @@ type Props =
   | {
       style: CSSProperties;
       type: 'bubble';
-      children: (props: ToolbarProps) => JSX.Element;
+      render: (props: ToolbarProps) => JSX.Element;
     };
 
 const STYLES: CSSProperties = { position: 'relative' };
 
-const Toolbar = ({ type = 'bubble', style, marks, children, editorRef }: Props) => {
+const Toolbar = ({ type = 'bubble', style, marks, render, editorRef }: Props) => {
   const editor = useSlate();
   const toolbarRef = useRef<HTMLDivElement>(null);
   const [toolbarProps, setToolbarProps] = useState({ open: false, style: {} });
@@ -133,8 +133,8 @@ const Toolbar = ({ type = 'bubble', style, marks, children, editorRef }: Props) 
     marks: marksMap,
   };
 
-  if (typeof children === 'function') {
-    return <div style={STYLES}>{children(childrenProps)}</div>;
+  if (typeof render === 'function') {
+    return <div style={STYLES}>{render(childrenProps)}</div>;
   }
 
   return (
