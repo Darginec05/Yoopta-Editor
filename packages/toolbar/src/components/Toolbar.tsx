@@ -1,10 +1,11 @@
-import { cx } from '@yopta/editor';
+import { cx, useYopta } from '@yopta/editor';
 import { CSSProperties, RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { Editor, Range } from 'slate';
 import { useSlate } from 'slate-react';
 // import { isInViewport } from '../utils/isInViewport';
 import { getRectByCurrentSelection } from '../utils/selectionRect';
-import s from './Toolbar.module.scss';
+import { DefaultToolbar } from './DefaultToolbar';
+import s from './DefaultToolbar.module.scss';
 
 type RootProps = {
   className: string;
@@ -22,29 +23,32 @@ export type ToolbarProps = {
 type FixedProps =
   | {
       type: 'fixed';
-      style: CSSProperties;
+      style?: CSSProperties;
       className?: CSSProperties;
+      render?: (props: ToolbarProps) => JSX.Element;
     }
   | {
       type: 'fixed';
       style?: CSSProperties;
       className: CSSProperties;
+      render?: (props: ToolbarProps) => JSX.Element;
     };
 
 type Props =
   | FixedProps
   | {
-      style: CSSProperties;
+      style?: CSSProperties;
       type: 'bubble';
-      render: (props: ToolbarProps) => JSX.Element;
+      render?: (props: ToolbarProps) => JSX.Element;
     };
 
 const STYLES: CSSProperties = { position: 'relative' };
 
-const Toolbar = ({ type = 'bubble', style, marks, render, editorRef }: Props) => {
+const Toolbar = ({ type = 'bubble', style, render }: Props) => {
   const editor = useSlate();
   const toolbarRef = useRef<HTMLDivElement>(null);
   const [toolbarProps, setToolbarProps] = useState({ open: false, style: {} });
+  const { marks } = useYopta();
 
   const isFixedToolbar = type === 'fixed';
 
@@ -83,31 +87,14 @@ const Toolbar = ({ type = 'bubble', style, marks, render, editorRef }: Props) =>
     const editorEl = document.getElementById('yopta-contenteditable');
 
     if (toolbarProps.open) {
-      editorEl!.addEventListener('blur', hideToolbar);
+      // editorEl!.addEventListener('blur', hideToolbar);
       window.addEventListener('scroll', updateToolbarPosition);
     }
     return () => {
       window.removeEventListener('scroll', updateToolbarPosition);
-      editorEl!.removeEventListener('blur', hideToolbar);
+      // editorEl!.removeEventListener('blur', hideToolbar);
     };
-  }, [toolbarProps.open, editorRef.current]);
-
-  const checkIsMarkActive = (mark) => {
-    const marks = Editor.marks(editor);
-    const checkIsMarkActive = !!marks?.[mark];
-    return checkIsMarkActive;
-  };
-
-  const toggleMark = (mark: any, only: boolean = false) => {
-    if (only) {
-      Object.keys(Editor.marks(editor) || {}).forEach((activeMark) => {
-        Editor.removeMark(editor, activeMark);
-      });
-    }
-
-    if (!checkIsMarkActive(mark)) Editor.addMark(editor, mark, true);
-    else Editor.removeMark(editor, mark);
-  };
+  }, [toolbarProps.open]);
 
   const getRootProps = (): RootProps => ({
     className: s.toolbarRoot,
@@ -115,51 +102,16 @@ const Toolbar = ({ type = 'bubble', style, marks, render, editorRef }: Props) =>
     style: isFixedToolbar ? style : toolbarProps.style,
   });
 
-  const marksMap = useMemo(() => {
-    const mapper: MarkMap = {};
-
-    marks.forEach((mark) => {
-      mapper[mark] = {
-        toggle: (options) => toggleMark(mark, options?.only),
-        isActive: checkIsMarkActive(mark),
-      };
-    });
-
-    return mapper;
-  }, [marks]);
-
-  const childrenProps: ToolbarProps = {
+  const renderProps: ToolbarProps = {
     getRootProps,
-    marks: marksMap,
+    marks,
   };
 
   if (typeof render === 'function') {
-    return <div style={STYLES}>{render(childrenProps)}</div>;
+    return <div style={STYLES}>{render(renderProps)}</div>;
   }
 
-  return (
-    <div {...getRootProps()}>
-      <div className={s.toolbar}>
-        <div className={s.marks}>
-          {marks?.map((mark) => {
-            const marks = Editor.marks(editor);
-            const checkIsMarkActive = !!marks?.[mark];
-
-            return (
-              <button
-                key={mark}
-                type="button"
-                className={cx(s.mark, { [s.active]: checkIsMarkActive })}
-                onClick={() => toggleMark(mark)}
-              >
-                {mark}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
+  return <DefaultToolbar {...renderProps} />;
 };
 
 export { Toolbar };

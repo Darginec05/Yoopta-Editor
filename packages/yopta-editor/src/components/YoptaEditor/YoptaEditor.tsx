@@ -2,9 +2,9 @@ import { useCallback, useEffect, useState, Key, useMemo, ReactNode } from 'react
 import { withHistory } from 'slate-history';
 import { createEditor, Descendant, Editor, Transforms } from 'slate';
 import { ReactEditor, Slate, withReact } from 'slate-react';
-import { YoEditor, YoptaBaseElement } from '../../types';
+import { YoEditor } from '../../types';
 import { YoptaMark } from '../../utils/marks';
-import { mergePlugins, mergePluginTypesToMap, YoptaPlugin } from '../../utils/plugins';
+import { mergePlugins, mergePluginTypesToMap, YoptaPlugin, YoptaPluginBaseOptions } from '../../utils/plugins';
 import { getInitialState, getStorageName, LOCAL_STORAGE_NAME_TYPE } from '../../utils/storage';
 import { NodeSettingsProvider } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { EditorYopta } from '../Editor/Editor';
@@ -13,6 +13,7 @@ import { withShortcuts } from '../Editor/plugins/shortcuts';
 import { withNonEmptyEditor } from '../Editor/plugins/nonEmptyEditor';
 import { withDeleteFragment } from '../Editor/plugins/deleteFragment';
 import { withHtml } from '../Editor/plugins/pasteHtml';
+import { YoptaContextProvider } from '../../contexts/YoptaEditor/YoptaContext';
 
 export type YoptaNodeElementSettings = {
   options?: {
@@ -122,17 +123,19 @@ const YoptaEditor = <O, T>({
 
   return (
     <Slate editor={editor} value={val} onChange={onChangeValue} key={key}>
-      <NodeSettingsProvider>
-        <EditorYopta
-          editor={editor}
-          readOnly={readOnly}
-          placeholder={placeholder}
-          plugins={yoptaPlugins}
-          children={children}
-          marks={marks}
-          PLUGINS_MAP={PLUGINS_MAP}
-        />
-      </NodeSettingsProvider>
+      <YoptaContextProvider plugins={plugins} marks={marks}>
+        <NodeSettingsProvider>
+          <EditorYopta
+            editor={editor}
+            readOnly={readOnly}
+            placeholder={placeholder}
+            plugins={yoptaPlugins}
+            children={children}
+            marks={marks}
+            PLUGINS_MAP={PLUGINS_MAP}
+          />
+        </NodeSettingsProvider>
+      </YoptaContextProvider>
     </Slate>
   );
 };

@@ -5,7 +5,7 @@ export function mergePlugins(plugins): YoptaPluginType[] {
   const items: YoptaPluginType[] = plugins
     .map((instance) => {
       const { childPlugin, ...componentProps } = instance.getPlugin;
-      return childPlugin ? [componentProps, { ...childPlugin.getPlugin, isChild: true }] : componentProps;
+      return childPlugin ? [componentProps, { ...childPlugin.getPlugin, hasParent: true }] : componentProps;
     })
     .flat();
 

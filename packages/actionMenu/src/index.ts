@@ -1,6 +1,6 @@
 import { YoEditor, YoptaBaseElement } from '@yopta/editor';
 import { ActionMenuList } from './components/ActionMenuList';
-export type { ActionMenuComponentItem, ActionMenuRenderItem, ActionRenderItemProps } from './types';
+export type { ActionMenuItem, ActionMenuRenderProps } from './types';
 
 declare module 'slate' {
   interface CustomTypes {

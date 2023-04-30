@@ -12,12 +12,12 @@ const MediumToolbar = (props: ToolbarProps) => {
       <div className={s.root}>
         <button type="button" className={s.button} onClick={() => marks.bold.toggle()}>
           <span style={marks.bold.isActive ? { color: '#b5e5a4' } : { color: '#fff' }} className={s.item}>
-            <BoldIcon />
+            <b>B</b>
           </span>
         </button>
         <button type="button" className={s.button} onClick={() => marks.italic.toggle()}>
           <span style={marks.italic.isActive ? { color: '#b5e5a4' } : { color: '#fff' }} className={s.item}>
-            <ItalicIcon />
+            <i>I</i>
           </span>
         </button>
         <button type="button" className={s.button} onClick={() => marks.underline.toggle()}>
@@ -30,7 +30,12 @@ const MediumToolbar = (props: ToolbarProps) => {
             <s>S</s>
           </span>
         </button>
-        <div className={s.separator} />
+        <button type="button" className={s.button} onClick={() => marks.code.toggle()}>
+          <span style={marks.code.isActive ? { color: '#b5e5a4' } : { color: '#fff' }} className={s.item}>
+            <pre>{'</>'}</pre>
+          </span>
+        </button>
+        {/* <div className={s.separator} />
         <button type="button" className={s.button} onClick={() => marks.bold.toggle()}>
           <span style={marks.bold.isActive ? { color: '#b5e5a4' } : { color: '#fff' }} className={s.item}>
             <ItalicIcon />
@@ -40,7 +45,7 @@ const MediumToolbar = (props: ToolbarProps) => {
           <span style={marks.bold.isActive ? { color: '#b5e5a4' } : { color: '#fff' }} className={s.item}>
             <LinkIcon />
           </span>
-        </button>
+        </button> */}
       </div>
     </div>
   );

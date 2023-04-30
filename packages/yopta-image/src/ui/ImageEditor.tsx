@@ -128,6 +128,7 @@ function ImageEditor(editor: YoEditor, plugin) {
             editor={editor}
             maxSizes={{ maxWidth, maxHeight }}
             onUpload={plugin.options?.onUpload}
+            accept={plugin.options?.accept}
           >
             {!readOnly && (
               <div>

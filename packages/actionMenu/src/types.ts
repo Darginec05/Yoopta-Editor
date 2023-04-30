@@ -1,13 +1,12 @@
 import { YoptaPlugin, YoptaPluginType } from '@yopta/editor';
-import { CSSProperties, MouseEvent, ReactNode } from 'react';
 
-export type ActionMenuComponentItem = {
+export type ActionMenuItem<T extends Record<string, unknown>> = {
   plugin: YoptaPlugin<any, any>;
   searchString?: string;
-} & Record<string, unknown>;
+} & T;
 
 export type ActionMenuRenderItem = Pick<YoptaPluginType, 'type' | 'createElement' | 'defineElement'> &
-  Omit<ActionMenuComponentItem, 'plugin'>;
+  Omit<ActionMenuItem<Record<string, unknown>>, 'plugin'>;
 
 export type ActionMenuRenderRootProps = {
   ref: any;
@@ -32,7 +31,7 @@ export type Groups = {
   inlines: ActionMenuRenderItem[];
 };
 
-export type ActionRenderItemProps = {
+export type ActionMenuRenderProps = {
   items: ActionMenuRenderItem[];
   isNotFound: boolean;
   groups: Groups;

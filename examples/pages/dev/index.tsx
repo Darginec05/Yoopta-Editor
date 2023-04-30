@@ -35,11 +35,11 @@
 //     });
 //   });
 
-import { createYoptaMark, YoptaEditor, UI_HELPERS } from '@yopta/editor';
+import { YoptaEditor } from '@yopta/editor';
 import Blockquote, { BlockquoteElement } from '@yopta/blockquote';
 import Paragraph, { ParagraphElement } from '@yopta/paragraph';
 import Callout, { CalloutElement } from '@yopta/callout';
-import Code, { CodeElement } from '@yopta/code';
+import Code from '@yopta/code';
 import Link, { LinkElement } from '@yopta/link';
 import Lists from '@yopta/lists';
 import Headings, { HeadingOneElement, HeadingThreeElement, HeadingTwoElement } from '@yopta/headings';
@@ -51,8 +51,8 @@ import YoptaRenderer from '@yopta/renderer';
 // import yoptaExports from '@yopta/exports';
 import ChatGPT from '@yopta/chat-gpt-assistant';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yopta/marks';
-import ActionMenu, { ActionMenuComponentItem } from '@yopta/action-menu-list';
-import { useEffect, useMemo, useState } from 'react';
+import ActionMenu, { ActionMenuItem } from '@yopta/action-menu-list';
+import { useMemo, useState } from 'react';
 
 import { Descendant } from 'slate';
 import { uploadToCloudinary } from '../../utils';
@@ -120,14 +120,7 @@ const BasicExample = () => {
     ];
   }, []);
 
-  const actionItems = [
-    // {
-    //   plugin: ChatGPT,
-    //   searchString: 'asisstant',
-    //   label: 'Ask GPT',
-    //   description: 'Ask anything',
-    //   icon: '/text.png',
-    // },
+  const actionItems: ActionMenuItem<Record<'label' | 'description' | 'icon', string>>[] = [
     {
       plugin: Paragraph,
       searchString: 'text paragraph',
@@ -236,9 +229,8 @@ const BasicExample = () => {
             plus: false,
           }}
         >
-          <ActionMenu items={actionItems} render={NotionActionMenu} />
-          {/* <Toolbar type="bubble" /> */}
-          <Toolbar type="bubble" render={MediumToolbar} />
+          <ActionMenu items={actionItems} />
+          <Toolbar type="bubble" />
           {/* <ChatGPT /> */}
         </YoptaEditor>
       ) : (

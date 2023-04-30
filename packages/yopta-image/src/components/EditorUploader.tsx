@@ -4,7 +4,7 @@ import s from './EditorUploader.module.scss';
 
 type Props = {};
 
-const Uploader = ({ onChange }) => {
+const Uploader = ({ onChange, accept = 'image/*' }) => {
   const onChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files;
 
@@ -20,11 +20,11 @@ const Uploader = ({ onChange }) => {
           type="file"
           id="image-uploader"
           className={s.uploaderInput}
-          accept="image/*"
+          accept={accept}
           onChange={onChangeFile}
           multiple={false}
         />
-        Upload file
+        Upload image
       </label>
     </div>
   );
@@ -46,7 +46,7 @@ const EmbedLink = ({ onEmbed }) => {
   );
 };
 
-const EditorUploader = ({ activeTab = 'upload', style, switchTab, onChange, onEmbed, onClose }) => {
+const EditorUploader = ({ activeTab = 'upload', style, switchTab, onChange, onEmbed, accept, onClose }) => {
   const isUploader = activeTab === 'upload';
   const isEmbed = activeTab === 'embed';
 
@@ -67,7 +67,7 @@ const EditorUploader = ({ activeTab = 'upload', style, switchTab, onChange, onEm
             </button>
           </div>
           <div className={s.uploadContent}>
-            {isUploader && <Uploader onChange={onChange} />}
+            {isUploader && <Uploader onChange={onChange} accept={accept} />}
             {isEmbed && <EmbedLink onEmbed={onEmbed} />}
           </div>
         </div>

@@ -12,56 +12,43 @@
 
 .toolbar {
   align-items: stretch;
-  background: #fff;
+  // background: #fff;
+  background: linear-gradient(90deg,rgba(49,49,47,.99),#262625);
   border-radius: 5px;
   box-shadow: 0 0 0 1px hsla(0, 0%, 6%, .05), 0 3px 6px hsla(0, 0%, 6%, .1), 0 9px 24px hsla(0, 0%, 6%, .2);
   display: inline-flex;
   font-size: 14px;
-  height: 32px;
   line-height: 1.2;
   overflow: hidden;
-  pointer-events: auto
-}
+  pointer-events: auto;
+  padding: 5px;
 
-.group {
-  align-items: center;
-  box-shadow: 1px 0 0 rgba(55, 53, 47, .09);
-  cursor: pointer;
-  display: flex;
-  margin-right: 1px;
-  padding: 0 8px;
-  user-select: none;
-  white-space: nowrap;
-  background-color: inherit;
-  border: none;
-}
-
-.group:hover {
-  background-color: rgba(55, 53, 47, .08)
 }
 
 .text {
-  color: #37352f;
+  color: #fff;
   font-weight: 500
 }
 
 .marks {
   display: flex;
-  padding: 2px 0;
 }
 
 .mark {
-  align-items: center;
-  color: #37352f;
+  all: unset;
   cursor: pointer;
+  color: #fff;
   display: flex;
-  padding: 0 8px;
-  margin: 0 1px;
-  user-select: none;
-  text-transform: capitalize;
-  background-color: inherit;
-  border: none;
+  align-items: center;
+  justify-content: center;
   border-radius: 3px;
+  background: inherit;
+  transition: background 100ms cubic-bezier(0.4, 0, 0.2, 1);
+  margin: 0 1px;
+  min-height: 32px;
+  min-width: 36px;
+  font-weight: 500;
+  font-size: 16px;
 
   &:last-child {
     margin-right: 2px;
@@ -82,6 +69,6 @@
 }
 
 .mark:hover {
-  background-color: rgba(55, 53, 47, .08);
-  color: #000;
+  background-color: #383835;
+  color: #fff;
 }

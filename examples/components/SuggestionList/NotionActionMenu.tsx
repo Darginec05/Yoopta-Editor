@@ -1,11 +1,14 @@
-import { ActionRenderItemProps } from '@yopta/action-menu-list';
+import { ActionMenuRenderProps } from '@yopta/action-menu-list';
 import s from './NotionActionMenu.module.scss';
 
-const NotionActionMenu = (props: ActionRenderItemProps) => {
-  const { groups, isNotFound, getItemProps, plugins } = props;
+const NotionActionMenu = (props: ActionMenuRenderProps) => {
+  const { groups, isNotFound, getItemProps, getRootProps, items } = props;
+
+  console.log('items', items);
+  console.log('groups', groups);
 
   return (
-    <div {...props.getRootProps()} className={s.dropdown}>
+    <div {...getRootProps()} className={s.dropdown}>
       <div className={s.elementList}>
         {groups.texts.length > 0 && (
           <div className={s.group}>

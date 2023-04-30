@@ -1,8 +1,8 @@
-import { ActionRenderItemProps } from '@yopta/action-menu-list';
+import { ActionMenuRenderProps } from '@yopta/action-menu-list';
 import { cx } from '@yopta/editor';
 import s from './SuggestionList.module.scss';
 
-const CustomSuggestionList = (props: ActionRenderItemProps) => {
+const CustomSuggestionList = (props: ActionMenuRenderProps) => {
   return (
     <div className={s.dropdown} {...props.getRootProps()}>
       <div className={s.elementList}>

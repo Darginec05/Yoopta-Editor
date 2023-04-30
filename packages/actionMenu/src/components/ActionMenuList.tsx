@@ -5,10 +5,10 @@ import { Element, Editor, Path, Point, Transforms, Text } from 'slate';
 import { useSlate } from 'slate-react';
 import { getRectByCurrentSelection } from '../utils/selectionRect';
 import {
-  ActionMenuComponentItem,
+  ActionMenuItem,
   ActionMenuRenderItem,
   ActionMenuRenderRootProps,
-  ActionRenderItemProps,
+  ActionMenuRenderProps,
   ActionMenuRenderItemProps,
   ActionMenuRenderPlugin,
   Groups,
@@ -19,10 +19,13 @@ import s from './DefaultMenuRender.module.scss';
 const checkIsMenuOpen = (style: CSSProperties) => style.opacity === 1 && !!style.top && !!style.right;
 
 type Props = {
-  items: ActionMenuComponentItem[];
-  render?: (props: ActionRenderItemProps) => JSX.Element;
+  items?: ActionMenuItem<Record<string, unknown>>[];
+  render?: (props: ActionMenuRenderProps) => JSX.Element;
   trigger?: string | null;
-} & ({ items: ActionMenuComponentItem[]; plugins?: YoptaPluginType[] } | { plugins: YoptaPluginType[]; items?: never });
+} & (
+  | { items?: ActionMenuItem<Record<string, unknown>>[]; plugins?: YoptaPluginType[] }
+  | { plugins: YoptaPluginType[]; items?: never }
+);
 
 type MenuProps = { fixedStyle: CSSProperties; absoluteStyle: CSSProperties; point: Point | null };
 
@@ -107,7 +110,7 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
     );
   };
 
-  const mapCustomMenuItems = (item: ActionMenuComponentItem) => {
+  const mapCustomMenuItems = (item: ActionMenuItem<Record<string, unknown>>) => {
     const { plugin, ...rest } = item;
     const { type, createElement, defineElement } = plugin.getPlugin;
 
@@ -120,8 +123,8 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
     if (items) {
       menuList = items.map(mapCustomMenuItems);
     } else {
-      menuList = (plugins as unknown as YoptaPluginType[])
-        .filter((item) => !item.isChild)
+      menuList = (plugins as YoptaPluginType[])
+        .filter((item) => !item.hasParent)
         .map((item) => ({ type: item.type, createElement: item.createElement, defineElement: item.defineElement }));
     }
 
@@ -314,7 +317,7 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
     return map;
   }, [renderMenuItems]);
 
-  const renderProps: ActionRenderItemProps = {
+  const renderProps: ActionMenuRenderProps = {
     items: renderMenuItems,
     groups: groupRenderItems,
     isNotFound,

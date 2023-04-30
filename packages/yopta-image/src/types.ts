@@ -10,6 +10,7 @@ export type ImageUploadResponse = {
 export type ImagePluginOptions = {
   maxWidth?: number;
   maxHeight?: number;
+  accept?: string | undefined;
   onUpload: (file: File) => Promise<ImageUploadResponse>;
 };
 

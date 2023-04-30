@@ -16,7 +16,7 @@ export type YoptaPluginEventHandlers = {
   [key in keyof EditorEventHandlers]: (editor: YoEditor, options: HandlersOptions) => EditorEventHandlers[key] | void;
 };
 
-type Options = Record<string, unknown>;
+export type YoptaPluginBaseOptions = Record<string, unknown>;
 
 export type YoptaRenderElementFunc<P extends YoptaBaseElement<string> = YoptaBaseElement<string>> = (
   editor: YoEditor,
@@ -42,7 +42,10 @@ type Exports = {
   markdown: Serializes;
 };
 
-export type YoptaPluginType<O = Options, P extends YoptaBaseElement<string> = YoptaBaseElement<string>> = {
+export type YoptaPluginType<
+  O = YoptaPluginBaseOptions,
+  P extends YoptaBaseElement<string> = YoptaBaseElement<string>,
+> = {
   type: string;
   renderer: YoptaRenderer<P>;
   shortcut?: string | string[];
@@ -53,15 +56,15 @@ export type YoptaPluginType<O = Options, P extends YoptaBaseElement<string> = Yo
   placeholder?: string | null;
   options?: O;
   childPlugin?: YoptaPlugin<any, any>;
-  isChild?: boolean;
+  hasParent?: boolean;
   createElement?: (editor: YoEditor) => void;
   defineElement: () => P;
   exports?: Exports;
 };
 
-export type ParentYoptaPlugin<O = Options> = Omit<YoptaPluginType<O>, 'childPlugin' | 'isChild'>;
+export type ParentYoptaPlugin<O = YoptaPluginBaseOptions> = Omit<YoptaPluginType<O>, 'childPlugin' | 'hasParent'>;
 
-export class YoptaPlugin<O extends Options, P extends YoptaBaseElement<string>> {
+export class YoptaPlugin<O extends YoptaPluginBaseOptions, P extends YoptaBaseElement<string>> {
   #props: YoptaPluginType<O, P>;
 
   constructor(inputPlugin: YoptaPluginType<O, P>) {
@@ -79,17 +82,19 @@ export class YoptaPlugin<O extends Options, P extends YoptaBaseElement<string>> 
   }
 }
 
-export function createYoptaPlugin<O extends Options, P extends YoptaBaseElement<string>>(input: YoptaPluginType<O, P>) {
+export function createYoptaPlugin<O extends YoptaPluginBaseOptions, P extends YoptaBaseElement<string>>(
+  input: YoptaPluginType<O, P>,
+) {
   return new YoptaPlugin<O, P>(input);
 }
 
-export function mergePlugins<O extends Options, P extends YoptaBaseElement<string>>(
+export function mergePlugins<O extends YoptaPluginBaseOptions, P extends YoptaBaseElement<string>>(
   plugins: YoptaPlugin<O, P>[],
 ): YoptaPluginType<O, P>[] {
   const items: YoptaPluginType<O, P>[] = plugins
     .map((instance) => {
       const { childPlugin, ...componentProps } = instance.getPlugin;
-      return childPlugin ? [componentProps, { ...childPlugin.getPlugin, isChild: true }] : componentProps;
+      return childPlugin ? [componentProps, { ...childPlugin.getPlugin, hasParent: true }] : componentProps;
     })
     .flat();
 

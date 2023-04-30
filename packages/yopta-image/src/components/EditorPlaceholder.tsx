@@ -14,6 +14,7 @@ import { ImageElement, ImagePluginOptions } from '../types';
 type Props = RenderElementProps<ImageElement> & {
   editor: YoEditor;
   onUpload?: ImagePluginOptions['onUpload'];
+  accept?: ImagePluginOptions['accept'];
   maxSizes: { maxWidth: number; maxHeight: number };
 };
 
@@ -24,7 +25,7 @@ type UploaderPosition = {
 
 const UPLOADER_HEIGHT = 88;
 
-const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, onUpload }: Props) => {
+const EditorPlaceholder = ({ element, accept, attributes, maxSizes, children, editor, onUpload }: Props) => {
   const [uploaderPos, setUploaderPos] = useState<null | UploaderPosition>(null);
   const [activeTab, setActiveTab] = useState('upload');
   const imageEditorRef = useRef<HTMLDivElement>(null);
@@ -148,6 +149,7 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
             activeTab={activeTab}
             switchTab={(tab) => setActiveTab(tab)}
             style={uploaderPos}
+            accept={accept}
           />
         )}
       </div>

@@ -1,8 +1,8 @@
-import { ActionRenderItemProps } from '../types';
+import { ActionMenuRenderProps } from '../types';
 import { ItemRender } from './ItemRender';
 import s from './DefaultMenuRender.module.scss';
 
-const DefaultMenuRender = ({ items, isNotFound, getItemProps, getRootProps }: ActionRenderItemProps) => {
+const DefaultMenuRender = ({ items, isNotFound, getItemProps, getRootProps }: ActionMenuRenderProps) => {
   return (
     <div className={s.dropdown} {...getRootProps()}>
       <ul className={s.elementList}>
