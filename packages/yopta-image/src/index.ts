@@ -30,7 +30,7 @@ const Image = createYoptaPlugin<ImagePluginOptions, ImageElement>({
   exports: {
     markdown: {
       serialize: (node, children) => {
-        return `![${node.data.caption || ''}](${node.data.url})`;
+        return `![${node.data.caption || ''}](${node.data.url})\n`;
       },
       deserialize: (node) => '',
     },

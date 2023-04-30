@@ -195,7 +195,9 @@ const TodoListItem = createYoptaPlugin<TodoListItemOptions, TodoListChildItemEle
   },
   exports: {
     markdown: {
-      serialize: (node, text) => `- ${text}`,
+      serialize: (node, text) => {
+        return `[${node.data.checked ? 'x' : ' '}] ${text}\n`;
+      },
       deserialize: (node) => '',
     },
     html: {

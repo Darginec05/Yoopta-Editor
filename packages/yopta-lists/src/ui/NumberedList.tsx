@@ -51,7 +51,7 @@ const NumberedList = createYoptaPlugin<ListOptions, NumberedList>({
   },
   exports: {
     markdown: {
-      serialize: (node, text) => `# ${text}`,
+      serialize: (node, text) => `${text}\n`,
       deserialize: (node) => '',
     },
     html: {

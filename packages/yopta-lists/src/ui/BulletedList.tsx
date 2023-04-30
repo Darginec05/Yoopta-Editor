@@ -72,7 +72,7 @@ const BulletedList = createYoptaPlugin<ListOptions, BulletedList>({
   },
   exports: {
     markdown: {
-      serialize: (node, text) => `# ${text}`,
+      serialize: (node, text) => `- ${text}`,
       deserialize: (node) => '',
     },
     html: {

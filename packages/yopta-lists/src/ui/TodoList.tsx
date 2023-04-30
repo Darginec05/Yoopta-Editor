@@ -71,7 +71,7 @@ const TodoList = createYoptaPlugin<ListOptions, TodoList>({
   },
   exports: {
     markdown: {
-      serialize: (node, text) => `# ${text}`,
+      serialize: (node, children) => `${children}`,
       deserialize: (node) => '',
     },
     html: {

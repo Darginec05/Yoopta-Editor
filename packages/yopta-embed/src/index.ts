@@ -59,7 +59,7 @@ const Embed = createYoptaPlugin<EmbedPluginOptions, EmbedElement>({
   exports: {
     markdown: {
       serialize: (node, text) => {
-        return `![${node.data.caption || ''}](${node.data.url})`;
+        return `[embed-url](${node.data.url})\n`;
       },
       deserialize: (node) => '',
     },
