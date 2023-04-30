@@ -209,7 +209,7 @@ const BasicExample = () => {
       <button type="button" onClick={() => toggleMode(isEdit ? 'render' : 'edit')}>
         Switch to {isEdit ? 'render' : 'edit'}
       </button>
-      <button type="button" onClick={() => console.log(exports.html.serialize(editorValue, plugins))}>
+      <button type="button" onClick={() => console.log(exports.markdown.serialize(editorValue, plugins))}>
         Export
       </button>
       {isEdit ? (
