@@ -37,7 +37,7 @@ const HeadingOne = createYoptaPlugin<HeadingOptions, HeadingOneElement>({
       deserialize: (node) => '',
     },
     html: {
-      serialize: (node) => 'lolkek',
+      serialize: (node, children) => `<h1>${children}</h1>`,
       deserialize: (node) => '',
     },
   },

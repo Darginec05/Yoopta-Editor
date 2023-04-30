@@ -50,6 +50,7 @@ import Toolbar from '@yopta/toolbar';
 import YoptaRenderer from '@yopta/renderer';
 // import yoptaExports from '@yopta/exports';
 import ChatGPT from '@yopta/chat-gpt-assistant';
+import exports from '@yopta/exports';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yopta/marks';
 import ActionMenu, { ActionMenuItem } from '@yopta/action-menu-list';
 import { useMemo, useState } from 'react';
@@ -207,6 +208,9 @@ const BasicExample = () => {
     <div className={s.container}>
       <button type="button" onClick={() => toggleMode(isEdit ? 'render' : 'edit')}>
         Switch to {isEdit ? 'render' : 'edit'}
+      </button>
+      <button type="button" onClick={() => console.log(exports.html.serialize(editorValue, plugins))}>
+        Export
       </button>
       {isEdit ? (
         <YoptaEditor

@@ -219,7 +219,8 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
       deserialize: (node) => '',
     },
     html: {
-      serialize: (node) => 'lolkek',
+      serialize: (node, children) =>
+        `<pre style="background-color: #263238; color: #fff; padding: 20px 24px;"><code>${children}</code></pre>`,
       deserialize: (node) => '',
     },
   },

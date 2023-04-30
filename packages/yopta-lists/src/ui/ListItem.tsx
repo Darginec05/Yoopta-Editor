@@ -177,7 +177,10 @@ const ListItemList = createYoptaPlugin<any, ListChildItemElement>({
       deserialize: (node) => '',
     },
     html: {
-      serialize: (node) => 'lolkek',
+      serialize: (node, children) => {
+        console.log('children', children);
+        return `<li>${children}</li>`;
+      },
       deserialize: (node) => '',
     },
   },

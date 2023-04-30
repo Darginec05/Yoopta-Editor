@@ -70,6 +70,19 @@ const BulletedList = createYoptaPlugin<ListOptions, BulletedList>({
       at: editor.selection?.anchor,
     });
   },
+  exports: {
+    markdown: {
+      serialize: (node, text) => `# ${text}`,
+      deserialize: (node) => '',
+    },
+    html: {
+      serialize: (node, children) => {
+        const paddingLeft = node.data?.depth ? node.data.depth * 15 : 15;
+        return `<ul style="padding-left: ${paddingLeft}px;">${children}</ul>`;
+      },
+      deserialize: (node) => '',
+    },
+  },
 });
 
 export { BulletedList };

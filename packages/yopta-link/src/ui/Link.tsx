@@ -194,7 +194,8 @@ const Link = createYoptaPlugin<any, LinkElement>({
       deserialize: (node) => '',
     },
     html: {
-      serialize: (node) => 'lolkek',
+      serialize: (node, children) =>
+        `<a target="_blank" rel="noopener noreferrer" href="${node.data.url}">${children}</a>`,
       deserialize: (node) => '',
     },
   },

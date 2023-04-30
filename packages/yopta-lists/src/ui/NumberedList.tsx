@@ -49,6 +49,19 @@ const NumberedList = createYoptaPlugin<ListOptions, NumberedList>({
       at: editor.selection?.anchor,
     });
   },
+  exports: {
+    markdown: {
+      serialize: (node, text) => `# ${text}`,
+      deserialize: (node) => '',
+    },
+    html: {
+      serialize: (node, children) => {
+        const paddingLeft = node.data?.depth ? node.data.depth * 15 : 15;
+        return `<ol style="padding-left: ${paddingLeft}px;">${children}</ol>`;
+      },
+      deserialize: (node) => '',
+    },
+  },
 });
 
 export { NumberedList };
