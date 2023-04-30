@@ -36,7 +36,8 @@ const Blockquote = createYoptaPlugin<any, BlockquoteElement>({
       deserialize: (node) => '',
     },
     html: {
-      serialize: (node) => 'lolkek',
+      serialize: (node, children) =>
+        `<blockquote style="border-left: 3px solid; color: #292929; padding: 2px 14px; margin: 0">${children}</blockquote>`,
       deserialize: (node) => '',
     },
   },

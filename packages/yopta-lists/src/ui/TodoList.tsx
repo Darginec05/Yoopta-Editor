@@ -69,6 +69,19 @@ const TodoList = createYoptaPlugin<ListOptions, TodoList>({
       at: editor.selection?.anchor,
     });
   },
+  exports: {
+    markdown: {
+      serialize: (node, text) => `# ${text}`,
+      deserialize: (node) => '',
+    },
+    html: {
+      serialize: (node, children) => {
+        const paddingLeft = node.data?.depth ? node.data.depth * 15 : 15;
+        return `<div style="padding-left: ${paddingLeft}px;">${children}</div>`;
+      },
+      deserialize: (node) => '',
+    },
+  },
 });
 
 export { TodoList };

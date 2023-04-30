@@ -29,13 +29,17 @@ const Image = createYoptaPlugin<ImagePluginOptions, ImageElement>({
   },
   exports: {
     markdown: {
-      serialize: (node, text) => {
+      serialize: (node, children) => {
         return `![${node.data.caption || ''}](${node.data.url})`;
       },
       deserialize: (node) => '',
     },
     html: {
-      serialize: (node) => 'lolkek',
+      serialize: (node, children) => {
+        return `<img src="${node.data.url}" width="${node.data.size?.width}" height="${
+          node.data.size?.height
+        }" decoding="async" loading="lazy"  alt="${node.data.caption || 'yopta-html-image'}" />`;
+      },
       deserialize: (node) => '',
     },
   },

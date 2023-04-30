@@ -27,18 +27,6 @@ const Embed = createYoptaPlugin<EmbedPluginOptions, EmbedElement>({
 
     return editor;
   },
-  exports: {
-    markdown: {
-      serialize: (node, text) => {
-        return `![${node.data.caption || ''}](${node.data.url})`;
-      },
-      deserialize: (node) => '',
-    },
-    html: {
-      serialize: (node) => 'lolkek',
-      deserialize: (node) => '',
-    },
-  },
   events: {
     onKeyDown:
       (editor, { defaultNode, hotkeys }) =>
@@ -58,7 +46,7 @@ const Embed = createYoptaPlugin<EmbedPluginOptions, EmbedElement>({
     id: generateId(),
     type: 'embed',
     nodeType: 'void',
-    data: { url: null, size: { width: 'auto', height: 'auto' } },
+    data: { url: null, size: { width: 'auto', height: 'auto' }, providerId: null },
     children: [{ text: '' }],
   }),
   createElement: function (editor) {
@@ -67,6 +55,24 @@ const Embed = createYoptaPlugin<EmbedPluginOptions, EmbedElement>({
     Transforms.setNodes(editor, node, {
       at: editor.selection?.anchor,
     });
+  },
+  exports: {
+    markdown: {
+      serialize: (node, text) => {
+        return `![${node.data.caption || ''}](${node.data.url})`;
+      },
+      deserialize: (node) => '',
+    },
+    html: {
+      serialize: (node, children) => {
+        return `<iframe src="https://player.vimeo.com/video/807053663?badge=0&amp;byline=0&amp;portrait=0&amp;title=0" frameborder="0" height="${
+          node.data.size?.height
+        }" width="${node.data.size?.width}" allowfullscreen="" url="https://vimeo.com/807053663" provider="${
+          node.data.provider || ''
+        }" />`;
+      },
+      deserialize: (node) => '',
+    },
   },
 });
 

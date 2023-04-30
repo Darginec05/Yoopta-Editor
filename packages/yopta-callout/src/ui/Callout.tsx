@@ -36,7 +36,8 @@ const Callout = createYoptaPlugin<any, CalloutElement>({
       deserialize: (node) => '',
     },
     html: {
-      serialize: (node) => 'lolkek',
+      serialize: (node, children) =>
+        `<div style="background: #f5f7f9; border-radius: 5px; color: #292929; padding: 12px 14px">${children}</div>`,
       deserialize: (node) => '',
     },
   },

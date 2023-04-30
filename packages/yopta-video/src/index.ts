@@ -55,6 +55,20 @@ const Video = createYoptaPlugin<VideoPluginOptions, VideoElement>({
       at: editor.selection?.anchor,
     });
   },
+  exports: {
+    markdown: {
+      serialize: (node, text) => text,
+      deserialize: (node) => '',
+    },
+    html: {
+      serialize: (node) => {
+        console.log('node', node);
+        // [TODO] - change to <source /> and add format
+        return `<video preload controls src="${node.data.url}" height="${node.data.size.height}" width="${node.data.size.width}"></video>`;
+      },
+      deserialize: (node) => '',
+    },
+  },
 });
 
 export default Video;

@@ -32,14 +32,14 @@ export type ExtendedYoptaRender<P extends YoptaBaseElement<string>> = {
 
 export type YoptaRenderer<P extends YoptaBaseElement<string>> = ExtendedYoptaRender<P> | YoptaRender<P>;
 
-type Serializes = {
-  serialize: (node: YoptaBaseElement<string>, text: string) => string;
-  deserialize: (node: YoptaBaseElement<string>, text: string) => string;
+type Serializes<T> = {
+  serialize: (node: T, text: string) => string;
+  deserialize: (node: T, text: string) => string;
 };
 
-type Exports = {
-  html: Serializes;
-  markdown: Serializes;
+type Exports<T> = {
+  html: Serializes<T>;
+  markdown: Serializes<T>;
 };
 
 export type YoptaPluginType<
@@ -59,7 +59,7 @@ export type YoptaPluginType<
   hasParent?: boolean;
   createElement?: (editor: YoEditor) => void;
   defineElement: () => P;
-  exports?: Exports;
+  exports?: Exports<P>;
 };
 
 export type ParentYoptaPlugin<O = YoptaPluginBaseOptions> = Omit<YoptaPluginType<O>, 'childPlugin' | 'hasParent'>;
