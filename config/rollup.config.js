@@ -29,6 +29,8 @@ const rendererPkg = require('../packages/yopta-renderer/package.json');
 const chatGPTPkg = require('../packages/yopta-chatGPT-assistant/package.json');
 const exportsPkg = require('../packages/exports/package.json');
 const embedPkg = require('../packages/yopta-embed/package.json');
+const chatGPTServerPkg = require('../packages/yopta-chatGPT-server/package.json');
+
 // const UIHelpersPkg = require('../packages/ui-helpers/package.json');
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -52,6 +54,8 @@ const aliases = {
   '@yopta/renderer': 'yopta-renderer',
   '@yopta/chat-gpt-assistant': 'yopta-chatGPT-assistant',
   '@yopta/exports': 'exports',
+  '@yopta/chat-gpt-assistant-server': 'yopta-chatGPT-server',
+
   // '@yopta/ui': 'ui-helpers',
 };
 
@@ -131,6 +135,8 @@ const ToolbarPkgConfig = createConfig({ pkg: toolbarListPkg });
 const MarksPkgConfig = createConfig({ pkg: marksPkg });
 const RendererPkgConfig = createConfig({ pkg: rendererPkg });
 const ChatGPTPkgConfig = createConfig({ pkg: chatGPTPkg });
+const ChatGPTServerPkg = createConfig({ pkg: chatGPTServerPkg });
+
 // const ExportsConfig = createConfig({ pkg: exportsPkg });
 // const UIHelpersPkgConfig = createConfig({ pkg: UIHelpersPkg });
 
@@ -151,5 +157,6 @@ export default [
   RendererPkgConfig,
   ChatGPTPkgConfig,
   EmbedPkgConfig,
+  ChatGPTServerPkg
   // ExportsConfig,
 ];

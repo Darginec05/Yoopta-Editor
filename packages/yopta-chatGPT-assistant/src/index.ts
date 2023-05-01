@@ -1,5 +1,5 @@
 import { YoEditor } from '@yopta/editor';
-import { ChatGTP } from './types';
+import { ChatGPT } from './types';
 import { ChatGPTAssistant } from './ui/ChatGPTEditor';
 
 declare module 'slate' {
@@ -9,4 +9,4 @@ declare module 'slate' {
 }
 
 export default ChatGPTAssistant;
-export { ChatGTP };
+export { ChatGPT };
