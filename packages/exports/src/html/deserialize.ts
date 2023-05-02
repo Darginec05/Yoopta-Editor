@@ -4,7 +4,6 @@ import { jsx } from 'slate-hyperscript';
 import { mergePluginTypesToMapHMTLNodeName } from '../utils/mergePlugins';
 
 const TEXT_TAGS = {
-  // CODE: () => ({ code: true }),
   DEL: () => ({ strikethrough: true }),
   EM: () => ({ italic: true }),
   I: () => ({ italic: true }),

@@ -42,11 +42,11 @@ export function getFigmaUrl(url) {
 }
 
 export function getProvider(url: string): SupporedEmbedProviders | null {
-  if (url.includes('youtube.com')) {
+  if (url.includes('youtube.com') || url.includes('youtu.be')) {
     return 'youtube';
   } else if (url.includes('vimeo.com')) {
     return 'vimeo';
-  } else if (url.includes('dailymotion.com')) {
+  } else if (url.includes('dailymotion.com') || url.includes('dai.ly')) {
     return 'dailymotion';
   } else if (url.includes('twitter')) {
     return 'twitter';

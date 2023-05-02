@@ -82,11 +82,6 @@ const ListItemList = createYoptaPlugin<any, ListChildItemElement>({
             return;
           }
 
-          // [TODO]
-          // if (isStart) {
-
-          // }
-
           if (!isEnd && !isStart) {
             Transforms.splitNodes(editor);
             Transforms.setNodes(editor, { id: generateId() });

@@ -1,7 +1,7 @@
 import NoSSR from './components/NoSsr/NoSsr';
 import { YoptaEditor as Editor, YoptaEditorProps } from './components/YoptaEditor/YoptaEditor';
 
-const YoptaEditor = <O, T>(props: YoptaEditorProps<O, T>) => {
+const YoptaEditor = (props: YoptaEditorProps) => {
   return (
     <NoSSR>
       <Editor {...props} value={props.value} onChange={props.onChange} />

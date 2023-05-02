@@ -13,7 +13,12 @@ export type YoptaElementConfig = {
 
 export type Modify<T, R> = Omit<T, keyof R> & R;
 
-export type YoptaBaseElement<T> = { id: string; type: T; children: BaseElement['children'] } & YoptaElementConfig;
+export type YoptaBaseElement<T> = {
+  id: string;
+  type: T;
+  children: BaseElement['children'];
+  data?: any;
+} & YoptaElementConfig;
 
 export type RenderElementProps<T extends BaseElement = BaseElement> = ElementProps & { element: T };
 

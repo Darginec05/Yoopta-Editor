@@ -1,4 +1,4 @@
-import { Transforms } from 'slate';
+import { Range, Transforms } from 'slate';
 import { YoEditor } from '../../../types';
 import { deserializeHtml } from '../../../utils/deserializeHTML';
 
@@ -6,6 +6,7 @@ const withHtml = (editor: YoEditor) => {
   const { insertData } = editor;
 
   editor.insertData = (data) => {
+    if (editor.selection && Range.isExpanded(editor.selection)) return;
     const html = data.getData('text/html');
 
     if (html) {

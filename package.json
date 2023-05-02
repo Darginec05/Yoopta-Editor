@@ -3,14 +3,13 @@
   "workspaces": [
     "packages/**"
   ],
-  "version": "1.1.4",
-  "license": "MIT",
   "private": true,
   "scripts": {
-    "prebuild": "rm -rf dist",
     "build:rollup": "rollup -c",
-    "build": "rollup --config ./config/rollup.config.js --bundleConfigAsCjs NODE_ENV:production",
+    "clean": "rimraf './packages/*/{dist,lib,node_modules}'",
+    "build": "rollup --config ./config/rollup.config.js --bundleConfigAsCjs --environment NODE_ENV:production",
     "serve": "cd ./examples && next dev",
+    "serve:build": "cd ./examples && next build && next start",
     "dev": "rollup --config ./config/rollup.config.js --watch --bundleConfigAsCjs",
     "start": "npm-run-all --parallel dev serve",
     "coverage": "vitest run --coverage",
@@ -58,6 +57,7 @@
     "prettier": "^2.7.1",
     "react": ">=17.0.2",
     "react-dom": ">=17.0.2",
+    "rimraf": "^5.0.0",
     "rollup": "^3.2.3",
     "rollup-plugin-generate-package-json": "^3.2.0",
     "rollup-plugin-json": "3.1.0",
@@ -79,5 +79,6 @@
     "react-dom": ">=17.0.2",
     "slate": ">=0.72.3",
     "slate-react": ">=0.72.4"
-  }
+  },
+  "dependencies": {}
 }
