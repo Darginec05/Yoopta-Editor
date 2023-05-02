@@ -2,6 +2,7 @@ import { VideoProviders } from '../types';
 
 export const getYoutubeId = (url: string) => {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+
   const match = url.match(regExp);
   return match && match[2].length === 11 ? match[2] : null;
 };
@@ -24,11 +25,11 @@ export const getDailymotionId = (url: string) => {
 };
 
 export function getProvider(url: string): VideoProviders | null {
-  if (url.includes('youtube.com')) {
+  if (url.includes('youtube.com') || url.includes('youtu.be')) {
     return 'youtube';
   } else if (url.includes('vimeo.com')) {
     return 'vimeo';
-  } else if (url.includes('dailymotion.com')) {
+  } else if (url.includes('dailymotion.com') || url.includes('dai.ly')) {
     return 'dailymotion';
   }
   // } else if (url.includes('twitch.tv')) {

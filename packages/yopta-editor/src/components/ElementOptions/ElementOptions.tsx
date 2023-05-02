@@ -78,7 +78,8 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
               <div className={s.text}>Duplicate</div>
               <div className={s.hotkey}>⌘+D</div>
             </button>
-            {!isVoid && (
+            {/* Work in progress */}
+            {/* {!isVoid && (
               <button type="button" className={s.item} onClick={handleTurnInto}>
                 <div className={s.icon}>
                   <TurnIcon />
@@ -86,7 +87,7 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
                 <div className={s.text}>Turn into</div>
                 <div className={s.hotkey}>{'>'}</div>
               </button>
-            )}
+            )} */}
             <button type="button" className={s.item} onClick={onCopy}>
               <div className={s.icon}>
                 <CopyIcon />
@@ -95,6 +96,7 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
               <div className={s.hotkey}>⌥+Shift+L</div>
             </button>
           </div>
+          {/* Work in progress */}
           {/* <div className={s.group}>
             <button type="button" className={s.item}>
               <div className={s.icon}></div>

@@ -6,7 +6,7 @@ import { getAspectRatio } from '../utils/aspect';
 import { Element, Transforms } from 'slate';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { RenderElementProps, YoEditor } from '@yopta/editor';
-import { VideoElement, VideoPluginOptions, VideoProviders } from '../types';
+import { VideoElement, VideoPluginOptions } from '../types';
 import { getDailymotionId, getProvider, getVimeoId, getYoutubeId } from '../utils/parsers';
 import s from './EditorPlaceholder.module.scss';
 
