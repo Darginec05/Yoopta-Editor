@@ -2,16 +2,9 @@ import { Editor, Transforms, Range, Element, NodeEntry, Path } from 'slate';
 import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, ReactNode, useRef } from 'react';
 import { DefaultElement, Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
-import {
-  deserializeHTML,
-  getDefaultParagraphLine,
-  getRenderFunctionFactory,
-  isElementHasText,
-  toggleMark,
-} from './utils';
+import { getDefaultParagraphLine, getRenderFunctionFactory, isElementHasText, toggleMark } from './utils';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
-import { onCopyYoptaNodes } from '../../utils/copy';
 import { ElementWrapper } from '../ElementWrapper/ElementWrapper';
 import { HOTKEYS } from '../../utils/hotkeys';
 import { ParentYoptaPlugin, YoptaPluginType } from '../../utils/plugins';
@@ -22,6 +15,7 @@ import { YoptaMark } from '../../utils/marks';
 import { YoEditor, YoptaBaseElement } from '../../types';
 import { deepClone } from '../../utils/deepClone';
 import { isKeyHotkey } from 'is-hotkey';
+import { serializeHtml } from '../../utils/serializeHTML';
 
 type YoptaProps = {
   editor: YoEditor;
@@ -334,24 +328,21 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
         renderElement={renderElement}
         readOnly={isReadOnly}
         decorate={decorate}
-        // onCopy={onCopyYoptaNodes}
+        onCopy={(event) => {
+          if (!editor.selection) return;
+          if (Range.isCollapsed(editor.selection)) return;
+
+          const selectedFragment = Editor.fragment(editor, editor.selection);
+          const parsedHTML = serializeHtml(selectedFragment, editor.plugins);
+          console.log('parsedHTML', parsedHTML);
+          event.clipboardData.setData('text/html', parsedHTML);
+          return event.clipboardData;
+        }}
         autoFocus
         spellCheck
         {...eventHandlers}
         onKeyDown={onKeyDown}
         onMouseDown={onMouseDown}
-        // onPaste={(event: any) => {
-        //   event.preventDefault();
-        //   const data = event.clipboardData;
-        //   const html = data.getData('text/html');
-        //   const parsed = new DOMParser().parseFromString(html, 'text/html');
-
-        //   console.log('parsed', parsed);
-
-        //   const fragment = deserializeHTML(parsed.body, editor.plugins);
-        //   Transforms.insertFragment(editor, fragment);
-        //   console.log('fragment', fragment);
-        // }}
       />
     </div>
   );

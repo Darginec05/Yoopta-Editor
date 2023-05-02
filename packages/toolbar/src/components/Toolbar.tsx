@@ -87,12 +87,12 @@ const Toolbar = ({ type = 'bubble', style, render }: Props) => {
     const editorEl = document.getElementById('yopta-contenteditable');
 
     if (toolbarProps.open) {
-      // editorEl!.addEventListener('blur', hideToolbar);
+      editorEl!.addEventListener('blur', hideToolbar);
       window.addEventListener('scroll', updateToolbarPosition);
     }
     return () => {
       window.removeEventListener('scroll', updateToolbarPosition);
-      // editorEl!.removeEventListener('blur', hideToolbar);
+      editorEl!.removeEventListener('blur', hideToolbar);
     };
   }, [toolbarProps.open]);
 

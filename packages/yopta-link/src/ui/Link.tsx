@@ -62,7 +62,7 @@ const Link = createYoptaPlugin<any, LinkElement>({
       const [node, path] = entry;
 
       if (Element.isElement(node) && node.type === LINK_NODE_TYPE) {
-        if (Node.child(node, 0)?.text.length === 0) {
+        if (node.children.length > 0 && Node.child(node, 0)?.text?.length === 0) {
           Transforms.removeNodes(editor, {
             at: entry[1],
             match: (n) => Element.isElement(n) && n.type === LINK_NODE_TYPE,

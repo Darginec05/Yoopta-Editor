@@ -95,13 +95,13 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
               <div className={s.hotkey}>⌥+Shift+L</div>
             </button>
           </div>
-          <div className={s.group}>
+          {/* <div className={s.group}>
             <button type="button" className={s.item}>
-              <div className={s.icon}>{/* <CaptionIcon /> */}</div>
+              <div className={s.icon}></div>
               <div className={s.text}>Caption</div>
               <div className={s.hotkey}>+D</div>
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </Overlay>
