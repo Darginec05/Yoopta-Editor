@@ -185,7 +185,6 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
 
     return editor;
   },
-  placeholder: 'Write bugs',
   defineElement: (): CodeElement => ({
     id: generateId(),
     type: 'code',
@@ -221,7 +220,9 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
     html: {
       serialize: (node, children) =>
         `<pre style="background-color: #263238; color: #fff; padding: 20px 24px;"><code>${children}</code></pre>`,
-      deserialize: (node) => '',
+      deserialize: {
+        nodeName: ['PRE'],
+      },
     },
   },
 });

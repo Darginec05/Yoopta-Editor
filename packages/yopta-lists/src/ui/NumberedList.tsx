@@ -59,7 +59,9 @@ const NumberedList = createYoptaPlugin<ListOptions, NumberedList>({
         const paddingLeft = node.data?.depth ? node.data.depth * 15 : 15;
         return `<ol style="padding-left: ${paddingLeft}px;">${children}</ol>`;
       },
-      deserialize: (node) => '',
+      deserialize: {
+        nodeName: 'OL',
+      },
     },
   },
 });

@@ -1,6 +1,6 @@
 import { createYoptaPlugin, generateId, getElementByPath, YoEditor } from '@yopta/editor';
 import { Transforms } from 'slate';
-import { VideoElement, VideoPluginOptions } from './types';
+import { VideoElement, VideoElementData, VideoPluginOptions } from './types';
 import { Video as VideoRender } from './ui/Video';
 import { VideoEditor } from './ui/VideoEditor';
 
@@ -67,7 +67,16 @@ const Video = createYoptaPlugin<VideoPluginOptions, VideoElement>({
         // [TODO] - change to <source /> and add format
         return `<video preload controls src="${node.data.url}" height="${node.data.size.height}" width="${node.data.size.width}"></video>`;
       },
-      deserialize: (node) => '',
+      deserialize: {
+        nodeName: 'VIDEO',
+        parse: (el): Partial<VideoElementData> => ({
+          url: el.getAttribute('src'),
+          size: {
+            height: typeof el.getAttribute('height') === 'string' ? Number(el.getAttribute('height')) : 'auto',
+            width: typeof el.getAttribute('width') === 'string' ? Number(el.getAttribute('width')) : 'auto',
+          },
+        }),
+      },
     },
   },
 });

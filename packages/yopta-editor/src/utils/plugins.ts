@@ -32,14 +32,17 @@ export type ExtendedYoptaRender<P extends YoptaBaseElement<string>> = {
 
 export type YoptaRenderer<P extends YoptaBaseElement<string>> = ExtendedYoptaRender<P> | YoptaRender<P>;
 
-type Serializes<T> = {
+type DeserializeHTML = { nodeName: string | string[]; parse?: (el: HTMLElement) => any };
+
+type Serializes<T, S> = {
   serialize: (node: T, text: string) => string;
-  deserialize: (node: T, text: string) => string;
+  deserialize: S;
+  // deserialize: (node: T, text: string) => string;
 };
 
 type Exports<T> = {
-  html: Serializes<T>;
-  markdown: Serializes<T>;
+  html: Serializes<T, DeserializeHTML>;
+  markdown: Serializes<T, { mark: string; parse: (mark: any) => any }>;
 };
 
 export type YoptaPluginType<

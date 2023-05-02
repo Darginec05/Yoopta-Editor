@@ -71,7 +71,16 @@ const Embed = createYoptaPlugin<EmbedPluginOptions, EmbedElement>({
           node.data.provider || ''
         }" />`;
       },
-      deserialize: (node) => '',
+      deserialize: {
+        nodeName: 'IFRAME',
+        parse: (el): Partial<EmbedElementData> => ({
+          url: el.getAttribute('src'),
+          size: {
+            height: typeof el.getAttribute('height') === 'string' ? Number(el.getAttribute('height')) : 'auto',
+            width: typeof el.getAttribute('width') === 'string' ? Number(el.getAttribute('width')) : 'auto',
+          },
+        }),
+      },
     },
   },
 });

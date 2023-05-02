@@ -38,7 +38,9 @@ const HeadingTwo = createYoptaPlugin<HeadingOptions, HeadingTwoElement>({
     },
     html: {
       serialize: (node, children) => `<h2>${children}</h2>`,
-      deserialize: (node) => '',
+      deserialize: {
+        nodeName: 'H2',
+      },
     },
   },
   options: {

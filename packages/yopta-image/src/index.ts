@@ -27,22 +27,6 @@ const Image = createYoptaPlugin<ImagePluginOptions, ImageElement>({
 
     return editor;
   },
-  exports: {
-    markdown: {
-      serialize: (node, children) => {
-        return `![${node.data.caption || ''}](${node.data.url})\n`;
-      },
-      deserialize: (node) => '',
-    },
-    html: {
-      serialize: (node, children) => {
-        return `<img src="${node.data.url}" width="${node.data.size?.width}" height="${
-          node.data.size?.height
-        }" decoding="async" loading="lazy"  alt="${node.data.caption || 'yopta-html-image'}" />`;
-      },
-      deserialize: (node) => '',
-    },
-  },
   events: {
     onKeyDown:
       (editor, { defaultNode, hotkeys }) =>
@@ -71,6 +55,31 @@ const Image = createYoptaPlugin<ImagePluginOptions, ImageElement>({
     Transforms.setNodes(editor, node, {
       at: editor.selection?.anchor,
     });
+  },
+  exports: {
+    markdown: {
+      serialize: (node, children) => {
+        return `![${node.data.caption || ''}](${node.data.url})\n`;
+      },
+      deserialize: (node) => '',
+    },
+    html: {
+      serialize: (node, children) => {
+        return `<img src="${node.data.url}" width="${node.data.size?.width}" height="${
+          node.data.size?.height
+        }" decoding="async" loading="lazy"  alt="${node.data.caption || 'yopta-html-image'}" />`;
+      },
+      deserialize: {
+        nodeName: 'IMG',
+        parse: (el): Partial<ImageElementData> => ({
+          url: el.getAttribute('src'),
+          size: {
+            height: typeof el.getAttribute('height') === 'string' ? Number(el.getAttribute('height')) : 'auto',
+            width: typeof el.getAttribute('width') === 'string' ? Number(el.getAttribute('width')) : 'auto',
+          },
+        }),
+      },
+    },
   },
 });
 

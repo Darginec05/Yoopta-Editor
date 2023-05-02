@@ -36,7 +36,9 @@ const Paragraph = createYoptaPlugin<any, ParagraphElement>({
     },
     html: {
       serialize: (node, children) => `<p>${children}</p>`,
-      deserialize: (node) => '',
+      deserialize: {
+        nodeName: 'P',
+      },
     },
   },
 });

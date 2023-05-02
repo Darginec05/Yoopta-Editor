@@ -3,7 +3,7 @@ import { ClipboardEvent } from 'react';
 // copy function for parent <div /> of nodes
 export function onCopyYoptaNodes(event: ClipboardEvent) {
   event.preventDefault();
-  event.stopPropagation();
+  // event.stopPropagation();
 
   const range = window.getSelection()!.getRangeAt(0);
   const content = range.cloneContents();

@@ -1,5 +1,5 @@
 import { createYoptaPlugin, generateId, RenderElementProps } from '@yopta/editor';
-import { Text, Transforms } from 'slate';
+import { Transforms } from 'slate';
 import { HeadingOneElement, HeadingOptions } from '../types';
 import s from './HeadingOne.module.scss';
 
@@ -38,7 +38,9 @@ const HeadingOne = createYoptaPlugin<HeadingOptions, HeadingOneElement>({
     },
     html: {
       serialize: (node, children) => `<h1>${children}</h1>`,
-      deserialize: (node) => '',
+      deserialize: {
+        nodeName: 'H1',
+      },
     },
   },
   options: {

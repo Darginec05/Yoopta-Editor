@@ -111,6 +111,8 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
       });
 
       marks.forEach((mark) => {
+        // console.log('props.leaf', props.leaf);
+
         if (props.leaf[mark.type]) {
           props.children = mark.render(props);
         }
@@ -332,7 +334,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
         renderElement={renderElement}
         readOnly={isReadOnly}
         decorate={decorate}
-        onCopy={onCopyYoptaNodes}
+        // onCopy={onCopyYoptaNodes}
         autoFocus
         spellCheck
         {...eventHandlers}
