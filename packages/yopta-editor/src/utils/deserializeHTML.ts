@@ -26,6 +26,8 @@ const deserialize = (
   }
 
   const { nodeName } = el;
+  console.log('nodeName', nodeName);
+
   let parent = el;
 
   let children = Array.from(parent.childNodes)
@@ -56,6 +58,7 @@ const deserialize = (
   }
 
   if (Text.isTextList(children)) {
+    console.log('children', children);
     return jsx('element', pluginsMap.P.defineElement(), children);
   }
 
@@ -64,6 +67,8 @@ const deserialize = (
     const textNodes = children.map((child) => {
       return Text.isText(child) ? jsx('text', attrs, child) : child;
     });
+
+    console.log('textNodes', textNodes);
 
     return textNodes;
   }
