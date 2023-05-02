@@ -80,7 +80,9 @@ const BulletedList = createYoptaPlugin<ListOptions, BulletedList>({
         const paddingLeft = node.data?.depth ? node.data.depth * 15 : 15;
         return `<ul style="padding-left: ${paddingLeft}px;">${children}</ul>`;
       },
-      deserialize: (node) => '',
+      deserialize: {
+        nodeName: 'UL',
+      },
     },
   },
 });

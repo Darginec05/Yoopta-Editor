@@ -38,7 +38,9 @@ const HeadingThree = createYoptaPlugin<HeadingOptions, HeadingThreeElement>({
     },
     html: {
       serialize: (node, children) => `<h3>${children}</h3>`,
-      deserialize: (node) => '',
+      deserialize: {
+        nodeName: ['H3', 'H4', 'H5', 'H6'],
+      },
     },
   },
   options: {

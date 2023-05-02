@@ -27,12 +27,12 @@ export type YoptaNodeElementSettings = {
   plus?: boolean;
 };
 
-export type YoptaEditorProps<O, T> = {
+export type YoptaEditorProps = {
   onChange: (_value: Descendant[]) => void;
   value: Descendant[];
   key?: Key;
   placeholder?: string;
-  plugins: YoptaPlugin<O, T>[];
+  plugins: YoptaPlugin<any, any>[];
   children: ReactNode | ReactNode[];
   readOnly?: boolean;
   autoFocus?: boolean;
@@ -41,7 +41,7 @@ export type YoptaEditorProps<O, T> = {
   nodeElementSettings: YoptaNodeElementSettings;
 };
 
-const YoptaEditor = <O, T>({
+const YoptaEditor = ({
   key,
   value,
   plugins,
@@ -52,7 +52,7 @@ const YoptaEditor = <O, T>({
   placeholder,
   autoFocus = true,
   shouldStoreInLocalStorage,
-}: YoptaEditorProps<O, T>) => {
+}: YoptaEditorProps) => {
   const storageName = getStorageName(shouldStoreInLocalStorage);
   const [val, setVal] = useState(() => getInitialState(storageName, shouldStoreInLocalStorage, value));
 

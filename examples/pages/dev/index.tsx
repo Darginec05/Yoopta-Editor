@@ -35,7 +35,7 @@
 //     });
 //   });
 
-import { YoptaEditor } from '@yopta/editor';
+import { generateId, YoptaEditor } from '@yopta/editor';
 import Blockquote, { BlockquoteElement } from '@yopta/blockquote';
 import Paragraph, { ParagraphElement } from '@yopta/paragraph';
 import Callout, { CalloutElement } from '@yopta/callout';
@@ -53,12 +53,10 @@ import ChatGPT from '@yopta/chat-gpt-assistant';
 import exports from '@yopta/exports';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yopta/marks';
 import ActionMenu, { ActionMenuItem } from '@yopta/action-menu-list';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { Descendant } from 'slate';
 import { uploadToCloudinary } from '../../utils';
-import { MediumToolbar } from '../../components/Toolbars/MediumToolbar';
-import { NotionActionMenu } from '../../components/SuggestionList/NotionActionMenu';
 import s from './styles.module.scss';
 
 type PluginOptions = ImagePluginOptions | Record<string, unknown>;
@@ -209,7 +207,12 @@ const BasicExample = () => {
       <button type="button" onClick={() => toggleMode(isEdit ? 'render' : 'edit')}>
         Switch to {isEdit ? 'render' : 'edit'}
       </button>
-      <button type="button" onClick={() => console.log(exports.markdown.serialize(editorValue, plugins))}>
+      <button
+        type="button"
+        onClick={() => {
+          console.log(exports.html.serialize(editorValue, plugins));
+        }}
+      >
         Export
       </button>
       {isEdit ? (
@@ -219,7 +222,6 @@ const BasicExample = () => {
           plugins={plugins}
           marks={marks}
           shouldStoreInLocalStorage={{ name: 'yopta-dev' }}
-          key="edit"
           placeholder="Type / to open menu"
           nodeElementSettings={{
             options: {

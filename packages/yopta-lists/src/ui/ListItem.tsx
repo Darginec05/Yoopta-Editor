@@ -181,7 +181,9 @@ const ListItemList = createYoptaPlugin<any, ListChildItemElement>({
         console.log('children', children);
         return `<li>${children}</li>`;
       },
-      deserialize: (node) => '',
+      deserialize: {
+        nodeName: 'LI',
+      },
     },
   },
 });

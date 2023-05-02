@@ -59,7 +59,7 @@ const Link = createYoptaPlugin<any, LinkElement>({
     editor.isInline = (element) => (element.type === LINK_NODE_TYPE ? true : isInline(element));
 
     editor.normalizeNode = (entry) => {
-      const [node] = entry;
+      const [node, path] = entry;
 
       if (Element.isElement(node) && node.type === LINK_NODE_TYPE) {
         if (Node.child(node, 0)?.text.length === 0) {
@@ -196,7 +196,15 @@ const Link = createYoptaPlugin<any, LinkElement>({
     html: {
       serialize: (node, children) =>
         `<a target="_blank" rel="noopener noreferrer" href="${node.data.url}">${children}</a>`,
-      deserialize: (node) => '',
+      deserialize: {
+        nodeName: 'A',
+        parse: (el): LinkElement['data'] => {
+          return {
+            url: el.getAttribute('href'),
+            skipDrag: true,
+          };
+        },
+      },
     },
   },
 });
