@@ -1,5 +1,5 @@
 {
-  "name": "root",
+  "name": "yopta",
   "workspaces": [
     "packages/**"
   ],

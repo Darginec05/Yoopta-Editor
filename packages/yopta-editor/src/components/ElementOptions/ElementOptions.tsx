@@ -30,6 +30,7 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
   const editor = useSlate();
   const [, handlers] = useElementSettings();
 
+  // [WIP]
   const handleTurnInto = () => {};
 
   const isVoid = Editor.isVoid(editor, element);
@@ -69,14 +70,14 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
                 <TrashIcon />
               </div>
               <div className={s.text}>Delete</div>
-              <div className={s.hotkey}>Del or Ctrl+D</div>
+              {/* <div className={s.hotkey}>Del or Ctrl+D</div> */}
             </button>
             <button type="button" className={s.item} onClick={onDuplicate}>
               <div className={s.icon}>
                 <DuplicateIcon />
               </div>
               <div className={s.text}>Duplicate</div>
-              <div className={s.hotkey}>⌘+D</div>
+              {/* <div className={s.hotkey}>⌘+D</div> */}
             </button>
             {/* Work in progress */}
             {/* {!isVoid && (
@@ -93,7 +94,7 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
                 <CopyIcon />
               </div>
               <div className={s.text}>Copy link to block</div>
-              <div className={s.hotkey}>⌥+Shift+L</div>
+              {/* <div className={s.hotkey}>⌥+Shift+L</div> */}
             </button>
           </div>
           {/* Work in progress */}
