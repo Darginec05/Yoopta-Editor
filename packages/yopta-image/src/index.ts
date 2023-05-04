@@ -2,7 +2,7 @@ import { generateId, getElementByPath, createYoptaPlugin, YoEditor } from '@yopt
 import { Transforms } from 'slate';
 import { ImageElement, ImageElementData, ImagePluginOptions } from './types';
 import { Image as ImageRender } from './ui/Image';
-import { ImageEditor } from './ui/ImageEditor';
+import { ImageEditorFactory } from './ui/ImageEditor';
 
 declare module 'slate' {
   interface CustomTypes {
@@ -15,7 +15,8 @@ const Image = createYoptaPlugin<ImagePluginOptions, ImageElement>({
   type: 'image',
   shortcut: 'image',
   renderer: {
-    editor: ImageEditor,
+    // @ts-ignore [TODO: fix types]
+    editor: ImageEditorFactory,
     render: ImageRender,
   },
   extendEditor(editor) {
@@ -61,7 +62,6 @@ const Image = createYoptaPlugin<ImagePluginOptions, ImageElement>({
       serialize: (node, children) => {
         return `![${node.data.caption || ''}](${node.data.url})\n`;
       },
-      deserialize: (node) => '',
     },
     html: {
       serialize: (node, children) => {

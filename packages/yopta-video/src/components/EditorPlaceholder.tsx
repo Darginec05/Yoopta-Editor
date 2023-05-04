@@ -5,10 +5,11 @@ import { EditorUploader } from './EditorUploader';
 import { getAspectRatio } from '../utils/aspect';
 import { Element, Transforms } from 'slate';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import { RenderElementProps, YoEditor } from '@yopta/editor';
+import { cx, RenderElementProps, YoEditor } from '@yopta/editor';
 import { VideoElement, VideoPluginOptions } from '../types';
 import { getDailymotionId, getProvider, getVimeoId, getYoutubeId } from '../utils/parsers';
 import s from './EditorPlaceholder.module.scss';
+import { Loader } from './Loader';
 
 type Props = RenderElementProps<VideoElement> & {
   editor: YoEditor;
@@ -25,6 +26,7 @@ const UPLOADER_HEIGHT = 88;
 
 const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, onUpload }: Props) => {
   const [uploaderPos, setUploaderPos] = useState<null | UploaderPosition>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState('upload');
   const videoEditorRef = useRef<HTMLDivElement>(null);
 
@@ -92,30 +94,44 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
   const onChangeFile = async (file) => {
     enableBodyScroll(document.body);
     setUploaderPos(null);
+    setLoading(true);
 
     if (!onUpload) return console.error('Provide `onUpload` props in Video options');
 
-    const response = await onUpload(file);
-    const { width, height } = getAspectRatio(response.width, response.height, maxSizes.maxWidth, maxSizes.maxHeight);
+    try {
+      const response = await onUpload(file);
+      const { width, height } = getAspectRatio(response.width, response.height, maxSizes.maxWidth, maxSizes.maxHeight);
 
-    const updateVideoNode: Partial<VideoElement> = {
-      data: {
-        url: response.url,
-        'data-src': undefined,
-        size: { width: width || element.data.size.width, height: height || element.data.size.height },
-      },
-    };
+      const updateVideoNode: Partial<VideoElement> = {
+        data: {
+          url: response.url,
+          'data-src': undefined,
+          size: { width: width || element.data.size.width, height: height || element.data.size.height },
+        },
+      };
 
-    Transforms.setNodes<VideoElement>(editor, updateVideoNode, {
-      at: ReactEditor.findPath(editor, element),
-      match: (n) => Element.isElement(n) && n.type === 'video',
-    });
+      setLoading(false);
+
+      Transforms.setNodes<VideoElement>(editor, updateVideoNode, {
+        at: ReactEditor.findPath(editor, element),
+        match: (n) => Element.isElement(n) && n.type === 'video',
+      });
+    } catch (error) {
+      enableBodyScroll(document.body);
+      setUploaderPos(null);
+      setLoading(false);
+    }
   };
 
   return (
-    <div className={s.editor} {...attributes} contentEditable={false}>
+    <div className={cx(s.editor, { [s.disabledUpload]: loading })} {...attributes} contentEditable={false}>
       <div ref={videoEditorRef}>
-        <button className={s.content} onClick={toggleUploaderOpen}>
+        <button className={s.content} onClick={toggleUploaderOpen} disabled={loading}>
+          {loading && (
+            <div className={s.loading}>
+              <Loader />
+            </div>
+          )}
           <UploadIcon className={s.icon} width={24} height={24} />
           <span>Click to add video</span>
         </button>

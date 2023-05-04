@@ -1,4 +1,4 @@
-import { MouseEvent, ReactElement, useMemo } from 'react';
+import { memo, MouseEvent, ReactElement, useMemo } from 'react';
 import { ReactEditor, RenderElementProps, useReadOnly, useSlate } from 'slate-react';
 import cx from 'classnames';
 import { YoptaElementConfig } from '../../types';
@@ -20,13 +20,6 @@ const ElementWrapper = ({ children, element, attributes, nodeType, render }: Pro
   const { hoverIn, onDrop } = handlers;
   const { dndState, DRAG_MAP } = values;
 
-  const skipSettings = element.data?.skipSettings;
-
-  const onMouseEnter = (e: MouseEvent<HTMLDivElement>) => {
-    if (skipSettings) return;
-    hoverIn(e, element);
-  };
-
   const dragState = useMemo(() => {
     if (dndState.from.element === null || dndState.to.element === null) {
       return {
@@ -46,6 +39,13 @@ const ElementWrapper = ({ children, element, attributes, nodeType, render }: Pro
       isDragSelf,
     };
   }, [values.dndState.from, values.dndState.to]);
+
+  const skipSettings = element.data?.skipSettings;
+
+  const onMouseEnter = (e: MouseEvent<HTMLDivElement>) => {
+    if (skipSettings) return;
+    hoverIn(e, element);
+  };
 
   const { isDragging, isDragOver, isDragSelf } = dragState;
 
@@ -70,5 +70,7 @@ const ElementWrapper = ({ children, element, attributes, nodeType, render }: Pro
     </div>
   );
 };
+
+ElementWrapper.displayName = 'ElementWrapper';
 
 export { ElementWrapper };

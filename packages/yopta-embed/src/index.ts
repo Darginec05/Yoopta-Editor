@@ -2,7 +2,7 @@ import { generateId, getElementByPath, createYoptaPlugin, YoEditor } from '@yopt
 import { Transforms } from 'slate';
 import { EmbedElement, EmbedElementData, EmbedPluginOptions } from './types';
 import { Embed as EmbedRender } from './ui/Embed';
-import { EmbedEditor } from './ui/EmbedEditor';
+import { EmbedEditorFactory } from './ui/EmbedEditor';
 
 declare module 'slate' {
   interface CustomTypes {
@@ -15,7 +15,8 @@ const Embed = createYoptaPlugin<EmbedPluginOptions, EmbedElement>({
   type: 'embed',
   shortcut: 'embed',
   renderer: {
-    editor: EmbedEditor,
+    // @ts-ignore [TODO: fix types]
+    editor: EmbedEditorFactory,
     render: EmbedRender,
   },
   extendEditor(editor) {
@@ -61,7 +62,6 @@ const Embed = createYoptaPlugin<EmbedPluginOptions, EmbedElement>({
       serialize: (node, text) => {
         return `[embed-url](${node.data.url})\n`;
       },
-      deserialize: (node) => '',
     },
     html: {
       serialize: (node, children) => {

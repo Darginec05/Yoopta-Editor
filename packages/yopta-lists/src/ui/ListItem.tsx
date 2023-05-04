@@ -169,7 +169,6 @@ const ListItemList = createYoptaPlugin<any, ListChildItemElement>({
   exports: {
     markdown: {
       serialize: (node, text) => `- ${text}`,
-      deserialize: (node) => '',
     },
     html: {
       serialize: (node, children) => {

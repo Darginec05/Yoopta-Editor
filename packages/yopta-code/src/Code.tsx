@@ -215,7 +215,6 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
       serialize: (node, text) => {
         return ` \`\`\`${text}\`\`\`\n`;
       },
-      deserialize: (node) => '',
     },
     html: {
       serialize: (node, children) =>

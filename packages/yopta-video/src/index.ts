@@ -2,7 +2,7 @@ import { createYoptaPlugin, generateId, getElementByPath, YoEditor } from '@yopt
 import { Transforms } from 'slate';
 import { VideoElement, VideoElementData, VideoPluginOptions } from './types';
 import { Video as VideoRender } from './ui/Video';
-import { VideoEditor } from './ui/VideoEditor';
+import { VideoEditorFactory } from './ui/VideoEditor';
 
 declare module 'slate' {
   interface CustomTypes {
@@ -14,7 +14,8 @@ declare module 'slate' {
 const Video = createYoptaPlugin<VideoPluginOptions, VideoElement>({
   type: 'video',
   renderer: {
-    editor: VideoEditor,
+    // @ts-ignore [TODO: fix types]
+    editor: VideoEditorFactory,
     render: VideoRender,
   },
   extendEditor(editor) {
@@ -60,7 +61,6 @@ const Video = createYoptaPlugin<VideoPluginOptions, VideoElement>({
       serialize: (node, text) => {
         return `<video preload controls src="${node.data.url}" height="${node.data.size.height}" width="${node.data.size.width}"></video>\n`;
       },
-      deserialize: (node) => '',
     },
     html: {
       serialize: (node) => {

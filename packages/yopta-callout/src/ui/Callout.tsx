@@ -33,7 +33,6 @@ const Callout = createYoptaPlugin<any, CalloutElement>({
   exports: {
     markdown: {
       serialize: (node, text) => `> ${text}`,
-      deserialize: (node) => '',
     },
     html: {
       serialize: (node, children) =>
