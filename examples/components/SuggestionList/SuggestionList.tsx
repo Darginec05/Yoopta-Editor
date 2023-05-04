@@ -1,5 +1,5 @@
-import { ActionMenuRenderProps } from '@yopta/action-menu-list';
-import { cx } from '@yopta/editor';
+import { ActionMenuRenderProps } from '@yoopta/action-menu-list';
+import { cx } from '@yoopta/editor';
 import s from './SuggestionList.module.scss';
 
 const CustomSuggestionList = (props: ActionMenuRenderProps) => {

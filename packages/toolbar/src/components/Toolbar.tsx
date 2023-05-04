@@ -1,4 +1,4 @@
-import { cx, useYopta } from '@yopta/editor';
+import { cx, useYopta } from '@yoopta/editor';
 import { CSSProperties, RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { Editor, Range } from 'slate';
 import { useSlate } from 'slate-react';
@@ -84,7 +84,7 @@ const Toolbar = ({ type = 'bubble', style, render }: Props) => {
   }, [editor.selection]);
 
   useEffect(() => {
-    const editorEl = document.getElementById('yopta-contenteditable');
+    const editorEl = document.getElementById('yoopta-contenteditable');
 
     if (toolbarProps.open) {
       editorEl!.addEventListener('blur', hideToolbar);

@@ -1,4 +1,4 @@
-import { ActionMenuRenderProps } from '@yopta/action-menu-list';
+import { ActionMenuRenderProps } from '@yoopta/action-menu-list';
 import s from './NotionActionMenu.module.scss';
 
 const NotionActionMenu = (props: ActionMenuRenderProps) => {

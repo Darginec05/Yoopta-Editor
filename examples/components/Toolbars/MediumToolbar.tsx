@@ -1,4 +1,4 @@
-import { ToolbarProps } from '@yopta/toolbar';
+import { ToolbarProps } from '@yoopta/toolbar';
 import BoldIcon from './icons/medium/Bold.svg';
 import ItalicIcon from './icons/medium/Italic.svg';
 import LinkIcon from './icons/medium/Link.svg';

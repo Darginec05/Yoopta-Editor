@@ -1,4 +1,4 @@
-import { YoptaBaseElement, YoptaPlugin, YoptaPluginType } from '@yopta/editor';
+import { YoptaBaseElement, YoptaPlugin, YoptaPluginType } from '@yoopta/editor';
 import uniqWith from 'lodash.uniqwith';
 
 export function mergePlugins(plugins): YoptaPluginType[] {

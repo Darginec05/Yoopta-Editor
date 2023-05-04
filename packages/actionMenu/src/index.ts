@@ -1,4 +1,4 @@
-import { YoEditor, YoptaBaseElement } from '@yopta/editor';
+import { YoEditor, YoptaBaseElement } from '@yoopta/editor';
 import { ActionMenuList } from './components/ActionMenuList';
 export type { ActionMenuItem, ActionMenuRenderProps } from './types';
 

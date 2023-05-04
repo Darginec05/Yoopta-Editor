@@ -1,21 +1,21 @@
 {
   "files": [],
   "references": [
-    { "path": "./packages/yopta-editor" },
-    { "path": "./packages/yopta-blockquote" },
-    { "path": "./packages/yopta-paragraph" },
-    { "path": "./packages/yopta-callout" },
-    { "path": "./packages/yopta-code" },
-    { "path": "./packages/yopta-lists" },
-    { "path": "./packages/yopta-link" },
-    { "path": "./packages/yopta-headings" },
-    { "path": "./packages/yopta-video" },
-    { "path": "./packages/yopta-image" },
+    { "path": "./packages/yoopta-editor" },
+    { "path": "./packages/yoopta-blockquote" },
+    { "path": "./packages/yoopta-paragraph" },
+    { "path": "./packages/yoopta-callout" },
+    { "path": "./packages/yoopta-code" },
+    { "path": "./packages/yoopta-lists" },
+    { "path": "./packages/yoopta-link" },
+    { "path": "./packages/yoopta-headings" },
+    { "path": "./packages/yoopta-video" },
+    { "path": "./packages/yoopta-image" },
     { "path": "./packages/actionMenu" },
     { "path": "./packages/marks" },
-    { "path": "./packages/yopta-renderer" },
-    { "path": "./packages/yopta-chatGPT-assistant" },
+    { "path": "./packages/yoopta-renderer" },
+    { "path": "./packages/yoopta-chatGPT-assistant" },
     { "path": "./packages/exports" },
-    { "path": "./packages/yopta-embed" }
+    { "path": "./packages/yoopta-embed" }
   ]
 }

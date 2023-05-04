@@ -1,4 +1,4 @@
-import { YoptaPlugin, YoptaPluginType } from '@yopta/editor';
+import { YoptaPlugin, YoptaPluginType } from '@yoopta/editor';
 
 export type ActionMenuItem<T extends Record<string, unknown>> = {
   plugin: YoptaPlugin<any, any>;

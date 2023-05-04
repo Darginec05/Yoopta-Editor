@@ -14,10 +14,10 @@
 
   :global {
 
-    .yopta-paragraph,
-    .yopta-list-item,
-    .yopta-block-quote,
-    .yopta-callout {
+    .yoopta-paragraph,
+    .yoopta-list-item,
+    .yoopta-block-quote,
+    .yoopta-callout {
       font-family: inherit;
       font-style: normal;
       font-weight: 400;
@@ -25,33 +25,33 @@
       line-height: 27px;
     }
 
-    .yopta-paragraph,
-    .yopta-list-item,
-    .yopta-block-quote,
-    .yopta-callout,
-    .yopta-heading-one,
-    .yopta-heading-two,
-    .yopta-heading-three {
+    .yoopta-paragraph,
+    .yoopta-list-item,
+    .yoopta-block-quote,
+    .yoopta-callout,
+    .yoopta-heading-one,
+    .yoopta-heading-two,
+    .yoopta-heading-three {
       color: #fff;
     }
 
-    .yopta-heading-one {
+    .yoopta-heading-one {
       margin-top: 20px;
     }
 
-    .yopta-callout {
+    .yoopta-callout {
       font-size: 15px;
       line-height: 24px;
       background-color: #2c333f;
       color: #fff;
     }
 
-    .yopta-numbered-list,
-    .yopta-ordered-list {
+    .yoopta-numbered-list,
+    .yoopta-ordered-list {
       padding-left: 30px;
     }
 
-    .yopta-bulleted-list .yopta-list-item::before {
+    .yoopta-bulleted-list .yoopta-list-item::before {
       content: "\2022";
       color: #fff;
       font-weight: bold;
@@ -67,7 +67,7 @@
       border-radius: 2px;
     }
 
-    .yopta-toolbar {
+    .yoopta-toolbar {
       z-index: 12;
     }
 
