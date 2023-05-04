@@ -28,7 +28,6 @@
     "lodash.clonedeep": "^4.5.0",
     "lodash.uniqwith": "^4.5.0",
     "nanoid": "^4.0.1",
-    "prismjs": "^1.29.0",
     "slate-history": "^0.66.0",
     "slate-hyperscript": "^0.77.0"
   },
