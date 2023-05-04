@@ -1,4 +1,4 @@
-import { ToolbarProps } from '@yopta/toolbar';
+import { ToolbarProps } from '@yoopta/toolbar';
 import s from './NotionToolbar.module.scss';
 
 const NotionToolbar = (props: ToolbarProps) => {

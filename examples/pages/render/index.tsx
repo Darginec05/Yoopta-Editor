@@ -1,10 +1,10 @@
-import { YoptaEditor } from '@yopta/editor';
+import { YoptaEditor } from '@yoopta/editor';
 
 import { useState } from 'react';
 import { Descendant } from 'slate';
 import { uploadToCloudinary } from '../../utils';
 
-// import '@yopta/editor/dist/index.css';
+// import '@yoopta/editor/dist/index.css';
 import s from './styles.module.scss';
 
 const initialData = [

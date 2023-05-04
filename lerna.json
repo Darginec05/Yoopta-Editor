@@ -3,5 +3,12 @@
   "packages": ["packages/**"],
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "version": "independent"
+  "version": "independent",
+  "command": {
+    "publish": {
+      "registry": "https://registry.npmjs.org/",
+      "access": "public",
+      "ignoreChanges": ["**/__tests__/**", "**/*.test.ts", "**/*.spec.ts"]
+    }
+  }
 }

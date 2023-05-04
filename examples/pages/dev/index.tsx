@@ -1,18 +1,18 @@
-import { YoptaEditor } from '@yopta/editor';
-import Blockquote, { BlockquoteElement } from '@yopta/blockquote';
-import Paragraph, { ParagraphElement } from '@yopta/paragraph';
-import Callout, { CalloutElement } from '@yopta/callout';
-import Code from '@yopta/code';
-import Link, { LinkElement } from '@yopta/link';
-import Lists from '@yopta/lists';
-import Headings, { HeadingOneElement, HeadingThreeElement, HeadingTwoElement } from '@yopta/headings';
-import Image, { ImageElement, ImagePluginOptions } from '@yopta/image';
-import Video, { VideoElement } from '@yopta/video';
-import Embed, { EmbedElement } from '@yopta/embed';
-import Toolbar from '@yopta/toolbar';
-import YoptaRenderer from '@yopta/renderer';
-import { Bold, Italic, CodeMark, Underline, Strike } from '@yopta/marks';
-import ActionMenu, { ActionMenuItem } from '@yopta/action-menu-list';
+import { YoptaEditor } from '@yoopta/editor';
+import Blockquote, { BlockquoteElement } from '@yoopta/blockquote';
+import Paragraph, { ParagraphElement } from '@yoopta/paragraph';
+import Callout, { CalloutElement } from '@yoopta/callout';
+import Code from '@yoopta/code';
+import Link, { LinkElement } from '@yoopta/link';
+import Lists from '@yoopta/lists';
+import Headings, { HeadingOneElement, HeadingThreeElement, HeadingTwoElement } from '@yoopta/headings';
+import Image, { ImageElement, ImagePluginOptions } from '@yoopta/image';
+import Video, { VideoElement } from '@yoopta/video';
+import Embed, { EmbedElement } from '@yoopta/embed';
+import Toolbar from '@yoopta/toolbar';
+import YoptaRenderer from '@yoopta/renderer';
+import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
+import ActionMenu, { ActionMenuItem } from '@yoopta/action-menu-list';
 import { useMemo, useState } from 'react';
 
 import { Descendant } from 'slate';
@@ -170,7 +170,7 @@ const BasicExample = () => {
           onChange={(val: Descendant[]) => setEditorValue(val)}
           plugins={plugins}
           marks={marks}
-          shouldStoreInLocalStorage={{ name: 'yopta-dev' }}
+          shouldStoreInLocalStorage={{ name: 'yoopta-dev' }}
           placeholder="Type / to open menu"
           // [WIP]
           nodeElementSettings={{

@@ -1,4 +1,4 @@
-import { createYoptaMark } from '@yopta/editor';
+import { createYoptaMark } from '@yoopta/editor';
 import s from './Marks.module.scss';
 
 export const Bold = createYoptaMark({ type: 'bold', hotkey: 'mod+b', className: s.bold });

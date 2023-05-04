@@ -1,9 +1,9 @@
-import { YoptaEditor } from '@yopta/editor';
+import { YoptaEditor } from '@yoopta/editor';
 import { useState } from 'react';
 import { Descendant } from 'slate';
 
 import s from './styles.module.scss';
-// import '@yopta/editor/dist/index.css';
+// import '@yoopta/editor/dist/index.css';
 
 const initialValue = [
   {
@@ -26,7 +26,7 @@ const OfflineExample = () => {
         value={editorValue}
         onChange={(val: Descendant[]) => setEditorValue(val)}
         className={s.editor}
-        shouldStoreInLocalStorage // DEFAULT NAME => yopta-content
+        shouldStoreInLocalStorage // DEFAULT NAME => yoopta-content
         // or
         // shouldStoreInLocalStorage={{ name: 'localstorage-name' }}
       />

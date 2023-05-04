@@ -13,7 +13,7 @@
   <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/qOQqVaxxRZ">Get started</a> | 
   <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/kUoZ2DoHnG">API</a> |
   <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/qo9nK4lDG5">FAQs</a> |
-  <a target="_blank" rel="noopener noreferrer" href="https://@yopta/editor.vercel.app/basic">Examples</a>
+  <a target="_blank" rel="noopener noreferrer" href="https://@yoopta/editor.vercel.app/basic">Examples</a>
 </p>
 
 ### Features
@@ -32,9 +32,9 @@
 
 ### Install
 
-    yarn add @yopta/editor
+    yarn add @yoopta/editor
     or
-    npm install @yopta/editor
+    npm install @yoopta/editor
 
 ### Peer dependencies
 
@@ -45,10 +45,10 @@
 ### Quickstart
 
 ```jsx
-import { YoptaEditor } from '@yopta/editor';
+import { YoptaEditor } from '@yoopta/editor';
 import { useState } from 'react';
 
-import '@yopta/editor/dist/index.css';
+import '@yoopta/editor/dist/index.css';
 
 function App() {
   const [editorValue, setEditorValue] = useState([]);
@@ -65,11 +65,11 @@ function App() {
 
 ### Check out other DEMO's 👇
 
-- <a target="_blank" rel="noopener noreferrer" href="https://@yopta/editor.vercel.app/basic">Basic usage</a>
-- <a target="_blank" rel="noopener noreferrer" href="https://@yopta/editor.vercel.app/offline">Offline mode</a>
-- <a target="_blank" rel="noopener noreferrer" href="https://@yopta/editor.vercel.app/media">Working with media</a>
-- <a target="_blank" rel="noopener noreferrer" href="https://@yopta/editor.vercel.app/render">Just rendering</a>
-- <a target="_blank" rel="noopener noreferrer" href="https://@yopta/editor.vercel.app/styling">Custom styling</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://@yoopta/editor.vercel.app/basic">Basic usage</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://@yoopta/editor.vercel.app/offline">Offline mode</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://@yoopta/editor.vercel.app/media">Working with media</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://@yoopta/editor.vercel.app/render">Just rendering</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://@yoopta/editor.vercel.app/styling">Custom styling</a>
   <br>
   <br>
 

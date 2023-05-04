@@ -1,4 +1,4 @@
-import { YoptaBaseElement, YoptaPluginType } from '@yopta/editor';
+import { YoptaBaseElement, YoptaPluginType } from '@yoopta/editor';
 import { Text } from 'slate';
 import { jsx } from 'slate-hyperscript';
 import { mergePluginTypesToMapHMTLNodeName } from '../utils/mergePlugins';

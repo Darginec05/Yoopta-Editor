@@ -1,10 +1,10 @@
-import { YoptaEditor } from '@yopta/editor';
+import { YoptaEditor } from '@yoopta/editor';
 import { useState } from 'react';
 import { Descendant } from 'slate';
 import { uploadToCloudinary } from '../../utils';
 
 import s from './styles.module.scss';
-// import '@yopta/editor/dist/index.css';
+// import '@yoopta/editor/dist/index.css';
 
 const initialValue = [
   {
@@ -59,7 +59,7 @@ const initialValue = [
             text: 'Heading 1 - ',
           },
           {
-            text: 'yopta-heading-one',
+            text: 'yoopta-heading-one',
             bold: true,
           },
         ],
@@ -72,7 +72,7 @@ const initialValue = [
             text: 'Heading 2 - ',
           },
           {
-            text: 'yopta-heading-two',
+            text: 'yoopta-heading-two',
             bold: true,
           },
         ],
@@ -85,7 +85,7 @@ const initialValue = [
             text: 'Heading 3 - ',
           },
           {
-            text: 'yopta-heading-three',
+            text: 'yoopta-heading-three',
             bold: true,
           },
         ],
@@ -98,7 +98,7 @@ const initialValue = [
             text: 'Paragraph (Text) - ',
           },
           {
-            text: 'yopta-paragraph',
+            text: 'yoopta-paragraph',
             bold: true,
           },
         ],
@@ -111,7 +111,7 @@ const initialValue = [
             text: 'Bulleted List - ',
           },
           {
-            text: 'yopta-bulleted-list',
+            text: 'yoopta-bulleted-list',
             bold: true,
           },
         ],
@@ -124,7 +124,7 @@ const initialValue = [
             text: 'Numbered List - ',
           },
           {
-            text: 'yopta-numbered-list',
+            text: 'yoopta-numbered-list',
             bold: true,
           },
         ],
@@ -137,7 +137,7 @@ const initialValue = [
             text: 'List Item - ',
           },
           {
-            text: 'yopta-list-item',
+            text: 'yoopta-list-item',
             bold: true,
           },
         ],
@@ -150,7 +150,7 @@ const initialValue = [
             text: 'Link - ',
           },
           {
-            text: 'yopta-link',
+            text: 'yoopta-link',
             bold: true,
           },
         ],
@@ -163,7 +163,7 @@ const initialValue = [
             text: 'Blockquote - ',
           },
           {
-            text: '@yopta/blockquote',
+            text: '@yoopta/blockquote',
             bold: true,
           },
         ],
@@ -176,7 +176,7 @@ const initialValue = [
             text: 'Callout - ',
           },
           {
-            text: 'yopta-callout',
+            text: 'yoopta-callout',
             bold: true,
           },
         ],
@@ -189,7 +189,7 @@ const initialValue = [
             text: 'Code - ',
           },
           {
-            text: 'yopta-code',
+            text: 'yoopta-code',
             bold: true,
           },
         ],
@@ -202,7 +202,7 @@ const initialValue = [
             text: 'Image - ',
           },
           {
-            text: 'yopta-image',
+            text: 'yoopta-image',
             bold: true,
           },
         ],
@@ -215,7 +215,7 @@ const initialValue = [
             text: 'Video - ',
           },
           {
-            text: 'yopta-video',
+            text: 'yoopta-video',
             bold: true,
           },
         ],
@@ -228,7 +228,7 @@ const initialValue = [
             text: 'Embed - ',
           },
           {
-            text: 'yopta-embed',
+            text: 'yoopta-embed',
             bold: true,
           },
         ],
@@ -383,7 +383,7 @@ const initialValue = [
             text: 'Node settings - ',
           },
           {
-            text: 'yopta-node_settings',
+            text: 'yoopta-node_settings',
             bold: true,
           },
         ],
@@ -422,7 +422,7 @@ const initialValue = [
             text: 'Suggestion list - ',
           },
           {
-            text: 'yopta-suggestion_list',
+            text: 'yoopta-suggestion_list',
             bold: true,
           },
         ],
@@ -435,7 +435,7 @@ const initialValue = [
             text: 'Toolbar - ',
           },
           {
-            text: 'yopta-toolbar',
+            text: 'yoopta-toolbar',
             bold: true,
           },
         ],

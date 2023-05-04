@@ -5,7 +5,7 @@ import { ExampleList } from '../components/ExampleList/ExampleList';
 import { SocialLinks } from '../components/SocialLinks/SocialLinks';
 
 import '../styles/globals.scss';
-// import '@yopta/editor/dist/index.css';
+// import '@yoopta/editor/dist/index.css';
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -39,7 +39,7 @@ export default function App({ Component, pageProps }: AppProps) {
             'Discover notion-like editor with similar behaviour. Our user-friendly interface, good UX, big plans and open source.'
           }
         />
-        <meta name="keywords" content="editor, notion, yopta-editor, rich-text, wysiwyg, content, blog, rich-editor" />
+        <meta name="keywords" content="editor, notion, yoopta-editor, rich-text, wysiwyg, content, blog, rich-editor" />
         <meta name="author" content="Akhmed Ibragimov" />
         <meta property="og:site_name" content={'Yopta-Editor'} />
         <meta property="og:url" content={`https://yopage.co/blog/0zntIA46L4/W0epdDpnRa`} />

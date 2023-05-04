@@ -1,4 +1,4 @@
-import { HOTKEYS, YoEditor, YoptaBaseElement, YoptaPluginType } from '@yopta/editor';
+import { HOTKEYS, YoEditor, YoptaBaseElement, YoptaPluginType } from '@yoopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Element, Editor, Path, Point, Transforms, Text } from 'slate';
@@ -256,7 +256,7 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
 
     if (focusableElement > renderMenuItems.length - 1) setFocusableElement(0);
 
-    const contentEditor = document.querySelector('#yopta-contenteditable');
+    const contentEditor = document.querySelector('#yoopta-contenteditable');
     contentEditor?.addEventListener('keyup', handleKeyup);
 
     if (isMenuOpen) document.addEventListener('keydown', handleKeydown, true);
