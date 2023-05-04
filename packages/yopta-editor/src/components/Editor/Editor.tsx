@@ -323,12 +323,14 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
         readOnly={isReadOnly}
         decorate={decorate}
         onCopy={(event) => {
+          event.preventDefault();
+
           if (!editor.selection) return;
           if (Range.isCollapsed(editor.selection)) return;
 
           const selectedFragment = Editor.fragment(editor, editor.selection);
           const parsedHTML = serializeHtml(selectedFragment, editor.plugins);
-          console.log('parsedHTML', parsedHTML);
+
           event.clipboardData.setData('text/html', parsedHTML);
           return event.clipboardData;
         }}

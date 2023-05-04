@@ -218,7 +218,7 @@ const Code = createYoptaPlugin<CodeOptions, CodeElement>({
     },
     html: {
       serialize: (node, children) =>
-        `<pre style="background-color: #263238; color: #fff; padding: 20px 24px;"><code>${children}</code></pre>`,
+        `<pre style="background-color: #263238; color: #fff; padding: 20px 24px; white-space: pre-line;"><code>${children}</code></pre>`,
       deserialize: {
         nodeName: ['PRE'],
       },

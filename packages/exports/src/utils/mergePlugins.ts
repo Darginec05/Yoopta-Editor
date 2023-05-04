@@ -30,15 +30,15 @@ export function mergePluginTypesToMapHMTLNodeName(
 
   const PLUGINS_MAP_HTML_NODE_NAMES = {};
   yoptaPlugins.forEach((plugin) => {
-    if (plugin.exports?.html.deserialize.nodeName) {
-      if (Array.isArray(plugin.exports?.html.deserialize.nodeName)) {
-        plugin.exports?.html.deserialize.nodeName.forEach((nodeName) => {
+    if (plugin.exports?.html.deserialize?.nodeName) {
+      if (Array.isArray(plugin.exports?.html.deserialize?.nodeName)) {
+        plugin.exports?.html.deserialize?.nodeName.forEach((nodeName) => {
           PLUGINS_MAP_HTML_NODE_NAMES[nodeName] = plugin;
         });
         return;
       }
 
-      PLUGINS_MAP_HTML_NODE_NAMES[plugin.exports?.html.deserialize.nodeName] = plugin;
+      PLUGINS_MAP_HTML_NODE_NAMES[plugin.exports?.html.deserialize?.nodeName] = plugin;
     }
   });
   return PLUGINS_MAP_HTML_NODE_NAMES;
