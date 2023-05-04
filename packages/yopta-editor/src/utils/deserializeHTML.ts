@@ -26,7 +26,6 @@ const deserialize = (
   }
 
   const { nodeName } = el;
-  console.log('nodeName', nodeName);
 
   let parent = el;
 
@@ -48,8 +47,8 @@ const deserialize = (
     if (plugin) {
       let node = plugin.defineElement();
 
-      if (typeof plugin.exports?.html.deserialize.parse === 'function') {
-        const data = plugin.exports?.html.deserialize.parse(el as HTMLElement);
+      if (typeof plugin.exports?.html.deserialize?.parse === 'function') {
+        const data = plugin.exports?.html.deserialize?.parse(el as HTMLElement);
         node = { ...node, data };
       }
 
@@ -58,7 +57,6 @@ const deserialize = (
   }
 
   if (Text.isTextList(children)) {
-    console.log('children', children);
     return jsx('element', pluginsMap.P.defineElement(), children);
   }
 
@@ -67,9 +65,6 @@ const deserialize = (
     const textNodes = children.map((child) => {
       return Text.isText(child) ? jsx('text', attrs, child) : child;
     });
-
-    console.log('textNodes', textNodes);
-
     return textNodes;
   }
 
@@ -82,15 +77,15 @@ export function mergePluginTypesToMapHMTLNodeName(
   const PLUGINS_MAP_HTML_NODE_NAMES = {};
   Object.keys(plugins).forEach((pluginKey) => {
     const plugin = plugins[pluginKey];
-    if (plugin.exports?.html.deserialize.nodeName) {
-      if (Array.isArray(plugin.exports?.html.deserialize.nodeName)) {
-        plugin.exports?.html.deserialize.nodeName.forEach((nodeName) => {
+    if (plugin.exports?.html.deserialize?.nodeName) {
+      if (Array.isArray(plugin.exports?.html.deserialize?.nodeName)) {
+        plugin.exports?.html.deserialize?.nodeName.forEach((nodeName) => {
           PLUGINS_MAP_HTML_NODE_NAMES[nodeName] = plugin;
         });
         return;
       }
 
-      PLUGINS_MAP_HTML_NODE_NAMES[plugin.exports?.html.deserialize.nodeName] = plugin;
+      PLUGINS_MAP_HTML_NODE_NAMES[plugin.exports?.html.deserialize?.nodeName] = plugin;
     }
   });
   return PLUGINS_MAP_HTML_NODE_NAMES;

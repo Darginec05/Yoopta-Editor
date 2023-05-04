@@ -45,8 +45,8 @@ const deserialize = (
     if (plugin) {
       let node = plugin.defineElement();
 
-      if (typeof plugin.exports?.html.deserialize.parse === 'function') {
-        const data = plugin.exports?.html.deserialize.parse(el as HTMLElement);
+      if (typeof plugin.exports?.html.deserialize?.parse === 'function') {
+        const data = plugin.exports?.html.deserialize?.parse(el as HTMLElement);
         node = { ...node, data };
       }
 
