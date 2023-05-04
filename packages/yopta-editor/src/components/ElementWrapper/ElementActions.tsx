@@ -42,7 +42,6 @@ const ElementActions = ({ element, editor, values, handlers }: Props) => {
       targetNode.setAttribute('draggable', 'true');
 
       targetNode.ondragstart = (event) => {
-        // handler!.style.cursor = 'grabbing';
         const from: DraggedNode = {
           path: pathNode,
           element: { id: element.id, type: element.type },

@@ -191,7 +191,6 @@ const Link = createYoptaPlugin<any, LinkElement>({
   exports: {
     markdown: {
       serialize: (node, text) => `[${text}](${node.data.url})`,
-      deserialize: (node) => '',
     },
     html: {
       serialize: (node, children) =>

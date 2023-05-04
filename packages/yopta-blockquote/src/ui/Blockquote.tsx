@@ -33,7 +33,6 @@ const Blockquote = createYoptaPlugin<any, BlockquoteElement>({
   exports: {
     markdown: {
       serialize: (node, text) => `> ${text}`,
-      deserialize: (node) => '',
     },
     html: {
       serialize: (node, children) =>

@@ -35,8 +35,8 @@ export type YoptaRenderer<P extends YoptaBaseElement<string>> = ExtendedYoptaRen
 type DeserializeHTML = { nodeName: string | string[]; parse?: (el: HTMLElement) => any };
 
 type Serializes<T, S> = {
-  serialize: (node: T, text: string) => string;
-  deserialize: S;
+  serialize?: (node: T, text: string) => string;
+  deserialize?: S;
   // deserialize: (node: T, text: string) => string;
 };
 

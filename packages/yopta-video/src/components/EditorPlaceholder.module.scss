@@ -27,7 +27,20 @@
   }
 }
 
+.disabledUpload {
+  cursor: not-allowed;
+  background-color: #efefef;
+  color: rgba(55, 53, 47, 0.65);
+  pointer-events: none;
+}
+
 .icon {
   margin-right: 8px;
   user-select: none;
+}
+
+.loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
 }

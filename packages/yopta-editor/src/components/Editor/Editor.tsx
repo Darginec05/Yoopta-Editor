@@ -39,25 +39,19 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
 
   const renderElement = useMemo(() => {
     return (props: RenderElementProps) => {
-      for (let i = 0; i < plugins.length; i++) {
-        const plugin = plugins[i];
-        const renderFn = getRenderFunctionFactory(plugin)(editor, plugin);
+      const plugin = PLUGINS_MAP[props.element.type];
+      const renderFn = getRenderFunctionFactory(plugin)(editor, plugin);
 
-        // [TODO] - add strong checker for renderFn
-        if (props.element.type === plugin.type) {
-          return (
-            <ElementWrapper
-              element={props.element}
-              attributes={props.attributes}
-              nodeType={props.element.nodeType}
-              render={renderFn}
-            >
-              {props.children}
-            </ElementWrapper>
-          );
-        }
-      }
-      return <DefaultElement {...props} />;
+      return (
+        <ElementWrapper
+          element={props.element}
+          attributes={props.attributes}
+          nodeType={props.element.nodeType}
+          render={renderFn}
+        >
+          {props.children}
+        </ElementWrapper>
+      );
     };
   }, [plugins, editor]);
 

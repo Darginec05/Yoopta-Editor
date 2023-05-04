@@ -32,7 +32,6 @@ const Paragraph = createYoptaPlugin<any, ParagraphElement>({
   exports: {
     markdown: {
       serialize: (node, text) => `${text}\n`,
-      deserialize: (node) => '',
     },
     html: {
       serialize: (node, children) => `<p>${children}</p>`,

@@ -34,7 +34,6 @@ const HeadingThree = createYoptaPlugin<HeadingOptions, HeadingThreeElement>({
   exports: {
     markdown: {
       serialize: (node, text) => `### ${text}`,
-      deserialize: (node) => '',
     },
     html: {
       serialize: (node, children) => `<h3>${children}</h3>`,

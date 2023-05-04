@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "build:rollup": "rollup -c",
-    "clean": "rimraf './packages/*/{dist,lib,node_modules}'",
+    "clean": "rimraf './packages/*/{dist}'",
     "build": "rollup --config ./config/rollup.config.js --bundleConfigAsCjs --environment NODE_ENV:production",
     "serve": "cd ./examples && next dev",
     "serve:build": "cd ./examples && next build && next start",

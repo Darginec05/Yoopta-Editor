@@ -1,15 +1,12 @@
 import { ReactEditor } from 'slate-react';
 import UploadIcon from './icons/upload.svg';
-import { MouseEvent, useEffect, useRef, useState } from 'react';
+import { MouseEvent, useRef, useState } from 'react';
 import { EditorUploader } from './EditorUploader';
-import { getAspectRatio } from '../utils/aspect';
-import { Editor, Element, Transforms } from 'slate';
+import { Element, Transforms } from 'slate';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import s from './EditorPlaceholder.module.scss';
-import { toBase64 } from '../utils/base64';
-import { getImageSizes } from '../utils/imageSizes';
 import { RenderElementProps, YoEditor } from '@yopta/editor';
-import { EmbedElement, EmbedPluginOptions } from '../types';
+import { EmbedElement } from '../types';
 import {
   getDailymotionId,
   getFigmaUrl,
