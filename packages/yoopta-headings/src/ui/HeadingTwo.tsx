@@ -1,4 +1,4 @@
-import { createYoptaPlugin, generateId, RenderElementProps } from '@yoopta/editor';
+import { createYooptaPlugin, generateId, RenderElementProps } from '@yoopta/editor';
 import { Transforms } from 'slate';
 import { HeadingOptions, HeadingTwoElement } from '../types';
 import s from './HeadingTwo.module.scss';
@@ -13,7 +13,7 @@ const HeadingTwoRender = ({ attributes, children, element }: RenderElementProps<
 
 HeadingTwoRender.displayName = 'HeadingTwo';
 
-const HeadingTwo = createYoptaPlugin<HeadingOptions, HeadingTwoElement>({
+const HeadingTwo = createYooptaPlugin<HeadingOptions, HeadingTwoElement>({
   type: 'heading-two',
   renderer: (editor) => HeadingTwoRender,
   shortcut: ['h2', 'subtitle', '##'],

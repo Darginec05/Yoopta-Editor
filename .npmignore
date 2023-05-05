@@ -1,7 +1,8 @@
 node_modules
 tests
 src
-examples
+development
+web
 .idea
 .github
 docs

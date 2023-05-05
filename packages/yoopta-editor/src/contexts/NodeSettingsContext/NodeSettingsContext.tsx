@@ -1,7 +1,7 @@
 import { Editor, Transforms, Path, Element } from 'slate';
 import React, { CSSProperties, MouseEvent, ReactNode, useContext, useMemo, useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
-import { YoptaBaseElement } from '../../types';
+import { YooptaBaseElement } from '../../types';
 import { useDragDrop, DragDropValues, DragDropHandlers, DEFAULT_DRAG_STATE } from '../../hooks/useDragDrop';
 import { generateId } from '../../utils/generateId';
 import { deepClone } from '../../utils/deepClone';
@@ -9,7 +9,7 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import copy from 'copy-to-clipboard';
 import { getDefaultParagraphLine } from '../../components/Editor/utils';
 
-export type HoveredElement = YoptaBaseElement<string> | null;
+export type HoveredElement = YooptaBaseElement<string> | null;
 
 export type NodeSettingsContextValues = DragDropValues & {
   hoveredElement: HoveredElement;
@@ -20,7 +20,7 @@ export type NodeSettingsContextValues = DragDropValues & {
 export type NodeSettingsContextHandlers = DragDropHandlers & {
   openNodeSettings: (_dragRef: any, _node: HoveredElement) => void;
   closeNodeSettings: () => void;
-  hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: YoptaBaseElement<string>) => void;
+  hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: YooptaBaseElement<string>) => void;
   triggerPlusButton: (_node: HoveredElement) => void;
   deleteNode: () => void;
   duplicateNode: () => void;
@@ -44,7 +44,7 @@ const NodeSettingsContext = React.createContext<NodeSettingsContextType>([
   {
     openNodeSettings: (_dragRef: any, _node?: HoveredElement) => {},
     closeNodeSettings: () => {},
-    hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: YoptaBaseElement<string>) => {},
+    hoverIn: (_e: MouseEvent<HTMLDivElement>, _node: YooptaBaseElement<string>) => {},
     triggerPlusButton: (_node: HoveredElement) => {},
     deleteNode: () => {},
     duplicateNode: () => {},
@@ -59,7 +59,7 @@ const NodeSettingsContext = React.createContext<NodeSettingsContextType>([
 
 const getInitialState = ({ children }: Editor): HoveredElement => {
   if (children.length === 1) {
-    const node = children[0] as YoptaBaseElement<string>;
+    const node = children[0] as YooptaBaseElement<string>;
     return node;
   }
 
@@ -87,7 +87,7 @@ const NodeSettingsProvider = ({ children }: NodeSettingsProps) => {
 
   const events = useMemo<NodeSettingsContextHandlers>(
     () => ({
-      hoverIn: (e: MouseEvent<HTMLDivElement>, node: YoptaBaseElement<string>) => {
+      hoverIn: (e: MouseEvent<HTMLDivElement>, node: YooptaBaseElement<string>) => {
         if (isElementOptionsOpen) return e.preventDefault();
 
         if (!!node?.data?.skipSettings) return;

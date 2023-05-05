@@ -6,11 +6,11 @@ import { deserializeHtml } from './html/deserialize';
 const markdown = { deserialize: deserializeMarkdown, serialize: serializeMarkdown };
 const html = { deserialize: deserializeHtml, serialize: serializeHtml };
 
-const yoptaExports = {
+const yooptaExports = {
   markdown,
   html,
 };
 
 export { markdown, html };
 
-export default yoptaExports;
+export default yooptaExports;

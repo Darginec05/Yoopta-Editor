@@ -1,4 +1,4 @@
-import { YoptaBaseElement, Modify } from '@yoopta/editor';
+import { YooptaBaseElement, Modify } from '@yoopta/editor';
 
 export type EmbedPluginOptions = {
   maxWidth?: number;
@@ -12,6 +12,6 @@ export type EmbedElementData = {
   providerId: string | null;
 };
 
-export type EmbedElement = Modify<YoptaBaseElement<'embed'>, { data: EmbedElementData }>;
+export type EmbedElement = Modify<YooptaBaseElement<'embed'>, { data: EmbedElementData }>;
 
 export type SupporedEmbedProviders = 'youtube' | 'vimeo' | 'dailymotion' | 'twitter' | 'figma' | string;

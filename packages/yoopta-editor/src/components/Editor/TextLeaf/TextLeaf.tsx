@@ -2,9 +2,9 @@ import { CSSProperties, memo } from 'react';
 import { RenderLeafProps, useSelected } from 'slate-react';
 import cx from 'classnames';
 import s from './TextLeaf.module.scss';
-import { YoptaPluginType } from '../../../utils/plugins';
+import { YooptaPluginType } from '../../../utils/plugins';
 
-type LeafProps = RenderLeafProps & { placeholder?: YoptaPluginType['placeholder']; leaf: any };
+type LeafProps = RenderLeafProps & { placeholder?: YooptaPluginType['placeholder']; leaf: any };
 
 const leafStyle: CSSProperties = {
   margin: '1px 0',

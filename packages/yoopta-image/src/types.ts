@@ -1,4 +1,4 @@
-import { YoptaBaseElement, Modify } from '@yoopta/editor';
+import { YooptaBaseElement, Modify } from '@yoopta/editor';
 
 export type ImageUploadResponse = {
   url: string;
@@ -21,4 +21,4 @@ export type ImageElementData = {
   'data-src'?: string | null | undefined;
 };
 
-export type ImageElement = Modify<YoptaBaseElement<'image'>, { data: ImageElementData }>;
+export type ImageElement = Modify<YooptaBaseElement<'image'>, { data: ImageElementData }>;

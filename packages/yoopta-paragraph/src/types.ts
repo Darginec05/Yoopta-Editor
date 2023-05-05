@@ -1,3 +1,3 @@
-import { YoptaBaseElement } from '@yoopta/editor';
+import { YooptaBaseElement } from '@yoopta/editor';
 
-export type ParagraphElement = YoptaBaseElement<'paragraph'>;
+export type ParagraphElement = YooptaBaseElement<'paragraph'>;

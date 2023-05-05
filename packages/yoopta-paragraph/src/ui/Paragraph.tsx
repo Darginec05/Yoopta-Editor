@@ -1,4 +1,4 @@
-import { generateId, createYoptaPlugin, RenderElementProps } from '@yoopta/editor';
+import { generateId, createYooptaPlugin, RenderElementProps } from '@yoopta/editor';
 import { Transforms } from 'slate';
 import { ParagraphElement } from '../types';
 import s from './Paragraph.module.scss';
@@ -13,7 +13,7 @@ const ParagraphRender = ({ attributes, children, element }: RenderElementProps<P
 
 ParagraphRender.displayName = 'Paragraph';
 
-const Paragraph = createYoptaPlugin<any, ParagraphElement>({
+const Paragraph = createYooptaPlugin<any, ParagraphElement>({
   type: 'paragraph',
   renderer: (editor) => ParagraphRender,
   defineElement: (): ParagraphElement => ({

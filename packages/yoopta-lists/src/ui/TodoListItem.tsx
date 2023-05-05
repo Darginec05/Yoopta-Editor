@@ -1,4 +1,4 @@
-import { generateId, getElementByPath, cx, YoEditor, createYoptaPlugin, RenderElementProps } from '@yoopta/editor';
+import { generateId, getElementByPath, cx, YoEditor, createYooptaPlugin, RenderElementProps } from '@yoopta/editor';
 import { ChangeEvent } from 'react';
 import { Editor, Element, NodeEntry, Path, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
@@ -35,7 +35,7 @@ const TodoListItemRender = (editor: YoEditor) => {
   };
 };
 
-const TodoListItem = createYoptaPlugin<TodoListItemOptions, TodoListChildItemElement>({
+const TodoListItem = createYooptaPlugin<TodoListItemOptions, TodoListChildItemElement>({
   type: TODO_LIST_NODE_ITEM_TYPE,
   renderer: TodoListItemRender,
   placeholder: null,

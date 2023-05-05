@@ -1,4 +1,4 @@
-import { createYoptaPlugin, generateId, RenderElementProps, YoptaPlugin } from '@yoopta/editor';
+import { createYooptaPlugin, generateId, RenderElementProps, YooptaPlugin } from '@yoopta/editor';
 import { Editor, Element, Node, Transforms } from 'slate';
 import type { BulletedList, ListChildItemElement, ListOptions } from '../types';
 import { ListItemList } from './ListItem';
@@ -14,7 +14,7 @@ const BulletedListRender = ({ attributes, children, element }: RenderElementProp
 
 const BULLETED_LIST_NODE_TYPE = 'bulleted-list';
 
-const BulletedList = createYoptaPlugin<ListOptions, BulletedList>({
+const BulletedList = createYooptaPlugin<ListOptions, BulletedList>({
   type: BULLETED_LIST_NODE_TYPE,
   renderer: (editor) => BulletedListRender,
   // [TODO] - fix for nested items

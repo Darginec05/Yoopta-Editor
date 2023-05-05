@@ -1,4 +1,4 @@
-import { Modify, YoptaBaseElement } from '@yoopta/editor';
+import { Modify, YooptaBaseElement } from '@yoopta/editor';
 
 export type VideoUploadResponse = {
   url: string;
@@ -22,6 +22,6 @@ export type VideoElementData = {
   videoId?: string | null;
 };
 
-export type VideoElement = Modify<YoptaBaseElement<'video'>, { data: VideoElementData }>;
+export type VideoElement = Modify<YooptaBaseElement<'video'>, { data: VideoElementData }>;
 
 export type VideoProviders = 'youtube' | 'vimeo' | 'dailymotion';

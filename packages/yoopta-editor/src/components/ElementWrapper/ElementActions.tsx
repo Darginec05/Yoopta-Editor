@@ -9,13 +9,13 @@ import { ReactEditor } from 'slate-react';
 import { Editor, Element } from 'slate';
 import cx from 'classnames';
 import { DraggedNode } from '../../hooks/useDragDrop';
-import { YoptaBaseElement } from '../../types';
+import { YooptaBaseElement } from '../../types';
 import { ElementOptions } from '../ElementOptions/ElementOptions';
 import s from './ElementWrapper.module.scss';
 
 type Props = {
   editor: Editor;
-  element: YoptaBaseElement<string>;
+  element: YooptaBaseElement<string>;
   values: NodeSettingsContextValues;
   handlers: NodeSettingsContextHandlers;
 };

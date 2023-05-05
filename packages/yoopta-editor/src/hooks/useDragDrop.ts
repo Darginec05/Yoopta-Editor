@@ -2,12 +2,12 @@ import { DragEvent, useEffect, useState } from 'react';
 import { Element, Node, NodeEntry, Path } from 'slate';
 import { Editor, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
-import { YoEditor, YoptaBaseElement } from '../types';
+import { YoEditor, YooptaBaseElement } from '../types';
 import { deepClone } from '../utils/deepClone';
 
 export type DraggedNode = {
   path: number[] | null;
-  element: Pick<YoptaBaseElement<string>, 'id' | 'type'> | null;
+  element: Pick<YooptaBaseElement<string>, 'id' | 'type'> | null;
   parent: NodeEntry<Node> | null;
 };
 
@@ -19,7 +19,7 @@ export type DndState = {
 export type DragDropValues = {
   dndState: DndState;
   disableWhileDrag: boolean;
-  DRAG_MAP: Map<YoptaBaseElement<string>['id'], YoptaBaseElement<string>>;
+  DRAG_MAP: Map<YooptaBaseElement<string>['id'], YooptaBaseElement<string>>;
 };
 
 export type DragDropHandlers = {

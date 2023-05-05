@@ -1,4 +1,4 @@
-import { createYoptaPlugin, generateId, getElementByPath, YoEditor } from '@yoopta/editor';
+import { createYooptaPlugin, generateId, getElementByPath, YoEditor } from '@yoopta/editor';
 import { Transforms } from 'slate';
 import { VideoElement, VideoElementData, VideoPluginOptions } from './types';
 import { Video as VideoRender } from './ui/Video';
@@ -11,7 +11,7 @@ declare module 'slate' {
   }
 }
 
-const Video = createYoptaPlugin<VideoPluginOptions, VideoElement>({
+const Video = createYooptaPlugin<VideoPluginOptions, VideoElement>({
   type: 'video',
   renderer: {
     // @ts-ignore [TODO: fix types]

@@ -1,11 +1,11 @@
-import { YoptaPlugin, YoptaPluginType } from '@yoopta/editor';
+import { YooptaPlugin, YooptaPluginType } from '@yoopta/editor';
 
 export type ActionMenuItem<T extends Record<string, unknown>> = {
-  plugin: YoptaPlugin<any, any>;
+  plugin: YooptaPlugin<any, any>;
   searchString?: string;
 } & T;
 
-export type ActionMenuRenderItem = Pick<YoptaPluginType, 'type' | 'createElement' | 'defineElement'> &
+export type ActionMenuRenderItem = Pick<YooptaPluginType, 'type' | 'createElement' | 'defineElement'> &
   Omit<ActionMenuItem<Record<string, unknown>>, 'plugin'>;
 
 export type ActionMenuRenderRootProps = {

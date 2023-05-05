@@ -7,30 +7,30 @@ import { useScrollToElement } from '../../hooks/useScrollToElement';
 import { useElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { ElementWrapper } from '../ElementWrapper/ElementWrapper';
 import { HOTKEYS } from '../../utils/hotkeys';
-import { ParentYoptaPlugin, YoptaPluginType } from '../../utils/plugins';
+import { ParentYooptaPlugin, YooptaPluginType } from '../../utils/plugins';
 import { getElementByPath } from '../../utils/nodes';
 import { EditorEventHandlers } from '../../types/eventHandlers';
 import { generateId } from '../../utils/generateId';
-import { YoptaMark } from '../../utils/marks';
-import { YoEditor, YoptaBaseElement } from '../../types';
+import { YooptaMark } from '../../utils/marks';
+import { YoEditor, YooptaBaseElement } from '../../types';
 import { deepClone } from '../../utils/deepClone';
 import { isKeyHotkey } from 'is-hotkey';
 import { serializeHtml } from '../../utils/serializeHTML';
 
-type YoptaProps = {
+type YooptaProps = {
   editor: YoEditor;
   placeholder?: string;
   readOnly?: boolean;
-  plugins: ParentYoptaPlugin[];
+  plugins: ParentYooptaPlugin[];
   children: ReactNode | ReactNode[];
-  marks: YoptaMark[];
-  PLUGINS_MAP: Record<YoptaBaseElement<string>['type'], YoptaPluginType<any, YoptaBaseElement<string>>>;
+  marks?: YooptaMark[];
+  PLUGINS_MAP: Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>>;
 };
 
 // [TODO] - defaultNode move to common event handler to avoid repeated id's
 const eventHandlersOptions = { hotkeys: HOTKEYS, defaultNode: getDefaultParagraphLine(generateId()) };
 
-const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, PLUGINS_MAP }: YoptaProps) => {
+const EditorYoopta = ({ editor, placeholder, marks, readOnly, children, plugins, PLUGINS_MAP }: YooptaProps) => {
   useScrollToElement();
   const editorRef = useRef<HTMLDivElement>(null);
   const [{ disableWhileDrag }, { changeHoveredNode }] = useElementSettings();
@@ -98,7 +98,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
         }
       });
 
-      marks.forEach((mark) => {
+      marks?.forEach((mark) => {
         // console.log('props.leaf', props.leaf);
 
         if (props.leaf[mark.type]) {
@@ -106,7 +106,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
         }
       });
 
-      let textPlaceholder: YoptaPluginType['placeholder'];
+      let textPlaceholder: YooptaPluginType['placeholder'];
       const parentElement = props.children.props?.parent;
 
       if (!isElementHasText(parentElement)) {
@@ -169,7 +169,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
 
       eventHandlers.onKeyDown?.(event);
 
-      const nodeEntry = Editor.above<YoptaBaseElement<string>>(editor, {
+      const nodeEntry = Editor.above<YooptaBaseElement<string>>(editor, {
         match: (n) => !Editor.isEditor(n),
         mode: 'lowest',
       });
@@ -275,7 +275,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
         return ReactEditor.focus(editor);
       }
 
-      const lineParagraph: YoptaBaseElement<'paragraph'> = getDefaultParagraphLine(generateId());
+      const lineParagraph: YooptaBaseElement<'paragraph'> = getDefaultParagraphLine(generateId());
       changeHoveredNode(lineParagraph);
 
       Transforms.insertNodes(editor, lineParagraph, {
@@ -306,7 +306,7 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
       return React.cloneElement(child, {
         ...child.props,
         plugins,
-        marks: marks.map((mark) => mark.type),
+        marks: marks?.map((mark) => mark.type),
         editorRef,
         PLUGINS_MAP,
       });
@@ -344,4 +344,4 @@ const EditorYopta = ({ editor, placeholder, marks, readOnly, children, plugins, 
   );
 };
 
-export { EditorYopta };
+export { EditorYoopta };

@@ -1,4 +1,4 @@
-import { cx, useYopta } from '@yoopta/editor';
+import { cx, useYoopta } from '@yoopta/editor';
 import { CSSProperties, RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { Editor, Range } from 'slate';
 import { useSlate } from 'slate-react';
@@ -48,7 +48,7 @@ const Toolbar = ({ type = 'bubble', style, render }: Props) => {
   const editor = useSlate();
   const toolbarRef = useRef<HTMLDivElement>(null);
   const [toolbarProps, setToolbarProps] = useState({ open: false, style: {} });
-  const { marks } = useYopta();
+  const { marks } = useYoopta();
 
   const isFixedToolbar = type === 'fixed';
 
