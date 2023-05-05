@@ -4,25 +4,21 @@ import { isValidYooptaNodes } from './validate';
 
 const DEFAULT_YOPTA_LS_NAME = 'yoopta-content';
 
-export type LOCAL_STORAGE_NAME_TYPE = boolean | { name: string };
+export type OFFLINE_STORAGE = boolean | string;
 
-export function getStorageName(shouldStoreInLocalStorage?: LOCAL_STORAGE_NAME_TYPE) {
-  if (typeof shouldStoreInLocalStorage === 'object' && shouldStoreInLocalStorage.name) {
-    return shouldStoreInLocalStorage.name;
+export function getStorageName(offline?: OFFLINE_STORAGE) {
+  if (typeof offline === 'string') {
+    return offline;
   }
 
   return DEFAULT_YOPTA_LS_NAME;
 }
 
-export function getInitialState(
-  storageName: string,
-  shouldStoreInLocalStorage?: LOCAL_STORAGE_NAME_TYPE,
-  value?: Descendant[],
-): Descendant[] {
+export function getInitialState(storageName: string, offline?: OFFLINE_STORAGE, value?: Descendant[]): Descendant[] {
   const DEFAULT_STATE = [{ id: generateId(), type: 'paragraph', children: [{ text: '' }] }] as Descendant[];
   const defaultValue = isValidYooptaNodes(value) ? value : DEFAULT_STATE;
 
-  if (!shouldStoreInLocalStorage) {
+  if (!offline) {
     localStorage.removeItem(storageName);
     return defaultValue as Descendant[];
   }

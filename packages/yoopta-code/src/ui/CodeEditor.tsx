@@ -26,14 +26,14 @@ import 'prismjs/components/prism-scala';
 import 'prism-material-themes/themes/material-default.css';
 
 import { LanguageSelect } from './LanguageSelect';
-import { cx, RenderElementProps, YoEditor, UI_HELPERS } from '@yoopta/editor';
+import { cx, RenderYooptaElementProps, YoEditor, UI_HELPERS } from '@yoopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { CodeElement } from '../types';
 
 const OPTIONS_WIDTH = 265;
 
 const CodeEditor = (editor: YoEditor) => {
-  return function CodeEditor({ element, attributes, children }: RenderElementProps<CodeElement>) {
+  return function CodeEditor({ element, attributes, children }: RenderYooptaElementProps<CodeElement>) {
     const [optionsPos, setOptionsPos] = useState<CSSProperties | null>(null);
     useEffect(() => {
       Prism.highlightAll(true);

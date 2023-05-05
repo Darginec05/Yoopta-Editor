@@ -1,4 +1,4 @@
-import { RenderElementProps } from '@yoopta/editor';
+import { RenderYooptaElementProps } from '@yoopta/editor';
 import { ReactNode } from 'react';
 import DailyMotion from '../providers/DayliMotion';
 import DefaultEmbed from '../providers/DefaultEmbed';
@@ -9,7 +9,7 @@ import YouTubePlayer from '../providers/YoutubePlayer';
 import { EmbedElement, EmbedElementData } from '../types';
 import s from './Embed.module.scss';
 
-type Props = RenderElementProps<EmbedElement> & {
+type Props = RenderYooptaElementProps<EmbedElement> & {
   children?: ReactNode;
   size?: EmbedElementData['size'];
   updateSize?: (size: Partial<EmbedElementData['size']>) => void;

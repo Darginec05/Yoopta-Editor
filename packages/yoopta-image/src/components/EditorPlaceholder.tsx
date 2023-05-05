@@ -8,10 +8,10 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import s from './EditorPlaceholder.module.scss';
 import { toBase64 } from '../utils/base64';
 import { getImageSizes } from '../utils/imageSizes';
-import { RenderElementProps, YoEditor } from '@yoopta/editor';
+import { RenderYooptaElementProps, YoEditor } from '@yoopta/editor';
 import { ImageElement, ImagePluginOptions } from '../types';
 
-type Props = RenderElementProps<ImageElement> & {
+type Props = RenderYooptaElementProps<ImageElement> & {
   editor: YoEditor;
   onUpload?: ImagePluginOptions['onUpload'];
   accept?: ImagePluginOptions['accept'];

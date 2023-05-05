@@ -1,9 +1,9 @@
-import { generateId, createYooptaPlugin, RenderElementProps } from '@yoopta/editor';
+import { generateId, createYooptaPlugin, RenderYooptaElementProps } from '@yoopta/editor';
 import { Transforms } from 'slate';
 import { HeadingOptions, HeadingThreeElement } from '../types';
 import s from './HeadingThree.module.scss';
 
-const HeadingThreeRender = ({ attributes, children, element }: RenderElementProps<HeadingThreeElement>) => {
+const HeadingThreeRender = ({ attributes, children, element }: RenderYooptaElementProps<HeadingThreeElement>) => {
   return (
     <h3 id={element.id} draggable={false} className={s['heading-three']} {...attributes}>
       {children}

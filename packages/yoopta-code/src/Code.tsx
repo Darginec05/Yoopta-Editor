@@ -31,25 +31,6 @@ const CodeLine = createYooptaPlugin<any, CodeChildElement>({
     // [TODO] - move it to render options
     data: { skipSettings: true, skipDrag: true },
   }),
-  extendEditor(editor) {
-    const { normalizeNode } = editor;
-
-    editor.normalizeNode = (entry) => {
-      const [node, path] = entry;
-
-      if (Element.isElement(node) && node.type === 'code-line') {
-        const [parentNode] = Editor.parent(editor, path);
-        if ((parentNode as CodeElement).type !== 'code') {
-          Transforms.removeNodes(editor, { at: path, match: (n) => Element.isElement(n) && n.type === 'code-line' });
-          return;
-        }
-      }
-
-      normalizeNode(entry);
-    };
-
-    return editor;
-  },
   events: {
     onKeyDown:
       (editor, { hotkeys, defaultNode }) =>

@@ -1,6 +1,6 @@
 import { Editor, Transforms, Range, Element, NodeEntry, Path } from 'slate';
 import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, ReactNode, useRef } from 'react';
-import { DefaultElement, Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
+import { Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
 import { getDefaultParagraphLine, getRenderFunctionFactory, isElementHasText, toggleMark } from './utils';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
@@ -25,12 +25,22 @@ type YooptaProps = {
   children: ReactNode | ReactNode[];
   marks?: YooptaMark[];
   PLUGINS_MAP: Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>>;
+  className?: string;
 };
 
 // [TODO] - defaultNode move to common event handler to avoid repeated id's
 const eventHandlersOptions = { hotkeys: HOTKEYS, defaultNode: getDefaultParagraphLine(generateId()) };
 
-const EditorYoopta = ({ editor, placeholder, marks, readOnly, children, plugins, PLUGINS_MAP }: YooptaProps) => {
+const EditorYoopta = ({
+  editor,
+  placeholder,
+  marks,
+  readOnly,
+  children,
+  plugins,
+  className,
+  PLUGINS_MAP,
+}: YooptaProps) => {
   useScrollToElement();
   const editorRef = useRef<HTMLDivElement>(null);
   const [{ disableWhileDrag }, { changeHoveredNode }] = useElementSettings();
@@ -48,6 +58,7 @@ const EditorYoopta = ({ editor, placeholder, marks, readOnly, children, plugins,
           attributes={props.attributes}
           nodeType={props.element.nodeType}
           render={renderFn}
+          HTMLAttributes={plugin.options?.HTMLAttributes}
         >
           {props.children}
         </ElementWrapper>
@@ -296,7 +307,7 @@ const EditorYoopta = ({ editor, placeholder, marks, readOnly, children, plugins,
     stopPropagation(e);
   };
 
-  const childs = useMemo(() => {
+  const childTools = useMemo(() => {
     const hasEditorChildren = React.Children.count(children) > 0;
     if (!hasEditorChildren) return null;
 
@@ -314,8 +325,8 @@ const EditorYoopta = ({ editor, placeholder, marks, readOnly, children, plugins,
   }, [plugins, marks, editorRef.current]);
 
   return (
-    <div id="yoopta-editor" ref={editorRef} onMouseDown={handleEmptyZoneClick}>
-      {childs}
+    <div id="yoopta-editor" className={className} ref={editorRef} onMouseDown={handleEmptyZoneClick}>
+      {childTools}
       <Editable
         id="yoopta-contenteditable"
         renderLeaf={renderLeaf}

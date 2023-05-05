@@ -1,4 +1,11 @@
-import { generateId, getElementByPath, cx, YoEditor, createYooptaPlugin, RenderElementProps } from '@yoopta/editor';
+import {
+  generateId,
+  getElementByPath,
+  cx,
+  YoEditor,
+  createYooptaPlugin,
+  RenderYooptaElementProps,
+} from '@yoopta/editor';
 import { ChangeEvent } from 'react';
 import { Editor, Element, NodeEntry, Path, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
@@ -8,7 +15,11 @@ import s from './TodoListItem.module.scss';
 const TODO_LIST_NODE_ITEM_TYPE = 'todo-list-item';
 
 const TodoListItemRender = (editor: YoEditor) => {
-  return function TodoListItemRender({ attributes, children, element }: RenderElementProps<TodoListChildItemElement>) {
+  return function TodoListItemRender({
+    attributes,
+    children,
+    element,
+  }: RenderYooptaElementProps<TodoListChildItemElement>) {
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
       const path = ReactEditor.findPath(editor, element);
 

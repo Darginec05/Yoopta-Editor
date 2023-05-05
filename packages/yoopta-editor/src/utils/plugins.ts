@@ -1,8 +1,8 @@
 import uniqWith from 'lodash.uniqwith';
-import { ReactElement } from 'react';
+import { HTMLAttributes, ReactElement } from 'react';
 import { Element, NodeEntry, Range } from 'slate';
 import { RenderLeafProps } from 'slate-react';
-import { YoEditor, RenderElementProps, YooptaBaseElement } from '../types';
+import { YoEditor, RenderYooptaElementProps, YooptaBaseElement } from '../types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS_TYPE } from './hotkeys';
 
@@ -21,16 +21,21 @@ export type YooptaPluginBaseOptions = Record<string, unknown>;
 export type YooptaRenderElementFunc<P extends YooptaBaseElement<string> = YooptaBaseElement<string>> = (
   editor: YoEditor,
   plugin: YooptaPluginType,
-) => (props: RenderElementProps<P>) => ReactElement;
+) => (props: RenderYooptaElementProps<P>) => ReactElement;
 
 export type YooptaRender<P extends YooptaBaseElement<string>> = YooptaRenderElementFunc<P>;
 
 export type ExtendedYooptaRender<P extends YooptaBaseElement<string>> = {
   editor: YooptaRenderElementFunc<P>;
-  render: (props: RenderElementProps<P>) => ReactElement;
+  render: (props: RenderYooptaElementProps<P>) => ReactElement;
+};
+
+export type YooptaRenderHTMLAttributes = {
+  props: HTMLAttributes<HTMLElement>;
 };
 
 export type YooptaRenderer<P extends YooptaBaseElement<string>> = ExtendedYooptaRender<P> | YooptaRender<P>;
+// | YooptaRenderHTMLAttributes;
 
 type DeserializeHTML = { nodeName: string | string[]; parse?: (el: HTMLElement) => any };
 
@@ -51,31 +56,60 @@ export type YooptaPluginType<
 > = {
   type: string;
   renderer: YooptaRenderer<P>;
-  shortcut?: string | string[];
-  decorator?: (editor: YoEditor) => DecoratorFn;
-  events?: YooptaPluginEventHandlers;
-  extendEditor?: (editor: YoEditor) => YoEditor;
-  leaf?: (editor: YoEditor) => (props: RenderLeafProps) => any;
   placeholder?: string | null;
-  options?: O;
+  shortcut?: string | string[];
+  exports?: Exports<P>;
+  events?: YooptaPluginEventHandlers;
+  options?: O & { HTMLAttributes?: HTMLAttributes<HTMLElement> };
+  extendEditor?: (editor: YoEditor) => YoEditor;
+  decorator?: (editor: YoEditor) => DecoratorFn;
+  leaf?: (editor: YoEditor) => (props: RenderLeafProps) => any;
   childPlugin?: YooptaPlugin<any, any>;
   hasParent?: boolean;
   createElement?: (editor: YoEditor) => void;
   defineElement: () => P;
-  exports?: Exports<P>;
 };
 
 export type ParentYooptaPlugin<O = YooptaPluginBaseOptions> = Omit<YooptaPluginType<O>, 'childPlugin' | 'hasParent'>;
 
 export class YooptaPlugin<O extends YooptaPluginBaseOptions, P extends YooptaBaseElement<string>> {
-  #props: YooptaPluginType<O, P>;
+  #props: Readonly<YooptaPluginType<O, P>>;
 
   constructor(inputPlugin: YooptaPluginType<O, P>) {
     this.#props = Object.freeze({ ...inputPlugin });
   }
 
-  extend(overrides: Partial<YooptaPluginType<O, P>>) {
-    const updatedProps = Object.freeze({ ...this.#props, ...overrides });
+  extend(
+    overrides: Partial<
+      Pick<
+        YooptaPluginType<O, P>,
+        'type' | 'renderer' | 'placeholder' | 'shortcut' | 'exports' | 'events' | 'options' | 'extendEditor'
+      >
+    >,
+  ) {
+    const {
+      type = this.#props.type,
+      renderer = this.#props.renderer,
+      placeholder = this.#props.placeholder,
+      shortcut = this.#props.shortcut,
+      exports = this.#props.exports,
+      events = this.#props.events,
+      options = this.#props.options,
+    } = overrides;
+
+    console.log('this.#props', this.#props.renderer);
+    console.log('renderer', renderer);
+
+    const updatedProps = Object.freeze({
+      ...this.#props,
+      type,
+      renderer,
+      placeholder,
+      shortcut,
+      exports,
+      events,
+      options,
+    });
 
     return new YooptaPlugin<O, P>(updatedProps);
   }

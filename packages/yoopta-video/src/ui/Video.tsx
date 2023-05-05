@@ -1,4 +1,4 @@
-import { RenderElementProps } from '@yoopta/editor';
+import { RenderYooptaElementProps } from '@yoopta/editor';
 import { ReactNode } from 'react';
 import DailyMotion from '../components/DayliMotion';
 import VimeoPlayer from '../components/VimeoPlayer';
@@ -6,7 +6,7 @@ import YouTubePlayer from '../components/YoutubePlayer';
 import { VideoElement, VideoElementData } from '../types';
 import s from './Video.module.scss';
 
-type Props = RenderElementProps<VideoElement> & { children?: ReactNode; size?: VideoElementData['size'] };
+type Props = RenderYooptaElementProps<VideoElement> & { children?: ReactNode; size?: VideoElementData['size'] };
 
 const PROVIDERS = {
   vimeo: VimeoPlayer,

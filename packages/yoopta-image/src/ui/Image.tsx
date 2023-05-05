@@ -1,9 +1,9 @@
-import { RenderElementProps } from '@yoopta/editor';
+import { RenderYooptaElementProps } from '@yoopta/editor';
 import { ReactNode } from 'react';
 import { ImageElement, ImageElementData } from '../types';
 import s from './Image.module.scss';
 
-type Props = RenderElementProps<ImageElement> & { children?: ReactNode; size?: ImageElementData['size'] };
+type Props = RenderYooptaElementProps<ImageElement> & { children?: ReactNode; size?: ImageElementData['size'] };
 
 const Image = ({ attributes, element, children, size }: Props) => {
   const width = size?.width || element.data?.size?.width || '100%';

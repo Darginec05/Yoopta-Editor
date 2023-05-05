@@ -299,10 +299,30 @@
     "@typescript-eslint/types" "5.59.2"
     eslint-visitor-keys "^3.3.0"
 
+"@yoopta/action-menu-list@^1.9.1-rc":
+  version "1.9.1-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/action-menu-list/-/action-menu-list-1.9.1-rc.tgz#18c0c81c2371b13bf773e4b1ce65d62912bedbcc"
+  integrity sha512-HyMagb13WrnFOI2K9zxwd6A1cfsps5JWFQ1NkfbskgyxEhrv0NVqQaM9/+OXL0Y29s4eYUczucTqUTx91n0N+Q==
+  dependencies:
+    body-scroll-lock "^4.0.0-beta.0"
+
 "@yoopta/blockquote@^1.9.2-rc":
   version "1.9.2-rc"
   resolved "https://registry.yarnpkg.com/@yoopta/blockquote/-/blockquote-1.9.2-rc.tgz#36666e2a307e2672b9993048b11b0a238604e825"
   integrity sha512-t+GQpnWGnO1oCBugWwQOLS0J87IcBxGQDuR14yXDAFxljYbMU3VtFRLQ9Z24+vuJDGVedt5AyDm2Si3ka8adPw==
+
+"@yoopta/callout@^1.9.1-rc":
+  version "1.9.1-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/callout/-/callout-1.9.1-rc.tgz#b074a662e1fecb887199caf08bb840880db4c553"
+  integrity sha512-7NqtLJmX1ASpNg/HvsdCzZ3TlHiGZyVZnFmEARqauPeg5YpjfDHzLm4j+cmRRzC2sOy3a1ND+/iHY8zoEJpGtA==
+
+"@yoopta/code@^1.9.1-rc":
+  version "1.9.1-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/code/-/code-1.9.1-rc.tgz#596395b63880520150e19bcb781913f4d2774c1f"
+  integrity sha512-bsPGAXGPymOB4QA3pn7geH3C6AuzG4ry8nxcFJLv7yEACgHbumojSIkKPND8nFT0K3a8WQYGJfB5qcUdUHllPA==
+  dependencies:
+    prism-material-themes "^1.0.4"
+    prismjs "^1.29.0"
 
 "@yoopta/editor@1.9.3-rc":
   version "1.9.3-rc"
@@ -319,10 +339,31 @@
     slate-history "^0.66.0"
     slate-hyperscript "^0.77.0"
 
+"@yoopta/embed@^1.9.1-rc":
+  version "1.9.1-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/embed/-/embed-1.9.1-rc.tgz#ec4b9f94ab78b13d14f8e4a42fb0176fbab4404b"
+  integrity sha512-n3Tv8Tx3FgKGRIZb+kalmpVfakjFdLN5+4h2osTu3+n5Vx3u7z5yePi/BHPWz6vMPlj5sTg/Xvps8L//WCVF6w==
+
 "@yoopta/headings@^1.9.1-rc":
   version "1.9.1-rc"
   resolved "https://registry.yarnpkg.com/@yoopta/headings/-/headings-1.9.1-rc.tgz#92c7ce35fa52436f2314e8105db872e6ea1136c6"
   integrity sha512-0FJPI+Z6kI70taw5dEkUNRNDj7dH8FsoheVN/6DP2VsSFN5QVuc5mXXZ2bZELIRELNm4lqOaOrpAAPQ5f7YfhQ==
+
+"@yoopta/image@^1.9.1-rc":
+  version "1.9.1-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/image/-/image-1.9.1-rc.tgz#7976a193846130c634c2611b797dba2cb64b87b7"
+  integrity sha512-qfSbdcXlRjegnxVXtdgjIXfpVGXLhG7s4Cg0UZNsIpqmY5CNCvEzLLuqD+QdQgMR6A2PBTj+S2T23Fyce2ayfA==
+  dependencies:
+    body-scroll-lock "^4.0.0-beta.0"
+    re-resizable "^6.9.9"
+
+"@yoopta/link@^1.9.1-rc":
+  version "1.9.1-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/link/-/link-1.9.1-rc.tgz#ea3a961b3831d475dc28f13b39f9d035e36c70b7"
+  integrity sha512-/M7hw6Q8pV4z2CQ2PC1NO/irQfu2oaVYtTiOzQeRb+zQNwiFzKx6AUMN90GGyQwSRKjTSAxaU2s05SWyNGtjiw==
+  dependencies:
+    is-url "^1.2.4"
+    prismjs "^1.29.0"
 
 "@yoopta/lists@^1.9.1-rc":
   version "1.9.1-rc"
@@ -340,6 +381,28 @@
   version "1.9.3-rc"
   resolved "https://registry.yarnpkg.com/@yoopta/paragraph/-/paragraph-1.9.3-rc.tgz#b14b213d7bc2fa5b628a7530bc4b0d99099ba3a8"
   integrity sha512-Bd7nosMo/eHdTVXedABu3qa8RpCfSru/G2uiqdjl7hV7knQSCd+yMWwV8GJ+TiFtgEbPSH8Z+hkzWgyRG2C6gA==
+
+"@yoopta/renderer@^1.9.1-rc":
+  version "1.9.1-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/renderer/-/renderer-1.9.1-rc.tgz#4ecede5ca5913d913a498a9a3ddb442f7cfef189"
+  integrity sha512-nPBQSXIl5nzMNq3o1SSJbLeqVlmjrWP+gviLTMGylK7CAd1fzBrpIfbWhBdHvSeRlMOdXQfh+h5I9NKhW6iNhQ==
+  dependencies:
+    lodash.uniqwith "^4.5.0"
+
+"@yoopta/toolbar@^1.9.1-rc":
+  version "1.9.1-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/toolbar/-/toolbar-1.9.1-rc.tgz#531f6724e732637638268d31e58f2715d308f19d"
+  integrity sha512-mk2bQTrSqzYplokc21Q05U08VCu0Lk5sAAChwlSpNIOIyqukbexUZ/g6Q24GxBV2YANcnoXGLamiKjLkQtWodQ==
+  dependencies:
+    body-scroll-lock "^4.0.0-beta.0"
+
+"@yoopta/video@^1.9.1-rc":
+  version "1.9.1-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/video/-/video-1.9.1-rc.tgz#85d952eb4200de390433cf5a49784667cbe61258"
+  integrity sha512-F2TH+FrchkYbjhEq4Ah1RWt9WzIC4RVuLUC2y2BeiaXX7GwdnwpeGKKbMwYGnO1cCfDQYa196MGR6Xc9h8EYVw==
+  dependencies:
+    body-scroll-lock "^4.0.0-beta.0"
+    re-resizable "^6.9.9"
 
 acorn-jsx@^5.3.2:
   version "5.3.2"
@@ -1647,6 +1710,11 @@ is-typed-array@^1.1.10, is-typed-array@^1.1.9:
     gopd "^1.0.1"
     has-tostringtag "^1.0.0"
 
+is-url@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/is-url/-/is-url-1.2.4.tgz#04a4df46d28c4cff3d73d01ff06abeb318a1aa52"
+  integrity sha512-ITvGim8FhRiYe4IQ5uHSkj7pVaPDrCTkNd3yq3cV7iZAcJdHTUMPMEHcqSOy9xZ9qFenQCvi+2wjH9a1nXqHww==
+
 is-weakmap@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/is-weakmap/-/is-weakmap-2.0.1.tgz#5008b59bdc43b698201d18f62b37b2ca243e8cf2"
@@ -2182,6 +2250,16 @@ prelude-ls@^1.2.1:
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
 
+prism-material-themes@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/prism-material-themes/-/prism-material-themes-1.0.4.tgz#1384981fdd8318bc31b30d49c5ea69d82695b241"
+  integrity sha512-ydN2H7BJA65njkdJkyHFhZprJSH/r0hhksR65Ate5XrR3sGP1M+fYhWxXzRoonBmKmal3UaoGg1+OZYBrU9tGA==
+
+prismjs@^1.29.0:
+  version "1.29.0"
+  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.29.0.tgz#f113555a8fa9b57c35e637bba27509dcf802dd12"
+  integrity sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==
+
 prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
@@ -2200,6 +2278,11 @@ queue-microtask@^1.2.2:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
+
+re-resizable@^6.9.9:
+  version "6.9.9"
+  resolved "https://registry.yarnpkg.com/re-resizable/-/re-resizable-6.9.9.tgz#99e8b31c67a62115dc9c5394b7e55892265be216"
+  integrity sha512-l+MBlKZffv/SicxDySKEEh42hR6m5bAHfNu3Tvxks2c4Ah+ldnWjfnVRwxo/nxF27SsUsxDS0raAzFuJNKABXA==
 
 react-dom@18.2.0:
   version "18.2.0"

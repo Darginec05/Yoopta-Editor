@@ -5,13 +5,13 @@ import { EditorUploader } from './EditorUploader';
 import { getAspectRatio } from '../utils/aspect';
 import { Element, Transforms } from 'slate';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import { cx, RenderElementProps, YoEditor } from '@yoopta/editor';
+import { cx, RenderYooptaElementProps, YoEditor } from '@yoopta/editor';
 import { VideoElement, VideoPluginOptions } from '../types';
 import { getDailymotionId, getProvider, getVimeoId, getYoutubeId } from '../utils/parsers';
 import s from './EditorPlaceholder.module.scss';
 import { Loader } from './Loader';
 
-type Props = RenderElementProps<VideoElement> & {
+type Props = RenderYooptaElementProps<VideoElement> & {
   editor: YoEditor;
   onUpload?: VideoPluginOptions['onUpload'];
   maxSizes: { maxWidth: number; maxHeight: number };

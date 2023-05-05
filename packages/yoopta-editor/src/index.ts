@@ -12,13 +12,13 @@ export { generateId } from './utils/generateId';
 export { HOTKEYS } from './utils/hotkeys';
 
 // [WIP]
-// export { useYoopta } from './contexts/YooptaContext/YooptaContext';
+export { useYoopta } from './contexts/YooptaContext/YooptaContext';
 export { deepClone } from './utils/deepClone';
 export { createYooptaMark } from './utils/marks';
 export { isElementActive, getElementByPath } from './utils/nodes';
 export type { YooptaPluginType, YooptaPluginEventHandlers, HandlersOptions } from './utils/plugins';
 export type { YooptaMarksConfig, YooptaMark } from './utils/marks';
-export type { YoEditor, RenderElementProps, YooptaBaseElement, Modify } from './types';
+export type { YoEditor, RenderYooptaElementProps, YooptaBaseElement, Modify } from './types';
 
 const UI_HELPERS = { ElementOptions, Overlay };
 

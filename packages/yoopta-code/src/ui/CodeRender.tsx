@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import Prism from 'prismjs';
-import { cx, RenderElementProps } from '@yoopta/editor';
+import { cx, RenderYooptaElementProps } from '@yoopta/editor';
 
 import 'prism-material-themes/themes/material-default.css';
 import { CodeElement } from '../types';
 import s from './CodeRender.module.scss';
 
-function CodeRender({ element, attributes, children }: RenderElementProps<CodeElement>) {
+function CodeRender({ element, attributes, children }: RenderYooptaElementProps<CodeElement>) {
   useEffect(() => {
     import(`prismjs/components/prism-${element.data.language}`).then(() => {
       Prism.highlightAll();

@@ -22,13 +22,13 @@ export type ToolbarProps = {
 
 type FixedProps =
   | {
-      type: 'fixed';
+      type?: 'fixed';
       style?: CSSProperties;
       className?: CSSProperties;
       render?: (props: ToolbarProps) => JSX.Element;
     }
   | {
-      type: 'fixed';
+      type?: 'fixed';
       style?: CSSProperties;
       className: CSSProperties;
       render?: (props: ToolbarProps) => JSX.Element;
@@ -38,7 +38,7 @@ type Props =
   | FixedProps
   | {
       style?: CSSProperties;
-      type: 'bubble';
+      type?: 'bubble';
       render?: (props: ToolbarProps) => JSX.Element;
     };
 

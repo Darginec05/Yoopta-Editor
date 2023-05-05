@@ -1,9 +1,9 @@
-import { createYooptaPlugin, generateId, RenderElementProps } from '@yoopta/editor';
+import { createYooptaPlugin, generateId, RenderYooptaElementProps } from '@yoopta/editor';
 import { Transforms } from 'slate';
 import { CalloutElement } from '../types';
 import s from './Callout.module.scss';
 
-const CalloutRender = ({ attributes, children, element }: RenderElementProps<CalloutElement>) => {
+const CalloutRender = ({ attributes, children, element }: RenderYooptaElementProps<CalloutElement>) => {
   return (
     <div draggable={false} className={s.callout} {...attributes}>
       {children}

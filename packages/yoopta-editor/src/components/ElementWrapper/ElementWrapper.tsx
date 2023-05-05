@@ -1,4 +1,4 @@
-import { memo, MouseEvent, ReactElement, useMemo } from 'react';
+import { HTMLAttributes, memo, MouseEvent, ReactElement, useMemo } from 'react';
 import { ReactEditor, RenderElementProps, useReadOnly, useSlate } from 'slate-react';
 import cx from 'classnames';
 import { YooptaElementConfig } from '../../types';
@@ -10,9 +10,10 @@ import { Editor } from 'slate';
 type Props = RenderElementProps & {
   nodeType: YooptaElementConfig['nodeType'];
   render: (props: RenderElementProps) => ReactElement;
+  HTMLAttributes?: HTMLAttributes<HTMLElement>;
 };
 
-const ElementWrapper = ({ children, element, attributes, nodeType, render }: Props) => {
+const ElementWrapper = ({ children, element, attributes, nodeType, render, HTMLAttributes }: Props) => {
   const editor = useSlate();
   const [values, handlers] = useElementSettings();
 
@@ -53,7 +54,7 @@ const ElementWrapper = ({ children, element, attributes, nodeType, render }: Pro
 
   DRAG_MAP.set(element.id, element);
 
-  if (isInline) return render({ attributes, element, children });
+  if (isInline) return render({ attributes, element, children, HTMLAttributes });
 
   return (
     <div
@@ -66,7 +67,7 @@ const ElementWrapper = ({ children, element, attributes, nodeType, render }: Pro
       {...attributes}
     >
       {skipSettings ? null : <ElementActions editor={editor} element={element} handlers={handlers} values={values} />}
-      {render({ attributes, element, children })}
+      {render({ attributes, element, children, HTMLAttributes })}
     </div>
   );
 };

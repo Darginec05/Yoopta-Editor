@@ -5,7 +5,7 @@ import { ReactEditor, Slate, withReact } from 'slate-react';
 import { YoEditor } from '../../types';
 import { YooptaMark } from '../../utils/marks';
 import { mergePlugins, mergePluginTypesToMap, YooptaPlugin } from '../../utils/plugins';
-import { getInitialState, getStorageName, LOCAL_STORAGE_NAME_TYPE } from '../../utils/storage';
+import { getInitialState, getStorageName, OFFLINE_STORAGE } from '../../utils/storage';
 import { NodeSettingsProvider } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { EditorYoopta } from '../Editor/Editor';
 import { withVoidNodes } from '../Editor/plugins/voids';
@@ -36,9 +36,10 @@ export type YooptaEditorProps = {
   children?: ReactNode | ReactNode[];
   readOnly?: boolean;
   autoFocus?: boolean;
-  shouldStoreInLocalStorage?: LOCAL_STORAGE_NAME_TYPE;
+  offline?: OFFLINE_STORAGE;
   marks?: YooptaMark[];
   nodeElementSettings?: YooptaNodeElementSettings;
+  className?: string;
 };
 
 const YooptaEditor = ({
@@ -51,17 +52,18 @@ const YooptaEditor = ({
   onChange,
   placeholder,
   autoFocus = true,
-  shouldStoreInLocalStorage,
+  offline,
+  className,
 }: YooptaEditorProps) => {
-  const storageName = getStorageName(shouldStoreInLocalStorage);
-  const [val, setVal] = useState(() => getInitialState(storageName, shouldStoreInLocalStorage, value));
+  const storageName = getStorageName(offline);
+  const [val, setVal] = useState(() => getInitialState(storageName, offline, value));
 
   const onChangeValue = useCallback(
     (data: Descendant[]) => {
       onChange(data);
       setVal(data);
 
-      if (!shouldStoreInLocalStorage) return;
+      if (!offline) return;
 
       const hasChanges = editor.operations.some((op) => op.type !== 'set_selection');
 
@@ -73,7 +75,7 @@ const YooptaEditor = ({
         } catch (error) {}
       }
     },
-    [shouldStoreInLocalStorage],
+    [offline],
   );
 
   const yooptaEditorPlugins = useMemo(() => {
@@ -133,6 +135,7 @@ const YooptaEditor = ({
             children={children}
             marks={marks}
             PLUGINS_MAP={PLUGINS_MAP}
+            className={className}
           />
         </NodeSettingsProvider>
       </YooptaContextProvider>
