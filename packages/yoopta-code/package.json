@@ -14,7 +14,7 @@
     "dist/"
   ],
   "peerDependencies": {
-    "@yoopta/editor": "1.1.4",
+    "@yoopta/editor": "1.9.0-rc",
     "react": ">=17.0.2",
     "react-dom": ">=17.0.2",
     "slate": ">=0.72.3",
@@ -34,7 +34,6 @@
     "url": "https://github.com/Darginec05/Editor-Yopta/issues"
   },
   "dependencies": {
-    "classnames": "^2.3.2",
     "prism-material-themes": "^1.0.4",
     "prismjs": "^1.29.0"
   }
