@@ -299,15 +299,15 @@
     "@typescript-eslint/types" "5.59.2"
     eslint-visitor-keys "^3.3.0"
 
-"@yoopta/blockquote@^1.9.1-rc":
-  version "1.9.1-rc"
-  resolved "https://registry.yarnpkg.com/@yoopta/blockquote/-/blockquote-1.9.1-rc.tgz#3d73ab87293a81a549db1b1998bd6e01f9689863"
-  integrity sha512-Wjr07RUClnQ/RilGUSKRNMr+Ncj/Q/zfrPriu9U5rz9FSBoUCLiIlkP+8RCQsm2cohjuDmdGuFAL6i6aTY5dAA==
+"@yoopta/blockquote@^1.9.2-rc":
+  version "1.9.2-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/blockquote/-/blockquote-1.9.2-rc.tgz#36666e2a307e2672b9993048b11b0a238604e825"
+  integrity sha512-t+GQpnWGnO1oCBugWwQOLS0J87IcBxGQDuR14yXDAFxljYbMU3VtFRLQ9Z24+vuJDGVedt5AyDm2Si3ka8adPw==
 
-"@yoopta/editor@1.9.1-rc":
-  version "1.9.1-rc"
-  resolved "https://registry.yarnpkg.com/@yoopta/editor/-/editor-1.9.1-rc.tgz#0a29f69e9b6445ad2175fa072b50847a3b42a516"
-  integrity sha512-eyr+hYV/TWrtpxjvbId1g/5HufxEPfpuSnj2t1u0kzq9KsVSx/Yuj55mX9SC04LvtGxMvjlIZJKsv9rgT8PzuQ==
+"@yoopta/editor@1.9.3-rc":
+  version "1.9.3-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/editor/-/editor-1.9.3-rc.tgz#738a80e12468252d311c55edf11918c5b43b2d31"
+  integrity sha512-3h8GvsD/nxGHhZJlzQGTQ/RcSS5JXoCAguFyc/sC+jmreB8kAWUOXrPMp1OWSQOx2aIDcXZ6f8mpLfoSQqt5OQ==
   dependencies:
     body-scroll-lock "^4.0.0-beta.0"
     classnames "^2.3.1"
@@ -319,17 +319,27 @@
     slate-history "^0.66.0"
     slate-hyperscript "^0.77.0"
 
-"@yoopta/marks@^1.9.0-rc":
-  version "1.9.0-rc"
-  resolved "https://registry.yarnpkg.com/@yoopta/marks/-/marks-1.9.0-rc.tgz#cf2042a8eacb1a77cd01d3b173f489229ccc5204"
-  integrity sha512-kEO4VkjukrOhu2Z/PBBv+vRIYQdquYskKiV+6LNUs0g9jYbMJkNNCIba1t9juQdSBa9QGs6x9+Byu+uwORTOzw==
+"@yoopta/headings@^1.9.1-rc":
+  version "1.9.1-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/headings/-/headings-1.9.1-rc.tgz#92c7ce35fa52436f2314e8105db872e6ea1136c6"
+  integrity sha512-0FJPI+Z6kI70taw5dEkUNRNDj7dH8FsoheVN/6DP2VsSFN5QVuc5mXXZ2bZELIRELNm4lqOaOrpAAPQ5f7YfhQ==
+
+"@yoopta/lists@^1.9.1-rc":
+  version "1.9.1-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/lists/-/lists-1.9.1-rc.tgz#ef8ea3323c6428fd8ef3c14f2264859321fe915e"
+  integrity sha512-r0vwiNXW5hWCvAUUWYRkiIVe95f/6nGqoGxPwSvnJjdJ8EJPt8dTbWAwAAFYMVIA2WkRpZXUrnqbnVrnahlQqg==
+
+"@yoopta/marks@^1.9.1-rc":
+  version "1.9.1-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/marks/-/marks-1.9.1-rc.tgz#257f0136343b6cfa49643bd5e47221374c6baa5a"
+  integrity sha512-DNgs88C9gtjayHeB7/M4naQNmAuwyM3Eidokd4M9eSyWNs+edCSBxrcHCJE+ZcM3B7JQUJICGYi7GJcN7tja9Q==
   dependencies:
     body-scroll-lock "^4.0.0-beta.0"
 
-"@yoopta/paragraph@^1.9.2-rc":
-  version "1.9.2-rc"
-  resolved "https://registry.yarnpkg.com/@yoopta/paragraph/-/paragraph-1.9.2-rc.tgz#84978a729cf6ba5ed851f82da7411f830de47166"
-  integrity sha512-mEk0gW8QgquTkMa6geJULDo1oOdCfonDec4tF4K5d1g3SwBKLJpz+33ICcHR2c2rNDLqXiWpbcxnz10fblXtBQ==
+"@yoopta/paragraph@^1.9.3-rc":
+  version "1.9.3-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/paragraph/-/paragraph-1.9.3-rc.tgz#b14b213d7bc2fa5b628a7530bc4b0d99099ba3a8"
+  integrity sha512-Bd7nosMo/eHdTVXedABu3qa8RpCfSru/G2uiqdjl7hV7knQSCd+yMWwV8GJ+TiFtgEbPSH8Z+hkzWgyRG2C6gA==
 
 acorn-jsx@^5.3.2:
   version "5.3.2"
@@ -2373,7 +2383,7 @@ slate-hyperscript@^0.77.0:
   dependencies:
     is-plain-object "^5.0.0"
 
-slate-react@^0.94.0:
+slate-react@>=0.72.4:
   version "0.94.0"
   resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.94.0.tgz#dfee63d4e70fbc1b47c853e0e879f079dcc2a32b"
   integrity sha512-8LW3HdC3Rya+3E1Gm5voyXdEfQrJGvm0QYl0bgtW2C06Dh82imxhGIPqRv2sj8j2Zf869oJGNp2bGUoCuNBJ6g==
@@ -2388,7 +2398,7 @@ slate-react@^0.94.0:
     scroll-into-view-if-needed "^2.2.20"
     tiny-invariant "1.0.6"
 
-slate@^0.94.0:
+slate@>=0.72.3:
   version "0.94.0"
   resolved "https://registry.yarnpkg.com/slate/-/slate-0.94.0.tgz#7066a8f4bb659c60cbe278edf9f5399f7f5dd5ad"
   integrity sha512-JVQ07odcLBmQHLI/MI6E6cuQ+HPpMph7Ek2Kq9CkUwW+vXoBYuCisqpXTlcvO1RyuJJOZqLQzN/jscXkaAoEjg==
