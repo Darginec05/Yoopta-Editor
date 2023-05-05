@@ -1,15 +1,15 @@
-import { YoptaBaseElement } from '../../types';
-import { YoptaPluginType, YoptaRenderElementFunc } from '../../utils/plugins';
+import { YooptaBaseElement } from '../../types';
+import { YooptaPluginType, YooptaRenderElementFunc } from '../../utils/plugins';
 import { Editor } from 'slate';
 
-export const getDefaultParagraphLine = (id: string): YoptaBaseElement<'paragraph'> => ({
+export const getDefaultParagraphLine = (id: string): YooptaBaseElement<'paragraph'> => ({
   id,
   type: 'paragraph',
   nodeType: 'block',
   children: [{ text: '' }],
 });
 
-export function getRenderFunctionFactory(plugin: YoptaPluginType): YoptaRenderElementFunc {
+export function getRenderFunctionFactory(plugin: YooptaPluginType): YooptaRenderElementFunc {
   if (typeof plugin.renderer === 'function') {
     return plugin.renderer;
   }
@@ -17,7 +17,7 @@ export function getRenderFunctionFactory(plugin: YoptaPluginType): YoptaRenderEl
   return plugin.renderer.editor;
 }
 
-export function isElementHasText(element: YoptaBaseElement<string>): boolean {
+export function isElementHasText(element: YooptaBaseElement<string>): boolean {
   if (element?.children?.length === 1 && element?.children[0]?.text.length === 0) return false;
 
   return true;

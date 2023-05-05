@@ -2,7 +2,7 @@ import uniqWith from 'lodash.uniqwith';
 import { ReactElement } from 'react';
 import { Element, NodeEntry, Range } from 'slate';
 import { RenderLeafProps } from 'slate-react';
-import { YoEditor, RenderElementProps, YoptaBaseElement } from '../types';
+import { YoEditor, RenderElementProps, YooptaBaseElement } from '../types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS_TYPE } from './hotkeys';
 
@@ -12,25 +12,25 @@ export type HandlersOptions = {
 };
 
 export type DecoratorFn = (nodeEntry: NodeEntry) => Range[];
-export type YoptaPluginEventHandlers = {
+export type YooptaPluginEventHandlers = {
   [key in keyof EditorEventHandlers]: (editor: YoEditor, options: HandlersOptions) => EditorEventHandlers[key] | void;
 };
 
-export type YoptaPluginBaseOptions = Record<string, unknown>;
+export type YooptaPluginBaseOptions = Record<string, unknown>;
 
-export type YoptaRenderElementFunc<P extends YoptaBaseElement<string> = YoptaBaseElement<string>> = (
+export type YooptaRenderElementFunc<P extends YooptaBaseElement<string> = YooptaBaseElement<string>> = (
   editor: YoEditor,
-  plugin: YoptaPluginType,
+  plugin: YooptaPluginType,
 ) => (props: RenderElementProps<P>) => ReactElement;
 
-export type YoptaRender<P extends YoptaBaseElement<string>> = YoptaRenderElementFunc<P>;
+export type YooptaRender<P extends YooptaBaseElement<string>> = YooptaRenderElementFunc<P>;
 
-export type ExtendedYoptaRender<P extends YoptaBaseElement<string>> = {
-  editor: YoptaRenderElementFunc<P>;
+export type ExtendedYooptaRender<P extends YooptaBaseElement<string>> = {
+  editor: YooptaRenderElementFunc<P>;
   render: (props: RenderElementProps<P>) => ReactElement;
 };
 
-export type YoptaRenderer<P extends YoptaBaseElement<string>> = ExtendedYoptaRender<P> | YoptaRender<P>;
+export type YooptaRenderer<P extends YooptaBaseElement<string>> = ExtendedYooptaRender<P> | YooptaRender<P>;
 
 type DeserializeHTML = { nodeName: string | string[]; parse?: (el: HTMLElement) => any };
 
@@ -45,56 +45,56 @@ type Exports<T> = {
   markdown: Serializes<T, { mark: string; parse: (mark: any) => any }>;
 };
 
-export type YoptaPluginType<
-  O = YoptaPluginBaseOptions,
-  P extends YoptaBaseElement<string> = YoptaBaseElement<string>,
+export type YooptaPluginType<
+  O = YooptaPluginBaseOptions,
+  P extends YooptaBaseElement<string> = YooptaBaseElement<string>,
 > = {
   type: string;
-  renderer: YoptaRenderer<P>;
+  renderer: YooptaRenderer<P>;
   shortcut?: string | string[];
   decorator?: (editor: YoEditor) => DecoratorFn;
-  events?: YoptaPluginEventHandlers;
+  events?: YooptaPluginEventHandlers;
   extendEditor?: (editor: YoEditor) => YoEditor;
   leaf?: (editor: YoEditor) => (props: RenderLeafProps) => any;
   placeholder?: string | null;
   options?: O;
-  childPlugin?: YoptaPlugin<any, any>;
+  childPlugin?: YooptaPlugin<any, any>;
   hasParent?: boolean;
   createElement?: (editor: YoEditor) => void;
   defineElement: () => P;
   exports?: Exports<P>;
 };
 
-export type ParentYoptaPlugin<O = YoptaPluginBaseOptions> = Omit<YoptaPluginType<O>, 'childPlugin' | 'hasParent'>;
+export type ParentYooptaPlugin<O = YooptaPluginBaseOptions> = Omit<YooptaPluginType<O>, 'childPlugin' | 'hasParent'>;
 
-export class YoptaPlugin<O extends YoptaPluginBaseOptions, P extends YoptaBaseElement<string>> {
-  #props: YoptaPluginType<O, P>;
+export class YooptaPlugin<O extends YooptaPluginBaseOptions, P extends YooptaBaseElement<string>> {
+  #props: YooptaPluginType<O, P>;
 
-  constructor(inputPlugin: YoptaPluginType<O, P>) {
+  constructor(inputPlugin: YooptaPluginType<O, P>) {
     this.#props = Object.freeze({ ...inputPlugin });
   }
 
-  extend(overrides: Partial<YoptaPluginType<O, P>>) {
+  extend(overrides: Partial<YooptaPluginType<O, P>>) {
     const updatedProps = Object.freeze({ ...this.#props, ...overrides });
 
-    return new YoptaPlugin<O, P>(updatedProps);
+    return new YooptaPlugin<O, P>(updatedProps);
   }
 
-  get getPlugin(): YoptaPluginType<O, P> {
+  get getPlugin(): YooptaPluginType<O, P> {
     return this.#props;
   }
 }
 
-export function createYoptaPlugin<O extends YoptaPluginBaseOptions, P extends YoptaBaseElement<string>>(
-  input: YoptaPluginType<O, P>,
+export function createYooptaPlugin<O extends YooptaPluginBaseOptions, P extends YooptaBaseElement<string>>(
+  input: YooptaPluginType<O, P>,
 ) {
-  return new YoptaPlugin<O, P>(input);
+  return new YooptaPlugin<O, P>(input);
 }
 
-export function mergePlugins<O extends YoptaPluginBaseOptions, P extends YoptaBaseElement<string>>(
-  plugins: YoptaPlugin<O, P>[],
-): YoptaPluginType<O, P>[] {
-  const items: YoptaPluginType<O, P>[] = plugins
+export function mergePlugins<O extends YooptaPluginBaseOptions, P extends YooptaBaseElement<string>>(
+  plugins: YooptaPlugin<O, P>[],
+): YooptaPluginType<O, P>[] {
+  const items: YooptaPluginType<O, P>[] = plugins
     .map((instance) => {
       const { childPlugin, ...componentProps } = instance.getPlugin;
       return childPlugin ? [componentProps, { ...childPlugin.getPlugin, hasParent: true }] : componentProps;
@@ -106,17 +106,17 @@ export function mergePlugins<O extends YoptaPluginBaseOptions, P extends YoptaBa
 }
 
 export function mergePluginTypesToMap(
-  plugins: YoptaPluginType<any, YoptaBaseElement<string>>[],
-): Record<YoptaBaseElement<string>['type'], YoptaPluginType<any, YoptaBaseElement<string>>> {
+  plugins: YooptaPluginType<any, YooptaBaseElement<string>>[],
+): Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>> {
   const PLUGINS_MAP = {};
   plugins.forEach((plugin) => (PLUGINS_MAP[plugin.type] = plugin));
   return PLUGINS_MAP;
 }
 
-// const YoptaPlugin: YoptaPlugin = (props) => {
+// const YooptaPlugin: YooptaPlugin = (props) => {
 //   const frozenProps = Object.freeze({ ...props });
 
-//   const extend = (overrides: Partial<YoptaPluginType>) => YoptaPlugin(Object.freeze({ ...frozenProps, ...overrides }));
+//   const extend = (overrides: Partial<YooptaPluginType>) => YooptaPlugin(Object.freeze({ ...frozenProps, ...overrides }));
 
 //   const getPlugin = () => frozenProps;
 

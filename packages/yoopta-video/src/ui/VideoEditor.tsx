@@ -4,7 +4,7 @@ import { ReactEditor, useReadOnly, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
 import { Video } from './Video';
 import { CSSProperties, MouseEvent, useEffect, useMemo, useState } from 'react';
-import { cx, RenderElementProps, YoEditor, UI_HELPERS, YoptaPluginType } from '@yoopta/editor';
+import { cx, RenderElementProps, YoEditor, UI_HELPERS, YooptaPluginType } from '@yoopta/editor';
 import { Loader } from '../components/Loader';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { VideoElement, VideoPluginOptions } from '../types';
@@ -14,7 +14,7 @@ const OPTIONS_WIDTH = 265;
 
 type Props = {
   editor: YoEditor;
-  plugin: YoptaPluginType<VideoPluginOptions, VideoElement>;
+  plugin: YooptaPluginType<VideoPluginOptions, VideoElement>;
   element: RenderElementProps<VideoElement>['element'];
   children: RenderElementProps<VideoElement>['children'];
   attributes: RenderElementProps<VideoElement>['attributes'];

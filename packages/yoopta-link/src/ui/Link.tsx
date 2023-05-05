@@ -1,6 +1,6 @@
 import { MouseEvent } from 'react';
 import { Editor, Element, Node, NodeEntry, Path, Transforms } from 'slate';
-import { getElementByPath, generateId, RenderElementProps, createYoptaPlugin } from '@yoopta/editor';
+import { getElementByPath, generateId, RenderElementProps, createYooptaPlugin } from '@yoopta/editor';
 import isUrl from 'is-url';
 import { addLinkNode } from '../utils/addLink';
 import { LinkEditor } from './LinkEditor';
@@ -40,7 +40,7 @@ LinkRender.displayName = 'Link';
 
 const LINK_NODE_TYPE = 'link';
 
-const Link = createYoptaPlugin<any, LinkElement>({
+const Link = createYooptaPlugin<any, LinkElement>({
   type: LINK_NODE_TYPE,
   renderer: {
     editor: () => LinkEditor,

@@ -1,6 +1,6 @@
 import { Element, NodeEntry, Text } from 'slate';
 import { Editor, Range, Transforms } from 'slate';
-import { YoEditor, YoptaBaseElement } from '../../../types';
+import { YoEditor, YooptaBaseElement } from '../../../types';
 
 export const withShortcuts = (editor: YoEditor) => {
   const { insertText } = editor;
@@ -11,7 +11,7 @@ export const withShortcuts = (editor: YoEditor) => {
     if (text === ' ' && selection && Range.isCollapsed(selection)) {
       const { anchor } = selection;
 
-      const blockEntry: NodeEntry<YoptaBaseElement<string>> | undefined = Editor.above(editor, {
+      const blockEntry: NodeEntry<YooptaBaseElement<string>> | undefined = Editor.above(editor, {
         match: (n) => Element.isElement(n) && Editor.isBlock(editor, n),
         mode: 'lowest',
       });

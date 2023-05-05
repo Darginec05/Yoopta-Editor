@@ -1,8 +1,8 @@
-import { YoptaBaseElement } from '@yoopta/editor';
+import { YooptaBaseElement } from '@yoopta/editor';
 import { ReactNode } from 'react';
 
 export type HeadingOptions = { anchor?: ReactNode | null | false };
 
-export type HeadingOneElement = YoptaBaseElement<'heading-one'>;
-export type HeadingTwoElement = YoptaBaseElement<'heading-two'>;
-export type HeadingThreeElement = YoptaBaseElement<'heading-three'>;
+export type HeadingOneElement = YooptaBaseElement<'heading-one'>;
+export type HeadingTwoElement = YooptaBaseElement<'heading-two'>;
+export type HeadingThreeElement = YooptaBaseElement<'heading-three'>;

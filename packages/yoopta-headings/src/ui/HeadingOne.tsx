@@ -1,4 +1,4 @@
-import { createYoptaPlugin, generateId, RenderElementProps } from '@yoopta/editor';
+import { createYooptaPlugin, generateId, RenderElementProps } from '@yoopta/editor';
 import { Transforms } from 'slate';
 import { HeadingOneElement, HeadingOptions } from '../types';
 import s from './HeadingOne.module.scss';
@@ -13,7 +13,7 @@ const HeadingOneRender = ({ attributes, children, element }: RenderElementProps<
 
 HeadingOneRender.displayName = 'HeadingOne';
 
-const HeadingOne = createYoptaPlugin<HeadingOptions, HeadingOneElement>({
+const HeadingOne = createYooptaPlugin<HeadingOptions, HeadingOneElement>({
   type: 'heading-one',
   renderer: (editor) => HeadingOneRender,
   shortcut: ['title', 'h1', 'heading one', '#'],

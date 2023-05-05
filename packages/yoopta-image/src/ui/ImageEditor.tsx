@@ -4,7 +4,7 @@ import { ReactEditor, useReadOnly, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
 import { Image } from './Image';
 import { CSSProperties, MouseEvent, useEffect, useMemo, useState } from 'react';
-import { cx, RenderElementProps, UI_HELPERS, YoEditor, YoptaPluginType } from '@yoopta/editor';
+import { cx, RenderElementProps, UI_HELPERS, YoEditor, YooptaPluginType } from '@yoopta/editor';
 import { Loader } from '../components/Loader';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { ImageElement, ImagePluginOptions } from '../types';
@@ -14,7 +14,7 @@ const OPTIONS_WIDTH = 265;
 
 type Props = {
   editor: YoEditor;
-  plugin: YoptaPluginType<ImagePluginOptions, ImageElement>;
+  plugin: YooptaPluginType<ImagePluginOptions, ImageElement>;
   element: RenderElementProps<ImageElement>['element'];
   children: RenderElementProps<ImageElement>['children'];
   attributes: RenderElementProps<ImageElement>['attributes'];

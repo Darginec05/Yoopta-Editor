@@ -1,6 +1,6 @@
 import { Descendant } from 'slate';
 import { generateId } from './generateId';
-import { isValidYoptaNodes } from './validate';
+import { isValidYooptaNodes } from './validate';
 
 const DEFAULT_YOPTA_LS_NAME = 'yoopta-content';
 
@@ -20,7 +20,7 @@ export function getInitialState(
   value?: Descendant[],
 ): Descendant[] {
   const DEFAULT_STATE = [{ id: generateId(), type: 'paragraph', children: [{ text: '' }] }] as Descendant[];
-  const defaultValue = isValidYoptaNodes(value) ? value : DEFAULT_STATE;
+  const defaultValue = isValidYooptaNodes(value) ? value : DEFAULT_STATE;
 
   if (!shouldStoreInLocalStorage) {
     localStorage.removeItem(storageName);
@@ -30,7 +30,7 @@ export function getInitialState(
   try {
     const storedData = JSON.parse(localStorage.getItem(storageName) || '[]');
 
-    return isValidYoptaNodes(storedData) ? storedData : defaultValue;
+    return isValidYooptaNodes(storedData) ? storedData : defaultValue;
   } catch (error) {
     localStorage.removeItem(storageName);
     return DEFAULT_STATE;

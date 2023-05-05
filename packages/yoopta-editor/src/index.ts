@@ -1,4 +1,4 @@
-import { YoptaPlugin, mergePlugins, createYoptaPlugin } from './utils/plugins';
+import { YooptaPlugin, mergePlugins, createYooptaPlugin } from './utils/plugins';
 import classnames from 'classnames';
 import { ElementOptions } from './components/ElementOptions/ElementOptions';
 import { Overlay } from './components/ElementOptions/Overlay';
@@ -6,18 +6,22 @@ import { useElementSettings } from './contexts/NodeSettingsContext/NodeSettingsC
 export { classnames as cx };
 export { isKeyHotkey, isHotkey, isCodeHotkey } from 'is-hotkey';
 
-export { YoptaEditor } from './YoptaEditor';
-export { isValidYoptaNodes } from './utils/validate';
+import { YooptaEditor } from './YooptaEditor';
+export { isValidYooptaNodes } from './utils/validate';
 export { generateId } from './utils/generateId';
 export { HOTKEYS } from './utils/hotkeys';
-export { useYopta } from './contexts/YoptaEditor/YoptaContext';
+
+// [WIP]
+// export { useYoopta } from './contexts/YooptaContext/YooptaContext';
 export { deepClone } from './utils/deepClone';
-export { createYoptaMark } from './utils/marks';
+export { createYooptaMark } from './utils/marks';
 export { isElementActive, getElementByPath } from './utils/nodes';
-export type { YoptaPluginType, YoptaPluginEventHandlers, HandlersOptions } from './utils/plugins';
-export type { YoptaMarksConfig, YoptaMark } from './utils/marks';
-export type { YoEditor, RenderElementProps, YoptaBaseElement, Modify } from './types';
+export type { YooptaPluginType, YooptaPluginEventHandlers, HandlersOptions } from './utils/plugins';
+export type { YooptaMarksConfig, YooptaMark } from './utils/marks';
+export type { YoEditor, RenderElementProps, YooptaBaseElement, Modify } from './types';
 
 const UI_HELPERS = { ElementOptions, Overlay };
 
-export { YoptaPlugin, mergePlugins, createYoptaPlugin, useElementSettings, UI_HELPERS };
+export { YooptaPlugin, mergePlugins, createYooptaPlugin, useElementSettings, UI_HELPERS };
+
+export default YooptaEditor;

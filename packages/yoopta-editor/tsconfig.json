@@ -25,5 +25,5 @@
     "preserveSymlinks": false
   },
   "include": ["react-svg.d.ts", "css-modules.d.ts", "src"],
-  "exclude": ["node_modules", "dist", "src/**/*.test.tsx", "src/**/*.stories.tsx", "examples"]
+  "exclude": ["node_modules", "dist", "src/**/*.test.tsx", "src/**/*.stories.tsx", "development"]
 }

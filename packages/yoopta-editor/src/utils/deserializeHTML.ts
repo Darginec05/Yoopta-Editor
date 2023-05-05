@@ -1,7 +1,7 @@
 import { Text } from 'slate';
 import { jsx } from 'slate-hyperscript';
-import { YoptaBaseElement } from '../types';
-import { YoptaPluginType } from './plugins';
+import { YooptaBaseElement } from '../types';
+import { YooptaPluginType } from './plugins';
 
 const TEXT_TAGS = {
   // CODE: () => ({ code: true }),
@@ -15,7 +15,7 @@ const TEXT_TAGS = {
 
 const deserialize = (
   el: HTMLElement | ChildNode,
-  pluginsMap: Record<YoptaBaseElement<string>['type'], YoptaPluginType<any, YoptaBaseElement<string>>>,
+  pluginsMap: Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>>,
 ) => {
   if (el.nodeType === 3) {
     return el.textContent;
@@ -72,8 +72,8 @@ const deserialize = (
 };
 
 export function mergePluginTypesToMapHMTLNodeName(
-  plugins: Record<YoptaBaseElement<string>['type'], YoptaPluginType<any, YoptaBaseElement<string>>>,
-): Record<YoptaBaseElement<string>['type'], YoptaPluginType<any, YoptaBaseElement<string>>> {
+  plugins: Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>>,
+): Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>> {
   const PLUGINS_MAP_HTML_NODE_NAMES = {};
   Object.keys(plugins).forEach((pluginKey) => {
     const plugin = plugins[pluginKey];
@@ -93,7 +93,7 @@ export function mergePluginTypesToMapHMTLNodeName(
 
 export function deserializeHtml(
   htmlString: string,
-  plugins: Record<YoptaBaseElement<string>['type'], YoptaPluginType<any, YoptaBaseElement<string>>>,
+  plugins: Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>>,
 ) {
   const pluginsMap = mergePluginTypesToMapHMTLNodeName(plugins);
   const parsedHtml = new DOMParser().parseFromString(htmlString, 'text/html');

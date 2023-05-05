@@ -1,5 +1,5 @@
 import { Editor, Element, Node, NodeEntry, Path, Range, Transforms } from 'slate';
-import { getElementByPath, generateId, createYoptaPlugin, YoEditor } from '@yoopta/editor';
+import { getElementByPath, generateId, createYooptaPlugin, YoEditor } from '@yoopta/editor';
 import { CodeLeaf } from './ui/CodeLeaf';
 import { CodeRender } from './ui/CodeRender';
 import { CodeLineRender } from './ui/CodeLineRender';
@@ -17,7 +17,7 @@ declare module 'slate' {
   }
 }
 
-const CodeLine = createYoptaPlugin<any, CodeChildElement>({
+const CodeLine = createYooptaPlugin<any, CodeChildElement>({
   type: CODE_CHILD_NODE_TYPE,
   renderer: CodeLineRender,
   leaf: () => CodeLeaf,
@@ -143,7 +143,7 @@ const CodeLine = createYoptaPlugin<any, CodeChildElement>({
   },
 });
 
-const Code = createYoptaPlugin<CodeOptions, CodeElement>({
+const Code = createYooptaPlugin<CodeOptions, CodeElement>({
   type: CODE_NODE_TYPE,
   renderer: {
     editor: CodeEditor,

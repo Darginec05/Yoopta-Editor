@@ -1,3 +1,3 @@
-import { YoptaBaseElement } from '@yoopta/editor';
+import { YooptaBaseElement } from '@yoopta/editor';
 
-export type CalloutElement = YoptaBaseElement<'callout'>;
+export type CalloutElement = YooptaBaseElement<'callout'>;

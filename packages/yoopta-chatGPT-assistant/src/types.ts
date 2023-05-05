@@ -1,3 +1,3 @@
-import { YoptaBaseElement } from '@yoopta/editor';
+import { YooptaBaseElement } from '@yoopta/editor';
 
-export type ChatGTP = YoptaBaseElement<'chat-gpt'>;
+export type ChatGTP = YooptaBaseElement<'chat-gpt'>;

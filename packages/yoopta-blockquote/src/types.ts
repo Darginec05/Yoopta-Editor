@@ -1,3 +1,3 @@
-import { YoptaBaseElement } from '@yoopta/editor';
+import { YooptaBaseElement } from '@yoopta/editor';
 
-export type BlockquoteElement = YoptaBaseElement<'blockquote'>;
+export type BlockquoteElement = YooptaBaseElement<'blockquote'>;

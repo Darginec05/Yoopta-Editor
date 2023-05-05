@@ -1,2 +1,2 @@
-import { YoptaRenderer } from './YoptaRenderer';
-export default YoptaRenderer;
+import { YooptaRenderer } from './YooptaRenderer';
+export default YooptaRenderer;

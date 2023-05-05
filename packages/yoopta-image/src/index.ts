@@ -1,4 +1,4 @@
-import { generateId, getElementByPath, createYoptaPlugin, YoEditor } from '@yoopta/editor';
+import { generateId, getElementByPath, createYooptaPlugin, YoEditor } from '@yoopta/editor';
 import { Transforms } from 'slate';
 import { ImageElement, ImageElementData, ImagePluginOptions } from './types';
 import { Image as ImageRender } from './ui/Image';
@@ -11,7 +11,7 @@ declare module 'slate' {
   }
 }
 
-const Image = createYoptaPlugin<ImagePluginOptions, ImageElement>({
+const Image = createYooptaPlugin<ImagePluginOptions, ImageElement>({
   type: 'image',
   shortcut: 'image',
   renderer: {

@@ -1,4 +1,4 @@
-export function isValidYoptaNodes(nodes: any): boolean {
+export function isValidYooptaNodes(nodes: any): boolean {
   if (!Array.isArray(nodes)) return false;
   if (nodes.length === 0) return false;
 
@@ -10,7 +10,7 @@ export function isValidYoptaNodes(nodes: any): boolean {
     const nodeChild = node.children;
 
     if (isNested) {
-      return isValidYoptaNodes(nodeChild);
+      return isValidYooptaNodes(nodeChild);
     }
 
     if (!node.type) {

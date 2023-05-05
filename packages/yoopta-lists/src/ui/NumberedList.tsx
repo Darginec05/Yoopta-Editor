@@ -1,4 +1,4 @@
-import { createYoptaPlugin, generateId, RenderElementProps } from '@yoopta/editor';
+import { createYooptaPlugin, generateId, RenderElementProps } from '@yoopta/editor';
 import { Editor, Element, Transforms } from 'slate';
 import type { ListChildItemElement, ListOptions, NumberedList } from '../types';
 import { ListItemList } from './ListItem';
@@ -14,7 +14,7 @@ const NumberedListRender = ({ attributes, children }: RenderElementProps<Numbere
 
 const NUMBERED_LIST_NODE_TYPE = 'numbered-list';
 
-const NumberedList = createYoptaPlugin<ListOptions, NumberedList>({
+const NumberedList = createYooptaPlugin<ListOptions, NumberedList>({
   type: NUMBERED_LIST_NODE_TYPE,
   renderer: (editor) => NumberedListRender,
   childPlugin: ListItemList,

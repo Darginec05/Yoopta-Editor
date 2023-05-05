@@ -1,4 +1,4 @@
-import { generateId, getElementByPath, createYoptaPlugin } from '@yoopta/editor';
+import { generateId, getElementByPath, createYooptaPlugin } from '@yoopta/editor';
 import { Editor, Element, NodeEntry, Path, Transforms } from 'slate';
 import { BulletedList, ListChildItemElement, NumberedList } from '../types';
 import s from './ListItem.module.scss';
@@ -15,7 +15,7 @@ ListItemRender.displayName = 'ListItem';
 
 const LIST_ITEM_NODE_TYPE = 'list-item';
 
-const ListItemList = createYoptaPlugin<any, ListChildItemElement>({
+const ListItemList = createYooptaPlugin<any, ListChildItemElement>({
   type: LIST_ITEM_NODE_TYPE,
   renderer: (editor) => ListItemRender,
   shortcut: '-',

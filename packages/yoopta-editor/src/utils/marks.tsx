@@ -1,18 +1,18 @@
 import { RenderLeafProps } from 'slate-react';
 
-export type YoptaMark = {
+export type YooptaMark = {
   type: string;
   hotkey?: string;
   render: (props: RenderLeafProps) => JSX.Element;
 };
 
-export type YoptaMarksConfig = {
+export type YooptaMarksConfig = {
   type: string;
   className: string;
   hotkey?: string;
 };
 
-export function createYoptaMark({ type, hotkey, className }: YoptaMarksConfig): YoptaMark {
+export function createYooptaMark({ type, hotkey, className }: YooptaMarksConfig): YooptaMark {
   return {
     type,
     hotkey,

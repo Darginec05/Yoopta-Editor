@@ -1,4 +1,4 @@
-import { YoptaBaseElement, YoptaPluginType } from '@yoopta/editor';
+import { YooptaBaseElement, YooptaPluginType } from '@yoopta/editor';
 import { Text } from 'slate';
 import { jsx } from 'slate-hyperscript';
 import { mergePluginTypesToMapHMTLNodeName } from '../utils/mergePlugins';
@@ -14,7 +14,7 @@ const TEXT_TAGS = {
 
 const deserialize = (
   el: HTMLElement | ChildNode,
-  pluginsMap: Record<YoptaBaseElement<string>['type'], YoptaPluginType<any, YoptaBaseElement<string>>>,
+  pluginsMap: Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>>,
 ) => {
   if (el.nodeType === 3) {
     return el.textContent;
@@ -70,7 +70,7 @@ const deserialize = (
   return children;
 };
 
-export function deserializeHtml(htmlString: string, plugins: YoptaPluginType<unknown, YoptaBaseElement<string>>[]) {
+export function deserializeHtml(htmlString: string, plugins: YooptaPluginType<unknown, YooptaBaseElement<string>>[]) {
   const pluginsMap = mergePluginTypesToMapHMTLNodeName(plugins);
 
   const parsedHtml = new DOMParser().parseFromString(htmlString, 'text/html');
