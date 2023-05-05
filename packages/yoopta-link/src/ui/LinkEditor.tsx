@@ -1,9 +1,9 @@
-import { cx, HOTKEYS, RenderElementProps } from '@yoopta/editor';
+import { cx, HOTKEYS, RenderYooptaElementProps } from '@yoopta/editor';
 import { MouseEvent, useEffect, useState } from 'react';
 import { LinkElement } from '../types';
 import s from './LinkEditor.module.scss';
 
-const LinkEditor = ({ attributes, element, children }: RenderElementProps<LinkElement>) => {
+const LinkEditor = ({ attributes, element, children }: RenderYooptaElementProps<LinkElement>) => {
   const [hovered, setHovered] = useState(false);
   const [clickable, setClickable] = useState(false);
 

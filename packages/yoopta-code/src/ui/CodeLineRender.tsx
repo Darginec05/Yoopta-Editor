@@ -1,8 +1,8 @@
-import { RenderElementProps } from '@yoopta/editor';
+import { RenderYooptaElementProps } from '@yoopta/editor';
 import { CodeChildElement } from '../types';
 
 const CodeLineRender = () => {
-  return function CodeLineRender({ attributes, children }: RenderElementProps<CodeChildElement>) {
+  return function CodeLineRender({ attributes, children }: RenderYooptaElementProps<CodeChildElement>) {
     return <div {...attributes}>{children}</div>;
   };
 };

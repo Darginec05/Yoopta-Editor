@@ -1,13 +1,13 @@
 import { MouseEvent } from 'react';
 import { Editor, Element, Node, NodeEntry, Path, Transforms } from 'slate';
-import { getElementByPath, generateId, RenderElementProps, createYooptaPlugin } from '@yoopta/editor';
+import { getElementByPath, generateId, RenderYooptaElementProps, createYooptaPlugin } from '@yoopta/editor';
 import isUrl from 'is-url';
 import { addLinkNode } from '../utils/addLink';
 import { LinkEditor } from './LinkEditor';
 import { LinkElement } from '../types';
 import s from './Link.module.scss';
 
-const LinkRender = ({ attributes, element, children }: RenderElementProps<LinkElement>) => {
+const LinkRender = ({ attributes, element, children }: RenderYooptaElementProps<LinkElement>) => {
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     if (!element.data.url) return;

@@ -4,7 +4,7 @@ import { ReactEditor, useReadOnly, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
 import { Image } from './Image';
 import { CSSProperties, MouseEvent, useEffect, useMemo, useState } from 'react';
-import { cx, RenderElementProps, UI_HELPERS, YoEditor, YooptaPluginType } from '@yoopta/editor';
+import { cx, RenderYooptaElementProps, UI_HELPERS, YoEditor, YooptaPluginType } from '@yoopta/editor';
 import { Loader } from '../components/Loader';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { ImageElement, ImagePluginOptions } from '../types';
@@ -15,13 +15,13 @@ const OPTIONS_WIDTH = 265;
 type Props = {
   editor: YoEditor;
   plugin: YooptaPluginType<ImagePluginOptions, ImageElement>;
-  element: RenderElementProps<ImageElement>['element'];
-  children: RenderElementProps<ImageElement>['children'];
-  attributes: RenderElementProps<ImageElement>['attributes'];
+  element: RenderYooptaElementProps<ImageElement>['element'];
+  children: RenderYooptaElementProps<ImageElement>['children'];
+  attributes: RenderYooptaElementProps<ImageElement>['attributes'];
 };
 
 const ImageEditorFactory =
-  (editor: Props['editor'], plugin: Props['plugin']) => (props: RenderElementProps<ImageElement>) =>
+  (editor: Props['editor'], plugin: Props['plugin']) => (props: RenderYooptaElementProps<ImageElement>) =>
     <ImageEditor editor={editor} plugin={plugin} {...props} />;
 
 function ImageEditor(props: Props) {

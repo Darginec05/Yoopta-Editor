@@ -39,7 +39,13 @@ const BasicExample = () => {
 
   const plugins = useMemo(() => {
     return [
-      Paragraph,
+      Paragraph.extend({
+        options: {
+          HTMLAttributes: {
+            spellCheck: true,
+          },
+        },
+      }),
       Blockquote,
       Callout,
       Code,
@@ -166,40 +172,42 @@ const BasicExample = () => {
     <div className={s.container}>
       <YooptaEditor
         value={editorValue}
-        onChange={(data) => setEditorValue(data)}
-        plugins={[Paragraph, Blockquote]}
+        onChange={(val: Descendant[]) => setEditorValue(val)}
+        plugins={plugins}
+        marks={marks}
+        placeholder="Start typing..."
+        offline="custom"
         autoFocus
-      />
+      >
+        <Toolbar />
+        <ActionMenu />
+      </YooptaEditor>
 
-      {/* {isEdit ? (
-        <YooptaEditor
-          value={editorValue}
-          onChange={(val: Descendant[]) => setEditorValue(val)}
-          plugins={plugins}
-          marks={marks}
-          shouldStoreInLocalStorage={{ name: 'yoopta-dev' }}
-          placeholder="Type / to open menu"
-          // [WIP]
-          nodeElementSettings={{
-            options: {
-              handlers: {
-                onCopy: () => console.log('do something'),
-                onDelete: () => console.log('do somenthing'),
-                onDuplicate: () => console.log('do something'),
-              },
+      {/* <YooptaEditor
+        value={editorValue}
+        onChange={(val: Descendant[]) => setEditorValue(val)}
+        plugins={plugins}
+        marks={marks}
+        offline={{ name: 'yoopta-dev' }}
+        placeholder="Type / to open menu"
+        // [WIP]
+        nodeElementSettings={{
+          options: {
+            handlers: {
+              onCopy: () => console.log('do something'),
+              onDelete: () => console.log('do somenthing'),
+              onDuplicate: () => console.log('do something'),
             },
-            drag: false,
-            plus: false,
-          }}
-        >
-          <ActionMenu items={actionItems} />
-          <Toolbar type="bubble" />
-          {/* // [WIP] */}
+          },
+          drag: false,
+          plus: false,
+        }}
+      >
+        <ActionMenu items={actionItems} />
+        <Toolbar type="bubble" /> */}
+      {/* // [WIP] */}
       {/* <ChatGPT /> */}
-      {/* </YooptaEditor>
-      ) : (
-        <YooptaRenderer key="render" plugins={plugins} marks={marks} data={editorValue} />
-      // )} */}
+      {/* </YooptaEditor> */}
     </div>
   );
 };

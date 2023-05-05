@@ -1,10 +1,10 @@
-import { createYooptaPlugin, generateId, RenderElementProps } from '@yoopta/editor';
+import { createYooptaPlugin, generateId, RenderYooptaElementProps } from '@yoopta/editor';
 import { Editor, Element, Transforms } from 'slate';
 import type { ListChildItemElement, ListOptions, NumberedList } from '../types';
 import { ListItemList } from './ListItem';
 import s from './NumberedList.module.scss';
 
-const NumberedListRender = ({ attributes, children }: RenderElementProps<NumberedList>) => {
+const NumberedListRender = ({ attributes, children }: RenderYooptaElementProps<NumberedList>) => {
   return (
     <ol draggable={false} {...attributes} className={s.list}>
       {children}

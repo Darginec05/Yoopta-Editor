@@ -1,37 +1,30 @@
-import YooptaEditor, { RenderElementProps } from '@yoopta/editor';
-import Paragraph, { ParagraphElement } from '@yoopta/paragraph';
-import Blockquote from '@yoopta/blockquote';
-import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
-import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
 import { Inter } from 'next/font/google';
 import { useState } from 'react';
 import { Descendant } from 'slate';
+import YooptaEditor, { RenderElementProps } from '@yoopta/editor';
+import Paragraph, { ParagraphElement } from '@yoopta/paragraph';
+import Blockquote from '@yoopta/blockquote';
+import Code from '@yoopta/code';
+import Embed from '@yoopta/embed';
+import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
+import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
+import ActionMenu from '@yoopta/action-menu-list';
+// import Toolbar from '@yoopta/toolbar';
 
 const inter = Inter({ subsets: ['latin'] });
 
-const MyCustomParagraph = (props: RenderElementProps<ParagraphElement>) => {
-  const { children, attributes } = props;
-
-  return (
-    <p draggable={false} style={{ fontSize: 18, color: 'green' }} {...attributes}>
-      {children}
-    </p>
-  );
-};
-
 const plugins = [
-  Paragraph.extend({
-    shortcut: 'text',
-    renderer: () => MyCustomParagraph,
-  }),
-  Blockquote,
-  HeadingOne,
-  HeadingTwo,
-  HeadingThree,
-  NumberedList,
-  BulletedList,
-  TodoList,
+  Paragraph,
+  // Blockquote,
+  // HeadingOne,
+  // HeadingTwo,
+  // HeadingThree,
+  // NumberedList,
+  // BulletedList,
+  // TodoList,
+  // Code,
+  // // Embed,
 ];
 
 const marks = [Bold, Italic, CodeMark, Underline, Strike];
@@ -48,8 +41,12 @@ export default function Home() {
           plugins={plugins}
           marks={marks}
           placeholder="Start typing..."
+          offline
           autoFocus
-        />
+        >
+          {/* <Toolbar type="bubble" /> */}
+          <ActionMenu />
+        </YooptaEditor>
       </div>
     </main>
   );
