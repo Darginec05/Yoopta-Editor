@@ -1,185 +1,121 @@
 import { Inter } from 'next/font/google';
-import { useState } from 'react';
-import { Descendant } from 'slate';
-import YooptaEditor, { YooptaBaseElement } from '@yoopta/editor';
+import NextImage from 'next/image';
 
-import Paragraph from '@yoopta/paragraph';
 import YoptaRenderer from '@yoopta/renderer';
+import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
 import Code from '@yoopta/code';
 import Embed from '@yoopta/embed';
-import Video from '@yoopta/video';
+import Image from '@yoopta/image';
 import Link from '@yoopta/link';
 import Callout from '@yoopta/callout';
+import Video from '@yoopta/video';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
-
-import ActionMenu from '@yoopta/action-menu-list';
-// import Toolbar from '@yoopta/toolbar';
-
-const DATA_FROM_SERVER: YooptaBaseElement<string>[] = [
-  {
-    id: 'VrPjveajVxZFdsls3_eio',
-    type: 'heading-one',
-    children: [
-      {
-        text: 'Style Guide',
-      },
-    ],
-    nodeType: 'block',
-  },
-  {
-    id: 'lNTqte__XplkztRBWCOSU',
-    type: 'paragraph',
-    nodeType: 'block',
-    children: [
-      {
-        text: 'Until now, trying to style an article, document, or blog post with Tailwind has been a tedious task that required a keen eye for typography and a lot of complex custom CSS.',
-      },
-    ],
-  },
-  {
-    id: 'K7Dn37VWOImroOCCU6dqk',
-    type: 'paragraph',
-    children: [
-      {
-        text: 'By default, Tailwind removes all of the default browser styling from paragraphs, headings, lists and more. This ends up being really useful for building application UIs because you spend less time undoing user-agent styles, but when you really are just trying to style some content that came from a rich-text editor in a CMS or a markdown file, it can be surprising and unintuitive.',
-      },
-    ],
-    nodeType: 'block',
-  },
-  {
-    id: 'NcyaXHjIXol2RNQOCa5Dr',
-    type: 'paragraph',
-    children: [
-      {
-        text: 'We get lots of complaints about it actually, with people regularly asking us things like:',
-      },
-    ],
-    nodeType: 'block',
-  },
-  {
-    id: 'eBsQhQdojyMHFF1XkSLcj',
-    type: 'image',
-    nodeType: 'void',
-    children: [
-      {
-        text: '',
-      },
-    ],
-    data: {
-      url: 'https://res.cloudinary.com/ench-app/image/upload/v1683383160/Screen_Shot_2023-05-06_at_14.10.05_n3kxoo.png',
-      size: {
-        width: 650,
-        height: 406,
-      },
-    },
-  },
-  {
-    id: 'hfi40TMkvot2tAJ5ZOmf7',
-    type: 'heading-two',
-    children: [
-      {
-        text: 'What to expect from here on out',
-      },
-    ],
-    nodeType: 'block',
-  },
-  {
-    id: 'zxXJHE0QZL58fi2r4gmTr',
-    type: 'paragraph',
-    children: [
-      {
-        text: "What follows from here is just a bunch of absolute nonsense I've written to dogfood the plugin itself. It includes every sensible typographic element I could think of, like bold text, unordered lists, ordered lists, code blocks, block quotes, and even italics.",
-      },
-    ],
-    nodeType: 'block',
-  },
-  {
-    id: 'qONT6A7r59wAKmWJlP5U5',
-    type: 'paragraph',
-    children: [
-      {
-        text: "It's important to cover all of these use cases for a few reasons:",
-      },
-    ],
-    nodeType: 'block',
-  },
-  {
-    id: 'gu2GOflPgMF49oX9BXHHR',
-    type: 'heading-three',
-    children: [
-      {
-        text: 'Typography should be easy',
-      },
-    ],
-    nodeType: 'block',
-  },
-  {
-    id: 'H2i6bAM0FbwpmLFFZqw7o',
-    type: 'paragraph',
-    children: [
-      {
-        text: "So that's a header for you — with any luck if we've done our job correctly that will look pretty reasonable.",
-      },
-    ],
-    nodeType: 'block',
-  },
-  {
-    id: 'aRnB8mMOYnjmk3ZOM6nr_',
-    type: 'paragraph',
-    children: [
-      {
-        text: 'Something a wise person once told me about typography is:',
-      },
-    ],
-    nodeType: 'block',
-  },
-  {
-    id: 'vZAqPU-tolM0TnfURLMTx',
-    type: 'embed',
-    nodeType: 'void',
-    children: [
-      {
-        text: '',
-      },
-    ],
-    data: {
-      url: 'https://www.youtube.com/watch?v=MuRaX2K6KrQ&t=4600s&ab_channel=%D0%A5%D0%B8%D1%82%D0%9D%D0%BE%D0%BD-%D0%A1%D1%82%D0%BE%D0%BF',
-      size: {
-        width: 'auto',
-        height: 'auto',
-      },
-      providerId: 'MuRaX2K6KrQ',
-      provider: 'youtube',
-    },
-  },
-];
+import { yooptaInitData } from '../../utils/initialData';
 
 const inter = Inter({ subsets: ['latin'] });
-
 const plugins = [
-  HeadingOne,
-  HeadingTwo,
-  HeadingThree,
   Paragraph.extend({
     options: {
       HTMLAttributes: {
         spellCheck: false,
-        className: 'text-white',
+        className: 'text-white leading-7',
       },
     },
   }),
   Blockquote,
-  NumberedList,
-  BulletedList,
-  TodoList,
-  Code,
-  Embed,
   Callout,
-  Video,
+  Code,
   Link,
+  NumberedList.extend({
+    options: {
+      HTMLAttributes: {
+        spellCheck: false,
+        className: 'font-heading text-4xl',
+      },
+    },
+  }),
+  BulletedList.extend({
+    options: {
+      HTMLAttributes: {
+        spellCheck: false,
+        className: 'font-heading text-4xl',
+      },
+    },
+  }),
+  TodoList.extend({
+    options: {
+      HTMLAttributes: {
+        spellCheck: false,
+        className: 'font-heading text-4xl',
+      },
+    },
+  }),
+  HeadingOne.extend({
+    options: {
+      HTMLAttributes: {
+        spellCheck: false,
+        className: 'font-heading text-4xl',
+      },
+    },
+  }),
+  HeadingTwo.extend({
+    options: {
+      HTMLAttributes: {
+        spellCheck: false,
+        className: 'font-heading text-3xl',
+      },
+    },
+  }),
+  HeadingThree.extend({
+    options: {
+      HTMLAttributes: {
+        spellCheck: false,
+        className: 'font-heading text-2xl',
+      },
+    },
+  }),
+  Embed.extend({
+    options: {
+      maxWidth: 650,
+      maxHeight: 750,
+    },
+  }),
+  Image.extend({
+    renderer: {
+      editor: Image.getPlugin.renderer.editor,
+      render: (props) => {
+        const { element, children, attributes, size } = props;
+
+        if (!element.data.url) return null;
+
+        return (
+          <div {...attributes} contentEditable={false}>
+            <NextImage
+              src={element.data.url || element.data['data-src']}
+              width={size?.width || element.data.size.width}
+              height={size?.height || element.data.size.height}
+              alt="supe iamge"
+              style={{ display: 'block', marginTop: 20 }}
+            />
+            {children}
+          </div>
+        );
+      },
+    },
+    options: {
+      maxWidth: 650,
+      maxHeight: 650,
+    },
+  }),
+  Video.extend({
+    options: {
+      maxWidth: 650,
+      maxHeight: 650,
+    },
+  }),
 ];
 
 const marks = [Bold, Italic, CodeMark, Underline, Strike];
@@ -191,7 +127,7 @@ export default function Home() {
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
     >
       <div className="w-full h-full">
-        <YoptaRenderer data={DATA_FROM_SERVER} plugins={plugins} marks={marks} />
+        <YoptaRenderer data={yooptaInitData} plugins={plugins} marks={marks} />
       </div>
     </main>
   );

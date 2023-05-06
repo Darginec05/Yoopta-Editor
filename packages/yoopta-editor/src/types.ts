@@ -17,6 +17,7 @@ export type YooptaBaseElement<T> = {
   id: string;
   type: T;
   children: BaseElement['children'];
+  // @ts-ignore [TODO: make it generic]
   data?: any;
 } & YooptaElementConfig;
 

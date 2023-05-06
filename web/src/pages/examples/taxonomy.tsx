@@ -19,6 +19,7 @@ import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import ActionMenu from '@yoopta/action-menu-list';
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import Toolbar from '@yoopta/toolbar';
+import { yooptaInitData } from '@/utils/initialData';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -93,11 +94,19 @@ const plugins = [
     renderer: {
       editor: Image.getPlugin.renderer.editor,
       render: (props) => {
-        const { element, children, attributes } = props;
+        const { element, children, attributes, size } = props;
+
+        if (!element.data.url) return null;
 
         return (
           <div {...attributes} contentEditable={false}>
-            <NextImage src={element.data.url} width={element.data.size.width} height={element.data.size.height} />
+            <NextImage
+              src={element.data.url || element.data['data-src']}
+              width={size?.width || element.data.size.width}
+              height={size?.height || element.data.size.height}
+              alt="supe iamge"
+              style={{ display: 'block', marginTop: 20 }}
+            />
             {children}
           </div>
         );
@@ -127,9 +136,7 @@ const plugins = [
 const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
 export default function Home() {
-  const [editorValue, setEditorValue] = useState<Descendant[]>([]);
-
-  console.log('editorValue', editorValue);
+  const [editorValue, setEditorValue] = useState<Descendant[]>(yooptaInitData);
 
   return (
     <main
