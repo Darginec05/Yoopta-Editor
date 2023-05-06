@@ -9,8 +9,6 @@ const ParagraphRender = ({
   element,
   HTMLAttributes,
 }: RenderYooptaElementProps<ParagraphElement>) => {
-  console.log('HTMLAttributes', HTMLAttributes);
-
   return (
     <p draggable={false} className={s.paragraph} {...HTMLAttributes} {...attributes}>
       {children}

@@ -4,9 +4,9 @@ import { ListOptions, TodoList, TodoListChildItemElement } from '../types';
 import s from './TodoList.module.scss';
 import { TodoListItem } from './TodoListItem';
 
-const TodoListRender = ({ attributes, children }: RenderYooptaElementProps<TodoList>) => {
+const TodoListRender = ({ attributes, children, HTMLAttributes }: RenderYooptaElementProps<TodoList>) => {
   return (
-    <div draggable={false} {...attributes} className={s.todoList}>
+    <div draggable={false} {...HTMLAttributes} {...attributes} className={s.todoList}>
       {children}
     </div>
   );

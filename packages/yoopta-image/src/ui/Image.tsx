@@ -5,7 +5,7 @@ import s from './Image.module.scss';
 
 type Props = RenderYooptaElementProps<ImageElement> & { children?: ReactNode; size?: ImageElementData['size'] };
 
-const Image = ({ attributes, element, children, size }: Props) => {
+const Image = ({ attributes, element, children, size, HTMLAttributes }: Props) => {
   const width = size?.width || element.data?.size?.width || '100%';
   const height = size?.height || element.data?.size?.height || 400;
 
@@ -24,6 +24,7 @@ const Image = ({ attributes, element, children, size }: Props) => {
           loading="lazy"
           decoding="async"
           className={s.img}
+          {...HTMLAttributes}
         />
         {caption && <figcaption className={s.caption}>{caption}</figcaption>}
       </figure>

@@ -1,15 +1,15 @@
-import { HTMLAttributes, memo, MouseEvent, ReactElement, useMemo } from 'react';
-import { ReactEditor, RenderElementProps, useReadOnly, useSlate } from 'slate-react';
+import { HTMLAttributes, MouseEvent, ReactElement, useMemo } from 'react';
+import { RenderElementProps, useSlate } from 'slate-react';
 import cx from 'classnames';
 import { YooptaElementConfig } from '../../types';
 import { useElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { ElementActions } from './ElementActions';
+import { YooptaRenderHTMLAttributes } from '../../utils/plugins';
 import s from './ElementWrapper.module.scss';
-import { Editor } from 'slate';
 
 type Props = RenderElementProps & {
   nodeType: YooptaElementConfig['nodeType'];
-  render: (props: RenderElementProps) => ReactElement;
+  render: (props: RenderElementProps & YooptaRenderHTMLAttributes) => ReactElement;
   HTMLAttributes?: HTMLAttributes<HTMLElement>;
 };
 

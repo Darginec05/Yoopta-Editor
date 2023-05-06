@@ -19,6 +19,7 @@ const TodoListItemRender = (editor: YoEditor) => {
     attributes,
     children,
     element,
+    HTMLAttributes,
   }: RenderYooptaElementProps<TodoListChildItemElement>) {
     const onChange = (event: ChangeEvent<HTMLInputElement>) => {
       const path = ReactEditor.findPath(editor, element);
@@ -36,7 +37,12 @@ const TodoListItemRender = (editor: YoEditor) => {
     const isChecked = element.data.checked;
 
     return (
-      <div draggable={false} {...attributes} className={cx(s.todoListItem, { [s.checked]: isChecked })}>
+      <div
+        draggable={false}
+        {...attributes}
+        {...HTMLAttributes}
+        className={cx(s.todoListItem, { [s.checked]: isChecked })}
+      >
         <label className={s.label} contentEditable={false} style={{ userSelect: 'none' }}>
           <input type="checkbox" checked={isChecked} className={s.input} onChange={onChange} />
         </label>

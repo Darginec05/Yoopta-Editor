@@ -3,9 +3,9 @@ import { Transforms } from 'slate';
 import { CalloutElement } from '../types';
 import s from './Callout.module.scss';
 
-const CalloutRender = ({ attributes, children, element }: RenderYooptaElementProps<CalloutElement>) => {
+const CalloutRender = ({ attributes, children, element, HTMLAttributes }: RenderYooptaElementProps<CalloutElement>) => {
   return (
-    <div draggable={false} className={s.callout} {...attributes}>
+    <div draggable={false} className={s.callout} {...HTMLAttributes} {...attributes}>
       {children}
     </div>
   );

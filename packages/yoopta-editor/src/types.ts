@@ -1,7 +1,7 @@
 import { BaseEditor, BaseElement } from 'slate';
-import { ReactEditor, RenderYooptaElementProps as ElementProps } from 'slate-react';
+import { ReactEditor, RenderElementProps as ElementProps } from 'slate-react';
 import { HistoryEditor } from 'slate-history';
-import { YooptaPluginType } from './utils/plugins';
+import { YooptaPluginType, YooptaRenderHTMLAttributes } from './utils/plugins';
 
 export type EmptyText = {
   text: string;
@@ -20,7 +20,9 @@ export type YooptaBaseElement<T> = {
   data?: any;
 } & YooptaElementConfig;
 
-export type RenderYooptaElementProps<T extends BaseElement = BaseElement> = ElementProps & { element: T };
+export type RenderYooptaElementProps<T extends BaseElement = BaseElement> = ElementProps & {
+  element: T;
+} & YooptaRenderHTMLAttributes;
 
 export interface YoEditor extends BaseEditor, ReactEditor, HistoryEditor {
   shortcuts: Record<string, YooptaPluginType<string>>;

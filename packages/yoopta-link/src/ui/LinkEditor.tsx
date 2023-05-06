@@ -3,7 +3,7 @@ import { MouseEvent, useEffect, useState } from 'react';
 import { LinkElement } from '../types';
 import s from './LinkEditor.module.scss';
 
-const LinkEditor = ({ attributes, element, children }: RenderYooptaElementProps<LinkElement>) => {
+const LinkEditor = ({ attributes, element, children, HTMLAttributes }: RenderYooptaElementProps<LinkElement>) => {
   const [hovered, setHovered] = useState(false);
   const [clickable, setClickable] = useState(false);
 
@@ -39,7 +39,6 @@ const LinkEditor = ({ attributes, element, children }: RenderYooptaElementProps<
   return (
     <a
       draggable={false}
-      {...attributes}
       href={element.data.url || ''}
       rel="noreferrer"
       target="_blank"
@@ -47,6 +46,8 @@ const LinkEditor = ({ attributes, element, children }: RenderYooptaElementProps<
       onClick={handleClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={reset}
+      {...HTMLAttributes}
+      {...attributes}
     >
       {children}
     </a>

@@ -1,4 +1,4 @@
-import YooptaEditor from '@yoopta/editor';
+import YooptaEditor, { createYooptaPlugin, generateId } from '@yoopta/editor';
 import Blockquote, { BlockquoteElement } from '@yoopta/blockquote';
 import Paragraph, { ParagraphElement } from '@yoopta/paragraph';
 import Callout, { CalloutElement } from '@yoopta/callout';
@@ -33,6 +33,23 @@ type PluginElements =
   | VideoElement
   | EmbedElement;
 
+const MyPlugin = createYooptaPlugin<any, any>({
+  type: 'myplugin',
+  renderer: {
+    render: (props) => {
+      return <div>sadsadsad</div>;
+    },
+    editor: (editor) => (props) => {
+      return <div></div>;
+    },
+  },
+  defineElement: () => ({
+    id: generateId(),
+    type: 'myplugin',
+  }),
+  options: {},
+});
+
 const BasicExample = () => {
   const [editorValue, setEditorValue] = useState<Descendant[]>([]);
   const [mode, toggleMode] = useState<'render' | 'edit'>('edit');
@@ -43,6 +60,7 @@ const BasicExample = () => {
         options: {
           HTMLAttributes: {
             spellCheck: true,
+            className: 's.paragraph',
           },
         },
       }),
@@ -60,6 +78,10 @@ const BasicExample = () => {
         options: {
           maxWidth: 800,
           maxHeight: 750,
+          HTMLAttributes: {
+            spellCheck: true,
+            className: 's.paragraph',
+          },
         },
       }),
       Image.extend({
@@ -69,6 +91,10 @@ const BasicExample = () => {
           onUpload: async (file: File) => {
             const response = await uploadToCloudinary(file, 'image');
             return { url: response.url, width: response.data.width, height: response.data.height };
+          },
+          HTMLAttributes: {
+            spellCheck: true,
+            className: 's.paragraph',
           },
         },
       }),

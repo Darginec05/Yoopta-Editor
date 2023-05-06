@@ -3,9 +3,14 @@ import { Transforms } from 'slate';
 import { HeadingOptions, HeadingThreeElement } from '../types';
 import s from './HeadingThree.module.scss';
 
-const HeadingThreeRender = ({ attributes, children, element }: RenderYooptaElementProps<HeadingThreeElement>) => {
+const HeadingThreeRender = ({
+  attributes,
+  children,
+  element,
+  HTMLAttributes,
+}: RenderYooptaElementProps<HeadingThreeElement>) => {
   return (
-    <h3 id={element.id} draggable={false} className={s['heading-three']} {...attributes}>
+    <h3 id={element.id} draggable={false} className={s['heading-three']} {...HTMLAttributes} {...attributes}>
       {children}
     </h3>
   );
