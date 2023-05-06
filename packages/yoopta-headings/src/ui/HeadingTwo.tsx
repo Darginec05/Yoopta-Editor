@@ -3,9 +3,14 @@ import { Transforms } from 'slate';
 import { HeadingOptions, HeadingTwoElement } from '../types';
 import s from './HeadingTwo.module.scss';
 
-const HeadingTwoRender = ({ attributes, children, element }: RenderYooptaElementProps<HeadingTwoElement>) => {
+const HeadingTwoRender = ({
+  attributes,
+  children,
+  element,
+  HTMLAttributes,
+}: RenderYooptaElementProps<HeadingTwoElement>) => {
   return (
-    <h2 id={element.id} draggable={false} className={s['heading-two']} {...attributes}>
+    <h2 id={element.id} draggable={false} className={s['heading-two']} {...HTMLAttributes} {...attributes}>
       {children}
     </h2>
   );

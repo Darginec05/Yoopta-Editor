@@ -3,9 +3,14 @@ import { Transforms } from 'slate';
 import { BlockquoteElement } from '../types';
 import s from './Blockquote.module.scss';
 
-const BlockquoteRender = ({ attributes, children, element }: RenderYooptaElementProps<BlockquoteElement>) => {
+const BlockquoteRender = ({
+  attributes,
+  children,
+  element,
+  HTMLAttributes,
+}: RenderYooptaElementProps<BlockquoteElement>) => {
   return (
-    <blockquote draggable={false} className={s.blockquote} {...attributes}>
+    <blockquote draggable={false} className={s.blockquote} {...HTMLAttributes} {...attributes}>
       {children}
     </blockquote>
   );

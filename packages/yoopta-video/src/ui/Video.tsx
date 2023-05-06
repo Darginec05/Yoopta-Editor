@@ -14,14 +14,14 @@ const PROVIDERS = {
   dailymotion: DailyMotion,
 };
 
-const Video = ({ attributes, element, children, size }: Props) => {
+const Video = ({ attributes, element, children, size, HTMLAttributes }: Props) => {
   const width = size?.width || element.data?.size?.width || '100%';
   const height = size?.height || element.data?.size?.height || 400;
 
   if (typeof element.data.provider === 'string' && element.data.videoId && PROVIDERS[element.data.provider]) {
     const ProviderComponent = PROVIDERS[element.data.provider];
     return (
-      <div {...attributes} className={s.videoElement} contentEditable={false} draggable={false}>
+      <div {...attributes} className={s.videoElement} {...HTMLAttributes} contentEditable={false} draggable={false}>
         <div className={s.iframRoot}>
           <div className={s.iframeWrap}>
             <ProviderComponent videoId={element.data.videoId} />
@@ -50,6 +50,7 @@ const Video = ({ attributes, element, children, size }: Props) => {
         height={height}
         className={s.video}
         onDragStart={(e) => e.preventDefault()}
+        {...HTMLAttributes}
       />
       {children}
     </div>

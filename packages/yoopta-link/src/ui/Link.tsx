@@ -7,7 +7,7 @@ import { LinkEditor } from './LinkEditor';
 import { LinkElement } from '../types';
 import s from './Link.module.scss';
 
-const LinkRender = ({ attributes, element, children }: RenderYooptaElementProps<LinkElement>) => {
+const LinkRender = ({ attributes, element, children, HTMLAttributes }: RenderYooptaElementProps<LinkElement>) => {
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     if (!element.data.url) return;
@@ -24,12 +24,13 @@ const LinkRender = ({ attributes, element, children }: RenderYooptaElementProps<
   return (
     <a
       draggable={false}
-      {...attributes}
       href={element.data.url || ''}
       rel="noreferrer"
       target="_blank"
       className={s.link}
       onClick={handleClick}
+      {...HTMLAttributes}
+      {...attributes}
     >
       {children}
     </a>

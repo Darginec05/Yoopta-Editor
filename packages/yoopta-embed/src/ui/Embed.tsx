@@ -23,11 +23,11 @@ const PROVIDERS = {
   figma: FigmaEmbed,
 };
 
-const Embed = ({ attributes, element, children, size }: Props) => {
+const Embed = ({ attributes, element, children, HTMLAttributes }: Props) => {
   if (typeof element.data.provider === 'string' && element.data.providerId && PROVIDERS[element.data.provider]) {
     const ProviderComponent = PROVIDERS[element.data.provider];
     return (
-      <div {...attributes} className={s.embedElement} contentEditable={false} draggable={false}>
+      <div {...attributes} className={s.embedElement} contentEditable={false} draggable={false} {...HTMLAttributes}>
         <ProviderComponent {...element.data} providerId={element.data.providerId} />
         {children}
       </div>
@@ -37,7 +37,7 @@ const Embed = ({ attributes, element, children, size }: Props) => {
   if (!element.data.url) return <div />;
 
   return (
-    <div {...attributes} className={s.embedElement} contentEditable={false} draggable={false}>
+    <div {...attributes} className={s.embedElement} contentEditable={false} draggable={false} {...HTMLAttributes}>
       <DefaultEmbed {...element.data} providerId={element.data.providerId} />
       {children}
     </div>

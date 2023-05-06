@@ -3,9 +3,9 @@ import { Editor, Element, NodeEntry, Path, Transforms } from 'slate';
 import { BulletedList, ListChildItemElement, NumberedList } from '../types';
 import s from './ListItem.module.scss';
 
-const ListItemRender = ({ attributes, children }) => {
+const ListItemRender = ({ attributes, children, HTMLAttributes }) => {
   return (
-    <li className={s.listItem} draggable={false} {...attributes}>
+    <li className={s.listItem} draggable={false} {...HTMLAttributes} {...attributes}>
       {children}
     </li>
   );

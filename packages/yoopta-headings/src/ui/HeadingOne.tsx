@@ -3,9 +3,14 @@ import { Transforms } from 'slate';
 import { HeadingOneElement, HeadingOptions } from '../types';
 import s from './HeadingOne.module.scss';
 
-const HeadingOneRender = ({ attributes, children, element }: RenderYooptaElementProps<HeadingOneElement>) => {
+const HeadingOneRender = ({
+  attributes,
+  children,
+  element,
+  HTMLAttributes,
+}: RenderYooptaElementProps<HeadingOneElement>) => {
   return (
-    <h1 id={element.id} draggable={false} className={s['heading-one']} {...attributes}>
+    <h1 id={element.id} draggable={false} className={s['heading-one']} {...HTMLAttributes} {...attributes}>
       {children}
     </h1>
   );

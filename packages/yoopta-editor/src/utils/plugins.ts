@@ -21,21 +21,20 @@ export type YooptaPluginBaseOptions = Record<string, unknown>;
 export type YooptaRenderElementFunc<P extends YooptaBaseElement<string> = YooptaBaseElement<string>> = (
   editor: YoEditor,
   plugin: YooptaPluginType,
-) => (props: RenderYooptaElementProps<P>) => ReactElement;
+) => (props: RenderYooptaElementProps<P> & YooptaRenderHTMLAttributes) => ReactElement;
 
 export type YooptaRender<P extends YooptaBaseElement<string>> = YooptaRenderElementFunc<P>;
 
 export type ExtendedYooptaRender<P extends YooptaBaseElement<string>> = {
   editor: YooptaRenderElementFunc<P>;
-  render: (props: RenderYooptaElementProps<P>) => ReactElement;
+  render: (props: RenderYooptaElementProps<P> & YooptaRenderHTMLAttributes) => ReactElement;
 };
 
 export type YooptaRenderHTMLAttributes = {
-  props: HTMLAttributes<HTMLElement>;
+  HTMLAttributes?: HTMLAttributes<HTMLElement>;
 };
 
 export type YooptaRenderer<P extends YooptaBaseElement<string>> = ExtendedYooptaRender<P> | YooptaRender<P>;
-// | YooptaRenderHTMLAttributes;
 
 type DeserializeHTML = { nodeName: string | string[]; parse?: (el: HTMLElement) => any };
 
@@ -60,7 +59,7 @@ export type YooptaPluginType<
   shortcut?: string | string[];
   exports?: Exports<P>;
   events?: YooptaPluginEventHandlers;
-  options?: O & { HTMLAttributes?: HTMLAttributes<HTMLElement> };
+  options?: O & YooptaRenderHTMLAttributes;
   extendEditor?: (editor: YoEditor) => YoEditor;
   decorator?: (editor: YoEditor) => DecoratorFn;
   leaf?: (editor: YoEditor) => (props: RenderLeafProps) => any;
@@ -96,9 +95,6 @@ export class YooptaPlugin<O extends YooptaPluginBaseOptions, P extends YooptaBas
       events = this.#props.events,
       options = this.#props.options,
     } = overrides;
-
-    console.log('this.#props', this.#props.renderer);
-    console.log('renderer', renderer);
 
     const updatedProps = Object.freeze({
       ...this.#props,

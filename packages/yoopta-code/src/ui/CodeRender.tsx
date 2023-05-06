@@ -6,16 +6,19 @@ import 'prism-material-themes/themes/material-default.css';
 import { CodeElement } from '../types';
 import s from './CodeRender.module.scss';
 
-function CodeRender({ element, attributes, children }: RenderYooptaElementProps<CodeElement>) {
+function CodeRender({ element, attributes, children, HTMLAttributes }: RenderYooptaElementProps<CodeElement>) {
   useEffect(() => {
-    import(`prismjs/components/prism-${element.data.language}`).then(() => {
-      Prism.highlightAll();
-      console.log('imported for: ', element.data.language);
-    });
+    console.log('imported for: ', element.data.language);
+
+    import(`prismjs/components/prism-${element.data.language}`)
+      .then(() => {
+        Prism.highlightAll();
+      })
+      .catch(console.log);
   }, [element.data.language]);
 
   return (
-    <code className={s.code} {...attributes}>
+    <code className={s.code} {...HTMLAttributes} {...attributes}>
       {element.data.filename && <span className={s.filename}>{element.data.filename}</span>}
       <pre className={cx(s.pre, `language-${element.data.language}`)}>{children}</pre>
     </code>
