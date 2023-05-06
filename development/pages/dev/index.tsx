@@ -14,6 +14,7 @@ import YooptaRenderer from '@yoopta/renderer';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
 import ActionMenu, { ActionMenuItem } from '@yoopta/action-menu-list';
 import { useMemo, useState } from 'react';
+import NextImage from 'next/image';
 
 import { Descendant } from 'slate';
 import { uploadToCloudinary } from '../../utils';
@@ -33,23 +34,6 @@ type PluginElements =
   | VideoElement
   | EmbedElement;
 
-const MyPlugin = createYooptaPlugin<any, any>({
-  type: 'myplugin',
-  renderer: {
-    render: (props) => {
-      return <div>sadsadsad</div>;
-    },
-    editor: (editor) => (props) => {
-      return <div></div>;
-    },
-  },
-  defineElement: () => ({
-    id: generateId(),
-    type: 'myplugin',
-  }),
-  options: {},
-});
-
 const BasicExample = () => {
   const [editorValue, setEditorValue] = useState<Descendant[]>([]);
   const [mode, toggleMode] = useState<'render' | 'edit'>('edit');
@@ -60,12 +44,17 @@ const BasicExample = () => {
         options: {
           HTMLAttributes: {
             spellCheck: true,
-            className: 's.paragraph',
           },
         },
       }),
       Blockquote,
-      Callout,
+      Callout.extend({
+        options: {
+          HTMLAttributes: {
+            spellCheck: false,
+          },
+        },
+      }),
       Code,
       Link,
       Lists.NumberedList,
@@ -76,31 +65,45 @@ const BasicExample = () => {
       Headings.HeadingThree,
       Embed.extend({
         options: {
-          maxWidth: 800,
+          maxWidth: 700,
           maxHeight: 750,
           HTMLAttributes: {
             spellCheck: true,
-            className: 's.paragraph',
           },
         },
       }),
       Image.extend({
+        renderer: {
+          editor: Image.getPlugin.renderer.editor,
+          render: (props) => {
+            const { element, children, attributes, size } = props;
+
+            return (
+              <div {...attributes} contentEditable={false}>
+                <NextImage
+                  src={element.data.url || element.data['data-src']}
+                  width={size?.width || element.data.size.width}
+                  height={size?.height || element.data.size.height}
+                  alt="supe iamge"
+                  style={{ display: 'block', marginTop: 20 }}
+                />
+                {children}
+              </div>
+            );
+          },
+        },
         options: {
-          maxWidth: 750,
-          maxHeight: 800,
+          maxWidth: 700,
+          maxHeight: 650,
           onUpload: async (file: File) => {
             const response = await uploadToCloudinary(file, 'image');
             return { url: response.url, width: response.data.width, height: response.data.height };
-          },
-          HTMLAttributes: {
-            spellCheck: true,
-            className: 's.paragraph',
           },
         },
       }),
       Video.extend({
         options: {
-          maxWidth: 750,
+          maxWidth: 700,
           maxHeight: 800,
           onUpload: async (file: File) => {
             const response = await uploadToCloudinary(file, 'video');
@@ -196,18 +199,22 @@ const BasicExample = () => {
 
   return (
     <div className={s.container}>
-      <YooptaEditor
-        value={editorValue}
-        onChange={(val: Descendant[]) => setEditorValue(val)}
-        plugins={plugins}
-        marks={marks}
-        placeholder="Start typing..."
-        offline="custom"
-        autoFocus
-      >
-        <Toolbar />
-        <ActionMenu />
-      </YooptaEditor>
+      {isEdit ? (
+        <YooptaEditor
+          value={editorValue}
+          onChange={(val: Descendant[]) => setEditorValue(val)}
+          plugins={plugins}
+          marks={marks}
+          placeholder="Start typing..."
+          offline="custom"
+          autoFocus
+        >
+          <Toolbar />
+          <ActionMenu />
+        </YooptaEditor>
+      ) : (
+        <YooptaRenderer data={editorValue} plugins={plugins} marks={marks} />
+      )}
 
       {/* <YooptaEditor
         value={editorValue}

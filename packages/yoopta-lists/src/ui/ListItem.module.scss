@@ -1,8 +1,8 @@
 .listItem {
   letter-spacing: -0.003em;
   font-size: 16px;
-  color: rgba(41, 41, 41, 1);
-  line-height: 24px;
+  color: inherit;
+  line-height: 28px;
   position: relative;
   padding-left: 0;
   list-style-position: inside;
@@ -30,7 +30,7 @@
   font-weight: 400;
   font-style: normal;
   display: inline;
-  line-height: 24px;
+  line-height: 28px;
   word-break: break-word;
   box-sizing: border-box;
   color: #000;

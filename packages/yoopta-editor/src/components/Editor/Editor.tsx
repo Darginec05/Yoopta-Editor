@@ -50,6 +50,8 @@ const EditorYoopta = ({
   const renderElement = useMemo(() => {
     return (props: RenderElementProps) => {
       const plugin = PLUGINS_MAP[props.element.type];
+      console.log('renderElement plugin', plugin);
+
       const renderFn = getRenderFunctionFactory(plugin)(editor, plugin);
 
       return (
@@ -335,9 +337,7 @@ const EditorYoopta = ({
         decorate={decorate}
         onCopy={(event) => {
           event.preventDefault();
-
           if (!editor.selection) return;
-          if (Range.isCollapsed(editor.selection)) return;
 
           const selectedFragment = Editor.fragment(editor, editor.selection);
           const parsedHTML = serializeHtml(selectedFragment, editor.plugins);

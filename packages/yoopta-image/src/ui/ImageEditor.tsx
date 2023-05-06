@@ -2,7 +2,6 @@ import { Element, Transforms } from 'slate';
 import { Resizable, ResizableProps } from 're-resizable';
 import { ReactEditor, useReadOnly, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
-import { Image } from './Image';
 import { CSSProperties, MouseEvent, useEffect, useMemo, useState } from 'react';
 import { cx, RenderYooptaElementProps, UI_HELPERS, YoEditor, YooptaPluginType } from '@yoopta/editor';
 import { Loader } from '../components/Loader';
@@ -122,7 +121,7 @@ function ImageEditor(props: Props) {
             ? window.innerWidth - OPTIONS_WIDTH - optionsButtonRect.width
             : optionsButtonRect.right - optionsButtonRect.width,
         top: showAtTop
-          ? optionsButtonRect.top - UPLOADER_HEIGHT - 5
+          ? optionsButtonRect.top - UPLOADER_HEIGHT / 2 - optionsButtonRect.height
           : optionsButtonRect.top + optionsButtonRect.height + 5,
       });
     }
@@ -175,7 +174,7 @@ function ImageEditor(props: Props) {
       key={element.id}
     >
       <Resizable {...resizeProps} className={s.resizeLib}>
-        <Image {...props} size={size} />
+        {plugin.renderer.render({ ...props, size })}
         <div className={cx(s.selectImg, { [s.selected]: selected })} />
         {isLoading && (
           <div className={s.loader}>
