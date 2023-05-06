@@ -50,8 +50,8 @@ const EditorYoopta = ({
   const renderElement = useMemo(() => {
     return (props: RenderElementProps) => {
       const plugin = PLUGINS_MAP[props.element.type];
-      console.log('renderElement plugin', plugin);
 
+      if (!plugin) return null;
       const renderFn = getRenderFunctionFactory(plugin)(editor, plugin);
 
       return (
