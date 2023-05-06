@@ -2,7 +2,6 @@ import { Element, Transforms } from 'slate';
 import { Resizable, ResizableProps } from 're-resizable';
 import { ReactEditor, useReadOnly, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
-import { Video } from './Video';
 import { CSSProperties, MouseEvent, useEffect, useMemo, useState } from 'react';
 import { cx, RenderYooptaElementProps, YoEditor, UI_HELPERS, YooptaPluginType } from '@yoopta/editor';
 import { Loader } from '../components/Loader';
@@ -114,13 +113,14 @@ function VideoEditor(props: Props) {
       const showAtTop = optionsButtonRect.top + optionsButtonRect.height + UPLOADER_HEIGHT + 20 > window.innerHeight;
 
       disableBodyScroll(document.body, { reserveScrollBarGap: true });
+
       setOptionsPos({
         left:
           optionsButtonRect.right - optionsButtonRect.width + OPTIONS_WIDTH > window.innerWidth
             ? window.innerWidth - OPTIONS_WIDTH - optionsButtonRect.width
             : optionsButtonRect.right - optionsButtonRect.width,
         top: showAtTop
-          ? optionsButtonRect.top - UPLOADER_HEIGHT - 5
+          ? optionsButtonRect.top - UPLOADER_HEIGHT / 2 - optionsButtonRect.height
           : optionsButtonRect.top + optionsButtonRect.height + 5,
       });
     }
@@ -173,7 +173,7 @@ function VideoEditor(props: Props) {
       key={element.id}
     >
       <Resizable {...resizeProps} className={s.resizeLib}>
-        <Video {...props} size={size} />
+        {plugin.renderer.render({ ...props, size })}
         <div className={cx(s.selectImg, { [s.selected]: selected })} />
         {isLoading && (
           <div className={s.loader}>

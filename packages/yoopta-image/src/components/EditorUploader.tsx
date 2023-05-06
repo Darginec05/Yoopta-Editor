@@ -63,7 +63,7 @@ const EditorUploader = ({ activeTab = 'upload', style, switchTab, onChange, onEm
               Upload
             </button>
             <button type="button" onClick={() => switchTab('embed')} className={cx(s.tab, { [s.activeTab]: isEmbed })}>
-              Embed link
+              Image link
             </button>
           </div>
           <div className={s.uploadContent}>

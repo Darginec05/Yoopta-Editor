@@ -1,7 +1,7 @@
 import { Inter } from 'next/font/google';
 import { useState } from 'react';
 import { Descendant } from 'slate';
-import YooptaEditor from '@yoopta/editor';
+import YooptaEditor, { YooptaBaseElement } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import YoptaRenderer from '@yoopta/renderer';
@@ -18,9 +18,9 @@ import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import ActionMenu from '@yoopta/action-menu-list';
 // import Toolbar from '@yoopta/toolbar';
 
-const DATA_FROM_SERVER = [
+const DATA_FROM_SERVER: YooptaBaseElement<string>[] = [
   {
-    id: 'C4S5RBOJyWxmJLvFNsXK9',
+    id: 'VrPjveajVxZFdsls3_eio',
     type: 'heading-one',
     children: [
       {
@@ -30,17 +30,7 @@ const DATA_FROM_SERVER = [
     nodeType: 'block',
   },
   {
-    id: 'bIb5nORwNLu9fUzb5cLDW',
-    type: 'heading-three',
-    nodeType: 'block',
-    children: [
-      {
-        text: 'Testing the MDX style guide with Tailwind Typography\n',
-      },
-    ],
-  },
-  {
-    id: 'mYGKyLEKQ7W42ZmOuIfpW',
+    id: 'lNTqte__XplkztRBWCOSU',
     type: 'paragraph',
     nodeType: 'block',
     children: [
@@ -50,7 +40,7 @@ const DATA_FROM_SERVER = [
     ],
   },
   {
-    id: 'hmOL_DW8clJZz3pOWYQse',
+    id: 'K7Dn37VWOImroOCCU6dqk',
     type: 'paragraph',
     children: [
       {
@@ -60,7 +50,7 @@ const DATA_FROM_SERVER = [
     nodeType: 'block',
   },
   {
-    id: 'M3n401rVW5FoARxfSb8W3',
+    id: 'NcyaXHjIXol2RNQOCa5Dr',
     type: 'paragraph',
     children: [
       {
@@ -70,130 +60,34 @@ const DATA_FROM_SERVER = [
     nodeType: 'block',
   },
   {
-    id: 'wNXcP6kcAaYA0ApsdKPM2',
-    type: 'paragraph',
+    id: 'eBsQhQdojyMHFF1XkSLcj',
+    type: 'image',
+    nodeType: 'void',
     children: [
       {
-        text: 'The ',
-      },
-      {
-        text: '@tailwindcss/typography',
-        code: true,
-      },
-      {
-        text: ' plugin is our attempt to give you what you actually want, without any of the downsides of doing something stupid like disabling our base styles.',
+        text: '',
       },
     ],
-    nodeType: 'block',
+    data: {
+      url: 'https://res.cloudinary.com/ench-app/image/upload/v1683383160/Screen_Shot_2023-05-06_at_14.10.05_n3kxoo.png',
+      size: {
+        width: 650,
+        height: 406,
+      },
+    },
   },
   {
-    id: 'Ri1vV3_vyBENNg8a2Ke6d',
-    type: 'paragraph',
-    children: [
-      {
-        text: 'It adds a new ',
-      },
-      {
-        text: 'prose',
-        code: true,
-      },
-      {
-        text: ' class that you can slap on any block of vanilla HTML content and turn it into a beautiful, well-formatted document:',
-      },
-    ],
-    nodeType: 'block',
-  },
-  // {
-  //   id: 'wReLng8HWW9T3NGnYwDya',
-  //   type: 'code',
-  //   children: [
-  //     {
-  //       id: 'bXN76m0ScxJGz1fIa-KzG',
-  //       type: 'code-line',
-  //       nodeType: 'block',
-  //       children: [
-  //         {
-  //           text: '<article class="prose">',
-  //         },
-  //       ],
-  //       data: {
-  //         skipSettings: true,
-  //         skipDrag: true,
-  //       },
-  //     },
-  //     {
-  //       id: 'mKFrS29qhVbtmHBtQIyE6',
-  //       type: 'code-line',
-  //       nodeType: 'block',
-  //       data: {
-  //         skipSettings: true,
-  //         skipDrag: true,
-  //       },
-  //       children: [
-  //         {
-  //           text: '  <h1>Garlic bread with cheese: What the science tells us</h1>            <p>For years parents have espoused the health benefits of eating garlic bread with cheese to their children, with the food earning such an iconic status in our culture that kids will often dress up as warm, cheesy loaf for Halloween.    </p><p>But a recent study shows that the celebrated appetizer may be linked to a series of rabies cases springing up around the country.</p>',
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       id: 'Qxg51_8aJqGA3B2D9icqG',
-  //       type: 'code-line',
-  //       nodeType: 'block',
-  //       data: {
-  //         skipSettings: true,
-  //         skipDrag: true,
-  //       },
-  //       children: [
-  //         {
-  //           text: '</article>',
-  //         },
-  //       ],
-  //     },
-  //   ],
-  //   nodeType: 'block',
-  //   data: {
-  //     language: 'html',
-  //   },
-  // },
-  {
-    id: '5sxXkQoqLHmSywkDY4Vnw',
-    type: 'paragraph',
-    children: [
-      {
-        text: 'For more information about how to use the plugin and the features it includes, ',
-      },
-      {
-        id: 'L5qKbeUJm62HbAx68IAj8',
-        type: 'link',
-        children: [
-          {
-            text: 'read the documentation',
-          },
-        ],
-        nodeType: 'inline',
-        data: {
-          url: 'https://github.com/tailwindcss/typography/blob/master/README.md',
-          skipDrag: true,
-        },
-      },
-      {
-        text: '.',
-      },
-    ],
-    nodeType: 'block',
-  },
-  {
-    id: '8a46xs2TDD6wanNwthhzt',
-    type: 'heading-three',
-    nodeType: 'block',
+    id: 'hfi40TMkvot2tAJ5ZOmf7',
+    type: 'heading-two',
     children: [
       {
         text: 'What to expect from here on out',
       },
     ],
+    nodeType: 'block',
   },
   {
-    id: '8CTw-l75q4aeBz2NvGDD0',
+    id: 'zxXJHE0QZL58fi2r4gmTr',
     type: 'paragraph',
     children: [
       {
@@ -203,7 +97,7 @@ const DATA_FROM_SERVER = [
     nodeType: 'block',
   },
   {
-    id: 'du1ovg5Roc_hcMKGNcIT9',
+    id: 'qONT6A7r59wAKmWJlP5U5',
     type: 'paragraph',
     children: [
       {
@@ -213,59 +107,7 @@ const DATA_FROM_SERVER = [
     nodeType: 'block',
   },
   {
-    id: 'sTtJ36cBjriwMMNew2PDj',
-    type: 'numbered-list',
-    children: [
-      {
-        id: 'ut9l5uhQTCnESn3U2wIAr',
-        type: 'list-item',
-        children: [
-          {
-            text: 'We want everything to look good out of the box.',
-          },
-        ],
-        nodeType: 'block',
-      },
-      {
-        id: 'rl0bAHuzO0HxihGtJpQjC',
-        type: 'list-item',
-        children: [
-          {
-            text: "Really just the first reason, that's the whole point of the plugin.",
-          },
-        ],
-        nodeType: 'block',
-      },
-      {
-        id: 'Pfu0fZ-z-LQsDqSWtwkUr',
-        type: 'list-item',
-        children: [
-          {
-            text: "Here's a third pretend reason though a list with three items looks more realistic than a list with two items.",
-          },
-        ],
-        nodeType: 'block',
-      },
-    ],
-    nodeType: 'block',
-    data: {
-      depth: 1,
-      skipDrag: true,
-      skipSettings: true,
-    },
-  },
-  {
-    id: '5Il_KkrW_VXYoiodJDpeB',
-    type: 'paragraph',
-    children: [
-      {
-        text: "Now we're going to try out another header style.",
-      },
-    ],
-    nodeType: 'block',
-  },
-  {
-    id: '8Il63aEf59yRP-CMajyep',
+    id: 'gu2GOflPgMF49oX9BXHHR',
     type: 'heading-three',
     children: [
       {
@@ -275,7 +117,7 @@ const DATA_FROM_SERVER = [
     nodeType: 'block',
   },
   {
-    id: 'sgr5lrEC_5-f14Xr-rkuv',
+    id: 'H2i6bAM0FbwpmLFFZqw7o',
     type: 'paragraph',
     children: [
       {
@@ -285,7 +127,7 @@ const DATA_FROM_SERVER = [
     nodeType: 'block',
   },
   {
-    id: 'x0tlVZYaMX5wO8340q72V',
+    id: 'aRnB8mMOYnjmk3ZOM6nr_',
     type: 'paragraph',
     children: [
       {
@@ -295,14 +137,23 @@ const DATA_FROM_SERVER = [
     nodeType: 'block',
   },
   {
-    id: 'Kr5arIxA5tCLT3JzyeP8S',
-    type: 'paragraph',
-    nodeType: 'block',
+    id: 'vZAqPU-tolM0TnfURLMTx',
+    type: 'embed',
+    nodeType: 'void',
     children: [
       {
         text: '',
       },
     ],
+    data: {
+      url: 'https://www.youtube.com/watch?v=MuRaX2K6KrQ&t=4600s&ab_channel=%D0%A5%D0%B8%D1%82%D0%9D%D0%BE%D0%BD-%D0%A1%D1%82%D0%BE%D0%BF',
+      size: {
+        width: 'auto',
+        height: 'auto',
+      },
+      providerId: 'MuRaX2K6KrQ',
+      provider: 'youtube',
+    },
   },
 ];
 
@@ -312,7 +163,14 @@ const plugins = [
   HeadingOne,
   HeadingTwo,
   HeadingThree,
-  Paragraph,
+  Paragraph.extend({
+    options: {
+      HTMLAttributes: {
+        spellCheck: false,
+        className: 'text-white',
+      },
+    },
+  }),
   Blockquote,
   NumberedList,
   BulletedList,

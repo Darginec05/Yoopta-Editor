@@ -120,7 +120,7 @@ function EmbedEditor(props: Props) {
             ? window.innerWidth - OPTIONS_WIDTH - optionsButtonRect.width
             : optionsButtonRect.right - optionsButtonRect.width,
         top: showAtTop
-          ? optionsButtonRect.top - UPLOADER_HEIGHT - 5
+          ? optionsButtonRect.top - UPLOADER_HEIGHT / 2 - optionsButtonRect.height
           : optionsButtonRect.top + optionsButtonRect.height + 5,
       });
     }
@@ -166,7 +166,7 @@ function EmbedEditor(props: Props) {
   return (
     <div contentEditable={false} draggable={false} className={s.root} key={element.id}>
       <Resizable {...resizeProps} className={s.resizeLib}>
-        <Embed {...props} size={size} updateSize={updateSize} />
+        {plugin.renderer.render({ ...props, size })}
         <div className={cx(s.selectImg, { [s.selected]: selected })} />
 
         {!readOnly && (

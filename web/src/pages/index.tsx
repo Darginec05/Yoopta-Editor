@@ -1,8 +1,8 @@
 import { Inter } from 'next/font/google';
 import { useState } from 'react';
 import { Descendant } from 'slate';
-import YooptaEditor, { RenderElementProps } from '@yoopta/editor';
-import Paragraph, { ParagraphElement } from '@yoopta/paragraph';
+import YooptaEditor from '@yoopta/editor';
+import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
 import Code from '@yoopta/code';
 import Embed from '@yoopta/embed';
@@ -10,24 +10,30 @@ import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import ActionMenu from '@yoopta/action-menu-list';
-// import Toolbar from '@yoopta/toolbar';
+import Toolbar from '@yoopta/toolbar';
 
 const inter = Inter({ subsets: ['latin'] });
 
-const plugins = [
-  Paragraph,
-  // Blockquote,
-  // HeadingOne,
-  // HeadingTwo,
-  // HeadingThree,
-  // NumberedList,
-  // BulletedList,
-  // TodoList,
-  // Code,
-  // // Embed,
-];
-
 const marks = [Bold, Italic, CodeMark, Underline, Strike];
+
+const plugins = [
+  Paragraph.extend({
+    options: {
+      HTMLAttributes: {
+        className: 'text-white',
+      },
+    },
+  }),
+  Blockquote,
+  HeadingOne,
+  HeadingTwo,
+  HeadingThree,
+  NumberedList,
+  BulletedList,
+  TodoList,
+  Code,
+  Embed,
+];
 
 export default function Home() {
   const [editorValue, setEditorValue] = useState<Descendant[]>([]);
@@ -44,7 +50,7 @@ export default function Home() {
           offline
           autoFocus
         >
-          {/* <Toolbar type="bubble" /> */}
+          <Toolbar />
           <ActionMenu />
         </YooptaEditor>
       </div>

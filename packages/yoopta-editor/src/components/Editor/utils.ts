@@ -10,6 +10,8 @@ export const getDefaultParagraphLine = (id: string): YooptaBaseElement<'paragrap
 });
 
 export function getRenderFunctionFactory(plugin: YooptaPluginType): YooptaRenderElementFunc {
+  console.log('getRenderFunctionFactory', plugin);
+
   if (typeof plugin.renderer === 'function') {
     return plugin.renderer;
   }
