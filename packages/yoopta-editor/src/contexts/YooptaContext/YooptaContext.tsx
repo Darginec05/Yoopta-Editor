@@ -87,5 +87,8 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList 
 };
 
 const useYoopta = () => useContext<YooptaContextType>(YooptaContext);
+// const usePlugins = () => useContext<YooptaContextType>(YooptaContext).marks;
+// const useElements = () => useContext<YooptaContextType>(YooptaContext).marks;
+// const useMarks = () => useContext<YooptaContextType>(YooptaContext).marks;
 
 export { YooptaContextProvider, useYoopta };

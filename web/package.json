@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@svgr/webpack": "^7.0.0",
     "@types/node": "20.0.0",
     "@types/react": "18.2.5",
     "@types/react-dom": "18.2.3",
@@ -16,7 +17,7 @@
     "@yoopta/blockquote": "^1.9.4-rc",
     "@yoopta/callout": "^1.9.3-rc",
     "@yoopta/code": "^1.9.3-rc",
-    "@yoopta/editor": "1.9.5-rc",
+    "@yoopta/editor": "1.9.6-rc",
     "@yoopta/embed": "^1.9.3-rc",
     "@yoopta/headings": "^1.9.3-rc",
     "@yoopta/image": "^1.9.3-rc",
@@ -28,6 +29,7 @@
     "@yoopta/toolbar": "^1.9.3-rc",
     "@yoopta/video": "^1.9.3-rc",
     "autoprefixer": "10.4.14",
+    "classnames": "^2.3.2",
     "eslint": "8.39.0",
     "eslint-config-next": "13.4.1",
     "next": "13.4.1",

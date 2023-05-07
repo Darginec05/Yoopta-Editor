@@ -1,0 +1,25 @@
+.list {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  font-weight: 600;
+  display: flex;
+  z-index: 1;
+}
+
+.button {
+  background-color: #007aff;
+  padding: 6px 8px;
+  color: #fff;
+  border-radius: 7px;
+  margin: 0 0 0 10px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+
+  & a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+  }
+}
