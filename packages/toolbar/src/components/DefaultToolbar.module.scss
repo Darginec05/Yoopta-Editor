@@ -10,6 +10,13 @@
   pointer-events: auto;
 }
 
+.toolbarFixed {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 1;
+}
+
 .toolbar {
   align-items: stretch;
   // background: #fff;

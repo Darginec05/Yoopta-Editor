@@ -2,7 +2,6 @@ import { cx, useYoopta } from '@yoopta/editor';
 import { CSSProperties, RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { Editor, Range } from 'slate';
 import { useSlate } from 'slate-react';
-// import { isInViewport } from '../utils/isInViewport';
 import { getRectByCurrentSelection } from '../utils/selectionRect';
 import { DefaultToolbar } from './DefaultToolbar';
 import s from './DefaultToolbar.module.scss';
@@ -20,37 +19,32 @@ export type ToolbarProps = {
   marks: MarkMap;
 };
 
-type FixedProps =
-  | {
-      type?: 'fixed';
-      style?: CSSProperties;
-      className?: CSSProperties;
-      render?: (props: ToolbarProps) => JSX.Element;
-    }
-  | {
-      type?: 'fixed';
-      style?: CSSProperties;
-      className: CSSProperties;
-      render?: (props: ToolbarProps) => JSX.Element;
-    };
+type FixedProps = {
+  // WORK IN PROGRESS
+  type?: 'fixed';
+  style?: CSSProperties;
+  className?: string;
+  render?: (props: ToolbarProps) => JSX.Element;
+};
 
-type Props =
-  | FixedProps
-  | {
-      style?: CSSProperties;
-      type?: 'bubble';
-      render?: (props: ToolbarProps) => JSX.Element;
-    };
+type BubleProps = {
+  type?: 'bubble';
+  style?: CSSProperties;
+  className?: string;
+  render?: (props: ToolbarProps) => JSX.Element;
+};
+
+type Props = FixedProps | BubleProps;
 
 const STYLES: CSSProperties = { position: 'relative' };
 
-const Toolbar = ({ type = 'bubble', style, render }: Props) => {
+const Toolbar = ({ type = 'bubble', style, className, render }: Props) => {
+  const isFixedToolbar = type === 'fixed';
+
   const editor = useSlate();
   const toolbarRef = useRef<HTMLDivElement>(null);
-  const [toolbarProps, setToolbarProps] = useState({ open: false, style: {} });
+  const [toolbarProps, setToolbarProps] = useState({ open: isFixedToolbar, style: {} });
   const { marks } = useYoopta();
-
-  const isFixedToolbar = type === 'fixed';
 
   const hideToolbar = () => {
     setToolbarProps({ open: false, style: {} });
@@ -97,7 +91,7 @@ const Toolbar = ({ type = 'bubble', style, render }: Props) => {
   }, [toolbarProps.open]);
 
   const getRootProps = (): RootProps => ({
-    className: s.toolbarRoot,
+    className: cx(s.toolbarRoot, { [s.toolbarFixed]: isFixedToolbar }, className),
     ref: toolbarRef,
     style: isFixedToolbar ? style : toolbarProps.style,
   });

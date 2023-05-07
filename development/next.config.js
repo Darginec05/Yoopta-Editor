@@ -9,7 +9,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ['res.cloudinary.com'],
+    domains: ['res.cloudinary.com', 'tx.shadcn.com'],
   },
   webpack(config) {
     // Grab the existing rule that handles SVG imports

@@ -21,7 +21,7 @@ const checkIsMenuOpen = (style: CSSProperties) => style.opacity === 1 && !!style
 type Props = {
   items?: ActionMenuItem<Record<string, unknown>>[];
   render?: (props: ActionMenuRenderProps) => JSX.Element;
-  trigger?: string | null;
+  trigger?: string | null | ((event: KeyboardEvent) => boolean);
 } & (
   | { items?: ActionMenuItem<Record<string, unknown>>[]; plugins?: YooptaPluginType[] }
   | { plugins: YooptaPluginType[]; items?: never }
@@ -102,7 +102,12 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
   const isMenuOpen = checkIsMenuOpen(menuProps.fixedStyle);
 
   const filterMenuList = (item: ActionMenuRenderItem) => {
-    const filterText = searchString.replace(trigger || '', '');
+    let filterText = searchString;
+
+    if (typeof trigger === 'string') {
+      filterText = searchString.replace(trigger || '', '');
+    }
+
     return (
       filterBy(item, filterText, 'type') ||
       filterBy(item, filterText, 'label') ||
@@ -223,6 +228,11 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
 
     const parentPath = Path.parent(editor.selection.anchor.path);
     const string = Editor.string(editor, parentPath);
+
+    if (typeof trigger === 'function' && trigger(event)) {
+      event.preventDefault();
+      return showActionMenu();
+    }
 
     if (!isMenuOpen && string === trigger && string.includes(event.key)) {
       event.preventDefault();

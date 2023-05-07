@@ -1,4 +1,4 @@
-import YooptaEditor, { createYooptaPlugin, generateId } from '@yoopta/editor';
+import YooptaEditor from '@yoopta/editor';
 import Blockquote, { BlockquoteElement } from '@yoopta/blockquote';
 import Paragraph, { ParagraphElement } from '@yoopta/paragraph';
 import Callout, { CalloutElement } from '@yoopta/callout';
@@ -13,12 +13,13 @@ import Toolbar from '@yoopta/toolbar';
 import YooptaRenderer from '@yoopta/renderer';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
 import ActionMenu, { ActionMenuItem } from '@yoopta/action-menu-list';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import NextImage from 'next/image';
 
 import { Descendant } from 'slate';
 import { uploadToCloudinary } from '../../utils';
 import s from './styles.module.scss';
+import { ExtendedYooptaRender } from '@yoopta/editor/dist/utils/plugins';
 
 type PluginOptions = ImagePluginOptions | Record<string, unknown>;
 type PluginElements =
@@ -34,85 +35,112 @@ type PluginElements =
   | VideoElement
   | EmbedElement;
 
+const plugins = [
+  Paragraph.extend({
+    options: {
+      HTMLAttributes: {
+        spellCheck: false,
+      },
+    },
+  }),
+  Blockquote,
+  Callout,
+  Code,
+  Link,
+  Lists.NumberedList.extend({
+    options: {
+      HTMLAttributes: {
+        spellCheck: false,
+      },
+    },
+  }),
+  Lists.BulletedList.extend({
+    options: {
+      HTMLAttributes: {
+        spellCheck: false,
+      },
+    },
+  }),
+  Lists.TodoList.extend({
+    options: {
+      HTMLAttributes: {
+        spellCheck: false,
+      },
+    },
+  }),
+  Headings.HeadingOne.extend({
+    options: {
+      HTMLAttributes: {
+        spellCheck: false,
+      },
+    },
+  }),
+  Headings.HeadingTwo.extend({
+    options: {
+      HTMLAttributes: {
+        spellCheck: false,
+      },
+    },
+  }),
+  Headings.HeadingThree.extend({
+    options: {
+      HTMLAttributes: {
+        spellCheck: false,
+      },
+    },
+  }),
+  Embed.extend({
+    options: {
+      maxWidth: 650,
+      maxHeight: 750,
+    },
+  }),
+  Image.extend({
+    renderer: {
+      editor: (Image.getPlugin.renderer as ExtendedYooptaRender<ImageElement>).editor,
+      render: (props) => {
+        const { element, children, attributes, size } = props;
+
+        if (!element.data.url) return null;
+
+        return (
+          <div {...attributes} contentEditable={false}>
+            <NextImage
+              src={element.data.url || element.data['data-src']}
+              width={size?.width || element.data.size.width}
+              height={size?.height || element.data.size.height}
+              alt="supe iamge"
+              style={{ display: 'block', marginTop: 20 }}
+            />
+            {children}
+          </div>
+        );
+      },
+    },
+    options: {
+      maxWidth: 650,
+      maxHeight: 650,
+      onUpload: async (file: File) => {
+        const response = await uploadToCloudinary(file, 'image');
+        return { url: response.url, width: response.data.width, height: response.data.height };
+      },
+    },
+  }),
+  Video.extend({
+    options: {
+      maxWidth: 650,
+      maxHeight: 650,
+      onUpload: async (file: File) => {
+        const response = await uploadToCloudinary(file, 'video');
+        return { url: response.url, width: response.data.width, height: response.data.height };
+      },
+    },
+  }),
+];
+
 const BasicExample = () => {
   const [editorValue, setEditorValue] = useState<Descendant[]>([]);
   const [mode, toggleMode] = useState<'render' | 'edit'>('edit');
-
-  const plugins = useMemo(() => {
-    return [
-      Paragraph.extend({
-        options: {
-          HTMLAttributes: {
-            spellCheck: true,
-          },
-        },
-      }),
-      Blockquote,
-      Callout.extend({
-        options: {
-          HTMLAttributes: {
-            spellCheck: false,
-          },
-        },
-      }),
-      Code,
-      Link,
-      Lists.NumberedList,
-      Lists.BulletedList,
-      Lists.TodoList,
-      Headings.HeadingOne,
-      Headings.HeadingTwo,
-      Headings.HeadingThree,
-      Embed.extend({
-        options: {
-          maxWidth: 700,
-          maxHeight: 750,
-          HTMLAttributes: {
-            spellCheck: true,
-          },
-        },
-      }),
-      Image.extend({
-        renderer: {
-          editor: Image.getPlugin.renderer.editor,
-          render: (props) => {
-            const { element, children, attributes, size } = props;
-
-            return (
-              <div {...attributes} contentEditable={false}>
-                <NextImage
-                  src={element.data.url || element.data['data-src']}
-                  width={size?.width || element.data.size.width}
-                  height={size?.height || element.data.size.height}
-                  alt="supe iamge"
-                  style={{ display: 'block', marginTop: 20 }}
-                />
-                {children}
-              </div>
-            );
-          },
-        },
-        options: {
-          maxWidth: 700,
-          maxHeight: 650,
-          onUpload: async (file: File) => {
-            const response = await uploadToCloudinary(file, 'image');
-            return { url: response.url, width: response.data.width, height: response.data.height };
-          },
-        },
-      }),
-      Video.extend({
-        options: {
-          maxWidth: 700,
-          maxHeight: 800,
-          onUpload: async (file: File) => {
-            const response = await uploadToCloudinary(file, 'video');
-            return { url: response.url, width: response.data.width, height: response.data.height };
-          },
-        },
-      }),
-    ];
-  }, []);
 
   const actionItems: ActionMenuItem<Record<'label' | 'description' | 'icon', string>>[] = [
     {
@@ -205,42 +233,16 @@ const BasicExample = () => {
           onChange={(val: Descendant[]) => setEditorValue(val)}
           plugins={plugins}
           marks={marks}
-          placeholder="Start typing..."
-          offline="custom"
+          placeholder="Type / to open menu"
+          offline
           autoFocus
         >
-          <Toolbar />
+          <Toolbar type="bubble" />
           <ActionMenu />
         </YooptaEditor>
       ) : (
         <YooptaRenderer data={editorValue} plugins={plugins} marks={marks} />
       )}
-
-      {/* <YooptaEditor
-        value={editorValue}
-        onChange={(val: Descendant[]) => setEditorValue(val)}
-        plugins={plugins}
-        marks={marks}
-        offline={{ name: 'yoopta-dev' }}
-        placeholder="Type / to open menu"
-        // [WIP]
-        nodeElementSettings={{
-          options: {
-            handlers: {
-              onCopy: () => console.log('do something'),
-              onDelete: () => console.log('do somenthing'),
-              onDuplicate: () => console.log('do something'),
-            },
-          },
-          drag: false,
-          plus: false,
-        }}
-      >
-        <ActionMenu items={actionItems} />
-        <Toolbar type="bubble" /> */}
-      {/* // [WIP] */}
-      {/* <ChatGPT /> */}
-      {/* </YooptaEditor> */}
     </div>
   );
 };
