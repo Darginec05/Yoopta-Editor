@@ -1,8 +1,8 @@
-import { YoptaBaseElement, YoptaPlugin, YoptaPluginType } from '@yopta/editor';
+import { YooptaBaseElement, YooptaPlugin, YooptaPluginType } from '@yoopta/editor';
 import uniqWith from 'lodash.uniqwith';
 
-export function mergePlugins(plugins): YoptaPluginType[] {
-  const items: YoptaPluginType[] = plugins
+export function mergePlugins(plugins): YooptaPluginType[] {
+  const items: YooptaPluginType[] = plugins
     .map((instance) => {
       const { childPlugin, ...componentProps } = instance.getPlugin;
       return childPlugin ? [componentProps, { ...childPlugin.getPlugin, hasParent: true }] : componentProps;
@@ -14,22 +14,22 @@ export function mergePlugins(plugins): YoptaPluginType[] {
 }
 
 export function mergePluginTypesToMap(
-  plugins: YoptaPluginType<unknown, YoptaBaseElement<string>>[],
-): Record<YoptaBaseElement<string>['type'], YoptaPluginType<any, YoptaBaseElement<string>>> {
-  const yoptaPlugins = mergePlugins(plugins);
+  plugins: YooptaPluginType<unknown, YooptaBaseElement<string>>[],
+): Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>> {
+  const yooptaPlugins = mergePlugins(plugins);
 
   const PLUGINS_MAP = {};
-  yoptaPlugins.forEach((plugin) => (PLUGINS_MAP[plugin.type] = plugin));
+  yooptaPlugins.forEach((plugin) => (PLUGINS_MAP[plugin.type] = plugin));
   return PLUGINS_MAP;
 }
 
 export function mergePluginTypesToMapHMTLNodeName(
-  plugins: YoptaPluginType<unknown, YoptaBaseElement<string>>[],
-): Record<YoptaBaseElement<string>['type'], YoptaPluginType<any, YoptaBaseElement<string>>> {
-  const yoptaPlugins = mergePlugins(plugins);
+  plugins: YooptaPluginType<unknown, YooptaBaseElement<string>>[],
+): Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>> {
+  const yooptaPlugins = mergePlugins(plugins);
 
   const PLUGINS_MAP_HTML_NODE_NAMES = {};
-  yoptaPlugins.forEach((plugin) => {
+  yooptaPlugins.forEach((plugin) => {
     if (plugin.exports?.html.deserialize?.nodeName) {
       if (Array.isArray(plugin.exports?.html.deserialize?.nodeName)) {
         plugin.exports?.html.deserialize?.nodeName.forEach((nodeName) => {

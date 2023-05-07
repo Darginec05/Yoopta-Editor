@@ -1,5 +1,5 @@
 import { ToolbarProps } from './Toolbar';
-import { cx } from '@yopta/editor';
+import { cx } from '@yoopta/editor';
 import s from './DefaultToolbar.module.scss';
 
 const DefaultToolbar = ({ getRootProps, marks }: ToolbarProps) => {

@@ -1,5 +1,5 @@
-<h2 align="center">Yopta-Editor v1 🎉</h2>
-<p align="center">Yopta-Editor - is an open source notion-like editor 💥</p>
+<h2 align="center">Yoopta-Editor v1 🎉</h2>
+<p align="center">Yoopta-Editor - is an open source notion-like editor 💥</p>
 <div align="center">
 <img width="574" alt="Screen Shot 2023-01-25 at 16 04 29" src="https://user-images.githubusercontent.com/29093118/215324525-882bf403-646c-4267-bb5f-c0f37509ac09.png">
 </div>
@@ -13,7 +13,7 @@
   <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/qOQqVaxxRZ">Get started</a> | 
   <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/kUoZ2DoHnG">API</a> |
   <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/qo9nK4lDG5">FAQs</a> |
-  <a target="_blank" rel="noopener noreferrer" href="https://@yopta/editor.vercel.app/basic">Examples</a>
+  <a target="_blank" rel="noopener noreferrer" href="https://@yoopta/editor.vercel.app/basic">Examples</a>
 </p>
 
 ### Features
@@ -24,17 +24,17 @@
 - Offline ready mode
 - Shortcuts
 - A cool representation of the data in JSON format, so you can easily save the content data to the database and validate
-  You can import two components from library: `<YoptaEditor />` and `<YoptaRender />`. <br>
-  `<YoptaEditor />` - it's for building beautiful content <br>
-  `<YoptaRender />` - it's just for rendering from your saved data, without any editor tools and libraries, so it make you page loading faster
+  You can import two components from library: `<YooptaEditor />` and `<YooptaRender />`. <br>
+  `<YooptaEditor />` - it's for building beautiful content <br>
+  `<YooptaRender />` - it's just for rendering from your saved data, without any editor tools and libraries, so it make you page loading faster
 - Custom styling
   ...and other
 
 ### Install
 
-    yarn add @yopta/editor
+    yarn add @yoopta/editor
     or
-    npm install @yopta/editor
+    npm install @yoopta/editor
 
 ### Peer dependencies
 
@@ -45,10 +45,10 @@
 ### Quickstart
 
 ```jsx
-import { YoptaEditor } from '@yopta/editor';
+import { YooptaEditor } from '@yoopta/editor';
 import { useState } from 'react';
 
-import '@yopta/editor/dist/index.css';
+import '@yoopta/editor/dist/index.css';
 
 function App() {
   const [editorValue, setEditorValue] = useState([]);
@@ -57,7 +57,7 @@ function App() {
 
   return (
     <div>
-      <YoptaEditor value={editorValue} onChange={onChange} />
+      <YooptaEditor value={editorValue} onChange={onChange} />
     </div>
   );
 }
@@ -65,15 +65,15 @@ function App() {
 
 ### Check out other DEMO's 👇
 
-- <a target="_blank" rel="noopener noreferrer" href="https://@yopta/editor.vercel.app/basic">Basic usage</a>
-- <a target="_blank" rel="noopener noreferrer" href="https://@yopta/editor.vercel.app/offline">Offline mode</a>
-- <a target="_blank" rel="noopener noreferrer" href="https://@yopta/editor.vercel.app/media">Working with media</a>
-- <a target="_blank" rel="noopener noreferrer" href="https://@yopta/editor.vercel.app/render">Just rendering</a>
-- <a target="_blank" rel="noopener noreferrer" href="https://@yopta/editor.vercel.app/styling">Custom styling</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://@yoopta/editor.vercel.app/basic">Basic usage</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://@yoopta/editor.vercel.app/offline">Offline mode</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://@yoopta/editor.vercel.app/media">Working with media</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://@yoopta/editor.vercel.app/render">Just rendering</a>
+- <a target="_blank" rel="noopener noreferrer" href="https://@yoopta/editor.vercel.app/styling">Custom styling</a>
   <br>
   <br>
 
-<div style="padding: 10px">❗ Yopta-Editor is on <span style="color: #007aff">BETA</span> version now. The core functionality works, but you may encounter some bugs.
+<div style="padding: 10px">❗ Yoopta-Editor is on <span style="color: #007aff">BETA</span> version now. The core functionality works, but you may encounter some bugs.
 I have big plans for the v2 version with a lot of cool features and improvements.
 Let's build together the best open source editor ever ☝ <br>
 Read more about future plans <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/5iK8VNiBI8">"What's next Lebovski?"</a>

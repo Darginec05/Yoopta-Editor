@@ -1,2 +1,2 @@
-import { YoptaPlugin, YoptaPluginType } from '@yopta/editor';
+import { YooptaPlugin, YooptaPluginType } from '@yoopta/editor';
 import { CSSProperties, MouseEvent, ReactNode } from 'react';

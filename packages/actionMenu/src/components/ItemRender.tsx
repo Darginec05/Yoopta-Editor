@@ -1,4 +1,4 @@
-import { cx } from '@yopta/editor';
+import { cx } from '@yoopta/editor';
 import { ReactNode } from 'react';
 import { ActionMenuRenderItem, ActionMenuRenderItemProps } from '../types';
 import s from './ItemRender.module.scss';

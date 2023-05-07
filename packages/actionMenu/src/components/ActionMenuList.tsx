@@ -1,4 +1,4 @@
-import { HOTKEYS, YoEditor, YoptaBaseElement, YoptaPluginType } from '@yopta/editor';
+import { HOTKEYS, YoEditor, YooptaBaseElement, YooptaPluginType } from '@yoopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Element, Editor, Path, Point, Transforms, Text } from 'slate';
@@ -23,8 +23,8 @@ type Props = {
   render?: (props: ActionMenuRenderProps) => JSX.Element;
   trigger?: string | null;
 } & (
-  | { items?: ActionMenuItem<Record<string, unknown>>[]; plugins?: YoptaPluginType[] }
-  | { plugins: YoptaPluginType[]; items?: never }
+  | { items?: ActionMenuItem<Record<string, unknown>>[]; plugins?: YooptaPluginType[] }
+  | { plugins: YooptaPluginType[]; items?: never }
 );
 
 type MenuProps = { fixedStyle: CSSProperties; absoluteStyle: CSSProperties; point: Point | null };
@@ -123,7 +123,7 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
     if (items) {
       menuList = items.map(mapCustomMenuItems);
     } else {
-      menuList = (plugins as YoptaPluginType[])
+      menuList = (plugins as YooptaPluginType[])
         .filter((item) => !item.hasParent)
         .map((item) => ({ type: item.type, createElement: item.createElement, defineElement: item.defineElement }));
     }
@@ -256,7 +256,7 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
 
     if (focusableElement > renderMenuItems.length - 1) setFocusableElement(0);
 
-    const contentEditor = document.querySelector('#yopta-contenteditable');
+    const contentEditor = document.querySelector('#yoopta-contenteditable');
     contentEditor?.addEventListener('keyup', handleKeyup);
 
     if (isMenuOpen) document.addEventListener('keydown', handleKeydown, true);

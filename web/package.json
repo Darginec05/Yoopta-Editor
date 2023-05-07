@@ -1,0 +1,42 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@types/node": "20.0.0",
+    "@types/react": "18.2.5",
+    "@types/react-dom": "18.2.3",
+    "@yoopta/action-menu-list": "^1.9.3-rc",
+    "@yoopta/blockquote": "^1.9.4-rc",
+    "@yoopta/callout": "^1.9.3-rc",
+    "@yoopta/code": "^1.9.3-rc",
+    "@yoopta/editor": "1.9.5-rc",
+    "@yoopta/embed": "^1.9.3-rc",
+    "@yoopta/headings": "^1.9.3-rc",
+    "@yoopta/image": "^1.9.3-rc",
+    "@yoopta/link": "^1.9.3-rc",
+    "@yoopta/lists": "^1.9.3-rc",
+    "@yoopta/marks": "^1.9.3-rc",
+    "@yoopta/paragraph": "^1.9.5-rc",
+    "@yoopta/renderer": "^1.9.3-rc",
+    "@yoopta/toolbar": "^1.9.3-rc",
+    "@yoopta/video": "^1.9.3-rc",
+    "autoprefixer": "10.4.14",
+    "eslint": "8.39.0",
+    "eslint-config-next": "13.4.1",
+    "next": "13.4.1",
+    "postcss": "8.4.23",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "slate": ">=0.72.3",
+    "slate-react": ">=0.72.4",
+    "tailwindcss": "3.3.2",
+    "typescript": "5.0.4"
+  }
+}

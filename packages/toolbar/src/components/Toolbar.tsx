@@ -1,4 +1,4 @@
-import { cx, useYopta } from '@yopta/editor';
+import { cx, useYoopta } from '@yoopta/editor';
 import { CSSProperties, RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { Editor, Range } from 'slate';
 import { useSlate } from 'slate-react';
@@ -22,13 +22,13 @@ export type ToolbarProps = {
 
 type FixedProps =
   | {
-      type: 'fixed';
+      type?: 'fixed';
       style?: CSSProperties;
       className?: CSSProperties;
       render?: (props: ToolbarProps) => JSX.Element;
     }
   | {
-      type: 'fixed';
+      type?: 'fixed';
       style?: CSSProperties;
       className: CSSProperties;
       render?: (props: ToolbarProps) => JSX.Element;
@@ -38,7 +38,7 @@ type Props =
   | FixedProps
   | {
       style?: CSSProperties;
-      type: 'bubble';
+      type?: 'bubble';
       render?: (props: ToolbarProps) => JSX.Element;
     };
 
@@ -48,7 +48,7 @@ const Toolbar = ({ type = 'bubble', style, render }: Props) => {
   const editor = useSlate();
   const toolbarRef = useRef<HTMLDivElement>(null);
   const [toolbarProps, setToolbarProps] = useState({ open: false, style: {} });
-  const { marks } = useYopta();
+  const { marks } = useYoopta();
 
   const isFixedToolbar = type === 'fixed';
 
@@ -84,7 +84,7 @@ const Toolbar = ({ type = 'bubble', style, render }: Props) => {
   }, [editor.selection]);
 
   useEffect(() => {
-    const editorEl = document.getElementById('yopta-contenteditable');
+    const editorEl = document.getElementById('yoopta-contenteditable');
 
     if (toolbarProps.open) {
       editorEl!.addEventListener('blur', hideToolbar);
