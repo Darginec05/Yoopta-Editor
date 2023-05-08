@@ -238,7 +238,7 @@ const BasicExample = () => {
           offline
           autoFocus
         >
-          <Toolbar />
+          <Toolbar render={MediumToolbar} />
           <ActionMenu items={actionItems} render={NotionActionMenu} />
         </YooptaEditor>
       ) : (

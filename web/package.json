@@ -28,6 +28,8 @@
     "@yoopta/renderer": "^1.9.4-rc",
     "@yoopta/toolbar": "^1.9.4-rc",
     "@yoopta/video": "^1.9.4-rc",
+    "slate": ">=0.72.3",
+    "slate-react": ">=0.72.4",
     "autoprefixer": "10.4.14",
     "classnames": "^2.3.2",
     "eslint": "8.39.0",
@@ -37,8 +39,6 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "sass": "^1.62.1",
-    "slate": ">=0.72.3",
-    "slate-react": ">=0.72.4",
     "tailwindcss": "3.3.2",
     "typescript": "5.0.4"
   }
