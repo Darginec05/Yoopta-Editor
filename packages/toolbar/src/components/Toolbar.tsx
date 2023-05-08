@@ -1,5 +1,5 @@
-import { cx, useYoopta } from '@yoopta/editor';
-import { CSSProperties, RefObject, useEffect, useMemo, useRef, useState } from 'react';
+import { cx } from '@yoopta/editor';
+import { CSSProperties, RefObject, useEffect, useRef, useState } from 'react';
 import { Editor, Range } from 'slate';
 import { useSlate } from 'slate-react';
 import { getRectByCurrentSelection } from '../utils/selectionRect';
@@ -12,11 +12,8 @@ type RootProps = {
   style?: CSSProperties;
 };
 
-type MarkMap = { [key: string]: { toggle: (options?: { only: boolean }) => void; isActive: boolean } };
-
 export type ToolbarProps = {
   getRootProps: () => RootProps;
-  marks: MarkMap;
 };
 
 type FixedProps = {
@@ -44,7 +41,6 @@ const Toolbar = ({ type = 'bubble', style, className, render }: Props) => {
   const editor = useSlate();
   const toolbarRef = useRef<HTMLDivElement>(null);
   const [toolbarProps, setToolbarProps] = useState({ open: isFixedToolbar, style: {} });
-  const { marks } = useYoopta();
 
   const hideToolbar = () => {
     setToolbarProps({ open: false, style: {} });
@@ -98,7 +94,6 @@ const Toolbar = ({ type = 'bubble', style, className, render }: Props) => {
 
   const renderProps: ToolbarProps = {
     getRootProps,
-    marks,
   };
 
   if (typeof render === 'function') {

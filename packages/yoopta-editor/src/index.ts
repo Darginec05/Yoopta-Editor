@@ -11,8 +11,9 @@ export { isValidYooptaNodes } from './utils/validate';
 export { generateId } from './utils/generateId';
 export { HOTKEYS } from './utils/hotkeys';
 
-// [WIP]
-export { useYoopta } from './contexts/YooptaContext/YooptaContext';
+// [WIP] - hooks
+export { useYoopta, useMarks, useElements } from './contexts/YooptaContext/YooptaContext';
+export type { ElementsMap, MarksMap } from './contexts/YooptaContext/YooptaContext';
 export { deepClone } from './utils/deepClone';
 export { createYooptaMark } from './utils/marks';
 export { isElementActive, getElementByPath } from './utils/nodes';

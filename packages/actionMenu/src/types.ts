@@ -35,7 +35,6 @@ export type ActionMenuRenderProps = {
   items: ActionMenuRenderItem[];
   isNotFound: boolean;
   groups: Groups;
-  plugins: ActionMenuRenderPlugin;
   getRootProps: () => ActionMenuRenderRootProps;
   getItemProps: (type) => ActionMenuRenderItemProps;
 };

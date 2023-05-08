@@ -4,9 +4,6 @@ import s from './NotionActionMenu.module.scss';
 const NotionActionMenu = (props: ActionMenuRenderProps) => {
   const { groups, isNotFound, getItemProps, getRootProps, items } = props;
 
-  console.log('items', items);
-  console.log('groups', groups);
-
   return (
     <div {...getRootProps()} className={s.dropdown}>
       <div className={s.elementList}>

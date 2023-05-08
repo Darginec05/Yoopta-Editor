@@ -1,4 +1,4 @@
-import { HOTKEYS, YoEditor, YooptaBaseElement, YooptaPluginType } from '@yoopta/editor';
+import { HOTKEYS, YoEditor, YooptaBaseElement, YooptaPluginType, useElements } from '@yoopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Element, Editor, Path, Point, Transforms, Text } from 'slate';
@@ -44,6 +44,7 @@ const ACTION_MENU_ITEM_DATA_ATTR = 'data-action-menu-item';
 
 const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.Element => {
   const editor = useSlate() as YoEditor;
+  const elements = useElements();
   const actionMenuRef = useRef<HTMLDivElement>(null);
   const [menuProps, setMenuProps] = useState<MenuProps>(MENU_PROPS_VALUE);
   const [searchString, setSearchString] = useState('');
@@ -205,7 +206,7 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
 
       if (!selectedType) return;
 
-      toggleNode(selectedType);
+      toggleElement(selectedType);
 
       event.preventDefault();
       event.stopPropagation();
@@ -277,33 +278,10 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
     };
   }, [editor, isMenuOpen, focusableElement, renderMenuItems]);
 
-  const toggleNode = (type: string) => {
+  const toggleElement = (type: string) => {
     const menuItem = renderMenuItems.find((item) => item.type === type);
     if (!menuItem) return;
-
-    Editor.withoutNormalizing(editor, () => {
-      if (!editor.selection) return;
-
-      const { offset, path } = editor.selection.anchor;
-      Transforms.delete(editor, {
-        at: {
-          anchor: { path, offset: 0 },
-          focus: { path, offset },
-        },
-      });
-
-      const [parentNode, parentPath] = Editor.parent(editor, Path.parent(editor.selection.anchor.path));
-
-      if (Element.isElement(parentNode) && !Editor.isEditor(parentNode)) {
-        Transforms.unwrapNodes(editor, {
-          at: parentPath,
-          match: (n) =>
-            !Editor.isEditor(n) && !Text.isText(n) && Element.isElement(parentNode) && n.type === parentNode.type,
-        });
-      }
-
-      menuItem.createElement?.(editor);
-    });
+    elements[type]?.toggle({ shouldDeleteText: true });
   };
 
   const getRootProps = (): ActionMenuRenderRootProps => ({
@@ -311,21 +289,11 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
   });
 
   const getItemProps = (type: string): ActionMenuRenderItemProps => ({
-    onClick: () => toggleNode(type),
+    onClick: () => toggleElement(type),
     [ACTION_MENU_ITEM_DATA_ATTR]: true,
     'aria-selected': false,
     'data-element-type': type,
   });
-
-  const plugingMap = useMemo<ActionMenuRenderPlugin>(() => {
-    const map: ActionMenuRenderPlugin = {};
-
-    renderMenuItems.map((item) => {
-      map[item.type] = { methods: { toggle: () => toggleNode(item.type) } };
-    });
-
-    return map;
-  }, [renderMenuItems]);
 
   const renderProps: ActionMenuRenderProps = {
     items: renderMenuItems,
@@ -333,7 +301,6 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
     isNotFound,
     getRootProps,
     getItemProps,
-    plugins: plugingMap,
   };
 
   if (typeof render === 'function') {
