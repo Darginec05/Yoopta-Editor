@@ -79,10 +79,11 @@ export default function Home() {
           placeholder="Start typing..."
           offline="medium-example"
           autoFocus
-        >
-          <Toolbar type="bubble" render={MediumToolbar} />
-          <ActionMenu />
-        </YooptaEditor>
+          tools={{
+            Toolbar: <Toolbar type="bubble" render={MediumToolbar} />,
+            ActionMenu: <ActionMenu />,
+          }}
+        />
       </div>
     </main>
   );

@@ -13,7 +13,7 @@ export type HoveredElement = YooptaBaseElement<string> | null;
 export type YooptaContextReturnValues = {
   marks: MarksMap;
   elements: ElementsMap;
-  tools: YooptaTools;
+  tools?: YooptaTools;
 };
 
 export type YooptaContextHandlers = {};
@@ -28,7 +28,7 @@ type YooptaContextProps = {
   children: ReactNode;
   plugins: YooptaPlugin<any, any>[];
   marks?: YooptaMark[];
-  tools: YooptaTools;
+  tools?: YooptaTools;
 };
 
 export type ToggleOptions = {

@@ -159,10 +159,11 @@ export default function Home() {
           placeholder="Start typing..."
           offline="notion-example"
           autoFocus
-        >
-          <Toolbar type="bubble" render={NotionToolbar} />
-          <ActionMenu render={NotionActionMenu} items={actionItems} />
-        </YooptaEditor>
+          tools={{
+            Toolbar: <Toolbar type="bubble" render={NotionToolbar} />,
+            ActionMenu: <ActionMenu render={NotionActionMenu} items={actionItems} />,
+          }}
+        />
       </div>
     </main>
   );

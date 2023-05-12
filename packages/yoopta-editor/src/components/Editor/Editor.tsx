@@ -269,9 +269,6 @@ const EditorYoopta = ({
       const lastNode: any = getElementByPath(editor, lastPath, 'highest');
       const lastNodeText = Editor.string(editor, lastPath);
 
-      console.log('lastNode', lastNode);
-      console.log('lastNodeText', lastNodeText);
-
       const location = {
         anchor: { path: lastPath, offset: 0 },
         focus: { path: lastPath, offset: 0 },
@@ -309,15 +306,17 @@ const EditorYoopta = ({
   };
 
   const yooptaTools = useMemo(() => {
-    const editorTools = tools || {};
-    const hasEditorChildren = Object.keys(editorTools).length > 0;
+    if (!tools) return null;
+    const hasEditorChildren = Object.keys(tools).length > 0;
     if (!hasEditorChildren) return null;
-    return Object.keys(editorTools).map((toolkey) => {
-      const tool = editorTools[toolkey] as ReactNode;
 
-      if (!React.isValidElement(editorTools[toolkey])) return null;
+    return Object.keys(tools).map((toolkey) => {
+      const tool = tools[toolkey] as ReactNode;
+
+      if (!React.isValidElement(tools[toolkey])) return null;
       return React.cloneElement(tool, {
         key: toolkey,
+        plugins,
         ...tool?.props,
       });
     });

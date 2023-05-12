@@ -249,7 +249,7 @@ const BasicExample = () => {
           placeholder="Type / to open menu"
           tools={{
             Toolbar: <Toolbar render={NotionToolbar} />,
-            ActionMenu: <ActionMenu items={actionItems} />,
+            ActionMenu: <ActionMenu items={actionItems} render={NotionActionMenu} />,
             ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" />,
           }}
         />

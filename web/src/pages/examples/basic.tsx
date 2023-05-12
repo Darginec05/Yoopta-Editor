@@ -78,10 +78,11 @@ export default function Home() {
           placeholder="Start typing..."
           offline
           autoFocus
-        >
-          <Toolbar type="bubble" />
-          <ActionMenu />
-        </YooptaEditor>
+          tools={{
+            Toolbar: <Toolbar type="bubble" />,
+            ActionMenu: <ActionMenu />,
+          }}
+        />
       </div>
     </main>
   );
