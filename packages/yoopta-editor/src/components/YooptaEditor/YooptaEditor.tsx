@@ -27,19 +27,26 @@ export type YooptaNodeElementSettings = {
   plus?: boolean;
 };
 
+export type YooptaTools = {
+  ActionMenu?: ReactNode;
+  Toolbar?: ReactNode;
+  ChatGPT?: ReactNode;
+  [x: string]: ReactNode;
+};
+
 export type YooptaEditorProps = {
   onChange: (_value: Descendant[]) => void;
   value: Descendant[];
   key?: Key;
   placeholder?: string;
   plugins: YooptaPlugin<any, any>[];
-  children?: ReactNode | ReactNode[];
   readOnly?: boolean;
   autoFocus?: boolean;
   offline?: OFFLINE_STORAGE;
   marks?: YooptaMark[];
   nodeElementSettings?: YooptaNodeElementSettings;
   className?: string;
+  tools?: YooptaTools;
 };
 
 const YooptaEditor = ({
@@ -48,12 +55,12 @@ const YooptaEditor = ({
   plugins,
   marks,
   readOnly,
-  children,
   onChange,
   placeholder,
   autoFocus = true,
   offline,
   className,
+  tools,
 }: YooptaEditorProps) => {
   const storageName = getStorageName(offline);
   const [val, setVal] = useState(() => getInitialState(storageName, offline, value));
@@ -125,14 +132,14 @@ const YooptaEditor = ({
 
   return (
     <Slate editor={editor} value={val} onChange={onChangeValue} key={key}>
-      <YooptaContextProvider plugins={plugins} marks={marks} tools={children}>
+      <YooptaContextProvider plugins={plugins} marks={marks} tools={tools}>
         <NodeSettingsProvider>
           <EditorYoopta
             editor={editor}
             readOnly={readOnly}
             placeholder={placeholder}
             plugins={yooptaPlugins}
-            children={children}
+            tools={tools}
             marks={marks}
             PLUGINS_MAP={PLUGINS_MAP}
             className={className}

@@ -6,19 +6,21 @@ import { mergePlugins, YooptaPlugin, YooptaPluginType } from '../../utils/plugin
 import { YooptaMark } from '../../utils/marks';
 import { getDefaultParagraphLine } from '../../components/Editor/utils';
 import { generateId } from '../../utils/generateId';
+import { YooptaTools } from '../../components/YooptaEditor/YooptaEditor';
 
 export type HoveredElement = YooptaBaseElement<string> | null;
 
 export type YooptaContextReturnValues = {
   marks: MarksMap;
   elements: ElementsMap;
+  tools: YooptaTools;
 };
 
 export type YooptaContextHandlers = {};
 
 export type YooptaContextType = YooptaContextReturnValues;
 
-const defaultValues: YooptaContextReturnValues = { marks: {}, elements: {} };
+const defaultValues: YooptaContextReturnValues = { marks: {}, elements: {}, tools: {} };
 
 const YooptaContext = React.createContext<YooptaContextType>(defaultValues);
 
@@ -26,8 +28,7 @@ type YooptaContextProps = {
   children: ReactNode;
   plugins: YooptaPlugin<any, any>[];
   marks?: YooptaMark[];
-  // [TODO] - add types
-  tools: any;
+  tools: YooptaTools;
 };
 
 export type ToggleOptions = {
@@ -50,7 +51,7 @@ export type MarksMap = {
   };
 };
 
-const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList }: YooptaContextProps) => {
+const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList, tools }: YooptaContextProps) => {
   const editor = useSlate();
 
   const toggleNodeElement = (plugin, options?: ToggleOptions) => {
@@ -146,8 +147,12 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList 
     return mapper;
   }, [markList, editor.selection]);
 
+  const yooptaTools = useMemo(() => {
+    return tools;
+  }, [tools]);
+
   const value = useMemo(() => {
-    return { elements, marks };
+    return { elements, marks, tools: yooptaTools };
   }, [editor.selection, marks, elements]);
 
   return <YooptaContext.Provider value={value}>{children}</YooptaContext.Provider>;
@@ -156,6 +161,6 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList 
 const useYoopta = () => useContext<YooptaContextType>(YooptaContext);
 const useMarks = () => useContext<YooptaContextType>(YooptaContext).marks;
 const useElements = () => useContext<YooptaContextType>(YooptaContext).elements;
-// const useTools = () => useContext<YooptaContextType>(YooptaContext).marks;
+const useTools = () => useContext<YooptaContextType>(YooptaContext).tools;
 
-export { YooptaContextProvider, useYoopta, useMarks, useElements };
+export { YooptaContextProvider, useYoopta, useMarks, useElements, useTools };

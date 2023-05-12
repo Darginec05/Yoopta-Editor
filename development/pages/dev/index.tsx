@@ -10,6 +10,7 @@ import Image, { ImageElement, ImagePluginOptions } from '@yoopta/image';
 import Video, { VideoElement } from '@yoopta/video';
 import Embed, { EmbedElement } from '@yoopta/embed';
 import Toolbar from '@yoopta/toolbar';
+import ChatGPT from '@yoopta/chat-gpt-assistant';
 import YooptaRenderer from '@yoopta/renderer';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
 import ActionMenu, { ActionMenuItem } from '@yoopta/action-menu-list';
@@ -19,8 +20,9 @@ import { MediumToolbar } from '../../components/Toolbars/MediumToolbar';
 
 import { Descendant } from 'slate';
 import { uploadToCloudinary } from '../../utils';
-import s from './styles.module.scss';
 import { NotionActionMenu } from '../../components/SuggestionList/NotionActionMenu';
+import s from './styles.module.scss';
+import { NotionToolbar } from '../../components/Toolbars/NotionToolbar';
 
 type PluginOptions = ImagePluginOptions | Record<string, unknown>;
 type PluginElements =
@@ -230,17 +232,19 @@ const BasicExample = () => {
     <div className={s.container}>
       {isEdit ? (
         <YooptaEditor
+          offline
+          autoFocus
           value={editorValue}
           onChange={(val: Descendant[]) => setEditorValue(val)}
           plugins={plugins}
           marks={marks}
           placeholder="Type / to open menu"
-          offline
-          autoFocus
-        >
-          <Toolbar render={MediumToolbar} />
-          <ActionMenu items={actionItems} render={NotionActionMenu} />
-        </YooptaEditor>
+          tools={{
+            Toolbar: <Toolbar render={NotionToolbar} />,
+            ActionMenu: <ActionMenu items={actionItems} render={NotionActionMenu} />,
+            ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" />,
+          }}
+        />
       ) : (
         <YooptaRenderer data={editorValue} plugins={plugins} marks={marks} />
       )}

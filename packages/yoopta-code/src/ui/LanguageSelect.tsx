@@ -13,6 +13,7 @@ const LanguageSelect = ({ onChange, value }) => {
         <option value="swift">Swift</option>
         <option value="r">R</option>
         <option value="ruby">Ruby</option>
+        <option value="bash">Bash</option>
         <option value="c">C</option>
         <option value="cpp">C++</option>
         <option value="matlab">Matlab</option>

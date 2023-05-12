@@ -1,11 +1,13 @@
 import { ToolbarProps } from '@yoopta/toolbar';
+import { useMarks } from '@yoopta/editor';
 import cx from 'classnames';
 import CodeIcon from './icons/notion/code.svg';
 
 import s from './NotionToolbar.module.scss';
 
 const NotionToolbar = (props: ToolbarProps) => {
-  const { getRootProps, marks } = props;
+  const { getRootProps } = props;
+  const marks = useMarks();
 
   return (
     <div {...getRootProps()}>

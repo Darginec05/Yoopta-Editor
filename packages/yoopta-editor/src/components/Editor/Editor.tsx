@@ -16,16 +16,17 @@ import { YoEditor, YooptaBaseElement } from '../../types';
 import { deepClone } from '../../utils/deepClone';
 import { isKeyHotkey } from 'is-hotkey';
 import { serializeHtml } from '../../utils/serializeHTML';
+import { YooptaTools } from '../YooptaEditor/YooptaEditor';
 
 type YooptaProps = {
   editor: YoEditor;
   placeholder?: string;
   readOnly?: boolean;
   plugins: ParentYooptaPlugin[];
-  children: ReactNode | ReactNode[];
   marks?: YooptaMark[];
   PLUGINS_MAP: Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>>;
   className?: string;
+  tools?: YooptaTools;
 };
 
 // [TODO] - defaultNode move to common event handler to avoid repeated id's
@@ -36,10 +37,10 @@ const EditorYoopta = ({
   placeholder,
   marks,
   readOnly,
-  children,
   plugins,
   className,
   PLUGINS_MAP,
+  tools,
 }: YooptaProps) => {
   useScrollToElement();
   const editorRef = useRef<HTMLDivElement>(null);
@@ -307,26 +308,24 @@ const EditorYoopta = ({
     stopPropagation(e);
   };
 
-  const childTools = useMemo(() => {
-    const hasEditorChildren = React.Children.count(children) > 0;
+  const yooptaTools = useMemo(() => {
+    const editorTools = tools || {};
+    const hasEditorChildren = Object.keys(editorTools).length > 0;
     if (!hasEditorChildren) return null;
+    return Object.keys(editorTools).map((toolkey) => {
+      const tool = editorTools[toolkey] as ReactNode;
 
-    return React.Children.map(children, (child) => {
-      if (!React.isValidElement(child)) return null;
-
-      return React.cloneElement(child, {
-        ...child.props,
-        plugins,
-        marks: marks?.map((mark) => mark.type),
-        editorRef,
-        PLUGINS_MAP,
+      if (!React.isValidElement(editorTools[toolkey])) return null;
+      return React.cloneElement(tool, {
+        key: toolkey,
+        ...tool?.props,
       });
     });
-  }, [plugins, marks, editorRef.current]);
+  }, [tools]);
 
   return (
     <div id="yoopta-editor" className={className} ref={editorRef} onMouseDown={handleEmptyZoneClick}>
-      {childTools}
+      {yooptaTools}
       <Editable
         id="yoopta-contenteditable"
         renderLeaf={renderLeaf}

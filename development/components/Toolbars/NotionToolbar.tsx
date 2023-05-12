@@ -1,18 +1,25 @@
+import { useMarks, useTools } from '@yoopta/editor';
 import { ToolbarProps } from '@yoopta/toolbar';
 import cx from 'classnames';
+import { useState } from 'react';
 import CodeIcon from './icons/notion/code.svg';
 
 import s from './NotionToolbar.module.scss';
 
 const NotionToolbar = (props: ToolbarProps) => {
-  const { getRootProps, marks } = props;
+  const [isCHatGPT, setIsChatGPT] = useState(false);
+  const { getRootProps } = props;
+  const marks = useMarks();
+  // const { ChatGPT } = useTools();
 
   return (
     <div {...getRootProps()}>
       <div className={s.toolbar}>
         <div className={s.group}>
-          <button type="button" className={s.item}>
+          <button type="button" className={s.item} onClick={() => setIsChatGPT(true)}>
             <span className={s.askGPT}>Ask GPT {`[WIP]`}</span>
+            {/* {isCHatGPT && ChatGPT} */}
+            {/* {tools.ActionMenu.show({ style: { marginLeft: '10px' } })} */}
           </button>
         </div>
         <div className={s.group}>

@@ -18,6 +18,7 @@ import 'prismjs/components/prism-java';
 import 'prismjs/components/prism-csharp';
 import 'prismjs/components/prism-swift';
 import 'prismjs/components/prism-r';
+import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-ruby';
 import 'prismjs/components/prism-c';
 import 'prismjs/components/prism-cpp';

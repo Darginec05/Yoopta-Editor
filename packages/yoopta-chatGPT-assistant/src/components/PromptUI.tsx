@@ -10,8 +10,6 @@ const PromptUI = ({ value, onChange, askChatGPT, loading, onClose }) => {
 
   const handleKeydown = (event) => {
     if (HOTKEYS.isBackspace(event)) {
-      console.log(value);
-
       if (value.length === 0) {
         return onClose();
       }

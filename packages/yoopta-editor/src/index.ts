@@ -12,7 +12,7 @@ export { generateId } from './utils/generateId';
 export { HOTKEYS } from './utils/hotkeys';
 
 // [WIP] - hooks
-export { useYoopta, useMarks, useElements } from './contexts/YooptaContext/YooptaContext';
+export { useYoopta, useMarks, useElements, useTools } from './contexts/YooptaContext/YooptaContext';
 export type { ElementsMap, MarksMap } from './contexts/YooptaContext/YooptaContext';
 export { deepClone } from './utils/deepClone';
 export { createYooptaMark } from './utils/marks';
