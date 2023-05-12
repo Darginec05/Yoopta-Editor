@@ -1433,9 +1433,9 @@
     prism-material-themes "^1.0.4"
     prismjs "^1.29.0"
 
-"@yoopta/editor@1.9.8-rc":
-  version "1.9.8-rc"
-  resolved "https://registry.yarnpkg.com/@yoopta/editor/-/editor-1.9.8-rc.tgz#767f7ff7906840f16c0c9341a77975e3fd65051a"
+"@yoopta/editor@1.9.9-rc":
+  version "1.9.9-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/editor/-/editor-1.9.9-rc.tgz#767f7ff7906840f16c0c9341a77975e3fd65051a"
   integrity sha512-3Dh6eyrRseCuq6hstmIzBX2RaoP6xo4yGjX2MMLZo4to0EliHP+q7jBj7mX61j00fMXtgNwZRMqY4UV6VTE5jQ==
   dependencies:
     body-scroll-lock "^4.0.0-beta.0"
