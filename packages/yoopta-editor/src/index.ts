@@ -17,6 +17,7 @@ export type { ElementsMap, MarksMap } from './contexts/YooptaContext/YooptaConte
 export { deepClone } from './utils/deepClone';
 export { createYooptaMark } from './utils/marks';
 export { isElementActive, getElementByPath } from './utils/nodes';
+export { getElementClassname } from './utils/getElementClassname';
 export type { YooptaPluginType, YooptaPluginEventHandlers, HandlersOptions } from './utils/plugins';
 export type { YooptaMarksConfig, YooptaMark } from './utils/marks';
 export type { YoEditor, RenderYooptaElementProps, YooptaBaseElement, Modify } from './types';

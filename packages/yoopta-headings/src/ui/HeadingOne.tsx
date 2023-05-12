@@ -1,4 +1,4 @@
-import { createYooptaPlugin, generateId, RenderYooptaElementProps } from '@yoopta/editor';
+import { createYooptaPlugin, generateId, getElementClassname, RenderYooptaElementProps } from '@yoopta/editor';
 import { Transforms } from 'slate';
 import { HeadingOneElement, HeadingOptions } from '../types';
 import s from './HeadingOne.module.scss';
@@ -10,7 +10,13 @@ const HeadingOneRender = ({
   HTMLAttributes,
 }: RenderYooptaElementProps<HeadingOneElement>) => {
   return (
-    <h1 id={element.id} draggable={false} className={s['heading-one']} {...HTMLAttributes} {...attributes}>
+    <h1
+      id={element.id}
+      draggable={false}
+      {...HTMLAttributes}
+      className={getElementClassname<HeadingOneElement>({ element, HTMLAttributes, className: s['heading-one'] })}
+      {...attributes}
+    >
       {children}
     </h1>
   );

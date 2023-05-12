@@ -10,7 +10,6 @@ import {
   ActionMenuRenderRootProps,
   ActionMenuRenderProps,
   ActionMenuRenderItemProps,
-  ActionMenuRenderPlugin,
   Groups,
 } from '../types';
 import { DefaultMenuRender } from './DefaultMenuRender';

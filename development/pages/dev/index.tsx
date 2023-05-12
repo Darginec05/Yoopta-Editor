@@ -43,11 +43,19 @@ const plugins = [
     options: {
       HTMLAttributes: {
         spellCheck: false,
+        className: 's.Paragraph',
       },
     },
   }),
   Blockquote,
-  Callout,
+  Callout.extend({
+    options: {
+      HTMLAttributes: {
+        spellCheck: false,
+        className: s.callout,
+      },
+    },
+  }),
   Code,
   Link,
   Lists.NumberedList.extend({
@@ -241,7 +249,7 @@ const BasicExample = () => {
           placeholder="Type / to open menu"
           tools={{
             Toolbar: <Toolbar render={NotionToolbar} />,
-            ActionMenu: <ActionMenu items={actionItems} render={NotionActionMenu} />,
+            ActionMenu: <ActionMenu items={actionItems} />,
             ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" />,
           }}
         />

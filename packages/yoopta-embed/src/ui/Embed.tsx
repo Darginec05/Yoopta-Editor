@@ -1,4 +1,4 @@
-import { RenderYooptaElementProps } from '@yoopta/editor';
+import { getElementClassname, RenderYooptaElementProps } from '@yoopta/editor';
 import { ReactNode } from 'react';
 import DailyMotion from '../providers/DayliMotion';
 import DefaultEmbed from '../providers/DefaultEmbed';
@@ -27,7 +27,13 @@ const Embed = ({ attributes, element, children, HTMLAttributes }: Props) => {
   if (typeof element.data.provider === 'string' && element.data.providerId && PROVIDERS[element.data.provider]) {
     const ProviderComponent = PROVIDERS[element.data.provider];
     return (
-      <div {...attributes} className={s.embedElement} contentEditable={false} draggable={false} {...HTMLAttributes}>
+      <div
+        {...attributes}
+        contentEditable={false}
+        draggable={false}
+        {...HTMLAttributes}
+        className={getElementClassname<EmbedElement>({ element, HTMLAttributes, className: s.embedElement })}
+      >
         <ProviderComponent {...element.data} providerId={element.data.providerId} />
         {children}
       </div>
@@ -37,7 +43,13 @@ const Embed = ({ attributes, element, children, HTMLAttributes }: Props) => {
   if (!element.data.url) return <div />;
 
   return (
-    <div {...attributes} className={s.embedElement} contentEditable={false} draggable={false} {...HTMLAttributes}>
+    <div
+      {...attributes}
+      contentEditable={false}
+      draggable={false}
+      {...HTMLAttributes}
+      className={getElementClassname<EmbedElement>({ element, HTMLAttributes, className: s.embedElement })}
+    >
       <DefaultEmbed {...element.data} providerId={element.data.providerId} />
       {children}
     </div>

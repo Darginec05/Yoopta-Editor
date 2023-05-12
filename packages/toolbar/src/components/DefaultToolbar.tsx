@@ -6,7 +6,7 @@ const DefaultToolbar = ({ getRootProps }: ToolbarProps) => {
   const marks = useMarks();
 
   return (
-    <div {...getRootProps()}>
+    <div {...getRootProps()} className={cx(getRootProps().className, 'yoopta-toolbar')}>
       <div className={s.toolbar}>
         <div className={s.marks}>
           <button

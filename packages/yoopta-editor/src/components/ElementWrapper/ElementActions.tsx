@@ -56,14 +56,14 @@ const ElementActions = ({ element, editor, values, handlers }: Props) => {
   const isElementHovered = hoveredElement?.id === element.id;
 
   return (
-    <div contentEditable={false} className={cx(s.actions, { [s.hovered]: isElementHovered })}>
+    <div contentEditable={false} className={cx(s.actions, { [s.hovered]: isElementHovered }, 'yoopta-element-actions')}>
       {isElementHovered && isElementOptionsOpen && (
         <ElementOptions element={element} style={nodeSettingsPos || undefined} onClose={closeNodeSettings} />
       )}
       <button
         type="button"
         onMouseDown={onMouseDown}
-        className={cx(s.actionButton, s.plusButton)}
+        className={cx(s.actionButton, s.plusButton, 'yoopta-element-actions-plus')}
         onClick={() => triggerPlusButton(element)}
       >
         <PlusIcon />
@@ -71,7 +71,7 @@ const ElementActions = ({ element, editor, values, handlers }: Props) => {
       <button
         type="button"
         onMouseDown={onMouseDown}
-        className={s.actionButton}
+        className={cx(s.actionButton, 'yoopta-element-actions-drag')}
         onClick={() => openNodeSettings(dragRef, element)}
         ref={dragRef}
       >

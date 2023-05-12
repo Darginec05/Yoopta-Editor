@@ -1,4 +1,10 @@
-import { createYooptaPlugin, generateId, RenderYooptaElementProps, YooptaPlugin } from '@yoopta/editor';
+import {
+  createYooptaPlugin,
+  generateId,
+  getElementClassname,
+  RenderYooptaElementProps,
+  YooptaPlugin,
+} from '@yoopta/editor';
 import { Editor, Element, Node, Transforms } from 'slate';
 import type { BulletedList, ListChildItemElement, ListOptions } from '../types';
 import { ListItemList } from './ListItem';
@@ -11,7 +17,12 @@ const BulletedListRender = ({
   HTMLAttributes,
 }: RenderYooptaElementProps<BulletedList>) => {
   return (
-    <ul draggable={false} className={s.list} {...HTMLAttributes} {...attributes}>
+    <ul
+      draggable={false}
+      {...HTMLAttributes}
+      className={getElementClassname<BulletedList>({ element, HTMLAttributes, className: s.list })}
+      {...attributes}
+    >
       {children}
     </ul>
   );

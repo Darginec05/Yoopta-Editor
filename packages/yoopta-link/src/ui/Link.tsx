@@ -1,6 +1,12 @@
 import { MouseEvent } from 'react';
 import { Editor, Element, Node, NodeEntry, Path, Transforms } from 'slate';
-import { getElementByPath, generateId, RenderYooptaElementProps, createYooptaPlugin } from '@yoopta/editor';
+import {
+  getElementByPath,
+  generateId,
+  RenderYooptaElementProps,
+  createYooptaPlugin,
+  getElementClassname,
+} from '@yoopta/editor';
 import isUrl from 'is-url';
 import { addLinkNode } from '../utils/addLink';
 import { LinkEditor } from './LinkEditor';
@@ -27,9 +33,9 @@ const LinkRender = ({ attributes, element, children, HTMLAttributes }: RenderYoo
       href={element.data.url || ''}
       rel="noreferrer"
       target="_blank"
-      className={s.link}
       onClick={handleClick}
       {...HTMLAttributes}
+      className={getElementClassname<LinkElement>({ element, HTMLAttributes, className: s.link })}
       {...attributes}
     >
       {children}

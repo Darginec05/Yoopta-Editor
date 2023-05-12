@@ -1,4 +1,4 @@
-import { generateId, createYooptaPlugin, RenderYooptaElementProps } from '@yoopta/editor';
+import { generateId, createYooptaPlugin, RenderYooptaElementProps, getElementClassname } from '@yoopta/editor';
 import { Transforms } from 'slate';
 import { ParagraphElement } from '../types';
 import s from './Paragraph.module.scss';
@@ -10,7 +10,12 @@ const ParagraphRender = ({
   HTMLAttributes,
 }: RenderYooptaElementProps<ParagraphElement>) => {
   return (
-    <p draggable={false} className={s.paragraph} {...HTMLAttributes} {...attributes}>
+    <p
+      draggable={false}
+      {...HTMLAttributes}
+      className={getElementClassname<ParagraphElement>({ element, HTMLAttributes, className: s.paragraph })}
+      {...attributes}
+    >
       {children}
     </p>
   );

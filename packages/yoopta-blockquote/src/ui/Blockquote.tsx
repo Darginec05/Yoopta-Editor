@@ -1,4 +1,4 @@
-import { createYooptaPlugin, generateId, RenderYooptaElementProps } from '@yoopta/editor';
+import { createYooptaPlugin, generateId, getElementClassname, RenderYooptaElementProps } from '@yoopta/editor';
 import { Transforms } from 'slate';
 import { BlockquoteElement } from '../types';
 import s from './Blockquote.module.scss';
@@ -10,7 +10,12 @@ const BlockquoteRender = ({
   HTMLAttributes,
 }: RenderYooptaElementProps<BlockquoteElement>) => {
   return (
-    <blockquote draggable={false} className={s.blockquote} {...HTMLAttributes} {...attributes}>
+    <blockquote
+      draggable={false}
+      {...HTMLAttributes}
+      className={getElementClassname<BlockquoteElement>({ element, HTMLAttributes, className: s.blockquote })}
+      {...attributes}
+    >
       {children}
     </blockquote>
   );

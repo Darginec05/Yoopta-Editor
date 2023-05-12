@@ -14,25 +14,29 @@
       margin: 0 auto;
     }
 
-    .yoopta-paragraph,
-    .yoopta-list-item,
-    .yoopta-block-quote,
-    .yoopta-callout {
-      font-family: inherit;
-      font-style: normal;
-      font-weight: 400;
-      font-size: 17px;
-      line-height: 27px;
-      max-width: 100%;
-      width: 100%;
-      white-space: pre-wrap;
-      word-break: break-word;
-      caret-color: rgb(55, 53, 47);
-      padding: 3px 2px;
-    }
+    // .yoopta-paragraph,
+    // .yoopta-list-item,
+    // .yoopta-block-quote,
+    // .yoopta-callout {
+    //   font-family: inherit;
+    //   font-style: normal;
+    //   font-weight: 400;
+    //   font-size: 17px;
+    //   line-height: 27px;
+    //   max-width: 100%;
+    //   width: 100%;
+    //   white-space: pre-wrap;
+    //   word-break: break-word;
+    //   caret-color: rgb(55, 53, 47);
+    //   padding: 3px 2px;
+    // }
   }
 }
 
 .editor {
  
+}
+
+.callout {
+  background-color: red;
 }

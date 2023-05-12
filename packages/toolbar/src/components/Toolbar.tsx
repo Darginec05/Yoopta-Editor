@@ -106,7 +106,11 @@ const Toolbar = ({ type = 'bubble', style, className, render }: Props) => {
   };
 
   if (typeof render === 'function') {
-    return <div style={STYLES}>{render(renderProps)}</div>;
+    return (
+      <div style={STYLES} className="yoopta-toolbar">
+        {render(renderProps)}
+      </div>
+    );
   }
 
   return <DefaultToolbar {...renderProps} />;

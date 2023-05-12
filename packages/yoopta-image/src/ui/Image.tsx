@@ -1,4 +1,4 @@
-import { RenderYooptaElementProps } from '@yoopta/editor';
+import { getElementClassname, RenderYooptaElementProps } from '@yoopta/editor';
 import { ReactNode } from 'react';
 import { ImageElement, ImageElementData } from '../types';
 import s from './Image.module.scss';
@@ -23,8 +23,8 @@ const Image = ({ attributes, element, children, size, HTMLAttributes }: Props) =
           height={height}
           loading="lazy"
           decoding="async"
-          className={s.img}
           {...HTMLAttributes}
+          className={getElementClassname<ImageElement>({ element, HTMLAttributes, className: s.img })}
         />
         {caption && <figcaption className={s.caption}>{caption}</figcaption>}
       </figure>

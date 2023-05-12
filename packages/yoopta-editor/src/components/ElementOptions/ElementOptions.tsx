@@ -1,6 +1,7 @@
 import { Overlay } from './Overlay';
 import { CSSProperties, MouseEvent, ReactNode } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
+import cx from 'classnames';
 import { Editor, Element, Path, Transforms } from 'slate';
 import TrashIcon from './icons/trash.svg';
 import DuplicateIcon from './icons/duplicate.svg';
@@ -62,7 +63,7 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
 
   return (
     <Overlay onClose={onClose}>
-      <div style={style} className={s.root}>
+      <div style={style} className={cx(s.root, 'yoopta-element-options')}>
         <div className={s.content}>
           <div className={s.group}>
             <button type="button" className={s.item} onClick={onDelete}>

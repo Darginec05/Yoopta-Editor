@@ -1,4 +1,4 @@
-import { RenderYooptaElementProps } from '@yoopta/editor';
+import { getElementClassname, RenderYooptaElementProps } from '@yoopta/editor';
 import { ReactNode } from 'react';
 import DailyMotion from '../components/DayliMotion';
 import VimeoPlayer from '../components/VimeoPlayer';
@@ -21,7 +21,13 @@ const Video = ({ attributes, element, children, size, HTMLAttributes }: Props) =
   if (typeof element.data.provider === 'string' && element.data.videoId && PROVIDERS[element.data.provider]) {
     const ProviderComponent = PROVIDERS[element.data.provider];
     return (
-      <div {...attributes} className={s.videoElement} {...HTMLAttributes} contentEditable={false} draggable={false}>
+      <div
+        {...attributes}
+        {...HTMLAttributes}
+        className={getElementClassname<VideoElement>({ element, HTMLAttributes, className: s.videoElement })}
+        contentEditable={false}
+        draggable={false}
+      >
         <div className={s.iframRoot}>
           <div className={s.iframeWrap}>
             <ProviderComponent videoId={element.data.videoId} />
@@ -48,9 +54,9 @@ const Video = ({ attributes, element, children, size, HTMLAttributes }: Props) =
         src={element.data.url || element.data['data-src'] || ''}
         width={width}
         height={height}
-        className={s.video}
         onDragStart={(e) => e.preventDefault()}
         {...HTMLAttributes}
+        className={getElementClassname<VideoElement>({ element, HTMLAttributes, className: s.video })}
       />
       {children}
     </div>

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Prism from 'prismjs';
-import { cx, RenderYooptaElementProps } from '@yoopta/editor';
+import { cx, getElementClassname, RenderYooptaElementProps } from '@yoopta/editor';
 
 import 'prism-material-themes/themes/material-default.css';
 import { CodeElement } from '../types';
@@ -18,7 +18,11 @@ function CodeRender({ element, attributes, children, HTMLAttributes }: RenderYoo
   }, [element.data.language]);
 
   return (
-    <code className={s.code} {...HTMLAttributes} {...attributes}>
+    <code
+      {...HTMLAttributes}
+      className={getElementClassname<CodeElement>({ element, HTMLAttributes, className: s.code })}
+      {...attributes}
+    >
       {element.data.filename && <span className={s.filename}>{element.data.filename}</span>}
       <pre className={cx(s.pre, `language-${element.data.language}`)}>{children}</pre>
     </code>

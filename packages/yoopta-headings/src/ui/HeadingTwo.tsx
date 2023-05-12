@@ -1,4 +1,4 @@
-import { createYooptaPlugin, generateId, RenderYooptaElementProps } from '@yoopta/editor';
+import { createYooptaPlugin, generateId, getElementClassname, RenderYooptaElementProps } from '@yoopta/editor';
 import { Transforms } from 'slate';
 import { HeadingOptions, HeadingTwoElement } from '../types';
 import s from './HeadingTwo.module.scss';
@@ -10,7 +10,13 @@ const HeadingTwoRender = ({
   HTMLAttributes,
 }: RenderYooptaElementProps<HeadingTwoElement>) => {
   return (
-    <h2 id={element.id} draggable={false} className={s['heading-two']} {...HTMLAttributes} {...attributes}>
+    <h2
+      id={element.id}
+      draggable={false}
+      {...HTMLAttributes}
+      className={getElementClassname<HeadingTwoElement>({ element, HTMLAttributes, className: s['heading-two'] })}
+      {...attributes}
+    >
       {children}
     </h2>
   );
