@@ -8,7 +8,7 @@ type Props = Partial<ActionMenuRenderItem> &
     children?: ReactNode;
   };
 
-const ItemRender = ({ children, type, onClick, ...rest }: Props) => {
+const ItemRender = ({ children, type, onClick, options, ...rest }: Props) => {
   return (
     <li
       className={cx(s.elementListItem)}
@@ -17,7 +17,7 @@ const ItemRender = ({ children, type, onClick, ...rest }: Props) => {
       data-element-type={rest['data-element-type']}
     >
       <button type="button" tabIndex={0} onClick={onClick} className={s.button}>
-        <span>{type}</span>
+        <span>{options?.displayLabel || type}</span>
         {children}
       </button>
     </li>

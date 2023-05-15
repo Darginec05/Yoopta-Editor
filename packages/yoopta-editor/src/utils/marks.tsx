@@ -1,4 +1,5 @@
 import { RenderLeafProps } from 'slate-react';
+import cx from 'classnames';
 
 export type YooptaMark = {
   type: string;
@@ -10,18 +11,23 @@ export type YooptaMarksConfig = {
   type: string;
   className: string;
   hotkey?: string;
+  as?: string;
 };
 
-export function createYooptaMark({ type, hotkey, className }: YooptaMarksConfig): YooptaMark {
-  return {
+export function createYooptaMark({ type, hotkey, className, as }: YooptaMarksConfig): YooptaMark {
+  const freezed = Object.freeze({
     type,
     hotkey,
     render: (props) => {
+      const Node = as || 'span';
+
       return (
-        <span {...props.attributes} className={className}>
+        <Node {...props.attributes} className={cx(className, `yoopta-leaf-${type}`)}>
           {props.children}
-        </span>
+        </Node>
       );
     },
-  };
+  });
+
+  return freezed;
 }

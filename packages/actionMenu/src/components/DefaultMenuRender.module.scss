@@ -11,7 +11,6 @@
   width: auto;
   min-width: 200px;
   padding: 5px;
-  background: linear-gradient(to right,rgba(49,49,47,.99),#262625);
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -19,6 +18,8 @@
   transition: opacity 0.18s cubic-bezier(0.4, 0, 0.2, 1);
   max-height: 304px;
   overflow: auto;
+  background: #fff;
+  box-shadow: 0 0 0 1px hsla(0,0%,6%,.05), 0 3px 6px hsla(0,0%,6%,.1), 0 9px 24px hsla(0,0%,6%,.2);
 }
 
 .elementList {

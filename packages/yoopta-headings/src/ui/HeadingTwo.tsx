@@ -55,6 +55,8 @@ const HeadingTwo = createYooptaPlugin<HeadingOptions, HeadingTwoElement>({
   },
   options: {
     anchor: '#',
+    searchString: 'h2 subtitle',
+    displayLabel: 'Heading 2',
   },
 });
 

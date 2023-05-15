@@ -100,6 +100,10 @@ const BulletedList = createYooptaPlugin<ListOptions, BulletedList>({
       },
     },
   },
+  options: {
+    searchString: 'bullet list',
+    displayLabel: 'BulletedList',
+  },
 });
 
 export { BulletedList };

@@ -1,4 +1,10 @@
-import { createYooptaPlugin, generateId, getElementClassname, RenderYooptaElementProps } from '@yoopta/editor';
+import {
+  createYooptaPlugin,
+  generateId,
+  getElementClassname,
+  RenderYooptaElementProps,
+  YooptaPluginBaseOptions,
+} from '@yoopta/editor';
 import { Transforms } from 'slate';
 import { BlockquoteElement } from '../types';
 import s from './Blockquote.module.scss';
@@ -23,7 +29,7 @@ const BlockquoteRender = ({
 
 BlockquoteRender.displayName = 'Blockquote';
 
-const Blockquote = createYooptaPlugin<any, BlockquoteElement>({
+const Blockquote = createYooptaPlugin<YooptaPluginBaseOptions, BlockquoteElement>({
   type: 'blockquote',
   renderer: (editor) => BlockquoteRender,
   shortcut: '>',
@@ -52,6 +58,7 @@ const Blockquote = createYooptaPlugin<any, BlockquoteElement>({
       },
     },
   },
+  options: { searchString: 'blockquote', displayLabel: 'Blockquote' },
 });
 
 export { Blockquote };

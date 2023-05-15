@@ -79,6 +79,10 @@ const Video = createYooptaPlugin<VideoPluginOptions, VideoElement>({
       },
     },
   },
+  options: {
+    searchString: 'video media',
+    displayLabel: 'Video',
+  },
 });
 
 export default Video;

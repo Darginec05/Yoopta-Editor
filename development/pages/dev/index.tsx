@@ -1,4 +1,4 @@
-import YooptaEditor from '@yoopta/editor';
+import YooptaEditor, { createYooptaMark } from '@yoopta/editor';
 import Blockquote, { BlockquoteElement } from '@yoopta/blockquote';
 import Paragraph, { ParagraphElement } from '@yoopta/paragraph';
 import Callout, { CalloutElement } from '@yoopta/callout';
@@ -21,8 +21,8 @@ import { MediumToolbar } from '../../components/Toolbars/MediumToolbar';
 import { Descendant } from 'slate';
 import { uploadToCloudinary } from '../../utils';
 import { NotionActionMenu } from '../../components/SuggestionList/NotionActionMenu';
-import s from './styles.module.scss';
 import { NotionToolbar } from '../../components/Toolbars/NotionToolbar';
+import s from './styles.module.scss';
 
 type PluginOptions = ImagePluginOptions | Record<string, unknown>;
 type PluginElements =
@@ -44,6 +44,27 @@ const plugins = [
       HTMLAttributes: {
         spellCheck: false,
         className: 's.Paragraph',
+      },
+    },
+  }),
+  Headings.HeadingOne.extend({
+    options: {
+      HTMLAttributes: {
+        spellCheck: false,
+      },
+    },
+  }),
+  Headings.HeadingTwo.extend({
+    options: {
+      HTMLAttributes: {
+        spellCheck: false,
+      },
+    },
+  }),
+  Headings.HeadingThree.extend({
+    options: {
+      HTMLAttributes: {
+        spellCheck: false,
       },
     },
   }),
@@ -73,27 +94,6 @@ const plugins = [
     },
   }),
   Lists.TodoList.extend({
-    options: {
-      HTMLAttributes: {
-        spellCheck: false,
-      },
-    },
-  }),
-  Headings.HeadingOne.extend({
-    options: {
-      HTMLAttributes: {
-        spellCheck: false,
-      },
-    },
-  }),
-  Headings.HeadingTwo.extend({
-    options: {
-      HTMLAttributes: {
-        spellCheck: false,
-      },
-    },
-  }),
-  Headings.HeadingThree.extend({
     options: {
       HTMLAttributes: {
         spellCheck: false,
@@ -149,113 +149,111 @@ const plugins = [
   }),
 ];
 
-const actionItems: ActionMenuItem<Record<'label' | 'description' | 'icon', string>>[] = [
+const ACTION_MENU_ITEMS: ActionMenuItem<Record<'description' | 'icon', string>>[] = [
   {
     plugin: Paragraph,
-    searchString: 'text paragraph',
-    label: 'Paragraph',
     description: 'Just start writing with plain text.',
     icon: '/text.png',
   },
   {
     plugin: Headings.HeadingOne,
-    searchString: 'h1 title',
-    label: 'Heading 1',
     description: 'Big section heading.',
     icon: '/header.png',
   },
   {
     plugin: Headings.HeadingTwo,
-    searchString: 'h2 subtitle',
-    label: 'Heading 2',
     description: 'Medium section heading.',
     icon: '/subheader.png',
   },
   {
     plugin: Headings.HeadingThree,
-    searchString: 'h3 subsubtitle small heading',
-    label: 'Heading 3',
     description: 'Small section heading.',
     icon: '/subsubheader.png',
   },
   {
     plugin: Image,
-    searchString: 'image picture',
-    label: 'Image',
     description: 'Upload or embed with a link.',
     icon: '/image.png',
   },
   {
     plugin: Video,
-    searchString: 'video media',
-    label: 'Video',
     description: 'Embed from YouTube, Vimeo...',
     icon: '/video.png',
   },
   {
     plugin: Embed,
-    searchString: 'Embed media',
-    label: 'Embed',
     description: 'Embed from YouTube, Vimeo...',
     icon: '/video.png',
   },
-  { plugin: Blockquote, label: 'Blockquote', description: 'Capture a quote', icon: '/text.png' },
-  { plugin: Callout, label: 'Callout', description: 'Just start writing with plain text.', icon: '/text.png' },
+  {
+    plugin: Blockquote,
+    description: 'Capture a quote',
+    icon: '/text.png',
+  },
+  {
+    plugin: Callout,
+    description: 'Just start writing with plain text.',
+    icon: '/text.png',
+  },
   {
     plugin: Code,
-    searchString: 'hello world bug',
-    label: 'Code',
     description: 'Write bugs.',
     icon: '/text.png',
   },
   {
     plugin: Lists.BulletedList,
-    label: 'BulletedList',
     description: 'Just start writing with plain text.',
     icon: '/text.png',
   },
   {
     plugin: Lists.NumberedList,
-    label: 'NumberedList',
     description: 'Just start writing with plain text.',
     icon: '/text.png',
   },
   {
     plugin: Lists.TodoList,
-    searchString: 'todo check list',
-    label: 'TodoList',
     description: 'Just start writing with plain text.',
     icon: '/text.png',
   },
 ];
+
+const SuperStrike = createYooptaMark({
+  type: 'super-strike',
+  hotkey: 'mod+shift+.',
+  className: s.superStrike,
+});
+
+const TOOLS = {
+  Toolbar: <Toolbar />,
+  ActionMenu: <ActionMenu items={ACTION_MENU_ITEMS} render={NotionActionMenu} />,
+  ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" />,
+};
 
 const BasicExample = () => {
   const [editorValue, setEditorValue] = useState<Descendant[]>([]);
   const [mode, toggleMode] = useState<'render' | 'edit'>('edit');
 
   const isEdit = mode === 'edit';
-  const marks = [Bold, Italic, CodeMark, Underline, Strike];
+  const marks = [Bold, Italic, CodeMark, Underline, Strike, SuperStrike];
 
   return (
     <div className={s.container}>
       {isEdit ? (
         <YooptaEditor
           offline
-          autoFocus
           value={editorValue}
           onChange={(val: Descendant[]) => setEditorValue(val)}
           plugins={plugins}
           marks={marks}
           placeholder="Type / to open menu"
-          tools={{
-            Toolbar: <Toolbar render={NotionToolbar} />,
-            ActionMenu: <ActionMenu items={actionItems} render={NotionActionMenu} />,
-            ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" />,
-          }}
+          tools={TOOLS}
         />
       ) : (
         <YooptaRenderer data={editorValue} plugins={plugins} marks={marks} />
       )}
+      <pre>
+        <code>{JSON.stringify(editorValue, null, 2)}</code>
+      </pre>
     </div>
   );
 };

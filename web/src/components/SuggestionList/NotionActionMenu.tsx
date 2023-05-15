@@ -1,7 +1,7 @@
 import { ActionMenuRenderProps } from '@yoopta/action-menu-list';
 import s from './NotionActionMenu.module.scss';
 
-type Props = Record<'label' | 'description' | 'icon', string> & ActionMenuRenderProps;
+type Props = Record<'displayLabel' | 'description' | 'icon', string> & ActionMenuRenderProps;
 
 const NotionActionMenu = (props: Props) => {
   const { groups, isNotFound, getItemProps, getRootProps } = props;
@@ -18,7 +18,7 @@ const NotionActionMenu = (props: Props) => {
                   <img src={item.icon} className={s.leftImage} />
                 </div>
                 <div className={s.itemRight}>
-                  <div className={s.rightTitle}>{item.label}</div>
+                  <div className={s.rightTitle}>{item.displayLabel}</div>
                   <div className={s.rightDesc}>{item.description}</div>
                 </div>
               </button>
@@ -35,7 +35,7 @@ const NotionActionMenu = (props: Props) => {
                   <img src={item.icon} className={s.leftImage} />
                 </div>
                 <div className={s.itemRight}>
-                  <div className={s.rightTitle}>{item.label}</div>
+                  <div className={s.rightTitle}>{item.displayLabel}</div>
                   <div className={s.rightDesc}>{item.description}</div>
                 </div>
               </button>

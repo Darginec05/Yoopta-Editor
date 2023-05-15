@@ -1,6 +1,7 @@
-import { Modify, YooptaBaseElement } from '@yoopta/editor';
+import { Modify, YooptaBaseElement, YooptaPluginBaseOptions, YooptaRenderHTMLAttributes } from '@yoopta/editor';
 
-export type ListOptions = { depth: number; skipDrag: boolean; skipSettings: boolean };
+export type ListOptions = { depth: number; skipDrag: boolean; skipSettings: boolean } & YooptaPluginBaseOptions &
+  YooptaRenderHTMLAttributes;
 export type TodoListItemOptions = { checked: boolean };
 
 export type ListChildItemElement = YooptaBaseElement<'list-item'>;

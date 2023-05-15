@@ -3,9 +3,9 @@ import { ItemRender } from './ItemRender';
 import s from './DefaultMenuRender.module.scss';
 import { cx } from '@yoopta/editor';
 
-const DefaultMenuRender = ({ items, isNotFound, getItemProps, getRootProps }: ActionMenuRenderProps) => {
+const DefaultMenuRender = ({ isNotFound, getItemProps, getRootProps, items, groups }: ActionMenuRenderProps) => {
   return (
-    <div className={cx(s.dropdown, 'yoopta-action-menu-list')} {...getRootProps()}>
+    <div className={cx(s.dropdown, 'yoopta-action-menu-list-inner')} {...getRootProps()}>
       <ul className={s.elementList}>
         {items?.map((menuItem) => {
           return <ItemRender key={menuItem.type} {...getItemProps(menuItem.type)} {...menuItem} />;

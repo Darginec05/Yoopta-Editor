@@ -1,4 +1,4 @@
-import { HOTKEYS, YoEditor, YooptaBaseElement, YooptaPluginType, useElements } from '@yoopta/editor';
+import { HOTKEYS, YoEditor, YooptaBaseElement, YooptaPluginType, useElements, cx } from '@yoopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { CSSProperties, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Element, Editor, Path, Point, Transforms, Text } from 'slate';
@@ -17,35 +17,46 @@ import s from './DefaultMenuRender.module.scss';
 
 const checkIsMenuOpen = (style: CSSProperties) => style.opacity === 1 && !!style.top && !!style.right;
 
+type ToggleOptions = {
+  shouldDeleteText?: boolean;
+};
+
 type Props = {
   items?: ActionMenuItem<Record<string, unknown>>[];
   render?: (props: ActionMenuRenderProps) => JSX.Element;
   trigger?: string | null | ((event: KeyboardEvent) => boolean);
+  options?: ToggleOptions;
+  [x: string]: any;
 } & (
-  | { items?: ActionMenuItem<Record<string, unknown>>[]; plugins?: YooptaPluginType[] }
-  | { plugins: YooptaPluginType[]; items?: never }
+  | {
+      items?: ActionMenuItem<Record<string, unknown>>[];
+      plugins?: YooptaPluginType[];
+      [x: string]: any;
+      options?: ToggleOptions;
+    }
+  | { plugins: YooptaPluginType[]; items?: never; [x: string]: any; options?: ToggleOptions }
 );
 
 type MenuProps = { fixedStyle: CSSProperties; absoluteStyle: CSSProperties; point: Point | null };
 
-const MENU_PROPS_VALUE: MenuProps = {
-  fixedStyle: { position: 'fixed', opacity: 0, zIndex: 6, left: -1000, bottom: -1000 },
+const getDefaultMenuPropsState = (style?: CSSProperties): MenuProps => ({
+  fixedStyle: { position: 'fixed', opacity: 0, zIndex: 6, left: -1000, bottom: -1000, ...style },
   absoluteStyle: { left: 0, bottom: 0, top: 'auto', right: 'auto' },
   point: null,
-};
+});
 
-const filterBy = (item: ActionMenuRenderItem, text: string, field: string) => {
-  if (!item[field]) return false;
+const filterBy = (item: ActionMenuRenderItem | ActionMenuRenderItem['options'], text: string, field: string) => {
+  if (!item || !item?.[field]) return false;
   return (item[field] as string).toLowerCase().indexOf(text) > -1;
 };
 
 const ACTION_MENU_ITEM_DATA_ATTR = 'data-action-menu-item';
 
-const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.Element => {
+const ActionMenuList = ({ items, render, plugins, trigger = '/', ...rest }: Props): JSX.Element => {
   const editor = useSlate() as YoEditor;
   const elements = useElements();
   const actionMenuRef = useRef<HTMLDivElement>(null);
-  const [menuProps, setMenuProps] = useState<MenuProps>(MENU_PROPS_VALUE);
+  const [menuProps, setMenuProps] = useState<MenuProps>(() => getDefaultMenuPropsState(rest?.style));
   const [searchString, setSearchString] = useState('');
   const [focusableElement, setFocusableElement] = useState(0);
 
@@ -81,7 +92,7 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
 
   const hideActionMenu = () => {
     enableBodyScroll(document.body);
-    setMenuProps(MENU_PROPS_VALUE);
+    setMenuProps(getDefaultMenuPropsState(rest?.style));
     setSearchString('');
     setFocusableElement(0);
 
@@ -110,16 +121,19 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
 
     return (
       filterBy(item, filterText, 'type') ||
-      filterBy(item, filterText, 'label') ||
-      filterBy(item, filterText, 'searchString')
+      filterBy(item, filterText, 'displayLabel') ||
+      filterBy(item, filterText, 'searchString') ||
+      filterBy(item.options, filterText, 'displayLabel') ||
+      filterBy(item.options, filterText, 'searchString')
     );
   };
 
   const mapCustomMenuItems = (item: ActionMenuItem<Record<string, unknown>>) => {
     const { plugin, ...rest } = item;
-    const { type, createElement, defineElement } = plugin.getPlugin;
+    const { type, createElement, defineElement, options = {} } = plugin.getPlugin;
+    const { displayLabel, searchString } = options;
 
-    return { ...rest, type, createElement, defineElement };
+    return { displayLabel, searchString, ...rest, type, createElement, defineElement, options };
   };
 
   const renderMenuItems = useMemo<ActionMenuRenderItem[]>(() => {
@@ -130,7 +144,7 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
     } else {
       menuList = (plugins as YooptaPluginType[])
         .filter((item) => !item.hasParent)
-        .map((item) => ({ type: item.type, createElement: item.createElement, defineElement: item.defineElement }));
+        .map(({ type, createElement, defineElement, options }) => ({ type, createElement, defineElement, options }));
     }
 
     return menuList.filter(filterMenuList);
@@ -280,7 +294,9 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
   const toggleElement = (type: string) => {
     const menuItem = renderMenuItems.find((item) => item.type === type);
     if (!menuItem) return;
-    elements[type]?.toggle({ shouldDeleteText: true });
+    elements[type]?.toggle({
+      shouldDeleteText: typeof rest.options?.shouldDeleteText === 'boolean' ? rest.options?.shouldDeleteText : true,
+    });
   };
 
   const getRootProps = (): ActionMenuRenderRootProps => ({
@@ -300,13 +316,14 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
     isNotFound,
     getRootProps,
     getItemProps,
+    className: 'yoopta-action-menu-list-inner',
   };
 
   if (typeof render === 'function') {
     return (
       <div role={'dialog'} aria-modal style={menuProps.fixedStyle}>
         <div className={s.relative}>
-          <div className={s.absolute} style={menuProps.absoluteStyle}>
+          <div className={cx(s.absolute, 'yoopta-action-menu-list')} style={menuProps.absoluteStyle}>
             {render(renderProps)}
           </div>
         </div>
@@ -317,7 +334,7 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/' }: Props): JSX.E
   return (
     <div role={'dialog'} aria-modal style={menuProps.fixedStyle}>
       <div className={s.relative}>
-        <div className={s.absolute} style={menuProps.absoluteStyle}>
+        <div className={cx(s.absolute, 'yoopta-action-menu-list')} style={menuProps.absoluteStyle}>
           <DefaultMenuRender {...renderProps} />
         </div>
       </div>

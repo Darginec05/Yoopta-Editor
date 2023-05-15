@@ -81,6 +81,10 @@ const Image = createYooptaPlugin<ImagePluginOptions, ImageElement>({
       },
     },
   },
+  options: {
+    searchString: 'image picture',
+    displayLabel: 'Image',
+  },
 });
 
 export default Image;

@@ -1,6 +1,6 @@
 import { YoEditor } from '@yoopta/editor';
 import Prism from 'prismjs';
-import { Element, Node, NodeEntry, Range, Transforms } from 'slate';
+import { Editor, Element, Node, NodeEntry, Range, Transforms } from 'slate';
 import { normalizeTokens } from './normalizeTokens';
 
 export const mergeMaps = <K, V>(...maps: Map<K, V>[]) => {
@@ -76,6 +76,7 @@ export const codeLineDecorator =
     if (Element.isElement(node) && node.type === 'code-line') {
       const ranges =
         (editor as YoEditor & { nodeToDecorations: (n: Element) => Range[] }).nodeToDecorations(node) || [];
+
       return ranges;
     }
 

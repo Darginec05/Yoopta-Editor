@@ -1,9 +1,9 @@
-import { YooptaBaseElement, Modify } from '@yoopta/editor';
+import { YooptaBaseElement, Modify, YooptaPluginBaseOptions } from '@yoopta/editor';
 
 export type EmbedPluginOptions = {
   maxWidth?: number;
   maxHeight?: number;
-};
+} & YooptaPluginBaseOptions;
 
 export type EmbedElementData = {
   size: { width: number | 'auto'; height: number | 'auto' };

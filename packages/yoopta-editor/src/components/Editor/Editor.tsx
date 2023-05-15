@@ -1,5 +1,5 @@
 import { Editor, Transforms, Range, Element, NodeEntry, Path } from 'slate';
-import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, ReactNode, useRef } from 'react';
+import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, ReactNode, useRef, ClipboardEvent } from 'react';
 import { Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
 import { getDefaultParagraphLine, getRenderFunctionFactory, isElementHasText, toggleMark } from './utils';
@@ -322,6 +322,16 @@ const EditorYoopta = ({
     });
   }, [tools]);
 
+  const onCopy = (event: ClipboardEvent) => {
+    if (!editor.selection) return;
+
+    const selectedFragment = Editor.fragment(editor, editor.selection);
+    const parsedHTML = serializeHtml(selectedFragment, editor.plugins);
+
+    event.clipboardData.setData('text/html', parsedHTML);
+    return event.clipboardData;
+  };
+
   return (
     <div id="yoopta-editor" className={className} ref={editorRef} onMouseDown={handleEmptyZoneClick}>
       {yooptaTools}
@@ -331,16 +341,7 @@ const EditorYoopta = ({
         renderElement={renderElement}
         readOnly={isReadOnly}
         decorate={decorate}
-        onCopy={(event) => {
-          event.preventDefault();
-          if (!editor.selection) return;
-
-          const selectedFragment = Editor.fragment(editor, editor.selection);
-          const parsedHTML = serializeHtml(selectedFragment, editor.plugins);
-
-          event.clipboardData.setData('text/html', parsedHTML);
-          return event.clipboardData;
-        }}
+        onCopy={onCopy}
         autoFocus
         spellCheck
         {...eventHandlers}

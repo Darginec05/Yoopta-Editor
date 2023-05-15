@@ -16,7 +16,7 @@ const NotionActionMenu = (props: ActionMenuRenderProps) => {
                   {typeof item.icon === 'string' && <img src={item.icon} className={s.leftImage} />}
                 </div>
                 <div className={s.itemRight}>
-                  <div className={s.rightTitle}>{item.label}</div>
+                  <div className={s.rightTitle}>{item.displayLabel}</div>
                   <div className={s.rightDesc}>{item.description}</div>
                 </div>
               </button>
@@ -33,7 +33,7 @@ const NotionActionMenu = (props: ActionMenuRenderProps) => {
                   {typeof item.icon === 'string' && <img src={item.icon} className={s.leftImage} />}
                 </div>
                 <div className={s.itemRight}>
-                  <div className={s.rightTitle}>{item.label}</div>
+                  <div className={s.rightTitle}>{item.displayLabel}</div>
                   <div className={s.rightDesc}>{item.description}</div>
                 </div>
               </button>

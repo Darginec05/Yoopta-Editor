@@ -73,6 +73,7 @@ const NumberedList = createYooptaPlugin<ListOptions, NumberedList>({
       },
     },
   },
+  options: { searchString: 'order number list', displayLabel: 'NumberedList' },
 });
 
 export { NumberedList };
