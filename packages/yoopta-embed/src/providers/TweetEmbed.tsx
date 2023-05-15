@@ -7,7 +7,7 @@ type Props = {
   providerId: EmbedElementData['providerId'];
 };
 
-function TweetEmbed({ providerId, ...other }: Props) {
+function TweetEmbed({ providerId }: Props) {
   const twitterRootRef = useRef<HTMLDivElement>(null);
 
   const { isIntersecting: isInViewport } = useIntersectionObserver(twitterRootRef, {

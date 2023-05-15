@@ -5,7 +5,7 @@ export type ActionMenuItem<T extends Record<string, unknown>> = {
   searchString?: string;
 } & T;
 
-export type ActionMenuRenderItem = Pick<YooptaPluginType, 'type' | 'createElement' | 'defineElement'> &
+export type ActionMenuRenderItem = Pick<YooptaPluginType, 'type' | 'createElement' | 'defineElement' | 'options'> &
   Omit<ActionMenuItem<Record<string, unknown>>, 'plugin'>;
 
 export type ActionMenuRenderRootProps = {
@@ -37,4 +37,5 @@ export type ActionMenuRenderProps = {
   groups: Groups;
   getRootProps: () => ActionMenuRenderRootProps;
   getItemProps: (type) => ActionMenuRenderItemProps;
+  className?: string;
 };

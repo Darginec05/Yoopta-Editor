@@ -85,6 +85,7 @@ const TodoList = createYooptaPlugin<ListOptions, TodoList>({
       },
     },
   },
+  options: { searchString: 'todo check list', displayLabel: 'TodoList' },
 });
 
 export { TodoList };

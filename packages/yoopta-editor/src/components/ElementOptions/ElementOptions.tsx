@@ -1,5 +1,5 @@
 import { Overlay } from './Overlay';
-import { CSSProperties, MouseEvent, ReactNode } from 'react';
+import { CSSProperties, MouseEvent, ReactNode, useRef, useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
 import cx from 'classnames';
 import { Editor, Element, Path, Transforms } from 'slate';
@@ -9,6 +9,7 @@ import TurnIcon from './icons/turn.svg';
 import CopyIcon from './icons/copy.svg';
 import { useElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import s from './ElementOptions.module.scss';
+import { useElements, useTools } from '../../contexts/YooptaContext/YooptaContext';
 
 type RenderProps = {
   handleDelete?: () => void;
@@ -27,12 +28,54 @@ type Props = {
   onCopy?: () => void;
 };
 
+type TurnInto = {
+  style?: CSSProperties;
+  open: boolean;
+};
+
+const DEFAULT_TURN_INTO_STYLES: TurnInto['style'] = {
+  position: 'fixed',
+  opacity: 1,
+  bottom: 'auto',
+  right: 'auto',
+};
+
 const ElementOptions = ({ onClose, style, element, render, ...props }: Props) => {
+  const [turnIntoElementsProps, setTurnIntoElementsProps] = useState<TurnInto>({
+    style: DEFAULT_TURN_INTO_STYLES,
+    open: false,
+  });
+
+  const containerRef = useRef<HTMLDivElement>(null);
   const editor = useSlate();
+  const tools = useTools();
   const [, handlers] = useElementSettings();
 
+  const { ActionMenu } = tools || {};
+
   // [WIP]
-  const handleTurnInto = () => {};
+  const handleTurnInto = (event: MouseEvent) => {
+    const containerRect = containerRef.current!.getBoundingClientRect();
+    const actionMenuRect = document.querySelector('.yoopta-action-menu-list')?.getBoundingClientRect();
+
+    const position = {
+      left: containerRect.left + containerRect.width + 10,
+      top: containerRect.top + containerRect.height,
+    };
+
+    if (actionMenuRect && position.left + actionMenuRect.width > window.innerWidth) {
+      position.left = containerRect.left - actionMenuRect.width - 10;
+    }
+
+    if (actionMenuRect && position.top < actionMenuRect.height) {
+      position.top = actionMenuRect.height + 20;
+    }
+
+    setTurnIntoElementsProps((prevProps) => ({
+      open: !prevProps.open,
+      style: { ...prevProps.style, ...position },
+    }));
+  };
 
   const isVoid = Editor.isVoid(editor, element);
 
@@ -51,61 +94,57 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
     props.onCopy?.();
   };
 
-  if (render) {
-    return (
-      <Overlay onClose={onClose}>
-        <div style={style} className={s.root}>
-          {render({ handleDelete: onDelete, handleDuplicate: onDuplicate, handleCopy: onCopy })}
-        </div>
-      </Overlay>
-    );
-  }
+  /* Work in progress */
+  // if (render) {
+  //   return (
+  //     <Overlay onClose={onClose}>
+  //       <div style={style} className={s.root}>
+  //         {render({ handleDelete: onDelete, handleDuplicate: onDuplicate, handleCopy: onCopy })}
+  //       </div>
+  //     </Overlay>
+  //   );
+  // }
 
   return (
     <Overlay onClose={onClose}>
-      <div style={style} className={cx(s.root, 'yoopta-element-options')}>
+      <div style={style} className={cx(s.root, 'yoopta-element-options')} ref={containerRef}>
         <div className={s.content}>
+          {turnIntoElementsProps.open && (
+            <Overlay onClose={() => setTurnIntoElementsProps({ style: DEFAULT_TURN_INTO_STYLES, open: false })}>
+              <ActionMenu style={turnIntoElementsProps.style} options={{ shouldDeleteText: false }} />
+            </Overlay>
+          )}
           <div className={s.group}>
             <button type="button" className={s.item} onClick={onDelete}>
               <div className={s.icon}>
                 <TrashIcon />
               </div>
               <div className={s.text}>Delete</div>
-              {/* <div className={s.hotkey}>Del or Ctrl+D</div> */}
             </button>
             <button type="button" className={s.item} onClick={onDuplicate}>
               <div className={s.icon}>
                 <DuplicateIcon />
               </div>
               <div className={s.text}>Duplicate</div>
-              {/* <div className={s.hotkey}>⌘+D</div> */}
             </button>
             {/* Work in progress */}
-            {/* {!isVoid && (
+            {!isVoid && (
               <button type="button" className={s.item} onClick={handleTurnInto}>
                 <div className={s.icon}>
                   <TurnIcon />
                 </div>
                 <div className={s.text}>Turn into</div>
-                <div className={s.hotkey}>{'>'}</div>
               </button>
-            )} */}
+            )}
             <button type="button" className={s.item} onClick={onCopy}>
               <div className={s.icon}>
                 <CopyIcon />
               </div>
               <div className={s.text}>Copy link to block</div>
-              {/* <div className={s.hotkey}>⌥+Shift+L</div> */}
             </button>
           </div>
           {/* Work in progress */}
-          {/* <div className={s.group}>
-            <button type="button" className={s.item}>
-              <div className={s.icon}></div>
-              <div className={s.text}>Caption</div>
-              <div className={s.hotkey}>+D</div>
-            </button>
-          </div> */}
+          {/** [TODO] - add ability for custom options  */}
         </div>
       </div>
     </Overlay>

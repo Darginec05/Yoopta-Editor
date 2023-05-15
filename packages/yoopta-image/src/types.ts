@@ -1,4 +1,4 @@
-import { YooptaBaseElement, Modify } from '@yoopta/editor';
+import { YooptaBaseElement, Modify, YooptaPluginBaseOptions } from '@yoopta/editor';
 
 export type ImageUploadResponse = {
   url: string;
@@ -12,7 +12,7 @@ export type ImagePluginOptions = {
   maxHeight?: number;
   accept?: string | undefined;
   onUpload: (file: File) => Promise<ImageUploadResponse>;
-};
+} & YooptaPluginBaseOptions;
 
 export type ImageElementData = {
   size: { width: number | 'auto'; height: number | 'auto' };

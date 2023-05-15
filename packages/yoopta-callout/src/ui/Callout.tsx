@@ -47,6 +47,10 @@ const Callout = createYooptaPlugin<any, CalloutElement>({
       },
     },
   },
+  options: {
+    searchString: 'callout',
+    displayLabel: 'Callout',
+  },
 });
 
 export { Callout };

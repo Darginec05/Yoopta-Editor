@@ -16,7 +16,11 @@ export type YooptaPluginEventHandlers = {
   [key in keyof EditorEventHandlers]: (editor: YoEditor, options: HandlersOptions) => EditorEventHandlers[key] | void;
 };
 
-export type YooptaPluginBaseOptions = Record<string, unknown>;
+export type YooptaPluginBaseOptions = {
+  searchString?: string;
+  displayLabel?: string;
+  [x: string]: any;
+};
 
 export type YooptaRenderElementFunc<P extends YooptaBaseElement<string> = YooptaBaseElement<string>> = (
   editor: YoEditor,
@@ -50,7 +54,7 @@ type Exports<T> = {
 };
 
 export type YooptaPluginType<
-  O = YooptaPluginBaseOptions,
+  O extends YooptaPluginBaseOptions = YooptaPluginBaseOptions,
   P extends YooptaBaseElement<string> = YooptaBaseElement<string>,
 > = {
   type: string;
@@ -93,7 +97,7 @@ export class YooptaPlugin<O extends YooptaPluginBaseOptions, P extends YooptaBas
       shortcut = this.#props.shortcut,
       exports = this.#props.exports,
       events = this.#props.events,
-      options = this.#props.options,
+      options,
     } = overrides;
 
     const updatedProps = Object.freeze({
@@ -104,7 +108,7 @@ export class YooptaPlugin<O extends YooptaPluginBaseOptions, P extends YooptaBas
       shortcut,
       exports,
       events,
-      options,
+      options: { ...this.#props.options, ...options },
     });
 
     return new YooptaPlugin<O, P>(updatedProps);

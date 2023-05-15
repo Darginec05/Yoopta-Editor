@@ -13,9 +13,9 @@
 
 .toolbar {
   align-items: stretch;
-  background: linear-gradient(90deg,rgba(49,49,47,.99),#262625);
-  border-radius: 5px;
+  background: #fff;
   box-shadow: 0 0 0 1px hsla(0, 0%, 6%, .05), 0 3px 6px hsla(0, 0%, 6%, .1), 0 9px 24px hsla(0, 0%, 6%, .2);
+  border-radius: 5px;
   display: inline-flex;
   font-size: 14px;
   line-height: 1.2;
@@ -26,7 +26,7 @@
 }
 
 .text {
-  color: #fff;
+  color: #000;
   font-weight: 500
 }
 
@@ -37,7 +37,7 @@
 .mark {
   all: unset;
   cursor: pointer;
-  color: #fff;
+  color: #000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -53,6 +53,7 @@
   &:last-child {
     margin-right: 2px;
   }
+
   &:first-child {
     margin-left: 2px;
   }
@@ -60,7 +61,7 @@
 
 .active {
   background-color: #1183ff;
-  color: #fff;
+  color: #000;
 
   &:hover {
     background-color: #007aff !important;
@@ -69,6 +70,6 @@
 }
 
 .mark:hover {
-  background-color: #383835;
-  color: #fff;
+  background-color: rgba(55, 53, 47, 0.08);
+  color: #000;
 }

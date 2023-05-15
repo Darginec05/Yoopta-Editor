@@ -1,34 +1,41 @@
 import { Editor, Element, NodeEntry, Path, Text, Transforms } from 'slate';
-import React, { ReactNode, useContext, useMemo } from 'react';
+import React, { ReactElement, ReactNode, useContext, useMemo } from 'react';
 import { useSlate } from 'slate-react';
 import { YooptaBaseElement } from '../../types';
-import { mergePlugins, YooptaPlugin, YooptaPluginType } from '../../utils/plugins';
+import { mergePlugins, ParentYooptaPlugin, YooptaPlugin, YooptaPluginType } from '../../utils/plugins';
 import { YooptaMark } from '../../utils/marks';
 import { getDefaultParagraphLine } from '../../components/Editor/utils';
 import { generateId } from '../../utils/generateId';
 import { YooptaTools } from '../../components/YooptaEditor/YooptaEditor';
 
+const defaultValues: YooptaContextReturnValues = { marks: {}, elements: {} };
+
+const YooptaContext = React.createContext<YooptaContextType>(defaultValues);
+
 export type HoveredElement = YooptaBaseElement<string> | null;
+
+type YooptaToolsMap = {
+  Toolbar: (props: any) => ReactElement;
+  ActionMenu: (props: any) => ReactElement;
+  ChatGPT: (props: any) => ReactElement;
+  [x: string]: (props: any) => ReactElement;
+};
 
 export type YooptaContextReturnValues = {
   marks: MarksMap;
   elements: ElementsMap;
-  tools?: YooptaTools;
+  tools?: YooptaToolsMap | undefined;
 };
 
 export type YooptaContextHandlers = {};
 
 export type YooptaContextType = YooptaContextReturnValues;
 
-const defaultValues: YooptaContextReturnValues = { marks: {}, elements: {}, tools: {} };
-
-const YooptaContext = React.createContext<YooptaContextType>(defaultValues);
-
-type YooptaContextProps = {
+type Props = {
   children: ReactNode;
-  plugins: YooptaPlugin<any, any>[];
+  plugins: ParentYooptaPlugin[];
   marks?: YooptaMark[];
-  tools?: YooptaTools;
+  tools?: YooptaTools | undefined;
 };
 
 export type ToggleOptions = {
@@ -51,12 +58,15 @@ export type MarksMap = {
   };
 };
 
-const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList, tools }: YooptaContextProps) => {
+const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList, tools }: Props) => {
   const editor = useSlate();
 
   const toggleNodeElement = (plugin, options?: ToggleOptions) => {
     Editor.withoutNormalizing(editor, () => {
       if (!editor.selection) return;
+
+      console.log('editor.selection', editor.selection);
+
       const { offset, path } = editor.selection.anchor;
       const { shouldDeleteText } = options || {};
 
@@ -99,23 +109,20 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList,
   };
 
   const elements = useMemo<ElementsMap>(() => {
-    const yooptaPlugins = mergePlugins(pluginList);
     const ELEMENTS_MAP: ElementsMap = {};
 
-    yooptaPlugins.forEach((plugin) => {
-      const { createElement, defineElement, type, hasParent } = plugin;
-      if (!hasParent) {
-        ELEMENTS_MAP[plugin.type] = {
-          create: createElement,
-          define: defineElement,
-          toggle: (options) => toggleNodeElement(plugin, options),
-          type,
-        };
-      }
+    pluginList.forEach((plugin) => {
+      const { createElement, defineElement, type } = plugin;
+      ELEMENTS_MAP[plugin.type] = {
+        create: createElement,
+        define: defineElement,
+        toggle: (options) => toggleNodeElement(plugin, options),
+        type,
+      };
     });
 
     return ELEMENTS_MAP;
-  }, [pluginList, editor.selection]);
+  }, [pluginList, editor.selection, tools]);
 
   const checkIsMarkActive = (mark) => {
     const marks = Editor.marks(editor);
@@ -147,9 +154,31 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList,
     return mapper;
   }, [markList, editor.selection]);
 
-  const yooptaTools = useMemo(() => {
-    return tools;
-  }, [tools]);
+  const yooptaTools = useMemo<YooptaToolsMap | undefined>(() => {
+    const toolKeys = Object.keys(tools || {});
+    if (toolKeys.length === 0) return undefined;
+
+    const TOOLS = {} as YooptaToolsMap;
+
+    toolKeys.forEach((toolKey) => {
+      const ToolComponent = tools?.[toolKey];
+
+      if (ToolComponent) {
+        if (React.isValidElement(ToolComponent)) {
+          TOOLS[toolKey] = ({ style, className, ...rest }) =>
+            React.cloneElement(ToolComponent as ReactElement, {
+              style,
+              className,
+              plugins: pluginList,
+              ...rest,
+              ...ToolComponent?.props,
+            });
+        }
+      }
+    });
+
+    return TOOLS;
+  }, [tools, editor.selection]);
 
   const value = useMemo(() => {
     return { elements, marks, tools: yooptaTools };

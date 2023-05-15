@@ -83,6 +83,10 @@ const Embed = createYooptaPlugin<EmbedPluginOptions, EmbedElement>({
       },
     },
   },
+  options: {
+    searchString: 'Embed media',
+    displayLabel: 'Embed',
+  },
 });
 
 export default Embed;

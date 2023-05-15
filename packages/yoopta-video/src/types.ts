@@ -1,4 +1,4 @@
-import { Modify, YooptaBaseElement } from '@yoopta/editor';
+import { Modify, YooptaBaseElement, YooptaPluginBaseOptions } from '@yoopta/editor';
 
 export type VideoUploadResponse = {
   url: string;
@@ -11,7 +11,7 @@ export type VideoPluginOptions = {
   maxWidth?: number;
   maxHeight?: number;
   onUpload: (file: File) => Promise<VideoUploadResponse>;
-};
+} & YooptaPluginBaseOptions;
 
 export type VideoElementData = {
   size: { width: number | 'auto'; height: number | 'auto' };

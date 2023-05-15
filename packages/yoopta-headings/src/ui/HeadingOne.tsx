@@ -55,6 +55,8 @@ const HeadingOne = createYooptaPlugin<HeadingOptions, HeadingOneElement>({
   },
   options: {
     anchor: '#',
+    searchString: 'h1 title',
+    displayLabel: 'Heading 1',
   },
 });
 

@@ -1,11 +1,11 @@
 import { Editor, Element, Node, NodeEntry, Path, Range, Transforms } from 'slate';
-import { getElementByPath, generateId, createYooptaPlugin, YoEditor } from '@yoopta/editor';
+import { getElementByPath, generateId, createYooptaPlugin, YoEditor, YooptaPluginBaseOptions } from '@yoopta/editor';
 import { CodeLeaf } from './ui/CodeLeaf';
 import { CodeRender } from './ui/CodeRender';
 import { CodeLineRender } from './ui/CodeLineRender';
 import { codeLineDecorator, getChildNodeToDecorations, mergeMaps } from './utils/decorator';
 import { CodeEditor } from './ui/CodeEditor';
-import { CodeChildElement, CodeElement, CodeOptions } from './types';
+import { CodeChildElement, CodeElement } from './types';
 
 const CODE_NODE_TYPE = 'code';
 const CODE_CHILD_NODE_TYPE = 'code-line';
@@ -124,7 +124,7 @@ const CodeLine = createYooptaPlugin<any, CodeChildElement>({
   },
 });
 
-const Code = createYooptaPlugin<CodeOptions, CodeElement>({
+const Code = createYooptaPlugin<YooptaPluginBaseOptions, CodeElement>({
   type: CODE_NODE_TYPE,
   renderer: {
     editor: CodeEditor,
@@ -204,6 +204,10 @@ const Code = createYooptaPlugin<CodeOptions, CodeElement>({
         nodeName: ['PRE'],
       },
     },
+  },
+  options: {
+    searchString: 'hello world bug',
+    displayLabel: 'Code',
   },
 });
 

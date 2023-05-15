@@ -11,7 +11,7 @@
   max-height: 70vh;
   opacity: 1;
   border-radius: 4px;
-  background: linear-gradient(90deg,rgba(49,49,47,.99),#262625);
+  background: #fff;
   position: fixed;
   max-width: calc(100vw - 24px);
   box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
@@ -27,6 +27,7 @@
   margin-right: 0px;
   margin-bottom: 0px;
   width: 100%;
+  position: relative;
 }
 
 .group {
@@ -51,11 +52,11 @@
   min-height: 28px;
   font-size: 14px;
   background: inherit;
-  color: #fff;
+  color: #000;
 
   &:hover {
-    background-color: #383835;
-    color: #fff;
+    background-color: rgba(55, 53, 47, 0.08);
+    color: #000;
   }
 }
 
@@ -65,7 +66,7 @@
   justify-content: center;
   margin-left: 10px;
   margin-right: 4px;
-  color: #fff;
+  color: #000;
 }
 
 .text {

@@ -1,4 +1,3 @@
-
 .elementListItem {
   color: #fff;
   display: flex;
@@ -10,8 +9,9 @@
   margin: 1px 0;
   border-radius: 10px;
 
-  &:hover, &:focus {
-    background: #383835;
+  &:hover,
+  &:focus {
+    background-color: rgba(55, 53, 47, 0.08);
   }
 
   span {
@@ -22,27 +22,28 @@
     background: #007AFF;
   }
 
-  &[aria-selected="true"]{
-    background: #383835;
+  &[aria-selected="true"] {
+    background-color: rgba(55, 53, 47, 0.08);
   }
 }
 
 .hovered {
-  background: #383835;
+  background-color: rgba(55, 53, 47, 0.08);
 }
 
 .button {
   all: unset;
   cursor: pointer;
-  color: #fff;
+  color: #000;
   display: flex;
   align-items: center;
   background: inherit;
   width: 100%;
-  padding: 8px 14px;
+  padding: 8px 12px;
   height: 100%;
   border-radius: inherit;
   text-transform: capitalize;
+  font-size: 14px;
 
   span {
     margin-left: 8px;

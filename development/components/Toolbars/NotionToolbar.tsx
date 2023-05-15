@@ -7,7 +7,7 @@ import CodeIcon from './icons/notion/code.svg';
 import s from './NotionToolbar.module.scss';
 
 const NotionToolbar = (props: ToolbarProps) => {
-  const [isCHatGPT, setIsChatGPT] = useState(false);
+  const [isChatGPTOpen, setIsChatGPTOpen] = useState(false);
   const { getRootProps } = props;
   const marks = useMarks();
   // const { ChatGPT } = useTools();
@@ -16,9 +16,9 @@ const NotionToolbar = (props: ToolbarProps) => {
     <div {...getRootProps()}>
       <div className={s.toolbar}>
         <div className={s.group}>
-          <button type="button" className={s.item} onClick={() => setIsChatGPT(true)}>
+          <button type="button" className={s.item} onClick={() => setIsChatGPTOpen(true)}>
             <span className={s.askGPT}>Ask GPT {`[WIP]`}</span>
-            {/* {isCHatGPT && ChatGPT} */}
+            {/* {isChatGPTOpen && <ChatGPT />} */}
             {/* {tools.ActionMenu.show({ style: { marginLeft: '10px' } })} */}
           </button>
         </div>

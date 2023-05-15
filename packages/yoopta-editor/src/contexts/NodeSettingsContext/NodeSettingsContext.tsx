@@ -78,6 +78,8 @@ const NodeSettingsProvider = ({ children }: NodeSettingsProps) => {
   const [hoveredElement, setHoveredElement] = useState<HoveredElement>(() => getInitialState(editor));
   const [isElementOptionsOpen, setNodeSettingsOpen] = useState<boolean>(false);
 
+  // console.log('hoveredElement', hoveredElement);
+
   const values: NodeSettingsContextValues = {
     hoveredElement,
     isElementOptionsOpen,
@@ -88,15 +90,19 @@ const NodeSettingsProvider = ({ children }: NodeSettingsProps) => {
   const events = useMemo<NodeSettingsContextHandlers>(
     () => ({
       hoverIn: (e: MouseEvent<HTMLDivElement>, node: YooptaBaseElement<string>) => {
+        // console.log('node', node);
+        // console.log('e.current', e.currentTarget);
+
+        // console.log('isElementOptionsOpen', isElementOptionsOpen);
+
         if (isElementOptionsOpen) return e.preventDefault();
 
         if (!!node?.data?.skipSettings) return;
         setHoveredElement(node);
       },
 
-      changeHoveredNode: (hoverProps: HoveredElement) => setHoveredElement(hoverProps),
+      changeHoveredNode: (hoverElement: HoveredElement) => setHoveredElement(hoverElement),
 
-      // [TODO] - write function to get path: [10], [10, 1], [12, 3, 4]
       triggerPlusButton: (elementNode) => {
         Editor.withoutNormalizing(editor, () => {
           if (!editor.selection || !elementNode) return;
@@ -117,6 +123,10 @@ const NodeSettingsProvider = ({ children }: NodeSettingsProps) => {
       openNodeSettings: (dragRef, element) => {
         disableBodyScroll(document.body, { reserveScrollBarGap: true });
         setNodeSettingsOpen(true);
+
+        const elementPath = ReactEditor.findPath(editor, element!);
+        Transforms.select(editor, { path: elementPath.concat(0), offset: 0 });
+        setHoveredElement(element);
 
         if (dragRef.current) {
           const dragRect = dragRef.current!.getBoundingClientRect();
@@ -221,6 +231,12 @@ const NodeSettingsProvider = ({ children }: NodeSettingsProps) => {
   return <NodeSettingsContext.Provider value={contextValue}>{children}</NodeSettingsContext.Provider>;
 };
 
-const useElementSettings = () => useContext<NodeSettingsContextType>(NodeSettingsContext);
+const useElementSettings = () => {
+  const [values, handlers] = useContext<NodeSettingsContextType>(NodeSettingsContext);
+
+  return {
+    hoveredElement: values.hoveredElement,
+  };
+};
 
 export { NodeSettingsProvider, useElementSettings };

@@ -1,4 +1,10 @@
-import { generateId, createYooptaPlugin, RenderYooptaElementProps, getElementClassname } from '@yoopta/editor';
+import {
+  generateId,
+  createYooptaPlugin,
+  RenderYooptaElementProps,
+  getElementClassname,
+  YooptaPluginBaseOptions,
+} from '@yoopta/editor';
 import { Transforms } from 'slate';
 import { ParagraphElement } from '../types';
 import s from './Paragraph.module.scss';
@@ -23,7 +29,7 @@ const ParagraphRender = ({
 
 ParagraphRender.displayName = 'Paragraph';
 
-const Paragraph = createYooptaPlugin<any, ParagraphElement>({
+const Paragraph = createYooptaPlugin<YooptaPluginBaseOptions, ParagraphElement>({
   type: 'paragraph',
   renderer: (editor) => ParagraphRender,
   defineElement: (): ParagraphElement => ({
@@ -49,6 +55,10 @@ const Paragraph = createYooptaPlugin<any, ParagraphElement>({
         nodeName: 'P',
       },
     },
+  },
+  options: {
+    searchString: 'text paragraph',
+    displayLabel: 'Paragraph',
   },
 });
 

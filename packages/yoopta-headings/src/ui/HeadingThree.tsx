@@ -55,6 +55,8 @@ const HeadingThree = createYooptaPlugin<HeadingOptions, HeadingThreeElement>({
   },
   options: {
     anchor: '#',
+    searchString: 'h3 subsubtitle small heading',
+    displayLabel: 'Heading 3',
   },
 });
 
