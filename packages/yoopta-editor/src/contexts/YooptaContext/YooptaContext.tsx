@@ -65,8 +65,6 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList,
     Editor.withoutNormalizing(editor, () => {
       if (!editor.selection) return;
 
-      console.log('editor.selection', editor.selection);
-
       const { offset, path } = editor.selection.anchor;
       const { shouldDeleteText } = options || {};
 

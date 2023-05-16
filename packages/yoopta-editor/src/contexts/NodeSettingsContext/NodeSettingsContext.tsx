@@ -1,4 +1,4 @@
-import { Editor, Transforms, Path, Element } from 'slate';
+import { Editor, Transforms, Path, Element, Node } from 'slate';
 import React, { CSSProperties, MouseEvent, ReactNode, useContext, useMemo, useState } from 'react';
 import { ReactEditor, useSlate } from 'slate-react';
 import { YooptaBaseElement } from '../../types';
@@ -125,7 +125,14 @@ const NodeSettingsProvider = ({ children }: NodeSettingsProps) => {
         setNodeSettingsOpen(true);
 
         const elementPath = ReactEditor.findPath(editor, element!);
-        Transforms.select(editor, { path: elementPath.concat(0), offset: 0 });
+
+        let selectionPath = elementPath.concat(0);
+
+        if (Element.isElement(element?.children[0])) {
+          selectionPath = selectionPath.concat(0);
+        }
+
+        Transforms.select(editor, { path: selectionPath, offset: 0 });
         setHoveredElement(element);
 
         if (dragRef.current) {
@@ -231,12 +238,6 @@ const NodeSettingsProvider = ({ children }: NodeSettingsProps) => {
   return <NodeSettingsContext.Provider value={contextValue}>{children}</NodeSettingsContext.Provider>;
 };
 
-const useElementSettings = () => {
-  const [values, handlers] = useContext<NodeSettingsContextType>(NodeSettingsContext);
-
-  return {
-    hoveredElement: values.hoveredElement,
-  };
-};
+const useElementSettings = () => useContext<NodeSettingsContextType>(NodeSettingsContext);
 
 export { NodeSettingsProvider, useElementSettings };

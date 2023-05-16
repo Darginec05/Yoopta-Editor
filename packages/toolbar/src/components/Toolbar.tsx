@@ -58,7 +58,7 @@ const Toolbar = ({ type = 'bubble', style, className, render }: Props) => {
   const updateToolbarPosition = () => {
     const selectionRect = getRectByCurrentSelection();
 
-    const top = selectionRect.top - toolbarRef.current!.offsetHeight - selectionRect.height / 4;
+    const top = selectionRect.top - toolbarRef.current!.offsetHeight - 10;
     let left = selectionRect.left + window.pageXOffset - toolbarRef.current!.offsetWidth / 2 + selectionRect.width / 2;
 
     left = left < 0 ? 10 : left;
@@ -80,6 +80,9 @@ const Toolbar = ({ type = 'bubble', style, className, render }: Props) => {
     if (!isExpanded || (isAllNodesSelected && editor.children.length > 1)) return hideToolbar();
 
     updateToolbarPosition();
+
+    // window.addEventListener('mouseup', updateToolbarPosition);
+    // return () => window.removeEventListener('mouseup', updateToolbarPosition);
   }, [editor.selection]);
 
   useEffect(() => {
