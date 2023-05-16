@@ -1,8 +1,9 @@
 import { Inter } from 'next/font/google';
 import { useState } from 'react';
 import { Descendant } from 'slate';
-import YooptaEditor from '@yoopta/editor';
+import NextLink from 'next/link';
 
+import YooptaEditor from '@yoopta/editor';
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
 import Code from '@yoopta/code';
@@ -19,22 +20,32 @@ import ActionMenu from '@yoopta/action-menu-list';
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import Toolbar from '@yoopta/toolbar';
 import { yooptaInitData } from '@/utils/initialData';
-import { MediumToolbar } from '@/components/Toolbars/MediumToolbar';
 
 const inter = Inter({ subsets: ['latin'] });
 
 const plugins = [
   Paragraph,
-  Blockquote,
-  Callout,
-  Code,
-  Link,
-  NumberedList,
-  BulletedList,
-  TodoList,
   HeadingOne,
   HeadingTwo,
   HeadingThree,
+  Blockquote,
+  Callout,
+  Code,
+  // Link.extend({
+  //   renderer: () => (props) => {
+  //     const { attributes, element, children, HTMLAttributes } = props;
+
+  //     return (
+  //       <NextLink href={element.data.url || ''} {...HTMLAttributes} {...attributes}>
+  //         {children}
+  //       </NextLink>
+  //     );
+  //   },
+  // }),
+  // Link,
+  NumberedList,
+  BulletedList,
+  TodoList,
   Embed.extend({
     options: {
       maxWidth: 650,
@@ -69,7 +80,10 @@ export default function Home() {
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
   return (
-    <main className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}>
+    <main
+      style={{ padding: '6rem' }}
+      className={`p-24 flex min-h-screen w-full h-full flex-col items-center justify-between ${inter.className}`}
+    >
       <div className="w-full h-full">
         <YooptaEditor
           value={editorValue}
@@ -77,10 +91,10 @@ export default function Home() {
           plugins={plugins}
           marks={marks}
           placeholder="Start typing..."
-          offline="medium-example"
+          offline
           autoFocus
           tools={{
-            Toolbar: <Toolbar type="bubble" render={MediumToolbar} />,
+            Toolbar: <Toolbar type="bubble" />,
             ActionMenu: <ActionMenu />,
           }}
         />

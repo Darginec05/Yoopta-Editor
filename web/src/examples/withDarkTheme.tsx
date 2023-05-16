@@ -2,7 +2,7 @@ import { Inter } from 'next/font/google';
 import { useState } from 'react';
 import { Descendant } from 'slate';
 import NextImage from 'next/image';
-import YooptaEditor, { RenderYooptaElementProps } from '@yoopta/editor';
+import YooptaEditor from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
@@ -139,7 +139,7 @@ export default function Home() {
 
   return (
     <main
-      style={{ backgroundColor: 'hsl(224 71% 4%)', color: 'white' }}
+      style={{ backgroundColor: 'hsl(224 71% 4%)', color: 'white', padding: '6rem' }}
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
     >
       <div className="w-full h-full">

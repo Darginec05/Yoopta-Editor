@@ -13,7 +13,7 @@ import Video from '@yoopta/video';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
-import { yooptaInitData } from '../../utils/initialData';
+import { yooptaInitData } from '../utils/initialData';
 
 const inter = Inter({ subsets: ['latin'] });
 const plugins = [

@@ -19,6 +19,7 @@ import ActionMenu from '@yoopta/action-menu-list';
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import Toolbar from '@yoopta/toolbar';
 import { yooptaInitData } from '@/utils/initialData';
+import { MediumToolbar } from '@/components/Toolbars/MediumToolbar';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -68,7 +69,10 @@ export default function Home() {
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
   return (
-    <main className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}>
+    <main
+      style={{ padding: '6rem' }}
+      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
+    >
       <div className="w-full h-full">
         <YooptaEditor
           value={editorValue}
@@ -76,10 +80,10 @@ export default function Home() {
           plugins={plugins}
           marks={marks}
           placeholder="Start typing..."
-          offline
+          offline="medium-example"
           autoFocus
           tools={{
-            Toolbar: <Toolbar type="bubble" />,
+            Toolbar: <Toolbar type="bubble" render={MediumToolbar} />,
             ActionMenu: <ActionMenu />,
           }}
         />

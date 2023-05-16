@@ -149,7 +149,10 @@ export default function Home() {
   const [editorValue, setEditorValue] = useState<Descendant[]>(yooptaInitData);
 
   return (
-    <main className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}>
+    <main
+      style={{ padding: '6rem' }}
+      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
+    >
       <div className="w-full h-full">
         <YooptaEditor
           value={editorValue}
