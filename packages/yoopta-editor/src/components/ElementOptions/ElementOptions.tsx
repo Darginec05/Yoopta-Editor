@@ -1,15 +1,15 @@
 import { Overlay } from './Overlay';
 import { CSSProperties, MouseEvent, ReactNode, useRef, useState } from 'react';
-import { ReactEditor, useSlate } from 'slate-react';
+import { useSlate } from 'slate-react';
 import cx from 'classnames';
-import { Editor, Element, Path, Transforms } from 'slate';
+import { Editor } from 'slate';
 import TrashIcon from './icons/trash.svg';
 import DuplicateIcon from './icons/duplicate.svg';
 import TurnIcon from './icons/turn.svg';
 import CopyIcon from './icons/copy.svg';
 import { useElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
+import { useTools } from '../../contexts/YooptaContext/YooptaContext';
 import s from './ElementOptions.module.scss';
-import { useElements, useTools } from '../../contexts/YooptaContext/YooptaContext';
 
 type RenderProps = {
   handleDelete?: () => void;
@@ -50,8 +50,6 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
   const editor = useSlate();
   const tools = useTools();
   const [, handlers] = useElementSettings();
-
-  const { ActionMenu } = tools || {};
 
   // [WIP]
   const handleTurnInto = (event: MouseEvent) => {
@@ -109,11 +107,11 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
     <Overlay onClose={onClose}>
       <div style={style} className={cx(s.root, 'yoopta-element-options')} ref={containerRef}>
         <div className={s.content}>
-          {turnIntoElementsProps.open && (
+          {/* {turnIntoElementsProps.open && (
             <Overlay onClose={() => setTurnIntoElementsProps({ style: DEFAULT_TURN_INTO_STYLES, open: false })}>
               <ActionMenu style={turnIntoElementsProps.style} options={{ shouldDeleteText: false }} />
             </Overlay>
-          )}
+          )} */}
           <div className={s.group}>
             <button type="button" className={s.item} onClick={onDelete}>
               <div className={s.icon}>
@@ -128,14 +126,14 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
               <div className={s.text}>Duplicate</div>
             </button>
             {/* Work in progress */}
-            {!isVoid && (
+            {/* {!isVoid && (
               <button type="button" className={s.item} onClick={handleTurnInto}>
                 <div className={s.icon}>
                   <TurnIcon />
                 </div>
                 <div className={s.text}>Turn into</div>
               </button>
-            )}
+            )} */}
             <button type="button" className={s.item} onClick={onCopy}>
               <div className={s.icon}>
                 <CopyIcon />
