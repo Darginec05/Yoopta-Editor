@@ -81,6 +81,7 @@
     "slate-react": ">=0.72.4"
   },
   "dependencies": {
-    "openai": "^3.2.1"
+    "openai": "^3.2.1",
+    "openai-streams": "^5.3.0"
   }
 }
