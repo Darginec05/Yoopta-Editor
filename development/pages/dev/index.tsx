@@ -222,9 +222,8 @@ const TOOLS = {
   Toolbar: <Toolbar />,
   ActionMenu: <ActionMenu items={ACTION_MENU_ITEMS} />,
   LinkTool: <LinkTool onlyTool />,
-
   // [WORK IN PROGRESS]
-  // ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" />,
+  ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" />,
 };
 
 const BasicExample = () => {
