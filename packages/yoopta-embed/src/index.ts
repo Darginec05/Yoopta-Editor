@@ -50,8 +50,8 @@ const Embed = createYooptaPlugin<EmbedPluginOptions, EmbedElement>({
     data: { url: null, size: { width: 'auto', height: 'auto' }, providerId: null },
     children: [{ text: '' }],
   }),
-  createElement: function (editor) {
-    const node = Embed.getPlugin.defineElement();
+  createElement: (editor, elementData) => {
+    const node: EmbedElement = { ...Embed.getPlugin.defineElement(), ...elementData };
 
     Transforms.setNodes(editor, node, {
       at: editor.selection?.anchor,

@@ -103,7 +103,7 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList,
         });
       }
 
-      plugin.createElement?.(editor);
+      plugin.createElement?.(editor, { id: currentNode.id });
     });
   };
 
@@ -181,6 +181,7 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList,
               style,
               className,
               plugins: pluginList,
+              asTool: true,
               ...rest,
               ...ToolComponent?.props,
             });

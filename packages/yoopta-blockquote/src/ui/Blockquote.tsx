@@ -39,8 +39,8 @@ const Blockquote = createYooptaPlugin<YooptaPluginBaseOptions, BlockquoteElement
     children: [{ text: '' }],
     nodeType: 'block',
   }),
-  createElement: (editor) => {
-    const node: BlockquoteElement = Blockquote.getPlugin.defineElement();
+  createElement: (editor, elementData) => {
+    const node: BlockquoteElement = { ...Blockquote.getPlugin.defineElement(), ...elementData };
 
     Transforms.setNodes<BlockquoteElement>(editor, node, {
       at: editor.selection?.anchor,

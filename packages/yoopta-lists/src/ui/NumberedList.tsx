@@ -36,7 +36,7 @@ const NumberedList = createYooptaPlugin<ListOptions, NumberedList>({
     nodeType: 'block',
     data: { depth: 1, skipDrag: true, skipSettings: true },
   }),
-  createElement: (editor) => {
+  createElement: (editor, elementData) => {
     const listItem: ListChildItemElement = ListItemList.getPlugin.defineElement();
 
     Transforms.unwrapNodes(editor, {
@@ -53,7 +53,7 @@ const NumberedList = createYooptaPlugin<ListOptions, NumberedList>({
       at: editor.selection?.anchor,
     });
 
-    const numberedList: NumberedList = NumberedList.getPlugin.defineElement();
+    const numberedList: NumberedList = { ...NumberedList.getPlugin.defineElement(), ...elementData };
 
     Transforms.wrapNodes(editor, numberedList, {
       at: editor.selection?.anchor,

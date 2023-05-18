@@ -4,8 +4,6 @@ import { Editor, Element, Node, NodeEntry, Range, Transforms } from 'slate';
 import { normalizeTokens } from './normalizeTokens';
 
 export const mergeMaps = <K, V>(...maps: Map<K, V>[]) => {
-  console.log('mergeMaps ');
-
   const map = new Map<K, V>();
 
   for (const m of maps) {

@@ -50,8 +50,8 @@ const Image = createYooptaPlugin<ImagePluginOptions, ImageElement>({
     data: { url: null, size: { width: 'auto', height: 'auto' } },
     children: [{ text: '' }],
   }),
-  createElement: function (editor) {
-    const node = Image.getPlugin.defineElement();
+  createElement: (editor, elementData) => {
+    const node: ImageElement = { ...Image.getPlugin.defineElement(), ...elementData };
 
     Transforms.setNodes(editor, node, {
       at: editor.selection?.anchor,

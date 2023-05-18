@@ -35,8 +35,8 @@ const HeadingTwo = createYooptaPlugin<HeadingOptions, HeadingTwoElement>({
     children: [{ text: '' }],
     nodeType: 'block',
   }),
-  createElement: function (editor) {
-    const node: HeadingTwoElement = HeadingTwo.getPlugin.defineElement();
+  createElement: (editor, elementData) => {
+    const node: HeadingTwoElement = { ...HeadingTwo.getPlugin.defineElement(), ...elementData };
 
     Transforms.setNodes<HeadingTwoElement>(editor, node, {
       at: editor.selection?.anchor,

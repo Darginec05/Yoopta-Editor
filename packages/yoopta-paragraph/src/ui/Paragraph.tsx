@@ -38,8 +38,8 @@ const Paragraph = createYooptaPlugin<YooptaPluginBaseOptions, ParagraphElement>(
     children: [{ text: '' }],
     nodeType: 'block',
   }),
-  createElement: function (editor) {
-    const node: ParagraphElement = Paragraph.getPlugin.defineElement();
+  createElement: (editor, elementData) => {
+    const node: ParagraphElement = { ...Paragraph.getPlugin.defineElement(), ...elementData };
 
     Transforms.setNodes(editor, node, {
       at: editor.selection?.anchor,

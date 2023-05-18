@@ -31,27 +31,27 @@ const TodoList = createYooptaPlugin<ListOptions, TodoList>({
     nodeType: 'block',
     data: { depth: 1, skipDrag: true, skipSettings: true },
   }),
-  extendEditor(editor) {
-    const { normalizeNode } = editor;
+  // extendEditor(editor) {
+  //   const { normalizeNode } = editor;
 
-    // editor.normalizeNode = (entry) => {
-    //   const [node, path] = entry;
+  //   // editor.normalizeNode = (entry) => {
+  //   //   const [node, path] = entry;
 
-    //   if (Element.isElement(node) && node.type === TODO_LIST_NODE_TYPE) {
-    //     if (node.children.length === 1 && !Element.isElement(node.children[0])) {
-    //       Transforms.removeNodes(editor, {
-    //         at: entry[1],
-    //         match: (n) => Element.isElement(n) && n.type === TODO_LIST_NODE_TYPE,
-    //       });
-    //     }
-    //   }
+  //   //   if (Element.isElement(node) && node.type === TODO_LIST_NODE_TYPE) {
+  //   //     if (node.children.length === 1 && !Element.isElement(node.children[0])) {
+  //   //       Transforms.removeNodes(editor, {
+  //   //         at: entry[1],
+  //   //         match: (n) => Element.isElement(n) && n.type === TODO_LIST_NODE_TYPE,
+  //   //       });
+  //   //     }
+  //   //   }
 
-    //   normalizeNode(entry);
-    // };
+  //   //   normalizeNode(entry);
+  //   // };
 
-    return editor;
-  },
-  createElement: (editor) => {
+  //   return editor;
+  // },
+  createElement: (editor, elementData) => {
     const todoListItemElement: TodoListChildItemElement = TodoListItem.getPlugin.defineElement();
 
     Transforms.unwrapNodes(editor, {
@@ -68,7 +68,7 @@ const TodoList = createYooptaPlugin<ListOptions, TodoList>({
       at: editor.selection?.anchor,
     });
 
-    const todoList: TodoList = TodoList.getPlugin.defineElement();
+    const todoList: TodoList = { ...TodoList.getPlugin.defineElement(), ...elementData };
 
     Transforms.wrapNodes(editor, todoList, {
       at: editor.selection?.anchor,
