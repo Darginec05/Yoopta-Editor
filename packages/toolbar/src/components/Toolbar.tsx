@@ -67,7 +67,7 @@ const Toolbar = ({ type = 'bubble', style, className, render }: Props) => {
   };
 
   useEffect(() => {
-    if (isFixedToolbar) return setToolbarProps({ open: true, style: DEFAULT_BUBBLE_STYLE });
+    if (isFixedToolbar) return setToolbarProps({ open: true, style: style || {} });
     if (!editor.selection || !toolbarRef.current) return hideToolbar();
 
     const [, firstElementPath] = Editor.first(editor, [0]);

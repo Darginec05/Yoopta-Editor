@@ -224,7 +224,7 @@ const SuperStrike = createYooptaMark({
 });
 
 const TOOLS = {
-  Toolbar: <Toolbar />,
+  Toolbar: <Toolbar render={MediumToolbar} />,
   ActionMenu: <ActionMenu items={ACTION_MENU_ITEMS} render={NotionActionMenu} />,
   // ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" />,
 };
