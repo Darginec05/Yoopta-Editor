@@ -51,8 +51,10 @@ const Video = createYooptaPlugin<VideoPluginOptions, VideoElement>({
     data: { url: null, size: { width: 'auto', height: 'auto' } },
     children: [{ text: '' }],
   }),
-  createElement: (editor) => {
-    Transforms.setNodes(editor, Video.getPlugin.defineElement(), {
+  createElement: (editor, elementData) => {
+    const node: VideoElement = { ...Video.getPlugin.defineElement(), ...elementData };
+
+    Transforms.setNodes(editor, node, {
       at: editor.selection?.anchor,
     });
   },

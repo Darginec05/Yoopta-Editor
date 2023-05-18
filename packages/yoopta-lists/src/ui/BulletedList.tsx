@@ -64,7 +64,7 @@ const BulletedList = createYooptaPlugin<ListOptions, BulletedList>({
 
   //   return editor;
   // },
-  createElement: (editor) => {
+  createElement: (editor, elementData) => {
     const listItem: ListChildItemElement = ListItemList.getPlugin.defineElement();
 
     Transforms.unwrapNodes(editor, {
@@ -81,7 +81,8 @@ const BulletedList = createYooptaPlugin<ListOptions, BulletedList>({
       at: editor.selection?.anchor,
     });
 
-    const bulletedList: BulletedList = BulletedList.getPlugin.defineElement();
+    const bulletedList: BulletedList = { ...BulletedList.getPlugin.defineElement(), ...elementData };
+
     Transforms.wrapNodes(editor, bulletedList, {
       at: editor.selection?.anchor,
     });

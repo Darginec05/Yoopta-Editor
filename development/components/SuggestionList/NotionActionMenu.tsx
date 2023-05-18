@@ -2,7 +2,7 @@ import { ActionMenuRenderProps } from '@yoopta/action-menu-list';
 import s from './NotionActionMenu.module.scss';
 
 const NotionActionMenu = (props: ActionMenuRenderProps) => {
-  const { groups, isNotFound, getItemProps, getRootProps, items } = props;
+  const { groups, isNotFound, getItemProps, getRootProps } = props;
 
   return (
     <div {...getRootProps()} className={s.dropdown}>

@@ -28,8 +28,8 @@ const Callout = createYooptaPlugin<any, CalloutElement>({
     children: [{ text: '' }],
     nodeType: 'block',
   }),
-  createElement: function (editor) {
-    const node: CalloutElement = Callout.getPlugin.defineElement();
+  createElement: (editor, elementData) => {
+    const node: CalloutElement = { ...Callout.getPlugin.defineElement(), ...elementData };
 
     Transforms.setNodes(editor, node, {
       at: editor.selection?.anchor,

@@ -51,6 +51,8 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
   const tools = useTools();
   const [, handlers] = useElementSettings();
 
+  const { ActionMenu } = tools || {};
+
   // [WIP]
   const handleTurnInto = (event: MouseEvent) => {
     const containerRect = containerRef.current!.getBoundingClientRect();
@@ -107,11 +109,11 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
     <Overlay onClose={onClose}>
       <div style={style} className={cx(s.root, 'yoopta-element-options')} ref={containerRef}>
         <div className={s.content}>
-          {/* {turnIntoElementsProps.open && (
+          {turnIntoElementsProps.open && ActionMenu && (
             <Overlay onClose={() => setTurnIntoElementsProps({ style: DEFAULT_TURN_INTO_STYLES, open: false })}>
-              <ActionMenu style={turnIntoElementsProps.style} options={{ shouldDeleteText: false }} />
+              {ActionMenu && <ActionMenu style={turnIntoElementsProps.style} options={{ shouldDeleteText: false }} />}
             </Overlay>
-          )} */}
+          )}
           <div className={s.group}>
             <button type="button" className={s.item} onClick={onDelete}>
               <div className={s.icon}>
@@ -126,14 +128,14 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
               <div className={s.text}>Duplicate</div>
             </button>
             {/* Work in progress */}
-            {/* {!isVoid && (
+            {!isVoid && (
               <button type="button" className={s.item} onClick={handleTurnInto}>
                 <div className={s.icon}>
                   <TurnIcon />
                 </div>
                 <div className={s.text}>Turn into</div>
               </button>
-            )} */}
+            )}
             <button type="button" className={s.item} onClick={onCopy}>
               <div className={s.icon}>
                 <CopyIcon />

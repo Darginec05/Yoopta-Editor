@@ -173,7 +173,7 @@ const Code = createYooptaPlugin<YooptaPluginBaseOptions, CodeElement>({
     nodeType: 'block',
     data: { language: 'javascript' },
   }),
-  createElement: function (editor) {
+  createElement: (editor, elementData) => {
     const childNode: CodeChildElement = CodeLine.getPlugin.defineElement();
 
     Transforms.unwrapNodes(editor, {
@@ -185,7 +185,7 @@ const Code = createYooptaPlugin<YooptaPluginBaseOptions, CodeElement>({
       at: editor.selection?.anchor,
     });
 
-    const parentBlock: CodeElement = Code.getPlugin.defineElement();
+    const parentBlock: CodeElement = { ...Code.getPlugin.defineElement(), ...elementData };
 
     Transforms.wrapNodes(editor, parentBlock, {
       at: editor.selection?.anchor,

@@ -69,7 +69,7 @@ export type YooptaPluginType<
   leaf?: (editor: YoEditor) => (props: RenderLeafProps) => any;
   childPlugin?: YooptaPlugin<any, any>;
   hasParent?: boolean;
-  createElement?: (editor: YoEditor) => void;
+  createElement?: (editor: YoEditor, elementData?: Partial<P>) => void;
   defineElement: () => P;
 };
 
