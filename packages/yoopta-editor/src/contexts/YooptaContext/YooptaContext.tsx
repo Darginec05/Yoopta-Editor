@@ -48,6 +48,7 @@ export type ElementsMap = {
     create: YooptaPluginType['createElement'];
     define: YooptaPluginType['defineElement'];
     toggle: (options?: ToggleOptions) => void;
+    isActive: boolean;
   };
 };
 
@@ -106,7 +107,18 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList,
     });
   };
 
-  const elements = useMemo<ElementsMap>(() => {
+  const isElementActive = (type: string) => {
+    if (!editor.selection) return false;
+
+    const [element] = Editor.nodes(editor, {
+      at: Editor.unhangRange(editor, editor.selection),
+      match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === type,
+    });
+
+    return !!element;
+  };
+
+  const getElements = () => {
     const ELEMENTS_MAP: ElementsMap = {};
 
     pluginList.forEach((plugin) => {
@@ -116,11 +128,12 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList,
         define: defineElement,
         toggle: (options) => toggleNodeElement(plugin, options),
         type,
+        isActive: isElementActive(type),
       };
     });
 
     return ELEMENTS_MAP;
-  }, [pluginList, editor.selection, tools]);
+  };
 
   const checkIsMarkActive = (mark) => {
     const marks = Editor.marks(editor);
@@ -179,8 +192,9 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList,
   }, [tools, editor.selection]);
 
   const value = useMemo(() => {
+    const elements = getElements();
     return { elements, marks, tools: yooptaTools };
-  }, [editor.selection, marks, elements]);
+  }, [editor.selection, marks]);
 
   return <YooptaContext.Provider value={value}>{children}</YooptaContext.Provider>;
 };

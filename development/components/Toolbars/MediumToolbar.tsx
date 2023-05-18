@@ -26,29 +26,39 @@ const MediumToolbar = (props: ToolbarProps) => {
             <ItalicIcon />
           </span>
         </button>
-        {/* <button type="button" className={s.button} onClick={() => marks.bold.toggle()}>
-          <span style={marks.bold.isActive ? { color: '#b5e5a4' } : { color: '#fff' }} className={s.item}>
-            <LinkIcon />
-          </span>
-        </button> */}
         <button type="button" className={s.button} onClick={() => marks.code.toggle()}>
           <span style={marks.code.isActive ? { color: '#b5e5a4' } : { color: '#fff' }} className={s.item}>
             <LinkIcon />
           </span>
         </button>
         <div className={s.separator} />
-        <button type="button" className={s.button} onClick={() => elements['heading-one'].toggle()}>
-          <span style={{ color: '#fff' }} className={s.item}>
+        <button
+          type="button"
+          style={elements['heading-one'].isActive ? { color: '#b5e5a4' } : { color: '#fff' }}
+          className={s.button}
+          onClick={() => elements['heading-one'].toggle()}
+        >
+          <span className={s.item}>
             <TitleIcon />
           </span>
         </button>
-        <button type="button" className={s.button} onClick={() => elements['heading-two'].toggle()}>
-          <span style={{ color: '#fff' }} className={s.item}>
+        <button
+          type="button"
+          style={elements['heading-two'].isActive ? { color: '#b5e5a4' } : { color: '#fff' }}
+          className={s.button}
+          onClick={() => elements['heading-two'].toggle()}
+        >
+          <span className={s.item}>
             <SubtitleIcon />
           </span>
         </button>
-        <button type="button" className={s.button} onClick={() => elements.blockquote.toggle()}>
-          <span style={{ color: '#fff' }} className={s.item}>
+        <button
+          type="button"
+          className={s.button}
+          style={elements.blockquote.isActive ? { color: '#b5e5a4' } : { color: '#fff' }}
+          onClick={() => elements.blockquote.toggle()}
+        >
+          <span className={s.item}>
             <BlockquoteIcon />
           </span>
         </button>
