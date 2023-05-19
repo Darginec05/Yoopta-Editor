@@ -53,7 +53,7 @@ const filterBy = (item: ActionMenuRenderItem | ActionMenuRenderItem['options'], 
 
 const ACTION_MENU_ITEM_DATA_ATTR = 'data-action-menu-item';
 
-const ActionMenuList = ({ items, render, plugins, trigger = '/', asTool, ...rest }: Props): JSX.Element => {
+const ActionMenuList = ({ items, render, plugins, trigger = '/', asTool, on, ...rest }: Props): JSX.Element => {
   const editor = useSlate() as YoEditor;
   const elements = useElements();
   const actionMenuRef = useRef<HTMLDivElement>(null);
@@ -300,6 +300,8 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/', asTool, ...rest
     elements[type]?.toggle({
       shouldDeleteText: typeof rest.options?.shouldDeleteText === 'boolean' ? rest.options?.shouldDeleteText : true,
     });
+
+    on?.toggle?.(type);
   };
 
   const getRootProps = (): ActionMenuRenderRootProps => ({
@@ -309,6 +311,7 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/', asTool, ...rest
   const getItemProps = (type: string): ActionMenuRenderItemProps => ({
     onClick: () => toggleElement(type),
     [ACTION_MENU_ITEM_DATA_ATTR]: true,
+    'data-element-active': elements[type]?.isActive,
     'aria-selected': false,
     'data-element-type': type,
   });
