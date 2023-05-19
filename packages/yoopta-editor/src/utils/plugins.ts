@@ -57,16 +57,48 @@ export type YooptaPluginType<
   O extends YooptaPluginBaseOptions = YooptaPluginBaseOptions,
   P extends YooptaBaseElement<string> = YooptaBaseElement<string>,
 > = {
+  /**
+   * The type of the plugin and element.
+   */
   type: string;
+  /**
+   * The plugin's renderer which can be .
+   */
   renderer: YooptaRenderer<P>;
+  /**
+   * The element placeholder.
+   */
   placeholder?: string | null;
+  /**
+   * The element's shortcuts.
+   */
   shortcut?: string | string[];
+  /**
+   * The element's exports which contain rules for deserializers and serializers for plain text([WIP]) html, markdown.
+   */
   exports?: Exports<P>;
+  /**
+   * The element's events: onKeyDown, onCopy and etc.
+   */
   events?: YooptaPluginEventHandlers;
+  /**
+   * The element's options object that can be extended with custom options for your plugin
+   * Default options: HTMLAttributes
+   */
   options?: O & YooptaRenderHTMLAttributes;
+  /**
+   *
+   * @param editor
+   * @returns
+   */
   extendEditor?: (editor: YoEditor) => YoEditor;
+  /**
+   * Slate decorator for text ranges. Check docs: https://docs.slatejs.org/concepts/09-rendering#decorations
+   */
   decorator?: (editor: YoEditor) => DecoratorFn;
+  /** Slate leaves. Check docs: https://docs.slatejs.org/concepts/09-rendering#decorations */
   leaf?: (editor: YoEditor) => (props: RenderLeafProps) => any;
+  /** Useful key for plugins which contain children as plugin. For example NumberedList contain childPlugin ListItem */
   childPlugin?: YooptaPlugin<any, any>;
   hasParent?: boolean;
   createElement?: (editor: YoEditor, elementData?: Partial<P>) => void;

@@ -2,7 +2,7 @@ import { Inter } from 'next/font/google';
 import NextImage from 'next/image';
 import { useState } from 'react';
 import { Descendant } from 'slate';
-import YooptaEditor, { createYooptaPlugin } from '@yoopta/editor';
+import YooptaEditor from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
