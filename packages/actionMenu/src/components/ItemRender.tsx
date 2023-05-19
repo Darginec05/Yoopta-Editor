@@ -15,6 +15,7 @@ const ItemRender = ({ children, type, onClick, options, ...rest }: Props) => {
       data-action-menu-item={rest['data-action-menu-item']}
       aria-selected={rest['aria-selected']}
       data-element-type={rest['data-element-type']}
+      data-element-active={rest['data-element-active']}
     >
       <button type="button" tabIndex={0} onClick={onClick} className={s.button}>
         <span>{options?.displayLabel || type}</span>

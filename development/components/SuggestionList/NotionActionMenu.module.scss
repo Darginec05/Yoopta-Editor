@@ -71,6 +71,10 @@
   padding: 4px 0;
   background-color: inherit;
 
+  &[data-element-active="true"] {
+    background-color: rgba(55, 53, 47, 0.08);
+  }
+
   &[aria-selected="true"]{
     background-color: rgba(55, 53, 47, 0.08);
   }

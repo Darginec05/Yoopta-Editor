@@ -14,6 +14,7 @@ export type ActionMenuRenderRootProps = {
 
 export type ActionMenuRenderItemProps = {
   onClick: () => void;
+  'data-element-active': boolean;
   'aria-selected': boolean;
   'data-action-menu-item': boolean;
   'data-element-type': string;

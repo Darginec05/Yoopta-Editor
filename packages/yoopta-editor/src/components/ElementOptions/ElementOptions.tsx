@@ -94,6 +94,13 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
     props.onCopy?.();
   };
 
+  const onCloseActionMenu = () => setTurnIntoElementsProps({ style: DEFAULT_TURN_INTO_STYLES, open: false });
+
+  const onToggleActionMenu = () => {
+    onCloseActionMenu();
+    handlers.closeNodeSettings();
+  };
+
   /* Work in progress */
   // if (render) {
   //   return (
@@ -111,7 +118,13 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
         <div className={s.content}>
           {turnIntoElementsProps.open && ActionMenu && (
             <Overlay onClose={() => setTurnIntoElementsProps({ style: DEFAULT_TURN_INTO_STYLES, open: false })}>
-              {ActionMenu && <ActionMenu style={turnIntoElementsProps.style} options={{ shouldDeleteText: false }} />}
+              {ActionMenu && (
+                <ActionMenu
+                  style={turnIntoElementsProps.style}
+                  options={{ shouldDeleteText: false }}
+                  on={{ toggle: onToggleActionMenu }}
+                />
+              )}
             </Overlay>
           )}
           <div className={s.group}>
