@@ -63,10 +63,6 @@ function ImageEditor(props: Props) {
         setSize({ width: ref.offsetWidth, height: ref.offsetHeight });
       },
       onResizeStop: (e, direction, ref) => {
-        console.log('image editor editor.children', editor.children);
-        console.log('ReactEditor.findPath(editor, element)', ReactEditor.findPath(editor, element));
-        console.log('element', element);
-
         Transforms.setNodes<ImageElement>(
           editor,
           { data: { ...element.data, size: { width: ref.offsetWidth, height: ref.offsetHeight } } },
@@ -174,6 +170,7 @@ function ImageEditor(props: Props) {
       key={element.id}
     >
       <Resizable {...resizeProps} className={s.resizeLib}>
+        {/* Move edit props to editorProps */}
         {plugin.renderer.render({ ...props, size })}
         <div className={cx(s.selectImg, { [s.selected]: selected })} />
         {isLoading && (

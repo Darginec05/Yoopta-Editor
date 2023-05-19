@@ -1,4 +1,4 @@
-import { cx } from '@yoopta/editor';
+import { cx, useElements } from '@yoopta/editor';
 import { CSSProperties, RefObject, useEffect, useRef, useState } from 'react';
 import { Editor, Range } from 'slate';
 import { useSlate } from 'slate-react';

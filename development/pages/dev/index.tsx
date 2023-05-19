@@ -1,4 +1,4 @@
-import YooptaEditor, { createYooptaMark } from '@yoopta/editor';
+import YooptaEditor, { createYooptaMark, createYooptaPlugin } from '@yoopta/editor';
 import Blockquote, { BlockquoteElement } from '@yoopta/blockquote';
 import Paragraph, { ParagraphElement } from '@yoopta/paragraph';
 import Callout, { CalloutElement } from '@yoopta/callout';
@@ -225,7 +225,7 @@ const SuperStrike = createYooptaMark({
 
 const TOOLS = {
   Toolbar: <Toolbar />,
-  ActionMenu: <ActionMenu items={ACTION_MENU_ITEMS} />,
+  ActionMenu: <ActionMenu items={ACTION_MENU_ITEMS} render={NotionActionMenu} />,
   // ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" />,
 };
 
