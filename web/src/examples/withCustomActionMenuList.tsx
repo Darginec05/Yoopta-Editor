@@ -65,6 +65,8 @@ const plugins = [
 export default function Home() {
   const [editorValue, setEditorValue] = useState<Descendant[]>(yooptaInitData);
 
+  console.log('editorValue', editorValue);
+
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
   return (
@@ -79,7 +81,6 @@ export default function Home() {
           plugins={plugins}
           marks={marks}
           placeholder="Start typing..."
-          offline
           autoFocus
           tools={{
             Toolbar: <Toolbar type="bubble" />,
