@@ -137,6 +137,8 @@ export default function Home() {
   const [editorValue, setEditorValue] = useState<Descendant[]>(yooptaInitData);
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
+  console.log('editorValue', editorValue);
+
   return (
     <main
       style={{ backgroundColor: 'hsl(224 71% 4%)', color: 'white', padding: '6rem' }}

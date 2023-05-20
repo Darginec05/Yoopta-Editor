@@ -5,7 +5,7 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push('/examples/basic');
+    router.push('/examples/withBasicExample');
   });
 
   return null;
