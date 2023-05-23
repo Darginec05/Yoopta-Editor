@@ -34,6 +34,33 @@
   display: flex;
 }
 
+.elementButton {
+  all: unset;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  background: inherit;
+  transition: background 100ms cubic-bezier(0.4, 0, 0.2, 1);
+  margin: 0 1px;
+  min-height: 32px;
+  min-width: 36px;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0 8px;
+
+  &:hover {
+    background-color: rgba(55, 53, 47, 0.08);
+    color: #000;
+  }
+}
+
+.elementButtonActive {
+  background-color: #1183ff;
+  color: #FFF;
+}
+
 .mark {
   all: unset;
   cursor: pointer;
@@ -72,4 +99,13 @@
 .mark:hover {
   background-color: rgba(55, 53, 47, 0.08);
   color: #000;
+}
+
+.separator {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1px;
+  margin: 0 4px;
+  height: 100%;
+  background: #eee;
 }

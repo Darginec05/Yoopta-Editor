@@ -117,7 +117,7 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
       <div style={style} className={cx(s.root, 'yoopta-element-options')} ref={containerRef}>
         <div className={s.content}>
           {turnIntoElementsProps.open && ActionMenu && (
-            <Overlay onClose={() => setTurnIntoElementsProps({ style: DEFAULT_TURN_INTO_STYLES, open: false })}>
+            <Overlay onClose={onCloseActionMenu}>
               {ActionMenu && (
                 <ActionMenu
                   style={turnIntoElementsProps.style}

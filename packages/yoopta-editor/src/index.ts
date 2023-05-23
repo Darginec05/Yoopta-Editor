@@ -5,6 +5,7 @@ import { Overlay } from './components/ElementOptions/Overlay';
 import { useElementSettings } from './contexts/NodeSettingsContext/NodeSettingsContext';
 export { classnames as cx };
 export { isKeyHotkey, isHotkey, isCodeHotkey } from 'is-hotkey';
+export { enableBodyScroll, disableBodyScroll } from 'body-scroll-lock';
 
 import { YooptaEditor } from './YooptaEditor';
 export { isValidYooptaNodes } from './utils/validate';

@@ -2,7 +2,7 @@ import { Editor, Element, NodeEntry, Path, Text, Transforms } from 'slate';
 import React, { ReactElement, ReactNode, useContext, useMemo } from 'react';
 import { useSlate } from 'slate-react';
 import { YooptaBaseElement } from '../../types';
-import { mergePlugins, ParentYooptaPlugin, YooptaPlugin, YooptaPluginType } from '../../utils/plugins';
+import { ParentYooptaPlugin, YooptaPluginType } from '../../utils/plugins';
 import { YooptaMark } from '../../utils/marks';
 import { getDefaultParagraphLine } from '../../components/Editor/utils';
 import { generateId } from '../../utils/generateId';
@@ -49,6 +49,7 @@ export type ElementsMap = {
     define: YooptaPluginType['defineElement'];
     toggle: (options?: ToggleOptions) => void;
     isActive: boolean;
+    options: { displayLabel?: string };
   };
 };
 
@@ -83,6 +84,8 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList,
         mode: 'highest',
         match: (n) => !Editor.isEditor(n) && Element.isElement(n),
       }) as NodeEntry<YooptaBaseElement<string>>;
+
+      console.log('currentNodeEntry', currentNodeEntry);
 
       const [parentNode, parentPath] = Editor.parent(editor, Path.parent(editor.selection.anchor.path));
       const [currentNode] = currentNodeEntry || [];
@@ -122,13 +125,14 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList,
     const ELEMENTS_MAP: ElementsMap = {};
 
     pluginList.forEach((plugin) => {
-      const { createElement, defineElement, type } = plugin;
+      const { createElement, defineElement, type, options } = plugin;
       ELEMENTS_MAP[plugin.type] = {
         create: createElement,
         define: defineElement,
         toggle: (options) => toggleNodeElement(plugin, options),
         type,
         isActive: isElementActive(type),
+        options: { displayLabel: options?.displayLabel },
       };
     });
 

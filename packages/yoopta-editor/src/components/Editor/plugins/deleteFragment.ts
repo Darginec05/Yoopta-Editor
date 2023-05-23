@@ -16,8 +16,6 @@ export const withDeleteFragment = (editor: YoEditor) => {
     const fullRange = Editor.range(editor, firstElementPath, lastElementPath);
     const isAllNodesSelected = Range.equals(selection, fullRange);
 
-    console.log({ isAllNodesSelected, fullRange });
-
     if (isAllNodesSelected) {
       Transforms.removeNodes(editor, { mode: 'highest', hanging: true });
       Transforms.select(editor, [0]);

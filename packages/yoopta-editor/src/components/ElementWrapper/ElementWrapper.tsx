@@ -44,6 +44,7 @@ const ElementWrapper = ({ children, element, attributes, nodeType, render, HTMLA
   const skipSettings = element.data?.skipSettings;
 
   const onMouseEnter = (e: MouseEvent<HTMLDivElement>) => {
+    // [TODO] - here is bug when use turn into
     if (skipSettings) return;
     hoverIn(e, element);
   };

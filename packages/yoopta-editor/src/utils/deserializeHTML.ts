@@ -1,9 +1,9 @@
-import { Text } from 'slate';
+import { Editor, Node, Text } from 'slate';
 import { jsx } from 'slate-hyperscript';
 import { YooptaBaseElement } from '../types';
 import { YooptaPluginType } from './plugins';
 
-const TEXT_TAGS = {
+const TEXT_FORMAT_TAGS = {
   // CODE: () => ({ code: true }),
   DEL: () => ({ strikethrough: true }),
   EM: () => ({ italic: true }),
@@ -60,11 +60,9 @@ const deserialize = (
     return jsx('element', pluginsMap.P.defineElement(), children);
   }
 
-  if (TEXT_TAGS[nodeName]) {
-    const attrs = TEXT_TAGS[nodeName](el);
-    const textNodes = children.map((child) => {
-      return Text.isText(child) ? jsx('text', attrs, child) : child;
-    });
+  if (TEXT_FORMAT_TAGS[nodeName]) {
+    const attrs = TEXT_FORMAT_TAGS[nodeName](el);
+    const textNodes = children.map((child) => (Text.isText(child) ? jsx('text', attrs, child) : child));
     return textNodes;
   }
 
@@ -95,7 +93,12 @@ export function deserializeHtml(
   htmlString: string,
   plugins: Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>>,
 ) {
-  const pluginsMap = mergePluginTypesToMapHMTLNodeName(plugins);
-  const parsedHtml = new DOMParser().parseFromString(htmlString, 'text/html');
-  return deserialize(parsedHtml.body, pluginsMap);
+  try {
+    const pluginsMap = mergePluginTypesToMapHMTLNodeName(plugins);
+    const parsedHtml = new DOMParser().parseFromString(htmlString, 'text/html');
+    return deserialize(parsedHtml.body, pluginsMap);
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 }
