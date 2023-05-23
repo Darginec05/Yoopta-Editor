@@ -1,99 +1,30 @@
-<h2 align="center">Yoopta-Editor v1 🎉</h2>
-<p align="center">Yoopta-Editor - is an open source notion-like editor 💥</p>
-<div align="center">
-<img width="574" alt="Screen Shot 2023-01-25 at 16 04 29" src="https://user-images.githubusercontent.com/29093118/215324525-882bf403-646c-4267-bb5f-c0f37509ac09.png">
-</div>
+# Yoopta-Editor
 
-<div align="center">
+Yoopta-Editor is a powerful and customizable open-source React WYSIWYG editor. It provides a flexible and intuitive editing experience, allowing users to create visually engaging content. With Yoopta-Editor, you can easily integrate a feature-rich editing tool into your projects, empowering your users to create rich documents, blog posts, collaborative spaces, and more. The editor offers extensive formatting options, media embedding, collaborative editing, and accessibility features.
 
-</div>
+## Key Features
 
-<p align="center">
-  <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/W0epdDpnRa">Full docs</a> |
-  <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/qOQqVaxxRZ">Get started</a> | 
-  <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/kUoZ2DoHnG">API</a> |
-  <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/qo9nK4lDG5">FAQs</a> |
-  <a target="_blank" rel="noopener noreferrer" href="https://@yoopta/editor.vercel.app/basic">Examples</a>
-</p>
+- **WYSIWYG Editing:** Create content in a familiar "What You See Is What You Get" environment.
+- **Extensibility:** Customize and extend the editor's functionality to fit your specific needs.
+- **Rich Formatting Options:** Style and format your content with headings, lists, tables, and more.
+- **Embeddable Media:** Seamlessly embed images, videos, and audio into your documents.
+- **Collaborative Editing:** Enable real-time collaboration for multiple users working on the same document.
+- **Accessibility:** Built with accessibility best practices to ensure an inclusive editing experience.
 
-### Features
+## Getting Started
 
-- Triggering by "/" to show list of elements and search needed element by typing
-- Drag and drop beetween elements
-- Redo/Undo your changes (Ctrl-Z/Ctrl-V)
-- Offline ready mode
-- Shortcuts
-- A cool representation of the data in JSON format, so you can easily save the content data to the database and validate
-  You can import two components from library: `<YooptaEditor />` and `<YooptaRender />`. <br>
-  `<YooptaEditor />` - it's for building beautiful content <br>
-  `<YooptaRender />` - it's just for rendering from your saved data, without any editor tools and libraries, so it make you page loading faster
-- Custom styling
-  ...and other
+Please refer to the [documentation](link_to_docs) to get started with Yoopta-Editor. It provides installation instructions, an overview of the editor's architecture, and detailed guides on how to use and customize the editor for your projects.
 
-### Install
+## Contributing
 
-    yarn add @yoopta/editor
-    or
-    npm install @yoopta/editor
+We welcome contributions from the community! If you have ideas, bug reports, or want to contribute code, please see our [contribution guidelines](link_to_contribution_guidelines) for more information.
 
-### Peer dependencies
+## License
 
-    yarn add react react-dom slate slate-react
-    or
-    npm install react react-dom slate slate-react
+Yoopta-Editor is released under the [MIT License](link_to_license). Feel free to use and modify it for your projects.
 
-### Quickstart
+## Support
 
-```jsx
-import { YooptaEditor } from '@yoopta/editor';
-import { useState } from 'react';
+If you have any questions or need assistance, please join our [community chat](link_to_chat) or raise an issue in the GitHub repository. Our friendly community and support team will be happy to help you.
 
-import '@yoopta/editor/dist/index.css';
-
-function App() {
-  const [editorValue, setEditorValue] = useState([]);
-
-  const onChange = (data) => setEditorValue(data);
-
-  return (
-    <div>
-      <YooptaEditor value={editorValue} onChange={onChange} />
-    </div>
-  );
-}
-```
-
-### Check out other DEMO's 👇
-
-- <a target="_blank" rel="noopener noreferrer" href="https://@yoopta/editor.vercel.app/basic">Basic usage</a>
-- <a target="_blank" rel="noopener noreferrer" href="https://@yoopta/editor.vercel.app/offline">Offline mode</a>
-- <a target="_blank" rel="noopener noreferrer" href="https://@yoopta/editor.vercel.app/media">Working with media</a>
-- <a target="_blank" rel="noopener noreferrer" href="https://@yoopta/editor.vercel.app/render">Just rendering</a>
-- <a target="_blank" rel="noopener noreferrer" href="https://@yoopta/editor.vercel.app/styling">Custom styling</a>
-  <br>
-  <br>
-
-<div style="padding: 10px">❗ Yoopta-Editor is on <span style="color: #007aff">BETA</span> version now. The core functionality works, but you may encounter some bugs.
-I have big plans for the v2 version with a lot of cool features and improvements.
-Let's build together the best open source editor ever ☝ <br>
-Read more about future plans <a target="_blank" rel="noopener noreferrer" href="https://yopage.co/blog/0zntIA46L4/5iK8VNiBI8">"What's next Lebovski?"</a>
-</div>
-<br>
-<div style="padding: 10px; marging: 10px">
-📝 This WYSIWYG editor build on top of <a target="_blank" rel="noopener noreferrer" href="https://github.com/ianstormtaylor/slate">Slate JS framework</a> <br>
-💙 SlateJS - is the best tool for building rich-text editors. It has beautiful design and great API
-</div>
-
-## Donation.
-
-### If you like this open source project you can support me using <a href="https://buy.stripe.com/9AQcQo6G57dyexGeUU">Stripe link</a> 💙
-
-### Used by
-
-- <a href="https://tapflow.co/">Tapflow - The perfect tool for building and selling online courses</a>
-- <a href="https://equalize.team">Equalize.team</a>
-- <a href="https://yopage.co/">Yopage.co - blogging platform</a>
-
-### License
-
-MIT LICENSE
+Let's create powerful and engaging editing experiences together with Yoopta-Editor!

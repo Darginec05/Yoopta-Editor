@@ -89,7 +89,6 @@ const NodeSettingsProvider = ({ children }: NodeSettingsProps) => {
     () => ({
       hoverIn: (e: MouseEvent<HTMLDivElement>, node: YooptaBaseElement<string>) => {
         if (isElementOptionsOpen) return e.preventDefault();
-
         if (!!node?.data?.skipSettings) return;
         setHoveredElement(node);
       },

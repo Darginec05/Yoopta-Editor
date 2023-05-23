@@ -11,6 +11,11 @@ import withDarkTheme from '../../examples/withDarkTheme';
 import withJustRender from '../../examples/withJustRender';
 import withMediumExample from '../../examples/withMediumExample';
 import withNotionExample from '../../examples/withNotionExample';
+import withCustomHTMLAttributes from '../../examples/withCustomHTMLAttributes';
+import withCustomPlugin from '../../examples/withCustomPlugin';
+import withExtendedPlugin from '../../examples/withExtendedPlugin';
+import withOffline from '../../examples/withOffline';
+import withCustomMark from '../../examples/withCustomMark';
 
 const EXAMPLES = {
   withBasicExample,
@@ -22,6 +27,11 @@ const EXAMPLES = {
   withJustRender,
   withMediumExample,
   withNotionExample,
+  withCustomHTMLAttributes,
+  withCustomPlugin,
+  withExtendedPlugin,
+  withOffline,
+  withCustomMark,
 };
 
 const ExampleComponent = ({ example, links }: { example: keyof typeof EXAMPLES; links: string[] }) => {
