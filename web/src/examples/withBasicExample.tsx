@@ -11,6 +11,7 @@ import Image from '@yoopta/image';
 import Link from '@yoopta/link';
 import Callout from '@yoopta/callout';
 import Video from '@yoopta/video';
+import LinkTool from '@yoopta/link-tool';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
@@ -65,6 +66,7 @@ const plugins = [
 const TOOLS = {
   Toolbar: <Toolbar />,
   ActionMenu: <ActionMenu />,
+  LinkTool: <LinkTool onlyTool />,
 };
 
 export default function Home() {
