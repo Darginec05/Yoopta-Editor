@@ -59,6 +59,11 @@
 .elementButtonActive {
   background-color: #1183ff;
   color: #FFF;
+
+  &:hover {
+    background-color: #007aff !important;
+    color: #fff !important;
+  }
 }
 
 .mark {

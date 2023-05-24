@@ -89,7 +89,7 @@ const Toolbar = ({ type = 'bubble', style, className, render }: Props) => {
     const editorEl = document.getElementById('yoopta-contenteditable');
 
     if (toolbarProps.open) {
-      editorEl!.addEventListener('blur', hideToolbar);
+      // editorEl!.addEventListener('blur', hideToolbar);
       window.addEventListener('scroll', updateToolbarPosition);
     }
     return () => {

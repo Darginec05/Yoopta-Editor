@@ -251,6 +251,7 @@ const EditorYoopta = ({
           return;
         }
 
+        // [TODO] - check if is inline node
         Transforms.select(editor, nodeEntry[1]);
         return;
       }
@@ -312,8 +313,9 @@ const EditorYoopta = ({
 
     return Object.keys(tools).map((toolkey) => {
       const tool = tools[toolkey] as ReactNode;
+      const isFloatedTool = tool?.props.onlyTool === true;
+      if (!React.isValidElement(tool) || isFloatedTool) return null;
 
-      if (!React.isValidElement(tools[toolkey])) return null;
       return React.cloneElement(tool, {
         key: toolkey,
         plugins,
