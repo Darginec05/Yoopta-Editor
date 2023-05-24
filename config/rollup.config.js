@@ -1,5 +1,3 @@
-const fs = require('fs');
-const path = require('path');
 const json = require('rollup-plugin-json');
 const commonjs = require('@rollup/plugin-commonjs');
 const nodeResolve = require('@rollup/plugin-node-resolve');
@@ -10,7 +8,6 @@ const typescript = require('rollup-plugin-typescript2');
 const svgr = require('@svgr/rollup');
 const peerDepsExternal = require('rollup-plugin-peer-deps-external');
 const postcss = require('rollup-plugin-postcss');
-const generatePackageJson = require('rollup-plugin-generate-package-json');
 
 const corePkg = require('../packages/yoopta-editor/package.json');
 const blockquotePkg = require('../packages/yoopta-blockquote/package.json');
@@ -29,7 +26,7 @@ const rendererPkg = require('../packages/yoopta-renderer/package.json');
 const chatGPTPkg = require('../packages/yoopta-chatGPT-assistant/package.json');
 const exportsPkg = require('../packages/exports/package.json');
 const embedPkg = require('../packages/yoopta-embed/package.json');
-// const UIHelpersPkg = require('../packages/ui-helpers/package.json');
+const linkToolPkg = require('../packages/linkTool/package.json');
 
 const isProd = process.env.NODE_ENV === 'production';
 const isDev = process.env.NODE_ENV === 'development';
@@ -52,7 +49,7 @@ const aliases = {
   '@yoopta/renderer': 'yoopta-renderer',
   '@yoopta/chat-gpt-assistant': 'yoopta-chatGPT-assistant',
   '@yoopta/exports': 'exports',
-  // '@yoopta/ui': 'ui-helpers',
+  '@yoopta/link-tool': 'linkTool',
 };
 
 const getPlugins = ({ postcssConfig, packagePathname }) => {
@@ -132,7 +129,7 @@ const MarksPkgConfig = createConfig({ pkg: marksPkg });
 const RendererPkgConfig = createConfig({ pkg: rendererPkg });
 const ChatGPTPkgConfig = createConfig({ pkg: chatGPTPkg });
 const ExportsConfig = createConfig({ pkg: exportsPkg });
-// const UIHelpersPkgConfig = createConfig({ pkg: UIHelpersPkg });
+const LinkToolConfig = createConfig({ pkg: linkToolPkg });
 
 export default [
   CoreConfig,
@@ -152,4 +149,5 @@ export default [
   ChatGPTPkgConfig,
   EmbedPkgConfig,
   ExportsConfig,
+  LinkToolConfig,
 ];
