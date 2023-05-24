@@ -14,6 +14,7 @@ import ChatGPT from '@yoopta/chat-gpt-assistant';
 import YooptaRenderer from '@yoopta/renderer';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
 import ActionMenu, { ActionMenuItem } from '@yoopta/action-menu-list';
+import LinkTool from '@yoopta/link-tool';
 import { useState } from 'react';
 import NextImage from 'next/image';
 import { MediumToolbar } from '../../components/Toolbars/MediumToolbar';
@@ -23,7 +24,6 @@ import { uploadToCloudinary } from '../../utils';
 import { NotionActionMenu } from '../../components/SuggestionList/NotionActionMenu';
 import { NotionToolbar } from '../../components/Toolbars/NotionToolbar';
 import s from './styles.module.scss';
-import { LinkTool } from '../../components/LinkTool/LinkTool';
 
 type PluginOptions = ImagePluginOptions | Record<string, unknown>;
 type PluginElements =

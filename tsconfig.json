@@ -16,6 +16,7 @@
     { "path": "./packages/yoopta-renderer" },
     { "path": "./packages/yoopta-chatGPT-assistant" },
     { "path": "./packages/exports" },
-    { "path": "./packages/yoopta-embed" }
+    { "path": "./packages/yoopta-embed" },
+    { "path": "./packages/linkTool" }
   ]
 }
