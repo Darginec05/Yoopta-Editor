@@ -13,7 +13,7 @@ export const addLinkNode = (editor: YoEditor, url: string) => {
   const link: LinkElement = {
     id: generateId(),
     type: 'link',
-    data: { url },
+    data: { url, skipDrag: true },
     children: isCollapsed ? [{ text: url }] : [],
     nodeType: 'inline',
   };

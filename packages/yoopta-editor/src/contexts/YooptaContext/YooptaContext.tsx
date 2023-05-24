@@ -18,6 +18,7 @@ type YooptaToolsMap = {
   Toolbar: (props: any) => ReactElement;
   ActionMenu: (props: any) => ReactElement;
   ChatGPT: (props: any) => ReactElement;
+  LinkTool: (props: any) => ReactElement;
   [x: string]: (props: any) => ReactElement;
 };
 
@@ -84,8 +85,6 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList,
         mode: 'highest',
         match: (n) => !Editor.isEditor(n) && Element.isElement(n),
       }) as NodeEntry<YooptaBaseElement<string>>;
-
-      console.log('currentNodeEntry', currentNodeEntry);
 
       const [parentNode, parentPath] = Editor.parent(editor, Path.parent(editor.selection.anchor.path));
       const [currentNode] = currentNodeEntry || [];

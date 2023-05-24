@@ -23,6 +23,7 @@ import { uploadToCloudinary } from '../../utils';
 import { NotionActionMenu } from '../../components/SuggestionList/NotionActionMenu';
 import { NotionToolbar } from '../../components/Toolbars/NotionToolbar';
 import s from './styles.module.scss';
+import { LinkTool } from '../../components/LinkTool/LinkTool';
 
 type PluginOptions = ImagePluginOptions | Record<string, unknown>;
 type PluginElements =
@@ -217,15 +218,12 @@ const ACTION_MENU_ITEMS: ActionMenuItem<Record<'description' | 'icon', string>>[
   },
 ];
 
-const SuperStrike = createYooptaMark({
-  type: 'super-strike',
-  hotkey: 'mod+shift+.',
-  className: s.superStrike,
-});
-
 const TOOLS = {
   Toolbar: <Toolbar />,
-  ActionMenu: <ActionMenu items={ACTION_MENU_ITEMS} render={NotionActionMenu} />,
+  ActionMenu: <ActionMenu items={ACTION_MENU_ITEMS} />,
+  LinkTool: <LinkTool onlyTool />,
+
+  // [WORK IN PROGRESS]
   // ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" />,
 };
 
@@ -234,7 +232,7 @@ const BasicExample = () => {
   const [mode, toggleMode] = useState<'render' | 'edit'>('edit');
 
   const isEdit = mode === 'edit';
-  const marks = [Bold, Italic, CodeMark, Underline, Strike, SuperStrike];
+  const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
   return (
     <div className={s.container}>
