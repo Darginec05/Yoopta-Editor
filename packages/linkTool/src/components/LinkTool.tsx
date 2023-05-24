@@ -70,11 +70,13 @@ const LinkTool = ({ asTool, style, selection, on }) => {
   const addLink = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
+    // [TODO] - Check bug with link tool when link already exists
+
     if (url.length === 0) {
       removeLinkNode(editor, selection);
     } else {
       if (linkNode) {
-        Transforms.setNodes(
+        Transforms.setNodes<YooptaBaseElement<'link'>>(
           editor,
           { data: { ...linkNode.data, url } },
           {
