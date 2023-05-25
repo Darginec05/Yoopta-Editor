@@ -2,7 +2,7 @@ import {
   generateId,
   getElementByPath,
   cx,
-  YoEditor,
+  YooEditor,
   createYooptaPlugin,
   RenderYooptaElementProps,
 } from '@yoopta/editor';
@@ -14,7 +14,7 @@ import s from './TodoListItem.module.scss';
 
 const TODO_LIST_NODE_ITEM_TYPE = 'todo-list-item';
 
-const TodoListItemRender = (editor: YoEditor) => {
+const TodoListItemRender = (editor: YooEditor) => {
   return function TodoListItemRender({
     attributes,
     children,

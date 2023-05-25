@@ -12,14 +12,14 @@ import { getElementByPath } from '../../utils/nodes';
 import { EditorEventHandlers } from '../../types/eventHandlers';
 import { generateId } from '../../utils/generateId';
 import { YooptaMark } from '../../utils/marks';
-import { YoEditor, YooptaBaseElement } from '../../types';
+import { YooEditor, YooptaBaseElement } from '../../types';
 import { deepClone } from '../../utils/deepClone';
 import { isKeyHotkey } from 'is-hotkey';
 import { serializeHtml } from '../../utils/serializeHTML';
 import { YooptaTools } from '../YooptaEditor/YooptaEditor';
 
 type YooptaProps = {
-  editor: YoEditor;
+  editor: YooEditor;
   placeholder?: string;
   readOnly?: boolean;
   plugins: ParentYooptaPlugin[];

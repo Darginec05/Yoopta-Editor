@@ -1,4 +1,4 @@
-import { createYooptaPlugin, generateId, getElementByPath, YoEditor } from '@yoopta/editor';
+import { createYooptaPlugin, generateId, getElementByPath, YooEditor } from '@yoopta/editor';
 import { Transforms } from 'slate';
 import { VideoElement, VideoElementData, VideoPluginOptions } from './types';
 import { Video as VideoRender } from './ui/Video';
@@ -6,7 +6,7 @@ import { VideoEditorFactory } from './ui/VideoEditor';
 
 declare module 'slate' {
   interface CustomTypes {
-    Editor: YoEditor;
+    Editor: YooEditor;
     Element: VideoElement;
   }
 }

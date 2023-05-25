@@ -1,12 +1,12 @@
 import { HeadingOne } from './ui/HeadingOne';
 import { HeadingTwo } from './ui/HeadingTwo';
 import { HeadingThree } from './ui/HeadingThree';
-import { YoEditor } from '@yoopta/editor';
+import { YooEditor } from '@yoopta/editor';
 import { HeadingOneElement, HeadingThreeElement, HeadingTwoElement } from './types';
 
 declare module 'slate' {
   interface CustomTypes {
-    Editor: YoEditor;
+    Editor: YooEditor;
     Element: HeadingOneElement | HeadingTwoElement | HeadingThreeElement;
   }
 }

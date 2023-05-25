@@ -1,8 +1,8 @@
-import { YoEditor, YooptaBaseElement, EmptyText } from './types';
+import { YooEditor, YooptaBaseElement, EmptyText } from './types';
 
 declare module 'slate' {
   interface CustomTypes {
-    Editor: YoEditor;
+    Editor: YooEditor;
     Element: YooptaBaseElement<string>;
     Text: EmptyText;
   }

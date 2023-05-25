@@ -1,8 +1,8 @@
 import { Transforms } from 'slate';
-import { YoEditor } from '../../../types';
+import { YooEditor } from '../../../types';
 import { deserializeHtml } from '../../../utils/deserializeHTML';
 
-const withHtml = (editor: YoEditor) => {
+const withHtml = (editor: YooEditor) => {
   const { insertData } = editor;
 
   editor.insertData = (data) => {

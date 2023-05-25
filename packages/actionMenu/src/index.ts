@@ -1,10 +1,10 @@
-import { YoEditor, YooptaBaseElement } from '@yoopta/editor';
+import { YooEditor, YooptaBaseElement } from '@yoopta/editor';
 import { ActionMenuList } from './components/ActionMenuList';
 export type { ActionMenuItem, ActionMenuRenderProps } from './types';
 
 declare module 'slate' {
   interface CustomTypes {
-    Editor: YoEditor;
+    Editor: YooEditor;
     Element: YooptaBaseElement<string>;
   }
 }

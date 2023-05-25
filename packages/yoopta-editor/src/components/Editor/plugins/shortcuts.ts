@@ -1,8 +1,8 @@
 import { Element, NodeEntry, Text } from 'slate';
 import { Editor, Range, Transforms } from 'slate';
-import { YoEditor, YooptaBaseElement } from '../../../types';
+import { YooEditor, YooptaBaseElement } from '../../../types';
 
-export const withShortcuts = (editor: YoEditor) => {
+export const withShortcuts = (editor: YooEditor) => {
   const { insertText } = editor;
 
   editor.insertText = (text: string) => {

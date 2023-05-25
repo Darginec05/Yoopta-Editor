@@ -1,4 +1,4 @@
-import { generateId, isElementActive, YoEditor, YooptaBaseElement } from '@yoopta/editor';
+import { generateId, YooEditor, YooptaBaseElement } from '@yoopta/editor';
 import { useState, ChangeEvent, MouseEvent, useEffect, useRef } from 'react';
 import { Editor, Element, Range, Transforms } from 'slate';
 import { useSlate } from 'slate-react';
@@ -6,7 +6,7 @@ import DoneIcon from './icons/done.svg';
 import CloseIcon from './icons/close.svg';
 import s from './LinkTool.module.scss';
 
-export const removeLinkNode = (editor: YoEditor, selection: Range) => {
+const removeLinkNode = (editor: YooEditor, selection: Range) => {
   Editor.withoutNormalizing(editor, () => {
     Transforms.unwrapNodes(editor, {
       match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'link',
@@ -16,31 +16,37 @@ export const removeLinkNode = (editor: YoEditor, selection: Range) => {
   });
 };
 
-export const addLinkNode = (editor: YoEditor, url: string, selection: Range) => {
-  if (isElementActive(editor, 'link')) {
-    removeLinkNode(editor, selection);
-  }
-
-  const isCollapsed = selection && Range.isCollapsed(selection);
-  const link: YooptaBaseElement<'link'> = {
-    id: generateId(),
-    type: 'link',
-    data: { url, skipDrag: true },
-    children: isCollapsed ? [{ text: url }] : [],
-    nodeType: 'inline',
-  };
-
+const addLinkNode = (editor: YooEditor, url: string, selection: Range) => {
   Editor.withoutNormalizing(editor, () => {
-    if (isCollapsed) {
-      Transforms.insertNodes(editor, link, { at: selection });
-    } else {
-      Transforms.wrapNodes(editor, link, { split: true, at: selection });
-      Transforms.collapse(editor, { edge: 'end' });
+    let linkSelection: Range = selection;
+
+    if (isLinkNodeActive(editor, selection)) {
+      removeLinkNode(editor, selection);
+
+      linkSelection = {
+        anchor: { ...linkSelection.anchor, path: linkSelection.anchor.path.slice(0, -1) },
+        focus: { ...linkSelection.focus, path: linkSelection.focus.path.slice(0, -1) },
+      };
     }
+
+    const link: YooptaBaseElement<'link'> = {
+      id: generateId(),
+      type: 'link',
+      data: { url, skipDrag: true },
+      children: [],
+      nodeType: 'inline',
+    };
+
+    Transforms.wrapNodes(editor, link, { split: true, at: linkSelection });
+    Transforms.collapse(editor, { edge: 'end' });
   });
 };
 
-export const getMatchedLinkNode = (editor: Editor, selection: Range) => {
+const isLinkNodeActive = (editor: YooEditor, selection: Range) => {
+  return !!getMatchedLinkNode(editor, selection);
+};
+
+const getMatchedLinkNode = (editor: Editor, selection: Range) => {
   const [match] = Array.from(
     Editor.nodes(editor, {
       at: Editor.unhangRange(editor, selection),
@@ -52,7 +58,7 @@ export const getMatchedLinkNode = (editor: Editor, selection: Range) => {
 };
 
 const LinkTool = ({ asTool, style, selection, on }) => {
-  const editor = useSlate();
+  const editor = useSlate() as YooEditor;
 
   const [url, setUrl] = useState('');
   const [linkNode, setLinkNode] = useState(null);
@@ -70,23 +76,10 @@ const LinkTool = ({ asTool, style, selection, on }) => {
   const addLink = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    // [TODO] - Check bug with link tool when link already exists
-
     if (url.length === 0) {
       removeLinkNode(editor, selection);
     } else {
-      if (linkNode) {
-        Transforms.setNodes<YooptaBaseElement<'link'>>(
-          editor,
-          { data: { ...linkNode.data, url } },
-          {
-            match: (n) => Element.isElement(n) && n.type === 'link',
-            at: selection,
-          },
-        );
-      } else {
-        addLinkNode(editor, url, selection);
-      }
+      addLinkNode(editor, url, selection);
     }
 
     on?.add?.();

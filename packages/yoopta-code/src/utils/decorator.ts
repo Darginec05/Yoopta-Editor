@@ -1,4 +1,4 @@
-import { YoEditor } from '@yoopta/editor';
+import { YooEditor } from '@yoopta/editor';
 import Prism from 'prismjs';
 import { Editor, Element, Node, NodeEntry, Range, Transforms } from 'slate';
 import { normalizeTokens } from './normalizeTokens';
@@ -69,11 +69,11 @@ export const getChildNodeToDecorations = ([block, blockPath]: NodeEntry<any>) =>
 };
 
 export const codeLineDecorator =
-  (editor: YoEditor) =>
+  (editor: YooEditor) =>
   ([node, path]: NodeEntry) => {
     if (Element.isElement(node) && node.type === 'code-line') {
       const ranges =
-        (editor as YoEditor & { nodeToDecorations: (n: Element) => Range[] }).nodeToDecorations(node) || [];
+        (editor as YooEditor & { nodeToDecorations: (n: Element) => Range[] }).nodeToDecorations(node) || [];
 
       return ranges;
     }

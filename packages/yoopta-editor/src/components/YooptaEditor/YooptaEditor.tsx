@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState, Key, useMemo, ReactNode } from 'react
 import { withHistory } from 'slate-history';
 import { createEditor, Descendant, Editor, Transforms } from 'slate';
 import { ReactEditor, Slate, withReact } from 'slate-react';
-import { YoEditor } from '../../types';
+import { YooEditor } from '../../types';
 import { YooptaMark } from '../../utils/marks';
 import { mergePlugins, mergePluginTypesToMap, YooptaPlugin } from '../../utils/plugins';
 import { getInitialState, getStorageName, OFFLINE_STORAGE } from '../../utils/storage';
@@ -94,7 +94,7 @@ const YooptaEditor = ({
 
   const { yooptaPlugins, PLUGINS_MAP } = yooptaEditorPlugins;
 
-  const editor = useMemo<YoEditor>(() => {
+  const editor = useMemo<YooEditor>(() => {
     let yooptaEditor = withHtml(
       withDeleteFragment(withNonEmptyEditor(withVoidNodes(withHistory(withShortcuts(withReact(createEditor())))))),
     );

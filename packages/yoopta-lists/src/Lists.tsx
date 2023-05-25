@@ -1,7 +1,7 @@
 import { NumberedList } from './ui/NumberedList';
 import { BulletedList } from './ui/BulletedList';
 import { TodoList } from './ui/TodoList';
-import { YoEditor } from '@yoopta/editor';
+import { YooEditor } from '@yoopta/editor';
 import type {
   ListChildItemElement,
   TodoListChildItemElement,
@@ -12,7 +12,7 @@ import type {
 
 declare module 'slate' {
   interface CustomTypes {
-    Editor: YoEditor;
+    Editor: YooEditor;
     Element:
       | ListChildItemElement
       | TodoListChildItemElement

@@ -1,4 +1,4 @@
-import { generateId, getElementByPath, createYooptaPlugin, YoEditor } from '@yoopta/editor';
+import { generateId, getElementByPath, createYooptaPlugin, YooEditor } from '@yoopta/editor';
 import { Transforms } from 'slate';
 import { ImageElement, ImageElementData, ImagePluginOptions } from './types';
 import { Image as ImageRender } from './ui/Image';
@@ -6,7 +6,7 @@ import { ImageEditorFactory } from './ui/ImageEditor';
 
 declare module 'slate' {
   interface CustomTypes {
-    Editor: YoEditor;
+    Editor: YooEditor;
     Element: ImageElement;
   }
 }
