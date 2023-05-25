@@ -3,7 +3,7 @@ import { Resizable, ResizableProps } from 're-resizable';
 import { ReactEditor, useReadOnly, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
 import { CSSProperties, MouseEvent, useEffect, useMemo, useState } from 'react';
-import { cx, RenderYooptaElementProps, YoEditor, UI_HELPERS, YooptaPluginType } from '@yoopta/editor';
+import { cx, RenderYooptaElementProps, YooEditor, UI_HELPERS, YooptaPluginType } from '@yoopta/editor';
 import { Loader } from '../components/Loader';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { VideoElement, VideoPluginOptions } from '../types';
@@ -12,7 +12,7 @@ import s from './VideoEditor.module.scss';
 const OPTIONS_WIDTH = 265;
 
 type Props = {
-  editor: YoEditor;
+  editor: YooEditor;
   plugin: YooptaPluginType<VideoPluginOptions, VideoElement>;
   element: RenderYooptaElementProps<VideoElement>['element'];
   children: RenderYooptaElementProps<VideoElement>['children'];

@@ -8,11 +8,11 @@ import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import s from './EditorPlaceholder.module.scss';
 import { toBase64 } from '../utils/base64';
 import { getImageSizes } from '../utils/imageSizes';
-import { RenderYooptaElementProps, YoEditor } from '@yoopta/editor';
+import { RenderYooptaElementProps, YooEditor } from '@yoopta/editor';
 import { ImageElement, ImagePluginOptions } from '../types';
 
 type Props = RenderYooptaElementProps<ImageElement> & {
-  editor: YoEditor;
+  editor: YooEditor;
   onUpload?: ImagePluginOptions['onUpload'];
   accept?: ImagePluginOptions['accept'];
   maxSizes: { maxWidth: number; maxHeight: number };

@@ -1,5 +1,5 @@
 import { Editor, Element, Node, NodeEntry, Path, Range, Transforms } from 'slate';
-import { getElementByPath, generateId, createYooptaPlugin, YoEditor, YooptaPluginBaseOptions } from '@yoopta/editor';
+import { getElementByPath, generateId, createYooptaPlugin, YooEditor, YooptaPluginBaseOptions } from '@yoopta/editor';
 import { CodeLeaf } from './ui/CodeLeaf';
 import { CodeRender } from './ui/CodeRender';
 import { CodeLineRender } from './ui/CodeLineRender';
@@ -12,7 +12,7 @@ const CODE_CHILD_NODE_TYPE = 'code-line';
 
 declare module 'slate' {
   interface CustomTypes {
-    Editor: YoEditor;
+    Editor: YooEditor;
     Element: CodeElement | CodeChildElement;
   }
 }
@@ -135,7 +135,7 @@ const Code = createYooptaPlugin<YooptaPluginBaseOptions, CodeElement>({
   extendEditor(editor) {
     const { normalizeNode } = editor;
 
-    (editor as YoEditor & { nodeToDecorations: (n: Element) => any }).nodeToDecorations = (node) => {
+    (editor as YooEditor & { nodeToDecorations: (n: Element) => any }).nodeToDecorations = (node) => {
       const blockEntries = Array.from(
         Editor.nodes(editor, {
           at: [],

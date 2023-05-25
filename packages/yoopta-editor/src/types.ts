@@ -25,7 +25,7 @@ export type RenderYooptaElementProps<T extends BaseElement = BaseElement> = Elem
   element: T;
 } & YooptaRenderHTMLAttributes;
 
-export interface YoEditor extends BaseEditor, ReactEditor, HistoryEditor {
+export interface YooEditor extends BaseEditor, ReactEditor, HistoryEditor {
   shortcuts: Record<string, YooptaPluginType<string>>;
   plugins: Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>>;
 }

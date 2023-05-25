@@ -1,7 +1,7 @@
 import { Editor, Element, Path } from 'slate';
-import { YoEditor } from '../types';
+import { YooEditor } from '../types';
 
-export const getMatchedNode = (editor: YoEditor, type: string) => {
+export const getMatchedNode = (editor: YooEditor, type: string) => {
   const { selection } = editor;
   if (!selection) return false;
 
@@ -15,9 +15,13 @@ export const getMatchedNode = (editor: YoEditor, type: string) => {
   return match;
 };
 
-export const isElementActive = (editor: YoEditor, type: string) => !!getMatchedNode(editor, type);
+export const isElementActive = (editor: YooEditor, type: string) => !!getMatchedNode(editor, type);
 
-export const getElementByPath = (editor: YoEditor, path?: Path, mode: 'all' | 'highest' | 'lowest' = 'lowest'): any => {
+export const getElementByPath = (
+  editor: YooEditor,
+  path?: Path,
+  mode: 'all' | 'highest' | 'lowest' = 'lowest',
+): any => {
   const nodeEntry = Array.from(
     Editor.nodes(editor, {
       match: (node) => Editor.isEditor(editor) && Element.isElement(node),

@@ -1,9 +1,9 @@
-import { generateId, isElementActive, YoEditor } from '@yoopta/editor';
+import { generateId, isElementActive, YooEditor } from '@yoopta/editor';
 import { Range, Transforms } from 'slate';
 import { LinkElement } from '../types';
 import { removeLinkNode } from './removeLink';
 
-export const addLinkNode = (editor: YoEditor, url: string) => {
+export const addLinkNode = (editor: YooEditor, url: string) => {
   if (isElementActive(editor, 'link')) {
     removeLinkNode(editor);
   }

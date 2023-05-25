@@ -1,9 +1,9 @@
 import { Editor, Transforms } from 'slate';
-import { YoEditor } from '../../../types';
+import { YooEditor } from '../../../types';
 import { generateId } from '../../../utils/generateId';
 import { getDefaultParagraphLine } from '../utils';
 
-export const withNonEmptyEditor = (editor: YoEditor) => {
+export const withNonEmptyEditor = (editor: YooEditor) => {
   const { normalizeNode } = editor;
 
   editor.normalizeNode = (entry) => {

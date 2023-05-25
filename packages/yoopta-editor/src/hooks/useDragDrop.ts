@@ -2,7 +2,7 @@ import { DragEvent, useEffect, useState } from 'react';
 import { Element, Node, NodeEntry, Path } from 'slate';
 import { Editor, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
-import { YoEditor, YooptaBaseElement } from '../types';
+import { YooEditor, YooptaBaseElement } from '../types';
 import { deepClone } from '../utils/deepClone';
 
 export type DraggedNode = {
@@ -34,7 +34,7 @@ export const DEFAULT_DRAG_STATE: DndState = {
   to: { path: null, element: null, parent: null },
 };
 
-export const useDragDrop = (editor: YoEditor): [DragDropValues, DragDropHandlers] => {
+export const useDragDrop = (editor: YooEditor): [DragDropValues, DragDropHandlers] => {
   const [disableWhileDrag, setIsDisableByDrag] = useState(false);
   const [dndState, setDndState] = useState<DndState>(DEFAULT_DRAG_STATE);
   const [DRAG_MAP] = useState(() => new Map());

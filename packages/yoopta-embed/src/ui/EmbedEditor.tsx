@@ -4,7 +4,7 @@ import { ReactEditor, useReadOnly, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
 import { Embed } from './Embed';
 import { CSSProperties, MouseEvent, useEffect, useMemo, useState } from 'react';
-import { cx, RenderYooptaElementProps, UI_HELPERS, YoEditor, YooptaPluginType } from '@yoopta/editor';
+import { cx, RenderYooptaElementProps, UI_HELPERS, YooEditor, YooptaPluginType } from '@yoopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { EmbedElement, EmbedElementData, EmbedPluginOptions } from '../types';
 import s from './EmbedEditor.module.scss';
@@ -12,7 +12,7 @@ import s from './EmbedEditor.module.scss';
 const OPTIONS_WIDTH = 265;
 
 type Props = {
-  editor: YoEditor;
+  editor: YooEditor;
   plugin: YooptaPluginType<EmbedPluginOptions, EmbedElement>;
   element: RenderYooptaElementProps<EmbedElement>['element'];
   children: RenderYooptaElementProps<EmbedElement>['children'];

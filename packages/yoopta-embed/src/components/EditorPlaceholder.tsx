@@ -5,7 +5,7 @@ import { EditorUploader } from './EditorUploader';
 import { Element, Transforms } from 'slate';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import s from './EditorPlaceholder.module.scss';
-import { RenderYooptaElementProps, YoEditor } from '@yoopta/editor';
+import { RenderYooptaElementProps, YooEditor } from '@yoopta/editor';
 import { EmbedElement } from '../types';
 import {
   getDailymotionId,
@@ -17,7 +17,7 @@ import {
 } from '../utils/parsers';
 
 type Props = RenderYooptaElementProps<EmbedElement> & {
-  editor: YoEditor;
+  editor: YooEditor;
   maxSizes: { maxWidth: number; maxHeight: number };
 };
 
