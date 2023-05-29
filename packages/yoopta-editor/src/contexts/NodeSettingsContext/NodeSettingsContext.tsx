@@ -10,11 +10,13 @@ import copy from 'copy-to-clipboard';
 import { getDefaultParagraphLine } from '../../components/Editor/utils';
 
 export type HoveredElement = YooptaBaseElement<string> | null;
+export type SelectedNodeElement = YooptaBaseElement<string> | null;
 
 export type NodeSettingsContextValues = DragDropValues & {
   hoveredElement: HoveredElement;
   isElementOptionsOpen: boolean;
   nodeSettingsPos?: CSSProperties | null;
+  selectedNodeElement: SelectedNodeElement;
 };
 
 export type NodeSettingsContextHandlers = DragDropHandlers & {
@@ -26,6 +28,7 @@ export type NodeSettingsContextHandlers = DragDropHandlers & {
   duplicateNode: () => void;
   copyLinkNode: () => void;
   changeHoveredNode: (_hoveredProps: HoveredElement) => void;
+  changeSelectedNodeElement: (_node: SelectedNodeElement) => void;
 };
 
 export type NodeSettingsContextType = [NodeSettingsContextValues, NodeSettingsContextHandlers];
@@ -37,6 +40,7 @@ const defaultValues: NodeSettingsContextValues = {
   dndState: DEFAULT_DRAG_STATE,
   disableWhileDrag: false,
   DRAG_MAP: new Map(),
+  selectedNodeElement: null,
 };
 
 const NodeSettingsContext = React.createContext<NodeSettingsContextType>([
@@ -54,6 +58,7 @@ const NodeSettingsContext = React.createContext<NodeSettingsContextType>([
     onDragEnter: (_e) => {},
     onDragStart: (_e) => {},
     changeHoveredNode: (_hoveredProps: HoveredElement) => {},
+    changeSelectedNodeElement: (_node: HoveredElement) => {},
   },
 ]);
 
@@ -76,12 +81,14 @@ const NodeSettingsProvider = ({ children }: NodeSettingsProps) => {
 
   const [nodeSettingsPos, setNodeSettingsPos] = useState<CSSProperties | null>(null);
   const [hoveredElement, setHoveredElement] = useState<HoveredElement>(() => getInitialState(editor));
+  const [selectedNodeElement, setSelectedNodeElement] = useState<SelectedNodeElement>(null);
   const [isElementOptionsOpen, setNodeSettingsOpen] = useState<boolean>(false);
 
   const values: NodeSettingsContextValues = {
     hoveredElement,
     isElementOptionsOpen,
     nodeSettingsPos,
+    selectedNodeElement,
     ...dragValues,
   };
 
@@ -91,6 +98,12 @@ const NodeSettingsProvider = ({ children }: NodeSettingsProps) => {
         if (isElementOptionsOpen) return e.preventDefault();
         if (!!node?.data?.skipSettings) return;
         setHoveredElement(node);
+      },
+
+      changeSelectedNodeElement: (node: SelectedNodeElement) => {
+        console.log('changeSelectedNodeElement node ', node);
+
+        setSelectedNodeElement(node);
       },
 
       changeHoveredNode: (hoverElement: HoveredElement) => setHoveredElement(hoverElement),
@@ -116,6 +129,7 @@ const NodeSettingsProvider = ({ children }: NodeSettingsProps) => {
       openNodeSettings: (dragRef, element) => {
         disableBodyScroll(document.body, { reserveScrollBarGap: true });
         setNodeSettingsOpen(true);
+        setSelectedNodeElement(element);
 
         const elementPath = ReactEditor.findPath(editor, element!);
 
@@ -138,6 +152,7 @@ const NodeSettingsProvider = ({ children }: NodeSettingsProps) => {
         enableBodyScroll(document.body);
         setNodeSettingsOpen(false);
         setNodeSettingsPos(null);
+        setSelectedNodeElement(null);
       },
 
       deleteNode: () => {
@@ -231,6 +246,6 @@ const NodeSettingsProvider = ({ children }: NodeSettingsProps) => {
   return <NodeSettingsContext.Provider value={contextValue}>{children}</NodeSettingsContext.Provider>;
 };
 
-const useElementSettings = () => useContext<NodeSettingsContextType>(NodeSettingsContext);
+const useNodeElementSettings = () => useContext<NodeSettingsContextType>(NodeSettingsContext);
 
-export { NodeSettingsProvider, useElementSettings };
+export { NodeSettingsProvider, useNodeElementSettings };

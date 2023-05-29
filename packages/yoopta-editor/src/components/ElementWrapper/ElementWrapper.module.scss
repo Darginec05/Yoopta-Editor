@@ -82,3 +82,14 @@
     transform: translateX(-50%);
   }
 }
+
+.isSelected {
+  position: absolute;
+  pointer-events: none;
+  inset: 0px;
+  background: rgba(35, 131, 226, 0.14);
+  z-index: 81;
+  border-radius: 3px;
+  opacity: 1;
+  transition: background-color 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}

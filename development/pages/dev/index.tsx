@@ -218,13 +218,17 @@ const ACTION_MENU_ITEMS: ActionMenuItem<Record<'description' | 'icon', string>>[
   },
 ];
 
-const TOOLS = {
-  Toolbar: <Toolbar />,
-  ActionMenu: <ActionMenu items={ACTION_MENU_ITEMS} />,
-  LinkTool: <LinkTool onlyTool />,
-  // [WORK IN PROGRESS]
-  ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" />,
-};
+const initContextMessages = [
+  {
+    role: 'user',
+    content: 'What is Node JS?',
+  },
+  {
+    role: 'assistant',
+    content:
+      'NodeJS is an open-source, cross-platform, server-side JavaScript runtime environment that allows developers to run JavaScript code outside of a web browser. It uses the V8 JavaScript engine from Google Chrome and provides an event-driven, non-blocking I/O model that makes it lightweight and efficient for building scalable network applications. NodeJS has a rich library of modules and is commonly used for building web servers, real-time applications, microservices, and command-line tools.',
+  },
+];
 
 const BasicExample = () => {
   const [editorValue, setEditorValue] = useState<Descendant[]>([]);
@@ -232,6 +236,14 @@ const BasicExample = () => {
 
   const isEdit = mode === 'edit';
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
+
+  const TOOLS = {
+    Toolbar: <Toolbar />,
+    ActionMenu: <ActionMenu items={ACTION_MENU_ITEMS} />,
+    LinkTool: <LinkTool asChildren={false} />,
+    // [WORK IN PROGRESS]
+    ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" context={initContextMessages} />,
+  };
 
   return (
     <div className={s.container}>

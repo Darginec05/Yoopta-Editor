@@ -2,7 +2,7 @@ import { HTMLAttributes, MouseEvent, ReactElement, useMemo } from 'react';
 import { RenderElementProps, useSlate } from 'slate-react';
 import cx from 'classnames';
 import { YooptaElementConfig } from '../../types';
-import { useElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
+import { useNodeElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { ElementActions } from './ElementActions';
 import { YooptaRenderHTMLAttributes } from '../../utils/plugins';
 import s from './ElementWrapper.module.scss';
@@ -15,7 +15,7 @@ type Props = RenderElementProps & {
 
 const ElementWrapper = ({ children, element, attributes, nodeType, render, HTMLAttributes }: Props) => {
   const editor = useSlate();
-  const [values, handlers] = useElementSettings();
+  const [values, handlers] = useNodeElementSettings();
 
   const isInline = nodeType === 'inline';
   const { hoverIn, onDrop } = handlers;
@@ -69,6 +69,9 @@ const ElementWrapper = ({ children, element, attributes, nodeType, render, HTMLA
     >
       {skipSettings ? null : <ElementActions editor={editor} element={element} handlers={handlers} values={values} />}
       {render({ attributes, element, children, HTMLAttributes })}
+      {values.selectedNodeElement?.id === element.id && (
+        <div className={cx(s.isSelected, 'yoopta-selected-node-element')} />
+      )}
     </div>
   );
 };

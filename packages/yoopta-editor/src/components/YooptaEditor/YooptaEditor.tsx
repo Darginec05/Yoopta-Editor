@@ -132,8 +132,8 @@ const YooptaEditor = ({
 
   return (
     <Slate editor={editor} value={val} onChange={onChangeValue} key={key}>
-      <YooptaContextProvider plugins={yooptaPlugins} marks={marks} tools={tools}>
-        <NodeSettingsProvider>
+      <NodeSettingsProvider>
+        <YooptaContextProvider plugins={yooptaPlugins} marks={marks} tools={tools}>
           <EditorYoopta
             editor={editor}
             readOnly={readOnly}
@@ -144,8 +144,8 @@ const YooptaEditor = ({
             PLUGINS_MAP={PLUGINS_MAP}
             className={className}
           />
-        </NodeSettingsProvider>
-      </YooptaContextProvider>
+        </YooptaContextProvider>
+      </NodeSettingsProvider>
     </Slate>
   );
 };

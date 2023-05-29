@@ -34,6 +34,7 @@
     "url": "https://github.com/Darginec05/Editor-Yoopta/issues"
   },
   "dependencies": {
-    "autosize": "^6.0.1"
+    "autosize": "^6.0.1",
+    "react-syntax-highlighter": "^15.5.0"
   }
 }

@@ -91,7 +91,7 @@ const LinkTool = ({ asTool, style, selection, on }) => {
       const [matchedLinkNode] = getMatchedLinkNode(editor, selection) || [];
 
       if (matchedLinkNode) {
-        setUrl(matchedLinkNode.data.url);
+        setUrl(matchedLinkNode.data?.url);
         setLinkNode(linkNode);
       }
     }

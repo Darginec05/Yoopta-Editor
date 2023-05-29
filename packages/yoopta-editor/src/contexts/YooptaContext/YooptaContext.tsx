@@ -1,5 +1,5 @@
 import { Editor, Element, NodeEntry, Path, Text, Transforms } from 'slate';
-import React, { ReactElement, ReactNode, useContext, useMemo } from 'react';
+import React, { ReactElement, ReactNode, useContext, useMemo, useRef } from 'react';
 import { useSlate } from 'slate-react';
 import { YooptaBaseElement } from '../../types';
 import { ParentYooptaPlugin, YooptaPluginType } from '../../utils/plugins';
@@ -7,6 +7,7 @@ import { YooptaMark } from '../../utils/marks';
 import { getDefaultParagraphLine } from '../../components/Editor/utils';
 import { generateId } from '../../utils/generateId';
 import { YooptaTools } from '../../components/YooptaEditor/YooptaEditor';
+import { useNodeElementSettings } from '../NodeSettingsContext/NodeSettingsContext';
 
 const defaultValues: YooptaContextReturnValues = { marks: {}, elements: {} };
 
@@ -63,6 +64,7 @@ export type MarksMap = {
 
 const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList, tools }: Props) => {
   const editor = useSlate();
+  const contextValue = useRef<YooptaContextReturnValues>();
 
   const toggleNodeElement = (plugin, options?: ToggleOptions) => {
     Editor.withoutNormalizing(editor, () => {
@@ -115,16 +117,18 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList,
     const [element] = Editor.nodes(editor, {
       at: Editor.unhangRange(editor, editor.selection),
       match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === type,
+      mode: 'highest',
     });
 
     return !!element;
   };
 
+  // [TODO] Should be optimized
   const getElements = () => {
     const ELEMENTS_MAP: ElementsMap = {};
 
     pluginList.forEach((plugin) => {
-      const { createElement, defineElement, type, options } = plugin;
+      const { createElement, defineElement, type, options, ...rest } = plugin;
       ELEMENTS_MAP[plugin.type] = {
         create: createElement,
         define: defineElement,
@@ -137,6 +141,8 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList,
 
     return ELEMENTS_MAP;
   };
+
+  const elements = useMemo<ElementsMap>(() => getElements(), [pluginList, editor.selection]);
 
   const checkIsMarkActive = (mark) => {
     const marks = Editor.marks(editor);
@@ -193,14 +199,17 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList,
     });
 
     return TOOLS;
-  }, [tools, editor.selection]);
+  }, [tools]);
 
-  const value = useMemo(() => {
-    const elements = getElements();
-    return { elements, marks, tools: yooptaTools };
-  }, [editor.selection, marks]);
+  contextValue.current = {
+    elements,
+    marks,
+    tools: yooptaTools,
+  };
 
-  return <YooptaContext.Provider value={value}>{children}</YooptaContext.Provider>;
+  // const value = contextValue.current
+
+  return <YooptaContext.Provider value={contextValue.current!}>{children}</YooptaContext.Provider>;
 };
 
 const useYoopta = () => useContext<YooptaContextType>(YooptaContext);

@@ -1,5 +1,5 @@
 import { generateId, getElementByPath, createYooptaPlugin } from '@yoopta/editor';
-import { Editor, Element, NodeEntry, Path, Transforms } from 'slate';
+import { Editor, Element, NodeEntry, Path, Text, Transforms } from 'slate';
 import { BulletedList, ListChildItemElement, NumberedList } from '../types';
 import s from './ListItem.module.scss';
 
@@ -18,6 +18,26 @@ const LIST_ITEM_NODE_TYPE = 'list-item';
 const ListItemList = createYooptaPlugin<any, ListChildItemElement>({
   type: LIST_ITEM_NODE_TYPE,
   renderer: (editor) => ListItemRender,
+  extendEditor(editor) {
+    const { normalizeNode } = editor;
+
+    editor.normalizeNode = (entry) => {
+      const [node, path] = entry;
+
+      if (Element.isElement(node) && node.type === LIST_ITEM_NODE_TYPE) {
+        const childNode = node.children[0];
+        if (Element.isElement(childNode) && !Editor.isInline(editor, childNode)) {
+          Transforms.unwrapNodes(editor, {
+            at: path.concat(0),
+          });
+        }
+      }
+
+      normalizeNode(entry);
+    };
+
+    return editor;
+  },
   shortcut: '-',
   defineElement: (): ListChildItemElement => ({
     id: generateId(),
