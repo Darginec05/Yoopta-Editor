@@ -1,35 +1,11 @@
 import { ToolbarProps } from './Toolbar';
-import { cx, UI_HELPERS, useElements, useMarks, useTools, disableBodyScroll, enableBodyScroll } from '@yoopta/editor';
+import { cx, UI_HELPERS, useElements, useMarks, useNodeElementSettings, useTools } from '@yoopta/editor';
 import s from './DefaultToolbar.module.scss';
-import { CSSProperties, MouseEvent, useRef, useState } from 'react';
-import { ReactEditor, useSlate } from 'slate-react';
-import { Editor, Element, Range } from 'slate';
-
-type TurnInto = {
-  style?: CSSProperties;
-  open: boolean;
-};
-
-const DEFAULT_TURN_INTO_STYLES: TurnInto['style'] = {
-  position: 'fixed',
-  opacity: 1,
-  bottom: 'auto',
-  right: 'auto',
-};
-
-export const getMatchedLinkNode = (editor: Editor) => {
-  const { selection } = editor;
-  if (!selection) return false;
-
-  const [match] = Array.from(
-    Editor.nodes(editor, {
-      at: Editor.unhangRange(editor, selection),
-      match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'link',
-    }),
-  );
-
-  return match;
-};
+import { useRef } from 'react';
+import { useSlate } from 'slate-react';
+import { useLinkTool } from '../hooks/useLinkTool';
+import { useActionMenuTool } from '../hooks/useActionMenuTool';
+import { useChatGPTTool } from '../hooks/useChatGPTTool';
 
 const DefaultToolbar = ({ getRootProps }: ToolbarProps) => {
   const marks = useMarks();
@@ -37,92 +13,29 @@ const DefaultToolbar = ({ getRootProps }: ToolbarProps) => {
   const tools = useTools();
   const editor = useSlate();
 
-  const selectionRef = useRef<Range | null>(null);
-
-  const { ActionMenu, LinkTool } = tools || {};
+  const { ActionMenu, LinkTool, ChatGPT } = tools || {};
   const hasActionMenuAsTool = !!ActionMenu;
   const hasLinkAsTool = !!LinkTool && !!elements.link;
+  const hasChatGPTAsTool = !!ChatGPT;
 
-  const linkToolButtonRef = useRef<HTMLButtonElement>(null);
-  const handleIntoButtonRef = useRef<HTMLButtonElement>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
 
-  const [linkToolProps, setLinkToolProps] = useState<TurnInto>({
-    style: DEFAULT_TURN_INTO_STYLES,
-    open: false,
+  const { closeLinkTool, openLinkTool, linkToolProps, linkToolButtonRef, selectionRef, hasMatchedLink } = useLinkTool({
+    editor,
+    toolbarRef,
   });
 
-  const [turnIntoElementsProps, setTurnIntoElementsProps] = useState<TurnInto>({
-    style: DEFAULT_TURN_INTO_STYLES,
-    open: false,
+  const { openActionMenuTool, closeActionMenuTool, turnIntoElementsProps, handleIntoButtonRef } = useActionMenuTool({
+    editor,
+    toolbarRef,
   });
 
-  const handleTurnInto = (event: MouseEvent) => {
-    if (!hasActionMenuAsTool) return;
+  const { openChatGPTTool, closeChatGPTTool, chatGPTToolProps, ashGPTButtonRef } = useChatGPTTool({
+    editor,
+    toolbarRef,
+  });
 
-    const handleIntoButtonRect = handleIntoButtonRef.current!.getBoundingClientRect();
-    const toolbarRect = toolbarRef.current!.getBoundingClientRect();
-    const actionMenuRect = document.querySelector('.yoopta-action-menu-list')?.getBoundingClientRect();
-
-    disableBodyScroll(document.body, { reserveScrollBarGap: true });
-
-    const position = {
-      left: handleIntoButtonRect.left - 5,
-      top: handleIntoButtonRect.top + toolbarRect.height + (actionMenuRect?.height || 0) + 5,
-    };
-
-    if (position.top > window?.innerHeight) {
-      position.top = handleIntoButtonRect.top - 10;
-    }
-
-    setTurnIntoElementsProps((prevProps) => ({
-      open: !prevProps.open,
-      style: { ...prevProps.style, ...position },
-    }));
-  };
-
-  const matchedLink = getMatchedLinkNode(editor);
-
-  const openLinkTools = (event: MouseEvent) => {
-    const linkToolButtonRect = linkToolButtonRef.current!.getBoundingClientRect();
-    const toolbarRect = toolbarRef.current!.getBoundingClientRect();
-
-    disableBodyScroll(document.body, { reserveScrollBarGap: true });
-
-    const position = {
-      left: toolbarRect.left,
-      top: toolbarRect.top,
-    };
-
-    if (position.top > window?.innerHeight) {
-      position.top = linkToolButtonRect.top - 10;
-    }
-
-    // Editor.addMark(editor, 'selection', true);
-    selectionRef.current = editor.selection;
-    ReactEditor.deselect(editor);
-
-    setLinkToolProps((prevProps) => ({
-      open: !prevProps.open,
-      style: { ...prevProps.style, ...position },
-    }));
-  };
-
-  const onCloseActionMenu = () => {
-    enableBodyScroll(document.body);
-    setTurnIntoElementsProps({ style: DEFAULT_TURN_INTO_STYLES, open: false });
-  };
-
-  const onCloseLinkTool = () => {
-    enableBodyScroll(document.body);
-    setLinkToolProps({ style: DEFAULT_TURN_INTO_STYLES, open: false });
-
-    if (selectionRef.current) {
-      Editor.removeMark(editor, 'selection');
-      selectionRef.current = null;
-    }
-  };
-
+  // [TODO] - get only top level parent element
   const activeElementType = Object.keys(elements).find((key) => elements[key].isActive) || '';
   const activeElement = elements[activeElementType];
 
@@ -130,31 +43,49 @@ const DefaultToolbar = ({ getRootProps }: ToolbarProps) => {
     <div {...getRootProps()} className={cx(getRootProps().className, 'yoopta-toolbar')}>
       <div className={s.toolbar} ref={toolbarRef}>
         {turnIntoElementsProps.open && hasActionMenuAsTool && (
-          <UI_HELPERS.Overlay onClose={onCloseActionMenu}>
+          <UI_HELPERS.Overlay onClose={closeActionMenuTool}>
             <ActionMenu
               style={turnIntoElementsProps.style}
               options={{ shouldDeleteText: false }}
-              on={{ toggle: onCloseActionMenu }}
+              on={{ toggle: closeActionMenuTool }}
             />
           </UI_HELPERS.Overlay>
         )}
         {linkToolProps.open && hasLinkAsTool && (
-          <UI_HELPERS.Overlay onClose={onCloseLinkTool}>
+          <UI_HELPERS.Overlay onClose={closeLinkTool}>
             <LinkTool
               style={linkToolProps.style}
               selection={selectionRef.current}
-              on={{ add: onCloseLinkTool, delete: onCloseLinkTool }}
+              on={{ add: closeLinkTool, delete: closeLinkTool }}
             />
           </UI_HELPERS.Overlay>
         )}
+        {chatGPTToolProps.open && hasLinkAsTool && (
+          <UI_HELPERS.Overlay onClose={closeChatGPTTool}>
+            <ChatGPT style={chatGPTToolProps.style} on={{ add: closeChatGPTTool, delete: closeChatGPTTool }} />
+          </UI_HELPERS.Overlay>
+        )}
         <div className={s.marks}>
+          {hasChatGPTAsTool && (
+            <>
+              <button
+                type="button"
+                ref={ashGPTButtonRef}
+                className={cx(s.elementButton, { [s.elementButtonActive]: chatGPTToolProps.open })}
+                onMouseDown={openChatGPTTool}
+              >
+                <span>Ask GPT</span>
+              </button>
+              <div className={s.separator} />
+            </>
+          )}
           {hasActionMenuAsTool && (
             <>
               <button
                 type="button"
                 ref={handleIntoButtonRef}
                 className={cx(s.elementButton, { [s.elementButtonActive]: turnIntoElementsProps.open })}
-                onClick={handleTurnInto}
+                onMouseDown={openActionMenuTool}
               >
                 <span>{activeElement?.options?.displayLabel || activeElementType}</span>
               </button>
@@ -166,8 +97,8 @@ const DefaultToolbar = ({ getRootProps }: ToolbarProps) => {
               <button
                 type="button"
                 ref={linkToolButtonRef}
-                className={cx(s.elementButton, { [s.elementButtonActive]: linkToolProps.open || !!matchedLink })}
-                onClick={openLinkTools}
+                className={cx(s.elementButton, { [s.elementButtonActive]: linkToolProps.open || hasMatchedLink })}
+                onMouseDown={openLinkTool}
               >
                 <span>Link</span>
               </button>

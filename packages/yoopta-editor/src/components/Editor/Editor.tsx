@@ -4,7 +4,7 @@ import { Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slat
 import { TextLeaf } from './TextLeaf/TextLeaf';
 import { getDefaultParagraphLine, getRenderFunctionFactory, isElementHasText, toggleMark } from './utils';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
-import { useElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
+import { useNodeElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { ElementWrapper } from '../ElementWrapper/ElementWrapper';
 import { HOTKEYS } from '../../utils/hotkeys';
 import { ParentYooptaPlugin, YooptaPluginType } from '../../utils/plugins';
@@ -44,7 +44,7 @@ const EditorYoopta = ({
 }: YooptaProps) => {
   useScrollToElement();
   const editorRef = useRef<HTMLDivElement>(null);
-  const [{ disableWhileDrag }, { changeHoveredNode }] = useElementSettings();
+  const [{ disableWhileDrag }, { changeHoveredNode }] = useNodeElementSettings();
 
   const isReadOnly = disableWhileDrag || readOnly;
 
@@ -313,8 +313,10 @@ const EditorYoopta = ({
 
     return Object.keys(tools).map((toolkey) => {
       const tool = tools[toolkey] as ReactNode;
-      const isFloatedTool = tool?.props.onlyTool === true;
-      if (!React.isValidElement(tool) || isFloatedTool) return null;
+      const asChildren = typeof tool?.props?.asChildren === 'boolean' ? typeof tool?.props?.asChildren : true;
+
+      const shouldRenderAsChildren = asChildren === true;
+      if (!React.isValidElement(tool) || !shouldRenderAsChildren) return null;
 
       return React.cloneElement(tool, {
         key: toolkey,

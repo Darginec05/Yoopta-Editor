@@ -2,7 +2,7 @@ import { YooptaPlugin, mergePlugins, createYooptaPlugin } from './utils/plugins'
 import classnames from 'classnames';
 import { ElementOptions } from './components/ElementOptions/ElementOptions';
 import { Overlay } from './components/ElementOptions/Overlay';
-import { useElementSettings } from './contexts/NodeSettingsContext/NodeSettingsContext';
+import { useNodeElementSettings } from './contexts/NodeSettingsContext/NodeSettingsContext';
 export { classnames as cx };
 export { isKeyHotkey, isHotkey, isCodeHotkey } from 'is-hotkey';
 export { enableBodyScroll, disableBodyScroll } from 'body-scroll-lock';
@@ -31,6 +31,6 @@ export type { YooEditor, RenderYooptaElementProps, YooptaBaseElement, Modify } f
 
 const UI_HELPERS = { ElementOptions, Overlay };
 
-export { YooptaPlugin, mergePlugins, createYooptaPlugin, useElementSettings, UI_HELPERS };
+export { YooptaPlugin, mergePlugins, createYooptaPlugin, useNodeElementSettings, UI_HELPERS };
 
 export default YooptaEditor;

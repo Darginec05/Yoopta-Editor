@@ -7,7 +7,7 @@ import TrashIcon from './icons/trash.svg';
 import DuplicateIcon from './icons/duplicate.svg';
 import TurnIcon from './icons/turn.svg';
 import CopyIcon from './icons/copy.svg';
-import { useElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
+import { useNodeElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
 import { useTools } from '../../contexts/YooptaContext/YooptaContext';
 import s from './ElementOptions.module.scss';
 
@@ -49,9 +49,10 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
   const containerRef = useRef<HTMLDivElement>(null);
   const editor = useSlate();
   const tools = useTools();
-  const [, handlers] = useElementSettings();
+  const [, handlers] = useNodeElementSettings();
 
   const { ActionMenu } = tools || {};
+  const hasActionMenuAsTool = !!ActionMenu;
 
   // [WIP]
   const handleTurnInto = (event: MouseEvent) => {
@@ -141,7 +142,7 @@ const ElementOptions = ({ onClose, style, element, render, ...props }: Props) =>
               <div className={s.text}>Duplicate</div>
             </button>
             {/* Work in progress */}
-            {!isVoid && (
+            {!isVoid && hasActionMenuAsTool && (
               <button type="button" className={s.item} onClick={handleTurnInto}>
                 <div className={s.icon}>
                   <TurnIcon />

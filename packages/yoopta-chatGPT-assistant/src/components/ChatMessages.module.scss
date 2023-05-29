@@ -1,0 +1,35 @@
+.messages {
+  padding: 8px 12px 8px 8px;
+  background-color: #191e2e;
+  max-height: 400px;
+  overflow-y: auto;
+  border-radius: 5px 5px 0 0;
+}
+
+.chatMessage {
+  padding: 7px 10px;
+  border-radius: 12px;
+  background: #000;
+  max-width: 80%;
+
+  &:first-child {
+    margin-top: 6px;
+  }
+}
+
+.chatMessageAssistant {
+  margin: 14px auto 3px 0;
+  background-color: #21293d;
+  color: #fff;
+}
+
+.chatMessageUser {
+  margin: 14px 0 3px auto;
+  background-color: #226edb;
+  color: #fff;
+}
+
+.chatMessageContent {
+  line-height: 20px;
+  font-size: 14px;
+}

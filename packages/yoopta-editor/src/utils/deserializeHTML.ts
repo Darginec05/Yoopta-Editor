@@ -96,6 +96,7 @@ export function deserializeHtml(
   try {
     const pluginsMap = mergePluginTypesToMapHMTLNodeName(plugins);
     const parsedHtml = new DOMParser().parseFromString(htmlString, 'text/html');
+
     return deserialize(parsedHtml.body, pluginsMap);
   } catch (error) {
     console.error(error);

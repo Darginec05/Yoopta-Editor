@@ -11,6 +11,8 @@ const withHtml = (editor: YooEditor) => {
 
     if (html) {
       const fragment = deserializeHtml(html, editor.plugins);
+      console.log('fragment', fragment);
+
       Transforms.insertFragment(editor, fragment);
       return;
     }

@@ -1,17 +1,22 @@
 .root {
-  border-radius: 6px;
-  background: white;
-  box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
+  background: #0f141e;
   overflow: hidden;
   isolation: isolate;
   position: relative;
   z-index: 2;
   opacity: 1;
   transition: opacity 80ms ease-in;
+  border-top: 1px solid #fff;
+  border-radius: 0 0 5px 5px;
+  color: #fff;
+}
+
+.rootIsEmpty {
+  border-radius: 5px;
 }
 
 .loading {
-  opacity: 0.6;
+  opacity: 1;
 }
 
 .content {
@@ -62,4 +67,8 @@
   background-color: inherit;
   padding: 0;
   margin: 0;
+
+  svg {
+    fill: #fff
+  }
 }

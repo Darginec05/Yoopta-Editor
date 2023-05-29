@@ -269,14 +269,12 @@ const openai = new OpenAIApi(configuration);
 
 // // data: [DONE]
 
-import { OpenAI } from 'openai-streams/node';
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (!req.body.prompt) {
-    return res.status(400).json({
-      error: 'PromptText is required',
-    });
-  }
+  // if (!req.body.prompt) {
+  //   return res.status(400).json({
+  //     error: 'PromptText is required',
+  //   });
+  // }
 
   if (!Array.isArray(req.body.messages)) {
     return res.status(400).json({
@@ -295,7 +293,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       model: 'gpt-3.5-turbo',
       messages: req.body.messages,
       temperature: 0.7,
-      max_tokens: 512,
+      max_tokens: 512 / 2,
       top_p: 1,
       frequency_penalty: 0,
       presence_penalty: 0,
@@ -327,3 +325,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // return new Response(stream);
 }
+
+const text =
+  "Yes, NodeJS is still a popular choice for building backend applications in 2022. It has a large community of developers, a rich ecosystem of libraries and modules, and is supported by major cloud providers like AWS, Google Cloud, and Microsoft Azure. NodeJS is known for its scalability, performance, and ability to handle a large number of concurrent connections. It is also well-suited for building microservices and serverless architectures. However, as with any technology, the suitability of NodeJS for a specific project depends on various factors like the project requirements, team expertise, and available resources.Sure! Here is a simple example of a NodeJS application using the ExpressJS framework:\n\nFirst, you will need to install NodeJS and the ExpressJS package using npm (Node Package Manager). Open a terminal or command prompt and run the following commands:\n\n```npm install node\nnpm install express\n```Once you have installed NodeJS and ExpressJS, create a new file called `app.js` and add the following code:\n\n```const express = require('express');\nconst app = express();\n\napp.get('/', (req, res) => {\n  res.send('Hello World!');\n});\n\napp.listen(3000, () => {\n  console.log('Example app listening on port 3000!');\n});\n```This code creates a new ExpressJS application, defines a route for the root URL (i.e. `/`), and sends a response with the text \"Hello World!\". It then starts the server and listens on port 3000.\n\nSave the file and run it using the following command:\n\n```node app.js\n```You should see the message \"Example app listening on port 3000!\" in the console. Open a web browser and navigate to `http://localhost:3000` to see the \"Hello World!\" message displayed in the";

@@ -11,6 +11,10 @@ export interface OpenAIChatMessage {
   role: OpenAIChatRole;
 }
 
+export type ContextChatGPTMessage = OpenAIChatMessage;
+
+export type ChatMessageUI = OpenAIChatMessage & { id: string; fromContext?: boolean };
+
 export interface OpenAIChatCompletionChunk {
   id: string;
   object: string;
