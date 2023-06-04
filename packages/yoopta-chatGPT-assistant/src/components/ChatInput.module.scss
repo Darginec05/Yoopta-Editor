@@ -1,18 +1,19 @@
 .root {
-  background: #0f141e;
-  overflow: hidden;
-  isolation: isolate;
-  position: relative;
-  z-index: 2;
-  opacity: 1;
-  transition: opacity 80ms ease-in;
-  border-top: 1px solid #fff;
+  background: #f8f8f8;
   border-radius: 0 0 5px 5px;
-  color: #fff;
+  border-top: 1px solid #191e2e;
+  color: #000;
+  isolation: isolate;
+  opacity: 1;
+  overflow: hidden;
+  position: relative;
+  transition: opacity 80ms ease-in;
+  z-index: 2;
 }
 
 .rootIsEmpty {
   border-radius: 5px;
+  border-top: none;
 }
 
 .loading {
@@ -69,6 +70,6 @@
   margin: 0;
 
   svg {
-    fill: #fff
+    fill: #191e2e
   }
 }

@@ -1,22 +1,34 @@
 import { generateId } from '@yoopta/editor';
 import { useState } from 'react';
-import { ChatMessageUI, OpenAIChatMessage } from '../types';
+import { ChatMessage, ChatMessageMap, OpenAIChatMessage } from '../types';
 
 type Props = {
-  context?: OpenAIChatMessage[];
+  context?: OpenAIChatMessage[] | null;
 };
 
 export const useChatMessages = ({ context }: Props) => {
   const getDefaultMessages = () => {
-    if (!Array.isArray(context)) return [];
-    if (context.length === 0) return [];
+    if (!Array.isArray(context)) return {};
+    if (context.length === 0) return {};
 
-    return context.map((msg) => ({ ...msg, id: generateId(), fromContext: true }));
+    const messageMap = {};
+
+    context.forEach((msg, i) => {
+      const id = generateId();
+      // messageMap[id] = { ...msg, id, fromContext: false, order: i };
+      messageMap[id] = { ...msg, id, fromContext: true, order: i };
+    });
+
+    return messageMap;
   };
 
-  const [messages, setMessages] = useState<ChatMessageUI[]>(() => getDefaultMessages());
+  const [messages, setMessages] = useState<ChatMessageMap | null>(() => getDefaultMessages());
 
-  const addMessage = (message: ChatMessageUI) => setMessages((prevMsgs) => [...prevMsgs, message]);
+  const addMessage = (message: Omit<ChatMessage, 'order'>) =>
+    setMessages((prevMsgs) => ({
+      ...prevMsgs,
+      [message.id]: { ...message, order: Object.keys(prevMsgs || {}).length },
+    }));
 
   return { messages, updateMessage: addMessage };
 };

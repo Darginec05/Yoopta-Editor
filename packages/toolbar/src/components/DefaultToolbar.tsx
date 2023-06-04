@@ -1,17 +1,20 @@
 import { ToolbarProps } from './Toolbar';
-import { cx, UI_HELPERS, useElements, useMarks, useNodeElementSettings, useTools } from '@yoopta/editor';
+import { cx, UI_HELPERS, useElements, useMarks, useTools } from '@yoopta/editor';
 import s from './DefaultToolbar.module.scss';
 import { useRef } from 'react';
 import { useSlate } from 'slate-react';
 import { useLinkTool } from '../hooks/useLinkTool';
 import { useActionMenuTool } from '../hooks/useActionMenuTool';
 import { useChatGPTTool } from '../hooks/useChatGPTTool';
+import { Range } from 'slate';
+import MagicIcon from '../icons/magic.svg';
 
 const DefaultToolbar = ({ getRootProps }: ToolbarProps) => {
   const marks = useMarks();
   const elements = useElements();
   const tools = useTools();
   const editor = useSlate();
+  const selectionRef = useRef<Range | null>(null);
 
   const { ActionMenu, LinkTool, ChatGPT } = tools || {};
   const hasActionMenuAsTool = !!ActionMenu;
@@ -20,9 +23,10 @@ const DefaultToolbar = ({ getRootProps }: ToolbarProps) => {
 
   const toolbarRef = useRef<HTMLDivElement>(null);
 
-  const { closeLinkTool, openLinkTool, linkToolProps, linkToolButtonRef, selectionRef, hasMatchedLink } = useLinkTool({
+  const { closeLinkTool, openLinkTool, linkToolProps, linkToolButtonRef, hasMatchedLink } = useLinkTool({
     editor,
     toolbarRef,
+    selectionRef,
   });
 
   const { openActionMenuTool, closeActionMenuTool, turnIntoElementsProps, handleIntoButtonRef } = useActionMenuTool({
@@ -30,9 +34,10 @@ const DefaultToolbar = ({ getRootProps }: ToolbarProps) => {
     toolbarRef,
   });
 
-  const { openChatGPTTool, closeChatGPTTool, chatGPTToolProps, ashGPTButtonRef } = useChatGPTTool({
+  const { openChatGPTTool, closeChatGPTTool, chatGPTToolProps, ashGPTButtonRef, selectedNodeText } = useChatGPTTool({
     editor,
     toolbarRef,
+    selectionRef,
   });
 
   // [TODO] - get only top level parent element
@@ -62,7 +67,25 @@ const DefaultToolbar = ({ getRootProps }: ToolbarProps) => {
         )}
         {chatGPTToolProps.open && hasLinkAsTool && (
           <UI_HELPERS.Overlay onClose={closeChatGPTTool}>
-            <ChatGPT style={chatGPTToolProps.style} on={{ add: closeChatGPTTool, delete: closeChatGPTTool }} />
+            <ChatGPT
+              style={chatGPTToolProps.style}
+              on={{ add: closeChatGPTTool, delete: closeChatGPTTool }}
+              options={{ shouldDeleteText: false }}
+              selection={selectionRef.current}
+              placeholder="What I should make with text?"
+              actions={[
+                { name: 'Summarize' },
+                { name: 'Fix spelling' },
+                { name: 'Translate it to...' },
+                { name: 'Continue writing' },
+              ]}
+              context={[
+                {
+                  content: selectedNodeText,
+                  role: 'user',
+                },
+              ]}
+            />
           </UI_HELPERS.Overlay>
         )}
         <div className={s.marks}>
@@ -75,6 +98,7 @@ const DefaultToolbar = ({ getRootProps }: ToolbarProps) => {
                 onMouseDown={openChatGPTTool}
               >
                 <span>Ask GPT</span>
+                {/* <MagicIcon width={16} height={16} className={s.icon} /> */}
               </button>
               <div className={s.separator} />
             </>

@@ -17,6 +17,7 @@ const ChatInput = ({
   placeholder,
   selectionRef,
   isMessageListEmpty,
+  shouldDeleteText,
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -33,12 +34,22 @@ const ChatInput = ({
     }
 
     if (HOTKEYS.isEscape(event)) {
-      return onClose();
+      if (shouldDeleteText === true) {
+        const lastSelection = selectionRef.current!;
+        const { offset, path } = lastSelection.anchor;
+
+        Transforms.delete(editor, {
+          at: {
+            anchor: { path, offset: 0 },
+            focus: { path, offset },
+          },
+        });
+      }
+
+      return onClose({ withSelect: false });
     }
 
     if (HOTKEYS.isEnter(event)) {
-      if (loading) return;
-
       event.preventDefault();
       return askChatGPT();
     }

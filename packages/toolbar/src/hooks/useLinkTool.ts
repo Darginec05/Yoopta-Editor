@@ -16,9 +16,8 @@ const DEFAULT_TURN_INTO_STYLES: TurnInto['style'] = {
   right: 'auto',
 };
 
-export const useLinkTool = ({ editor, toolbarRef }) => {
+export const useLinkTool = ({ editor, toolbarRef, selectionRef }) => {
   const linkToolButtonRef = useRef<HTMLButtonElement>(null);
-  const selectionRef = useRef<Range | null>(null);
 
   const [linkToolProps, setLinkToolProps] = useState<TurnInto>({
     style: DEFAULT_TURN_INTO_STYLES,
@@ -40,7 +39,6 @@ export const useLinkTool = ({ editor, toolbarRef }) => {
       position.top = linkToolButtonRect.top - 10;
     }
 
-    // Editor.addMark(editor, 'selection', true);
     selectionRef.current = editor.selection;
     ReactEditor.deselect(editor);
 

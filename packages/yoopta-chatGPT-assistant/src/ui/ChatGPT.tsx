@@ -1,18 +1,20 @@
-import { cx, disableBodyScroll, enableBodyScroll } from '@yoopta/editor';
-import { CSSProperties, useEffect, useRef, useState } from 'react';
-import { Editor, Path, Point, Selection, Transforms } from 'slate';
+import { cx, useNodeElementSettings, YooptaBaseElement } from '@yoopta/editor';
+import { CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
+import { Editor, Element, Path, Point, Selection, Transforms } from 'slate';
 import { ReactEditor, useSlate } from 'slate-react';
+import { Actions } from '../components/Actions';
 import { ChatInput } from '../components/ChatInput';
 import { ChatMessages } from '../components/ChatMessages';
+import { useChatActions } from '../hooks/useChatActions';
 import { useChatCompletion } from '../hooks/useChatCompletion';
 import { useChatMessages } from '../hooks/useChatMessages';
-import { OpenAIChatMessage } from '../types';
+import { ChatMessage, OpenAIChatMessage, Action } from '../types';
 import s from './ChatGPT.module.scss';
 
 type MenuProps = { fixedStyle: CSSProperties; absoluteStyle: CSSProperties; point: Point | null };
 
 const getDefaultMenuPropsState = (style?: CSSProperties): MenuProps => ({
-  fixedStyle: { position: 'fixed', opacity: 0, zIndex: 6, left: -1000, bottom: -1000, ...style },
+  fixedStyle: { position: 'static', opacity: 0, zIndex: 6, left: -1000, bottom: -1000, ...style },
   absoluteStyle: { left: 0, bottom: 0, top: 'auto', right: 'auto' },
   point: null,
 });
@@ -26,34 +28,46 @@ export function getRectByCurrentSelection(): DOMRect {
   return rect;
 }
 
-const checkIsChatGPTOpen = (style: CSSProperties) => style.opacity === 1 && !!style.top && !!style.right;
+const checkIsChatGPTOpen = (style: CSSProperties) => style.opacity === 1;
+// const checkIsChatGPTOpen = (style: CSSProperties) => style.opacity === 1 && !!style.top && !!style.right;
 
 type ChatGPTAssistantProps = {
   // trigger?: string;
   API_URL?: string;
   placeholder?: string;
-  context?: OpenAIChatMessage[];
+  context?: OpenAIChatMessage[] | null;
+  actions?: Action[] | null;
   [x: string]: any;
 };
 
+function parseCodeBlocks(text) {
+  const codeBlocks = text.match(/```[^`]*```/g);
+  return codeBlocks ? codeBlocks.map((block) => block.replace(/```/g, '')) : [];
+}
+
 const TRIGGER = '?';
 
-/**
- * Actions:
- *  1. Summarize
- *  2. Fix spelling
- *  3. Translate to
- *  4. Continue writing
- */
-const ChatGPTAssistant = ({ API_URL = '', placeholder, context, ...rest }: ChatGPTAssistantProps) => {
+const ChatGPTAssistant = ({
+  API_URL = '',
+  placeholder,
+  context,
+  asTool,
+  options = {},
+  actions: baseActions = null,
+  ...rest
+}: ChatGPTAssistantProps) => {
   const editor = useSlate();
+  const [, { changeSelectedNodeElement }] = useNodeElementSettings();
   const [inputMessage, setInputMessage] = useState('');
-  const selectionRef = useRef<Selection | null>(null);
+  const selectionRef = useRef<Selection | null>(rest?.selection || null);
 
   const [menuProps, setMenuProps] = useState<MenuProps>(() => getDefaultMenuPropsState(rest?.style));
   const chatContentRef = useRef<HTMLDivElement>(null);
-  const { messages, updateMessage } = useChatMessages({ context });
 
+  const lastSelectionRef = asTool ? { current: rest?.selection } : selectionRef;
+
+  const { actions, updateActions } = useChatActions({ actions: baseActions });
+  const { messages, updateMessage } = useChatMessages({ context });
   const { loading, fetchChatGPT, streamingMessage, error } = useChatCompletion({
     onUpdateMessage: updateMessage,
     inputMessage,
@@ -68,39 +82,38 @@ const ChatGPTAssistant = ({ API_URL = '', placeholder, context, ...rest }: ChatG
 
     const showAtTop = selectionRect.top + selectionRect.height + actionMenuHeight > window.innerHeight;
 
-    disableBodyScroll(document.body, { reserveScrollBarGap: true });
     const parentPath = Path.parent(editor.selection.anchor.path);
+    const [node] = Editor.node(editor, parentPath) || [];
+
+    if (node) changeSelectedNodeElement(node as YooptaBaseElement<string>);
 
     selectionRef.current = editor.selection;
 
     const absoluteStyle = showAtTop
-      ? { left: 0, bottom: 5, top: 'auto', right: 'auto' }
-      : { left: 0, bottom: 'auto', top: selectionRect.height + 5, right: 'auto' };
+      ? { bottom: 5, right: 'auto', left: 0, top: 0 }
+      : { bottom: 'auto', right: 'auto', left: 0, top: 0 };
 
     setMenuProps({
       absoluteStyle,
       fixedStyle: {
         ...menuProps.fixedStyle,
-        left: selectionRect.left,
-        top: selectionRect.top,
+        left: 0,
+        top: document.documentElement.scrollTop + selectionRect.top - selectionRect.height - 10,
         right: 'auto',
         bottom: 'auto',
         opacity: 1,
-        position: 'fixed',
+        position: 'relative',
       },
       point: { path: parentPath, offset: editor.selection.anchor.offset },
     });
   };
 
-  const hideChatGPT = () => {
-    enableBodyScroll(document.body);
+  const hideChatGPT = ({ withSelect = true } = {}) => {
     setMenuProps(getDefaultMenuPropsState(rest?.style));
     setInputMessage('');
 
     if (selectionRef.current) {
-      Transforms.select(editor, selectionRef.current);
       ReactEditor.focus(editor);
-      Editor.removeMark(editor, 'selection');
     }
 
     selectionRef.current = null;
@@ -122,6 +135,8 @@ const ChatGPTAssistant = ({ API_URL = '', placeholder, context, ...rest }: ChatG
   };
 
   useEffect(() => {
+    if (!isChatGPTOpen) return;
+
     if (!editor.selection || !menuProps.point) return hideChatGPT();
 
     const parentPath: Path = Path.parent(editor.selection.anchor.path);
@@ -137,8 +152,6 @@ const ChatGPTAssistant = ({ API_URL = '', placeholder, context, ...rest }: ChatG
     contentEditor?.addEventListener('keyup', handleKeyup);
 
     if (isChatGPTOpen) {
-      console.log('chatContentRef', chatContentRef.current);
-      console.log('chatContentRef.current?.scrollHeight', chatContentRef.current?.scrollHeight);
       chatContentRef.current?.scrollTo(0, chatContentRef.current?.scrollHeight);
     }
 
@@ -147,8 +160,6 @@ const ChatGPTAssistant = ({ API_URL = '', placeholder, context, ...rest }: ChatG
     };
   }, [editor, isChatGPTOpen]);
 
-  // Give me example of using OpenAI with ChatGPT in NodeJS
-
   const askChatGPT = () => {
     if (loading || inputMessage.trim() === '') return;
 
@@ -156,8 +167,96 @@ const ChatGPTAssistant = ({ API_URL = '', placeholder, context, ...rest }: ChatG
     fetchChatGPT();
   };
 
-  const chatMessages = messages.filter((message) => !message.fromContext);
-  const isMessageListEmpty = chatMessages.length === 0;
+  const orderedMessagIds = useMemo(() => {
+    if (!messages) return [];
+
+    return Object.keys(messages)
+      .sort((keyA, keyB) => messages[keyA].order - messages[keyB].order)
+      .filter((messageId) => !messages?.[messageId].fromContext);
+  }, [messages]);
+
+  const removeTriggerKey = () => {
+    if (options.shouldDeleteText === false) return;
+
+    const lastSelection = selectionRef.current;
+    if (!lastSelection) return;
+
+    const { offset, path } = lastSelection.anchor;
+
+    Transforms.delete(editor, {
+      at: {
+        anchor: { path, offset: 0 },
+        focus: { path, offset },
+      },
+    });
+  };
+
+  const pasteContentBelow = (message: ChatMessage) => {
+    const lastSelection = lastSelectionRef.current;
+    if (!lastSelection) return null;
+
+    const [node] = Editor.above(editor, { at: lastSelection, match: (n) => Element.isElement(n) }) || [];
+    const { anchor, focus } = lastSelection;
+    const string = Editor.string(editor, anchor.path);
+
+    console.log('string', string);
+    console.log('is', string.trim() === TRIGGER);
+    const fromTrigger = string.trim() === TRIGGER;
+
+    if (fromTrigger) {
+      Transforms.delete(editor, { at: anchor.path, unit: 'block' });
+    }
+
+    const nodeText = fromTrigger ? message.content : ` ${message.content}`;
+    Transforms.insertText(editor, nodeText, { at: { path: focus.path, offset: focus.offset } });
+
+    // if (node) {
+    //   changeSelectedNodeElement(node as YooptaBaseElement<string>);
+    // }
+
+    Transforms.select(editor, {
+      anchor: { ...anchor, offset: 0 },
+      focus: { path: focus.path, offset: message.content.length },
+    });
+
+    hideChatGPT();
+  };
+
+  const replaceContent = (message: ChatMessage) => {
+    const lastSelection = lastSelectionRef.current;
+    if (!lastSelection) return null;
+
+    const { anchor, focus } = lastSelection;
+    const [node] = Editor.above(editor, { at: lastSelection, match: (n) => Element.isElement(n) }) || [];
+
+    Transforms.delete(editor, { at: anchor.path, unit: 'block' });
+    Transforms.insertText(editor, message.content, { at: { path: focus.path, offset: focus.offset } });
+
+    // if (node) {
+    //   changeSelectedNodeElement(node as YooptaBaseElement<string>);
+    // }
+
+    Transforms.select(editor, {
+      anchor: { ...anchor, offset: 0 },
+      focus: { path: focus.path, offset: message.content.length },
+    });
+
+    hideChatGPT();
+  };
+
+  const handleAction = (action: Action) => {
+    setInputMessage(action.name);
+  };
+
+  const hasActions = Array.isArray(actions) && actions.length > 0;
+
+  const onChangeMessageInput = (event) => {
+    const input = event.target.value;
+    updateActions(input);
+    setInputMessage(input);
+  };
+
+  const isMessageListEmpty = orderedMessagIds.length === 0;
 
   return (
     <div role={'dialog'} aria-modal className={s.root} style={menuProps.fixedStyle}>
@@ -166,18 +265,26 @@ const ChatGPTAssistant = ({ API_URL = '', placeholder, context, ...rest }: ChatG
           <div ref={chatContentRef} className={cx(s.chatContent, 'yoopta-chatGPT')}>
             {isChatGPTOpen && (
               <>
-                <ChatMessages messages={chatMessages} streamingMessage={streamingMessage} />
+                <ChatMessages
+                  messageIds={orderedMessagIds}
+                  streamingMessage={streamingMessage}
+                  messages={messages}
+                  replaceContent={replaceContent}
+                  pasteContentBelow={pasteContentBelow}
+                />
                 <ChatInput
                   value={inputMessage}
-                  onChange={(event) => setInputMessage(event.target.value)}
+                  onChange={onChangeMessageInput}
                   askChatGPT={askChatGPT}
                   loading={loading}
                   onClose={hideChatGPT}
                   placeholder={placeholder}
                   isMessageListEmpty={isMessageListEmpty}
-                  selectionRef={selectionRef}
+                  selectionRef={lastSelectionRef}
                   editor={editor}
+                  shouldDeleteText={options.shouldDeleteText}
                 />
+                {hasActions && <Actions actions={actions} onAction={handleAction} />}
               </>
             )}
           </div>
