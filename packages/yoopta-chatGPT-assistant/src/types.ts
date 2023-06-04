@@ -13,7 +13,11 @@ export interface OpenAIChatMessage {
 
 export type ContextChatGPTMessage = OpenAIChatMessage;
 
-export type ChatMessageUI = OpenAIChatMessage & { id: string; fromContext?: boolean };
+export type ChatMessage = OpenAIChatMessage & { id: string; order: number; fromContext?: boolean };
+
+export type ChatMessageMap = {
+  [id: string]: ChatMessage;
+};
 
 export interface OpenAIChatCompletionChunk {
   id: string;
@@ -40,18 +44,9 @@ export interface ChatMessageParams extends OpenAIChatMessage {
   };
 }
 
-export interface ChatMessage extends OpenAIChatMessage {
-  timestamp: number;
-  meta: {
-    loading: boolean;
-    responseTime: string;
-    chunks: ChatCompletionToken[];
-  };
-}
-
 // For more information on each of these properties:
 // https://platform.openai.com/docs/api-reference/chat
-export interface OpenAIStreamingParams {
+export type OpenAIStreamingParams = {
   apiKey: string;
   model: Model;
   temperature?: number;
@@ -63,11 +58,13 @@ export interface OpenAIStreamingParams {
   frequency_penalty?: number;
   logit_bias?: Map<string | number, number>;
   user?: string;
-}
+};
 
-export interface FetchRequestOptions {
+export type FetchRequestOptions = {
   headers: Record<string, string>;
   method: 'POST';
   body: string;
   signal?: AbortSignal;
-}
+};
+
+export type Action = { name: string };

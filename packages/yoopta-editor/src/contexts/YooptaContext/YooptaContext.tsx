@@ -185,15 +185,16 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList,
 
       if (ToolComponent) {
         if (React.isValidElement(ToolComponent)) {
-          TOOLS[toolKey] = ({ style, className, ...rest }) =>
-            React.cloneElement(ToolComponent as ReactElement, {
+          TOOLS[toolKey] = ({ style, className, ...rest }) => {
+            return React.cloneElement(ToolComponent as ReactElement, {
               style,
               className,
               plugins: pluginList,
               asTool: true,
-              ...rest,
               ...ToolComponent?.props,
+              ...rest,
             });
+          };
         }
       }
     });

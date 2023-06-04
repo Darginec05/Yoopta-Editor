@@ -1,16 +1,16 @@
 import { generateId } from '@yoopta/editor';
 import { useEffect, useRef, useState } from 'react';
-import { OpenAIChatCompletionChunk, OpenAIChatRole, ChatMessageUI, OpenAIChatMessage } from '../types';
+import { OpenAIChatCompletionChunk, OpenAIChatRole, ChatMessage, OpenAIChatMessage, ChatMessageMap } from '../types';
 
 const textDecoder = new TextDecoder();
 
 type Props = {
-  onUpdateMessage: (message: ChatMessageUI) => void;
+  onUpdateMessage: (message: Omit<ChatMessage, 'order'>) => void;
   inputMessage: string;
-  messages: ChatMessageUI[];
+  messages: ChatMessageMap | null;
 };
 
-export const useChatCompletion = ({ onUpdateMessage, inputMessage, messages }: Props) => {
+export const useChatCompletion = ({ onUpdateMessage, inputMessage, messages = {} }: Props) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<any>(false);
   const [isStreamingFinished, setIsStreamingFinished] = useState<boolean>(false);
@@ -19,7 +19,9 @@ export const useChatCompletion = ({ onUpdateMessage, inputMessage, messages }: P
   useEffect(() => {
     if (isStreamingFinished) {
       setIsStreamingFinished(false);
+      setLoading(false);
       setStreamingMessage([]);
+
       onUpdateMessage({ role: 'assistant', content: streamingMessage.join(''), id: generateId() });
     }
   }, [isStreamingFinished, streamingMessage]);
@@ -53,11 +55,12 @@ export const useChatCompletion = ({ onUpdateMessage, inputMessage, messages }: P
 
       let GPTMessages: OpenAIChatMessage[] = [{ role: 'user', content: inputMessage }];
 
-      if (messages.length > 0) {
-        GPTMessages = [
-          ...messages.map((message) => ({ content: message.content, role: message.role })),
-          ...GPTMessages,
-        ];
+      if (messages && Object.keys(messages).length > 0) {
+        const orederedMessages = Object.values(messages)
+          .sort((a, b) => a.order - b.order)
+          .map((message) => ({ content: message.content, role: message.role }));
+
+        GPTMessages = [...orederedMessages, ...GPTMessages];
       }
 
       onUpdateMessage({ role: 'user', content: inputMessage, id: generateId() });

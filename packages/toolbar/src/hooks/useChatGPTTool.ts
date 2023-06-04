@@ -15,10 +15,10 @@ const DEFAULT_TURN_INTO_STYLES: TurnInto['style'] = {
   right: 'auto',
 };
 
-export const useChatGPTTool = ({ editor, toolbarRef }) => {
+export const useChatGPTTool = ({ editor, toolbarRef, selectionRef }) => {
   const ashGPTButtonRef = useRef<HTMLButtonElement>(null);
-  const selectionRef = useRef<Range | null>(null);
   const [, { changeSelectedNodeElement }] = useNodeElementSettings();
+  const [selectedNodeText, setSelectedNodeText] = useState<null | string>(null);
 
   const [chatGPTToolProps, setChatGPTToolProps] = useState<TurnInto>({
     style: DEFAULT_TURN_INTO_STYLES,
@@ -29,11 +29,12 @@ export const useChatGPTTool = ({ editor, toolbarRef }) => {
     const askGPTButtonRect = ashGPTButtonRef.current!.getBoundingClientRect();
     const toolbarRect = toolbarRef.current!.getBoundingClientRect();
 
-    disableBodyScroll(document.body, { reserveScrollBarGap: true });
+    // disableBodyScroll(document.body, { reserveScrollBarGap: true });
 
-    const position = {
+    const position: CSSProperties = {
       left: askGPTButtonRect.left - 5,
       top: toolbarRect.top + toolbarRect.height + askGPTButtonRect.height + 15,
+      position: 'relative',
     };
 
     const [node] =
@@ -42,9 +43,10 @@ export const useChatGPTTool = ({ editor, toolbarRef }) => {
         match: (n) => Element.isElement(n),
       }) || [];
 
-    changeSelectedNodeElement((node as YooptaBaseElement<'string'>) || null);
+    changeSelectedNodeElement((node as YooptaBaseElement<string>) || null);
 
     const nodeHTMLElement = document.querySelector(`[data-element-id="${node?.id}"]`);
+    setSelectedNodeText(nodeHTMLElement?.textContent || null);
 
     if (nodeHTMLElement) {
       const nodeElementRect = nodeHTMLElement.getBoundingClientRect();
@@ -78,5 +80,6 @@ export const useChatGPTTool = ({ editor, toolbarRef }) => {
     closeChatGPTTool: onCloseChatGPT,
     chatGPTToolProps,
     ashGPTButtonRef,
+    selectedNodeText,
   };
 };
