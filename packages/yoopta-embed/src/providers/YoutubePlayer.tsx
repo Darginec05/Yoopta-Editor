@@ -29,8 +29,8 @@ function YouTubePlayer({ providerId, ...other }) {
           {isInViewport && (
             <iframe
               title="Youtube Player"
-              // https://developers.google.com/youtube/player_parameters?hl=en
-              src={`https://www.youtube.com/embed/${providerId}?hl=no&rel=0`}
+              // https://developers.google.com/youtube/player_parameters
+              src={`https://www.youtube.com/embed/${providerId}`}
               frameBorder={0}
               onLoad={() => setFrameLoaded(true)}
               allowFullScreen

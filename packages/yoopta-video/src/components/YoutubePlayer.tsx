@@ -28,7 +28,7 @@ function YouTubePlayer({ videoId, ...other }) {
         <iframe
           title="Video Player"
           // https://developers.google.com/youtube/player_parameters?hl=en
-          src={`https://www.youtube.com/embed/${videoId}?hl=no&rel=0`}
+          src={`https://www.youtube.com/embed/${videoId}`}
           frameBorder={0}
           onLoad={() => setFrameLoaded(true)}
           allowFullScreen
