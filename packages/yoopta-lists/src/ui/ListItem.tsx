@@ -1,6 +1,6 @@
 import { generateId, getElementByPath, createYooptaPlugin } from '@yoopta/editor';
-import { Editor, Element, NodeEntry, Path, Text, Transforms } from 'slate';
-import { BulletedList, ListChildItemElement, NumberedList } from '../types';
+import { Editor, Element, NodeEntry, Path, Transforms } from 'slate';
+import { BulletedListElement, ListChildItemElement, NumberedListElement } from '../types';
 import s from './ListItem.module.scss';
 
 const ListItemRender = ({ attributes, children, HTMLAttributes }) => {
@@ -64,7 +64,7 @@ const ListItemList = createYooptaPlugin<any, ListChildItemElement>({
 
         const { anchor } = editor.selection;
         const [listItemNode, listItemPath] = nodeEntry;
-        const [parentNode, parentPath] = Editor.parent(editor, listItemPath) as NodeEntry<BulletedList | NumberedList>;
+        const [parentNode, parentPath] = Editor.parent(editor, listItemPath) as NodeEntry<BulletedListElement | NumberedListElement>;
 
         const text = Editor.string(editor, listItemPath);
         const isEnd = Editor.isEnd(editor, anchor, listItemPath);
@@ -146,7 +146,7 @@ const ListItemList = createYooptaPlugin<any, ListChildItemElement>({
 
           if (isMaxDepth) return;
 
-          const parentNestedNode: BulletedList | NumberedList = {
+          const parentNestedNode: BulletedListElement | NumberedListElement = {
             ...parentNode,
             id: generateId(),
             type: parentNode.type,
@@ -154,7 +154,7 @@ const ListItemList = createYooptaPlugin<any, ListChildItemElement>({
           };
 
           Transforms.wrapNodes(editor, parentNestedNode, { at: listItemPath });
-          Transforms.setNodes<BulletedList | NumberedList>(
+          Transforms.setNodes<BulletedListElement | NumberedListElement>(
             editor,
             { data: { depth: currentDepth + 1, skipDrag: true } },
             {
@@ -175,7 +175,7 @@ const ListItemList = createYooptaPlugin<any, ListChildItemElement>({
             split: true,
           });
 
-          Transforms.setNodes<BulletedList | NumberedList>(
+          Transforms.setNodes<BulletedListElement | NumberedListElement>(
             editor,
             { data: { depth: currentDepth - 1, skipDrag: true } },
             {

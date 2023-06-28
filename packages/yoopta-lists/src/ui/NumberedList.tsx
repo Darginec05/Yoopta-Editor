@@ -1,6 +1,6 @@
 import { createYooptaPlugin, generateId, getElementClassname, RenderYooptaElementProps } from '@yoopta/editor';
 import { Editor, Element, Transforms } from 'slate';
-import type { ListChildItemElement, ListOptions, NumberedList } from '../types';
+import type { ListChildItemElement, ListOptions, NumberedListElement } from '../types';
 import { ListItemList } from './ListItem';
 import s from './NumberedList.module.scss';
 
@@ -9,13 +9,13 @@ const NumberedListRender = ({
   children,
   element,
   HTMLAttributes,
-}: RenderYooptaElementProps<NumberedList>) => {
+}: RenderYooptaElementProps<NumberedListElement>) => {
   return (
     <ol
       draggable={false}
       {...HTMLAttributes}
       {...attributes}
-      className={getElementClassname<NumberedList>({ element, HTMLAttributes, className: s.list })}
+      className={getElementClassname<NumberedListElement>({ element, HTMLAttributes, className: s.list })}
     >
       {children}
     </ol>
@@ -24,7 +24,7 @@ const NumberedListRender = ({
 
 const NUMBERED_LIST_NODE_TYPE = 'numbered-list';
 
-const NumberedList = createYooptaPlugin<ListOptions, NumberedList>({
+const NumberedList = createYooptaPlugin<ListOptions, NumberedListElement>({
   type: NUMBERED_LIST_NODE_TYPE,
   renderer: (editor) => NumberedListRender,
   childPlugin: ListItemList,
@@ -53,7 +53,7 @@ const NumberedList = createYooptaPlugin<ListOptions, NumberedList>({
       at: editor.selection?.anchor,
     });
 
-    const numberedList: NumberedList = { ...NumberedList.getPlugin.defineElement(), ...elementData };
+    const numberedList: NumberedListElement = { ...NumberedList.getPlugin.defineElement(), ...elementData };
 
     Transforms.wrapNodes(editor, numberedList, {
       at: editor.selection?.anchor,

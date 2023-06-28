@@ -7,15 +7,15 @@ export type TodoListItemOptions = { checked: boolean };
 export type ListChildItemElement = YooptaBaseElement<'list-item'>;
 export type TodoListChildItemElement = Modify<YooptaBaseElement<'todo-list-item'>, { data: TodoListItemOptions }>;
 
-export type TodoList = Modify<
+export type TodoListElement = Modify<
   YooptaBaseElement<'todo-list'>,
   { children: TodoListChildItemElement[]; data: ListOptions }
 >;
-export type BulletedList = Modify<
+export type BulletedListElement = Modify<
   YooptaBaseElement<'bulleted-list'>,
   { children: ListChildItemElement[]; data: ListOptions }
 >;
-export type NumberedList = Modify<
+export type NumberedListElement = Modify<
   YooptaBaseElement<'numbered-list'>,
   { children: ListChildItemElement[]; data: ListOptions }
 >;

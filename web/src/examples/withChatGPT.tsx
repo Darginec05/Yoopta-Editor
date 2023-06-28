@@ -3,15 +3,15 @@ import { useState } from 'react';
 import { Descendant } from 'slate';
 import YooptaEditor from '@yoopta/editor';
 
-import Paragraph from '@yoopta/paragraph';
-import Blockquote from '@yoopta/blockquote';
-import Code from '@yoopta/code';
-import Embed from '@yoopta/embed';
-import Image from '@yoopta/image';
-import Link from '@yoopta/link';
-import Callout from '@yoopta/callout';
-import Video from '@yoopta/video';
-import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
+import Paragraph, { ParagraphElement } from '@yoopta/paragraph';
+import Blockquote, { BlockquoteElement } from '@yoopta/blockquote';
+import Code, { CodeElement } from '@yoopta/code';
+import Embed, { EmbedElement } from '@yoopta/embed';
+import Image, { ImageElement } from '@yoopta/image';
+import Link, { LinkElement } from '@yoopta/link';
+import Callout, { CalloutElement } from '@yoopta/callout';
+import Video, { VideoElement } from '@yoopta/video';
+import { NumberedList, BulletedList, TodoList} from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 

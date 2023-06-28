@@ -2761,6 +2761,28 @@ aggregate-error@^3.0.0:
     clean-stack "^2.0.0"
     indent-string "^4.0.0"
 
+ai@^2.1.3:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/ai/-/ai-2.1.3.tgz#5c13ab641a49a88af34779c5bf7c0080f185a40a"
+  integrity sha512-TwSSYf7YZdwTc9ZdV0qnvToesEePVvH0UlzYmLY44uOHkhNYYsPw5wh7Y+GwS/mHFBnPOm7NFDZbtFGGn+D0mQ==
+  dependencies:
+    eventsource-parser "1.0.0"
+    nanoid "^3.3.6"
+    sswr "^1.10.0"
+    swr "2.1.5"
+    swrv "1.0.3"
+
+ai@^2.1.8:
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/ai/-/ai-2.1.8.tgz#d31b9f2b55c4c8f008fe62dd3ffe35d9b620a93d"
+  integrity sha512-r3/bLvfWe69Y9MvHJHwemMI/YCXGbKK8bqYJwvuFG732PElvBBWA2a6C3Kwh0rZLvomlkboWsq+XFW8edLRoLw==
+  dependencies:
+    eventsource-parser "1.0.0"
+    nanoid "^3.3.6"
+    sswr "^1.10.0"
+    swr "2.1.5"
+    swrv "1.0.3"
+
 ajv-formats@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ajv-formats/-/ajv-formats-2.1.1.tgz#6e669400659eb74973bbf2e33327180a0996b520"
@@ -4757,7 +4779,7 @@ eventemitter3@^4.0.4:
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
   integrity sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
 
-eventsource-parser@^1.0.0:
+eventsource-parser@1.0.0, eventsource-parser@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/eventsource-parser/-/eventsource-parser-1.0.0.tgz#6332e37fd5512e3c8d9df05773b2bf9e152ccc04"
   integrity sha512-9jgfSCa3dmEme2ES3mPByGXfgZ87VbP97tng1G2nWwWx6bV2nYxm2AWCrbQjXToSe+yYlqaZNtxffR9IeQr95g==
@@ -7015,6 +7037,11 @@ nanoid@^3.3.4:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.4.tgz#730b67e3cd09e2deacf03c027c81c9d9dbc5e8ab"
   integrity sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==
 
+nanoid@^3.3.6:
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.6.tgz#443380c856d6e9f9824267d960b4236ad583ea4c"
+  integrity sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==
+
 nanoid@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-4.0.1.tgz#398d7ccfdbf9faf2231b2ca7e8fff5dbca6a509b"
@@ -7513,6 +7540,16 @@ open@^8.4.0:
     define-lazy-prop "^2.0.0"
     is-docker "^2.1.1"
     is-wsl "^2.2.0"
+
+openai-edge@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/openai-edge/-/openai-edge-1.0.0.tgz#8ed5d4833dea8433ddaddaa292a0ffa7d5fbcc9d"
+  integrity sha512-psrC4fxpP87tWIUaALkqn9cW/8WxvAUOuHG93iXDzXaGsxba/+0QD1RJu2KBiwVTyB6/9q/JxIPRmrCQXD/59Q==
+
+openai-edge@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/openai-edge/-/openai-edge-1.1.0.tgz#f9d6723cf4175b4d085664599805d8b8ec0c0aad"
+  integrity sha512-VkXT7yhKjr1QlC/wIMuPW/s003cPHUtiNjt/kH+54iKDZZ7eiGMPuymhpSWJ/zVZfVz6+94okGd6rNuu7JRBDw==
 
 openai-streams@^5.3.0:
   version "5.3.0"
@@ -9247,6 +9284,13 @@ ssri@^8.0.0, ssri@^8.0.1:
   dependencies:
     minipass "^3.1.1"
 
+sswr@^1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/sswr/-/sswr-1.10.0.tgz#dbf16ca41a3db1c92f003a0dc41df2224f1a1d1c"
+  integrity sha512-nLWAJSQy3h8t7rrbTXanRyVHuQPj4PwKIVGe4IMlxJFdhyaxnN/JGACnvQKGDeWiTGYIZIx/jRuUsPEF0867Pg==
+  dependencies:
+    swrev "^3.0.0"
+
 stable@^0.1.8:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/stable/-/stable-0.1.8.tgz#836eb3c8382fe2936feaf544631017ce7d47a3cf"
@@ -9486,6 +9530,23 @@ svgo@^3.0.2:
     css-tree "^2.2.1"
     csso "^5.0.5"
     picocolors "^1.0.0"
+
+swr@2.1.5:
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/swr/-/swr-2.1.5.tgz#688effa719c03f6d35c66decbb0f8e79c7190399"
+  integrity sha512-/OhfZMcEpuz77KavXST5q6XE9nrOBOVcBLWjMT+oAE/kQHyE3PASrevXCtQDZ8aamntOfFkbVJp7Il9tNBQWrw==
+  dependencies:
+    use-sync-external-store "^1.2.0"
+
+swrev@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/swrev/-/swrev-3.0.0.tgz#4b5c0c1a28ef017dd20041c9c2cb24f60d8eca52"
+  integrity sha512-QJuZiptdOmbDY45pECBRVEgnoBlOKjeT2MWVz04wKHpWX15hM3P7EjcIbHDg5yLoPCMQ7to3349MEE+l9QF5HA==
+
+swrv@1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/swrv/-/swrv-1.0.3.tgz#b1af4f55a77d74336d29956924cb1b61f564490f"
+  integrity sha512-sl+eLEE+aPPjhP1E8gQ75q3RPRyw5Gd/kROnrTFo3+LkCeLskv7F+uAl5W97wgJkzitobL6FLsRPVm0DgIgN8A==
 
 symbol-tree@^3.2.4:
   version "3.2.4"
@@ -9934,7 +9995,7 @@ url-parse@^1.5.3:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
-use-sync-external-store@1.2.0:
+use-sync-external-store@1.2.0, use-sync-external-store@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
   integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==

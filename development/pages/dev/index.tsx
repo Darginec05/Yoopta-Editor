@@ -230,20 +230,19 @@ const initContextMessages = [
   },
 ];
 
+const TOOLS = {
+  Toolbar: <Toolbar />,
+  ActionMenu: <ActionMenu items={ACTION_MENU_ITEMS} />,
+  LinkTool: <LinkTool asChildren={false} />,
+  ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" context={initContextMessages} />,
+};
+
 const BasicExample = () => {
   const [editorValue, setEditorValue] = useState<Descendant[]>([]);
   const [mode, toggleMode] = useState<'render' | 'edit'>('edit');
 
   const isEdit = mode === 'edit';
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
-
-  const TOOLS = {
-    Toolbar: <Toolbar />,
-    ActionMenu: <ActionMenu items={ACTION_MENU_ITEMS} />,
-    LinkTool: <LinkTool asChildren={false} />,
-    // [WORK IN PROGRESS]
-    ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" context={initContextMessages} />,
-  };
 
   return (
     <div className={s.container}>

@@ -6,7 +6,7 @@ import {
   YooptaPlugin,
 } from '@yoopta/editor';
 import { Editor, Element, Node, Transforms } from 'slate';
-import type { BulletedList, ListChildItemElement, ListOptions } from '../types';
+import type { BulletedListElement, ListChildItemElement, ListOptions } from '../types';
 import { ListItemList } from './ListItem';
 import s from './BulletedList.module.scss';
 
@@ -15,12 +15,12 @@ const BulletedListRender = ({
   children,
   element,
   HTMLAttributes,
-}: RenderYooptaElementProps<BulletedList>) => {
+}: RenderYooptaElementProps<BulletedListElement>) => {
   return (
     <ul
       draggable={false}
       {...HTMLAttributes}
-      className={getElementClassname<BulletedList>({ element, HTMLAttributes, className: s.list })}
+      className={getElementClassname<BulletedListElement>({ element, HTMLAttributes, className: s.list })}
       {...attributes}
     >
       {children}
@@ -30,7 +30,7 @@ const BulletedListRender = ({
 
 const BULLETED_LIST_NODE_TYPE = 'bulleted-list';
 
-const BulletedList = createYooptaPlugin<ListOptions, BulletedList>({
+const BulletedList = createYooptaPlugin<ListOptions, BulletedListElement>({
   type: BULLETED_LIST_NODE_TYPE,
   renderer: (editor) => BulletedListRender,
   // [TODO] - fix for nested items
@@ -81,7 +81,7 @@ const BulletedList = createYooptaPlugin<ListOptions, BulletedList>({
       at: editor.selection?.anchor,
     });
 
-    const bulletedList: BulletedList = { ...BulletedList.getPlugin.defineElement(), ...elementData };
+    const bulletedList: BulletedListElement = { ...BulletedList.getPlugin.defineElement(), ...elementData };
 
     Transforms.wrapNodes(editor, bulletedList, {
       at: editor.selection?.anchor,

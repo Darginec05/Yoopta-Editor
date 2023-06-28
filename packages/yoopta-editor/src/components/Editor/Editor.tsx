@@ -44,7 +44,7 @@ const EditorYoopta = ({
 }: YooptaProps) => {
   useScrollToElement();
   const editorRef = useRef<HTMLDivElement>(null);
-  const [{ disableWhileDrag, selectedNodeElement }, { changeHoveredNode }] = useNodeElementSettings();
+  const [{ disableWhileDrag }, { changeHoveredNode }] = useNodeElementSettings();
 
   const isReadOnly = disableWhileDrag || readOnly;
 

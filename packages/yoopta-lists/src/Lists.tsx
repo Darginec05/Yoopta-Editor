@@ -5,9 +5,9 @@ import { YooEditor } from '@yoopta/editor';
 import type {
   ListChildItemElement,
   TodoListChildItemElement,
-  TodoList as TodoListElement,
-  BulletedList as BulletedListElement,
-  NumberedList as NumberedListElement,
+  TodoListElement,
+  BulletedListElement,
+  NumberedListElement,
 } from './types';
 
 declare module 'slate' {
@@ -29,4 +29,4 @@ const Lists = {
 };
 
 export default Lists;
-export { NumberedList, BulletedList, TodoList };
+export { NumberedList, BulletedList, TodoList, TodoListElement , BulletedListElement, NumberedListElement};
