@@ -13,6 +13,7 @@ type Props = RenderYooptaElementProps<EmbedElement> & {
   children?: ReactNode;
   size?: EmbedElementData['size'];
   updateSize?: (size: Partial<EmbedElementData['size']>) => void;
+  isEdit?: boolean;
 };
 
 const PROVIDERS = {
@@ -23,8 +24,8 @@ const PROVIDERS = {
   figma: FigmaEmbed,
 };
 
-const Embed = ({ attributes, element, children, HTMLAttributes }: Props) => {
-  if (typeof element.data.provider === 'string' && element.data.providerId && PROVIDERS[element.data.provider]) {
+const Embed = ({ attributes, element, children, HTMLAttributes, isEdit = false }: Props) => {
+  if (typeof element.data.provider === 'string' && element.data.providerId && !!PROVIDERS[element.data.provider]) {
     const ProviderComponent = PROVIDERS[element.data.provider];
     return (
       <div
@@ -32,6 +33,7 @@ const Embed = ({ attributes, element, children, HTMLAttributes }: Props) => {
         contentEditable={false}
         draggable={false}
         {...HTMLAttributes}
+        style={isEdit ? undefined : element.data.size}
         className={getElementClassname<EmbedElement>({ element, HTMLAttributes, className: s.embedElement })}
       >
         <ProviderComponent {...element.data} providerId={element.data.providerId} />
@@ -49,6 +51,7 @@ const Embed = ({ attributes, element, children, HTMLAttributes }: Props) => {
       draggable={false}
       {...HTMLAttributes}
       className={getElementClassname<EmbedElement>({ element, HTMLAttributes, className: s.embedElement })}
+      style={isEdit ? undefined : element.data.size}
     >
       <DefaultEmbed {...element.data} providerId={element.data.providerId} />
       {children}

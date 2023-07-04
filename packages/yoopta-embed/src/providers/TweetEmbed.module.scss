@@ -1,10 +1,8 @@
 
 .root {
   display: flex;
-  height: 100%;
   justify-content: center;
   min-height: 100px;
-  padding-bottom: 86%;
   position: relative;
   width: 100%;
 }
@@ -14,24 +12,22 @@
   left: 0px;
   top: 0px;
   width: 100%;
-  height: 100%;
+  height: auto;
   border-radius: 1px;
   pointer-events: auto;
   background-color: white;
 }
 
 .container {
-  position: absolute;
   left: 0px;
   top: 0px;
   width: 100%;
-  height: 100%;
+  height: auto;
   border-radius: 1px;
   pointer-events: auto;
 }
 
 .iframePreview {
-  position: absolute;
   left: 0;
   top: 0;
   object-fit: cover;
@@ -41,18 +37,13 @@
 
 .embed {
   width: 100%;
-  height: 100%;
+  height: auto;
   position: relative;
 
   & >div {
-    height: 100%;
+    height: auto;
   }
   & >div > div {
-    height: 100%;
-  }
-
-  & iframe {
-    height: 100% !important;
-    width: 100% !important;
+    height: auto;
   }
 }

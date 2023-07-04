@@ -29,14 +29,14 @@ function TweetEmbed({ providerId }: Props) {
           conversation: 'none',
           dnt: true,
           theme: 'dark',
-          height: 300,
+          height: 500,
         });
       }
     };
   }, [providerId, isInViewport]);
 
   return (
-    <div className={s.root} ref={twitterRootRef}>
+    <div className={s.root} ref={twitterRootRef} >
       <div className={s.container}>
         <div className={s.embed}>
           <div id={providerId!} />

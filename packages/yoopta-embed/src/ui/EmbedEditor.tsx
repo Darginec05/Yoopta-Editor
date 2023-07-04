@@ -2,7 +2,6 @@ import { Element, Transforms } from 'slate';
 import { Resizable, ResizableProps } from 're-resizable';
 import { ReactEditor, useReadOnly, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
-import { Embed } from './Embed';
 import { CSSProperties, MouseEvent, useEffect, useMemo, useState } from 'react';
 import { cx, RenderYooptaElementProps, UI_HELPERS, YooEditor, YooptaPluginType } from '@yoopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
@@ -166,7 +165,7 @@ function EmbedEditor(props: Props) {
   return (
     <div contentEditable={false} draggable={false} className={s.root} key={element.id}>
       <Resizable {...resizeProps} className={s.resizeLib}>
-        {plugin.renderer.render({ ...props, size })}
+        {plugin.renderer.render({ ...props, size, isEdit: true })}
         <div className={cx(s.selectImg, { [s.selected]: selected })} />
 
         {!readOnly && (

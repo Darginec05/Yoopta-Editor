@@ -239,13 +239,16 @@ const TOOLS = {
 
 const BasicExample = () => {
   const [editorValue, setEditorValue] = useState<Descendant[]>([]);
-  const [mode, toggleMode] = useState<'render' | 'edit'>('edit');
+  const [mode, setMode] = useState<'render' | 'edit'>('edit');
 
   const isEdit = mode === 'edit';
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
+  const toggleMode = () => setMode(isEdit ? 'render' : 'edit');
+
   return (
     <div className={s.container}>
+      <button type="button" onClick={toggleMode}>read only</button>
       {isEdit ? (
         <YooptaEditor
           offline
