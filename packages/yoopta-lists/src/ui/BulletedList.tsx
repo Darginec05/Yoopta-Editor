@@ -3,10 +3,10 @@ import {
   generateId,
   getElementClassname,
   RenderYooptaElementProps,
-  YooptaPlugin,
+  YooptaPluginBaseOptions,
 } from '@yoopta/editor';
 import { Editor, Element, Node, Transforms } from 'slate';
-import type { BulletedListElement, ListChildItemElement, ListOptions } from '../types';
+import type { BulletedListElement, ListChildItemElement } from '../types';
 import { ListItemList } from './ListItem';
 import s from './BulletedList.module.scss';
 
@@ -30,7 +30,7 @@ const BulletedListRender = ({
 
 const BULLETED_LIST_NODE_TYPE = 'bulleted-list';
 
-const BulletedList = createYooptaPlugin<ListOptions, BulletedListElement>({
+const BulletedList = createYooptaPlugin<YooptaPluginBaseOptions, BulletedListElement>({
   type: BULLETED_LIST_NODE_TYPE,
   renderer: (editor) => BulletedListRender,
   // [TODO] - fix for nested items

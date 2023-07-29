@@ -27,7 +27,7 @@ export type {
   YooptaRenderHTMLAttributes,
 } from './utils/plugins';
 export type { YooptaMarksConfig, YooptaMark } from './utils/marks';
-export type { YooEditor, RenderYooptaElementProps, YooptaBaseElement, Modify } from './types';
+export type { YooEditor, RenderYooptaElementProps, YooptaBaseElement, Modify, YooptaEditorValue, YooptaBaseToolProps } from './types';
 
 const UI_HELPERS = { ElementOptions, Overlay };
 

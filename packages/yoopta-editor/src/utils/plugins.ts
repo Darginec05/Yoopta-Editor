@@ -16,10 +16,9 @@ export type YooptaPluginEventHandlers = {
   [key in keyof EditorEventHandlers]: (editor: YooEditor, options: HandlersOptions) => EditorEventHandlers[key] | void;
 };
 
-export type YooptaPluginBaseOptions = {
+export type YooptaPluginBaseOptions = YooptaRenderHTMLAttributes & {
   searchString?: string;
   displayLabel?: string;
-  [x: string]: any;
 };
 
 export type YooptaRenderElementFunc<P extends YooptaBaseElement<string> = YooptaBaseElement<string>> = (
@@ -85,7 +84,7 @@ export type YooptaPluginType<
    * The element's options object that can be extended with custom options for your plugin
    * Default options: HTMLAttributes
    */
-  options?: O & YooptaRenderHTMLAttributes;
+  options?: O;
   /**
    *
    * @param editor
@@ -105,7 +104,7 @@ export type YooptaPluginType<
   defineElement: () => P;
 };
 
-export type ParentYooptaPlugin<O = YooptaPluginBaseOptions> = Omit<YooptaPluginType<O>, 'childPlugin' | 'hasParent'>;
+export type ParentYooptaPlugin = Omit<YooptaPluginType, 'childPlugin' | 'hasParent'>;
 
 export class YooptaPlugin<O extends YooptaPluginBaseOptions, P extends YooptaBaseElement<string>> {
   #props: Readonly<YooptaPluginType<O, P>>;

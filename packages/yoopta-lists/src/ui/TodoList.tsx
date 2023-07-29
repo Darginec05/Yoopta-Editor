@@ -1,10 +1,10 @@
-import { createYooptaPlugin, generateId, getElementClassname, RenderYooptaElementProps } from '@yoopta/editor';
+import { createYooptaPlugin, generateId, getElementClassname, RenderYooptaElementProps, YooptaPluginBaseOptions } from '@yoopta/editor';
 import { Editor, Element, Node, Transforms } from 'slate';
-import { ListOptions, TodoListElement, TodoListChildItemElement } from '../types';
-import s from './TodoList.module.scss';
+import { TodoListElement, TodoListChildItemElement } from '../types';
 import { TodoListItem } from './TodoListItem';
+import s from './TodoList.module.scss';
 
-const TodoListRender = ({ attributes, element, children, HTMLAttributes }: RenderYooptaElementProps<TodoList>) => {
+const TodoListRender = ({ attributes, element, children, HTMLAttributes }: RenderYooptaElementProps<TodoListElement>) => {
   return (
     <div
       draggable={false}
@@ -19,7 +19,7 @@ const TodoListRender = ({ attributes, element, children, HTMLAttributes }: Rende
 
 const TODO_LIST_NODE_TYPE = 'todo-list';
 
-const TodoList = createYooptaPlugin<ListOptions, TodoListElement>({
+const TodoList = createYooptaPlugin<YooptaPluginBaseOptions, TodoListElement>({
   type: TODO_LIST_NODE_TYPE,
   renderer: (editor) => TodoListRender,
   childPlugin: TodoListItem,

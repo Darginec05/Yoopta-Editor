@@ -7,7 +7,6 @@ import { YooptaMark } from '../../utils/marks';
 import { getDefaultParagraphLine } from '../../components/Editor/utils';
 import { generateId } from '../../utils/generateId';
 import { YooptaTools } from '../../components/YooptaEditor/YooptaEditor';
-import { useNodeElementSettings } from '../NodeSettingsContext/NodeSettingsContext';
 
 const defaultValues: YooptaContextReturnValues = { marks: {}, elements: {} };
 

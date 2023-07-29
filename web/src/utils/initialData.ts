@@ -1,4 +1,22 @@
-export const yooptaInitData = [
+import type { ParagraphElement } from '@yoopta/paragraph';
+import type { BlockquoteElement } from '@yoopta/blockquote';
+import type { CodeElement } from '@yoopta/code';
+import type { EmbedElement } from '@yoopta/embed';
+import type { ImageElement } from '@yoopta/image';
+import type { LinkElement } from '@yoopta/link';
+import type { CalloutElement } from '@yoopta/callout';
+import type { VideoElement } from '@yoopta/video';
+import type { HeadingOneElement, HeadingTwoElement, HeadingThreeElement } from '@yoopta/headings';
+
+export type YooptaValue = ParagraphElement |  BlockquoteElement | 
+CodeElement | 
+EmbedElement | 
+ImageElement | 
+LinkElement | 
+CalloutElement | 
+VideoElement | HeadingOneElement | HeadingTwoElement | HeadingThreeElement;
+
+export const yooptaInitData: YooptaValue[] = [
   {
     id: 'w8KBqhH7kE1rdJgPBuj_E',
     type: 'heading-one',

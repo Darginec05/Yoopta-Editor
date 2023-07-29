@@ -62,8 +62,16 @@ const plugins = [
   }),
 ];
 
+type Value = ParagraphElement |  BlockquoteElement | 
+CodeElement | 
+EmbedElement | 
+ImageElement | 
+LinkElement | 
+CalloutElement | 
+VideoElement;
+
 export default function Home() {
-  const [editorValue, setEditorValue] = useState<Descendant[]>(yooptaInitData);
+  const [editorValue, setEditorValue] = useState<Value>(yooptaInitData);
 
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
 

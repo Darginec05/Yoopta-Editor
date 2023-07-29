@@ -63,7 +63,7 @@ const plugins = [
 ];
 
 export default function Home() {
-  const [editorValue, setEditorValue] = useState<Descendant[]>(yooptaInitData);
+  const [editorValue, setEditorValue] = useState(yooptaInitData);
 
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
@@ -75,7 +75,7 @@ export default function Home() {
       <div className="w-full h-full">
         <YooptaEditor
           value={editorValue}
-          onChange={(val: Descendant[]) => setEditorValue(val)}
+          onChange={(val) => setEditorValue(val)}
           plugins={plugins}
           marks={marks}
           placeholder="Start typing..."

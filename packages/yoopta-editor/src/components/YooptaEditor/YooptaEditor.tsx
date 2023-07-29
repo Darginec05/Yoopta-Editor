@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState, Key, useMemo, ReactNode } from 'react';
 import { withHistory } from 'slate-history';
-import { createEditor, Descendant, Editor, Transforms } from 'slate';
+import { createEditor, Editor, Transforms } from 'slate';
 import { ReactEditor, Slate, withReact } from 'slate-react';
-import { YooEditor } from '../../types';
+import { YooEditor, YooptaBaseElement, YooptaEditorValue } from '../../types';
 import { YooptaMark } from '../../utils/marks';
 import { mergePlugins, mergePluginTypesToMap, YooptaPlugin } from '../../utils/plugins';
 import { getInitialState, getStorageName, OFFLINE_STORAGE } from '../../utils/storage';
@@ -34,9 +34,9 @@ export type YooptaTools = {
   [x: string]: ReactNode;
 };
 
-export type YooptaEditorProps = {
-  onChange: (_value: Descendant[]) => void;
-  value: Descendant[];
+export type YooptaEditorProps<V> = {
+  onChange: (_value: YooptaEditorValue<V>) => void;
+  value: YooptaEditorValue<V>;
   key?: Key;
   placeholder?: string;
   plugins: YooptaPlugin<any, any>[];
@@ -49,7 +49,7 @@ export type YooptaEditorProps = {
   tools?: YooptaTools;
 };
 
-const YooptaEditor = ({
+const YooptaEditor = <V extends YooptaBaseElement<string>, >({
   key,
   value,
   plugins,
@@ -61,12 +61,12 @@ const YooptaEditor = ({
   offline,
   className,
   tools,
-}: YooptaEditorProps) => {
+}: YooptaEditorProps<V>) => {
   const storageName = getStorageName(offline);
-  const [val, setVal] = useState(() => getInitialState(storageName, offline, value));
+  const [val, setVal] = useState<YooptaEditorValue<V>>(() => getInitialState(storageName, offline, value));
 
   const onChangeValue = useCallback(
-    (data: Descendant[]) => {
+    (data: YooptaEditorValue<V>) => {
       onChange(data);
       setVal(data);
 

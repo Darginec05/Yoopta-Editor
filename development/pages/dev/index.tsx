@@ -2,7 +2,7 @@ import YooptaEditor, { createYooptaMark, createYooptaPlugin } from '@yoopta/edit
 import Blockquote, { BlockquoteElement } from '@yoopta/blockquote';
 import Paragraph, { ParagraphElement } from '@yoopta/paragraph';
 import Callout, { CalloutElement } from '@yoopta/callout';
-import Code from '@yoopta/code';
+import Code, { CodeElement } from '@yoopta/code';
 import Link, { LinkElement } from '@yoopta/link';
 import Lists from '@yoopta/lists';
 import Headings, { HeadingOneElement, HeadingThreeElement, HeadingTwoElement } from '@yoopta/headings';
@@ -25,12 +25,12 @@ import { NotionActionMenu } from '../../components/SuggestionList/NotionActionMe
 import { NotionToolbar } from '../../components/Toolbars/NotionToolbar';
 import s from './styles.module.scss';
 
-type PluginOptions = ImagePluginOptions | Record<string, unknown>;
-type PluginElements =
+// type PluginOptions = ImagePluginOptions | Record<string, unknown>;
+type YooptaValue =
   | ParagraphElement
   | BlockquoteElement
   | CalloutElement
-  // | CodeElement
+  | CodeElement
   | LinkElement
   | HeadingOneElement
   | HeadingTwoElement
@@ -108,27 +108,6 @@ const plugins = [
     },
   }),
   Image.extend({
-    renderer: {
-      editor: Image.getPlugin.renderer.editor,
-      render: (props) => {
-        const { element, children, attributes, size } = props;
-
-        if (!element.data.url) return null;
-
-        return (
-          <div {...attributes} contentEditable={false}>
-            <NextImage
-              src={element.data.url || element.data['data-src']}
-              width={size?.width || element.data.size.width}
-              height={size?.height || element.data.size.height}
-              alt="supe iamge"
-              style={{ display: 'block', marginTop: 20 }}
-            />
-            {children}
-          </div>
-        );
-      },
-    },
     options: {
       maxWidth: 650,
       maxHeight: 650,
@@ -218,27 +197,16 @@ const ACTION_MENU_ITEMS: ActionMenuItem<Record<'description' | 'icon', string>>[
   },
 ];
 
-const initContextMessages = [
-  {
-    role: 'user',
-    content: 'What is Node JS?',
-  },
-  {
-    role: 'assistant',
-    content:
-      'NodeJS is an open-source, cross-platform, server-side JavaScript runtime environment that allows developers to run JavaScript code outside of a web browser. It uses the V8 JavaScript engine from Google Chrome and provides an event-driven, non-blocking I/O model that makes it lightweight and efficient for building scalable network applications. NodeJS has a rich library of modules and is commonly used for building web servers, real-time applications, microservices, and command-line tools.',
-  },
-];
-
 const TOOLS = {
   Toolbar: <Toolbar />,
   ActionMenu: <ActionMenu items={ACTION_MENU_ITEMS} />,
+  // @ts-ignore
   LinkTool: <LinkTool asChildren={false} />,
-  ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" context={initContextMessages} />,
+  // ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" context={initContextMessages} />,
 };
 
 const BasicExample = () => {
-  const [editorValue, setEditorValue] = useState<Descendant[]>([]);
+  const [editorValue, setEditorValue] = useState<YooptaValue[]>([]);
   const [mode, setMode] = useState<'render' | 'edit'>('edit');
 
   const isEdit = mode === 'edit';
@@ -250,10 +218,10 @@ const BasicExample = () => {
     <div className={s.container}>
       <button type="button" onClick={toggleMode}>read only</button>
       {isEdit ? (
-        <YooptaEditor
+        <YooptaEditor<YooptaValue>
           offline
           value={editorValue}
-          onChange={(val: Descendant[]) => setEditorValue(val)}
+          onChange={(val) => setEditorValue(val)}
           plugins={plugins}
           marks={marks}
           placeholder="Type / to open menu"

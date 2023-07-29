@@ -1,4 +1,4 @@
-import { Descendant } from 'slate';
+import { YooptaEditorValue } from '../types';
 import { generateId } from './generateId';
 import { isValidYooptaNodes } from './validate';
 
@@ -14,13 +14,13 @@ export function getStorageName(offline?: OFFLINE_STORAGE) {
   return DEFAULT_YOPTA_LS_NAME;
 }
 
-export function getInitialState(storageName: string, offline?: OFFLINE_STORAGE, value?: Descendant[]): Descendant[] {
-  const DEFAULT_STATE = [{ id: generateId(), type: 'paragraph', children: [{ text: '' }] }] as Descendant[];
+export function getInitialState<V>(storageName: string, offline?: OFFLINE_STORAGE, value?: YooptaEditorValue<V>): YooptaEditorValue<V> {
+  const DEFAULT_STATE = [{ id: generateId(), type: 'paragraph', children: [{ text: '' }] }] as YooptaEditorValue<V>;
   const defaultValue = isValidYooptaNodes(value) ? value : DEFAULT_STATE;
 
   if (!offline) {
     localStorage.removeItem(storageName);
-    return defaultValue as Descendant[];
+    return defaultValue as YooptaEditorValue<V>;
   }
 
   try {
