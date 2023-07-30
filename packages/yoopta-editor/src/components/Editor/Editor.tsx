@@ -16,7 +16,7 @@ import { YooEditor, YooptaBaseElement } from '../../types';
 import { deepClone } from '../../utils/deepClone';
 import { isKeyHotkey } from 'is-hotkey';
 import { serializeHtml } from '../../utils/serializeHTML';
-import { YooptaTools } from '../YooptaEditor/YooptaEditor';
+import { useTools } from '../../contexts/YooptaContext/YooptaContext';
 
 type YooptaProps = {
   editor: YooEditor;
@@ -26,7 +26,6 @@ type YooptaProps = {
   marks?: YooptaMark[];
   PLUGINS_MAP: Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>>;
   className?: string;
-  tools?: YooptaTools;
 };
 
 // [TODO] - defaultNode move to common event handler to avoid repeated id's
@@ -40,19 +39,21 @@ const EditorYoopta = ({
   plugins,
   className,
   PLUGINS_MAP,
-  tools,
+  // tools,
 }: YooptaProps) => {
   useScrollToElement();
   const editorRef = useRef<HTMLDivElement>(null);
   const [{ disableWhileDrag }, { changeHoveredNode }] = useNodeElementSettings();
+  const tools = useTools();
+  const { ActionMenu, Toolbar } = tools || {}
+
+  console.log('tools', tools);
 
   const isReadOnly = disableWhileDrag || readOnly;
 
   const renderElement = useMemo(() => {
     return (props: RenderElementProps) => {
       const plugin = PLUGINS_MAP[props.element.type];
-
-      if (!plugin) return null;
       const renderFn = getRenderFunctionFactory(plugin)(editor, plugin);
 
       return (
@@ -306,26 +307,6 @@ const EditorYoopta = ({
     stopPropagation(e);
   };
 
-  const yooptaTools = useMemo(() => {
-    if (!tools) return null;
-    const hasEditorChildren = Object.keys(tools).length > 0;
-    if (!hasEditorChildren) return null;
-
-    return Object.keys(tools).map((toolkey) => {
-      const tool = tools[toolkey] as ReactNode;
-      const asChildren = typeof tool?.props?.asChildren === 'boolean' ? typeof tool?.props?.asChildren : true;
-
-      const shouldRenderAsChildren = asChildren === true;
-      if (!React.isValidElement(tool) || !shouldRenderAsChildren) return null;
-
-      return React.cloneElement(tool, {
-        key: toolkey,
-        plugins,
-        ...tool?.props,
-      });
-    });
-  }, [tools]);
-
   const onCopy = (event: ClipboardEvent) => {
     if (!editor.selection) return;
 
@@ -338,7 +319,8 @@ const EditorYoopta = ({
 
   return (
     <div id="yoopta-editor" className={className} ref={editorRef} onMouseDown={handleEmptyZoneClick}>
-      {yooptaTools}
+      {!!ActionMenu && <ActionMenu />}
+      {!!Toolbar && <Toolbar />}
       <Editable
         id="yoopta-contenteditable"
         renderLeaf={renderLeaf}

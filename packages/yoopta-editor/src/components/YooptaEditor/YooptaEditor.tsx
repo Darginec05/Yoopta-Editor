@@ -139,7 +139,6 @@ const YooptaEditor = <V extends YooptaBaseElement<string>, >({
             readOnly={readOnly}
             placeholder={placeholder}
             plugins={yooptaPlugins}
-            tools={tools}
             marks={marks}
             PLUGINS_MAP={PLUGINS_MAP}
             className={className}

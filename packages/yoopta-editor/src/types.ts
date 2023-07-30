@@ -27,13 +27,16 @@ export type RenderYooptaElementProps<T extends BaseElement = BaseElement> = Elem
 } & YooptaRenderHTMLAttributes;
 
 export type YooptaEditorValue<V> = V[];
+export type YooptaBaseToolEvents = {
+  [x: string]: (...args: any) => void;
+}
 
-export type YooptaBaseToolProps<P extends YooptaPluginType> = {
-  // asChildren?: boolean;
+export type YooptaBaseToolProps<P extends YooptaPluginType = YooptaPluginType, Events extends YooptaBaseToolEvents = YooptaBaseToolEvents> = {
   style?: CSSProperties;
   className?: string;
-  plugins: P[];
-  asTool?: boolean;
+  plugins?: P[];
+  fromHook?: boolean;
+  on?: Events
 }
 
 export interface YooEditor extends BaseEditor, ReactEditor, HistoryEditor {

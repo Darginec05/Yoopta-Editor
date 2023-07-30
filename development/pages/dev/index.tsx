@@ -200,8 +200,7 @@ const ACTION_MENU_ITEMS: ActionMenuItem<Record<'description' | 'icon', string>>[
 const TOOLS = {
   Toolbar: <Toolbar />,
   ActionMenu: <ActionMenu items={ACTION_MENU_ITEMS} />,
-  // @ts-ignore
-  LinkTool: <LinkTool asChildren={false} />,
+  LinkTool: <LinkTool />,
   // ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" context={initContextMessages} />,
 };
 

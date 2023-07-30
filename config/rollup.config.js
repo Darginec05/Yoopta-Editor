@@ -145,9 +145,9 @@ export default [
   SuggestionListPkgConfig,
   ToolbarPkgConfig,
   MarksPkgConfig,
-  // RendererPkgConfig,
-  // ChatGPTPkgConfig,
+  RendererPkgConfig,
+  ChatGPTPkgConfig,
   EmbedPkgConfig,
-  // ExportsConfig,
+  ExportsConfig,
   LinkToolConfig,
 ];

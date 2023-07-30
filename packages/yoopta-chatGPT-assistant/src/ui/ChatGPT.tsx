@@ -51,7 +51,7 @@ const ChatGPTAssistant = ({
   API_URL = '',
   placeholder,
   context,
-  asTool,
+  fromHook,
   options = {},
   actions: baseActions = null,
   ...rest
@@ -64,7 +64,7 @@ const ChatGPTAssistant = ({
   const [menuProps, setMenuProps] = useState<MenuProps>(() => getDefaultMenuPropsState(rest?.style));
   const chatContentRef = useRef<HTMLDivElement>(null);
 
-  const lastSelectionRef = asTool ? { current: rest?.selection } : selectionRef;
+  const lastSelectionRef = fromHook ? { current: rest?.selection } : selectionRef;
 
   const { actions, updateActions } = useChatActions({ actions: baseActions });
   const { messages, updateMessage } = useChatMessages({ context });

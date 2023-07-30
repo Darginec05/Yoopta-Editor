@@ -1,10 +1,11 @@
-import { YooEditor, YooptaBaseElement } from '@yoopta/editor';
+import { YooEditor, YooptaBaseElement, YooptaBaseToolProps } from '@yoopta/editor';
 import { useState, ChangeEvent, MouseEvent, useEffect, useRef } from 'react';
 import { useSlate } from 'slate-react';
 import DoneIcon from './icons/done.svg';
 import CloseIcon from './icons/close.svg';
 import { addLinkNode, getMatchedLinkNode, removeLinkNode } from '../utils/link';
 import s from './LinkTool.module.scss';
+import { Selection } from 'slate';
 
 declare module 'slate' {
   interface CustomTypes {
@@ -13,7 +14,16 @@ declare module 'slate' {
   }
 }
 
-const LinkTool = ({ asTool, style, selection, on }) => {
+type Events = {
+  delete: () => {};
+  add: () => {};
+}
+
+type Props = YooptaBaseToolProps<any, Events> & {
+  selection?: Selection
+}
+
+const LinkTool = ({ fromHook, style, selection, on }: Props) => {
   const editor = useSlate() as YooEditor;
 
   const [url, setUrl] = useState('');
@@ -25,33 +35,37 @@ const LinkTool = ({ asTool, style, selection, on }) => {
   const deleteLink = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    removeLinkNode(editor, selection);
+    if (selection) removeLinkNode(editor, selection);
     on?.delete?.();
   };
 
   const addLink = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
-    if (url.length === 0) {
-      removeLinkNode(editor, selection);
-    } else {
-      addLinkNode(editor, url, selection);
+    
+    if (selection) {
+      if (url.length === 0) {
+        removeLinkNode(editor, selection);
+      } else {
+        addLinkNode(editor, url, selection);
+      }
     }
 
     on?.add?.();
   };
 
   useEffect(() => {
-    if (asTool) {
+    if (fromHook) {
       inputRef.current?.focus();
-      const [matchedLinkNode] = getMatchedLinkNode(editor, selection) || [];
-
-      if (matchedLinkNode) {
-        setUrl(matchedLinkNode.data?.url);
-        setLinkNode(linkNode);
+      if (selection) {
+        const [matchedLinkNode] = getMatchedLinkNode(editor, selection) || [];
+  
+        if (matchedLinkNode) {
+          setUrl(matchedLinkNode.data?.url);
+          setLinkNode(linkNode);
+        }
       }
     }
-  }, [inputRef.current, asTool, selection]);
+  }, [inputRef.current, fromHook, selection]);
 
   return (
     <div className={s.block} style={style}>

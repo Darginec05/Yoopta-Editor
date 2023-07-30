@@ -1,4 +1,4 @@
-import { HOTKEYS, YooEditor, YooptaBaseElement, YooptaPluginType, useElements, cx } from '@yoopta/editor';
+import { HOTKEYS, YooEditor, YooptaBaseElement, YooptaPluginType, useElements, cx, YooptaBaseToolProps } from '@yoopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { CSSProperties, MouseEvent, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Element, Editor, Path, Point, Transforms, Text } from 'slate';
@@ -22,7 +22,7 @@ type ToggleOptions = {
   shouldDeleteText?: boolean;
 };
 
-type Props = {
+type Props = YooptaBaseToolProps & {
   items?: ActionMenuItem<Record<string, unknown>>[];
   render?: (props: ActionMenuRenderProps) => JSX.Element;
   trigger?: string | null | ((event: KeyboardEvent) => boolean);
@@ -53,7 +53,7 @@ const filterBy = (item: ActionMenuRenderItem | ActionMenuRenderItem['options'], 
 
 const ACTION_MENU_ITEM_DATA_ATTR = 'data-action-menu-item';
 
-const ActionMenuList = ({ items, render, plugins, trigger = '/', asTool, on, ...rest }: Props): JSX.Element => {
+const ActionMenuList = ({ items, render, plugins, trigger = '/', on, ...rest }: Props): JSX.Element => {
   const editor = useSlate() as YooEditor;
   const elements = useElements();
   const actionMenuRef = useRef<HTMLDivElement>(null);
