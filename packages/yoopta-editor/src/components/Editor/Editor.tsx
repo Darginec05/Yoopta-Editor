@@ -1,5 +1,14 @@
 import { Editor, Transforms, Range, Element, NodeEntry, Path } from 'slate';
-import React, { useCallback, MouseEvent, useMemo, KeyboardEvent, ReactNode, useRef, ClipboardEvent } from 'react';
+import React, {
+  useCallback,
+  MouseEvent,
+  useMemo,
+  KeyboardEvent,
+  ReactNode,
+  useRef,
+  ClipboardEvent,
+  CSSProperties,
+} from 'react';
 import { Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
 import { getDefaultParagraphLine, getRenderFunctionFactory, isElementHasText, toggleMark } from './utils';
@@ -17,6 +26,10 @@ import { deepClone } from '../../utils/deepClone';
 import { isKeyHotkey } from 'is-hotkey';
 import { serializeHtml } from '../../utils/serializeHTML';
 import { useTools } from '../../contexts/YooptaContext/YooptaContext';
+
+const EDITOR_STYLES: CSSProperties = {
+  outline: 'none',
+};
 
 type YooptaProps = {
   editor: YooEditor;
@@ -38,14 +51,13 @@ const EditorYoopta = ({
   readOnly,
   plugins,
   className,
-  PLUGINS_MAP,
-  // tools,
+  PLUGINS_MAP, // tools,
 }: YooptaProps) => {
   useScrollToElement();
   const editorRef = useRef<HTMLDivElement>(null);
   const [{ disableWhileDrag }, { changeHoveredNode }] = useNodeElementSettings();
   const tools = useTools();
-  const { ActionMenu, Toolbar } = tools || {}
+  const { ActionMenu, Toolbar } = tools || {};
 
   console.log('tools', tools);
 
@@ -333,6 +345,7 @@ const EditorYoopta = ({
         {...eventHandlers}
         onKeyDown={onKeyDown}
         onMouseDown={onMouseDown}
+        style={EDITOR_STYLES}
       />
     </div>
   );

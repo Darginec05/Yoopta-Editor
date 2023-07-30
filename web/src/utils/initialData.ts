@@ -8,13 +8,18 @@ import type { CalloutElement } from '@yoopta/callout';
 import type { VideoElement } from '@yoopta/video';
 import type { HeadingOneElement, HeadingTwoElement, HeadingThreeElement } from '@yoopta/headings';
 
-export type YooptaValue = ParagraphElement |  BlockquoteElement | 
-CodeElement | 
-EmbedElement | 
-ImageElement | 
-LinkElement | 
-CalloutElement | 
-VideoElement | HeadingOneElement | HeadingTwoElement | HeadingThreeElement;
+export type YooptaValue =
+  | ParagraphElement
+  | BlockquoteElement
+  | CodeElement
+  | EmbedElement
+  | ImageElement
+  | LinkElement
+  | CalloutElement
+  | VideoElement
+  | HeadingOneElement
+  | HeadingTwoElement
+  | HeadingThreeElement;
 
 export const yooptaInitData: YooptaValue[] = [
   {

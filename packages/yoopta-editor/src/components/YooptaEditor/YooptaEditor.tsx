@@ -49,7 +49,7 @@ export type YooptaEditorProps<V> = {
   tools?: YooptaTools;
 };
 
-const YooptaEditor = <V extends YooptaBaseElement<string>, >({
+const YooptaEditor = <V extends YooptaBaseElement<string>>({
   key,
   value,
   plugins,
@@ -131,7 +131,7 @@ const YooptaEditor = <V extends YooptaBaseElement<string>, >({
   }, [autoFocus, editor]);
 
   return (
-    <Slate editor={editor} value={val} onChange={onChangeValue} key={key}>
+    <Slate editor={editor} initialValue={val} onChange={onChangeValue} key={key}>
       <NodeSettingsProvider>
         <YooptaContextProvider plugins={yooptaPlugins} marks={marks} tools={tools}>
           <EditorYoopta

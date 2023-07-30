@@ -2403,10 +2403,15 @@
   dependencies:
     "@types/lodash" "*"
 
-"@types/lodash@*", "@types/lodash@^4.14.149":
+"@types/lodash@*":
   version "4.14.191"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.191.tgz#09511e7f7cba275acd8b419ddac8da9a6a79e2fa"
   integrity sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==
+
+"@types/lodash@^4.14.149":
+  version "4.14.196"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.196.tgz#a7c3d6fc52d8d71328b764e28e080b4169ec7a95"
+  integrity sha512-22y3o88f4a94mKljsZcanlNWPzO0uBsBdzLAngf2tp533LzZcQzb6+eZPJ+vCTt+bqF2XnvT9gejTLsAcJAJyQ==
 
 "@types/minimatch@^3.0.3":
   version "3.0.5"
@@ -5615,9 +5620,9 @@ ignore@^5.0.4, ignore@^5.2.0:
   integrity sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==
 
 immer@^9.0.6:
-  version "9.0.19"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.19.tgz#67fb97310555690b5f9cd8380d38fc0aabb6b38b"
-  integrity sha512-eY+Y0qcsB4TZKwgQzLaE/lqYMlKhv5J9dyd2RhhtGhNo2njPXDqU9XPfcNfa3MIDsdtZt5KlkIsirlo4dHsWdQ==
+  version "9.0.21"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.21.tgz#1e025ea31a40f24fb064f1fef23e931496330176"
+  integrity sha512-bc4NBHqOqSfRW7POMkHd51LvClaeMXpm8dx0e8oE2GORbq5aRK7Bxl4FyzVLdGtLmvLKL7BTDBG5ACQm4HWjTA==
 
 immutable@^4.0.0:
   version "4.2.4"
@@ -9092,9 +9097,9 @@ slate-hyperscript@^0.77.0:
     is-plain-object "^5.0.0"
 
 slate-react@>=0.72.4:
-  version "0.91.0"
-  resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.91.0.tgz#a5c9da930f686a31c316df182547764efc43d810"
-  integrity sha512-jNguVhrWWajTeifFVoM0TgNKocphODfTFiIYrZyyRIImEJ1Qibmb776ca29aCSDWO36KgUy5DUYwxdHyvEgaHw==
+  version "0.98.0"
+  resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.98.0.tgz#4b1bddd2df49c8fe934c35ebed445a6f0576b556"
+  integrity sha512-AzwdSfwbRVg3+/X72poriwu6JptUPgX1+Defq+o9Go65ZAGshyIZMESrqrIgZSu+JPM+JgdO6hISKgTLSHsQ7A==
   dependencies:
     "@juggle/resize-observer" "^3.4.0"
     "@types/is-hotkey" "^0.1.1"
@@ -9107,9 +9112,9 @@ slate-react@>=0.72.4:
     tiny-invariant "1.0.6"
 
 slate@>=0.72.3:
-  version "0.90.0"
-  resolved "https://registry.yarnpkg.com/slate/-/slate-0.90.0.tgz#a21e5eae70171d435b30f9f50a92bddc3615143e"
-  integrity sha512-dv8idv0JjYyHiAJcVKf5yWKPDMTDi+PSZyfjsnquEI8VB5nmTVGjeJab06lc3o69O7aN05ROwO9/OY8mU1IUPA==
+  version "0.94.1"
+  resolved "https://registry.yarnpkg.com/slate/-/slate-0.94.1.tgz#13b0ba7d0a7eeb0ec89a87598e9111cbbd685696"
+  integrity sha512-GH/yizXr1ceBoZ9P9uebIaHe3dC/g6Plpf9nlUwnvoyf6V1UOYrRwkabtOCd3ZfIGxomY4P7lfgLr7FPH8/BKA==
   dependencies:
     immer "^9.0.6"
     is-plain-object "^5.0.0"
