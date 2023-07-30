@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/link-tool",
-  "version": "1.9.5-rc",
+  "version": "1.9.6-rc",
   "description": "> TODO: description",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
@@ -14,7 +14,7 @@
     "dist/"
   ],
   "peerDependencies": {
-    "@yoopta/editor": "1.9.16-rc",
+    "@yoopta/editor": "1.9.17-rc",
     "react": ">=17.0.2",
     "react-dom": ">=17.0.2",
     "slate": ">=0.72.3",
