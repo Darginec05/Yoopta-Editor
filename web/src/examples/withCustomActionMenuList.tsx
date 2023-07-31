@@ -62,11 +62,13 @@ const plugins = [
   }),
 ];
 
+const TOOLS = {
+  Toolbar: <Toolbar type="bubble" />,
+  ActionMenu: <ActionMenu />,
+};
+
 export default function Home() {
   const [editorValue, setEditorValue] = useState<Descendant[]>(yooptaInitData);
-
-  console.log('editorValue', editorValue);
-
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
   return (
@@ -82,10 +84,7 @@ export default function Home() {
           marks={marks}
           placeholder="Start typing..."
           autoFocus
-          tools={{
-            Toolbar: <Toolbar type="bubble" />,
-            ActionMenu: <ActionMenu />,
-          }}
+          tools={TOOLS}
         />
       </div>
     </main>

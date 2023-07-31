@@ -1511,7 +1511,7 @@
   resolved "https://registry.yarnpkg.com/@yoopta/embed/-/embed-1.9.16-rc.tgz#c43318a854b04272375ef208bfb169fd30ac399d"
   integrity sha512-V2aGxi0/ZyZz99enIeljBDC8NyjM0TUAJpRCbZPOJnT5IOnUBF6IKFLNIeV/2hTLlmyjS97E0LGncZvVhjsIhQ==
 
-"@yoopta/headings@^1.9.17-rc":
+"@yoopta/headings@^1.9.14-rc":
   version "1.9.14-rc"
   resolved "https://registry.yarnpkg.com/@yoopta/headings/-/headings-1.9.14-rc.tgz#2d3d53bf148e0b6954356a99f64e3b39216fea26"
   integrity sha512-76cSWG+ZnVka8Zjx56EUurTCwG0SEnzSx+0tJ8fuounMSy+rtNbnkp70XqpiLPRfpQQZrLeV/8aB8CP+bTTMeg==
@@ -1561,7 +1561,7 @@
   dependencies:
     lodash.uniqwith "^4.5.0"
 
-"@yoopta/toolbar@^1.9.15-rc":
+"@yoopta/toolbar@^1.9.14-rc":
   version "1.9.14-rc"
   resolved "https://registry.yarnpkg.com/@yoopta/toolbar/-/toolbar-1.9.14-rc.tgz#d39731d3d6222c613058956080ba91335bb754e6"
   integrity sha512-zwIGT4cINZByJtPF/SOJUhydvmz7bH1u11pnX7HnnLgWJPRox9zVUNWSaNtpjdChblgJWtXfaDOFBr7vwSJe/Q==
