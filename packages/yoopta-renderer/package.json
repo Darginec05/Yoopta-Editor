@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/renderer",
-  "version": "1.9.13-rc",
+  "version": "1.9.16-rc",
   "description": "> TODO: description",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
@@ -14,8 +14,11 @@
     "dist/"
   ],
   "peerDependencies": {
+    "@yoopta/editor": "1.9.18-rc",
     "react": ">=17.0.2",
-    "react-dom": ">=17.0.2"
+    "react-dom": ">=17.0.2",
+    "slate": ">=0.72.3",
+    "slate-react": ">=0.95.0"
   },
   "publishConfig": {
     "registry": "https://registry.yarnpkg.com"

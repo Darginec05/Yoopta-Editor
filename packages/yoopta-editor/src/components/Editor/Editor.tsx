@@ -1,14 +1,5 @@
 import { Editor, Transforms, Range, Element, NodeEntry, Path } from 'slate';
-import React, {
-  useCallback,
-  MouseEvent,
-  useMemo,
-  KeyboardEvent,
-  ReactNode,
-  useRef,
-  ClipboardEvent,
-  CSSProperties,
-} from 'react';
+import { useCallback, MouseEvent, useMemo, KeyboardEvent, useRef, ClipboardEvent, CSSProperties } from 'react';
 import { Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slate-react';
 import { TextLeaf } from './TextLeaf/TextLeaf';
 import { getDefaultParagraphLine, getRenderFunctionFactory, isElementHasText, toggleMark } from './utils';
@@ -59,14 +50,19 @@ const EditorYoopta = ({
   const tools = useTools();
   const { ActionMenu, Toolbar } = tools || {};
 
-  console.log('tools', tools);
-
   const isReadOnly = disableWhileDrag || readOnly;
 
   const renderElement = useMemo(() => {
+    console.log('PLUGINS_MAP', PLUGINS_MAP);
+
     return (props: RenderElementProps) => {
       const plugin = PLUGINS_MAP[props.element.type];
       const renderFn = getRenderFunctionFactory(plugin)(editor, plugin);
+
+      console.log('plugin', plugin);
+      console.log('props.element.type', props.element.type);
+
+      if (!plugin) return <></>;
 
       return (
         <ElementWrapper

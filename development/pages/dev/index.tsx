@@ -215,7 +215,9 @@ const BasicExample = () => {
 
   return (
     <div className={s.container}>
-      <button type="button" onClick={toggleMode}>read only</button>
+      <button type="button" onClick={toggleMode}>
+        read only
+      </button>
       {isEdit ? (
         <YooptaEditor<YooptaValue>
           offline

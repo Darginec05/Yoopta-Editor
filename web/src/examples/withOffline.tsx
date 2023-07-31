@@ -22,41 +22,41 @@ const inter = Inter({ subsets: ['latin'] });
 const plugins = [
   Paragraph,
   HeadingOne,
-  // HeadingTwo,
-  // HeadingThree,
-  // Blockquote,
-  // Callout,
-  // Code,
-  // Link,
-  // NumberedList,
-  // BulletedList,
-  // TodoList,
-  // Embed.extend({
-  //   options: {
-  //     maxWidth: 650,
-  //     maxHeight: 750,
-  //   },
-  // }),
-  // Image.extend({
-  //   options: {
-  //     maxWidth: 650,
-  //     maxHeight: 650,
-  //     onUpload: async (file: File) => {
-  //       const response = await uploadToCloudinary(file, 'image');
-  //       return { url: response.url, width: response.data.width, height: response.data.height };
-  //     },
-  //   },
-  // }),
-  // Video.extend({
-  //   options: {
-  //     maxWidth: 650,
-  //     maxHeight: 650,
-  //     onUpload: async (file: File) => {
-  //       const response = await uploadToCloudinary(file, 'video');
-  //       return { url: response.url, width: response.data.width, height: response.data.height };
-  //     },
-  //   },
-  // }),
+  HeadingTwo,
+  HeadingThree,
+  Blockquote,
+  Callout,
+  Code,
+  Link,
+  NumberedList,
+  BulletedList,
+  TodoList,
+  Embed.extend({
+    options: {
+      maxWidth: 650,
+      maxHeight: 750,
+    },
+  }),
+  Image.extend({
+    options: {
+      maxWidth: 650,
+      maxHeight: 650,
+      onUpload: async (file: File) => {
+        const response = await uploadToCloudinary(file, 'image');
+        return { url: response.url, width: response.data.width, height: response.data.height };
+      },
+    },
+  }),
+  Video.extend({
+    options: {
+      maxWidth: 650,
+      maxHeight: 650,
+      onUpload: async (file: File) => {
+        const response = await uploadToCloudinary(file, 'video');
+        return { url: response.url, width: response.data.width, height: response.data.height };
+      },
+    },
+  }),
 ];
 
 export default function Home() {
