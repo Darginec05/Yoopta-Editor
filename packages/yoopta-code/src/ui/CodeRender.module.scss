@@ -1,0 +1,24 @@
+.code {
+  min-height: 1em;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  font-size: 16px;
+  line-height: 24px;
+  border-radius: 3px;
+  display: block;
+  position: relative;
+
+}
+
+.pre {
+  padding: 34px 16px 32px 32px !important;
+}
+
+.filename {
+  position: absolute;
+  left: 16px;
+  top: 8px;
+  display: flex;
+  user-select: none;
+  font-size: 12px;
+}

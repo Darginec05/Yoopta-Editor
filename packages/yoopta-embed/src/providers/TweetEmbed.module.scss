@@ -1,0 +1,49 @@
+
+.root {
+  display: flex;
+  justify-content: center;
+  min-height: 100px;
+  position: relative;
+  width: 100%;
+}
+
+.iframe {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: auto;
+  border-radius: 1px;
+  pointer-events: auto;
+  background-color: white;
+}
+
+.container {
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: auto;
+  border-radius: 1px;
+  pointer-events: auto;
+}
+
+.iframePreview {
+  left: 0;
+  top: 0;
+  object-fit: cover;
+  filter: blur(10px);
+  transition: opacity 150ms ease-in, filter 150ms ease-in;
+}
+
+.embed {
+  width: 100%;
+  height: auto;
+  position: relative;
+
+  & >div {
+    height: auto;
+  }
+  & >div > div {
+    height: auto;
+  }
+}

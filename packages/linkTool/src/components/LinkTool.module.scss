@@ -1,0 +1,49 @@
+.block {
+  width: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  flex: 0 0 auto;
+  max-width: 100%;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 0 1px hsla(0,0%,6%,.05), 0 3px 6px hsla(0,0%,6%,.1), 0 9px 24px hsla(0,0%,6%,.2);
+}
+
+.button {
+  border-radius: 8px;
+  width: 28px;
+  height: 32px;
+  padding: 0;
+  background: inherit;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input {
+  flex: 1 1 auto;
+  text-overflow: ellipsis;
+  margin: 0 .5rem;
+  outline: none;
+  border: none;
+  padding: 0;
+  background: inherit;
+  color: #000;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.separator {
+  background: #eee;
+  display: inline-block;
+  margin: 0 4px;
+  vertical-align: middle;
+  width: 1px;
+  height: 30px;
+}

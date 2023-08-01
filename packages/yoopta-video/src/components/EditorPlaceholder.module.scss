@@ -1,0 +1,46 @@
+.editor {
+  width: 100%;
+  user-select: none;
+  margin: 20px 0 10px;
+  position: relative;
+}
+
+.content {
+  padding: 12px 36px 12px 12px;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  width: 100%;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 3px;
+  font-size: 14px;
+  color: rgba(55, 53, 47, 0.65);
+  position: relative;
+  cursor: pointer;
+  border: none;
+  background-color: #efefef;
+  transition: background-color 100ms ease-in;
+
+  &:hover {
+    background-color: #e3e3e3;
+  }
+}
+
+.disabledUpload {
+  cursor: not-allowed;
+  background-color: #efefef;
+  color: rgba(55, 53, 47, 0.65);
+  pointer-events: none;
+}
+
+.icon {
+  margin-right: 8px;
+  user-select: none;
+}
+
+.loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}

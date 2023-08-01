@@ -1,0 +1,74 @@
+{
+  "name": "@yoopta/editor",
+  "version": "1.9.18-rc",
+  "license": "MIT",
+  "private": false,
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "prebuild": "rm -rf dist",
+    "build:rollup": "rollup -c",
+    "build": "rollup -c --environment NODE_ENV:production",
+    "dev": "rm -rf dist && rollup -c -w --environment NODE_ENV:development --open",
+    "coverage": "vitest run --coverage",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:integration": "playwright test"
+  },
+  "dependencies": {
+    "body-scroll-lock": "^4.0.0-beta.0",
+    "classnames": "^2.3.1",
+    "copy-to-clipboard": "^3.3.2",
+    "is-hotkey": "^0.2.0",
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.uniqwith": "^4.5.0",
+    "nanoid": "^4.0.1",
+    "slate-history": "^0.66.0",
+    "slate-hyperscript": "^0.77.0"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.2",
+    "react-dom": ">=17.0.2",
+    "slate": ">=0.72.3",
+    "slate-react": ">=0.95.0"
+  },
+  "keywords": [
+    "contenteditable",
+    "docs",
+    "document",
+    "edit",
+    "editor",
+    "editable",
+    "html",
+    "markdown",
+    "medium",
+    "paper",
+    "react",
+    "rich",
+    "richtext",
+    "richtext",
+    "slate",
+    "text",
+    "notion",
+    "wysiwyg",
+    "wysiwym"
+  ],
+  "devDependencies": {
+    "@types/lodash.uniqwith": "^4.5.7"
+  },
+  "description": "<h2 align=\"center\">Yoopta-Editor v1 🎉</h2> <p align=\"center\">Yoopta-Editor - is an open source notion-like editor 💥</p> <div align=\"center\"> <img width=\"574\" alt=\"Screen Shot 2023-01-25 at 16 04 29\" src=\"https://user-images.githubusercontent.com/29093118/215324525-882bf403-646c-4267-bb5f-c0f37509ac09.png\"> </div>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Darginec05/Yoopta-Editor.git"
+  },
+  "author": "https://github.com/Darginec05",
+  "bugs": {
+    "url": "https://github.com/Darginec05/Yoopta-Editor/issues"
+  },
+  "homepage": "https://github.com/Darginec05/Yoopta-Editor#readme"
+}

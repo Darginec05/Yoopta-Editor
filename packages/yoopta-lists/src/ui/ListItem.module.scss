@@ -1,0 +1,37 @@
+.listItem {
+  letter-spacing: -0.003em;
+  font-size: 16px;
+  color: inherit;
+  line-height: 28px;
+  position: relative;
+  padding-left: 0;
+  list-style-position: inside;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.dotWrapper {
+  user-select: none;
+    margin-right: 2px;
+    width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 0;
+    flex-shrink: 0;
+    min-height: calc(1.5em + 3px + 3px);
+}
+
+.dot {
+  min-width: 28px;
+  padding: 0px 6px 0px 4px;
+  flex-shrink: 0;
+  font-size: 16px;
+  font-weight: 400;
+  font-style: normal;
+  display: inline;
+  line-height: 28px;
+  word-break: break-word;
+  box-sizing: border-box;
+  color: #000;
+}

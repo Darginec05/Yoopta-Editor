@@ -1,0 +1,122 @@
+.toolbarRoot {
+  transition: opacity 50ms ease-in;
+  z-index: 99;
+  pointer-events: auto;
+}
+
+.toolbarFixed {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 1;
+}
+
+.toolbar {
+  align-items: stretch;
+  background: #fff;
+  box-shadow: 0 0 0 1px hsla(0, 0%, 6%, .05), 0 3px 6px hsla(0, 0%, 6%, .1), 0 9px 24px hsla(0, 0%, 6%, .2);
+  border-radius: 5px;
+  display: inline-flex;
+  font-size: 14px;
+  line-height: 1.2;
+  overflow: hidden;
+  pointer-events: auto;
+  padding: 5px;
+
+}
+
+.text {
+  color: #000;
+  font-weight: 500
+}
+
+.marks {
+  display: flex;
+}
+
+.elementButton {
+  all: unset;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  background: inherit;
+  transition: background 100ms cubic-bezier(0.4, 0, 0.2, 1);
+  margin: 0 1px;
+  min-height: 32px;
+  min-width: 36px;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0 8px;
+  color: #000;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: rgba(55, 53, 47, 0.08);
+    color: #000;
+  }
+}
+
+.elementButtonActive {
+  background-color: #1183ff;
+  color: #FFF;
+
+  &:hover {
+    background-color: #007aff !important;
+    color: #fff !important;
+  }
+}
+
+.mark {
+  all: unset;
+  cursor: pointer;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  background: inherit;
+  transition: background 100ms cubic-bezier(0.4, 0, 0.2, 1);
+  margin: 0 1px;
+  min-height: 32px;
+  min-width: 36px;
+  font-weight: 500;
+  font-size: 16px;
+
+  &:last-child {
+    margin-right: 2px;
+  }
+
+  &:first-child {
+    margin-left: 2px;
+  }
+}
+
+.active {
+  background-color: #1183ff;
+  color: #fff;
+
+  &:hover {
+    background-color: #007aff !important;
+    color: #fff !important;
+  }
+}
+
+.mark:hover {
+  background-color: rgba(55, 53, 47, 0.08);
+  color: #000;
+}
+
+.separator {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1px;
+  margin: 0 4px;
+  height: 100%;
+  background: #eee;
+}
+
+.icon {
+  margin-left: 4px;
+}

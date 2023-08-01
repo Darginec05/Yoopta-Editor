@@ -1,0 +1,95 @@
+.actions {
+  display: flex;
+  position: absolute;
+  position: absolute;
+  left: -50px;
+  top: 2px;
+  opacity: 0;
+  transition: opacity 180ms ease-in,
+}
+
+.hovered {
+  opacity: 1;
+}
+
+.actionButton {
+  all: unset;
+  cursor: pointer;
+  border-radius: 6px;
+  width: auto;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: inherit;
+  background-color: transparent;
+  transition: background-color 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  width: 18px;
+  padding: 0;
+  color: rgba(55, 53, 47, 0.35);
+  margin: 0 1px;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: rgba(55, 54, 47, 0.08);
+  }
+}
+
+.plusButton {
+  width: 24px;
+}
+
+.elementWrapper {
+  position: relative;
+  transition: opacity 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.isDragOver {
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -7px;
+    height: 3px;
+    width: 100%;
+    background-color: #007AFF;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.isDragSelf {
+  &::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    height: 3px;
+    width: 100%;
+    background-color: inherit;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -7px;
+    height: 3px;
+    width: 100%;
+    background-color: inherit;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.isSelected {
+  position: absolute;
+  pointer-events: none;
+  inset: 0px;
+  background: rgba(35, 131, 226, 0.14);
+  z-index: 81;
+  border-radius: 3px;
+  opacity: 1;
+  transition: background-color 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
