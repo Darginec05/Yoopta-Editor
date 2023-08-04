@@ -15,7 +15,7 @@ import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { yooptaInitData, YooptaValue } from '@/utils/initialData';
+import { YooptaValue } from '@/utils/initialData';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -60,28 +60,23 @@ const plugins = [
 ];
 
 export default function Home() {
-  const [editorValue, setEditorValue] = useState<YooptaValue[]>(yooptaInitData);
-
+  const [editorValue, setEditorValue] = useState<YooptaValue[]>([]);
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
   return (
     <main
-      style={{ padding: '6rem' }}
+      style={{ padding: '3rem 0' }}
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
     >
       <div className="w-full h-full">
-        <YooptaEditor<YooptaValue>
+        <YooptaEditor<any>
           value={editorValue}
           onChange={(val) => setEditorValue(val)}
           plugins={plugins}
           marks={marks}
           placeholder="Start typing..."
-          offline="yoopta-editor-data"
+          offline
           autoFocus
-          // tools={{
-          //   Toolbar: <Toolbar type="bubble" />,
-          //   ActionMenu: <ActionMenu />,
-          // }}
         />
       </div>
     </main>

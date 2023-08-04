@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import cx from 'classnames';
 import s from './ExampleList.module.scss';
 
 type Props = {
@@ -6,14 +8,26 @@ type Props = {
 };
 
 const ExampleList = ({ links }: Props) => {
+  const router = useRouter();
+
+  // console.log('router.pathname', router.asPath);
+  const isCurrent = (path: string) => router.asPath.toLowerCase().endsWith(path);
+
   return (
-    <div className={s.list}>
+    <div className={s.root}>
       <div className={s.inner}>
-        {links.map((link) => (
-          <div className={s.button} key={link}>
-            <Link href={`/examples/${link}`}>{link}</Link>
-          </div>
-        ))}
+        <h4 className={s.title}>Examples</h4>
+        <div className={s.list}>
+          {links.map((link) => (
+            <Link
+              href={`/examples/${link}`}
+              className={cx(s.button, { [s.currentButton]: isCurrent(link.toLowerCase()) })}
+              key={link}
+            >
+              {link}
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );

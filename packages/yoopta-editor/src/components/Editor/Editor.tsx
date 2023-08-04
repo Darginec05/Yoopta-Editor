@@ -53,14 +53,9 @@ const EditorYoopta = ({
   const isReadOnly = disableWhileDrag || readOnly;
 
   const renderElement = useMemo(() => {
-    console.log('PLUGINS_MAP', PLUGINS_MAP);
-
     return (props: RenderElementProps) => {
       const plugin = PLUGINS_MAP[props.element.type];
       const renderFn = getRenderFunctionFactory(plugin)(editor, plugin);
-
-      console.log('plugin', plugin);
-      console.log('props.element.type', props.element.type);
 
       if (!plugin) return <></>;
 

@@ -118,7 +118,7 @@ export default function Home() {
 
   return (
     <main
-      style={{ backgroundColor: 'hsl(224 71% 4%)', color: 'white', padding: '6rem' }}
+      style={{ backgroundColor: 'hsl(224 71% 4%)', color: 'white', padding: '3rem 0' }}
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
     >
       <div className="w-full h-full">

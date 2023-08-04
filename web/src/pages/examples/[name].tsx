@@ -3,7 +3,6 @@ import { readdirSync } from 'fs';
 import { join } from 'path';
 
 import withBasicExample from '../../examples/withBasicExample';
-import withChatGPT from '../../examples/withChatGPT';
 import withCustomActionMenuList from '../../examples/withCustomActionMenuList';
 import withCustomComponent from '../../examples/withCustomComponent';
 import withCustomToolbar from '../../examples/withCustomToolbar';
@@ -19,7 +18,6 @@ import withCustomMark from '../../examples/withCustomMark';
 
 const EXAMPLES = {
   withBasicExample,
-  withChatGPT,
   withCustomActionMenuList,
   withCustomComponent,
   withCustomToolbar,

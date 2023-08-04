@@ -1,9 +1,9 @@
 import { Inter } from 'next/font/google';
 import { useState } from 'react';
-import { Descendant } from 'slate';
-import NextLink from 'next/link';
+import NextImage from 'next/image';
 
 import YooptaEditor from '@yoopta/editor';
+
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
 import Code from '@yoopta/code';
@@ -16,10 +16,12 @@ import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 
+import LinkTool from '@yoopta/link-tool';
 import ActionMenu from '@yoopta/action-menu-list';
-import { uploadToCloudinary } from '@/utils/cloudinary';
 import Toolbar from '@yoopta/toolbar';
-import { yooptaInitData } from '@/utils/initialData';
+
+import { uploadToCloudinary } from '@/utils/cloudinary';
+import { YooptaValue, yooptaInitData } from '@/utils/initialData';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -31,18 +33,7 @@ const plugins = [
   Blockquote,
   Callout,
   Code,
-  // Link.extend({
-  //   renderer: () => (props) => {
-  //     const { attributes, element, children, HTMLAttributes } = props;
-
-  //     return (
-  //       <NextLink href={element.data.url || ''} {...HTMLAttributes} {...attributes}>
-  //         {children}
-  //       </NextLink>
-  //     );
-  //   },
-  // }),
-  // Link,
+  Link,
   NumberedList,
   BulletedList,
   TodoList,
@@ -53,13 +44,29 @@ const plugins = [
     },
   }),
   Image.extend({
+    renderer: {
+      editor: Image.getPlugin.renderer.editor,
+      render: (props) => {
+        const { element, children, attributes, size } = props;
+
+        if (!element.data.url) return null;
+
+        return (
+          <div {...attributes} contentEditable={false} style={{ display: 'block', marginTop: 20 }}>
+            <NextImage
+              src={element.data.url || element.data['data-src']}
+              width={size?.width || element.data.size.width}
+              height={size?.height || element.data.size.height}
+              alt="super iamge"
+            />
+            {children}
+          </div>
+        );
+      },
+    },
     options: {
       maxWidth: 650,
       maxHeight: 650,
-      onUpload: async (file: File) => {
-        const response = await uploadToCloudinary(file, 'image');
-        return { url: response.url, width: response.data.width, height: response.data.height };
-      },
     },
   }),
   Video.extend({
@@ -74,29 +81,30 @@ const plugins = [
   }),
 ];
 
-export default function Home() {
-  const [editorValue, setEditorValue] = useState<Descendant[]>(yooptaInitData);
+const TOOLS = {
+  Toolbar: <Toolbar />,
+  ActionMenu: <ActionMenu />,
+  LinkTool: <LinkTool />,
+};
 
+export default function Home() {
+  const [editorValue, setEditorValue] = useState<YooptaValue[]>(yooptaInitData);
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
   return (
     <main
-      style={{ padding: '6rem' }}
+      style={{ padding: '3rem 0' }}
       className={`p-24 flex min-h-screen w-full h-full flex-col items-center justify-between ${inter.className}`}
     >
       <div className="w-full h-full">
-        <YooptaEditor
+        <YooptaEditor<any>
           value={editorValue}
-          onChange={(val: Descendant[]) => setEditorValue(val)}
+          onChange={(val: YooptaValue[]) => setEditorValue(val)}
           plugins={plugins}
           marks={marks}
           placeholder="Start typing..."
-          offline
           autoFocus
-          tools={{
-            Toolbar: <Toolbar type="bubble" />,
-            ActionMenu: <ActionMenu />,
-          }}
+          tools={TOOLS}
         />
       </div>
     </main>

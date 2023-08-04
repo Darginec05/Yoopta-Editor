@@ -150,7 +150,7 @@ export default function Home() {
 
   return (
     <main
-      style={{ padding: '6rem' }}
+      style={{ padding: '3rem 0' }}
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
     >
       <div className="w-full h-full">

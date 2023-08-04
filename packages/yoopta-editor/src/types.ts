@@ -2,7 +2,7 @@ import { BaseEditor, BaseElement } from 'slate';
 import { ReactEditor, RenderElementProps as ElementProps } from 'slate-react';
 import { HistoryEditor } from 'slate-history';
 import { YooptaPluginType, YooptaRenderHTMLAttributes } from './utils/plugins';
-import { CSSProperties } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 
 export type EmptyText = {
   text: string;
@@ -29,17 +29,39 @@ export type RenderYooptaElementProps<T extends BaseElement = BaseElement> = Elem
 export type YooptaEditorValue<V> = V[];
 export type YooptaBaseToolEvents = {
   [x: string]: (...args: any) => void;
-}
+};
 
-export type YooptaBaseToolProps<P extends YooptaPluginType = YooptaPluginType, Events extends YooptaBaseToolEvents = YooptaBaseToolEvents> = {
+export type YooptaBaseToolProps<
+  P extends YooptaPluginType = YooptaPluginType,
+  Events extends YooptaBaseToolEvents = YooptaBaseToolEvents,
+> = {
   style?: CSSProperties;
   className?: string;
   plugins?: P[];
   fromHook?: boolean;
-  on?: Events
-}
+  on?: Events;
+};
 
 export interface YooEditor extends BaseEditor, ReactEditor, HistoryEditor {
   shortcuts: Record<string, YooptaPluginType>;
   plugins: Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>>;
 }
+
+export type YooptaNodeElementSettings = {
+  options?: {
+    handlers?: {
+      onCopy?: () => void;
+      onDelete?: () => void;
+      onDuplicate?: () => void;
+    };
+  };
+  drag?: boolean;
+  plus?: boolean;
+};
+
+export type YooptaTools = {
+  ActionMenu?: ReactNode;
+  Toolbar?: ReactNode;
+  ChatGPT?: ReactNode;
+  [x: string]: ReactNode;
+};

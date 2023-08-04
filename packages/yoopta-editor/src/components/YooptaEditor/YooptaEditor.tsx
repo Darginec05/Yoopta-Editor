@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState, Key, useMemo, ReactNode } from 'react
 import { withHistory } from 'slate-history';
 import { createEditor, Editor, Transforms } from 'slate';
 import { ReactEditor, Slate, withReact } from 'slate-react';
-import { YooEditor, YooptaBaseElement, YooptaEditorValue } from '../../types';
+import { YooEditor, YooptaBaseElement, YooptaEditorValue, YooptaTools, YooptaNodeElementSettings } from '../../types';
 import { YooptaMark } from '../../utils/marks';
 import { mergePlugins, mergePluginTypesToMap, YooptaPlugin } from '../../utils/plugins';
 import { getInitialState, getStorageName, OFFLINE_STORAGE } from '../../utils/storage';
@@ -14,25 +14,6 @@ import { withNonEmptyEditor } from '../Editor/plugins/nonEmptyEditor';
 import { withDeleteFragment } from '../Editor/plugins/deleteFragment';
 import { withHtml } from '../Editor/plugins/pasteHtml';
 import { YooptaContextProvider } from '../../contexts/YooptaContext/YooptaContext';
-
-export type YooptaNodeElementSettings = {
-  options?: {
-    handlers?: {
-      onCopy?: () => void;
-      onDelete?: () => void;
-      onDuplicate?: () => void;
-    };
-  };
-  drag?: boolean;
-  plus?: boolean;
-};
-
-export type YooptaTools = {
-  ActionMenu?: ReactNode;
-  Toolbar?: ReactNode;
-  ChatGPT?: ReactNode;
-  [x: string]: ReactNode;
-};
 
 export type YooptaEditorProps<V> = {
   onChange: (_value: YooptaEditorValue<V>) => void;
