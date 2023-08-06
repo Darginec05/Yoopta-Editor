@@ -21,7 +21,48 @@ import ActionMenu from '@yoopta/action-menu-list';
 import Toolbar from '@yoopta/toolbar';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { YooptaValue, yooptaInitData } from '@/utils/initialData';
+import { YooptaValue } from '@/utils/initialData';
+
+const initalData: YooptaValue[] = [
+  {
+    id: 'w8KBqhH7kE1rdJgPBuj_E',
+    type: 'heading-one',
+    children: [{ text: 'With custom component' }],
+    nodeType: 'block',
+  },
+  {
+    id: 'KrGMxiCZVUlGOP9IZ3PcF',
+    type: 'paragraph',
+    nodeType: 'block',
+    children: [
+      { text: 'Here is example with ' },
+      {
+        id: 'uKE1Hz3hhKR_cgILdhcLL',
+        type: 'link',
+        data: { url: 'https://nextjs.org/docs/pages/api-reference/components/image', skipDrag: true },
+        children: [{ text: 'next/image' }],
+        nodeType: 'inline',
+      },
+      { text: ' component ' },
+    ],
+  },
+  {
+    id: 'jfwOBOqmtEtmZ4nyS64Hx',
+    type: 'image',
+    nodeType: 'void',
+    data: {
+      url: 'https://tx.shadcn.com/_next/image?url=%2Fimages%2Fblog%2Fblog-post-4.jpg&w=1920&q=75',
+      size: { width: 650, height: 403 },
+    },
+    children: [{ text: '' }],
+  },
+  {
+    id: 'w8KBqhH7kE1rdJgPBuj_E',
+    type: 'heading-one',
+    children: [{ text: '' }],
+    nodeType: 'block',
+  },
+];
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -87,8 +128,8 @@ const TOOLS = {
   LinkTool: <LinkTool />,
 };
 
-export default function Home() {
-  const [editorValue, setEditorValue] = useState<YooptaValue[]>(yooptaInitData);
+export default function WithCustomComponent() {
+  const [editorValue, setEditorValue] = useState<YooptaValue[]>(initalData);
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
   return (
@@ -103,6 +144,7 @@ export default function Home() {
           plugins={plugins}
           marks={marks}
           placeholder="Start typing..."
+          offline="withCustomComponent"
           autoFocus
           tools={TOOLS}
         />

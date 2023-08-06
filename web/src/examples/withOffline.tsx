@@ -1,6 +1,6 @@
 import { Inter } from 'next/font/google';
 import { useState } from 'react';
-import YooptaEditor from '@yoopta/editor';
+import YooptaEditor, { generateId } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
@@ -59,8 +59,12 @@ const plugins = [
   }),
 ];
 
+const DEFAULT_VALUE: YooptaValue[] = [
+  { id: generateId(), type: 'paragraph', children: [{ text: 'Type something and reload page' }], nodeType: 'block' },
+];
+
 export default function Home() {
-  const [editorValue, setEditorValue] = useState<YooptaValue[]>([]);
+  const [editorValue, setEditorValue] = useState<YooptaValue[]>(DEFAULT_VALUE);
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
   return (

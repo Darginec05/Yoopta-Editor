@@ -69,7 +69,7 @@ const TOOLS = {
   LinkTool: <LinkTool />,
 };
 
-export default function Home() {
+export default function WithBasicExample() {
   const [editorValue, setEditorValue] = useState<YooptaValue[]>([]);
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
@@ -86,6 +86,7 @@ export default function Home() {
           marks={marks}
           placeholder="Type '/' to start"
           tools={TOOLS}
+          offline="withBasicExample"
         />
       </div>
     </main>

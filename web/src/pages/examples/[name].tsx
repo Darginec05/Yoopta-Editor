@@ -8,7 +8,6 @@ import withCustomComponent from '../../examples/withCustomComponent';
 import withCustomToolbar from '../../examples/withCustomToolbar';
 import withDarkTheme from '../../examples/withDarkTheme';
 import withJustRender from '../../examples/withJustRender';
-import withMediumExample from '../../examples/withMediumExample';
 import withNotionExample from '../../examples/withNotionExample';
 import withCustomHTMLAttributes from '../../examples/withCustomHTMLAttributes';
 import withCustomPlugin from '../../examples/withCustomPlugin';
@@ -23,7 +22,6 @@ const EXAMPLES = {
   withCustomToolbar,
   withDarkTheme,
   withJustRender,
-  withMediumExample,
   withNotionExample,
   withCustomHTMLAttributes,
   withCustomPlugin,

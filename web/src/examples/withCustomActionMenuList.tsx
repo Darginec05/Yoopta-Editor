@@ -18,7 +18,7 @@ import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import ActionMenu from '@yoopta/action-menu-list';
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import Toolbar from '@yoopta/toolbar';
-import { yooptaInitData } from '@/utils/initialData';
+import { yooptaInitData, YooptaValue } from '@/utils/initialData';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -68,7 +68,7 @@ const TOOLS = {
 };
 
 export default function Home() {
-  const [editorValue, setEditorValue] = useState<Descendant[]>(yooptaInitData);
+  const [editorValue, setEditorValue] = useState<YooptaValue[]>(yooptaInitData);
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
   return (
@@ -77,9 +77,9 @@ export default function Home() {
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
     >
       <div className="w-full h-full">
-        <YooptaEditor
+        <YooptaEditor<any>
           value={editorValue}
-          onChange={(val: Descendant[]) => setEditorValue(val)}
+          onChange={(val: YooptaValue[]) => setEditorValue(val)}
           plugins={plugins}
           marks={marks}
           placeholder="Start typing..."

@@ -25,8 +25,6 @@ const ColoredMark = createYooptaMark({
   className: 'colored-red',
 });
 
-// export const Bold = createYooptaMark({ type: 'bold', hotkey: 'mod+b', className: s.bold, as: 'strong' });
-
 const inter = Inter({ subsets: ['latin'] });
 
 const plugins = [
@@ -74,7 +72,7 @@ const TOOLS = {
   ActionMenu: <ActionMenu />,
 };
 
-export default function Home() {
+export default function WithCustomMark() {
   const [editorValue, setEditorValue] = useState<YooptaValue[]>([]);
   const marks = [Bold, Italic, CodeMark, Underline, Strike, ColoredMark];
 
@@ -91,6 +89,7 @@ export default function Home() {
           marks={marks}
           placeholder="Start typing..."
           tools={TOOLS}
+          offline="withCustomMark"
         />
       </div>
     </main>
