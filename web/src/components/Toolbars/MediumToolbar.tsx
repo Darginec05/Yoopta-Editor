@@ -7,13 +7,15 @@ import ItalicIcon from './icons/medium/Italic.svg';
 import TitleIcon from './icons/medium/Title.svg';
 import SubtitleIcon from './icons/medium/Subtitle.svg';
 import LinkIcon from './icons/medium/Link.svg';
+import { useRef } from 'react';
+import { useLinkTool } from './hooks';
+import { useSlate } from 'slate-react';
 import s from './MediumToolbar.module.scss';
-import { CSSProperties, useRef, useState } from 'react';
 
 const MediumToolbar = (props: ToolbarProps) => {
-  const buttonLinkRef = useRef<HTMLButtonElement>(null);
-  const [linkToolPosition, setLinkToolPosition] = useState<CSSProperties | null>(null);
   const selectionRef = useRef<Range | null>(null);
+  const toolbarRef = useRef<HTMLDivElement>(null);
+  const editor = useSlate();
 
   const { getRootProps } = props;
   const marks = useMarks();
@@ -21,31 +23,26 @@ const MediumToolbar = (props: ToolbarProps) => {
   const tools = useTools();
 
   const { LinkTool } = tools || {};
-  const hastLinkTool = !!LinkTool;
+  const hasLinkTool = !!LinkTool;
 
-  console.log('hastLinkTool', hastLinkTool);
-
-  const handleOpenLinkTool = () => {
-    const buttonEl = buttonLinkRef.current!;
-    const buttonRect = buttonEl.getBoundingClientRect();
-
-    setLinkToolPosition({ left: buttonRect.left, top: buttonRect.top });
-  };
-
-  const handleCloseLinkTool = () => setLinkToolPosition(null);
+  const { openLinkTool, closeLinkTool, linkToolButtonRef, linkToolProps } = useLinkTool({
+    editor,
+    selectionRef,
+    toolbarRef,
+  });
 
   return (
     <div {...getRootProps()}>
-      {!!linkToolPosition && hastLinkTool && (
-        <UI_HELPERS.Overlay onClose={handleCloseLinkTool}>
+      {!!linkToolProps.open && hasLinkTool && (
+        <UI_HELPERS.Overlay onClose={closeLinkTool}>
           <LinkTool
-            style={linkToolPosition}
+            style={linkToolProps.style}
             selection={selectionRef.current}
-            on={{ add: handleCloseLinkTool, delete: handleCloseLinkTool }}
+            on={{ add: closeLinkTool, delete: closeLinkTool }}
           />
         </UI_HELPERS.Overlay>
       )}
-      <div className={s.root}>
+      <div className={s.root} ref={toolbarRef}>
         <button type="button" className={s.button} onClick={() => marks.bold.toggle()}>
           <span style={marks.bold.isActive ? { color: '#b5e5a4' } : { color: '#fff' }} className={s.item}>
             <BoldIcon />
@@ -56,26 +53,46 @@ const MediumToolbar = (props: ToolbarProps) => {
             <ItalicIcon />
           </span>
         </button>
-        {hastLinkTool && (
-          <button type="button" ref={buttonLinkRef} className={s.button} onClick={handleOpenLinkTool}>
+        <button type="button" className={s.button} onClick={() => marks.colored.toggle()}>
+          <span style={marks.colored.isActive ? { color: '#b5e5a4' } : { color: '#fff' }} className={s.item}>
+            <ItalicIcon />
+          </span>
+        </button>
+        {hasLinkTool && (
+          <button type="button" ref={linkToolButtonRef} className={s.button} onClick={openLinkTool}>
             <span style={marks.code.isActive ? { color: '#b5e5a4' } : { color: '#fff' }} className={s.item}>
               <LinkIcon />
             </span>
           </button>
         )}
         <div className={s.separator} />
-        <button type="button" className={s.button} onClick={() => elements['heading-one'].toggle()}>
-          <span style={{ color: '#fff' }} className={s.item}>
+        <button
+          type="button"
+          style={elements['heading-one'].isActive ? { color: '#b5e5a4' } : { color: '#fff' }}
+          className={s.button}
+          onClick={() => elements['heading-one'].toggle()}
+        >
+          <span className={s.item}>
             <TitleIcon />
           </span>
         </button>
-        <button type="button" className={s.button} onClick={() => elements['heading-two'].toggle()}>
-          <span style={{ color: '#fff' }} className={s.item}>
+        <button
+          type="button"
+          style={elements['heading-two'].isActive ? { color: '#b5e5a4' } : { color: '#fff' }}
+          className={s.button}
+          onClick={() => elements['heading-two'].toggle()}
+        >
+          <span className={s.item}>
             <SubtitleIcon />
           </span>
         </button>
-        <button type="button" className={s.button} onClick={() => elements.blockquote.toggle()}>
-          <span style={{ color: '#fff' }} className={s.item}>
+        <button
+          type="button"
+          className={s.button}
+          style={elements.blockquote.isActive ? { color: '#b5e5a4' } : { color: '#fff' }}
+          onClick={() => elements.blockquote.toggle()}
+        >
+          <span className={s.item}>
             <BlockquoteIcon />
           </span>
         </button>

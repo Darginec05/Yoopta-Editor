@@ -1,4 +1,12 @@
-import { HOTKEYS, YooEditor, YooptaBaseElement, YooptaPluginType, useElements, cx, YooptaBaseToolProps } from '@yoopta/editor';
+import {
+  HOTKEYS,
+  YooEditor,
+  YooptaBaseElement,
+  YooptaPluginType,
+  useElements,
+  cx,
+  YooptaBaseToolProps,
+} from '@yoopta/editor';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { CSSProperties, MouseEvent, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Element, Editor, Path, Point, Transforms, Text } from 'slate';
@@ -29,14 +37,14 @@ type Props = YooptaBaseToolProps & {
   options?: ToggleOptions;
   [x: string]: any;
 } & (
-  | {
-      items?: ActionMenuItem<Record<string, unknown>>[];
-      plugins?: YooptaPluginType[];
-      [x: string]: any;
-      options?: ToggleOptions;
-    }
-  | { plugins: YooptaPluginType[]; items?: never; [x: string]: any; options?: ToggleOptions }
-);
+    | {
+        items?: ActionMenuItem<Record<string, unknown>>[];
+        plugins?: YooptaPluginType[];
+        [x: string]: any;
+        options?: ToggleOptions;
+      }
+    | { plugins?: YooptaPluginType[]; items?: never; [x: string]: any; options?: ToggleOptions }
+  );
 
 type MenuProps = { fixedStyle: CSSProperties; absoluteStyle: CSSProperties; point: Point | null };
 

@@ -18,11 +18,9 @@ for (const packageDir of packageDirs) {
 
   // Increment the patch version
   const newVersion = packageJson.version.replace(patchVersionRegex, (match, p1, p2, p3) => {
+    console.log('p1: ', p1, 'p2: ', p2, 'p3: ', p3);
     return p1 + (parseInt(p2, 10) + 1) + p3;
   });
-
-  console.log('prevVersion', packageJson.version);
-  console.log('newVersion', newVersion);
 
   // Update the package.json file with the new version
   packageJson.version = newVersion;
