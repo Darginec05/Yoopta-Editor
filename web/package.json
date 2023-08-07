@@ -22,6 +22,7 @@
     "@yoopta/code": "^1.9.15-rc",
     "@yoopta/editor": "^1.9.19-rc",
     "@yoopta/embed": "^1.9.17-rc",
+    "@yoopta/exports": "^1.9.17-rc",
     "@yoopta/headings": "^1.9.15-rc",
     "@yoopta/image": "^1.9.15-rc",
     "@yoopta/link": "^1.9.15-rc",
