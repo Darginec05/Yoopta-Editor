@@ -14,6 +14,8 @@ import withCustomPlugin from '../../examples/withCustomPlugin';
 import withExtendedPlugin from '../../examples/withExtendedPlugin';
 import withOffline from '../../examples/withOffline';
 import withCustomMark from '../../examples/withCustomMark';
+import withExports from '../../examples/withExports';
+import { CheckSourceCode } from '@/components/CheckSourceCode/CheckSourceCode';
 
 const EXAMPLES = {
   withBasicExample,
@@ -28,6 +30,7 @@ const EXAMPLES = {
   withExtendedPlugin,
   withOffline,
   withCustomMark,
+  withExports,
 };
 
 const ExampleComponent = ({ example, links }: { example: keyof typeof EXAMPLES; links: string[] }) => {
@@ -37,6 +40,7 @@ const ExampleComponent = ({ example, links }: { example: keyof typeof EXAMPLES; 
     <div>
       <ExampleList links={links} />
       <ExampleComponent />
+      <CheckSourceCode example={example} />
     </div>
   );
 };

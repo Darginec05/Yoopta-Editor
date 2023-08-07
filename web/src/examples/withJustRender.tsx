@@ -14,6 +14,7 @@ import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import { yooptaInitData } from '../utils/initialData';
+import { uploadToCloudinary } from '@/utils/cloudinary';
 
 const inter = Inter({ subsets: ['latin'] });
 const plugins = [
@@ -108,6 +109,10 @@ const plugins = [
     options: {
       maxWidth: 650,
       maxHeight: 650,
+      onUpload: async (file: File) => {
+        const response = await uploadToCloudinary(file, 'image');
+        return { url: response.url, width: response.data.width, height: response.data.height };
+      },
     },
   }),
   Video.extend({
@@ -123,7 +128,7 @@ const marks = [Bold, Italic, CodeMark, Underline, Strike];
 export default function Home() {
   return (
     <main
-      style={{ backgroundColor: 'hsl(224 71% 4%)', color: 'white', padding: '3rem 0' }}
+      style={{ backgroundColor: 'hsl(224 71% 4%)', color: 'white', padding: '5rem 0' }}
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
     >
       <div className="w-full h-full">

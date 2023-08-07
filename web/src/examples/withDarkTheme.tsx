@@ -117,19 +117,29 @@ const TOOLS = {
   ActionMenu: <ActionMenu />,
 };
 
-export default function WithDarkTheme() {
-  const [editorValue, setEditorValue] = useState<YooptaValue[]>(yooptaInitData);
+type Props = {
+  value?: YooptaValue[];
+  onChange?: (val: YooptaValue[]) => void;
+};
+
+export default function WithDarkTheme({ value, onChange }: Props) {
+  const [editorValue, setEditorValue] = useState<YooptaValue[]>(value || yooptaInitData);
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
+
+  const onChangeValue = (val: YooptaValue[]) => {
+    if (onChange) return onChange(val);
+    setEditorValue(val);
+  };
 
   return (
     <main
-      style={{ backgroundColor: 'hsl(224 71% 4%)', color: 'white', padding: '3rem 0' }}
+      style={{ backgroundColor: 'hsl(224 71% 4%)', color: 'white', padding: '5rem 0' }}
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
     >
       <div className="w-full h-full">
         <YooptaEditor<any>
           value={editorValue}
-          onChange={(val: YooptaValue[]) => setEditorValue(val)}
+          onChange={onChangeValue}
           plugins={plugins}
           marks={marks}
           placeholder="Start typing..."

@@ -1,6 +1,6 @@
 import { Inter } from 'next/font/google';
 import { useState } from 'react';
-import YooptaEditor from '@yoopta/editor';
+import YooptaEditor, { createYooptaMark } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
@@ -22,6 +22,12 @@ import { MediumToolbar } from '@/components/Toolbars/MediumToolbar';
 import LinkTool from '@yoopta/link-tool';
 
 const inter = Inter({ subsets: ['latin'] });
+
+const ColoredMark = createYooptaMark({
+  type: 'colored',
+  hotkey: 'shift+y',
+  className: 'colored-red',
+});
 
 const plugins = [
   Paragraph,
@@ -72,11 +78,11 @@ const TOOLS = {
 export default function Home() {
   const [editorValue, setEditorValue] = useState<YooptaValue[]>(yooptaInitData);
 
-  const marks = [Bold, Italic, CodeMark, Underline, Strike];
+  const marks = [Bold, Italic, CodeMark, Underline, Strike, ColoredMark];
 
   return (
     <main
-      style={{ padding: '3rem 0' }}
+      style={{ padding: '5rem 0' }}
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
     >
       <div className="w-full h-full">

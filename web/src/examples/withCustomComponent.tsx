@@ -108,6 +108,10 @@ const plugins = [
     options: {
       maxWidth: 650,
       maxHeight: 650,
+      onUpload: async (file: File) => {
+        const response = await uploadToCloudinary(file, 'image');
+        return { url: response.url, width: response.data.width, height: response.data.height };
+      },
     },
   }),
   Video.extend({
@@ -134,7 +138,7 @@ export default function WithCustomComponent() {
 
   return (
     <main
-      style={{ padding: '3rem 0' }}
+      style={{ padding: '5rem 0' }}
       className={`p-24 flex min-h-screen w-full h-full flex-col items-center justify-between ${inter.className}`}
     >
       <div className="w-full h-full">

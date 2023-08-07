@@ -155,7 +155,7 @@ export default function WithNotionExample() {
 
   return (
     <main
-      style={{ padding: '3rem 0' }}
+      style={{ padding: '5rem 0' }}
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
     >
       <div className="w-full h-full">
