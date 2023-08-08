@@ -23,6 +23,48 @@ import LinkTool from '@yoopta/link-tool';
 
 const inter = Inter({ subsets: ['latin'] });
 
+const INITAL_VALUE: YooptaValue[] = [
+  {
+    id: 'byaLDi8f_moivVcJp2fKn',
+    type: 'heading-three',
+    nodeType: 'block',
+    children: [
+      {
+        text: 'Example with custom render for Toolbar',
+      },
+    ],
+  },
+  {
+    id: 'GfVX4aaQtecmB8nVluQIn',
+    type: 'paragraph',
+    nodeType: 'block',
+    children: [
+      {
+        text: 'When you select the text, you can see the ',
+      },
+      {
+        id: 'THTb35YxYtxPhmvhzwKp3',
+        // @ts-ignore [TODO] - fix types for nested children
+        type: 'link',
+        data: {
+          // @ts-ignore [TODO] - fix types for nested children
+          url: 'https://medium.com/new-story',
+          skipDrag: true,
+        },
+        children: [
+          {
+            text: 'Medium style',
+          },
+        ],
+        nodeType: 'inline',
+      },
+      {
+        text: ' toolbar',
+      },
+    ],
+  },
+];
+
 const ColoredMark = createYooptaMark({
   type: 'colored',
   hotkey: 'shift+y',
@@ -76,7 +118,7 @@ const TOOLS = {
 };
 
 export default function Home() {
-  const [editorValue, setEditorValue] = useState<YooptaValue[]>(yooptaInitData);
+  const [editorValue, setEditorValue] = useState<YooptaValue[]>(INITAL_VALUE);
 
   const marks = [Bold, Italic, CodeMark, Underline, Strike, ColoredMark];
 
@@ -92,7 +134,7 @@ export default function Home() {
           plugins={plugins}
           marks={marks}
           placeholder="Start typing..."
-          offline
+          offline="withCustomToolbar"
           autoFocus
           tools={TOOLS}
         />

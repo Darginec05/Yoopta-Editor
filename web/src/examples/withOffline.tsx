@@ -59,13 +59,19 @@ const plugins = [
   }),
 ];
 
-const DEFAULT_VALUE: YooptaValue[] = [
-  { id: generateId(), type: 'paragraph', children: [{ text: 'Type something and reload page' }], nodeType: 'block' },
+const INITIAL_VALUE: YooptaValue[] = [
+  {
+    id: generateId(),
+    type: 'paragraph',
+    children: [{ text: 'Type something and reload page. Your data will be saved' }],
+    nodeType: 'block',
+  },
 ];
 
-export default function Home() {
-  const [editorValue, setEditorValue] = useState<YooptaValue[]>(DEFAULT_VALUE);
+export default function WithOffline() {
+  const [editorValue, setEditorValue] = useState<YooptaValue[]>(INITIAL_VALUE);
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
+  console.log('editorValue', editorValue);
 
   return (
     <main
@@ -79,7 +85,7 @@ export default function Home() {
           plugins={plugins}
           marks={marks}
           placeholder="Start typing..."
-          offline
+          offline="withOffline"
           autoFocus
         />
       </div>

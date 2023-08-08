@@ -120,9 +120,10 @@ const TOOLS = {
 type Props = {
   value?: YooptaValue[];
   onChange?: (val: YooptaValue[]) => void;
+  localStorageName?: string;
 };
 
-export default function WithDarkTheme({ value, onChange }: Props) {
+export default function WithDarkTheme({ value, onChange, localStorageName }: Props) {
   const [editorValue, setEditorValue] = useState<YooptaValue[]>(value || yooptaInitData);
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
@@ -143,7 +144,7 @@ export default function WithDarkTheme({ value, onChange }: Props) {
           plugins={plugins}
           marks={marks}
           placeholder="Start typing..."
-          offline="withDarkTheme"
+          offline={localStorageName || 'withDarkTheme'}
           autoFocus
           tools={TOOLS}
         />

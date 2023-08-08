@@ -3,7 +3,6 @@ import { readdirSync } from 'fs';
 import { join } from 'path';
 
 import withBasicExample from '../../examples/withBasicExample';
-import withCustomActionMenuList from '../../examples/withCustomActionMenuList';
 import withCustomComponent from '../../examples/withCustomComponent';
 import withCustomToolbar from '../../examples/withCustomToolbar';
 import withDarkTheme from '../../examples/withDarkTheme';
@@ -19,7 +18,6 @@ import { CheckSourceCode } from '@/components/CheckSourceCode/CheckSourceCode';
 
 const EXAMPLES = {
   withBasicExample,
-  withCustomActionMenuList,
   withCustomComponent,
   withCustomToolbar,
   withDarkTheme,

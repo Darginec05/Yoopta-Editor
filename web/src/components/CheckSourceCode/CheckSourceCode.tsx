@@ -13,7 +13,7 @@ const CheckSourceCode = ({ example }: Props) => {
         rel="noopener"
         className={s.link}
       >
-        Source code for <strong>{example}</strong> example
+        Source code for <strong>{example}</strong>
       </a>
     </div>
   );

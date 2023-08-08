@@ -1,6 +1,6 @@
 import { Inter } from 'next/font/google';
 import { useState } from 'react';
-import YooptaEditor from '@yoopta/editor';
+import YooptaEditor, { generateId } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
@@ -68,8 +68,12 @@ const TOOLS = {
   ActionMenu: <ActionMenu />,
 };
 
+const INITIAL_VALUE: YooptaValue[] = [
+  { id: generateId(), type: 'paragraph', nodeType: 'block', children: [{ text: 'Example in progress...' }] },
+];
+
 export default function WithCustomPlugin() {
-  const [editorValue, setEditorValue] = useState<YooptaValue[]>(yooptaInitData);
+  const [editorValue, setEditorValue] = useState<YooptaValue[]>(INITIAL_VALUE);
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
   return (

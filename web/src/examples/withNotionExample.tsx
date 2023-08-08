@@ -25,6 +25,49 @@ import { NotionToolbar } from '@/components/Toolbars/NotionToolbar';
 
 const inter = Inter({ subsets: ['latin'] });
 
+const INITIAL_VALUE: YooptaValue[] = [
+  {
+    id: '_d8RWaRAWV3Z3odUaIElv',
+    type: 'heading-three',
+    nodeType: 'block',
+    children: [
+      {
+        text: 'With Notion style example',
+      },
+    ],
+  },
+  {
+    id: 'vPt3vfSb2X6DXauKld1q3',
+    type: 'paragraph',
+    nodeType: 'block',
+    children: [
+      {
+        text: 'In this example you can see notion-style rendering of ',
+      },
+      {
+        text: 'ActionMenuList',
+        bold: true,
+        underline: true,
+      },
+      {
+        text: ' (create new block and type ',
+      },
+      {
+        text: '"/"',
+        bold: true,
+      },
+      {
+        text: ' to open menu list) and notion-style rendering of ',
+      },
+      {
+        text: 'Toolbar',
+        bold: true,
+        underline: true,
+      },
+    ],
+  },
+];
+
 const plugins = [
   Paragraph,
   Blockquote,
@@ -151,7 +194,8 @@ const TOOLS = {
 };
 
 export default function WithNotionExample() {
-  const [editorValue, setEditorValue] = useState<YooptaValue[]>(yooptaInitData);
+  const [editorValue, setEditorValue] = useState<YooptaValue[]>(INITIAL_VALUE);
+  const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
   return (
     <main
@@ -163,9 +207,9 @@ export default function WithNotionExample() {
           value={editorValue}
           onChange={(val: YooptaValue[]) => setEditorValue(val)}
           plugins={plugins}
-          marks={[Bold, Italic, CodeMark, Underline, Strike]}
+          marks={marks}
           placeholder="Start typing..."
-          offline="notion-example"
+          offline="withNotionExample"
           autoFocus
           tools={TOOLS}
         />
