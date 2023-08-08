@@ -1,30 +1,64 @@
-# Yoopta-Editor
+# Welcome to Yoopta-Editor 🎉
 
-Yoopta-Editor is a powerful and customizable open-source React WYSIWYG editor. It provides a flexible and intuitive editing experience, allowing users to create visually engaging content. With Yoopta-Editor, you can easily integrate a feature-rich editing tool into your projects, empowering your users to create rich documents, blog posts, collaborative spaces, and more. The editor offers extensive formatting options, media embedding, collaborative editing, and accessibility features.
+![](https://res.cloudinary.com/ench-app/image/upload/v1691533442/9C3CB447-AB61-4644-BA3A-00F089BCD053_r2bhws.gif)
 
-## Key Features
+## Introduction
 
-- **WYSIWYG Editing:** Create content in a familiar "What You See Is What You Get" environment.
-- **Extensibility:** Customize and extend the editor's functionality to fit your specific needs.
-- **Rich Formatting Options:** Style and format your content with headings, lists, tables, and more.
-- **Embeddable Media:** Seamlessly embed images, videos, and audio into your documents.
-- **Collaborative Editing:** Enable real-time collaboration for multiple users working on the same document.
-- **Accessibility:** Built with accessibility best practices to ensure an inclusive editing experience.
+Yoopta-Editor is an open-source rich-text editor designed for React applications. With Yoopta-Editor, you can effortlessly create a robust and versatile editor that rivals the likes of Notion and Medium.
 
-## Getting Started
+This editor empowers you to seamlessly customize, extend, and tailor its behavior and user interface to your specific needs. Whether you want to add unique features, style elements, or create a tailored UI, Yoopta-Editor provides you with the tools to make it your own.
 
-Please refer to the [documentation](link_to_docs) to get started with Yoopta-Editor. It provides installation instructions, an overview of the editor's architecture, and detailed guides on how to use and customize the editor for your projects.
+## Features
 
-## Contributing
+- Default list of plugins
+- Each plugin can be easily customize and extensible
+- You can create your own plugin
+- Many typical solved problems in UX behavior.
+- A list of useful tools for the convenience of working with the editor
+- Automatic lazy loading for media components (eg. embeds)
+- Shortcuts and markdown style
+- Offline mode
+- Redo/undo changes
+- A cool representation of the data in JSON format, so you can easily save the content data to the database and validate
+- ChatGPT tool (soon) 😍
+- Component for just rendering your data without any editor tools for fast page loading
+  Useful for blog platforms!
+- Drag and drop, nested dnd is supported also
+- The soul invested in the development of this editor 💙
+- ...and other features
 
-We welcome contributions from the community! If you have ideas, bug reports, or want to contribute code, please see our [contribution guidelines](link_to_contribution_guidelines) for more information.
+## Examples
+
+In this section, we provide you with some examples of using the Yoopta-Editor in your projects. These examples will help you get started quickly and show you how easy it is to integrate and customize the editor to your needs.
+
+Okay, let's go!
+
+- [With basic example](https://yopta-editor-darginec05.vercel.app/examples/withBasicExample)
+- [With Notion example](https://yopta-editor-darginec05.vercel.app/examples/withNotionExample)
+- [With custom toolbar (Medium example)](https://yopta-editor-darginec05.vercel.app/examples/withCustomToolbar)
+- [With custom component](https://yopta-editor-darginec05.vercel.app/examples/withCustomComponent)
+- [With extended plugin](https://yopta-editor-darginec05.vercel.app/examples/withExtendedPlugin)
+- [With offline mode](https://yopta-editor-darginec05.vercel.app/examples/withOffline)
+- [With HTML and Markdown exports](https://yopta-editor-darginec05.vercel.app/examples/withExports)
+- [With custom mark](https://yopta-editor-darginec05.vercel.app/examples/withCustomMark)
+- ...and check other examples in the sidebar list
+
+## Give us ⭐️ star
+
+If you find Yoopta-Editor useful and valuable for your projects, I kindly ask you to show your support by giving us a ⭐️ star on GitHub. Your appreciation means a lot to us and helps us grow and continue improving the editor for the community. 💙💙💙
 
 ## License
 
-Yoopta-Editor is released under the [MIT License](link_to_license). Feel free to use and modify it for your projects.
+Yoopta-Editor is released under the [MIT License](https://github.com/Darginec05/Yopta-Editor/blob/master/LICENSE). Feel free to use and modify it for your projects.
 
 ## Support
 
-If you have any questions or need assistance, please join our [community chat](link_to_chat) or raise an issue in the GitHub repository. Our friendly community and support team will be happy to help you.
+If you have any questions or need assistance raise an issue in the GitHub repository. I will be happy to help you.
 
 Let's create powerful and engaging editing experiences together with Yoopta-Editor!
+
+## Contacts
+
+- [Twitter](https://twitter.com/LebovskiYoo)
+- [Telegram](https://tttttt.me/DevOpsBanda)
+- [Github](https://github.com/Darginec05)
