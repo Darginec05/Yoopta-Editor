@@ -55,6 +55,23 @@ const initalValue: YooptaValue[] = [
     ],
   },
   {
+    id: 'r0K-5cSpKSAP-6Hw6fnUR',
+    type: 'image',
+    nodeType: 'void',
+    children: [
+      {
+        text: '',
+      },
+    ],
+    data: {
+      url: 'https://res.cloudinary.com/ench-app/image/upload/v1691535280/9C3CB447-AB61-4644-BA3A-00F089BCD053_puugln.gif',
+      size: {
+        width: 606.2176165803108,
+        height: 650,
+      },
+    },
+  },
+  {
     id: 'WbQW3IRtYCG769ELg7d8g',
     type: 'heading-two',
     children: [
