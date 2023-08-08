@@ -13,9 +13,22 @@ import Video from '@yoopta/video';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
-import { yooptaInitData } from '../utils/initialData';
+import { yooptaInitData, YooptaValue } from '../utils/initialData';
+import { uploadToCloudinary } from '@/utils/cloudinary';
+import { generateId } from '@yoopta/editor';
 
 const inter = Inter({ subsets: ['latin'] });
+
+const DATA_FROM_DB: YooptaValue[] = [
+  {
+    id: generateId(),
+    type: 'heading-three',
+    nodeType: 'block',
+    children: [{ text: 'Example with rendering your content without editor tools' }],
+  },
+  ...yooptaInitData,
+];
+
 const plugins = [
   Paragraph.extend({
     options: {
@@ -108,6 +121,10 @@ const plugins = [
     options: {
       maxWidth: 650,
       maxHeight: 650,
+      onUpload: async (file: File) => {
+        const response = await uploadToCloudinary(file, 'image');
+        return { url: response.url, width: response.data.width, height: response.data.height };
+      },
     },
   }),
   Video.extend({
@@ -123,11 +140,11 @@ const marks = [Bold, Italic, CodeMark, Underline, Strike];
 export default function Home() {
   return (
     <main
-      style={{ backgroundColor: 'hsl(224 71% 4%)', color: 'white', padding: '6rem' }}
+      style={{ backgroundColor: 'hsl(224 71% 4%)', color: 'white', padding: '5rem 0' }}
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
     >
       <div className="w-full h-full">
-        <YoptaRenderer data={yooptaInitData} plugins={plugins} marks={marks} />
+        <YoptaRenderer data={DATA_FROM_DB} plugins={plugins} marks={marks} />
       </div>
     </main>
   );

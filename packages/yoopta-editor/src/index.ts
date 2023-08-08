@@ -12,7 +12,6 @@ export { isValidYooptaNodes } from './utils/validate';
 export { generateId } from './utils/generateId';
 export { HOTKEYS } from './utils/hotkeys';
 
-// [WIP] - hooks
 export { useYoopta, useMarks, useElements, useTools } from './contexts/YooptaContext/YooptaContext';
 export type { ElementsMap, MarksMap } from './contexts/YooptaContext/YooptaContext';
 export { deepClone } from './utils/deepClone';
@@ -27,7 +26,16 @@ export type {
   YooptaRenderHTMLAttributes,
 } from './utils/plugins';
 export type { YooptaMarksConfig, YooptaMark } from './utils/marks';
-export type { YooEditor, RenderYooptaElementProps, YooptaBaseElement, Modify, YooptaEditorValue, YooptaBaseToolProps } from './types';
+export type {
+  YooEditor,
+  RenderYooptaElementProps,
+  YooptaBaseElement,
+  Modify,
+  YooptaEditorValue,
+  YooptaBaseToolProps,
+  YooptaTools,
+  YooptaNodeElementSettings,
+} from './types';
 
 const UI_HELPERS = { ElementOptions, Overlay };
 

@@ -19,7 +19,7 @@ import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import ActionMenu from '@yoopta/action-menu-list';
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import Toolbar from '@yoopta/toolbar';
-import { yooptaInitData } from '@/utils/initialData';
+import { yooptaInitData, YooptaValue } from '@/utils/initialData';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -112,28 +112,41 @@ const plugins = [
   }),
 ];
 
-export default function Home() {
-  const [editorValue, setEditorValue] = useState<Descendant[]>(yooptaInitData);
+const TOOLS = {
+  Toolbar: <Toolbar />,
+  ActionMenu: <ActionMenu />,
+};
+
+type Props = {
+  value?: YooptaValue[];
+  onChange?: (val: YooptaValue[]) => void;
+  localStorageName?: string;
+};
+
+export default function WithDarkTheme({ value, onChange, localStorageName }: Props) {
+  const [editorValue, setEditorValue] = useState<YooptaValue[]>(value || yooptaInitData);
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
+
+  const onChangeValue = (val: YooptaValue[]) => {
+    if (onChange) return onChange(val);
+    setEditorValue(val);
+  };
 
   return (
     <main
-      style={{ backgroundColor: 'hsl(224 71% 4%)', color: 'white', padding: '6rem' }}
+      style={{ backgroundColor: 'hsl(224 71% 4%)', color: 'white', padding: '5rem 0' }}
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
     >
       <div className="w-full h-full">
-        <YooptaEditor
+        <YooptaEditor<any>
           value={editorValue}
-          onChange={(val: Descendant[]) => setEditorValue(val)}
+          onChange={onChangeValue}
           plugins={plugins}
           marks={marks}
           placeholder="Start typing..."
-          offline
+          offline={localStorageName || 'withDarkTheme'}
           autoFocus
-          tools={{
-            Toolbar: <Toolbar type="bubble" />,
-            ActionMenu: <ActionMenu />,
-          }}
+          tools={TOOLS}
         />
       </div>
     </main>

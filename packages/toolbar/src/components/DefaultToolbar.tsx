@@ -1,13 +1,12 @@
 import { ToolbarProps } from './Toolbar';
 import { cx, UI_HELPERS, useElements, useMarks, useTools } from '@yoopta/editor';
-import s from './DefaultToolbar.module.scss';
 import { useRef } from 'react';
 import { useSlate } from 'slate-react';
 import { useLinkTool } from '../hooks/useLinkTool';
 import { useActionMenuTool } from '../hooks/useActionMenuTool';
 import { useChatGPTTool } from '../hooks/useChatGPTTool';
 import { Range } from 'slate';
-import MagicIcon from '../icons/magic.svg';
+import s from './DefaultToolbar.module.scss';
 
 const DefaultToolbar = ({ getRootProps }: ToolbarProps) => {
   const marks = useMarks();

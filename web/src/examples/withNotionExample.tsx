@@ -19,11 +19,54 @@ import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import ActionMenu, { ActionMenuItem } from '@yoopta/action-menu-list';
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import Toolbar from '@yoopta/toolbar';
-import { yooptaInitData } from '@/utils/initialData';
+import { yooptaInitData, YooptaValue } from '@/utils/initialData';
 import { NotionActionMenu } from '@/components/SuggestionList/NotionActionMenu';
 import { NotionToolbar } from '@/components/Toolbars/NotionToolbar';
 
 const inter = Inter({ subsets: ['latin'] });
+
+const INITIAL_VALUE: YooptaValue[] = [
+  {
+    id: '_d8RWaRAWV3Z3odUaIElv',
+    type: 'heading-three',
+    nodeType: 'block',
+    children: [
+      {
+        text: 'With Notion style example',
+      },
+    ],
+  },
+  {
+    id: 'vPt3vfSb2X6DXauKld1q3',
+    type: 'paragraph',
+    nodeType: 'block',
+    children: [
+      {
+        text: 'In this example you can see notion-style rendering of ',
+      },
+      {
+        text: 'ActionMenuList',
+        bold: true,
+        underline: true,
+      },
+      {
+        text: ' (create new block and type ',
+      },
+      {
+        text: '"/"',
+        bold: true,
+      },
+      {
+        text: ' to open menu list) and notion-style rendering of ',
+      },
+      {
+        text: 'Toolbar',
+        bold: true,
+        underline: true,
+      },
+    ],
+  },
+];
 
 const plugins = [
   Paragraph,
@@ -145,27 +188,30 @@ const actionItems: ActionMenuItem<Record<'label' | 'description' | 'icon', strin
   },
 ];
 
-export default function Home() {
-  const [editorValue, setEditorValue] = useState<Descendant[]>(yooptaInitData);
+const TOOLS = {
+  Toolbar: <Toolbar type="bubble" render={NotionToolbar} />,
+  ActionMenu: <ActionMenu render={NotionActionMenu} items={actionItems} />,
+};
+
+export default function WithNotionExample() {
+  const [editorValue, setEditorValue] = useState<YooptaValue[]>(INITIAL_VALUE);
+  const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
   return (
     <main
-      style={{ padding: '6rem' }}
+      style={{ padding: '5rem 0' }}
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
     >
       <div className="w-full h-full">
-        <YooptaEditor
+        <YooptaEditor<any>
           value={editorValue}
-          onChange={(val: Descendant[]) => setEditorValue(val)}
+          onChange={(val: YooptaValue[]) => setEditorValue(val)}
           plugins={plugins}
-          marks={[Bold, Italic, CodeMark, Underline, Strike]}
+          marks={marks}
           placeholder="Start typing..."
-          offline="notion-example"
+          offline="withNotionExample"
           autoFocus
-          tools={{
-            Toolbar: <Toolbar type="bubble" render={NotionToolbar} />,
-            ActionMenu: <ActionMenu render={NotionActionMenu} items={actionItems} />,
-          }}
+          tools={TOOLS}
         />
       </div>
     </main>

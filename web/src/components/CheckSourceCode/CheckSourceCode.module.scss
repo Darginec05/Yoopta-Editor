@@ -1,0 +1,18 @@
+.root {
+  width: auto;
+  height: auto;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+
+.link {
+  cursor: pointer;
+  max-width: 80px;
+  padding: 10px;
+  text-decoration: underline;
+  background: #007aff;
+  border-radius: 7px;
+  color: #fff;
+  font-size: 14px;
+}

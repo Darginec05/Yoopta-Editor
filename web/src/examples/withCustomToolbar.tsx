@@ -1,7 +1,6 @@
 import { Inter } from 'next/font/google';
 import { useState } from 'react';
-import { Descendant } from 'slate';
-import YooptaEditor from '@yoopta/editor';
+import YooptaEditor, { createYooptaMark } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
@@ -18,9 +17,59 @@ import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import ActionMenu from '@yoopta/action-menu-list';
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import Toolbar from '@yoopta/toolbar';
-import { yooptaInitData } from '@/utils/initialData';
+import { yooptaInitData, YooptaValue } from '@/utils/initialData';
+import { MediumToolbar } from '@/components/Toolbars/MediumToolbar';
+import LinkTool from '@yoopta/link-tool';
 
 const inter = Inter({ subsets: ['latin'] });
+
+const INITAL_VALUE: YooptaValue[] = [
+  {
+    id: 'byaLDi8f_moivVcJp2fKn',
+    type: 'heading-three',
+    nodeType: 'block',
+    children: [
+      {
+        text: 'Example with custom render for Toolbar',
+      },
+    ],
+  },
+  {
+    id: 'GfVX4aaQtecmB8nVluQIn',
+    type: 'paragraph',
+    nodeType: 'block',
+    children: [
+      {
+        text: 'When you select the text, you can see the ',
+      },
+      {
+        id: 'THTb35YxYtxPhmvhzwKp3',
+        // @ts-ignore [TODO] - fix types for nested children
+        type: 'link',
+        data: {
+          // @ts-ignore [TODO] - fix types for nested children
+          url: 'https://medium.com/new-story',
+          skipDrag: true,
+        },
+        children: [
+          {
+            text: 'Medium style',
+          },
+        ],
+        nodeType: 'inline',
+      },
+      {
+        text: ' toolbar',
+      },
+    ],
+  },
+];
+
+const ColoredMark = createYooptaMark({
+  type: 'colored',
+  hotkey: 'shift+y',
+  className: 'colored-red',
+});
 
 const plugins = [
   Paragraph,
@@ -62,29 +111,32 @@ const plugins = [
   }),
 ];
 
-export default function Home() {
-  const [editorValue, setEditorValue] = useState<Descendant[]>(yooptaInitData);
+const TOOLS = {
+  Toolbar: <Toolbar render={MediumToolbar} />,
+  ActionMenu: <ActionMenu />,
+  LinkTool: <LinkTool />,
+};
 
-  const marks = [Bold, Italic, CodeMark, Underline, Strike];
+export default function Home() {
+  const [editorValue, setEditorValue] = useState<YooptaValue[]>(INITAL_VALUE);
+
+  const marks = [Bold, Italic, CodeMark, Underline, Strike, ColoredMark];
 
   return (
     <main
-      style={{ padding: '6rem' }}
+      style={{ padding: '5rem 0' }}
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
     >
       <div className="w-full h-full">
-        <YooptaEditor
+        <YooptaEditor<any>
           value={editorValue}
-          onChange={(val: Descendant[]) => setEditorValue(val)}
+          onChange={(val: YooptaValue[]) => setEditorValue(val)}
           plugins={plugins}
           marks={marks}
           placeholder="Start typing..."
-          offline
+          offline="withCustomToolbar"
           autoFocus
-          tools={{
-            Toolbar: <Toolbar type="bubble" />,
-            ActionMenu: <ActionMenu />,
-          }}
+          tools={TOOLS}
         />
       </div>
     </main>

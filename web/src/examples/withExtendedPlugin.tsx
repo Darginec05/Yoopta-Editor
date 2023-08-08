@@ -18,7 +18,169 @@ import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import ActionMenu from '@yoopta/action-menu-list';
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import Toolbar from '@yoopta/toolbar';
-import { yooptaInitData } from '@/utils/initialData';
+import { YooptaValue } from '@/utils/initialData';
+
+const INITIAL_VALUE: YooptaValue[] = [
+  {
+    id: 'lNhZtKVF-gcGmwysrUQCN',
+    type: 'paragraph',
+    nodeType: 'block',
+    children: [
+      {
+        text: 'Here is example how you can rewrite default configuration for any plugin using ',
+      },
+      {
+        text: '<plugin>.extend',
+        code: true,
+      },
+      {
+        text: ' method.',
+      },
+    ],
+  },
+  {
+    id: 'alOjr3e7N3PImo1mvP7np',
+    type: 'code',
+    children: [
+      {
+        id: 'Dcc7j06tHkEepxAla9EXA',
+        type: 'code-line',
+        nodeType: 'block',
+        children: [
+          {
+            text: 'const plugins = [',
+          },
+        ],
+        data: {
+          skipSettings: true,
+          skipDrag: true,
+        },
+      },
+      {
+        id: 'xTArpV-obYMxudaO1ZOOZ',
+        type: 'code-line',
+        nodeType: 'block',
+        data: {
+          skipSettings: true,
+          skipDrag: true,
+        },
+        children: [
+          {
+            text: '  ...otherPlugins,',
+          },
+        ],
+      },
+      {
+        id: 'vS9a0UqrFI-dx2Ff8YY_C',
+        type: 'code-line',
+        nodeType: 'block',
+        data: {
+          skipSettings: true,
+          skipDrag: true,
+        },
+        children: [
+          {
+            text: '  Callout.extend({ ',
+          },
+        ],
+      },
+      {
+        id: 'ivFAlfhiv2AsvwrRJVcZ8',
+        type: 'code-line',
+        nodeType: 'block',
+        data: {
+          skipSettings: true,
+          skipDrag: true,
+        },
+        children: [
+          {
+            text: "    placeholder: 'This is callout placeholder',",
+          },
+        ],
+      },
+      {
+        id: 'z4dXtSolZsvwc4oJufTQp',
+        type: 'code-line',
+        nodeType: 'block',
+        data: {
+          skipSettings: true,
+          skipDrag: true,
+        },
+        children: [
+          {
+            text: "    shortcut: '>>'",
+          },
+        ],
+      },
+      {
+        id: 'PPSH-aRhUDvndKwJF2Vfu',
+        type: 'code-line',
+        nodeType: 'block',
+        data: {
+          skipSettings: true,
+          skipDrag: true,
+        },
+        children: [
+          {
+            text: '  }),',
+          },
+        ],
+      },
+      {
+        id: 'HzQJxCMIfJXMTONNxXEQd',
+        type: 'code-line',
+        nodeType: 'block',
+        data: {
+          skipSettings: true,
+          skipDrag: true,
+        },
+        children: [
+          {
+            text: ']',
+          },
+        ],
+      },
+    ],
+    nodeType: 'block',
+    data: {
+      language: 'javascript',
+    },
+  },
+  {
+    id: 'N7ci7dUzT12oLU1enAo7K',
+    type: 'callout',
+    nodeType: 'block',
+    children: [
+      {
+        text: '',
+      },
+    ],
+  },
+  {
+    id: 'ZeHDWam1jwiK7DE8fJxZS',
+    type: 'paragraph',
+    nodeType: 'block',
+    children: [
+      {
+        text: 'Type ',
+      },
+      {
+        text: '>>',
+        underline: true,
+      },
+      {
+        text: ' and then click on ',
+      },
+      {
+        text: 'space',
+        bold: true,
+      },
+      {
+        text: ' button',
+      },
+    ],
+  },
+];
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,7 +190,10 @@ const plugins = [
   HeadingTwo,
   HeadingThree,
   Blockquote,
-  Callout,
+  Callout.extend({
+    placeholder: 'This is callout placeholder',
+    shortcut: '>>',
+  }),
   Code,
   Link,
   NumberedList,
@@ -62,29 +227,30 @@ const plugins = [
   }),
 ];
 
-export default function Home() {
-  const [editorValue, setEditorValue] = useState<Descendant[]>(yooptaInitData);
+const TOOLS = {
+  Toolbar: <Toolbar type="bubble" />,
+  ActionMenu: <ActionMenu />,
+};
 
+export default function WithExtendedPlugin() {
+  const [editorValue, setEditorValue] = useState<YooptaValue[]>(INITIAL_VALUE);
   const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
   return (
     <main
-      style={{ padding: '6rem' }}
+      style={{ padding: '5rem 0' }}
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
     >
       <div className="w-full h-full">
         <YooptaEditor
           value={editorValue}
-          onChange={(val: Descendant[]) => setEditorValue(val)}
+          onChange={(val: YooptaValue[]) => setEditorValue(val)}
           plugins={plugins}
           marks={marks}
           placeholder="Start typing..."
-          offline
+          offline="withExtendedPlugin"
           autoFocus
-          tools={{
-            Toolbar: <Toolbar type="bubble" />,
-            ActionMenu: <ActionMenu />,
-          }}
+          tools={TOOLS}
         />
       </div>
     </main>

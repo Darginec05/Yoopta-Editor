@@ -4,7 +4,7 @@ import s from './NotionActionMenu.module.scss';
 type Props = Record<'displayLabel' | 'description' | 'icon', string> & ActionMenuRenderProps;
 
 const NotionActionMenu = (props: Props) => {
-  const { groups, isNotFound, getItemProps, getRootProps } = props;
+  const { groups, isNotFound, getItemProps, getRootProps, items } = props;
 
   return (
     <div {...getRootProps()} className={s.dropdown}>

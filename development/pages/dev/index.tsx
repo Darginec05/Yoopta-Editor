@@ -10,7 +10,6 @@ import Image, { ImageElement, ImagePluginOptions } from '@yoopta/image';
 import Video, { VideoElement } from '@yoopta/video';
 import Embed, { EmbedElement } from '@yoopta/embed';
 import Toolbar from '@yoopta/toolbar';
-import ChatGPT from '@yoopta/chat-gpt-assistant';
 import YooptaRenderer from '@yoopta/renderer';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
 import ActionMenu, { ActionMenuItem } from '@yoopta/action-menu-list';
@@ -129,6 +128,12 @@ const plugins = [
   }),
 ];
 
+const ColoredMark = createYooptaMark({
+  type: 'colored',
+  hotkey: 'shift+y',
+  className: 'colored-red',
+});
+
 const ACTION_MENU_ITEMS: ActionMenuItem<Record<'description' | 'icon', string>>[] = [
   {
     plugin: Paragraph,
@@ -198,8 +203,8 @@ const ACTION_MENU_ITEMS: ActionMenuItem<Record<'description' | 'icon', string>>[
 ];
 
 const TOOLS = {
-  Toolbar: <Toolbar />,
-  ActionMenu: <ActionMenu items={ACTION_MENU_ITEMS} />,
+  Toolbar: <Toolbar render={MediumToolbar} />,
+  ActionMenu: <ActionMenu items={ACTION_MENU_ITEMS} options={{ shouldDeleteText: false }} />,
   LinkTool: <LinkTool />,
   // ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" context={initContextMessages} />,
 };
@@ -209,7 +214,7 @@ const BasicExample = () => {
   const [mode, setMode] = useState<'render' | 'edit'>('edit');
 
   const isEdit = mode === 'edit';
-  const marks = [Bold, Italic, CodeMark, Underline, Strike];
+  const marks = [Bold, Italic, CodeMark, Underline, Strike, ColoredMark];
 
   const toggleMode = () => setMode(isEdit ? 'render' : 'edit');
 

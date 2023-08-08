@@ -1,11 +1,11 @@
-import { YooEditor, YooptaBaseElement, YooptaBaseToolProps } from '@yoopta/editor';
+import { YooEditor, YooptaBaseElement, YooptaBaseToolProps, cx } from '@yoopta/editor';
 import { useState, ChangeEvent, MouseEvent, useEffect, useRef } from 'react';
 import { useSlate } from 'slate-react';
 import DoneIcon from './icons/done.svg';
 import CloseIcon from './icons/close.svg';
 import { addLinkNode, getMatchedLinkNode, removeLinkNode } from '../utils/link';
-import s from './LinkTool.module.scss';
 import { Selection } from 'slate';
+import s from './LinkTool.module.scss';
 
 declare module 'slate' {
   interface CustomTypes {
@@ -17,11 +17,11 @@ declare module 'slate' {
 type Events = {
   delete: () => {};
   add: () => {};
-}
+};
 
 type Props = YooptaBaseToolProps<any, Events> & {
-  selection?: Selection
-}
+  selection?: Selection;
+};
 
 const LinkTool = ({ fromHook, style, selection, on }: Props) => {
   const editor = useSlate() as YooEditor;
@@ -41,7 +41,7 @@ const LinkTool = ({ fromHook, style, selection, on }: Props) => {
 
   const addLink = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    
+
     if (selection) {
       if (url.length === 0) {
         removeLinkNode(editor, selection);
@@ -58,7 +58,7 @@ const LinkTool = ({ fromHook, style, selection, on }: Props) => {
       inputRef.current?.focus();
       if (selection) {
         const [matchedLinkNode] = getMatchedLinkNode(editor, selection) || [];
-  
+
         if (matchedLinkNode) {
           setUrl(matchedLinkNode.data?.url);
           setLinkNode(linkNode);
@@ -68,7 +68,7 @@ const LinkTool = ({ fromHook, style, selection, on }: Props) => {
   }, [inputRef.current, fromHook, selection]);
 
   return (
-    <div className={s.block} style={style}>
+    <div className={cx(s.block, 'yoopta-link-tool')} style={style}>
       <input
         className={s.input}
         value={url}
