@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { yooptaInitData, YooptaValue } from '@/utils/initialData';
 
-import { Inter } from 'next/font/google';
+// import { Inter } from 'next/font/google';
 import YooptaEditor from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
@@ -21,8 +21,6 @@ import ActionMenu from '@yoopta/action-menu-list';
 import Toolbar from '@yoopta/toolbar';
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import { ExportButtons } from '@/components/ExportButtons/ExportButtons';
-
-const inter = Inter({ subsets: ['latin'] });
 
 const plugins = [
   Paragraph,
@@ -83,7 +81,7 @@ export default function WithExports() {
   return (
     <main
       style={{ padding: '5rem 0' }}
-      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
+      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 `}
     >
       <div className="w-full h-full">
         <ExportButtons editorValue={editorValue} plugins={plugins} offlineKey={OFFLINE_KEY} onChange={onChange} />

@@ -1,4 +1,4 @@
-import { Inter } from 'next/font/google';
+// import { Inter } from 'next/font/google';
 import { useState } from 'react';
 import { Descendant } from 'slate';
 import NextImage from 'next/image';
@@ -20,8 +20,6 @@ import ActionMenu from '@yoopta/action-menu-list';
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import Toolbar from '@yoopta/toolbar';
 import { yooptaInitData, YooptaValue } from '@/utils/initialData';
-
-const inter = Inter({ subsets: ['latin'] });
 
 const plugins = [
   Paragraph.extend({
@@ -135,7 +133,7 @@ export default function WithDarkTheme({ value, onChange, localStorageName }: Pro
   return (
     <main
       style={{ backgroundColor: 'hsl(224 71% 4%)', color: 'white', padding: '5rem 0' }}
-      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
+      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 `}
     >
       <div className="w-full h-full">
         <YooptaEditor<any>

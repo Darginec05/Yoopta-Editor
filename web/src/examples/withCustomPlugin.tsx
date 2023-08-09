@@ -1,4 +1,4 @@
-import { Inter } from 'next/font/google';
+// import { Inter } from 'next/font/google';
 import { useState } from 'react';
 import YooptaEditor, { generateId } from '@yoopta/editor';
 
@@ -19,8 +19,6 @@ import { uploadToCloudinary } from '@/utils/cloudinary';
 import Toolbar from '@yoopta/toolbar';
 import { yooptaInitData, YooptaValue } from '@/utils/initialData';
 import { AccordionPlugin } from '@/components/CustomAccordeonPlugin/CustomAccordeonPlugin';
-
-const inter = Inter({ subsets: ['latin'] });
 
 const plugins = [
   AccordionPlugin,
@@ -79,7 +77,7 @@ export default function WithCustomPlugin() {
   return (
     <main
       style={{ padding: '5rem 0' }}
-      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
+      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 `}
     >
       <div className="w-full h-full">
         <YooptaEditor<any>

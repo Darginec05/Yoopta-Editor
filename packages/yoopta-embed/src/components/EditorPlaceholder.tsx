@@ -2,7 +2,7 @@ import { ReactEditor } from 'slate-react';
 import UploadIcon from './icons/upload.svg';
 import { MouseEvent, useRef, useState } from 'react';
 import { EditorUploader } from './EditorUploader';
-import { Element, Transforms } from 'slate';
+import { Editor, Element, Transforms } from 'slate';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import s from './EditorPlaceholder.module.scss';
 import { RenderYooptaElementProps, YooEditor } from '@yoopta/editor';
@@ -68,9 +68,10 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor }: 
     else if (provider === 'twitter') providerId = getTwitterEmbedId(src);
     else if (provider === 'figma') providerId = getFigmaUrl(src);
 
-    console.log({ provider, providerId });
+    console.log({ provider, providerId, element });
 
     try {
+      console.log('path', ReactEditor.findPath(editor, element));
       enableBodyScroll(document.body);
       setUploaderPos(null);
 
@@ -89,6 +90,8 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor }: 
         match: (n) => Element.isElement(n) && n.type === 'embed',
       });
     } catch (error) {
+      console.log('provider adding error', error);
+
       enableBodyScroll(document.body);
       setUploaderPos(null);
     }

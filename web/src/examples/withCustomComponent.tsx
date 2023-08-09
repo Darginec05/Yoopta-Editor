@@ -1,4 +1,4 @@
-import { Inter } from 'next/font/google';
+// import { Inter } from 'next/font/google';
 import { useState } from 'react';
 import NextImage from 'next/image';
 
@@ -63,8 +63,6 @@ const initalData: YooptaValue[] = [
     nodeType: 'block',
   },
 ];
-
-const inter = Inter({ subsets: ['latin'] });
 
 const plugins = [
   Paragraph,
@@ -139,7 +137,7 @@ export default function WithCustomComponent() {
   return (
     <main
       style={{ padding: '5rem 0' }}
-      className={`p-24 flex min-h-screen w-full h-full flex-col items-center justify-between ${inter.className}`}
+      className={`p-24 flex min-h-screen w-full h-full flex-col items-center justify-between `}
     >
       <div className="w-full h-full">
         <YooptaEditor<any>

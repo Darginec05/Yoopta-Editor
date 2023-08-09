@@ -64,6 +64,8 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
     else if (provider === 'vimeo') videoId = getVimeoId(src);
     else if (provider === 'dailymotion') videoId = getDailymotionId(src);
 
+    console.log({ provider, videoId, path: ReactEditor.findPath(editor, element), element });
+
     if (!videoId) return;
 
     try {
@@ -86,6 +88,7 @@ const EditorPlaceholder = ({ element, attributes, maxSizes, children, editor, on
         match: (n) => Element.isElement(n) && n.type === 'video',
       });
     } catch (error) {
+      console.log('error in video on embed', error);
       enableBodyScroll(document.body);
       setUploaderPos(null);
     }

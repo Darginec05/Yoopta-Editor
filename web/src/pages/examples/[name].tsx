@@ -14,21 +14,24 @@ import withExtendedPlugin from '../../examples/withExtendedPlugin';
 import withOffline from '../../examples/withOffline';
 import withCustomMark from '../../examples/withCustomMark';
 import withExports from '../../examples/withExports';
+import withMedia from '../../examples/withMedia';
 import { CheckSourceCode } from '@/components/CheckSourceCode/CheckSourceCode';
+import { Head } from '@/components/Head/Head';
 
 const EXAMPLES = {
   withBasicExample,
-  withCustomComponent,
+  withNotionExample,
   withCustomToolbar,
   withDarkTheme,
-  withJustRender,
-  withNotionExample,
-  withCustomHTMLAttributes,
-  withCustomPlugin,
-  withExtendedPlugin,
+  withMedia,
   withOffline,
-  withCustomMark,
+  withExtendedPlugin,
+  withJustRender,
+  withCustomComponent,
+  withCustomHTMLAttributes,
   withExports,
+  withCustomMark,
+  withCustomPlugin,
 };
 
 const ExampleComponent = ({ example, links }: { example: keyof typeof EXAMPLES; links: string[] }) => {
@@ -36,6 +39,7 @@ const ExampleComponent = ({ example, links }: { example: keyof typeof EXAMPLES; 
 
   return (
     <div>
+      <Head />
       <ExampleList links={links} />
       <ExampleComponent />
       <CheckSourceCode example={example} />

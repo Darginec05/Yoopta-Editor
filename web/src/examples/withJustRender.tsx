@@ -1,4 +1,4 @@
-import { Inter } from 'next/font/google';
+// import { Inter } from 'next/font/google';
 import NextImage from 'next/image';
 
 import YoptaRenderer from '@yoopta/renderer';
@@ -16,8 +16,6 @@ import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import { yooptaInitData, YooptaValue } from '../utils/initialData';
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import { generateId } from '@yoopta/editor';
-
-const inter = Inter({ subsets: ['latin'] });
 
 const DATA_FROM_DB: YooptaValue[] = [
   {
@@ -141,7 +139,7 @@ export default function Home() {
   return (
     <main
       style={{ backgroundColor: 'hsl(224 71% 4%)', color: 'white', padding: '5rem 0' }}
-      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
+      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 `}
     >
       <div className="w-full h-full">
         <YoptaRenderer data={DATA_FROM_DB} plugins={plugins} marks={marks} />

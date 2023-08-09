@@ -1,4 +1,4 @@
-import { Inter } from 'next/font/google';
+// import { Inter } from 'next/font/google';
 import { useState } from 'react';
 import YooptaEditor, { generateId } from '@yoopta/editor';
 
@@ -16,8 +16,6 @@ import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import { YooptaValue } from '@/utils/initialData';
-
-const inter = Inter({ subsets: ['latin'] });
 
 const plugins = [
   Paragraph,
@@ -76,7 +74,7 @@ export default function WithOffline() {
   return (
     <main
       style={{ padding: '5rem 0' }}
-      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 ${inter.className}`}
+      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 `}
     >
       <div className="w-full h-full">
         <YooptaEditor<any>
