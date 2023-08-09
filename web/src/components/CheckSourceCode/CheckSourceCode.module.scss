@@ -6,6 +6,15 @@
   top: 20px;
 }
 
+.linkWrap {
+  &:last-child {
+    margin-top: 25px;
+    & .link {
+      background: #222f3f;
+    }
+  }
+}
+
 .link {
   cursor: pointer;
   max-width: 80px;

@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Yoopta-Editor is an open-source rich-text editor designed for React applications. With Yoopta-Editor, you can effortlessly create a robust and versatile editor that rivals the likes of Notion and Medium.
+Yoopta-Editor is an open-source rich-text editor designed for React applications. Using Yoopta-Editor you can effortlessly create a robust and versatile editor that rivals the likes of Notion and Medium.
 
 This editor empowers you to seamlessly customize, extend, and tailor its behavior and user interface to your specific needs. Whether you want to add unique features, style elements, or create a tailored UI, Yoopta-Editor provides you with the tools to make it your own.
 
@@ -33,14 +33,15 @@ In this section, we provide you with some examples of using the Yoopta-Editor in
 
 Okay, let's go!
 
-- [With basic example](https://yopta-editor-darginec05.vercel.app/examples/withBasicExample)
-- [With Notion example](https://yopta-editor-darginec05.vercel.app/examples/withNotionExample)
-- [With custom toolbar (Medium example)](https://yopta-editor-darginec05.vercel.app/examples/withCustomToolbar)
-- [With custom component](https://yopta-editor-darginec05.vercel.app/examples/withCustomComponent)
-- [With extended plugin](https://yopta-editor-darginec05.vercel.app/examples/withExtendedPlugin)
-- [With offline mode](https://yopta-editor-darginec05.vercel.app/examples/withOffline)
-- [With HTML and Markdown exports](https://yopta-editor-darginec05.vercel.app/examples/withExports)
-- [With custom mark](https://yopta-editor-darginec05.vercel.app/examples/withCustomMark)
+- [With basic example](https://yopta-editor.vercel.app/examples/withBasicExample)
+- [With Notion example](https://yopta-editor.vercel.app/examples/withNotionExample)
+- [With custom toolbar (Medium example)](https://yopta-editor.vercel.app/examples/withCustomToolbar)
+- [With media plugins](https://yopta-editor.vercel.app/examples/withMedia)
+- [With custom component](https://yopta-editor.vercel.app/examples/withCustomComponent)
+- [With extended plugin](https://yopta-editor.vercel.app/examples/withExtendedPlugin)
+- [With offline mode](https://yopta-editor.vercel.app/examples/withOffline)
+- [With HTML and Markdown exports](https://yopta-editor.vercel.app/examples/withExports)
+- [With custom mark](https://yopta-editor.vercel.app/examples/withCustomMark)
 - ...and check other examples in the sidebar list
 
 ## Give us ⭐️ star

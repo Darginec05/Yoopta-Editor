@@ -11,7 +11,7 @@ const Head = () => {
       <meta charSet="utf-8" />
       <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=360, initial-scale=1, shrink-to-fit=no" />
-      <link rel="canonical" href={`${hostname}/examples/withBasicExample`} />
+      <link rel="canonical" href="https://github.com/Darginec05/Yopta-Editor" />
       <link type="image/x-icon" href="/favicon.ico" rel="shortcut icon" />
       <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       <link rel="icon" sizes="32x32" href="/favicon.ico" />
@@ -27,7 +27,7 @@ const Head = () => {
       <meta
         property="twitter:description"
         content={
-          'With Yoopta-Editor, you can effortlessly create a robust and versatile editor that rivals the likes of Notion and Medium.'
+          'Using Yoopta-Editor you can effortlessly create a robust and versatile editor that rivals the likes of Notion and Medium.'
         }
       />
 
@@ -36,14 +36,14 @@ const Head = () => {
       <meta name="twitter:image" content={`${hostname}/apple-touch-icon.png`} />
 
       <meta property="og:type" content="website" />
-      <meta property="og:site_name" content={hostname?.replace('https://', '')} />
-      <meta property="og:url" content={`${hostname}/examples/withBasicExample`} />
+      <meta property="og:site_name" content="Yopta-Editor" />
+      <meta property="og:url" content="https://github.com/Darginec05/Yopta-Editor" />
       <meta property="og:image" content={`${hostname}/apple-touch-icon.png`} />
       <meta property="og:title" content={'Yoopta-Editor - open-source rich-text editor'} />
       <meta
         property="og:description"
         content={
-          'With Yoopta-Editor, you can effortlessly create a robust and versatile editor that rivals the likes of Notion and Medium.'
+          'Using Yoopta-Editor you can effortlessly create a robust and versatile editor that rivals the likes of Notion and Medium.'
         }
       />
       <meta itemProp="name" content={'Yoopta-Editor - open-source rich-text editor'} />
@@ -51,7 +51,7 @@ const Head = () => {
       <meta
         name="description"
         content={
-          'With Yoopta-Editor, you can effortlessly create a robust and versatile editor that rivals the likes of Notion and Medium.'
+          'Using Yoopta-Editor you can effortlessly create a robust and versatile editor that rivals the likes of Notion and Medium.'
         }
       />
       <meta itemProp="image" content={`${hostname}/apple-touch-icon.png`} />
