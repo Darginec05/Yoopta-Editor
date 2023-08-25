@@ -67,6 +67,14 @@ const YooptaEditor = <V extends YooptaBaseElement<string>>({
   );
 
   const yooptaEditorPlugins = useMemo(() => {
+    if (!Array.isArray(plugins)) {
+      throw new Error('Props `plugins` should be array of plugins');
+    }
+
+    if (Array.isArray(plugins) && plugins.length === 0) {
+      throw new Error('Props `plugins` cannot be empty. Pass an array of plugins');
+    }
+
     const yooptaPlugins = mergePlugins(plugins);
     const PLUGINS_MAP = mergePluginTypesToMap(yooptaPlugins);
 

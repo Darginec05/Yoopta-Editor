@@ -1,3 +1,4 @@
+import { YooptaEditor } from './YooptaEditor';
 import { YooptaPlugin, mergePlugins, createYooptaPlugin } from './utils/plugins';
 import classnames from 'classnames';
 import { ElementOptions } from './components/ElementOptions/ElementOptions';
@@ -7,7 +8,6 @@ export { classnames as cx };
 export { isKeyHotkey, isHotkey, isCodeHotkey } from 'is-hotkey';
 export { enableBodyScroll, disableBodyScroll } from 'body-scroll-lock';
 
-import { YooptaEditor } from './YooptaEditor';
 export { isValidYooptaNodes } from './utils/validate';
 export { generateId } from './utils/generateId';
 export { HOTKEYS } from './utils/hotkeys';
