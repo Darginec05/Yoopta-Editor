@@ -1587,20 +1587,20 @@
   dependencies:
     body-scroll-lock "^4.0.0-beta.0"
 
-"@yoopta/blockquote@^1.9.17-rc":
-  version "1.9.17-rc"
-  resolved "https://registry.yarnpkg.com/@yoopta/blockquote/-/blockquote-1.9.17-rc.tgz#3c56deb3c706294f97d80a3f12432e3cbcfffc5f"
-  integrity sha512-w3Dy200cBdSu3cCTvZt86LiFPmbI/xTffEO4Oxju/+C4GaxgsoDuJqYQtGfmbKSk8loiTKDEwY1sfrNWREdqVw==
+"@yoopta/blockquote@^1.9.18-rc":
+  version "1.9.18-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/blockquote/-/blockquote-1.9.18-rc.tgz#844375b1e7cc1f9f89d835595766931a3346489d"
+  integrity sha512-0tmRJzz2jdSPvFWu/3QJufcygceHCLkhS2F+enbgZUwspFuzfAHS5Tvsgl37CkxSuyiPWcUGzdwzqhd5lkx60g==
 
 "@yoopta/callout@^1.9.15-rc":
   version "1.9.15-rc"
   resolved "https://registry.yarnpkg.com/@yoopta/callout/-/callout-1.9.15-rc.tgz#802d6daf0a750f051057f1f1d49d8922e781d23c"
   integrity sha512-OW5vA/dmwX2sYkzb2j12dU2OdlU95lJDJwmjsy/VKKwErJ3gv+720pW1TTKVrbe6CPbQIkVsyVaw+surOeCFBA==
 
-"@yoopta/chat-gpt-assistant@^1.9.15-rc":
-  version "1.9.15-rc"
-  resolved "https://registry.yarnpkg.com/@yoopta/chat-gpt-assistant/-/chat-gpt-assistant-1.9.15-rc.tgz#704d48944a2940c7f92876ec2a5a97f1cae3fc43"
-  integrity sha512-pI/V9cESqUtODLpyGj0jE8AxnjWWzIuFfZGAwc9xSzL4mx7y7ZKfZeSFHrPiH+3oiaRqKpyYY4M1062kzkUeAA==
+"@yoopta/chat-gpt-assistant@^1.9.16-rc":
+  version "1.9.16-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/chat-gpt-assistant/-/chat-gpt-assistant-1.9.16-rc.tgz#585e1c388cdf16ac0ea4e1d83ce38198e37fbc7f"
+  integrity sha512-O5qefsshmNlYLCg1IU/Xk3UctsNA3EQ1oipHcTAme3aBtrxW920xJsbkrtRayi3oWgLyf/RPAKSici8bIQ+mmg==
   dependencies:
     ai "^2.1.3"
     autosize "^6.0.1"
