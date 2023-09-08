@@ -55,9 +55,9 @@ const EditorYoopta = ({
   const renderElement = useMemo(() => {
     return (props: RenderElementProps) => {
       const plugin = PLUGINS_MAP[props.element.type];
-      const renderFn = getRenderFunctionFactory(plugin)(editor, plugin);
+      if (!plugin) return null;
 
-      if (!plugin) return <></>;
+      const renderFn = getRenderFunctionFactory(plugin)(editor, plugin);
 
       return (
         <ElementWrapper
@@ -331,7 +331,6 @@ const EditorYoopta = ({
         readOnly={isReadOnly}
         decorate={decorate}
         onCopy={onCopy}
-        autoFocus
         spellCheck
         {...eventHandlers}
         onKeyDown={onKeyDown}
