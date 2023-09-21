@@ -1615,10 +1615,10 @@
     prism-material-themes "^1.0.4"
     prismjs "^1.29.0"
 
-"@yoopta/editor@^1.9.19-rc":
-  version "1.9.19-rc"
-  resolved "https://registry.yarnpkg.com/@yoopta/editor/-/editor-1.9.19-rc.tgz#b53bfd6bfc9ff3c71d1c2f14ef4a15e513d6ac2e"
-  integrity sha512-nYa+lCfyIDln1L8qZsPyTIp8zMH0IXc4iehnUGE/o55/LsHp00RNVHw7N3w0aXXXC/EXgfwW8wmfESx3GxlNlQ==
+"@yoopta/editor@^1.9.22-rc":
+  version "1.9.22-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/editor/-/editor-1.9.22-rc.tgz#3074393d3c3f316658c706c9492d207ba1e8632a"
+  integrity sha512-pnQsS7kT2ux++4QaS+rJ34ZOOqmRXq/drJsSI69t6rhjXS5jSWwRoNeiCeK0STJM3bz348hWs3UPRm35qXrwdQ==
   dependencies:
     body-scroll-lock "^4.0.0-beta.0"
     classnames "^2.3.1"
