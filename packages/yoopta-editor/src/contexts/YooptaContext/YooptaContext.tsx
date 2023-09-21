@@ -1,12 +1,11 @@
 import { Editor, Element, NodeEntry, Path, Text, Transforms } from 'slate';
 import React, { ReactElement, ReactNode, useContext, useMemo, useRef } from 'react';
 import { useSlate } from 'slate-react';
-import { YooptaBaseElement } from '../../types';
-import { ParentYooptaPlugin, YooptaPluginType } from '../../utils/plugins';
+import { YooptaBaseElement, YooptaTools } from '../../types';
+import { YooptaPluginType } from '../../utils/plugins';
 import { YooptaMark } from '../../utils/marks';
 import { getDefaultParagraphLine } from '../../components/Editor/utils';
 import { generateId } from '../../utils/generateId';
-import { YooptaTools } from '../../components/YooptaEditor/YooptaEditor';
 
 const defaultValues: YooptaContextReturnValues = { marks: {}, elements: {} };
 
@@ -34,7 +33,7 @@ export type YooptaContextType = YooptaContextReturnValues;
 
 type Props = {
   children: ReactNode;
-  plugins: ParentYooptaPlugin[];
+  plugins: Omit<YooptaPluginType, 'childPlugin'>[];
   marks?: YooptaMark[];
   tools?: YooptaTools | undefined;
 };
@@ -127,13 +126,13 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList,
     const ELEMENTS_MAP: ElementsMap = {};
 
     pluginList.forEach((plugin) => {
-      const { createElement, defineElement, type, options, ...rest } = plugin;
+      const { createElement, defineElement, type, options, hasParent } = plugin;
       ELEMENTS_MAP[plugin.type] = {
         create: createElement,
         define: defineElement,
         toggle: (options) => toggleNodeElement(plugin, options),
         type,
-        isActive: isElementActive(type),
+        isActive: !hasParent && isElementActive(type),
         options: { displayLabel: options?.displayLabel },
       };
     });
