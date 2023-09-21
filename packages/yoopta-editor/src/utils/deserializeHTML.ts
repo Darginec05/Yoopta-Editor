@@ -57,7 +57,8 @@ const deserialize = (
   }
 
   if (Text.isTextList(children)) {
-    return jsx('element', pluginsMap.P.defineElement(), children);
+    children = children.filter((child) => child.text !== '');
+    if (children.length > 0) return jsx('element', pluginsMap.P.defineElement(), children);
   }
 
   if (TEXT_FORMAT_TAGS[nodeName]) {
