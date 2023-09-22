@@ -114,7 +114,7 @@ const YooptaContextProvider = ({ children, plugins: pluginList, marks: markList,
 
     const [element] = Editor.nodes(editor, {
       at: Editor.unhangRange(editor, editor.selection),
-      match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === type,
+      match: (n) => !Editor.isEditor(n) && Element.isElement(n) && !Editor.isInline(editor, n) && n.type === type,
       mode: 'highest',
     });
 
