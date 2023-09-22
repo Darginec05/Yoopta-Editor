@@ -1,4 +1,4 @@
-import { Transforms } from 'slate';
+import { Text, Transforms } from 'slate';
 import { YooEditor } from '../../../types';
 import { deserializeHtml } from '../../../utils/deserializeHTML';
 
@@ -11,7 +11,9 @@ const withHtml = (editor: YooEditor) => {
 
     if (html) {
       const fragment = deserializeHtml(html, editor.plugins);
-      Transforms.insertFragment(editor, fragment);
+      const nodes = fragment.filter((node) => !Text.isText(node));
+
+      Transforms.insertFragment(editor, nodes);
       return;
     }
 

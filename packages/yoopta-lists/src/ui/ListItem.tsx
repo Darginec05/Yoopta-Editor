@@ -64,7 +64,9 @@ const ListItemList = createYooptaPlugin<any, ListChildItemElement>({
 
         const { anchor } = editor.selection;
         const [listItemNode, listItemPath] = nodeEntry;
-        const [parentNode, parentPath] = Editor.parent(editor, listItemPath) as NodeEntry<BulletedListElement | NumberedListElement>;
+        const [parentNode, parentPath] = Editor.parent(editor, listItemPath) as NodeEntry<
+          BulletedListElement | NumberedListElement
+        >;
 
         const text = Editor.string(editor, listItemPath);
         const isEnd = Editor.isEnd(editor, anchor, listItemPath);
@@ -192,7 +194,6 @@ const ListItemList = createYooptaPlugin<any, ListChildItemElement>({
     },
     html: {
       serialize: (node, children) => {
-        console.log('children', children);
         return `<li>${children}</li>`;
       },
       deserialize: {
