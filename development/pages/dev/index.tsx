@@ -4,6 +4,7 @@ import Paragraph, { ParagraphElement } from '@yoopta/paragraph';
 import Callout, { CalloutElement } from '@yoopta/callout';
 import Code, { CodeElement } from '@yoopta/code';
 import Link, { LinkElement } from '@yoopta/link';
+import File, { FileElement } from '@yoopta/file';
 import Lists from '@yoopta/lists';
 import Headings, { HeadingOneElement, HeadingThreeElement, HeadingTwoElement } from '@yoopta/headings';
 import Image, { ImageElement, ImagePluginOptions } from '@yoopta/image';
@@ -79,6 +80,16 @@ const plugins = [
   }),
   Code,
   Link,
+  File.extend({
+    options: {
+      onUpload: async (file: File) => {
+        const response = await uploadToCloudinary(file, 'auto');
+        console.log('response', response);
+
+        return { url: response.url, width: response.data.width, height: response.data.height };
+      },
+    },
+  }),
   Lists.NumberedList.extend({
     options: {
       HTMLAttributes: {
@@ -127,12 +138,6 @@ const plugins = [
     },
   }),
 ];
-
-const ColoredMark = createYooptaMark({
-  type: 'colored',
-  hotkey: 'shift+y',
-  className: 'colored-red',
-});
 
 const ACTION_MENU_ITEMS: ActionMenuItem<Record<'description' | 'icon', string>>[] = [
   {
@@ -204,7 +209,7 @@ const ACTION_MENU_ITEMS: ActionMenuItem<Record<'description' | 'icon', string>>[
 
 const TOOLS = {
   Toolbar: <Toolbar render={MediumToolbar} />,
-  ActionMenu: <ActionMenu items={ACTION_MENU_ITEMS} options={{ shouldDeleteText: false }} />,
+  ActionMenu: <ActionMenu options={{ shouldDeleteText: false }} />,
   LinkTool: <LinkTool />,
   // ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" context={initContextMessages} />,
 };
@@ -214,7 +219,7 @@ const BasicExample = () => {
   const [mode, setMode] = useState<'render' | 'edit'>('edit');
 
   const isEdit = mode === 'edit';
-  const marks = [Bold, Italic, CodeMark, Underline, Strike, ColoredMark];
+  const marks = [Bold, Italic, CodeMark, Underline, Strike];
 
   const toggleMode = () => setMode(isEdit ? 'render' : 'edit');
 

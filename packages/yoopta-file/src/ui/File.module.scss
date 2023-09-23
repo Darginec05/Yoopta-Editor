@@ -1,0 +1,45 @@
+.fileElement {
+  margin: 10px 0;
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 2px;
+  transition: background 100ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    background: rgba(35, 131, 226, 0.14);
+  }
+}
+
+.file {
+  object-fit: cover;
+  border-radius: 1px;
+  pointer-events: auto;
+  max-width: 100%;
+}
+
+.fileContent {
+  display: flex;
+}
+
+.fileContentText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 6px;
+  font-weight: 600;
+}
+
+.fileContentTextSize {
+  font-size: 12px;
+  color: #8e8e93;
+  margin-left: 10px;
+}

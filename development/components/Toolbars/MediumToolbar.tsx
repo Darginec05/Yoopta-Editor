@@ -53,11 +53,11 @@ const MediumToolbar = (props: ToolbarProps) => {
             <ItalicIcon />
           </span>
         </button>
-        <button type="button" className={s.button} onClick={() => marks.colored.toggle()}>
+        {/* <button type="button" className={s.button} onClick={() => marks.colored.toggle()}>
           <span style={marks.colored.isActive ? { color: '#b5e5a4' } : { color: '#fff' }} className={s.item}>
             <ItalicIcon />
           </span>
-        </button>
+        </button> */}
         {hasLinkTool && (
           <button type="button" ref={linkToolButtonRef} className={s.button} onClick={openLinkTool}>
             <span style={marks.code.isActive ? { color: '#b5e5a4' } : { color: '#fff' }} className={s.item}>

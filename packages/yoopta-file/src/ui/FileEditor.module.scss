@@ -1,0 +1,38 @@
+.root {
+  display: block;
+  cursor: pointer;
+  position: relative;
+}
+
+.loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.dotsOptions {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1;
+  opacity: 0;
+  background-color: #eee;
+  width: 22px;
+  height: 22px;
+  transition: opacity 150ms ease-in 0s;
+  border: none;
+  cursor: pointer;
+  border-radius: 2px;
+  padding: 0 4px;
+}
+
+.dot {
+  min-width: 3px;
+  min-height: 3px;
+  background-color: gray;
+  border-radius: 50%;
+}
