@@ -145,14 +145,18 @@ const ActionMenuList = ({ items, render, plugins, trigger = '/', on, ...rest }: 
     return { displayLabel, searchString, ...rest, type, createElement, defineElement, options };
   };
 
+  const filterInlineNodes = (item: Pick<YooptaPluginType, 'type' | 'createElement' | 'defineElement' | 'options'>) =>
+    item.defineElement().nodeType !== 'inline';
+
   const renderMenuItems = useMemo<ActionMenuRenderItem[]>(() => {
     let menuList: ActionMenuRenderItem[];
 
     if (items) {
-      menuList = items.map(mapCustomMenuItems);
+      menuList = items.map(mapCustomMenuItems).filter(filterInlineNodes);
     } else {
       menuList = (plugins as YooptaPluginType[])
         .filter((item) => !item.hasParent)
+        .filter(filterInlineNodes)
         .map(({ type, createElement, defineElement, options }) => ({ type, createElement, defineElement, options }));
     }
 

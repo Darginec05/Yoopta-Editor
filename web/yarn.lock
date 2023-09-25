@@ -1580,10 +1580,10 @@
     "@typescript-eslint/types" "5.62.0"
     eslint-visitor-keys "^3.3.0"
 
-"@yoopta/action-menu-list@^1.9.15-rc":
-  version "1.9.15-rc"
-  resolved "https://registry.yarnpkg.com/@yoopta/action-menu-list/-/action-menu-list-1.9.15-rc.tgz#eb85d19ae40ecfe0200e996cc4fa005b765fc7bc"
-  integrity sha512-ByJLvuhjgXkjnjI8apZXfiFyIy0Mg6qLwa6jwD8XdjZAI4nqFvbHU0a5bypitkhwzBkpgHeMeEVpXeUmOqEC9w==
+"@yoopta/action-menu-list@^1.9.16-rc":
+  version "1.9.16-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/action-menu-list/-/action-menu-list-1.9.16-rc.tgz#ea85d5d2908134f2f58dd115e8003d3d0a3b8556"
+  integrity sha512-iZosBlQQIYw93ew/XP89xLw0NhqBoVZ0d/ggt0M/QGGI9QoLnRqxFEE2aHTDQTRpk/DSQaBGdivSEwnV553ICw==
   dependencies:
     body-scroll-lock "^4.0.0-beta.0"
 
