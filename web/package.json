@@ -15,7 +15,7 @@
     "@types/node": "20.0.0",
     "@types/react": "18.2.5",
     "@types/react-dom": "18.2.3",
-    "@yoopta/action-menu-list": "^1.9.15-rc",
+    "@yoopta/action-menu-list": "^1.9.16-rc",
     "@yoopta/blockquote": "^1.9.18-rc",
     "@yoopta/callout": "^1.9.15-rc",
     "@yoopta/chat-gpt-assistant": "^1.9.16-rc",
