@@ -17,6 +17,7 @@
     { "path": "./packages/yoopta-chatGPT-assistant" },
     { "path": "./packages/exports" },
     { "path": "./packages/yoopta-embed" },
-    { "path": "./packages/linkTool" }
+    { "path": "./packages/linkTool" },
+    { "path": "./packages/yoopta-file" }
   ]
 }

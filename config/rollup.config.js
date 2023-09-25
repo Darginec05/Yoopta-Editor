@@ -27,6 +27,7 @@ const chatGPTPkg = require('../packages/yoopta-chatGPT-assistant/package.json');
 const exportsPkg = require('../packages/exports/package.json');
 const embedPkg = require('../packages/yoopta-embed/package.json');
 const linkToolPkg = require('../packages/linkTool/package.json');
+const filePkg = require('../packages/yoopta-file/package.json');
 
 const isProd = process.env.NODE_ENV === 'production';
 const isDev = process.env.NODE_ENV === 'development';
@@ -50,6 +51,7 @@ const aliases = {
   '@yoopta/chat-gpt-assistant': 'yoopta-chatGPT-assistant',
   '@yoopta/exports': 'exports',
   '@yoopta/link-tool': 'linkTool',
+  '@yoopta/file': 'yoopta-file',
 };
 
 const getPlugins = ({ postcssConfig, packagePathname }) => {
@@ -130,6 +132,7 @@ const RendererPkgConfig = createConfig({ pkg: rendererPkg });
 const ChatGPTPkgConfig = createConfig({ pkg: chatGPTPkg });
 const ExportsConfig = createConfig({ pkg: exportsPkg });
 const LinkToolConfig = createConfig({ pkg: linkToolPkg });
+const FileConfig = createConfig({ pkg: filePkg });
 
 export default [
   CoreConfig,
@@ -145,6 +148,7 @@ export default [
   SuggestionListPkgConfig,
   ToolbarPkgConfig,
   MarksPkgConfig,
+  FileConfig,
   RendererPkgConfig,
   ChatGPTPkgConfig,
   EmbedPkgConfig,

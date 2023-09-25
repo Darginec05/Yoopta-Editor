@@ -8,6 +8,7 @@ import Code from '@yoopta/code';
 import Embed from '@yoopta/embed';
 import Image from '@yoopta/image';
 import Link from '@yoopta/link';
+import File from '@yoopta/file';
 import Callout from '@yoopta/callout';
 import Video from '@yoopta/video';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
@@ -35,6 +36,14 @@ const plugins = [
   NumberedList,
   BulletedList,
   TodoList,
+  File.extend({
+    options: {
+      onUpload: async (file: File) => {
+        const response = await uploadToCloudinary(file, 'auto');
+        return { url: response.url };
+      },
+    },
+  }),
   Embed.extend({
     options: {
       maxWidth: 650,
