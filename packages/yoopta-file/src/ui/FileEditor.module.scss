@@ -2,19 +2,19 @@
   display: block;
   cursor: pointer;
   position: relative;
-}
 
-.loader {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  &:hover {
+    & .dotsOptions {
+      opacity: 1;
+    }
+  }
 }
 
 .dotsOptions {
   position: absolute;
   right: 10px;
-  top: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -35,4 +35,15 @@
   min-height: 3px;
   background-color: gray;
   border-radius: 50%;
+}
+
+.loadingState {
+  cursor: wait;
+
+  & a {
+    pointer-events: none;
+    opacity: 0.6;
+    background: rgba(35, 131, 226, 0.14);
+    cursor: inherit;
+  }
 }

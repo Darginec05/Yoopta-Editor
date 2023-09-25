@@ -15,13 +15,14 @@ function formatBytesToKilobytes(bytes) {
 }
 
 const File = ({ attributes, element, children, HTMLAttributes }: Props) => {
-  if (!element.data.url) return <div {...attributes} />;
+  if (!element.data.url && !element.data['data-url']) return <div {...attributes} />;
 
   return (
     <div {...attributes} className={s.fileElement} contentEditable={false} draggable={false}>
       <a
         target="_blank"
-        href={element.data.url}
+        rel="noopener noreferrer"
+        href={element.data.url!}
         className={getElementClassname<FileElement>({ element, HTMLAttributes, className: s.file })}
       >
         <div className={s.fileContent}>

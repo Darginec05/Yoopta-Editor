@@ -5,6 +5,7 @@ import Callout, { CalloutElement } from '@yoopta/callout';
 import Code, { CodeElement } from '@yoopta/code';
 import Link, { LinkElement } from '@yoopta/link';
 import File, { FileElement } from '@yoopta/file';
+import { html, markdown } from '@yoopta/exports';
 import Lists from '@yoopta/lists';
 import Headings, { HeadingOneElement, HeadingThreeElement, HeadingTwoElement } from '@yoopta/headings';
 import Image, { ImageElement, ImagePluginOptions } from '@yoopta/image';
@@ -227,6 +228,9 @@ const BasicExample = () => {
     <div className={s.container}>
       <button type="button" onClick={toggleMode}>
         read only
+      </button>
+      <button type="button" onClick={() => console.log(html.serialize(editorValue, plugins))}>
+        to html
       </button>
       {isEdit ? (
         <YooptaEditor<YooptaValue>

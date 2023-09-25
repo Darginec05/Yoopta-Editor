@@ -2,19 +2,16 @@ import { YooptaBaseElement, Modify, YooptaPluginBaseOptions } from '@yoopta/edit
 
 export type FileUploadResponse = {
   url: string;
-  width: number;
-  height: number;
-  srcSet?: string[];
+  preview?: string;
 };
 
 export type FilePluginOptions = {
-  maxWidth?: number;
-  maxHeight?: number;
   accept?: string | undefined;
   onUpload: (file: File) => Promise<FileUploadResponse>;
 } & YooptaPluginBaseOptions;
 
 export type FileElementData = {
+  'data-url'?: string | null | undefined;
   url: string | null | undefined;
   name: string;
   size: number;

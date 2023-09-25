@@ -1642,6 +1642,11 @@
   dependencies:
     lodash.uniqwith "^4.5.0"
 
+"@yoopta/file@1.0.2-rc":
+  version "1.0.2-rc"
+  resolved "https://registry.yarnpkg.com/@yoopta/file/-/file-1.0.2-rc.tgz#457bf4dc2c8ee62e4ef593b4c44b98f2cb4e8816"
+  integrity sha512-H29iXeFkYoQChlDzz389n4jODxrd9GoNcUc+ASa961klLnPuV8d5Zh5CBSttQLE8FAgpNs9ElKe0MVbfjYjIEA==
+
 "@yoopta/headings@^1.9.15-rc":
   version "1.9.15-rc"
   resolved "https://registry.yarnpkg.com/@yoopta/headings/-/headings-1.9.15-rc.tgz#a12591fde237de74c18b440fb734b358fa83c265"

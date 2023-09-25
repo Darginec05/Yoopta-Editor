@@ -1,10 +1,9 @@
 import { ReactEditor } from 'slate-react';
-import UploadIcon from './icons/upload.svg';
+import UploadIcon from '../icons/file.svg';
 import { MouseEvent, useRef, useState } from 'react';
 import { EditorUploader } from './EditorUploader';
 import { Element, Transforms } from 'slate';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import { toBase64 } from '../utils/base64';
 import { RenderYooptaElementProps, YooEditor } from '@yoopta/editor';
 import { FileElement, FilePluginOptions } from '../types';
 import s from './EditorPlaceholder.module.scss';
@@ -51,13 +50,9 @@ const EditorPlaceholder = ({ element, accept, attributes, children, editor, onUp
     }
   };
 
-  const onChangeFile = async (file) => {
-    console.log('file.name', file.name);
-    console.log('file.size', file.size);
-
-    const base64 = await toBase64(file);
-
+  const onChangeFile = async (file: File) => {
     enableBodyScroll(document.body);
+
     setUploaderPos(null);
 
     const fileNode: Partial<FileElement> = {
@@ -65,7 +60,7 @@ const EditorPlaceholder = ({ element, accept, attributes, children, editor, onUp
         ...element.data,
         name: file.name,
         size: file.size,
-        url: 'ádadsa',
+        'data-url': file.name,
       },
     };
 
@@ -84,6 +79,7 @@ const EditorPlaceholder = ({ element, accept, attributes, children, editor, onUp
         url: response.url,
         size: file.size,
         name: file.name,
+        'data-url': undefined,
       },
     };
 

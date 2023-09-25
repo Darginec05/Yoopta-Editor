@@ -60,18 +60,21 @@ const File = createYooptaPlugin<FilePluginOptions, FileElement>({
   exports: {
     markdown: {
       serialize: (node, children) => {
-        return `![${node.data.caption || ''}](${node.data.url})\n`;
+        return `![${node.data.name || ''}](${node.data.url})\n`;
       },
     },
     html: {
       serialize: (node, children) => {
-        return `<img src="${node.data.url}" width="${node.data.size?.width}" height="${node.data.size
-          ?.height}" decoding="async" loading="lazy"  alt="${node.data.caption || 'yoopta-html-file'}" />`;
+        console.log('node', node);
+        console.log('children', children);
+
+        return `<div><a href="${node.data.url}" target="_blank" rel="noopener noreferrer">${node.data.name}</a></div>`;
       },
       deserialize: {
-        nodeName: 'IMG',
+        nodeName: 'A',
         parse: (el): Partial<FileElementData> => ({
-          url: el.getAttribute('src'),
+          url: el.getAttribute('href'),
+          name: el.textContent as string,
         }),
       },
     },

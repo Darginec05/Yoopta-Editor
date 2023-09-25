@@ -2,7 +2,6 @@ import { useReadOnly, useSelected } from 'slate-react';
 import { EditorPlaceholder } from '../components/EditorPlaceholder';
 import { CSSProperties, MouseEvent, useState } from 'react';
 import { cx, RenderYooptaElementProps, UI_HELPERS, YooEditor, YooptaPluginType } from '@yoopta/editor';
-import { Loader } from '../components/Loader';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { FileElement, FilePluginOptions } from '../types';
 import s from './FileEditor.module.scss';
@@ -28,7 +27,7 @@ function FileEditor(props: Props) {
   const readOnly = useReadOnly();
 
   const [optionsPos, setOptionsPos] = useState<CSSProperties | null>(null);
-  const isLoading = !!element.data['data-src'] && !element.data.url;
+  const isLoading = !!element.data['data-url'] && !element.data.url;
 
   const closeOptions = () => {
     enableBodyScroll(document.body);
@@ -38,9 +37,7 @@ function FileEditor(props: Props) {
   const toggleOptionsOpen = (e?: MouseEvent) => {
     e?.stopPropagation();
 
-    if (optionsPos !== null) {
-      return closeOptions();
-    }
+    if (optionsPos !== null) return closeOptions();
 
     const optionsButtonRect = e?.currentTarget?.getBoundingClientRect();
 
@@ -62,9 +59,7 @@ function FileEditor(props: Props) {
     }
   };
 
-  console.log('element', element);
-
-  if (!element.data.url) {
+  if (element.data.url === null && !isLoading) {
     return (
       <div className={s.root} key={element.id} contentEditable={false} draggable={false}>
         <div className={cx(s.selectImg, { [s.selected]: selected })} />
@@ -110,13 +105,7 @@ function FileEditor(props: Props) {
     >
       {/* Move edit props to editorProps */}
       {plugin.renderer.render(props)}
-      <div className={cx(s.selectImg, { [s.selected]: selected })} />
-      {isLoading && (
-        <div className={s.loader}>
-          <Loader />
-        </div>
-      )}
-      {!readOnly && (
+      {!readOnly && !isLoading && (
         <div>
           <button type="button" className={s.dotsOptions} onClick={toggleOptionsOpen}>
             <span className={s.dot} />
