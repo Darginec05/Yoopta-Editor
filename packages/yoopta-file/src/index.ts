@@ -65,18 +65,18 @@ const File = createYooptaPlugin<FilePluginOptions, FileElement>({
     },
     html: {
       serialize: (node, children) => {
-        console.log('node', node);
-        console.log('children', children);
-
         return `<div><a href="${node.data.url}" target="_blank" rel="noopener noreferrer">${node.data.name}</a></div>`;
       },
-      deserialize: {
-        nodeName: 'A',
-        parse: (el): Partial<FileElementData> => ({
-          url: el.getAttribute('href'),
-          name: el.textContent as string,
-        }),
-      },
+      // [TODO] - research how to deserialize html for file
+      // deserialize: {
+      //   nodeName: 'A',
+      //   parse: (el) => {
+      //     return {
+      //       url: el.getAttribute('href'),
+      //       name: el.textContent as string,
+      //     };
+      //   },
+      // },
     },
   },
   options: {
