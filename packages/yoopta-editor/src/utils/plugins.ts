@@ -39,7 +39,7 @@ export type YooptaRenderHTMLAttributes = {
 
 export type YooptaRenderer<P extends YooptaBaseElement<string>> = ExtendedYooptaRender<P> | YooptaRender<P>;
 
-type DeserializeHTML = { nodeName: string | string[]; parse?: (el: HTMLElement) => any };
+type DeserializeHTML = { nodeName: string | string[]; parse?: (el: HTMLElement) => any | null };
 
 type Serializes<T, S> = {
   serialize?: (node: T, text: string) => string;
