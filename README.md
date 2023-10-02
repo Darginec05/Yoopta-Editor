@@ -27,7 +27,142 @@ This editor empowers you to seamlessly customize, extend, and tailor its behavio
 - The soul invested in the development of this editor 💙
 - ...and other features
 
-## Examples
+## Getting Started
+
+First install the peer dependencies and the Yoopta core package with at least one plugin
+
+```bash
+## slate and slate-react - peer dependecies
+## @yoopta/editor - core package
+## @yoopta/paragraph - default plugin
+yarn add slate slate-react @yoopta/editor @yoopta/paragraph
+# or
+npm install slate slate-react @yoopta/editor @yoopta/paragraph
+```
+
+### Plugins:
+
+```jsx
+import YooptaEditor from '@yoopta/editor';
+import Paragraph from '@yoopta/paragraph';
+import { useState } from 'react';
+
+// List of plugins should be defined outside component
+const plugins = [Paragraph];
+
+// Your custom styles
+const styles = { width: 640, margin: '0 auto', padding: '40px 10px' };
+
+export default function Editor() {
+  const [value, setValue] = useState([]);
+
+  return (
+    <div style={styles}>
+      <YooptaEditor
+        value={value}
+        onChange={(val) => setValue(val)}
+        plugins={plugins}
+        placeholder="Type text.."
+      />
+    </div>
+  );
+}
+```
+
+Here is list of available plugins
+
+- @yoopta/paragraph
+- @yoopta/blockquote
+- @yoopta/code
+- @yoopta/embed
+- @yoopta/image
+- @yoopta/link
+- @yoopta/file
+- @yoopta/callout
+- @yoopta/video
+- @yoopta/lists
+- @yoopta/headings
+
+***[Check code with plugins](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L27)***
+
+### Tools
+Yoopta-Editor provides useful tools that can help you when working with the editor
+
+```jsx
+// IMPORT TOOLS
+import LinkTool from '@yoopta/link-tool';
+import ActionMenu from '@yoopta/action-menu-list';
+import Toolbar from '@yoopta/toolbar';
+
+// Tools should be defined outside component
+const TOOLS = {
+  Toolbar: <Toolbar />,
+  ActionMenu: <ActionMenu />,
+  LinkTool: <LinkTool />,
+};
+
+export default function Editor() {
+  const [value, setValue] = useState([]);
+
+  return (
+    <div style={styles}>
+      <YooptaEditor
+        value={value}
+        onChange={(val) => setValue(val)}
+        plugins={plugins}
+        placeholder="Type text.."
+        tools={TOOLS}
+      />
+    </div>
+  );
+}
+```
+
+Here is list of available tools
+
+- @yoopta/link-tool
+- @yoopta/action-menu-list
+- @yoopta/toolbar
+- *@yoopta/chat-gpt-assistant* - **soon**
+
+***[Check code with tools](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L76)***
+### Marks 
+Marks are simple text formatters
+
+```jsx
+// IMPORT MARKS
+import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
+
+export default function Editor() {
+  const [value, setValue] = useState([]);
+  const MARKS = [Bold, Italic, CodeMark, Underline, Strike];
+
+  return (
+    <div style={styles}>
+      <YooptaEditor
+        value={value}
+        onChange={(val) => setValue(val)}
+        placeholder="Type text.."
+        plugins={plugins}
+        tools={TOOLS}
+        marks={MARKS}
+      />
+    </div>
+  );
+}
+```
+
+Here is list of available marks from **@yoopta/marks** package
+
+- Bold
+- Italic
+- CodeMark
+- Underline 
+- Strike
+
+***[Check code with marks](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L85)***
+
+## Examples - DEMO's
 
 In this section, we provide you with some examples of using the Yoopta-Editor in your projects. These examples will help you get started quickly and show you how easy it is to integrate and customize the editor to your needs.
 
