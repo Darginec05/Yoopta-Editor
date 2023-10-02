@@ -40,6 +40,8 @@ yarn add slate slate-react @yoopta/editor @yoopta/paragraph
 npm install slate slate-react @yoopta/editor @yoopta/paragraph
 ```
 
+### Plugins:
+
 ```jsx
 import YooptaEditor from '@yoopta/editor';
 import Paragraph from '@yoopta/paragraph';
@@ -67,8 +69,7 @@ export default function Editor() {
 }
 ```
 
-### Plugins:
-Here is list of available plugins - [check code with plugins](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L27)
+Here is list of available plugins
 
 - @yoopta/paragraph
 - @yoopta/blockquote
@@ -82,8 +83,10 @@ Here is list of available plugins - [check code with plugins](https://github.com
 - @yoopta/lists
 - @yoopta/headings
 
+***[Check code with plugins](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L27)***
+
 ### Tools
-Yoopta-Editor provides useful tools that can help you to help when working with the editor
+Yoopta-Editor provides useful tools that can help you when working with the editor
 
 ```jsx
 // IMPORT TOOLS
@@ -115,13 +118,14 @@ export default function Editor() {
 }
 ```
 
-Here is list of available tools - [check code with tools](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L76)
+Here is list of available tools
 
 - @yoopta/link-tool
 - @yoopta/action-menu-list
 - @yoopta/toolbar
 - *@yoopta/chat-gpt-assistant* - **soon**
 
+***[Check code with tools](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L76)***
 ### Marks 
 Marks are simple text formatters
 
@@ -148,7 +152,7 @@ export default function Editor() {
 }
 ```
 
-Here is list of available marks from **@yoopta/marks** package - [check code with tools](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L85)
+Here is list of available marks from **@yoopta/marks** package
 
 - Bold
 - Italic
@@ -156,6 +160,7 @@ Here is list of available marks from **@yoopta/marks** package - [check code wit
 - Underline 
 - Strike
 
+***[Check code with marks](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L85)***
 
 ## Examples - DEMO's
 
