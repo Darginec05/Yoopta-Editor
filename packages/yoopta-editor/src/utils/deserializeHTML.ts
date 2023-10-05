@@ -1,4 +1,4 @@
-import { Editor, Node, Text } from 'slate';
+import { Editor, Element, Node, Text } from 'slate';
 import { jsx } from 'slate-hyperscript';
 import { YooptaBaseElement } from '../types';
 import { YooptaPluginType } from './plugins';
@@ -13,12 +13,20 @@ const TEXT_FORMAT_TAGS = {
   U: () => ({ underline: true }),
 };
 
+// Sometimes when you copy/paste from external resources, the HTML is not well formatted and deserialize function will return a list of Text nodes.
+// This function will check if all nodes are Text nodes or Inline nodes.
+const isAllInlineOrTextNodes = (nodes: Node[]): boolean => {
+  return nodes.every(
+    (item) => (Text.isText(item) && item.text.length > 0) || (Element.isElement(item) && item.nodeType === 'inline'),
+  );
+};
+
 const deserialize = (
   el: HTMLElement | ChildNode,
   pluginsMap: Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>>,
 ) => {
   if (el.nodeType === 3) {
-    return el.textContent;
+    return el.textContent?.replace(/[\t\n\r\f\v]+/g, ' ');
   } else if (el.nodeType !== 1) {
     return null;
   } else if (el.nodeName === 'BR') {
@@ -98,7 +106,12 @@ export function deserializeHtml(
     const pluginsMap = mergePluginTypesToMapHMTLNodeName(plugins);
     const parsedHtml = new DOMParser().parseFromString(htmlString, 'text/html');
 
-    return deserialize(parsedHtml.body, pluginsMap);
+    const deserialized = deserialize(parsedHtml.body, pluginsMap);
+    if (isAllInlineOrTextNodes(deserialized)) {
+      return [jsx('element', pluginsMap.P.defineElement(), deserialized)];
+    }
+
+    return deserialized.filter((node) => !Text.isText(node));
   } catch (error) {
     console.error(error);
     return null;
