@@ -20,7 +20,7 @@
     "@yoopta/callout": "^1.9.15-rc",
     "@yoopta/chat-gpt-assistant": "^1.9.16-rc",
     "@yoopta/code": "^1.9.15-rc",
-    "@yoopta/editor": "^1.9.25-rc",
+    "@yoopta/editor": "^1.9.26-rc",
     "@yoopta/embed": "^1.9.18-rc",
     "@yoopta/exports": "^1.9.17-rc",
     "@yoopta/file": "^1.0.3-rc",

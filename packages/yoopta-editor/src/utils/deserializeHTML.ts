@@ -13,7 +13,8 @@ const TEXT_FORMAT_TAGS = {
   U: () => ({ underline: true }),
 };
 
-// Sometimes copy/paste from external
+// Sometimes when you copy/paste from external resources, the HTML is not well formatted and deserialize function will return a list of Text nodes.
+// This function will check if all nodes are Text nodes or Inline nodes.
 const isAllInlineOrTextNodes = (nodes: Node[]): boolean => {
   return nodes.every(
     (item) => (Text.isText(item) && item.text.length > 0) || (Element.isElement(item) && item.nodeType === 'inline'),
