@@ -1,4 +1,4 @@
-import { Text, Transforms } from 'slate';
+import { Transforms } from 'slate';
 import { YooEditor } from '../../../types';
 import { deserializeHtml } from '../../../utils/deserializeHTML';
 

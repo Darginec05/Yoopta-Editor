@@ -13,40 +13,19 @@ const TEXT_FORMAT_TAGS = {
   U: () => ({ underline: true }),
 };
 
-const candidate = [
-  {
-    text: 'To understand how',
-  },
-  {
-    id: 'u5ID6xLJGhyJRvr288kix',
-    type: 'link',
-    children: [
-      {
-        text: 'Homo sapiens',
-      },
-    ],
-    nodeType: 'inline',
-    data: {
-      url: 'https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjRlIuI1cjrAhWOVN8KHRZgCTgQFjAAegQIBRAB&url=https://humanorigins.si.edu/evidence/human-fossils/species/homo-sapiens&usg=AOvVaw3YMoa0h_v8efY-5dR5m1wY',
-      skipDrag: true,
-    },
-  },
-  {
-    text: 'eventually evolved from these older lineages of hominins, the group including modern humans and our closest extinct relatives and ancestors, scientists are unearthing ancient bones and stone tools, digging into our genes and recreating the changing environments that helped shape our ancestors’ world and guide their evolution.',
-  },
-];
-
-console.log(
-  'candidate text nodes or inlines',
-  candidate.filter((item) => Text.isText(item) || (Element.isElement(item) && item.nodeType === 'inline')),
-);
+// Sometimes copy/paste from external
+const isAllInlineOrTextNodes = (nodes: Node[]): boolean => {
+  return nodes.every(
+    (item) => (Text.isText(item) && item.text.length > 0) || (Element.isElement(item) && item.nodeType === 'inline'),
+  );
+};
 
 const deserialize = (
   el: HTMLElement | ChildNode,
   pluginsMap: Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>>,
 ) => {
   if (el.nodeType === 3) {
-    return el.textContent?.replace(/[\t\r\f\v]+/g, ' ');
+    return el.textContent?.replace(/[\t\n\r\f\v]+/g, ' ');
   } else if (el.nodeType !== 1) {
     return null;
   } else if (el.nodeName === 'BR') {
@@ -54,8 +33,6 @@ const deserialize = (
   }
 
   const { nodeName } = el;
-
-  console.log('nodeName', nodeName);
 
   let parent = el;
 
@@ -129,17 +106,10 @@ export function deserializeHtml(
     const parsedHtml = new DOMParser().parseFromString(htmlString, 'text/html');
 
     const deserialized = deserialize(parsedHtml.body, pluginsMap);
-
-    if (
-      candidate.filter(
-        (item) =>
-          (Text.isText(item) && item.text.length > 0) || (Element.isElement(item) && item.nodeType === 'inline'),
-      ).length > 0
-    ) {
+    if (isAllInlineOrTextNodes(deserialized)) {
       return [jsx('element', pluginsMap.P.defineElement(), deserialized)];
     }
 
-    // return deserialized;
     return deserialized.filter((node) => !Text.isText(node));
   } catch (error) {
     console.error(error);
