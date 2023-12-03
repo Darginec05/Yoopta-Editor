@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/blockquote",
-  "version": "1.9.18-rc",
+  "version": "1.9.19-rc",
   "description": "> TODO: description",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
@@ -18,7 +18,7 @@
     "react-dom": ">=17.0.2",
     "slate": ">=0.72.3",
     "slate-react": ">=0.95.0",
-    "@yoopta/editor": ">=1.9.16-rc"
+    "@yoopta/editor": ">=1.9.18-rc"
   },
   "publishConfig": {
     "registry": "https://registry.yarnpkg.com"
