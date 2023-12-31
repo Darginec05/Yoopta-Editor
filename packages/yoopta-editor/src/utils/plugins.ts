@@ -160,6 +160,11 @@ export function mergePlugins<O extends YooptaPluginBaseOptions, P extends Yoopta
   plugins: YooptaPlugin<O, P>[],
 ): YooptaPluginType<O, P>[] {
   const items: YooptaPluginType<O, P>[] = plugins
+    .filter((plugin) => {
+      // if (!(plugin instanceof YooptaPlugin)) console.log('plugin', plugin);
+
+      return plugin instanceof YooptaPlugin;
+    })
     .map((instance) => {
       const { childPlugin, ...componentProps } = instance.getPlugin;
       return childPlugin ? [componentProps, { ...childPlugin.getPlugin, hasParent: true }] : componentProps;

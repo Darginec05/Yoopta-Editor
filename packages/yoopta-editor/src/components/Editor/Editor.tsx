@@ -321,10 +321,11 @@ const EditorYoopta = ({
   };
 
   return (
-    <div id="yoopta-editor" className={className} ref={editorRef} onMouseDown={handleEmptyZoneClick}>
-      {!!ActionMenu && <ActionMenu />}
-      {!!Toolbar && <Toolbar />}
-      <Editable
+    // <div id="yoopta-editor" className={className} ref={editorRef} onMouseDown={handleEmptyZoneClick}>
+    <div id="yoopta-editor" className={className} ref={editorRef}>
+      {/* {!!ActionMenu && <ActionMenu />}
+      {!!Toolbar && <Toolbar />} */}
+      {/* <Editable
         id="yoopta-contenteditable"
         renderLeaf={renderLeaf}
         renderElement={renderElement}
@@ -333,11 +334,45 @@ const EditorYoopta = ({
         onCopy={onCopy}
         spellCheck
         {...eventHandlers}
-        onKeyDown={onKeyDown}
+        // onKeyDown={onKeyDown}
         onMouseDown={onMouseDown}
+        style={EDITOR_STYLES}
+      /> */}
+      <Editable
+        renderElement={(props) => <ParagraphPluginUltra {...props} />}
+        onKeyDown={onKeyDown}
+        onChange={(value) => {
+          console.log('editor.operations', editor.operations);
+        }}
+        className={className}
+        style={EDITOR_STYLES}
+      />
+      <Editable
+        renderElement={(props) => <CodePluginUltra {...props} />}
+        onKeyDown={onKeyDown}
+        onChange={(value) => {
+          console.log('editor.operations', editor.operations);
+        }}
+        className={className}
         style={EDITOR_STYLES}
       />
     </div>
+  );
+};
+
+const ParagraphPluginUltra = (props) => {
+  console.log('ParagraphPluginUltra props', props);
+
+  return <p {...props.attributes}>{props.children}</p>;
+};
+
+const CodePluginUltra = (props) => {
+  console.log('CodePluginUltra props', props);
+
+  return (
+    <pre {...props.attributes} style={{ marginTop: 40, minHeight: 100, width: '100%' }}>
+      <code>{props.children}</code>
+    </pre>
   );
 };
 

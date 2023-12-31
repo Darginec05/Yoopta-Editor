@@ -1,4 +1,4 @@
-import { Editor, Element, Node, NodeEntry, Path, Range, Transforms } from 'slate';
+import { createEditor, Editor, Element, Node, NodeEntry, Path, Range, Transforms } from 'slate';
 import { getElementByPath, generateId, createYooptaPlugin, YooEditor, YooptaPluginBaseOptions } from '@yoopta/editor';
 import { CodeLeaf } from './ui/CodeLeaf';
 import { CodeRender } from './ui/CodeRender';
@@ -6,6 +6,8 @@ import { CodeLineRender } from './ui/CodeLineRender';
 import { codeLineDecorator, getChildNodeToDecorations, mergeMaps } from './utils/decorator';
 import { CodeEditor } from './ui/CodeEditor';
 import { CodeChildElement, CodeElement } from './types';
+import { useState } from 'react';
+import { withReact } from 'slate-react';
 
 const CODE_NODE_TYPE = 'code';
 const CODE_CHILD_NODE_TYPE = 'code-line';

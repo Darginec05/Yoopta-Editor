@@ -1,19 +1,13 @@
-import { useCallback, useEffect, useState, Key, useMemo, ReactNode } from 'react';
-import { withHistory } from 'slate-history';
-import { createEditor, Editor, Transforms } from 'slate';
-import { ReactEditor, Slate, withReact } from 'slate-react';
-import { YooEditor, YooptaBaseElement, YooptaEditorValue, YooptaTools, YooptaNodeElementSettings } from '../../types';
+import { useCallback, useEffect, useState, Key, useMemo, ReactNode, Children, Fragment } from 'react';
+import { YooptaBaseElement, YooptaEditorValue, YooptaTools, YooptaNodeElementSettings } from '../../types';
+import { generateId } from '../../utils/generateId';
 import { YooptaMark } from '../../utils/marks';
-import { mergePlugins, mergePluginTypesToMap, YooptaPlugin } from '../../utils/plugins';
-import { getInitialState, getStorageName, OFFLINE_STORAGE } from '../../utils/storage';
-import { NodeSettingsProvider } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
-import { EditorYoopta } from '../Editor/Editor';
-import { withVoidNodes } from '../Editor/plugins/voids';
-import { withShortcuts } from '../Editor/plugins/shortcuts';
-import { withNonEmptyEditor } from '../Editor/plugins/nonEmptyEditor';
-import { withDeleteFragment } from '../Editor/plugins/deleteFragment';
-import { withHtml } from '../Editor/plugins/pasteHtml';
-import { YooptaContextProvider } from '../../contexts/YooptaContext/YooptaContext';
+import { YooptaPlugin } from '../../utils/plugins';
+import { getStorageName, OFFLINE_STORAGE } from '../../utils/storage';
+import { useYooptaEditor } from './contexts/UltraYooptaContext/UltraYooptaContext';
+import { YOOPTA_EDITOR_ULTRA_VALUE, DEFAULT_ULTRA_PLUGIN } from './defaultValue';
+import { UltraPlugin } from './types';
+import { ULTRA_PLUGINS } from './ultraPlugins';
 
 export type YooptaEditorProps<V> = {
   onChange: (_value: YooptaEditorValue<V>) => void;
@@ -30,111 +24,72 @@ export type YooptaEditorProps<V> = {
   tools?: YooptaTools;
 };
 
+const DEFAULT_EDITOR_KEYS = [];
+const PLUGIN_NODE_INDEX = new WeakMap();
+
 const YooptaEditor = <V extends YooptaBaseElement<string>>({
   key,
-  value,
-  plugins,
+  // value,
+  // onChange,
+  // plugins,
   marks,
   readOnly,
-  onChange,
   placeholder,
   autoFocus = true,
   offline,
   className,
   tools,
 }: YooptaEditorProps<V>) => {
-  const storageName = getStorageName(offline);
-  const [val, setVal] = useState<YooptaEditorValue<V>>(() => getInitialState(storageName, offline, value));
+  const yooptaEditor = useYooptaEditor();
 
-  const onChangeValue = useCallback(
-    (data: YooptaEditorValue<V>) => {
-      onChange(data);
-      setVal(data);
+  console.log('yooptaEditor.editor.children', yooptaEditor.editor.children);
 
-      if (!offline) return;
+  const [editorValue, setEditorValue] = useState(YOOPTA_EDITOR_ULTRA_VALUE);
 
-      const hasChanges = editor.operations.some((op) => op.type !== 'set_selection');
+  const onChange = useCallback((id, value) => {
+    console.log(value[0].type, value);
 
-      if (hasChanges) {
-        try {
-          const content = JSON.stringify(data);
-          localStorage.setItem(storageName, content);
-          // eslint-disable-next-line no-empty
-        } catch (error) {}
-      }
-    },
-    [offline],
-  );
+    setEditorValue((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  }, []);
 
-  const yooptaEditorPlugins = useMemo(() => {
-    if (!Array.isArray(plugins)) {
-      throw new Error('Props `plugins` should be array of plugins');
+  const pluginValueKeys = Object.keys(editorValue) || DEFAULT_EDITOR_KEYS;
+
+  const ultraPluginsMap = useMemo<Record<string, UltraPlugin>>(() => {
+    const pluginsMap = {};
+    ULTRA_PLUGINS.forEach((plugin) => (pluginsMap[plugin.type] = plugin));
+    return pluginsMap;
+  }, []);
+
+  const nodes = [];
+
+  for (let i = 0; i < pluginValueKeys.length; i++) {
+    const key = pluginValueKeys[i];
+    const pluginEditorValue = editorValue[key];
+    const plugin = ultraPluginsMap[pluginEditorValue[0].type];
+
+    if (plugin) {
+      nodes.push(
+        <div key={key}>
+          {plugin.render({
+            id: key,
+            value: pluginEditorValue,
+            onChange,
+          })}
+        </div>,
+      );
     }
 
-    if (Array.isArray(plugins) && plugins.length === 0) {
-      throw new Error('Props `plugins` cannot be empty. Pass an array of plugins');
-    }
-
-    const yooptaPlugins = mergePlugins(plugins);
-    const PLUGINS_MAP = mergePluginTypesToMap(yooptaPlugins);
-
-    return { yooptaPlugins, PLUGINS_MAP };
-  }, [plugins]);
-
-  const { yooptaPlugins, PLUGINS_MAP } = yooptaEditorPlugins;
-
-  const editor = useMemo<YooEditor>(() => {
-    let yooptaEditor = withHtml(
-      withDeleteFragment(withNonEmptyEditor(withVoidNodes(withHistory(withShortcuts(withReact(createEditor())))))),
-    );
-
-    yooptaEditor.plugins = PLUGINS_MAP;
-
-    const shortcutMap = {};
-    yooptaPlugins.forEach((plugin) => {
-      if (plugin.shortcut) {
-        if (Array.isArray(plugin.shortcut)) {
-          plugin.shortcut.forEach((shortcut) => (shortcutMap[shortcut] = plugin));
-        } else shortcutMap[plugin.shortcut] = plugin;
-      }
-
-      yooptaEditor = plugin.extendEditor?.(yooptaEditor) || yooptaEditor;
-    });
-
-    yooptaEditor.shortcuts = shortcutMap;
-    return yooptaEditor;
-  }, [yooptaPlugins]);
-
-  useEffect(() => {
-    if (!autoFocus) return;
-
-    try {
-      const [, path] = Editor.first(editor, [0]);
-      Transforms.select(editor, {
-        anchor: { path, offset: 0 },
-        focus: { path, offset: 0 },
-      });
-
-      ReactEditor.focus(editor);
-    } catch (error) {}
-  }, [autoFocus, editor]);
+    PLUGIN_NODE_INDEX.set(pluginEditorValue, i);
+  }
 
   return (
-    <Slate editor={editor} initialValue={val} onChange={onChangeValue} key={key}>
-      <NodeSettingsProvider>
-        <YooptaContextProvider plugins={yooptaPlugins} marks={marks} tools={tools}>
-          <EditorYoopta
-            editor={editor}
-            readOnly={readOnly}
-            placeholder={placeholder}
-            plugins={yooptaPlugins}
-            marks={marks}
-            PLUGINS_MAP={PLUGINS_MAP}
-            className={className}
-          />
-        </YooptaContextProvider>
-      </NodeSettingsProvider>
-    </Slate>
+    <div id="yoopta-editor">
+      <button onClick={() => console.log(PLUGIN_NODE_INDEX.get(editorValue['HGQj3faHJkbMGFcBJNUgj']))}>get </button>
+      {nodes}
+    </div>
   );
 };
 

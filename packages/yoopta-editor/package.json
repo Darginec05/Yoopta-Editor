@@ -10,20 +10,14 @@
   "files": [
     "dist/"
   ],
-  "scripts": {
-    "prebuild": "rm -rf dist",
-    "build:rollup": "rollup -c",
-    "build": "rollup -c --environment NODE_ENV:production",
-    "dev": "rm -rf dist && rollup -c -w --environment NODE_ENV:development --open",
-    "coverage": "vitest run --coverage",
-    "test": "vitest",
-    "test:ui": "vitest --ui",
-    "test:integration": "playwright test"
-  },
   "dependencies": {
+    "@codemirror/lang-javascript": "^6.2.1",
+    "@uiw/codemirror-theme-github": "^4.21.21",
+    "@uiw/react-codemirror": "^4.21.21",
     "body-scroll-lock": "^4.0.0-beta.0",
     "classnames": "^2.3.1",
     "copy-to-clipboard": "^3.3.2",
+    "immer": "^10.0.3",
     "is-hotkey": "^0.2.0",
     "lodash.clonedeep": "^4.5.0",
     "lodash.uniqwith": "^4.5.0",

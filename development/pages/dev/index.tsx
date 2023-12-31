@@ -2,7 +2,7 @@ import YooptaEditor, { createYooptaMark, createYooptaPlugin } from '@yoopta/edit
 import Blockquote, { BlockquoteElement } from '@yoopta/blockquote';
 import Paragraph, { ParagraphElement } from '@yoopta/paragraph';
 import Callout, { CalloutElement } from '@yoopta/callout';
-import Code, { CodeElement } from '@yoopta/code';
+import Code, { CodeElement, CodePluginUltra } from '@yoopta/code';
 import Link, { LinkElement } from '@yoopta/link';
 import File, { FileElement } from '@yoopta/file';
 import { html, markdown } from '@yoopta/exports';
@@ -80,64 +80,65 @@ const plugins = [
     },
   }),
   Code,
-  Link,
-  File.extend({
-    options: {
-      onUpload: async (file: File) => {
-        const response = await uploadToCloudinary(file, 'auto');
-        console.log('response', response);
+  // Link,
+  // File.extend({
+  //   options: {
+  //     onUpload: async (file: File) => {
+  //       const response = await uploadToCloudinary(file, 'auto');
+  //       console.log('response', response);
 
-        return { url: response.url, width: response.data.width, height: response.data.height };
-      },
-    },
-  }),
-  Lists.NumberedList.extend({
-    options: {
-      HTMLAttributes: {
-        spellCheck: false,
-      },
-    },
-  }),
-  Lists.BulletedList.extend({
-    options: {
-      HTMLAttributes: {
-        spellCheck: false,
-      },
-    },
-  }),
-  Lists.TodoList.extend({
-    options: {
-      HTMLAttributes: {
-        spellCheck: false,
-      },
-    },
-  }),
-  Embed.extend({
-    options: {
-      maxWidth: 650,
-      maxHeight: 750,
-    },
-  }),
-  Image.extend({
-    options: {
-      maxWidth: 650,
-      maxHeight: 650,
-      onUpload: async (file: File) => {
-        const response = await uploadToCloudinary(file, 'image');
-        return { url: response.url, width: response.data.width, height: response.data.height };
-      },
-    },
-  }),
-  Video.extend({
-    options: {
-      maxWidth: 650,
-      maxHeight: 650,
-      onUpload: async (file: File) => {
-        const response = await uploadToCloudinary(file, 'video');
-        return { url: response.url, width: response.data.width, height: response.data.height };
-      },
-    },
-  }),
+  //       return { url: response.url, width: response.data.width, height: response.data.height };
+  //     },
+  //   },
+  // }),
+  // Lists.NumberedList.extend({
+  //   options: {
+  //     HTMLAttributes: {
+  //       spellCheck: false,
+  //     },
+  //   },
+  // }),
+  // Lists.BulletedList.extend({
+  //   options: {
+  //     HTMLAttributes: {
+  //       spellCheck: false,
+  //     },
+  //   },
+  // }),
+  // Lists.TodoList.extend({
+  //   options: {
+  //     HTMLAttributes: {
+  //       spellCheck: false,
+  //     },
+  //   },
+  // }),
+  // Embed.extend({
+  //   options: {
+  //     maxWidth: 650,
+  //     maxHeight: 750,
+  //   },
+  // }),
+  // Image.extend({
+  //   options: {
+  //     maxWidth: 650,
+  //     maxHeight: 650,
+  //     onUpload: async (file: File) => {
+  //       const response = await uploadToCloudinary(file, 'image');
+  //       return { url: response.url, width: response.data.width, height: response.data.height };
+  //     },
+  //   },
+  // }),
+  // Video.extend({
+  //   options: {
+  //     maxWidth: 650,
+  //     maxHeight: 650,
+  //     onUpload: async (file: File) => {
+  //       const response = await uploadToCloudinary(file, 'video');
+  //       return { url: response.url, width: response.data.width, height: response.data.height };
+  //     },
+  //   },
+  // }),
+  CodePluginUltra,
 ];
 
 const ACTION_MENU_ITEMS: ActionMenuItem<Record<'description' | 'icon', string>>[] = [
@@ -226,25 +227,15 @@ const BasicExample = () => {
 
   return (
     <div className={s.container}>
-      <button type="button" onClick={toggleMode}>
-        read only
-      </button>
-      <button type="button" onClick={() => console.log(html.serialize(editorValue, plugins))}>
-        to html
-      </button>
-      {isEdit ? (
-        <YooptaEditor<YooptaValue>
-          offline
-          value={editorValue}
-          onChange={(val) => setEditorValue(val)}
-          plugins={plugins}
-          marks={marks}
-          placeholder="Type / to open menu"
-          tools={TOOLS}
-        />
-      ) : (
-        <YooptaRenderer data={editorValue} plugins={plugins} marks={marks} />
-      )}
+      <YooptaEditor<YooptaValue>
+        offline
+        value={editorValue}
+        onChange={setEditorValue}
+        plugins={plugins}
+        marks={marks}
+        placeholder="Type / to open menu"
+        tools={TOOLS}
+      />
       <pre>
         <code>{JSON.stringify(editorValue, null, 2)}</code>
       </pre>
