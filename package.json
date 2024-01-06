@@ -7,7 +7,7 @@
   "scripts": {
     "build:rollup": "rollup -c",
     "clean": "find ./packages -type d -name dist -exec rm -r {} +",
-    "build": "yarn clean && rollup --config ./config/rollup.config.js --bundleConfigAsCjs --environment NODE_ENV:production",
+    "build": "rollup --config ./config/rollup.config.js --bundleConfigAsCjs --environment NODE_ENV:production",
     "serve": "cd ./development && next dev",
     "serve:build": "cd ./development && next build && next start",
     "dev": "rollup --config ./config/rollup.config.js --watch --bundleConfigAsCjs",
