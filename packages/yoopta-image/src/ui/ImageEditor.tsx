@@ -20,8 +20,9 @@ type Props = {
 };
 
 const ImageEditorFactory =
-  (editor: Props['editor'], plugin: Props['plugin']) => (props: RenderYooptaElementProps<ImageElement>) =>
-    <ImageEditor editor={editor} plugin={plugin} {...props} />;
+  (editor: Props['editor'], plugin: Props['plugin']) => (props: RenderYooptaElementProps<ImageElement>) => (
+    <ImageEditor editor={editor} plugin={plugin} {...props} />
+  );
 
 function ImageEditor(props: Props) {
   const { element, editor, plugin } = props;

@@ -4,10 +4,14 @@ import { generateId } from '../../utils/generateId';
 import { YooptaMark } from '../../utils/marks';
 import { YooptaPlugin } from '../../utils/plugins';
 import { getStorageName, OFFLINE_STORAGE } from '../../utils/storage';
+import { Code } from './plugins/Code/Code';
 import { useYooptaEditor } from './contexts/UltraYooptaContext/UltraYooptaContext';
 import { YOOPTA_EDITOR_ULTRA_VALUE, DEFAULT_ULTRA_PLUGIN } from './defaultValue';
+import { Paragraph } from './plugins/Paragraph/Paragraph';
 import { UltraPlugin } from './types';
-import { ULTRA_PLUGINS } from './ultraPlugins';
+import { createUltraPlugin } from './ultraPlugins';
+import { Blockquote } from './plugins/Blockquote/Blockquote';
+import { UltraElementWrapper } from './UltraElementWrapper/UltraElementWrapper';
 
 export type YooptaEditorProps<V> = {
   onChange: (_value: YooptaEditorValue<V>) => void;
@@ -24,31 +28,27 @@ export type YooptaEditorProps<V> = {
   tools?: YooptaTools;
 };
 
+const Video = createUltraPlugin({
+  type: 'video',
+
+  render: (props) => {
+    return (
+      <div data-element-type="VideoPluginUltra" {...props.attributes}>
+        {props.children}
+      </div>
+    );
+  },
+});
+
+const ULTRA_PLUGINS = [Paragraph, Blockquote, Code];
+
 const DEFAULT_EDITOR_KEYS = [];
 const PLUGIN_NODE_INDEX = new WeakMap();
 
-const YooptaEditor = <V extends YooptaBaseElement<string>>({
-  key,
-  // value,
-  // onChange,
-  // plugins,
-  marks,
-  readOnly,
-  placeholder,
-  autoFocus = true,
-  offline,
-  className,
-  tools,
-}: YooptaEditorProps<V>) => {
-  const yooptaEditor = useYooptaEditor();
-
-  console.log('yooptaEditor.editor.children', yooptaEditor.editor.children);
-
+const YooptaEditor = () => {
   const [editorValue, setEditorValue] = useState(YOOPTA_EDITOR_ULTRA_VALUE);
 
   const onChange = useCallback((id, value) => {
-    console.log(value[0].type, value);
-
     setEditorValue((prev) => ({
       ...prev,
       [id]: value,
@@ -63,7 +63,7 @@ const YooptaEditor = <V extends YooptaBaseElement<string>>({
     return pluginsMap;
   }, []);
 
-  const nodes = [];
+  const nodes: JSX.Element[] = [];
 
   for (let i = 0; i < pluginValueKeys.length; i++) {
     const key = pluginValueKeys[i];
@@ -72,25 +72,20 @@ const YooptaEditor = <V extends YooptaBaseElement<string>>({
 
     if (plugin) {
       nodes.push(
-        <div key={key}>
-          {plugin.render({
+        <UltraElementWrapper key={key}>
+          {plugin.renderPlugin({
             id: key,
             value: pluginEditorValue,
             onChange,
           })}
-        </div>,
+        </UltraElementWrapper>,
       );
     }
 
     PLUGIN_NODE_INDEX.set(pluginEditorValue, i);
   }
 
-  return (
-    <div id="yoopta-editor">
-      <button onClick={() => console.log(PLUGIN_NODE_INDEX.get(editorValue['HGQj3faHJkbMGFcBJNUgj']))}>get </button>
-      {nodes}
-    </div>
-  );
+  return <div id="yoopta-editor">{nodes}</div>;
 };
 
 export { YooptaEditor };

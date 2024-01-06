@@ -1,0 +1,18 @@
+.root {
+  position: relative;
+  padding: 0 12px;
+}
+
+.addButton {
+  position: absolute;
+  top: 0;
+  left: -18px;
+  padding: 4px 8px;
+  margin: 0;
+  background: gray;
+  border: none;
+  border-radius: 6px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}

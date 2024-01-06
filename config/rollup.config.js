@@ -136,9 +136,9 @@ const FileConfig = createConfig({ pkg: filePkg });
 
 export default [
   CoreConfig,
-  // BlockquoteConfig,
+  BlockquoteConfig,
   ParagraphPkgConfig,
-  // CalloutPkgConfig,
+  CalloutPkgConfig,
   CodePkgConfig,
   // LinkPkgConfig,
   // ListsPkgConfig,
