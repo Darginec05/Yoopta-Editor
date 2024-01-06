@@ -17,8 +17,6 @@ export const PluginTransforms = {
   movePlugin: (editor, path, plugin) => {},
 };
 
-const YooptaEditor = {};
-
 const UltraYooptaContextProvider = ({ children, value }) => {
   const contextValue = useRef<UltraYooptaContextValue>({});
 
@@ -31,4 +29,4 @@ const UltraYooptaContextProvider = ({ children, value }) => {
 
 const useYooptaEditor = () => useContext(UltraYooptaContext);
 
-export { UltraYooptaContextProvider, YooptaEditor, useYooptaEditor };
+export { UltraYooptaContextProvider, useYooptaEditor };
