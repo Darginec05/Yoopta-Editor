@@ -14,7 +14,7 @@ export type UltraYooptaContextReturnValue = {
   updateBlock: (node, at) => void;
   deleteBlock: (at) => void;
   getBlock: (at) => void;
-  moveBlock: (from, to) => void;
+  moveBlock: (from: number[], to: number[]) => void;
   changeValue: (id, data) => void;
   plugins: Record<string, UltraYooptaContextPlugin>;
 };
@@ -31,47 +31,41 @@ const DEFAULT_HANDLERS = {
 
 const UltraYooptaContext = createContext<UltraYooptaContextReturnValue>(DEFAULT_HANDLERS);
 
-// export const PluginTransforms = {
-//   addPlugin: (editor, plugin, path) => {},
-//   getPlugin: (editor, path) => {},
-//   deletePlugin: (editor, path) => {},
-//   updatePlugin: (editor, path, plugin) => {},
-//   movePlugin: (editor, path, plugin) => {},
-// };
-
-const UltraYooptaContextProvider = ({ children, value }) => {
-  const [editorValue, setEditorValue] = useState<Record<string, UltraYooptaContextPlugin>>(value);
+const UltraYooptaContextProvider = ({ children, value: initialValue }) => {
+  const [editorValue, setEditorValue] = useState<Record<string, UltraYooptaContextPlugin>>(initialValue);
   const contextValueRef = useRef<UltraYooptaContextReturnValue>(DEFAULT_HANDLERS);
 
-  const insertBlock = (blockData, at?: number[]) => {
-    console.log('blockData', blockData);
-
+  const insertBlock = (blockData: UltraYooptaContextPlugin, at?: number[]) => {
     setEditorValue((plugins) => {
-      return {
-        ...plugins,
-        [generateId()]: {
-          value: blockData.value,
-          type: blockData.type,
-          meta: {
-            order: Object.keys(plugins).length,
-          },
+      const newBlock: UltraYooptaContextPlugin = {
+        value: blockData.value,
+        type: blockData.type,
+        meta: {
+          ...blockData.meta,
+          order: 0,
         },
       };
+
+      const updatedPlugins = { ...plugins };
+
+      if (at) {
+        const [position] = at;
+        Object.values(updatedPlugins).forEach((plugin) => {
+          if (plugin.meta.order >= position) {
+            plugin.meta.order += 1;
+          }
+        });
+
+        newBlock.meta.order = position;
+      } else {
+        const newIndex = Object.keys(updatedPlugins).length;
+        newBlock.meta.order = newIndex;
+      }
+
+      updatedPlugins[generateId()] = newBlock;
+
+      return updatedPlugins;
     });
-
-    // const order = at;
-
-    // setEditorValue((plugin) => {
-    //   const pluginValue = plugin[id];
-
-    //   return {
-    //     ...plugin,
-    //     [id]: {
-    //       ...pluginValue,
-    //       value,
-    //     },
-    //   };
-    // });
   };
 
   const onChange = useCallback((id, value) => {
@@ -91,7 +85,28 @@ const UltraYooptaContextProvider = ({ children, value }) => {
   const updateBlock = (node, at) => {};
   const deleteBlock = (at) => {};
   const getBlock = (at) => {};
-  const moveBlock = (from, at) => {};
+
+  const moveBlock = (from: number[], to: number[]) => {
+    const [fromPosition] = from;
+    const [toPosition] = to;
+
+    setEditorValue((plugins) => {
+      const updatedPlugins = { ...plugins };
+
+      const fromId = Object.keys(updatedPlugins).find((id) => updatedPlugins[id].meta.order === fromPosition);
+      const toId = Object.keys(updatedPlugins).find((id) => updatedPlugins[id].meta.order === toPosition);
+
+      const blockFrom = updatedPlugins[fromId || ''];
+      const blockTo = updatedPlugins[toId || ''];
+
+      if (blockFrom && blockTo) {
+        blockFrom.meta.order = toPosition;
+        blockTo.meta.order = fromPosition;
+      }
+
+      return updatedPlugins;
+    });
+  };
 
   const contextValue = {
     getBlock,
