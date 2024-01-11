@@ -13,11 +13,17 @@ export type UltraPlugin = {
   renderPlugin: (props: UltraPluginProps) => ReactNode;
 };
 
-export type UltraPluginCreateOptions = {};
+export type UltraPluginCreateOptions = {
+  isVoid?: boolean;
+};
 
-type CustomEditorProps = UltraPluginProps & Pick<UltraPlugin, 'type'> & { editor: Editor };
+export type CustomEditorProps = UltraPluginProps & Pick<UltraPlugin, 'type'> & { editor: Editor };
 
-type UltraPluginBaseParams = {
+export type ElementMetaData<T> = {
+  id: string;
+} & T;
+
+export type UltraPluginBaseParam<T> = {
   id?: string;
   type: string;
   options?: UltraPluginCreateOptions;

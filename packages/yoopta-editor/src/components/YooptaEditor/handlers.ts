@@ -1,5 +1,6 @@
-import { Editor, Element, Range, Transforms } from 'slate';
+import { Editor, Element, Path, Range, Transforms } from 'slate';
 import { YooptaBaseElement } from '../../types';
+import { deepClone } from '../../utils/deepClone';
 import { generateId } from '../../utils/generateId';
 import { HOTKEYS } from '../../utils/hotkeys';
 import { getDefaultParagraphLine } from '../Editor/utils';
@@ -7,53 +8,53 @@ import { getDefaultParagraphLine } from '../Editor/utils';
 export function onKeyDown(event: any, editor: Editor) {
   Editor.withoutNormalizing(editor, () => {
     if (!editor.selection) return;
-    // const defaultNode = getDefaultParagraphLine(generateId());
+    const defaultNode = getDefaultParagraphLine(generateId());
 
-    // const nodeEntry = Editor.above<YooptaBaseElement<string>>(editor, {
-    //   match: (n) => !Editor.isEditor(n),
-    //   mode: 'lowest',
-    // });
+    const nodeEntry = Editor.above<YooptaBaseElement<string>>(editor, {
+      match: (n) => !Editor.isEditor(n),
+      mode: 'lowest',
+    });
 
-    // if (HOTKEYS.isEnter(event)) {
-    //   if (event.isDefaultPrevented()) return;
-    //   event.preventDefault();
+    if (HOTKEYS.isEnter(event)) {
+      if (event.isDefaultPrevented()) return;
+      event.preventDefault();
 
-    //   const marks = Object.keys(Editor.marks(editor) || {});
+      const marks = Object.keys(Editor.marks(editor) || {});
 
-    //   if (marks.length > 0) marks.forEach((mark) => Editor.removeMark(editor, mark));
+      if (marks.length > 0) marks.forEach((mark) => Editor.removeMark(editor, mark));
 
-    //   const parentPath = Path.parent(editor.selection.anchor.path);
+      const parentPath = Path.parent(editor.selection.anchor.path);
 
-    //   const text = Editor.string(editor, parentPath);
-    //   const isDefaultNode = nodeEntry && nodeEntry[0].type !== defaultNode.type;
+      const text = Editor.string(editor, parentPath);
+      const isDefaultNode = nodeEntry && nodeEntry[0].type !== defaultNode.type;
 
-    //   if (isDefaultNode && text.length === 0) {
-    //     Transforms.setNodes(editor, defaultNode, {
-    //       at: parentPath,
-    //     });
+      if (isDefaultNode && text.length === 0) {
+        Transforms.setNodes(editor, defaultNode, {
+          at: parentPath,
+        });
 
-    //     return;
-    //   }
+        return;
+      }
 
-    //   const isStart = Editor.isStart(editor, editor.selection.anchor, editor.selection.anchor.path);
+      const isStart = Editor.isStart(editor, editor.selection.anchor, editor.selection.anchor.path);
 
-    //   if (isStart && isDefaultNode) {
-    //     const [currentNode] = nodeEntry;
+      if (isStart && isDefaultNode) {
+        const [currentNode] = nodeEntry;
 
-    //     Transforms.setNodes(editor, defaultNode, { at: parentPath });
-    //     Transforms.delete(editor, { unit: 'block' });
-    //     Transforms.insertNodes(editor, deepClone(currentNode), { at: Path.next(parentPath) });
+        Transforms.setNodes(editor, defaultNode, { at: parentPath });
+        Transforms.delete(editor, { unit: 'block' });
+        Transforms.insertNodes(editor, deepClone(currentNode), { at: Path.next(parentPath) });
 
-    //     Transforms.select(editor, { path: [Path.next(editor.selection.anchor.path)[0] + 1, 0], offset: 0 });
-    //     return;
-    //   }
+        Transforms.select(editor, { path: [Path.next(editor.selection.anchor.path)[0] + 1, 0], offset: 0 });
+        return;
+      }
 
-    //   Transforms.splitNodes(editor, { always: true });
-    //   Transforms.setNodes(editor, defaultNode);
-    //   // changeHoveredNode(defaultNode);
+      Transforms.splitNodes(editor, { always: true });
+      Transforms.setNodes(editor, defaultNode);
+      // changeHoveredNode(defaultNode);
 
-    //   return;
-    // }
+      return;
+    }
 
     if (HOTKEYS.isShiftEnter(event)) {
       if (event.isDefaultPrevented()) return;

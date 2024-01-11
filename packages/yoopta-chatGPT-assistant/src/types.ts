@@ -37,7 +37,7 @@ export interface ChatCompletionToken extends OpenAIChatMessage {
 
 export interface ChatMessageParams extends OpenAIChatMessage {
   timestamp?: number;
-  meta?: {
+  data?: {
     loading?: boolean;
     responseTime?: string;
     chunks?: ChatCompletionToken[];

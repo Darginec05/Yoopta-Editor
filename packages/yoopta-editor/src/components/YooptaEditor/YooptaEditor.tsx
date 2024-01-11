@@ -1,17 +1,17 @@
-import { useCallback, useEffect, useState, Key, useMemo, ReactNode, Children, Fragment } from 'react';
-import { YooptaBaseElement, YooptaEditorValue, YooptaTools, YooptaNodeElementSettings } from '../../types';
+import { Key, useMemo } from 'react';
+import { YooptaEditorValue, YooptaTools, YooptaNodeElementSettings } from '../../types';
 import { generateId } from '../../utils/generateId';
 import { YooptaMark } from '../../utils/marks';
 import { YooptaPlugin } from '../../utils/plugins';
-import { getStorageName, OFFLINE_STORAGE } from '../../utils/storage';
+import { OFFLINE_STORAGE } from '../../utils/storage';
 import { Code } from './plugins/Code/Code';
 import { useYooptaEditor } from './contexts/UltraYooptaContext/UltraYooptaContext';
-import { YOOPTA_EDITOR_ULTRA_VALUE, DEFAULT_ULTRA_PLUGIN } from './defaultValue';
 import { Paragraph } from './plugins/Paragraph/Paragraph';
 import { UltraPlugin } from './types';
 import { createUltraPlugin } from './ultraPlugins';
 import { Blockquote } from './plugins/Blockquote/Blockquote';
-import { UltraElementWrapper } from './UltraElementWrapper/UltraElementWrapper';
+import { UltraElementWrapper } from '../ElementWrapper/UltraElementWrapper';
+import { PLUGIN_INDEX } from './utils';
 
 export type YooptaEditorProps<V> = {
   onChange: (_value: YooptaEditorValue<V>) => void;
@@ -28,61 +28,96 @@ export type YooptaEditorProps<V> = {
   tools?: YooptaTools;
 };
 
-const Video = createUltraPlugin({
-  type: 'video',
+type VideoElementMeta = {
+  height: number;
+  width: number;
+  src: string;
+};
 
-  render: (props) => {
-    return (
-      <div data-element-type="VideoPluginUltra" {...props.attributes}>
-        {props.children}
-      </div>
-    );
+const VideoRender = (props) => {
+  const data = props.element.data;
+
+  return (
+    <div data-element-type="VideoPluginUltra" {...props.attributes}>
+      <video
+        playsInline
+        controls
+        data-automation="VideoPlayer"
+        height={data.height}
+        width={data.width}
+        loop
+        muted
+        autoPlay
+        poster={data.poster}
+        preload="auto"
+        aria-label="video-player"
+      >
+        <source
+          src="https://www.shutterstock.com/shutterstock/videos/1075423076/preview/stock-footage-collage-of-eyes-beautiful-people-of-different-ages-and-multiethnic-close-up-montage-of-positive.webm"
+          type="video/webm"
+        />
+        <source
+          src="https://www.shutterstock.com/shutterstock/videos/1075423076/preview/stock-footage-collage-of-eyes-beautiful-people-of-different-ages-and-multiethnic-close-up-montage-of-positive.mp4"
+          type="video/mp4"
+        />
+      </video>
+      {props.children}
+    </div>
+  );
+};
+
+const Video = createUltraPlugin<VideoElementMeta>({
+  type: 'video',
+  render: VideoRender,
+  data: {
+    id: generateId(),
+    height: 400,
+    width: 400,
+    src: '',
+  },
+  options: {
+    isVoid: true,
   },
 });
 
-const ULTRA_PLUGINS = [Paragraph, Blockquote, Code];
-
+const ULTRA_PLUGINS = [Paragraph, Blockquote, Code, Video];
 const DEFAULT_EDITOR_KEYS = [];
-const PLUGIN_NODE_INDEX = new WeakMap();
 
 const YooptaEditor = () => {
-  const [editorValue, setEditorValue] = useState(YOOPTA_EDITOR_ULTRA_VALUE);
+  const editor = useYooptaEditor();
+  const pluginValueKeys = Object.keys(editor.plugins) || DEFAULT_EDITOR_KEYS;
 
-  const onChange = useCallback((id, value) => {
-    setEditorValue((prev) => ({
-      ...prev,
-      [id]: value,
-    }));
-  }, []);
-
-  const pluginValueKeys = Object.keys(editorValue) || DEFAULT_EDITOR_KEYS;
+  console.log('editor', editor);
 
   const ultraPluginsMap = useMemo<Record<string, UltraPlugin>>(() => {
     const pluginsMap = {};
     ULTRA_PLUGINS.forEach((plugin) => (pluginsMap[plugin.type] = plugin));
+
     return pluginsMap;
   }, []);
 
   const nodes: JSX.Element[] = [];
 
   for (let i = 0; i < pluginValueKeys.length; i++) {
-    const key = pluginValueKeys[i];
-    const pluginEditorValue = editorValue[key];
-    const plugin = ultraPluginsMap[pluginEditorValue[0].type];
+    const pluginId = pluginValueKeys[i];
+    const plugin = editor.plugins[pluginId];
+    // console.log('plugin.type', plugin.type);
 
-    if (plugin) {
+    const renderPlugin = ultraPluginsMap[plugin.type]?.renderPlugin;
+
+    if (renderPlugin) {
       nodes.push(
-        <UltraElementWrapper key={key}>
-          {plugin.renderPlugin({
-            id: key,
-            value: pluginEditorValue,
-            onChange,
+        <UltraElementWrapper key={pluginId} element={plugin}>
+          {renderPlugin({
+            id: pluginId,
+            value: plugin.value,
+            onChange: editor.changeValue,
           })}
         </UltraElementWrapper>,
       );
     }
 
-    PLUGIN_NODE_INDEX.set(pluginEditorValue, i);
+    PLUGIN_INDEX.set(plugin, i);
   }
 
   return <div id="yoopta-editor">{nodes}</div>;
