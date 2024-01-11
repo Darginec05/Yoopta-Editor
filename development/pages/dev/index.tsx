@@ -1,4 +1,4 @@
-import YooptaEditor, { createYooptaMark, createYooptaPlugin } from '@yoopta/editor';
+import YooptaEditor, { createYooptaMark, createYooptaPlugin, useYoopta } from '@yoopta/editor';
 import Blockquote, { BlockquoteElement } from '@yoopta/blockquote';
 import Paragraph, { ParagraphElement } from '@yoopta/paragraph';
 import Callout, { CalloutElement } from '@yoopta/callout';
@@ -14,7 +14,7 @@ import Embed, { EmbedElement } from '@yoopta/embed';
 import Toolbar from '@yoopta/toolbar';
 import YooptaRenderer from '@yoopta/renderer';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
-import ActionMenu, { ActionMenuItem } from '@yoopta/action-menu-list';
+// import ActionMenu, { ActionMenuItem } from '@yoopta/action-menu-list';
 import LinkTool from '@yoopta/link-tool';
 import { useState } from 'react';
 import NextImage from 'next/image';
@@ -211,7 +211,7 @@ const ACTION_MENU_ITEMS: ActionMenuItem<Record<'description' | 'icon', string>>[
 
 const TOOLS = {
   Toolbar: <Toolbar render={MediumToolbar} />,
-  ActionMenu: <ActionMenu options={{ shouldDeleteText: false }} />,
+  // ActionMenu: <ActionMenu options={{ shouldDeleteText: false }} />,
   LinkTool: <LinkTool />,
   // ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" context={initContextMessages} />,
 };

@@ -1,30 +1,111 @@
 import { createContext, useCallback, useContext, useRef, useState } from 'react';
-import { Transforms as SlateTransforms } from 'slate';
+import { generateId } from '../../../../utils/generateId';
 
-type UltraYooptaContextValue = {
-  data: Record<string, any>;
+export type UltraYooptaContextPlugin = {
+  value: any[];
+  type: string;
+  meta: {
+    order: number;
+  };
 };
 
-const UltraYooptaContext = createContext<UltraYooptaContextValue>({
-  data: {},
-});
-
-export const PluginTransforms = {
-  addPlugin: (editor, plugin, path) => {},
-  getPlugin: (editor, path) => {},
-  deletePlugin: (editor, path) => {},
-  updatePlugin: (editor, path, plugin) => {},
-  movePlugin: (editor, path, plugin) => {},
+export type UltraYooptaContextReturnValue = {
+  insertBlock: (data, at?: number[]) => void;
+  updateBlock: (node, at) => void;
+  deleteBlock: (at) => void;
+  getBlock: (at) => void;
+  moveBlock: (from, to) => void;
+  changeValue: (id, data) => void;
+  plugins: Record<string, UltraYooptaContextPlugin>;
 };
+
+const DEFAULT_HANDLERS = {
+  getBlock: () => undefined,
+  insertBlock: () => undefined,
+  updateBlock: () => undefined,
+  moveBlock: () => undefined,
+  deleteBlock: () => undefined,
+  changeValue: () => undefined,
+  plugins: {},
+};
+
+const UltraYooptaContext = createContext<UltraYooptaContextReturnValue>(DEFAULT_HANDLERS);
+
+// export const PluginTransforms = {
+//   addPlugin: (editor, plugin, path) => {},
+//   getPlugin: (editor, path) => {},
+//   deletePlugin: (editor, path) => {},
+//   updatePlugin: (editor, path, plugin) => {},
+//   movePlugin: (editor, path, plugin) => {},
+// };
 
 const UltraYooptaContextProvider = ({ children, value }) => {
-  const contextValue = useRef<UltraYooptaContextValue>({});
+  const [editorValue, setEditorValue] = useState<Record<string, UltraYooptaContextPlugin>>(value);
+  const contextValueRef = useRef<UltraYooptaContextReturnValue>(DEFAULT_HANDLERS);
 
-  contextValue.current = {
-    data: value,
+  const insertBlock = (blockData, at?: number[]) => {
+    console.log('blockData', blockData);
+
+    setEditorValue((plugins) => {
+      return {
+        ...plugins,
+        [generateId()]: {
+          value: blockData.value,
+          type: blockData.type,
+          meta: {
+            order: Object.keys(plugins).length,
+          },
+        },
+      };
+    });
+
+    // const order = at;
+
+    // setEditorValue((plugin) => {
+    //   const pluginValue = plugin[id];
+
+    //   return {
+    //     ...plugin,
+    //     [id]: {
+    //       ...pluginValue,
+    //       value,
+    //     },
+    //   };
+    // });
   };
 
-  return <UltraYooptaContext.Provider value={contextValue.current}>{children}</UltraYooptaContext.Provider>;
+  const onChange = useCallback((id, value) => {
+    setEditorValue((plugins) => {
+      const pluginValue = plugins[id];
+
+      return {
+        ...plugins,
+        [id]: {
+          ...pluginValue,
+          value,
+        },
+      };
+    });
+  }, []);
+
+  const updateBlock = (node, at) => {};
+  const deleteBlock = (at) => {};
+  const getBlock = (at) => {};
+  const moveBlock = (from, at) => {};
+
+  const contextValue = {
+    getBlock,
+    moveBlock,
+    insertBlock,
+    updateBlock,
+    deleteBlock,
+    plugins: editorValue,
+    changeValue: onChange,
+  };
+
+  contextValueRef.current = contextValue;
+
+  return <UltraYooptaContext.Provider value={contextValueRef.current}>{children}</UltraYooptaContext.Provider>;
 };
 
 const useYooptaEditor = () => useContext(UltraYooptaContext);

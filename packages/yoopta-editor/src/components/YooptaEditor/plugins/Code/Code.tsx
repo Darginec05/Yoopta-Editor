@@ -34,6 +34,9 @@ const Code = createUltraPlugin({
       </div>
     );
   },
+  options: {
+    isVoid: true,
+  },
 });
 
 export { Code };
