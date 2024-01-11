@@ -21,7 +21,7 @@ export { Paragraph };
 `;
 
 export const YOOPTA_ULTRA_VALUES = {
-  paragraph: () => ({
+  paragraph: (meta) => ({
     value: [
       {
         id: generateId(),
@@ -30,11 +30,9 @@ export const YOOPTA_ULTRA_VALUES = {
       },
     ],
     type: 'paragraph',
-    meta: {
-      order: 0,
-    },
+    meta,
   }),
-  code: () => ({
+  code: (meta) => ({
     value: [
       {
         id: generateId(),
@@ -43,11 +41,9 @@ export const YOOPTA_ULTRA_VALUES = {
       },
     ],
     type: 'code',
-    meta: {
-      order: 1,
-    },
+    meta,
   }),
-  blockquote: () => ({
+  blockquote: (meta) => ({
     value: [
       {
         id: generateId(),
@@ -56,11 +52,9 @@ export const YOOPTA_ULTRA_VALUES = {
       },
     ],
     type: 'blockquote',
-    meta: {
-      order: 2,
-    },
+    meta,
   }),
-  video: () => ({
+  video: (meta) => ({
     value: [
       {
         id: generateId(),
@@ -75,9 +69,7 @@ export const YOOPTA_ULTRA_VALUES = {
       },
     ],
     type: 'video',
-    meta: {
-      order: 3,
-    },
+    meta,
   }),
 };
 
@@ -88,10 +80,10 @@ export const DEFAULT_ULTRA_PLUGIN = {
 };
 
 export const YOOPTA_EDITOR_ULTRA_VALUE = {
-  li3D16cCB7Ze5jxy8OwrN: YOOPTA_ULTRA_VALUES.paragraph(),
-  ir9BOyBAjjXB3NyjXfZXm: YOOPTA_ULTRA_VALUES.code(),
-  'Gci1KGGfnlup_h4Ta-AOI': YOOPTA_ULTRA_VALUES.blockquote(),
-  ATrb0U6MPHzdn8XRTm5M6: YOOPTA_ULTRA_VALUES.paragraph(),
-  HGQj3faHJkbMGFcBJNUgj: YOOPTA_ULTRA_VALUES.blockquote(),
-  HGQj3faHJkbMGFcasdaBJNUgj: YOOPTA_ULTRA_VALUES.video(),
+  li3D16cCB7Ze5jxy8OwrN: YOOPTA_ULTRA_VALUES.paragraph({ order: 0 }),
+  ir9BOyBAjjXB3NyjXfZXm: YOOPTA_ULTRA_VALUES.code({ order: 1 }),
+  'Gci1KGGfnlup_h4Ta-AOI': YOOPTA_ULTRA_VALUES.blockquote({ order: 2 }),
+  ATrb0U6MPHzdn8XRTm5M6: YOOPTA_ULTRA_VALUES.paragraph({ order: 3 }),
+  HGQj3faHJkbMGFcBJNUgj: YOOPTA_ULTRA_VALUES.blockquote({ order: 4 }),
+  HGQj3faHJkbMGFcasdaBJNUgj: YOOPTA_ULTRA_VALUES.video({ order: 5 }),
 };

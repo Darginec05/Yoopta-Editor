@@ -2,16 +2,13 @@ import { useMemo } from 'react';
 import { createEditor, Editor } from 'slate';
 import { withHistory } from 'slate-history';
 import { Editable, RenderElementProps, Slate, withReact } from 'slate-react';
+import { useYooptaEditor } from './contexts/UltraYooptaContext/UltraYooptaContext';
 import { onKeyDown } from './handlers';
 import { UltraPlugin, UltraPluginBaseParam } from './types';
 
-const withVoid = (editor: Editor) => {
-  editor.isVoid = () => true;
-  return editor;
-};
-
 const RenderPlugin = ({ id, value, onChange, type, render, customEditor, options = {} }) => {
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+  const yooEditor = useYooptaEditor();
 
   const handleChange = (updatedValue) => onChange(id, updatedValue);
   const key = `${type}-${id}`;
@@ -36,7 +33,7 @@ const RenderPlugin = ({ id, value, onChange, type, render, customEditor, options
         data-plugin-id={id}
         data-plugin-type={type}
         renderElement={renderElement}
-        onKeyDown={(event) => onKeyDown(event, editor)}
+        onKeyDown={(event) => onKeyDown(event, editor, yooEditor)}
       />
     </Slate>
   );

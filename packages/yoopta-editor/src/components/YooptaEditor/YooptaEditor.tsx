@@ -85,9 +85,14 @@ const DEFAULT_EDITOR_KEYS = [];
 
 const YooptaEditor = () => {
   const editor = useYooptaEditor();
-  const pluginValueKeys = Object.keys(editor.plugins) || DEFAULT_EDITOR_KEYS;
 
-  console.log('editor', editor);
+  const pluginValueKeys =
+    Object.keys(editor.plugins).sort((a, b) => {
+      const aOrder = editor.plugins[a].meta.order;
+      const bOrder = editor.plugins[b].meta.order;
+
+      return aOrder - bOrder;
+    }) || DEFAULT_EDITOR_KEYS;
 
   const ultraPluginsMap = useMemo<Record<string, UltraPlugin>>(() => {
     const pluginsMap = {};

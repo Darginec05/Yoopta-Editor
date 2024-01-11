@@ -16,11 +16,15 @@ const DEFAULT_BLOCK = {
 const UltraElementWrapper = ({ children, element }) => {
   const editor = useYooptaEditor();
 
-  const onMouseDown = () => {};
-
   const onPlusClick = () => {
     const pluginIndex = PLUGIN_INDEX.get(element);
+    // editor.insertBlock(DEFAULT_BLOCK, [pluginIndex + 1]);
     editor.insertBlock(DEFAULT_BLOCK);
+  };
+
+  const onMoveBlock = () => {
+    const pluginIndex = PLUGIN_INDEX.get(element);
+    editor.moveBlock([pluginIndex], [pluginIndex + 1]);
   };
 
   return (
@@ -33,7 +37,7 @@ const UltraElementWrapper = ({ children, element }) => {
         >
           <PlusIcon />
         </button>
-        <button type="button" onMouseDown={onMouseDown} className={cx(s.actionButton, 'yoopta-element-actions-drag')}>
+        <button type="button" onMouseDown={onMoveBlock} className={cx(s.actionButton, 'yoopta-element-actions-drag')}>
           <DragIcon />
         </button>
       </div>
