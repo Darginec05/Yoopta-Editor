@@ -1,3 +1,5 @@
+[![RepoRater](https://repo-rater.eddiehub.io/api/badge?owner=Darginec05&name=Yoopta-Editor)](https://repo-rater.eddiehub.io/rate?owner=Darginec05&name=Yoopta-Editor)
+
 # Welcome to Yoopta-Editor 🎉
 
 ![](https://res.cloudinary.com/ench-app/image/upload/v1691533442/9C3CB447-AB61-4644-BA3A-00F089BCD053_r2bhws.gif)
