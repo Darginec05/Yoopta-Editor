@@ -4,31 +4,26 @@ import DragIcon from './icons/drag.svg';
 import PlusIcon from './icons/plus.svg';
 import cx from 'classnames';
 import { PLUGIN_INDEX } from '../YooptaEditor/utils';
-import { DEFAULT_ULTRA_PLUGIN } from '../YooptaEditor/defaultValue';
-import { generateId } from '../../utils/generateId';
+import { getDefaultUltraBlock } from '../YooptaEditor/defaultValue';
 
-const DEFAULT_BLOCK = {
-  value: [DEFAULT_ULTRA_PLUGIN],
-  type: 'paragraph',
-  meta: {},
-};
-
-const UltraElementWrapper = ({ children, element }) => {
+const UltraElementWrapper = ({ children, plugin, pluginId }) => {
   const editor = useYooptaEditor();
 
   const onPlusClick = () => {
-    const pluginIndex = PLUGIN_INDEX.get(element);
-    // editor.insertBlock(DEFAULT_BLOCK, [pluginIndex + 1]);
-    editor.insertBlock(DEFAULT_BLOCK);
+    const pluginIndex = PLUGIN_INDEX.get(plugin);
+    const defaultBlock = getDefaultUltraBlock();
+
+    editor.insertBlock(defaultBlock, [pluginIndex + 1]);
+    editor.focusBlock(defaultBlock.id);
   };
 
   const onMoveBlock = () => {
-    const pluginIndex = PLUGIN_INDEX.get(element);
+    const pluginIndex = PLUGIN_INDEX.get(plugin);
     editor.moveBlock([pluginIndex], [pluginIndex + 1]);
   };
 
   return (
-    <div className={s.root}>
+    <div className={s.root} data-yoopta-plugin-id={pluginId} data-yoopta-plugin>
       <div contentEditable={false} className={cx(s.actions, { [s.hovered]: false }, 'yoopta-element-actions')}>
         <button
           type="button"

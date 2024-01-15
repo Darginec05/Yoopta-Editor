@@ -1,9 +1,10 @@
 import { RenderElementProps } from 'slate-react';
 import { createUltraPlugin } from '../../ultraPlugins';
+import s from './Paragraph.module.css';
 
 const ParagraphRender = (props: RenderElementProps) => {
   return (
-    <p data-element-type="Paragraph" className="flex text-lg" {...props.attributes}>
+    <p data-element-type="Paragraph" className={s.paragraph} {...props.attributes}>
       {props.children}
     </p>
   );
