@@ -1,6 +1,5 @@
-import { Key, useMemo } from 'react';
+import { Key, useEffect, useMemo, useRef } from 'react';
 import { YooptaEditorValue, YooptaTools, YooptaNodeElementSettings } from '../../types';
-import { generateId } from '../../utils/generateId';
 import { YooptaMark } from '../../utils/marks';
 import { YooptaPlugin } from '../../utils/plugins';
 import { OFFLINE_STORAGE } from '../../utils/storage';
@@ -8,10 +7,10 @@ import { Code } from './plugins/Code/Code';
 import { useYooptaEditor } from './contexts/UltraYooptaContext/UltraYooptaContext';
 import { Paragraph } from './plugins/Paragraph/Paragraph';
 import { UltraPlugin } from './types';
-import { createUltraPlugin } from './ultraPlugins';
 import { Blockquote } from './plugins/Blockquote/Blockquote';
 import { UltraElementWrapper } from '../ElementWrapper/UltraElementWrapper';
 import { PLUGIN_INDEX } from './utils';
+import { Video } from './plugins/Video/Video';
 
 export type YooptaEditorProps<V> = {
   onChange: (_value: YooptaEditorValue<V>) => void;
@@ -28,63 +27,12 @@ export type YooptaEditorProps<V> = {
   tools?: YooptaTools;
 };
 
-type VideoElementMeta = {
-  height: number;
-  width: number;
-  src: string;
-};
-
-const VideoRender = (props) => {
-  const data = props.element.data;
-
-  return (
-    <div data-element-type="VideoPluginUltra" {...props.attributes}>
-      <video
-        playsInline
-        controls
-        data-automation="VideoPlayer"
-        height={data.height}
-        width={data.width}
-        loop
-        muted
-        autoPlay
-        poster={data.poster}
-        preload="auto"
-        aria-label="video-player"
-      >
-        <source
-          src="https://www.shutterstock.com/shutterstock/videos/1075423076/preview/stock-footage-collage-of-eyes-beautiful-people-of-different-ages-and-multiethnic-close-up-montage-of-positive.webm"
-          type="video/webm"
-        />
-        <source
-          src="https://www.shutterstock.com/shutterstock/videos/1075423076/preview/stock-footage-collage-of-eyes-beautiful-people-of-different-ages-and-multiethnic-close-up-montage-of-positive.mp4"
-          type="video/mp4"
-        />
-      </video>
-      {props.children}
-    </div>
-  );
-};
-
-const Video = createUltraPlugin<VideoElementMeta>({
-  type: 'video',
-  render: VideoRender,
-  data: {
-    id: generateId(),
-    height: 400,
-    width: 400,
-    src: '',
-  },
-  options: {
-    isVoid: true,
-  },
-});
-
 const ULTRA_PLUGINS = [Paragraph, Blockquote, Code, Video];
 const DEFAULT_EDITOR_KEYS = [];
 
 const YooptaEditor = () => {
   const editor = useYooptaEditor();
+  const selection = useRef<number[] | null>(null);
 
   const pluginValueKeys =
     Object.keys(editor.plugins).sort((a, b) => {
@@ -101,22 +49,25 @@ const YooptaEditor = () => {
     return pluginsMap;
   }, []);
 
+  console.log('selection', selection.current);
+
   const nodes: JSX.Element[] = [];
 
   for (let i = 0; i < pluginValueKeys.length; i++) {
     const pluginId = pluginValueKeys[i];
     const plugin = editor.plugins[pluginId];
-    // console.log('plugin.type', plugin.type);
 
     const renderPlugin = ultraPluginsMap[plugin.type]?.renderPlugin;
 
     if (renderPlugin) {
       nodes.push(
-        <UltraElementWrapper key={pluginId} element={plugin}>
+        <UltraElementWrapper key={pluginId} plugin={plugin} pluginId={pluginId}>
           {renderPlugin({
             id: pluginId,
+            meta: plugin.meta,
             value: plugin.value,
             onChange: editor.changeValue,
+            selection: selection.current,
           })}
         </UltraElementWrapper>,
       );
@@ -124,6 +75,25 @@ const YooptaEditor = () => {
 
     PLUGIN_INDEX.set(plugin, i);
   }
+
+  useEffect(() => {
+    const handleSelectionChange = (event) => {
+      const domSelection = document.getSelection()!;
+      let el = domSelection.anchorNode;
+
+      while (el && !el.parentElement?.hasAttribute('data-yoopta-plugin')) {
+        el = el.parentNode;
+      }
+
+      const pluginElement = el?.parentElement;
+      const pluginId = pluginElement?.getAttribute('data-yoopta-plugin-id') || '';
+
+      selection.current = editor.plugins[pluginId] ? [editor.plugins[pluginId].meta.order] : null;
+    };
+
+    window.document.addEventListener('selectionchange', handleSelectionChange);
+    return () => window.document.removeEventListener('selectionchange', handleSelectionChange);
+  }, [pluginValueKeys]);
 
   return <div id="yoopta-editor">{nodes}</div>;
 };

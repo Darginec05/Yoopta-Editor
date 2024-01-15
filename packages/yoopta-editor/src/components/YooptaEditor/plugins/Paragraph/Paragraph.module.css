@@ -1,0 +1,11 @@
+.paragraph {
+  margin-top: 2px;
+  margin-bottom: 1px;
+  letter-spacing: -0.003em;
+  font-size: 16px;
+  color: inherit;
+  line-height: 28px;
+  position: relative;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}

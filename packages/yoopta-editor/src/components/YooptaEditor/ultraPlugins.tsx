@@ -1,14 +1,22 @@
-import { useMemo } from 'react';
-import { createEditor, Editor } from 'slate';
+import { useEffect, useMemo, useRef } from 'react';
+import { createEditor, Transforms } from 'slate';
 import { withHistory } from 'slate-history';
-import { Editable, RenderElementProps, Slate, withReact } from 'slate-react';
+import { Editable, ReactEditor, RenderElementProps, Slate, withReact } from 'slate-react';
 import { useYooptaEditor } from './contexts/UltraYooptaContext/UltraYooptaContext';
-import { onKeyDown } from './handlers';
+import { EVENT_HANDLERS } from './handlers';
 import { UltraPlugin, UltraPluginBaseParam } from './types';
+import { PLUGIN_EDITOR_TO_ELEMENT } from './utils';
 
-const RenderPlugin = ({ id, value, onChange, type, render, customEditor, options = {} }) => {
-  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+const RenderPlugin = ({ id, value, onChange, type, render, customEditor, options = {}, selection }) => {
   const yooEditor = useYooptaEditor();
+  const slateEditor = useMemo(() => {
+    const editor = withHistory(withReact(createEditor()));
+    if (options.isVoid) {
+      editor.isVoid = (element) => element.type === type;
+    }
+
+    return editor;
+  }, []);
 
   const handleChange = (updatedValue) => onChange(id, updatedValue);
   const key = `${type}-${id}`;
@@ -18,24 +26,29 @@ const RenderPlugin = ({ id, value, onChange, type, render, customEditor, options
       id,
       type,
       value,
-      editor,
       onChange,
+      editor: slateEditor,
     });
   }
 
   // [TODO]
   const renderElement = (props: RenderElementProps) => render(props);
 
+  useEffect(() => {
+    if (!yooEditor.pluginsEditorMap[id]) yooEditor.pluginsEditorMap[id] = slateEditor;
+  });
+
   return (
-    <Slate editor={editor} initialValue={value} onChange={handleChange} key={key}>
-      <Editable
-        key={key}
-        data-plugin-id={id}
-        data-plugin-type={type}
-        renderElement={renderElement}
-        onKeyDown={(event) => onKeyDown(event, editor, yooEditor)}
-      />
-    </Slate>
+    <div data-plugin-id={id} data-plugin-type={type}>
+      <Slate editor={slateEditor} initialValue={value} onChange={handleChange} key={key}>
+        <Editable
+          key={key}
+          renderElement={renderElement}
+          onKeyDown={EVENT_HANDLERS.onKeyDown(yooEditor, slateEditor)}
+          placeholder="Enter some rich text…"
+        />
+      </Slate>
+    </div>
   );
 };
 

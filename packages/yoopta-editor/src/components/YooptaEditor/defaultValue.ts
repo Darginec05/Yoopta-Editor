@@ -20,8 +20,12 @@ const Paragraph = createUltraPlugin({
 export { Paragraph };
 `;
 
-export const YOOPTA_ULTRA_VALUES = {
-  paragraph: (meta) => ({
+export const YOOPTA_ULTRA_VALUES: Record<
+  string,
+  (id: string, meta: UltraYooptaContextPlugin['meta']) => UltraYooptaContextPlugin
+> = {
+  paragraph: (id, meta) => ({
+    id,
     value: [
       {
         id: generateId(),
@@ -32,7 +36,8 @@ export const YOOPTA_ULTRA_VALUES = {
     type: 'paragraph',
     meta,
   }),
-  code: (meta) => ({
+  code: (id, meta) => ({
+    id,
     value: [
       {
         id: generateId(),
@@ -43,7 +48,8 @@ export const YOOPTA_ULTRA_VALUES = {
     type: 'code',
     meta,
   }),
-  blockquote: (meta) => ({
+  blockquote: (id, meta) => ({
+    id,
     value: [
       {
         id: generateId(),
@@ -54,7 +60,8 @@ export const YOOPTA_ULTRA_VALUES = {
     type: 'blockquote',
     meta,
   }),
-  video: (meta) => ({
+  video: (id, meta) => ({
+    id,
     value: [
       {
         id: generateId(),
@@ -73,17 +80,24 @@ export const YOOPTA_ULTRA_VALUES = {
   }),
 };
 
-export const DEFAULT_ULTRA_PLUGIN = {
+export const DEFAULT_ULTRA_PLUGIN_ELEMENT = {
   id: generateId(),
   type: 'paragraph',
-  children: [{ text: 'DEFAULT_ULTRA_PLUGIN!' }],
+  children: [{ text: '' }],
 };
 
+export const getDefaultUltraBlock = () => ({
+  id: generateId(),
+  value: [DEFAULT_ULTRA_PLUGIN_ELEMENT],
+  type: 'paragraph',
+  meta: {},
+});
+
 export const YOOPTA_EDITOR_ULTRA_VALUE = {
-  li3D16cCB7Ze5jxy8OwrN: YOOPTA_ULTRA_VALUES.paragraph({ order: 0 }),
-  ir9BOyBAjjXB3NyjXfZXm: YOOPTA_ULTRA_VALUES.code({ order: 1 }),
-  'Gci1KGGfnlup_h4Ta-AOI': YOOPTA_ULTRA_VALUES.blockquote({ order: 2 }),
-  ATrb0U6MPHzdn8XRTm5M6: YOOPTA_ULTRA_VALUES.paragraph({ order: 3 }),
-  HGQj3faHJkbMGFcBJNUgj: YOOPTA_ULTRA_VALUES.blockquote({ order: 4 }),
-  HGQj3faHJkbMGFcasdaBJNUgj: YOOPTA_ULTRA_VALUES.video({ order: 5 }),
+  li3D16cCB7Ze5jxy8OwrN: YOOPTA_ULTRA_VALUES.paragraph('li3D16cCB7Ze5jxy8OwrN', { order: 0, depth: 0 }),
+  ir9BOyBAjjXB3NyjXfZXm: YOOPTA_ULTRA_VALUES.code('ir9BOyBAjjXB3NyjXfZXm', { order: 1, depth: 0 }),
+  'Gci1KGGfnlup_h4Ta-AOI': YOOPTA_ULTRA_VALUES.blockquote('Gci1KGGfnlup_h4Ta-AOI', { order: 2, depth: 0 }),
+  ATrb0U6MPHzdn8XRTm5M6: YOOPTA_ULTRA_VALUES.paragraph('ATrb0U6MPHzdn8XRTm5M6', { order: 3, depth: 0 }),
+  HGQj3faHJkbMGFcBJNUgj: YOOPTA_ULTRA_VALUES.blockquote('HGQj3faHJkbMGFcBJNUgj', { order: 4, depth: 0 }),
+  HGQj3faHJkbMGFcasdaBJNUgj: YOOPTA_ULTRA_VALUES.video('HGQj3faHJkbMGFcasdaBJNUgj', { order: 5, depth: 0 }),
 };

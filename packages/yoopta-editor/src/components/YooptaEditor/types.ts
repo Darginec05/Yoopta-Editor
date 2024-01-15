@@ -1,11 +1,14 @@
 import { ReactNode } from 'react';
 import { Editor } from 'slate';
 import { RenderElementProps } from 'slate-react';
+import { UltraYooptaContextPlugin } from './contexts/UltraYooptaContext/UltraYooptaContext';
 
 export type UltraPluginProps = {
   id: string;
   value: any[];
   onChange: (id: string, value: any[]) => void;
+  selection: number[] | null;
+  meta: UltraYooptaContextPlugin['meta'];
 };
 
 export type UltraPlugin = {
