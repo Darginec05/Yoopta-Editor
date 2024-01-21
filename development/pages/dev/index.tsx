@@ -1,4 +1,4 @@
-import YooptaEditor, { createYooptaMark, createYooptaPlugin, useYoopta } from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor, createYooptaMark, createYooptaPlugin, useYoopta } from '@yoopta/editor';
 import Blockquote, { BlockquoteElement } from '@yoopta/blockquote';
 import Paragraph, { ParagraphElement } from '@yoopta/paragraph';
 import Callout, { CalloutElement } from '@yoopta/callout';
@@ -16,7 +16,7 @@ import YooptaRenderer from '@yoopta/renderer';
 import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
 // import ActionMenu, { ActionMenuItem } from '@yoopta/action-menu-list';
 import LinkTool from '@yoopta/link-tool';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import NextImage from 'next/image';
 import { MediumToolbar } from '../../components/Toolbars/MediumToolbar';
 
@@ -217,28 +217,11 @@ const TOOLS = {
 };
 
 const BasicExample = () => {
-  const [editorValue, setEditorValue] = useState<YooptaValue[]>([]);
-  const [mode, setMode] = useState<'render' | 'edit'>('edit');
-
-  const isEdit = mode === 'edit';
-  const marks = [Bold, Italic, CodeMark, Underline, Strike];
-
-  const toggleMode = () => setMode(isEdit ? 'render' : 'edit');
+  const editor = useMemo(() => createYooptaEditor(), []);
 
   return (
     <div className={s.container}>
-      <YooptaEditor<YooptaValue>
-        offline
-        value={editorValue}
-        onChange={setEditorValue}
-        plugins={plugins}
-        marks={marks}
-        placeholder="Type / to open menu"
-        tools={TOOLS}
-      />
-      <pre>
-        <code>{JSON.stringify(editorValue, null, 2)}</code>
-      </pre>
+      <YooptaEditor editor={editor} placeholder="Type / to open menu" />
     </div>
   );
 };

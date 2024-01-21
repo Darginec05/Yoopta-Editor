@@ -3,55 +3,49 @@ import { YooptaBaseElement } from '../../types';
 import { deepClone } from '../../utils/deepClone';
 import { generateId } from '../../utils/generateId';
 import { HOTKEYS } from '../../utils/hotkeys';
-import { UltraYooEditor } from './contexts/UltraYooptaContext/UltraYooptaContext';
+import { UltraYooEditor, YooEditor } from './contexts/UltraYooptaContext/UltraYooptaContext';
 import { getDefaultUltraBlock } from './defaultValue';
 
 export const EVENT_HANDLERS = {
   onKeyDown,
 };
 
-function onKeyDown(yooEditor: UltraYooEditor, slateEditor: Editor) {
+function onKeyDown(editor: YooEditor, slate: Editor) {
   return (event) => {
-    if (!slateEditor.selection) return;
+    if (!slate.selection) return;
 
     if (HOTKEYS.isShiftEnter(event)) {
       if (event.isDefaultPrevented()) return;
 
       event.preventDefault();
-      slateEditor.insertText('\n');
+      slate.insertText('\n');
     }
 
     if (HOTKEYS.isEnter(event)) {
       if (event.isDefaultPrevented()) return;
       event.preventDefault();
 
-      const isStart = Editor.isStart(slateEditor, slateEditor.selection.anchor, slateEditor.selection.anchor.path);
-      const isEnd = Editor.isEnd(slateEditor, slateEditor.selection.anchor, slateEditor.selection.anchor.path);
+      const isStart = Editor.isStart(slate, slate.selection.anchor, slate.selection.anchor.path);
+      const isEnd = Editor.isEnd(slate, slate.selection.anchor, slate.selection.anchor.path);
 
       // Split the node at the cursor
       if (!isStart && !isEnd) {
-        console.log('slateEditor.selection.anchor', slateEditor.selection.anchor);
-        console.log('slateEditor.selection.focus', slateEditor.selection.focus);
       }
       const defaultBlock = getDefaultUltraBlock();
-
-      yooEditor.insertBlock(defaultBlock);
-      yooEditor.focusBlock(defaultBlock.id);
+      const nextPath = editor.selection ? [editor.selection[0] + 1] : [0];
+      editor.insertBlock(defaultBlock, { at: nextPath });
+      // editor.focusBlock(defaultBlock.id);
       return;
     }
 
     if (HOTKEYS.isBackspace(event)) {
-      const parentPath = Path.parent(slateEditor.selection.anchor.path);
-      const text = Editor.string(slateEditor, parentPath);
-      const isStart = Editor.isStart(slateEditor, slateEditor.selection.anchor, slateEditor.selection.anchor.path);
-
-      console.log('isStart', isStart);
-      console.log('text', text);
-      console.log('delete block', text.length === 0 && isStart);
+      const parentPath = Path.parent(slate.selection.anchor.path);
+      const text = Editor.string(slate, parentPath);
+      const isStart = Editor.isStart(slate, slate.selection.anchor, slate.selection.anchor.path);
 
       if (text.length === 0 && isStart) {
         event.preventDefault();
-        yooEditor.deleteBlock([2]);
+        editor.deleteBlock([2]);
         return;
       }
       return;
@@ -59,8 +53,8 @@ function onKeyDown(yooEditor: UltraYooEditor, slateEditor: Editor) {
   };
 }
 
-// function onKeyDown(event: any, editor: Editor, yooEditor: UltraYooEditor) {
-//   console.log('yooEditor', yooEditor.insertBlock);
+// function onKeyDown(event: any, editor: Editor, editor: UltraYooEditor) {
+//   console.log('editor', editor.insertBlock);
 
 //   Editor.withoutNormalizing(editor, () => {
 //     if (!editor.selection) return;
@@ -77,7 +71,7 @@ function onKeyDown(yooEditor: UltraYooEditor, slateEditor: Editor) {
 //       if (event.isDefaultPrevented()) return;
 //       event.preventDefault();
 
-//       yooEditor.insertBlock(getDefaultUltraBlock);
+//       editor.insertBlock(getDefaultUltraBlock);
 //       return;
 
 //       const marks = Object.keys(Editor.marks(editor) || {});

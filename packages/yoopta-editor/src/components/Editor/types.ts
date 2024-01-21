@@ -5,10 +5,9 @@ import { UltraYooptaContextPlugin } from './contexts/UltraYooptaContext/UltraYoo
 
 export type UltraPluginProps = {
   id: string;
-  value: any[];
-  onChange: (id: string, value: any[]) => void;
-  selection: number[] | null;
-  meta: UltraYooptaContextPlugin['meta'];
+  // value: any[];
+  // onChange: (id: string, value: any[]) => void;
+  // meta: UltraYooptaContextPlugin['meta'];
 };
 
 export type UltraPlugin = {

@@ -1,10 +1,10 @@
-import { useYooptaEditor } from '../YooptaEditor/contexts/UltraYooptaContext/UltraYooptaContext';
+import { useYooptaEditor } from '../Editor/contexts/UltraYooptaContext/UltraYooptaContext';
 import s from './UltraElementWrapper.module.scss';
 import DragIcon from './icons/drag.svg';
 import PlusIcon from './icons/plus.svg';
 import cx from 'classnames';
-import { PLUGIN_INDEX } from '../YooptaEditor/utils';
-import { getDefaultUltraBlock } from '../YooptaEditor/defaultValue';
+import { PLUGIN_INDEX } from '../Editor/utils';
+import { getDefaultUltraBlock } from '../Editor/defaultValue';
 
 const UltraElementWrapper = ({ children, plugin, pluginId }) => {
   const editor = useYooptaEditor();
@@ -13,8 +13,8 @@ const UltraElementWrapper = ({ children, plugin, pluginId }) => {
     const pluginIndex = PLUGIN_INDEX.get(plugin);
     const defaultBlock = getDefaultUltraBlock();
 
-    editor.insertBlock(defaultBlock, [pluginIndex + 1]);
-    editor.focusBlock(defaultBlock.id);
+    editor.insertBlock(defaultBlock, { at: [pluginIndex + 1] });
+    // editor.focusBlock(defaultBlock.id);
   };
 
   const onMoveBlock = () => {

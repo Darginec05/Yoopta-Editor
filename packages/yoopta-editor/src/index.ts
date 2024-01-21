@@ -18,6 +18,7 @@ export { deepClone } from './utils/deepClone';
 export { createYooptaMark } from './utils/marks';
 export { isElementActive, getElementByPath } from './utils/nodes';
 export { getElementClassname } from './utils/getElementClassname';
+export { createYooptaEditor } from './editor';
 export type {
   YooptaPluginType,
   YooptaPluginEventHandlers,

@@ -1,16 +1,31 @@
-import NoSSR from './components/NoSsr/NoSsr';
-import { UltraYooptaContextProvider } from './components/YooptaEditor/contexts/UltraYooptaContext/UltraYooptaContext';
-import { YOOPTA_EDITOR_ULTRA_VALUE } from './components/YooptaEditor/defaultValue';
-import { YooptaEditor as Editor, YooptaEditorProps } from './components/YooptaEditor/YooptaEditor';
+import {
+  UltraYooptaContextProvider,
+  YooEditor,
+} from './components/Editor/contexts/UltraYooptaContext/UltraYooptaContext';
+import { YOOPTA_EDITOR_ULTRA_VALUE } from './components/Editor/defaultValue';
+import { Editor } from './components/Editor/Editor';
 import { YooptaBaseElement } from './types';
+import { useCallback, useState } from 'react';
 
-const YooptaEditor = <V extends YooptaBaseElement<string>>(props: YooptaEditorProps<V>) => {
+type Props = {
+  editor: YooEditor;
+};
+
+const YooptaEditor = <V extends YooptaBaseElement<string>>({ editor, ...props }: Props) => {
+  const onChange = useCallback(() => {
+    setEditorState((prev) => ({ ...prev, version: prev.version + 1 }));
+  }, []);
+
+  const [editorState, setEditorState] = useState<{ editor: YooEditor; version: number }>(() => {
+    editor.onChange = onChange;
+    editor.children = YOOPTA_EDITOR_ULTRA_VALUE;
+    return { editor, version: 0 };
+  });
+
   return (
-    <NoSSR>
-      <UltraYooptaContextProvider value={YOOPTA_EDITOR_ULTRA_VALUE}>
-        <Editor<V> {...props} value={props.value} onChange={props.onChange} />
-      </UltraYooptaContextProvider>
-    </NoSSR>
+    <UltraYooptaContextProvider editorState={editorState}>
+      <Editor />
+    </UltraYooptaContextProvider>
   );
 };
 
