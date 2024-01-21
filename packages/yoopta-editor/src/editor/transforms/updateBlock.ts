@@ -1,19 +1,14 @@
-export function updateBlock(editor, data, options) {
-  const { at } = options;
+import { createDraft, finishDraft } from 'immer';
+import { YooEditor } from '../../components/Editor/contexts/UltraYooptaContext/UltraYooptaContext';
 
-  const [position] = at;
-  const plugins = editor.children;
-  const pluginKeys = Object.keys(plugins);
-  const pluginToUpdateId = pluginKeys.find((id) => plugins[id].meta.order === position);
+export function updateBlock(editor: YooEditor, id: string, data, options) {
+  editor.children = createDraft(editor.children);
 
-  if (pluginToUpdateId) {
-    plugins[pluginToUpdateId].value = data.value;
-    plugins[pluginToUpdateId].type = data.type;
-    plugins[pluginToUpdateId].meta = {
-      ...plugins[pluginToUpdateId].meta,
-      ...data.meta,
-    };
-  }
+  const block = editor.children[id];
+  block.value = data;
 
-  return plugins;
+  editor.children = finishDraft(editor.children);
+
+  // [TODO] - optimize applyChanges while updating slate value
+  // editor.applyChanges();
 }

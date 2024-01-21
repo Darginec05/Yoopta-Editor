@@ -13,7 +13,8 @@ const UltraElementWrapper = ({ children, plugin, pluginId }) => {
     const pluginIndex = PLUGIN_INDEX.get(plugin);
     const defaultBlock = getDefaultUltraBlock();
 
-    editor.insertBlock(defaultBlock, { at: [pluginIndex + 1] });
+    const nextPath = [pluginIndex + 1];
+    editor.insertBlock(defaultBlock, { at: nextPath });
     // editor.focusBlock(defaultBlock.id);
   };
 

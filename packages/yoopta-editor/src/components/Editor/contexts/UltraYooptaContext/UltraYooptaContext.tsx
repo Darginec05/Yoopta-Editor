@@ -16,10 +16,10 @@ export type UltraYooptaContextPlugin = {
 
 export type YooEditor = {
   insertBlock: (data, options?: any) => void;
-  updateBlock: (node, at) => void;
+  updateBlock: (id, data, options?: any) => void;
   deleteBlock: (at: number[]) => void;
   getBlock: (at) => void;
-  onChange: () => void;
+  applyChanges: () => void;
   moveBlock: (from: number[], to: number[]) => void;
   focusBlock: (id, at?: number[]) => void;
   selection: number[] | null;
@@ -44,7 +44,7 @@ const DEFAULT_HANDLERS = {
     changeValue: () => undefined,
     focusBlock: () => undefined,
     setSelection: () => undefined,
-    onChange: () => undefined,
+    applyChanges: () => undefined,
     selection: null,
     blockEditorsMap: {},
     children: {},
@@ -66,7 +66,7 @@ const UltraYooptaContextProvider = ({ children, editorState }) => {
   return <UltraYooptaContext.Provider value={contextValueRef.current}>{children}</UltraYooptaContext.Provider>;
 };
 
-const useYooptaEditor = () => {
+const useYooptaEditor = (): YooEditor => {
   const editor = useContext(UltraYooptaContext).editor;
   return editor;
 };
