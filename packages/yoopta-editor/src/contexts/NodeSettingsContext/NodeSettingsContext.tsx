@@ -7,7 +7,7 @@ import { generateId } from '../../utils/generateId';
 import { deepClone } from '../../utils/deepClone';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import copy from 'copy-to-clipboard';
-import { getDefaultParagraphLine } from '../../components/Editor/utils';
+import { getDefaultParagraphLine } from '../../components/FakeEditor/utils';
 
 export type HoveredElement = YooptaBaseElement<string> | null;
 export type SelectedNodeElement = YooptaBaseElement<string> | null;

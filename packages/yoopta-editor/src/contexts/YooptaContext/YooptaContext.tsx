@@ -4,7 +4,7 @@ import { useSlate } from 'slate-react';
 import { YooptaBaseElement, YooptaTools } from '../../types';
 import { YooptaPluginType } from '../../utils/plugins';
 import { YooptaMark } from '../../utils/marks';
-import { getDefaultParagraphLine } from '../../components/Editor/utils';
+import { getDefaultParagraphLine } from '../../components/FakeEditor/utils';
 import { generateId } from '../../utils/generateId';
 
 const defaultValues: YooptaContextReturnValues = { marks: {}, elements: {} };
