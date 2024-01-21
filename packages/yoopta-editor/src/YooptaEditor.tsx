@@ -9,15 +9,18 @@ import { useCallback, useState } from 'react';
 
 type Props = {
   editor: YooEditor;
+  onChange?: (value: YooEditor['children']) => void;
 };
 
 const YooptaEditor = <V extends YooptaBaseElement<string>>({ editor, ...props }: Props) => {
-  const onChange = useCallback(() => {
+  const applyChanges = useCallback(() => {
+    if (props.onChange) props.onChange(editor.children);
+
     setEditorState((prev) => ({ ...prev, version: prev.version + 1 }));
   }, []);
 
   const [editorState, setEditorState] = useState<{ editor: YooEditor; version: number }>(() => {
-    editor.onChange = onChange;
+    editor.applyChanges = applyChanges;
     editor.children = YOOPTA_EDITOR_ULTRA_VALUE;
     return { editor, version: 0 };
   });

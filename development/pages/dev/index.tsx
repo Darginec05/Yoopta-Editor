@@ -221,7 +221,11 @@ const BasicExample = () => {
 
   return (
     <div className={s.container}>
-      <YooptaEditor editor={editor} placeholder="Type / to open menu" />
+      <YooptaEditor
+        editor={editor}
+        onChange={(val) => console.log('on change prop value', val)}
+        placeholder="Type / to open menu"
+      />
     </div>
   );
 };

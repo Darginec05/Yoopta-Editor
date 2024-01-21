@@ -6,6 +6,8 @@ import { YooEditor } from '../../components/Editor/contexts/UltraYooptaContext/U
 import { generateId } from '../../utils/generateId';
 
 export function insertBlock(editor: YooEditor, data, options = {}) {
+  editor.children = createDraft(editor.children);
+
   const { at = null } = options;
 
   const newBlock = {
@@ -34,8 +36,6 @@ export function insertBlock(editor: YooEditor, data, options = {}) {
 
   editor.children[newBlock.id] = newBlock;
 
-  const slate = withHistory(withReact(createEditor()));
-  editor.blockEditorsMap[newBlock.id] = slate;
-
-  editor.onChange();
+  editor.children = finishDraft(editor.children);
+  editor.applyChanges();
 }
