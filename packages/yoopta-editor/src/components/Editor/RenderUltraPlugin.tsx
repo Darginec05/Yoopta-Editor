@@ -12,10 +12,10 @@ const RenderPlugin = ({ id, render, customEditor, options }) => {
   const type = plugin.type;
 
   const slate = useMemo(() => {
-    const editor = withHistory(withReact(createEditor()));
-    if (options?.isVoid) editor.isVoid = (element) => element.type === type;
+    const slateEditor = yooEditor.blockEditorsMap[id];
+    if (options?.isVoid) slateEditor.isVoid = (element) => element.type === type;
 
-    return editor;
+    return slateEditor;
   }, []);
 
   const onChange = useCallback((data) => {

@@ -42,11 +42,6 @@ export type YooptaBaseToolProps<
   on?: Events;
 };
 
-export interface YooEditor extends BaseEditor, ReactEditor, HistoryEditor {
-  shortcuts: Record<string, YooptaPluginType>;
-  plugins: Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>>;
-}
-
 export type YooptaNodeElementSettings = {
   options?: {
     handlers?: {

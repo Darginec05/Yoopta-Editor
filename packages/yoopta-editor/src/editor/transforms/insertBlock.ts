@@ -2,13 +2,13 @@ import { createDraft, finishDraft } from 'immer';
 import { createEditor } from 'slate';
 import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
-import { YooEditor } from '../../components/Editor/contexts/UltraYooptaContext/UltraYooptaContext';
 import { generateId } from '../../utils/generateId';
+import { YooEditor, YooptaEditorOptions } from '../types';
 
-export function insertBlock(editor: YooEditor, data, options = {}) {
+export function insertBlock(editor: YooEditor, data, options: YooptaEditorOptions = {}) {
   editor.children = createDraft(editor.children);
 
-  const { at = null } = options;
+  const { at = null, focus = false } = options;
 
   const newBlock = {
     id: generateId(),
@@ -35,7 +35,13 @@ export function insertBlock(editor: YooEditor, data, options = {}) {
   }
 
   editor.children[newBlock.id] = newBlock;
-
   editor.children = finishDraft(editor.children);
+
+  const slate = withHistory(withReact(createEditor()));
+  editor.blockEditorsMap[newBlock.id] = slate;
   editor.applyChanges();
+
+  if (focus) {
+    editor.focusBlock(newBlock.id);
+  }
 }

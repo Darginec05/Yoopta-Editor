@@ -12,7 +12,7 @@ import { getElementByPath } from '../../utils/nodes';
 import { EditorEventHandlers } from '../../types/eventHandlers';
 import { generateId } from '../../utils/generateId';
 import { YooptaMark } from '../../utils/marks';
-import { YooEditor, YooptaBaseElement } from '../../types';
+import { YooptaBaseElement } from '../../types';
 import { deepClone } from '../../utils/deepClone';
 import { isKeyHotkey } from 'is-hotkey';
 import { serializeHtml } from '../../utils/serializeHTML';
@@ -23,7 +23,7 @@ const EDITOR_STYLES: CSSProperties = {
 };
 
 type YooptaProps = {
-  editor: YooEditor;
+  editor: any;
   placeholder?: string;
   readOnly?: boolean;
   plugins: ParentYooptaPlugin[];

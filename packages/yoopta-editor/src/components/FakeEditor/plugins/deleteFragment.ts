@@ -1,7 +1,6 @@
 import { Editor, Range, Transforms } from 'slate';
-import { YooEditor } from '../../../types';
 
-export const withDeleteFragment = (editor: YooEditor) => {
+export const withDeleteFragment = (editor: any) => {
   const { deleteFragment } = editor;
 
   // Fixes https://github.com/ianstormtaylor/slate/issues/3605
