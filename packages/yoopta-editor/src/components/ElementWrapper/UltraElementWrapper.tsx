@@ -24,20 +24,18 @@ const UltraElementWrapper = ({ children, plugin, pluginId }) => {
 
   return (
     <div className={s.root} data-yoopta-plugin-id={pluginId} data-yoopta-plugin>
-      {isSelected && (
-        <div contentEditable={false} className={cx(s.actions, { [s.hovered]: false }, 'yoopta-element-actions')}>
-          <button
-            type="button"
-            onClick={onPlusClick}
-            className={cx(s.actionButton, s.plusButton, 'yoopta-element-actions-plus')}
-          >
-            <PlusIcon />
-          </button>
-          <button type="button" onMouseDown={onMoveBlock} className={cx(s.actionButton, 'yoopta-element-actions-drag')}>
-            <DragIcon />
-          </button>
-        </div>
-      )}
+      <div contentEditable={false} className={cx(s.actions, { [s.hovered]: false }, 'yoopta-element-actions')}>
+        <button
+          type="button"
+          onClick={onPlusClick}
+          className={cx(s.actionButton, s.plusButton, 'yoopta-element-actions-plus')}
+        >
+          <PlusIcon />
+        </button>
+        <button type="button" onMouseDown={onMoveBlock} className={cx(s.actionButton, 'yoopta-element-actions-drag')}>
+          <DragIcon />
+        </button>
+      </div>
       <div className={s.content}>{children}</div>
     </div>
   );

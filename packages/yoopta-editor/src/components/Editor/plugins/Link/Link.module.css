@@ -1,0 +1,8 @@
+.link {
+  font-style: normal;
+  font-weight: normal;
+  text-decoration-line: underline;
+  color: #007aff;
+  position: relative;
+  cursor: pointer;
+}

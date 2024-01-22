@@ -216,6 +216,14 @@ const TOOLS = {
   // ChatGPT: <ChatGPT API_URL="https://path/api/chatgpt" context={initContextMessages} />,
 };
 
+// import { Video } from '@'
+
+// const plugins = [Video, Paragraph, Image, Link, Image];
+// const plugins = {
+//   asdasd: Video,
+//   azczxcsdasd: Paragraph,
+// };
+
 const BasicExample = () => {
   const editor = useMemo(() => createYooptaEditor(), []);
 
@@ -224,6 +232,7 @@ const BasicExample = () => {
       <YooptaEditor
         editor={editor}
         onChange={(val) => console.log('on change prop value', val)}
+        // plugins={plugins}
         placeholder="Type / to open menu"
       />
     </div>
