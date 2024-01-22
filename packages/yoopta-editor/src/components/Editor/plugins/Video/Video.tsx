@@ -1,11 +1,4 @@
-import { generateId } from '../../../../utils/generateId';
 import { createUltraPlugin } from '../../ultraPlugins';
-
-type VideoElementMeta = {
-  height: number;
-  width: number;
-  src: string;
-};
 
 const VideoRender = (props) => {
   const data = props.element.data;
@@ -39,17 +32,24 @@ const VideoRender = (props) => {
   );
 };
 
-const Video = createUltraPlugin<VideoElementMeta>({
+export type VideoSlateElementProps = {
+  height: number;
+  width: number;
+  src: string | null;
+  poster?: string;
+};
+
+const Video = createUltraPlugin<VideoSlateElementProps>({
   type: 'video',
   render: VideoRender,
-  data: {
-    id: generateId(),
-    height: 400,
-    width: 400,
-    src: '',
-  },
   options: {
     isVoid: true,
+  },
+  props: {
+    height: 400,
+    width: 400,
+    src: null,
+    poster: undefined,
   },
 });
 

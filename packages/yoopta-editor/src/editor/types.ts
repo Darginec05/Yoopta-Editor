@@ -4,18 +4,21 @@ export type YooptaPath = number[];
 
 export type UltraYooptaBlockPluginType = 'block' | 'inline' | 'void';
 
-export type YooptaBlockPluginMetaBase = {
-  order: number;
-  depth: number;
-};
+export type YooptaBlockPluginMetaBase =
+  | {
+      order: number;
+      depth: number;
+      type: 'block' | 'void';
+    }
+  | { type: 'inline' };
 
 export type UltraYooptaContextBlockPluginMetaInline = {
-  refId: string;
+  refId?: string;
 };
 
-export type YooptaBlockPlugin<T = Descendant[]> = {
+export type YooptaBlockPlugin<T = Descendant> = {
   id: string;
-  value: T;
+  value: T[];
   type: string;
   meta: YooptaBlockPluginMetaBase;
 };
@@ -40,3 +43,10 @@ export type YooEditor = {
   setSelection: (path: YooptaPath | null) => void;
   blockEditorsMap: YooptaPluginsEditorMap;
 };
+
+// types for slate value
+export type YooptaEditorSlateBaseData<T = unknown> = {
+  id: string;
+  type: string;
+  children: Descendant[];
+} & T;
