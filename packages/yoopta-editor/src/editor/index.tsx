@@ -4,7 +4,7 @@ import { moveBlock } from './transforms/moveBlock';
 import { focusBlock } from './transforms/focusBlock';
 import { updateBlock } from './transforms/updateBlock';
 import { setSelection } from './selection/setSelection';
-import { YooEditor } from '../components/Editor/contexts/UltraYooptaContext/UltraYooptaContext';
+import { YooEditor } from './types';
 
 export const createYooptaEditor = (): YooEditor => {
   const editor = {

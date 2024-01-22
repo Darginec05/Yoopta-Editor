@@ -1,15 +1,23 @@
-export function deleteBlock(editor, at: number[]) {
+import { createDraft, finishDraft } from 'immer';
+import { YooEditor, YooptaEditorOptions } from '../types';
+
+export function deleteBlock(editor: YooEditor, options: YooptaEditorOptions = {}) {
+  const { at = null } = options;
+
+  if (!at) return;
+
+  editor.children = createDraft(editor.children);
   const [position] = at;
-  const updatedPlugins = editor.children;
-  const pluginKeys = Object.keys(updatedPlugins);
-  const pluginToDeleteId = pluginKeys.find((id) => updatedPlugins[id].meta.order === position);
+  const pluginKeys = Object.keys(editor.children);
+  const pluginToDeleteId = pluginKeys.find((id) => editor.children[id].meta.order === position);
 
   pluginKeys.forEach((pluginId) => {
-    const plugin = updatedPlugins[pluginId];
+    const plugin = editor.children[pluginId];
     if (plugin.meta.order > position) plugin.meta.order -= 1;
   });
 
-  if (pluginToDeleteId) delete updatedPlugins[pluginToDeleteId];
+  if (pluginToDeleteId) delete editor.children[pluginToDeleteId];
 
-  return updatedPlugins;
+  editor.children = finishDraft(editor.children);
+  editor.applyChanges();
 }

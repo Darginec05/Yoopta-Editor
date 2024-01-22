@@ -1,32 +1,6 @@
-import { createContext, useCallback, useContext, useRef, useState } from 'react';
-import { Editor, Transforms } from 'slate';
-import { ReactEditor } from 'slate-react';
-import { generateId } from '../../../../utils/generateId';
-import { PLUGIN_EDITOR_TO_ELEMENT } from '../../utils';
-
-export type UltraYooptaContextPlugin = {
-  id: string;
-  value: any[];
-  type: string;
-  meta: {
-    order: number;
-    depth: number;
-  };
-};
-
-export type YooEditor = {
-  insertBlock: (data, options?: any) => void;
-  updateBlock: (id, data, options?: any) => void;
-  deleteBlock: (at: number[]) => void;
-  getBlock: (at) => void;
-  applyChanges: () => void;
-  moveBlock: (from: number[], to: number[]) => void;
-  focusBlock: (id, at?: number[]) => void;
-  selection: number[] | null;
-  children: Record<string, UltraYooptaContextPlugin>;
-  setSelection: (path: number[] | null) => void;
-  blockEditorsMap: UltraYooptaContextPluginsEditorMap;
-};
+import { createContext, useContext, useRef } from 'react';
+import { Editor } from 'slate';
+import { YooEditor } from '../../../../editor/types';
 
 export type UltraYooptaContextPluginsEditorMap = Record<string, Editor>;
 

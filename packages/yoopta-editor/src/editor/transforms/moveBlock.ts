@@ -1,7 +1,7 @@
 import { createDraft, finishDraft } from 'immer';
-import { YooEditor } from '../../components/Editor/contexts/UltraYooptaContext/UltraYooptaContext';
+import { YooEditor, YooptaPath } from '../types';
 
-export function moveBlock(editor: YooEditor, from: number[], to: number[]) {
+export function moveBlock(editor: YooEditor, from: YooptaPath, to: YooptaPath) {
   editor.children = createDraft(editor.children);
 
   const [fromPosition] = from;

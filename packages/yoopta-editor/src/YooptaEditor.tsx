@@ -6,13 +6,16 @@ import { YOOPTA_EDITOR_ULTRA_VALUE } from './components/Editor/defaultValue';
 import { Editor } from './components/Editor/Editor';
 import { YooptaBaseElement } from './types';
 import { useCallback, useState } from 'react';
+import { withHistory } from 'slate-history';
+import { withReact } from 'slate-react';
+import { createEditor } from 'slate';
 
 type Props = {
   editor: YooEditor;
   onChange?: (value: YooEditor['children']) => void;
 };
 
-const YooptaEditor = <V extends YooptaBaseElement<string>>({ editor, ...props }: Props) => {
+const YooptaEditor = ({ editor, ...props }: Props) => {
   const applyChanges = useCallback(() => {
     if (props.onChange) props.onChange(editor.children);
 
@@ -22,6 +25,12 @@ const YooptaEditor = <V extends YooptaBaseElement<string>>({ editor, ...props }:
   const [editorState, setEditorState] = useState<{ editor: YooEditor; version: number }>(() => {
     editor.applyChanges = applyChanges;
     editor.children = YOOPTA_EDITOR_ULTRA_VALUE;
+
+    Object.keys(editor.children).forEach((id) => {
+      const slate = withHistory(withReact(createEditor()));
+      editor.blockEditorsMap[id] = slate;
+    });
+
     return { editor, version: 0 };
   });
 
