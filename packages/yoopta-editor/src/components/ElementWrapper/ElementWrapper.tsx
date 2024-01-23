@@ -2,7 +2,7 @@ import { HTMLAttributes, MouseEvent, ReactElement, useMemo } from 'react';
 import { RenderElementProps, useSlate } from 'slate-react';
 import cx from 'classnames';
 import { YooptaElementConfig } from '../../types';
-import { useNodeElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
+import { useNodeElementSettings } from '../../fakecontexts/NodeSettingsContext/NodeSettingsContext';
 import { ElementActions } from './ElementActions';
 import { YooptaRenderHTMLAttributes } from '../../utils/plugins';
 import s from './ElementWrapper.module.scss';

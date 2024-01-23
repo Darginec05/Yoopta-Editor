@@ -1,5 +1,5 @@
 import { RenderElementProps } from 'slate-react';
-import { createUltraPlugin } from '../../ultraPlugins';
+import { createUltraPlugin } from '../../../../plugins';
 import s from './Paragraph.module.css';
 
 const ParagraphRender = (props: RenderElementProps) => {

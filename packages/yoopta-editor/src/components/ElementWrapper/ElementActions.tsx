@@ -3,7 +3,7 @@ import PlusIcon from './icons/plus.svg';
 import {
   NodeSettingsContextHandlers,
   NodeSettingsContextValues,
-} from '../../contexts/NodeSettingsContext/NodeSettingsContext';
+} from '../../fakecontexts/NodeSettingsContext/NodeSettingsContext';
 import { MouseEvent, useRef } from 'react';
 import { ReactEditor } from 'slate-react';
 import { Editor, Element } from 'slate';
