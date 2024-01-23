@@ -7,8 +7,8 @@ import TrashIcon from './icons/trash.svg';
 import DuplicateIcon from './icons/duplicate.svg';
 import TurnIcon from './icons/turn.svg';
 import CopyIcon from './icons/copy.svg';
-import { useNodeElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
-import { useTools } from '../../contexts/YooptaContext/YooptaContext';
+import { useNodeElementSettings } from '../../fakecontexts/NodeSettingsContext/NodeSettingsContext';
+import { useTools } from '../../fakecontexts/YooptaContext/YooptaContext';
 import s from './ElementOptions.module.scss';
 
 type RenderProps = {

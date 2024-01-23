@@ -1,4 +1,4 @@
-import { useYooptaEditor } from '../Editor/contexts/UltraYooptaContext/UltraYooptaContext';
+import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
 import s from './UltraElementWrapper.module.scss';
 import DragIcon from './icons/drag.svg';
 import PlusIcon from './icons/plus.svg';

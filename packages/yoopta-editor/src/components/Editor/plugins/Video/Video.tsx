@@ -1,4 +1,4 @@
-import { createUltraPlugin } from '../../ultraPlugins';
+import { createUltraPlugin } from '../../../../plugins';
 
 const VideoRender = (props) => {
   const data = props.element.data;
@@ -45,7 +45,7 @@ const Video = createUltraPlugin<VideoSlateElementProps>({
   options: {
     isVoid: true,
   },
-  props: {
+  nodeProps: {
     height: 400,
     width: 400,
     src: null,

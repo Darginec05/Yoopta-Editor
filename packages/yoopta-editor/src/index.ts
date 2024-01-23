@@ -3,7 +3,7 @@ import { YooptaPlugin, mergePlugins, createYooptaPlugin } from './utils/plugins'
 import classnames from 'classnames';
 import { ElementOptions } from './components/ElementOptions/ElementOptions';
 import { Overlay } from './components/ElementOptions/Overlay';
-import { useNodeElementSettings } from './contexts/NodeSettingsContext/NodeSettingsContext';
+import { useNodeElementSettings } from './fakecontexts/NodeSettingsContext/NodeSettingsContext';
 export { classnames as cx };
 export { isKeyHotkey, isHotkey, isCodeHotkey } from 'is-hotkey';
 export { enableBodyScroll, disableBodyScroll } from 'body-scroll-lock';
@@ -12,8 +12,8 @@ export { isValidYooptaNodes } from './utils/validate';
 export { generateId } from './utils/generateId';
 export { HOTKEYS } from './utils/hotkeys';
 
-export { useYoopta, useMarks, useElements, useTools } from './contexts/YooptaContext/YooptaContext';
-export type { ElementsMap, MarksMap } from './contexts/YooptaContext/YooptaContext';
+export { useYoopta, useMarks, useElements, useTools } from './fakecontexts/YooptaContext/YooptaContext';
+export type { ElementsMap, MarksMap } from './fakecontexts/YooptaContext/YooptaContext';
 export { deepClone } from './utils/deepClone';
 export { createYooptaMark } from './utils/marks';
 export { isElementActive, getElementByPath } from './utils/nodes';
@@ -27,16 +27,6 @@ export type {
   YooptaRenderHTMLAttributes,
 } from './utils/plugins';
 export type { YooptaMarksConfig, YooptaMark } from './utils/marks';
-export type {
-  YooEditor,
-  RenderYooptaElementProps,
-  YooptaBaseElement,
-  Modify,
-  YooptaEditorValue,
-  YooptaBaseToolProps,
-  YooptaTools,
-  YooptaNodeElementSettings,
-} from './types';
 
 const UI_HELPERS = { ElementOptions, Overlay };
 

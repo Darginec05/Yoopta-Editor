@@ -4,7 +4,7 @@ import { Editable, ReactEditor, RenderElementProps, RenderLeafProps } from 'slat
 import { TextLeaf } from './TextLeaf/TextLeaf';
 import { getDefaultParagraphLine, getRenderFunctionFactory, isElementHasText, toggleMark } from './utils';
 import { useScrollToElement } from '../../hooks/useScrollToElement';
-import { useNodeElementSettings } from '../../contexts/NodeSettingsContext/NodeSettingsContext';
+import { useNodeElementSettings } from '../../fakecontexts/NodeSettingsContext/NodeSettingsContext';
 import { ElementWrapper } from '../ElementWrapper/ElementWrapper';
 import { HOTKEYS } from '../../utils/hotkeys';
 import { ParentYooptaPlugin, YooptaPluginType } from '../../utils/plugins';
@@ -16,7 +16,7 @@ import { YooptaBaseElement } from '../../types';
 import { deepClone } from '../../utils/deepClone';
 import { isKeyHotkey } from 'is-hotkey';
 import { serializeHtml } from '../../utils/serializeHTML';
-import { useTools } from '../../contexts/YooptaContext/YooptaContext';
+import { useTools } from '../../fakecontexts/YooptaContext/YooptaContext';
 
 const EDITOR_STYLES: CSSProperties = {
   outline: 'none',

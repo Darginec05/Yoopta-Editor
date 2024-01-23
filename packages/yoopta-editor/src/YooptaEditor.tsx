@@ -1,4 +1,4 @@
-import { UltraYooptaContextProvider } from './components/Editor/contexts/UltraYooptaContext/UltraYooptaContext';
+import { UltraYooptaContextProvider } from './contexts/UltraYooptaContext/UltraYooptaContext';
 import { YOOPTA_EDITOR_ULTRA_VALUE } from './components/Editor/defaultValue';
 import { Editor } from './components/Editor/Editor';
 import { useCallback, useState } from 'react';

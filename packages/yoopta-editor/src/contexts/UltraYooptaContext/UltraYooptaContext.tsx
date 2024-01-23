@@ -1,6 +1,6 @@
 import { createContext, useContext, useRef } from 'react';
 import { Editor } from 'slate';
-import { YooEditor } from '../../../../editor/types';
+import { YooEditor } from '../../editor/types';
 
 export type UltraYooptaContextPluginsEditorMap = Record<string, Editor>;
 

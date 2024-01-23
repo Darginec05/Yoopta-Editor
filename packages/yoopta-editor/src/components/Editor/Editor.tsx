@@ -1,14 +1,11 @@
 import { Key, useEffect, useRef } from 'react';
-import { YooptaEditorValue, YooptaTools, YooptaNodeElementSettings } from '../../types';
 import { YooptaMark } from '../../utils/marks';
 import { YooptaPlugin } from '../../utils/plugins';
 import { OFFLINE_STORAGE } from '../../utils/storage';
-import { useYooptaEditor } from './contexts/UltraYooptaContext/UltraYooptaContext';
-import { RenderBlocks } from './RenderUltraBlocks';
+import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
+import { RenderBlocks } from './RenderBlocks';
 
 export type YooptaEditorProps<V> = {
-  onChange: (_value: YooptaEditorValue<V>) => void;
-  value: YooptaEditorValue<V>;
   key?: Key;
   placeholder?: string;
   plugins: YooptaPlugin<any, any>[];
@@ -16,9 +13,7 @@ export type YooptaEditorProps<V> = {
   autoFocus?: boolean;
   offline?: OFFLINE_STORAGE;
   marks?: YooptaMark[];
-  nodeElementSettings?: YooptaNodeElementSettings;
   className?: string;
-  tools?: YooptaTools;
 };
 
 const Editor = () => {

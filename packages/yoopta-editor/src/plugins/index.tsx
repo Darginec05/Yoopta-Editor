@@ -1,7 +1,7 @@
-import { RenderPlugin } from './RenderUltraPlugin';
-import { UltraPlugin, CreateUltraPluginBaseParam } from './types';
+import { RenderPlugin } from './RenderPlugin';
+import { CreatePluginParams, Plugin } from './types';
 
-export function createUltraPlugin<T>(plugin: CreateUltraPluginBaseParam<T>): UltraPlugin {
+export function createUltraPlugin<T>(plugin: CreatePluginParams<T>): Plugin {
   return {
     type: plugin.type,
     renderPlugin: (props) => {

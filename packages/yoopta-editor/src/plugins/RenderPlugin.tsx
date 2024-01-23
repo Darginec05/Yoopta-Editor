@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useRef } from 'react';
 import { Editable, RenderElementProps, Slate } from 'slate-react';
-import { useYooptaEditor, useYooptaPlugin } from './contexts/UltraYooptaContext/UltraYooptaContext';
-import { EVENT_HANDLERS } from './handlers';
+import { useYooptaEditor, useYooptaPlugin } from '../contexts/UltraYooptaContext/UltraYooptaContext';
+import { EVENT_HANDLERS } from '../handlers';
 
 const RenderPlugin = ({ id, render, customEditor, options }) => {
   const yooEditor = useYooptaEditor();
@@ -9,17 +9,10 @@ const RenderPlugin = ({ id, render, customEditor, options }) => {
   const initialValue = useRef(plugin.value).current;
   const type = plugin.type;
 
-  console.log('options', options);
-
   const slate = useMemo(() => {
     const slateEditor = yooEditor.blockEditorsMap[id];
     if (options?.isVoid) slateEditor.isVoid = (element) => element.type === type;
-    if (options?.isInline) {
-      console.log('options?.isInline', options?.isInline);
-      console.log('type', type);
-
-      return (slateEditor.isInline = (element) => element.type === type);
-    }
+    if (options?.isInline) slateEditor.isInline = (element) => element.type === type;
 
     return slateEditor;
   }, []);

@@ -2,26 +2,24 @@ import { Descendant, Editor as SlateEditor } from 'slate';
 
 export type YooptaPath = number[];
 
-export type UltraYooptaBlockPluginType = 'block' | 'inline' | 'void';
+export type YooptaChildrenKey = string;
+export type YooptaChildren = Record<YooptaChildrenKey, YooptaChildrenValue>;
+export type YooptaChildrenValue<T = Descendant> = {
+  id: string;
+  value: T[];
+  type: string;
+  meta: YooptaBlockBaseMeta;
+};
 
-export type YooptaBlockPluginMetaBase =
+export type YooptaBlockType = 'block' | 'inline' | 'void';
+
+export type YooptaBlockBaseMeta =
   | {
       order: number;
       depth: number;
       type: 'block' | 'void';
     }
   | { type: 'inline' };
-
-export type UltraYooptaContextBlockPluginMetaInline = {
-  refId?: string;
-};
-
-export type YooptaBlockPlugin<T = Descendant> = {
-  id: string;
-  value: T[];
-  type: string;
-  meta: YooptaBlockPluginMetaBase;
-};
 
 export type YooptaEditorOptions = {
   at?: YooptaPath | null;
@@ -39,7 +37,7 @@ export type YooEditor = {
   moveBlock: (from: YooptaPath, to: YooptaPath) => void;
   focusBlock: (id: string, options?: YooptaEditorOptions) => void;
   selection: YooptaPath | null;
-  children: Record<string, YooptaBlockPlugin>;
+  children: Record<string, YooptaChildrenValue>;
   setSelection: (path: YooptaPath | null) => void;
   blockEditorsMap: YooptaPluginsEditorMap;
 };

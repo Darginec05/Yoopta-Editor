@@ -78,23 +78,23 @@ export const YOOPTA_ULTRA_VALUES: Record<
     type: 'video',
     meta,
   }),
-  link: (id, meta) => ({
-    id,
-    value: [
-      {
-        id: generateId(),
-        type: 'link',
-        children: [{ text: '' }],
-        data: {
-          url: 'https://www.youtube.com/embed/7FjgBBwKgJA',
-          target: '_blank',
-          rel: 'noreferrer',
-        },
-      },
-    ],
-    type: 'link',
-    meta,
-  }),
+  // link: (id, meta) => ({
+  //   id,
+  //   value: [
+  //     {
+  //       id: generateId(),
+  //       type: 'link',
+  //       children: [{ text: '' }],
+  //       data: {
+  //         url: 'https://www.youtube.com/embed/7FjgBBwKgJA',
+  //         target: '_blank',
+  //         rel: 'noreferrer',
+  //       },
+  //     },
+  //   ],
+  //   type: 'link',
+  //   meta,
+  // }),
 };
 
 export const DEFAULT_ULTRA_PLUGIN_ELEMENT = {
@@ -125,5 +125,5 @@ export const YOOPTA_EDITOR_ULTRA_VALUE = {
     depth: 0,
     type: 'void',
   }),
-  HGQj3faHJkbMGFcasdLINK: YOOPTA_ULTRA_VALUES.link('HGQj3faHJkbMGFcasdLINK', { type: 'inline' }),
+  // HGQj3faHJkbMGFcasdLINK: YOOPTA_ULTRA_VALUES.link('HGQj3faHJkbMGFcasdLINK', { type: 'inline' }),
 };

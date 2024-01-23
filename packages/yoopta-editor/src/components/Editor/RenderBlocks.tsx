@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { UltraElementWrapper } from '../ElementWrapper/UltraElementWrapper';
-import { UltraPlugin } from './types';
 import { PLUGIN_INDEX } from './utils';
 
 import { Blockquote } from './plugins/Blockquote/Blockquote';
@@ -8,8 +7,9 @@ import { Code } from './plugins/Code/Code';
 import { Link } from './plugins/Link/Link';
 import { Paragraph } from './plugins/Paragraph/Paragraph';
 import { Video } from './plugins/Video/Video';
+import { Plugin } from '../../plugins/types';
 
-const ULTRA_PLUGINS = [Paragraph, Blockquote, Code, Video, Link];
+const ULTRA_PLUGINS = [Paragraph, Blockquote, Code, Video];
 const DEFAULT_EDITOR_KEYS = [];
 
 const RenderBlocks = ({ editor }) => {
@@ -26,7 +26,7 @@ const RenderBlocks = ({ editor }) => {
     });
   }, [pluginKeys]);
 
-  const ultraPluginsMap = useMemo<Record<string, UltraPlugin>>(() => {
+  const ultraPluginsMap = useMemo<Record<string, Plugin>>(() => {
     const pluginsMap = {};
     ULTRA_PLUGINS.forEach((plugin) => (pluginsMap[plugin.type] = plugin));
 
