@@ -1,4 +1,4 @@
-import { createUltraPlugin } from '../../../../plugins';
+import { createPlugin } from '../../../../plugins';
 
 const VideoRender = (props) => {
   const data = props.element.data;
@@ -39,17 +39,21 @@ export type VideoSlateElementProps = {
   poster?: string;
 };
 
-const Video = createUltraPlugin<VideoSlateElementProps>({
-  type: 'video',
-  render: VideoRender,
-  options: {
-    isVoid: true,
-  },
-  nodeProps: {
-    height: 400,
-    width: 400,
-    src: null,
-    poster: undefined,
+const Video = createPlugin<VideoSlateElementProps>({
+  type: 'VideoPlugin',
+  elements: {
+    video: {
+      component: VideoRender,
+      props: {
+        height: 400,
+        width: 400,
+        src: null,
+        poster: undefined,
+      },
+      options: {
+        isVoid: true,
+      },
+    },
   },
 });
 

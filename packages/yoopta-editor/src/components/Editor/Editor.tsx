@@ -1,22 +1,13 @@
-import { Key, useEffect, useRef } from 'react';
-import { YooptaMark } from '../../utils/marks';
-import { YooptaPlugin } from '../../utils/plugins';
-import { OFFLINE_STORAGE } from '../../utils/storage';
+import { useEffect, useRef } from 'react';
 import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
 import { RenderBlocks } from './RenderBlocks';
+import { Plugin } from '../../plugins/types';
 
-export type YooptaEditorProps<V> = {
-  key?: Key;
-  placeholder?: string;
-  plugins: YooptaPlugin<any, any>[];
-  readOnly?: boolean;
-  autoFocus?: boolean;
-  offline?: OFFLINE_STORAGE;
-  marks?: YooptaMark[];
-  className?: string;
+type Props = {
+  plugins: Plugin[];
 };
 
-const Editor = () => {
+const Editor = ({ plugins }: Props) => {
   const editor = useYooptaEditor();
   const yooptaEditorRef = useRef<HTMLDivElement>(null);
 
@@ -32,8 +23,8 @@ const Editor = () => {
 
       const pluginElement = el?.parentElement;
       const pluginId = pluginElement?.getAttribute('data-yoopta-plugin-id') || '';
-      const updatedPath = pluginId ? [editor.children[pluginId].meta.order] : null;
 
+      const updatedPath = pluginId ? [editor.children[pluginId].meta.order] : null;
       editor.setSelection(updatedPath);
     };
 
@@ -43,7 +34,7 @@ const Editor = () => {
 
   return (
     <div id="yoopta-editor" ref={yooptaEditorRef}>
-      <RenderBlocks editor={editor} />
+      <RenderBlocks editor={editor} plugins={plugins} />
     </div>
   );
 };

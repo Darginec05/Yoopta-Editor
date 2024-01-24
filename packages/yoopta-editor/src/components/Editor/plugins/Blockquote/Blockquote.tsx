@@ -1,5 +1,5 @@
 import { RenderElementProps } from 'slate-react';
-import { createUltraPlugin } from '../../../../plugins';
+import { createPlugin } from '../../../../plugins';
 import s from './Blockquote.module.css';
 
 const BlockquoteRender = (props: RenderElementProps) => {
@@ -10,9 +10,13 @@ const BlockquoteRender = (props: RenderElementProps) => {
   );
 };
 
-const Blockquote = createUltraPlugin({
-  type: 'blockquote',
-  render: BlockquoteRender,
+const Blockquote = createPlugin({
+  type: 'BlockquotePlugin',
+  elements: {
+    blockquote: {
+      component: BlockquoteRender,
+    },
+  },
 });
 
 export { Blockquote };

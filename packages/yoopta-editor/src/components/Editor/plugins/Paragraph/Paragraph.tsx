@@ -1,5 +1,5 @@
 import { RenderElementProps } from 'slate-react';
-import { createUltraPlugin } from '../../../../plugins';
+import { createPlugin } from '../../../../plugins';
 import s from './Paragraph.module.css';
 
 const ParagraphRender = (props: RenderElementProps) => {
@@ -10,9 +10,14 @@ const ParagraphRender = (props: RenderElementProps) => {
   );
 };
 
-const Paragraph = createUltraPlugin({
-  type: 'paragraph',
+const Paragraph = createPlugin({
+  type: 'ParagraphPlugin',
   render: ParagraphRender,
+  elements: {
+    paragraph: {
+      component: ParagraphRender,
+    },
+  },
 });
 
 export { Paragraph };

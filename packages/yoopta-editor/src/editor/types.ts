@@ -13,13 +13,10 @@ export type YooptaChildrenValue<T = Descendant> = {
 
 export type YooptaBlockType = 'block' | 'inline' | 'void';
 
-export type YooptaBlockBaseMeta =
-  | {
-      order: number;
-      depth: number;
-      type: 'block' | 'void';
-    }
-  | { type: 'inline' };
+export type YooptaBlockBaseMeta = {
+  order: number;
+  depth: number;
+};
 
 export type YooptaEditorOptions = {
   at?: YooptaPath | null;

@@ -1,5 +1,5 @@
 import { RenderElementProps } from 'slate-react';
-import { createUltraPlugin } from '../../../../plugins';
+import { createPlugin } from '../../../../plugins';
 import s from './Link.module.css';
 
 const LinkRender = (props: RenderElementProps) => {
@@ -30,16 +30,20 @@ type LinkElementProps = {
   rel?: string;
 };
 
-const Link = createUltraPlugin<LinkElementProps>({
-  type: 'link',
-  render: LinkRender,
-  options: {
-    isInline: true,
-  },
-  nodeProps: {
-    url: null,
-    target: '_blank',
-    rel: 'noreferrer',
+const Link = createPlugin<LinkElementProps>({
+  type: 'LinkPlugin',
+  elements: {
+    link: {
+      component: LinkRender,
+      props: {
+        url: null,
+        target: '_blank',
+        rel: 'noreferrer',
+      },
+      options: {
+        isInline: true,
+      },
+    },
   },
 });
 
