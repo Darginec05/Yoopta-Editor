@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { UltraElementWrapper } from '../ElementWrapper/UltraElementWrapper';
 import { PLUGIN_INDEX } from './utils';
 
-import { Plugin, PluginElement, PluginElementsMap } from '../../plugins/types';
+import { Plugin, PluginElementsMap } from '../../plugins/types';
 import { YooEditor } from '../../editor/types';
 
 const DEFAULT_EDITOR_KEYS = [];
