@@ -231,9 +231,9 @@ const BasicExample = () => {
     <div className={s.container}>
       <YooptaEditor
         editor={editor}
-        onChange={(val) => console.log('on change prop value', val)}
         // plugins={plugins}
-        placeholder="Type / to open menu"
+        // onChange={(val) => console.log('on change prop value', val)}
+        // placeholder="Type / to open menu"
       />
     </div>
   );

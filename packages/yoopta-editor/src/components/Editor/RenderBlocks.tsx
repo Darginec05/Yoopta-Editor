@@ -2,54 +2,72 @@ import { useMemo } from 'react';
 import { UltraElementWrapper } from '../ElementWrapper/UltraElementWrapper';
 import { PLUGIN_INDEX } from './utils';
 
-import { Blockquote } from './plugins/Blockquote/Blockquote';
-import { Code } from './plugins/Code/Code';
-import { Link } from './plugins/Link/Link';
-import { Paragraph } from './plugins/Paragraph/Paragraph';
-import { Video } from './plugins/Video/Video';
-import { Plugin } from '../../plugins/types';
+import { Plugin, PluginElement, PluginElementsMap } from '../../plugins/types';
+import { YooEditor } from '../../editor/types';
 
-const ULTRA_PLUGINS = [Paragraph, Blockquote, Code, Video];
 const DEFAULT_EDITOR_KEYS = [];
 
-const RenderBlocks = ({ editor }) => {
-  const pluginKeys = Object.keys(editor.children);
+type Props = {
+  editor: YooEditor;
+  plugins: Plugin[];
+};
 
-  const pluginValueKeys = useMemo(() => {
-    if (pluginKeys.length === 0) return DEFAULT_EDITOR_KEYS;
+const RenderBlocks = ({ editor, plugins }: Props) => {
+  const childrenUnorderedKeys = Object.keys(editor.children);
 
-    return pluginKeys.sort((a, b) => {
+  const childrenKeys = useMemo(() => {
+    if (childrenUnorderedKeys.length === 0) return DEFAULT_EDITOR_KEYS;
+
+    return childrenUnorderedKeys.sort((a, b) => {
       const aOrder = editor.children[a].meta.order;
       const bOrder = editor.children[b].meta.order;
 
       return aOrder - bOrder;
     });
-  }, [pluginKeys]);
+  }, [childrenUnorderedKeys]);
 
-  const ultraPluginsMap = useMemo<Record<string, Plugin>>(() => {
+  // [TODO] - Optimize and remvoe top level inline plugins
+  const PLUGINS_MAP = useMemo<Record<string, Plugin>>(() => {
     const pluginsMap = {};
-    ULTRA_PLUGINS.forEach((plugin) => (pluginsMap[plugin.type] = plugin));
+    const inlineTopLevelPlugins: PluginElementsMap<unknown> = {};
+
+    plugins.forEach((plugin) => {
+      if (plugin.elements) {
+        Object.keys(plugin.elements).forEach((type) => {
+          const element = plugin.elements[type];
+          if (element.options?.isInline) inlineTopLevelPlugins[type] = element;
+        });
+      }
+
+      pluginsMap[plugin.type] = plugin;
+    });
+
+    plugins.forEach((plugin) => {
+      if (plugin.elements) {
+        const elements = { ...plugin.elements, ...inlineTopLevelPlugins };
+        pluginsMap[plugin.type] = { ...plugin, elements };
+      }
+    });
 
     return pluginsMap;
-  }, []);
+  }, [plugins]);
 
   const blocks: JSX.Element[] = [];
 
-  for (let i = 0; i < pluginValueKeys.length; i++) {
-    const pluginId = pluginValueKeys[i];
-    const plugin = editor.children[pluginId];
+  for (let i = 0; i < childrenKeys.length; i++) {
+    const childrenId = childrenKeys[i];
+    const yooptaPlugin = editor.children[childrenId];
+    const pluginRenderer = PLUGINS_MAP[yooptaPlugin.type];
 
-    const renderPlugin = ultraPluginsMap[plugin.type]?.renderPlugin;
-
-    if (renderPlugin) {
+    if (pluginRenderer?.renderPlugin) {
       blocks.push(
-        <UltraElementWrapper key={pluginId} plugin={plugin} pluginId={pluginId}>
-          {renderPlugin({ id: pluginId })}
+        <UltraElementWrapper key={childrenId} plugin={yooptaPlugin} pluginId={childrenId}>
+          {pluginRenderer.renderPlugin({ id: childrenId, elements: pluginRenderer.elements })}
         </UltraElementWrapper>,
       );
     }
 
-    PLUGIN_INDEX.set(plugin, i);
+    PLUGIN_INDEX.set(yooptaPlugin, i);
   }
 
   return <>{blocks}</>;

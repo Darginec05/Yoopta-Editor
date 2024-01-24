@@ -4,7 +4,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { githubDark } from '@uiw/codemirror-theme-github';
 import { useYooptaEditor, useYooptaPlugin } from '../../../../contexts/UltraYooptaContext/UltraYooptaContext';
-import { createUltraPlugin } from '../../../../plugins';
+import { createPlugin } from '../../../../plugins';
 import { CustomEditorProps } from '../../../../plugins/types';
 
 const CodeEditor = ({ id, type }: CustomEditorProps) => {
@@ -37,13 +37,9 @@ const CodeEditor = ({ id, type }: CustomEditorProps) => {
   );
 };
 
-const Code = createUltraPlugin({
-  type: 'code',
+const Code = createPlugin({
+  type: 'CodePlugin',
   customEditor: CodeEditor,
-  render: null,
-  options: {
-    isVoid: true,
-  },
 });
 
 export { Code };

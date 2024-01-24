@@ -4,14 +4,15 @@ import DragIcon from './icons/drag.svg';
 import PlusIcon from './icons/plus.svg';
 import cx from 'classnames';
 import { PLUGIN_INDEX } from '../Editor/utils';
-import { getDefaultUltraBlock } from '../Editor/defaultValue';
+import { getDefaultYooptaChildrenValue } from '../Editor/defaultValue';
+import { generateId } from '../../utils/generateId';
 
 const UltraElementWrapper = ({ children, plugin, pluginId }) => {
   const editor = useYooptaEditor();
 
   const onPlusClick = () => {
     const pluginIndex = PLUGIN_INDEX.get(plugin);
-    const defaultBlock = getDefaultUltraBlock();
+    const defaultBlock = getDefaultYooptaChildrenValue(generateId());
 
     const nextPath = [pluginIndex + 1];
     editor.insertBlock(defaultBlock, { at: nextPath, focus: true });
