@@ -13,6 +13,7 @@ import { Code } from './components/Editor/plugins/Code/Code';
 import { Video } from './components/Editor/plugins/Video/Video';
 import { Link } from './components/Editor/plugins/Link/Link';
 import NoSSR from './components/NoSsr/NoSsr';
+import { Mention } from './components/Editor/plugins/Mention/Mention';
 
 type Props = {
   editor: YooEditor;
@@ -21,7 +22,7 @@ type Props = {
   onChange?: (value: YooEditor['children']) => void;
 };
 
-const PLUGINS = [Paragraph, Blockquote, Code, Video, Link];
+const PLUGINS = [Paragraph, Blockquote, Code, Video, Link, Mention];
 const DEFAULT_VALUE = getDefaultYooptaChildren();
 
 const YooptaEditor = ({ editor, value, plugins = PLUGINS, ...props }: Props) => {

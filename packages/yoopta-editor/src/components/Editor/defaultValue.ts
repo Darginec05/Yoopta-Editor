@@ -30,7 +30,12 @@ export const YOOPTA_ULTRA_VALUES: Record<
       {
         id: generateId(),
         type: 'paragraph',
-        children: [{ text: 'A line of text in a paragraph.' }, INLINE_LINK_ELEMENT],
+        children: [
+          { text: 'A line of text in a paragraph.' },
+          INLINE_LINK_ELEMENT,
+          { text: 'link via the toolbar icon above,' },
+          INLINE_MENTION_ELEMENT,
+        ],
       },
     ],
     type: 'ParagraphPlugin',
@@ -109,6 +114,17 @@ export const INLINE_LINK_ELEMENT = {
   children: [{ text: 'Finally, here is our favorite dog video.' }],
   data: {
     url: 'https://twitter.com/JustMissEmma/status/1448679899531726852',
+    target: '_blank',
+    rel: 'noreferrer',
+  },
+};
+
+export const INLINE_MENTION_ELEMENT = {
+  id: generateId(),
+  type: 'mention',
+  children: [{ text: '@elon.musk' }],
+  data: {
+    url: 'https://twitter.com/teo_bale/',
     target: '_blank',
     rel: 'noreferrer',
   },
