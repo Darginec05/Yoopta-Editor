@@ -21,12 +21,15 @@ export type YooptaBlockBaseMeta = {
 export type YooptaEditorOptions = {
   at?: YooptaPath | null;
   focus?: boolean;
+  slate?: SlateEditor;
+  pluginId?: string;
 };
 
 export type YooptaPluginsEditorMap = Record<string, SlateEditor>;
 
 export type YooEditor = {
   insertBlock: (data, options?: YooptaEditorOptions) => void;
+  splitBlock: (options?: YooptaEditorOptions) => void;
   updateBlock: (id: string, data, options?: YooptaEditorOptions) => void;
   deleteBlock: (options?: YooptaEditorOptions) => void;
   getBlock: (options?: YooptaEditorOptions) => void;

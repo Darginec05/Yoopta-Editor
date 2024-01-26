@@ -13,7 +13,7 @@ const getMappedElements = (elements) => {
   return mappedElements;
 };
 
-const RenderPlugin = <T,>({ id, render, customEditor, elements }: Props<T>) => {
+const SlateEditorComponent = <T,>({ id, customEditor, elements }: Props<T>) => {
   const yooEditor = useYooptaEditor();
   const plugin = useYooptaPlugin(id);
   const initialValue = useRef(plugin.value).current;
@@ -71,4 +71,4 @@ const RenderPlugin = <T,>({ id, render, customEditor, elements }: Props<T>) => {
   );
 };
 
-export { RenderPlugin };
+export { SlateEditorComponent };
