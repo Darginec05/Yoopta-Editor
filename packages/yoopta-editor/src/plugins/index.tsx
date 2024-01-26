@@ -1,4 +1,4 @@
-import { RenderPlugin } from './RenderPlugin';
+import { SlateEditorComponent } from './SlateEditorComponent';
 import { PluginParams, Plugin } from './types';
 
 export function createPlugin<T>(plugin: PluginParams<T>): Plugin {
@@ -9,7 +9,7 @@ export function createPlugin<T>(plugin: PluginParams<T>): Plugin {
       const { customEditor, render, type } = plugin;
 
       return (
-        <RenderPlugin
+        <SlateEditorComponent
           key={props.id}
           type={type}
           id={props.id}

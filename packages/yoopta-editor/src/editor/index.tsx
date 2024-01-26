@@ -3,6 +3,7 @@ import { deleteBlock } from './transforms/deleteBlock';
 import { moveBlock } from './transforms/moveBlock';
 import { focusBlock } from './transforms/focusBlock';
 import { updateBlock } from './transforms/updateBlock';
+import { splitBlock } from './transforms/splitBlock';
 import { setSelection } from './selection/setSelection';
 import { YooEditor } from './types';
 
@@ -18,6 +19,7 @@ export const createYooptaEditor = (): YooEditor => {
     getBlock: (...args) => undefined,
     focusBlock: (...args) => focusBlock(editor, ...args),
     updateBlock: (...args) => updateBlock(editor, ...args),
+    splitBlock: (...args) => splitBlock(editor, ...args),
     setSelection: (...args) => setSelection(editor, ...args),
     blockEditorsMap: {},
   };

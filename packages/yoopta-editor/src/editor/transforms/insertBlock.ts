@@ -1,5 +1,5 @@
 import { createDraft, finishDraft } from 'immer';
-import { createEditor } from 'slate';
+import { createEditor, Range } from 'slate';
 import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
 import { generateId } from '../../utils/generateId';
@@ -8,7 +8,7 @@ import { YooEditor, YooptaEditorOptions } from '../types';
 export function insertBlock(editor: YooEditor, data, options: YooptaEditorOptions = {}) {
   editor.children = createDraft(editor.children);
 
-  const { at = null, focus = false } = options;
+  const { at = null, focus = false, slate } = options;
 
   const newBlock = {
     id: generateId(),
@@ -37,8 +37,8 @@ export function insertBlock(editor: YooEditor, data, options: YooptaEditorOption
   editor.children[newBlock.id] = newBlock;
   editor.children = finishDraft(editor.children);
 
-  const slate = withHistory(withReact(createEditor()));
-  editor.blockEditorsMap[newBlock.id] = slate;
+  const newSlateEditor = withHistory(withReact(createEditor()));
+  editor.blockEditorsMap[newBlock.id] = newSlateEditor;
   editor.applyChanges();
 
   if (focus) {

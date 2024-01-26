@@ -31,7 +31,7 @@ type Mention = {
 };
 
 const Mention = createPlugin<Mention>({
-  type: 'Mention',
+  type: 'MentionPlugin',
   elements: {
     mention: {
       component: MentionRender,
