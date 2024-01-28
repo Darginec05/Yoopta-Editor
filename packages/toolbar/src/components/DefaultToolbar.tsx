@@ -132,6 +132,9 @@ const DefaultToolbar = ({ getRootProps }: ToolbarProps) => {
             type="button"
             className={cx(s.mark, { [s.active]: marks.bold.isActive })}
             onClick={() => marks.bold.toggle()}
+            // onClick={() => editor.formats.highlight.toggle()}
+            // onClick={() => editor.formats.highlight.update()}
+            // onClick={() => editor.formats.highlight.isActive()}
           >
             <span>
               <b>B</b>

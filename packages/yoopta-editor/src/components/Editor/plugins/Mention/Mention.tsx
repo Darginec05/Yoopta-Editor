@@ -34,7 +34,7 @@ const Mention = createPlugin<Mention>({
   type: 'MentionPlugin',
   elements: {
     mention: {
-      component: MentionRender,
+      render: MentionRender,
       props: {
         url: null,
         target: '_blank',

@@ -27,7 +27,22 @@ export type YooptaEditorOptions = {
 
 export type YooptaPluginsEditorMap = Record<string, SlateEditor>;
 
-export type YooEditor = {
+// Marks
+export type TextFormat = {
+  type: string;
+  hotkey?: string;
+  value: string;
+  isActive: (editor, format) => boolean;
+  toggle: (editor, format) => void;
+  update: (editor, format, props: any) => void;
+};
+
+export type TextFormatMap<TKey extends string = any> = {
+  [key in TKey]: TextFormat;
+};
+
+// [TODO] - Fix generic and default types
+export type YooEditor<TNodes = any, TKey extends string = any> = {
   insertBlock: (data, options?: YooptaEditorOptions) => void;
   splitBlock: (options?: YooptaEditorOptions) => void;
   updateBlock: (id: string, data, options?: YooptaEditorOptions) => void;
@@ -40,6 +55,9 @@ export type YooEditor = {
   children: Record<string, YooptaChildrenValue>;
   setSelection: (path: YooptaPath | null) => void;
   blockEditorsMap: YooptaPluginsEditorMap;
+  formats: {
+    [key in TKey]: Pick<TextFormat, 'type' | 'hotkey'>;
+  };
 };
 
 // types for slate value

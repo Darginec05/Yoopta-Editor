@@ -1,18 +1,19 @@
 import { useMemo } from 'react';
 import { UltraElementWrapper } from '../ElementWrapper/UltraElementWrapper';
 import { PLUGIN_INDEX } from './utils';
-
 import { Plugin, PluginElementsMap } from '../../plugins/types';
 import { YooEditor } from '../../editor/types';
+import { YooptaMark } from '../../textFormatters/createYooptaMark';
 
 const DEFAULT_EDITOR_KEYS = [];
 
 type Props = {
   editor: YooEditor;
+  marks?: YooptaMark[];
   plugins: Plugin[];
 };
 
-const RenderBlocks = ({ editor, plugins }: Props) => {
+const RenderBlocks = ({ editor, plugins, marks }: Props) => {
   const childrenUnorderedKeys = Object.keys(editor.children);
 
   const childrenKeys = useMemo(() => {
@@ -62,7 +63,7 @@ const RenderBlocks = ({ editor, plugins }: Props) => {
     if (pluginRenderer?.renderPlugin) {
       blocks.push(
         <UltraElementWrapper key={childrenId} plugin={yooptaPlugin} pluginId={childrenId}>
-          {pluginRenderer.renderPlugin({ id: childrenId, elements: pluginRenderer.elements })}
+          {pluginRenderer.renderPlugin({ id: childrenId, elements: pluginRenderer.elements, marks })}
         </UltraElementWrapper>,
       );
     }

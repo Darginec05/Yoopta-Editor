@@ -15,7 +15,7 @@ const Paragraph = createPlugin({
   render: ParagraphRender,
   elements: {
     paragraph: {
-      component: ParagraphRender,
+      render: ParagraphRender,
     },
   },
 });

@@ -2,12 +2,14 @@ import { useEffect, useRef } from 'react';
 import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
 import { RenderBlocks } from './RenderBlocks';
 import { Plugin } from '../../plugins/types';
+import { YooptaMark } from '../../textFormatters/createYooptaMark';
 
 type Props = {
   plugins: Plugin[];
+  marks?: YooptaMark[];
 };
 
-const Editor = ({ plugins }: Props) => {
+const Editor = ({ plugins, marks }: Props) => {
   const editor = useYooptaEditor();
   const yooptaEditorRef = useRef<HTMLDivElement>(null);
 
@@ -34,7 +36,7 @@ const Editor = ({ plugins }: Props) => {
 
   return (
     <div id="yoopta-editor" ref={yooptaEditorRef}>
-      <RenderBlocks editor={editor} plugins={plugins} />
+      <RenderBlocks editor={editor} plugins={plugins} marks={marks} />
     </div>
   );
 };

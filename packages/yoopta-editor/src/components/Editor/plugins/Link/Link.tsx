@@ -34,7 +34,7 @@ const Link = createPlugin<LinkElementProps>({
   type: 'LinkPlugin',
   elements: {
     link: {
-      component: LinkRender,
+      render: LinkRender,
       props: {
         url: null,
         target: '_blank',

@@ -14,7 +14,7 @@ const Blockquote = createPlugin({
   type: 'BlockquotePlugin',
   elements: {
     blockquote: {
-      component: BlockquoteRender,
+      render: BlockquoteRender,
     },
   },
 });

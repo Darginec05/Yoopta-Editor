@@ -43,7 +43,7 @@ const Video = createPlugin<VideoSlateElementProps>({
   type: 'VideoPlugin',
   elements: {
     video: {
-      component: VideoRender,
+      render: VideoRender,
       props: {
         height: 400,
         width: 400,
