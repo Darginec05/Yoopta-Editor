@@ -235,15 +235,7 @@ const BasicExample = () => {
 
   return (
     <div className={s.container}>
-      <button
-        onClick={() => {
-          console.log('click add color');
-
-          TextFormats.update(editor, editor.formats.highlight, { color: 'green' });
-        }}
-      >
-        add color
-      </button>
+      <button onClick={() => TextFormats.update(editor, 'highlight', { color: 'green' })}>add color</button>
       <YooptaEditor
         editor={editor}
         // plugins={plugins}
