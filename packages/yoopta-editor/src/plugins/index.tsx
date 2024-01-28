@@ -13,6 +13,7 @@ export function createPlugin<T>(plugin: PluginParams<T>): Plugin {
           key={props.id}
           type={type}
           id={props.id}
+          marks={props.marks}
           customEditor={customEditor}
           render={render}
           // [TODO] - remove elements from plugins. NOTE: top level inline nodes

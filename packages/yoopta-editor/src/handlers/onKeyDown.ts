@@ -1,5 +1,8 @@
+import { isKeyHotkey } from 'is-hotkey';
 import { Editor, Path, Range, Transforms } from 'slate';
+import { TextTransforms } from 'slate/dist/interfaces/transforms/text';
 import { getDefaultYooptaChildrenValue } from '../components/Editor/defaultValue';
+import { TextFormats } from '../editor';
 import { YooEditor } from '../editor/types';
 import { generateId } from '../utils/generateId';
 import { HOTKEYS } from '../utils/hotkeys';
@@ -42,6 +45,18 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
       editor.insertBlock(defaultBlock, { at: nextPath, focus: true });
       return;
     }
+
+    Object.values(editor.formats).forEach((mark) => {
+      if (mark.hotkey && isKeyHotkey(mark.hotkey)(event)) {
+        if (Range.isCollapsed(slate.selection!)) {
+          // break from array
+        }
+
+        event.preventDefault();
+        TextFormats.toggle(editor, mark);
+        // break from array
+      }
+    });
 
     if (HOTKEYS.isBackspace(event)) {
       const parentPath = Path.parent(slate.selection.anchor.path);

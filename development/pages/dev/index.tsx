@@ -1,4 +1,10 @@
-import YooptaEditor, { createYooptaEditor, createYooptaMark, createYooptaPlugin, useYoopta } from '@yoopta/editor';
+import YooptaEditor, {
+  createYooptaEditor,
+  createYooptaMark,
+  createYooptaPlugin,
+  useYoopta,
+  TextFormats,
+} from '@yoopta/editor';
 import Blockquote, { BlockquoteElement } from '@yoopta/blockquote';
 import Paragraph, { ParagraphElement } from '@yoopta/paragraph';
 import Callout, { CalloutElement } from '@yoopta/callout';
@@ -229,6 +235,15 @@ const BasicExample = () => {
 
   return (
     <div className={s.container}>
+      <button
+        onClick={() => {
+          console.log('click add color');
+
+          TextFormats.update(editor, editor.formats.highlight, { color: 'green' });
+        }}
+      >
+        add color
+      </button>
       <YooptaEditor
         editor={editor}
         // plugins={plugins}

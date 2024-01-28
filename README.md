@@ -58,12 +58,7 @@ export default function Editor() {
 
   return (
     <div style={styles}>
-      <YooptaEditor
-        value={value}
-        onChange={(val) => setValue(val)}
-        plugins={plugins}
-        placeholder="Type text.."
-      />
+      <YooptaEditor value={value} onChange={(val) => setValue(val)} plugins={plugins} placeholder="Type text.." />
     </div>
   );
 }
@@ -83,9 +78,10 @@ Here is list of available plugins
 - @yoopta/lists
 - @yoopta/headings
 
-***[Check code with plugins](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L27)***
+**_[Check code with plugins](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L27)_**
 
 ### Tools
+
 Yoopta-Editor provides useful tools that can help you when working with the editor
 
 ```jsx
@@ -123,11 +119,13 @@ Here is list of available tools
 - @yoopta/link-tool
 - @yoopta/action-menu-list
 - @yoopta/toolbar
-- *@yoopta/chat-gpt-assistant* - **soon**
+- _@yoopta/chat-gpt-assistant_ - **soon**
 
-***[Check code with tools](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L76)***
-### Marks 
-Marks are simple text formatters
+**_[Check code with tools](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L76)_**
+
+### Marks
+
+Marks are simple text formats
 
 ```jsx
 // IMPORT MARKS
@@ -157,10 +155,10 @@ Here is list of available marks from **@yoopta/marks** package
 - Bold
 - Italic
 - CodeMark
-- Underline 
+- Underline
 - Strike
 
-***[Check code with marks](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L85)***
+**_[Check code with marks](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L85)_**
 
 ## Examples - DEMO's
 
