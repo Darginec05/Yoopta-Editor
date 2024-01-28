@@ -8,11 +8,12 @@ export function toggle(editor: YooEditor, format: any) {
   const isActive = TextFormats.isActive(editor, format);
 
   if (!slate) return;
-  const marks = Editor.marks(slate) || {};
 
   if (!isActive) {
-    Editor.addMark(slate, format.type, { ...marks, [format.type]: true });
+    Editor.addMark(slate, format.type, true);
   } else {
     Editor.removeMark(slate, format.type);
   }
+
+  // editor.applyChanges();
 }
