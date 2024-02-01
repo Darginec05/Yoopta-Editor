@@ -5,7 +5,7 @@ import { LeafColorProps, YooptaMark } from '../textFormatters/createYooptaMark';
 export type RenderPluginProps = {
   id: string;
   elements: Plugin['elements'];
-  marks?: YooptaMark[];
+  marks?: YooptaMark<unknown>[];
 };
 
 export type Plugin = {

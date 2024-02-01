@@ -7,6 +7,7 @@ import { useYooptaEditor, useYooptaPlugin } from '../../../../contexts/UltraYoop
 import { createPlugin } from '../../../../plugins';
 import { CustomEditorProps } from '../../../../plugins/types';
 
+// [TODO] - fix logic with update values
 const CodeEditor = ({ id, type }: CustomEditorProps) => {
   const plugin = useYooptaPlugin(id);
   const [codeEditorValue, setCodeEditorValue] = useState(plugin.value?.[0].children?.[0].text || '');
@@ -40,6 +41,14 @@ const CodeEditor = ({ id, type }: CustomEditorProps) => {
 const Code = createPlugin({
   type: 'CodePlugin',
   customEditor: CodeEditor,
+  elements: {
+    code: {
+      render: CodeEditor,
+      options: {
+        isVoid: true,
+      },
+    },
+  },
 });
 
 export { Code };
