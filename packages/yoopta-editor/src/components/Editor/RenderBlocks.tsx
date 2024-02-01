@@ -1,19 +1,6 @@
-import { useMemo, useState } from 'react';
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragOverlay,
-} from '@dnd-kit/core';
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
+import { useMemo } from 'react';
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 import { UltraElementWrapper } from '../ElementWrapper/UltraElementWrapper';
 import { PLUGIN_INDEX } from './utils';
@@ -29,20 +16,28 @@ type Props = {
   plugins: Plugin[];
 };
 
-const DraggableItem = ({ editor, pluginId, PLUGINS_MAP, marks }) => {
-  const yooptaPlugin = editor.children[pluginId];
-  const pluginRenderer = PLUGINS_MAP[yooptaPlugin.type];
-
-  return (
-    <UltraElementWrapper key={pluginId} plugin={yooptaPlugin} pluginId={pluginId}>
-      {pluginRenderer.renderPlugin({ id: pluginId, elements: pluginRenderer.elements, marks })}
-    </UltraElementWrapper>
+const useDnd = ({ editor }) => {
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
   );
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+
+    if (active && over && active.id !== over.id) {
+      const newPluginPosition = editor.children[over.id].meta.order;
+      editor.moveBlock(active.id, [newPluginPosition]);
+    }
+  };
+
+  return { sensors, handleDragEnd };
 };
 
 const RenderBlocks = ({ editor, plugins, marks }: Props) => {
-  console.log('editor', editor.children);
-
+  const { sensors, handleDragEnd } = useDnd({ editor });
   const childrenUnorderedKeys = Object.keys(editor.children);
   const childrenKeys = useMemo(() => {
     if (childrenUnorderedKeys.length === 0) return DEFAULT_EDITOR_KEYS;
@@ -54,7 +49,7 @@ const RenderBlocks = ({ editor, plugins, marks }: Props) => {
       return aOrder - bOrder;
     });
 
-    //[TODO]
+    //[TODO] - unnecesary
   }, [childrenUnorderedKeys]);
 
   // [TODO] - Optimize and remvoe top level inline plugins
@@ -83,13 +78,6 @@ const RenderBlocks = ({ editor, plugins, marks }: Props) => {
     return pluginsMap;
   }, [plugins]);
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    }),
-  );
-
   const blocks: JSX.Element[] = [];
 
   for (let i = 0; i < childrenKeys.length; i++) {
@@ -108,24 +96,11 @@ const RenderBlocks = ({ editor, plugins, marks }: Props) => {
     PLUGIN_INDEX.set(yooptaPlugin, i);
   }
 
-  function handleDragEnd(event) {
-    const { active, over } = event;
-
-    if (active && over && active.id !== over.id) {
-      const newPluginPosition = editor.children[over.id].meta.order;
-
-      editor.moveBlock(active.id, [newPluginPosition]);
-    }
-  }
-
   return (
     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext items={childrenKeys} strategy={verticalListSortingStrategy}>
         {blocks}
       </SortableContext>
-      {/* <DragOverlay>
-        {dragId ? <DraggableItem pluginId={dragId} PLUGINS_MAP={PLUGINS_MAP} marks={marks} editor={editor} /> : null}
-      </DragOverlay> */}
     </DndContext>
   );
 };

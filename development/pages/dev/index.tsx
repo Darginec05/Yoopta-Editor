@@ -262,14 +262,16 @@ const BasicExample = () => {
   return (
     <div className={s.container}>
       <button
-        onClick={() =>
+        onClick={() => {
+          editor.moveBlock('callout_4', [1]);
+
           TextFormats.update(editor, 'highlight', {
             backgroundImage: 'linear-gradient(90deg, rgb(97, 229, 255) 0%, rgb(255, 112, 245) 100%)',
             color: 'rgb(176, 171, 250)',
-          })
-        }
+          });
+        }}
       >
-        add color
+        Move node
       </button>
       <YooptaEditor
         editor={editor}

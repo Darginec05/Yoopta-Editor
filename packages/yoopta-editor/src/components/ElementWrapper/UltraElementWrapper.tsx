@@ -1,5 +1,4 @@
 import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
-import s from './UltraElementWrapper.module.scss';
 import DragIcon from './icons/drag.svg';
 import PlusIcon from './icons/plus.svg';
 import cx from 'classnames';
@@ -8,6 +7,7 @@ import { getDefaultYooptaChildrenValue } from '../Editor/defaultValue';
 import { generateId } from '../../utils/generateId';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import s from './UltraElementWrapper.module.scss';
 
 const UltraElementWrapper = ({ children, plugin, pluginId }) => {
   const editor = useYooptaEditor();
@@ -30,6 +30,8 @@ const UltraElementWrapper = ({ children, plugin, pluginId }) => {
     transform: CSS.Translate.toString(transform),
     transition,
     opacity: isDragging ? 0.7 : 1,
+    // // implement selected state by mouse area
+    // backgroundColor: selected ? 'rgba(35, 131, 226, 0.14)' : undefined,
   };
 
   const onPlusClick = () => {

@@ -50,7 +50,7 @@ export const YOOPTA_ULTRA_VALUES: Record<
         children: children || [{ text: codeText }],
       },
     ],
-    type: 'Code',
+    type: 'CodePlugin',
     meta,
   }),
   blockquote: (id, meta, children) => ({
@@ -164,7 +164,7 @@ export const getDefaultYooptaChildren = () => {
 export const FAKE_YOOPTA_EDITOR_CHILDREN = {
   li3D16cCB7Ze5jxy8OwrN_0: YOOPTA_ULTRA_VALUES.paragraph('li3D16cCB7Ze5jxy8OwrN_0', { order: 0, depth: 0 }),
   // [TODO]
-  // ir9BOyBAjjXB3NyjXfZXm: YOOPTA_ULTRA_VALUES.code('ir9BOyBAjjXB3NyjXfZXm', { order: 1, depth: 0 }),
+  ir9BOyBAjjXB3NyjXfZXm: YOOPTA_ULTRA_VALUES.code('ir9BOyBAjjXB3NyjXfZXm', { order: 7, depth: 0 }),
   'Gci1KGGfnlup_h4Ta-AOI_1': YOOPTA_ULTRA_VALUES.blockquote(
     'Gci1KGGfnlup_h4Ta-AOI_1',
     {
