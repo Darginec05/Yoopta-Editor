@@ -1,22 +1,29 @@
 import { createDraft, finishDraft } from 'immer';
 import { YooEditor, YooptaPath } from '../types';
 
-export function moveBlock(editor: YooEditor, from: YooptaPath, to: YooptaPath) {
+export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: YooptaPath) {
   editor.children = createDraft(editor.children);
 
-  const [fromPosition] = from;
-  const [toPosition] = to;
+  const [newPosition] = newPath;
+  const draggedBlock = editor.children[draggedBlockId!];
+  const blockInNewPosition = Object.values(editor.children).find((item) => item.meta.order === newPosition)!;
 
-  const fromId = Object.keys(editor.children).find((id) => editor.children[id].meta.order === fromPosition);
-  const toId = Object.keys(editor.children).find((id) => editor.children[id].meta.order === toPosition);
+  const dragFromTopToBottom = draggedBlock.meta.order < blockInNewPosition.meta.order;
+  const dragFromBottomToTop = draggedBlock.meta.order > blockInNewPosition.meta.order;
 
-  const blockFrom = editor.children[fromId || ''];
-  const blockTo = editor.children[toId || ''];
+  Object.values(editor.children).forEach((item) => {
+    if (dragFromTopToBottom) {
+      if (item.meta.order > draggedBlock.meta.order && item.meta.order <= blockInNewPosition.meta.order) {
+        item.meta.order--;
+      }
+    } else if (dragFromBottomToTop) {
+      if (item.meta.order < draggedBlock.meta.order && item.meta.order >= blockInNewPosition.meta.order) {
+        item.meta.order++;
+      }
+    }
+  });
 
-  if (blockFrom && blockTo) {
-    blockFrom.meta.order = toPosition;
-    blockTo.meta.order = fromPosition;
-  }
+  draggedBlock.meta.order = newPosition;
 
   editor.children = finishDraft(editor.children);
   editor.applyChanges();

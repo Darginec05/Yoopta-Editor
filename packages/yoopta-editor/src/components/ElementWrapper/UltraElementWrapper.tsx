@@ -6,9 +6,31 @@ import cx from 'classnames';
 import { PLUGIN_INDEX } from '../Editor/utils';
 import { getDefaultYooptaChildrenValue } from '../Editor/defaultValue';
 import { generateId } from '../../utils/generateId';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 const UltraElementWrapper = ({ children, plugin, pluginId }) => {
   const editor = useYooptaEditor();
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    setActivatorNodeRef,
+    transform,
+    transition,
+    active,
+    over,
+    isOver,
+    isDragging,
+  } = useSortable({
+    id: pluginId,
+  });
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    transition,
+    opacity: isDragging ? 0.7 : 1,
+  };
 
   const onPlusClick = () => {
     const pluginIndex = PLUGIN_INDEX.get(plugin);
@@ -18,13 +40,8 @@ const UltraElementWrapper = ({ children, plugin, pluginId }) => {
     editor.insertBlock(defaultBlock, { at: nextPath, focus: true });
   };
 
-  const onMoveBlock = () => {
-    const pluginIndex = PLUGIN_INDEX.get(plugin);
-    editor.moveBlock([pluginIndex], [pluginIndex + 1]);
-  };
-
   return (
-    <div className={s.root} data-yoopta-plugin-id={pluginId} data-yoopta-plugin>
+    <div className={s.root} data-yoopta-plugin-id={pluginId} style={style} data-yoopta-plugin ref={setNodeRef}>
       <div contentEditable={false} className={cx(s.actions, { [s.hovered]: false }, 'yoopta-element-actions')}>
         <button
           type="button"
@@ -33,11 +50,23 @@ const UltraElementWrapper = ({ children, plugin, pluginId }) => {
         >
           <PlusIcon />
         </button>
-        <button type="button" onMouseDown={onMoveBlock} className={cx(s.actionButton, 'yoopta-element-actions-drag')}>
+        <button
+          type="button"
+          className={cx(s.actionButton, 'yoopta-element-actions-drag')}
+          ref={setActivatorNodeRef}
+          {...attributes}
+          {...listeners}
+        >
           <DragIcon />
         </button>
       </div>
-      <div className={s.content}>{children}</div>
+      <div
+        className={s.content}
+        // [TODO] - check in what direction is dragging
+        style={{ borderBottom: isOver && !isDragging ? '2px solid #007aff' : 'none' }}
+      >
+        {children}
+      </div>
     </div>
   );
 };

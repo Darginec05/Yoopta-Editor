@@ -11,6 +11,9 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": false,
   "prettier.useEditorConfig": false,
-  "prettier.useTabs": false
+  "prettier.useTabs": false,
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  }
   // "prettier.configPath": ".prettierrc.cjs"
 }

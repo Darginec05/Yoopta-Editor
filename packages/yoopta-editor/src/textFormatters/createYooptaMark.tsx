@@ -71,7 +71,7 @@ export type LeafColorProps = {
 
 export const Highlight = createYooptaMark<YooptaMarkProps<'highlight', LeafColorProps>>({
   type: 'highlight',
-  render: (props: YooptaMarkProps<'highlight', LeafColorProps>) => {
+  render: (props) => {
     const highlight = props.leaf?.highlight;
 
     return (
