@@ -65,6 +65,18 @@ export const YOOPTA_ULTRA_VALUES: Record<
     ],
     meta,
   }),
+  callout: (id, meta, children) => ({
+    id,
+    type: 'CalloutPlugin',
+    value: [
+      {
+        id: generateId(),
+        type: 'callout',
+        children: children || [{ text: 'A line of text in a callout' }],
+      },
+    ],
+    meta,
+  }),
   video: (id, meta, children) => ({
     id,
     type: 'VideoPlugin',
@@ -83,6 +95,7 @@ export const YOOPTA_ULTRA_VALUES: Record<
     ],
     meta,
   }),
+
   // link: (id, meta) => ({
   //   id,
   //   value: [
@@ -149,13 +162,22 @@ export const getDefaultYooptaChildren = () => {
 };
 
 export const FAKE_YOOPTA_EDITOR_CHILDREN = {
-  li3D16cCB7Ze5jxy8OwrN: YOOPTA_ULTRA_VALUES.paragraph('li3D16cCB7Ze5jxy8OwrN', { order: 0, depth: 0 }),
-  ir9BOyBAjjXB3NyjXfZXm: YOOPTA_ULTRA_VALUES.code('ir9BOyBAjjXB3NyjXfZXm', { order: 1, depth: 0 }),
-  'Gci1KGGfnlup_h4Ta-AOI': YOOPTA_ULTRA_VALUES.blockquote('Gci1KGGfnlup_h4Ta-AOI', {
-    order: 2,
-    depth: 0,
-  }),
-  ATrb0U6MPHzdn8XRTm5M6: YOOPTA_ULTRA_VALUES.paragraph('ATrb0U6MPHzdn8XRTm5M6', { order: 3, depth: 0 }, [
+  li3D16cCB7Ze5jxy8OwrN_0: YOOPTA_ULTRA_VALUES.paragraph('li3D16cCB7Ze5jxy8OwrN_0', { order: 0, depth: 0 }),
+  // [TODO]
+  // ir9BOyBAjjXB3NyjXfZXm: YOOPTA_ULTRA_VALUES.code('ir9BOyBAjjXB3NyjXfZXm', { order: 1, depth: 0 }),
+  'Gci1KGGfnlup_h4Ta-AOI_1': YOOPTA_ULTRA_VALUES.blockquote(
+    'Gci1KGGfnlup_h4Ta-AOI_1',
+    {
+      order: 1,
+      depth: 0,
+    },
+    [
+      {
+        text: `Finally, we'll need to set up event handlers on the DndContext provider in order to update the order of the items on drag end.`,
+      },
+    ],
+  ),
+  ATrb0U6MPHzdn8XRTm5M6_2: YOOPTA_ULTRA_VALUES.paragraph('ATrb0U6MPHzdn8XRTm5M6_2', { order: 2, depth: 0 }, [
     {
       text: `I used slate for a small project last week and enjoyed it quite a bit at the beginning. I also have a sandbox to demonstrate the usage: `,
     },
@@ -184,10 +206,27 @@ export const FAKE_YOOPTA_EDITOR_CHILDREN = {
       text: ` Then use slate's Range.end(editor.selection) to get the current cursor position. Note the current cursor position. From current cursor and keep going left until the character doesn't match regexp.`,
     },
   ]),
-  HGQj3faHJkbMGFcBJNUgj: YOOPTA_ULTRA_VALUES.blockquote('HGQj3faHJkbMGFcBJNUgj', { order: 4, depth: 0 }),
-  // HGQj3faHJkbMGFcasdaBJNUgj: YOOPTA_ULTRA_VALUES.video('HGQj3faHJkbMGFcasdaBJNUgj', {
-  //   order: 5,
-  //   depth: 0,
-  // }),
+  callout_4: YOOPTA_ULTRA_VALUES.callout('callout_4', { order: 4, depth: 0 }, [
+    {
+      text: `To note, Redux has RTK, which helps with precisely this type of structure. It also has lots of helper functions to help you organize, select and update each entity. It's not an ORM, but you can use an ORM on top of it.`,
+    },
+  ]),
+  HGQj3faHJkbMGFcBJNUgj_6: YOOPTA_ULTRA_VALUES.blockquote('HGQj3faHJkbMGFcBJNUgj_6', { order: 6, depth: 0 }),
+  HGQj3faHJkbMGFcasdaBJNUgj_5: YOOPTA_ULTRA_VALUES.video('HGQj3faHJkbMGFcasdaBJNUgj_5', {
+    order: 5,
+    depth: 0,
+  }),
+  anotherway_3: YOOPTA_ULTRA_VALUES.blockquote(
+    'anotherway_3',
+    {
+      order: 3,
+      depth: 0,
+    },
+    [
+      {
+        text: `I am trying to use D3 parallel parcoords and Material-table together in one app. Each component works well individual. but when those are render together an issue is occurred inside react-beautiful-dnd. D3 parallel parcoords uses d3-dragging package inside and material-table uses react-beautiful-dnd package.`,
+      },
+    ],
+  ),
   // HGQj3faHJkbMGFcasdLINK: YOOPTA_ULTRA_VALUES.link('HGQj3faHJkbMGFcasdLINK', { type: 'inline' }),
 };

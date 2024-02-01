@@ -230,12 +230,47 @@ const TOOLS = {
 //   azczxcsdasd: Paragraph,
 // };
 
+// export const Bold = createYooptaMark<BoldMarkProps>({
+//   type: 'bold',
+//   hotkey: 'mod+b',
+//   render: (props) => <strong>{props.children}</strong>,
+// });
+
+// export const Highlight = createYooptaMark<YooptaMarkProps<'highlight', LeafColorProps>>({
+//   type: 'highlight',
+//   render: (props) => {
+//     const highlight = props.leaf?.highlight;
+
+//     return (
+//       <span
+//         style={{
+//           color: highlight?.color,
+//           backgroundImage: highlight?.backgroundImage,
+//           WebkitTextFillColor: highlight?.webkitTextFillColor,
+//           backgroundClip: highlight?.backgroundClip,
+//         }}
+//       >
+//         {props.children}
+//       </span>
+//     );
+//   },
+// });
+
 const BasicExample = () => {
   const editor = useMemo(() => createYooptaEditor(), []);
 
   return (
     <div className={s.container}>
-      <button onClick={() => TextFormats.update(editor, 'highlight', { color: 'green' })}>add color</button>
+      <button
+        onClick={() =>
+          TextFormats.update(editor, 'highlight', {
+            backgroundImage: 'linear-gradient(90deg, rgb(97, 229, 255) 0%, rgb(255, 112, 245) 100%)',
+            color: 'rgb(176, 171, 250)',
+          })
+        }
+      >
+        add color
+      </button>
       <YooptaEditor
         editor={editor}
         // plugins={plugins}

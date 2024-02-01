@@ -49,7 +49,7 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   deleteBlock: (options?: YooptaEditorOptions) => void;
   getBlock: (options?: YooptaEditorOptions) => void;
   applyChanges: () => void;
-  moveBlock: (from: YooptaPath, to: YooptaPath) => void;
+  moveBlock: (blockId: string, to: YooptaPath) => void;
   focusBlock: (id: string, options?: YooptaEditorOptions) => void;
   selection: YooptaPath | null;
   children: Record<string, YooptaChildrenValue>;

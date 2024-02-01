@@ -6,7 +6,7 @@ import { YooptaMark } from '../../textFormatters/createYooptaMark';
 
 type Props = {
   plugins: Plugin[];
-  marks?: YooptaMark[];
+  marks?: YooptaMark<any>[];
 };
 
 const Editor = ({ plugins, marks }: Props) => {

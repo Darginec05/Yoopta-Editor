@@ -11,6 +11,7 @@ import { Paragraph } from './components/Editor/plugins/Paragraph/Paragraph';
 import { Blockquote } from './components/Editor/plugins/Blockquote/Blockquote';
 import { Code } from './components/Editor/plugins/Code/Code';
 import { Video } from './components/Editor/plugins/Video/Video';
+import { Callout } from './components/Editor/plugins/Callout/Callout';
 import { Link } from './components/Editor/plugins/Link/Link';
 import NoSSR from './components/NoSsr/NoSsr';
 import { Mention } from './components/Editor/plugins/Mention/Mention';
@@ -25,7 +26,7 @@ type Props = {
   onChange?: (value: YooEditor['children']) => void;
 };
 
-const PLUGINS = [Paragraph, Blockquote, Code, Video, Link, Mention];
+const PLUGINS = [Paragraph, Blockquote, Code, Video, Link, Mention, Callout];
 const TEXT_FORMATTERS = [Bold, Italic, Underline, Strike, CodeMark, Highlight];
 const DEFAULT_VALUE = getDefaultYooptaChildren();
 
