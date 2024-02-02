@@ -80,6 +80,8 @@ const RenderBlocks = ({ editor, plugins, marks }: Props) => {
 
   const blocks: JSX.Element[] = [];
 
+  console.log('Plugins', PLUGINS_MAP);
+
   for (let i = 0; i < childrenKeys.length; i++) {
     const childrenId = childrenKeys[i];
     const yooptaPlugin = editor.children[childrenId];
