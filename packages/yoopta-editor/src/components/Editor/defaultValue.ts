@@ -95,6 +95,97 @@ export const YOOPTA_ULTRA_VALUES: Record<
     ],
     meta,
   }),
+  table: (id, meta, children) => ({
+    id,
+    type: 'Table',
+    value: [
+      {
+        id: generateId(),
+        type: 'table',
+        children: [
+          {
+            id: generateId(),
+            type: 'table-row',
+            children: [
+              {
+                id: generateId(),
+                type: 'table-cell',
+                children: [{ text: '' }],
+              },
+              {
+                id: generateId(),
+                type: 'table-cell',
+                children: [{ text: 'Human', bold: true }],
+              },
+              {
+                id: generateId(),
+                type: 'table-cell',
+                children: [{ text: 'Dog', bold: true }],
+              },
+              {
+                id: generateId(),
+                type: 'table-cell',
+                children: [{ text: 'Cat', bold: true }],
+              },
+            ],
+          },
+          {
+            id: generateId(),
+            type: 'table-row',
+            children: [
+              {
+                id: generateId(),
+                type: 'table-cell',
+                children: [{ text: '# of Feet', bold: true }],
+              },
+              {
+                id: generateId(),
+                type: 'table-cell',
+                children: [{ text: '2' }],
+              },
+              {
+                id: generateId(),
+                type: 'table-cell',
+                children: [{ text: '4' }],
+              },
+              {
+                id: generateId(),
+                type: 'table-cell',
+                children: [{ text: '4' }],
+              },
+            ],
+          },
+          {
+            id: generateId(),
+            type: 'table-row',
+            children: [
+              {
+                id: generateId(),
+                type: 'table-cell',
+                children: [{ text: '# of Lives', bold: true }],
+              },
+              {
+                id: generateId(),
+                type: 'table-cell',
+                children: [{ text: '1' }],
+              },
+              {
+                id: generateId(),
+                type: 'table-cell',
+                children: [{ text: '1' }],
+              },
+              {
+                id: generateId(),
+                type: 'table-cell',
+                children: [{ text: '9' }],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    meta,
+  }),
 
   // link: (id, meta) => ({
   //   id,
@@ -212,6 +303,7 @@ export const FAKE_YOOPTA_EDITOR_CHILDREN = {
     },
   ]),
   HGQj3faHJkbMGFcBJNUgj_6: YOOPTA_ULTRA_VALUES.blockquote('HGQj3faHJkbMGFcBJNUgj_6', { order: 6, depth: 0 }),
+  table_7: YOOPTA_ULTRA_VALUES.table('table_7', { order: 7, depth: 0 }),
   HGQj3faHJkbMGFcasdaBJNUgj_5: YOOPTA_ULTRA_VALUES.video('HGQj3faHJkbMGFcasdaBJNUgj_5', {
     order: 5,
     depth: 0,

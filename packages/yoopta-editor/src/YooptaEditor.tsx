@@ -17,6 +17,7 @@ import NoSSR from './components/NoSsr/NoSsr';
 import { Mention } from './components/Editor/plugins/Mention/Mention';
 import { Bold, CodeMark, Highlight, Italic, Strike, Underline, YooptaMark } from './textFormatters/createYooptaMark';
 import { TextFormats } from './editor';
+import { Table } from './components/Editor/plugins/Table/Table';
 
 type Props = {
   editor: YooEditor;
@@ -26,7 +27,7 @@ type Props = {
   onChange?: (value: YooEditor['children']) => void;
 };
 
-const PLUGINS = [Paragraph, Blockquote, Code, Video, Link, Mention, Callout];
+const PLUGINS = [Paragraph, Blockquote, Code, Video, Link, Mention, Callout, Table];
 const TEXT_FORMATTERS = [Bold, Italic, Underline, Strike, CodeMark, Highlight];
 const DEFAULT_VALUE = getDefaultYooptaChildren();
 

@@ -1,5 +1,4 @@
-import { RenderLeafProps } from 'slate-react';
-import { ExtendedLeaf, YooptaMarkProps } from '../plugins/types';
+import { YooptaMarkProps } from '../plugins/types';
 
 export type YooptaMark<TProps> = {
   type: string;
@@ -74,17 +73,13 @@ export const Highlight = createYooptaMark<YooptaMarkProps<'highlight', LeafColor
   render: (props) => {
     const highlight = props.leaf?.highlight;
 
-    return (
-      <span
-        style={{
-          color: highlight?.color,
-          backgroundImage: highlight?.backgroundImage,
-          WebkitTextFillColor: highlight?.webkitTextFillColor,
-          backgroundClip: highlight?.backgroundClip,
-        }}
-      >
-        {props.children}
-      </span>
-    );
+    const style = {
+      color: highlight?.color,
+      backgroundImage: highlight?.backgroundImage,
+      WebkitTextFillColor: highlight?.webkitTextFillColor,
+      backgroundClip: highlight?.backgroundClip,
+    };
+
+    return <span style={style}>{props.children}</span>;
   },
 });

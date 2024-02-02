@@ -46,31 +46,37 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
       return;
     }
 
-    Object.values(editor.formats).forEach((mark) => {
-      if (mark.hotkey && isKeyHotkey(mark.hotkey)(event)) {
-        if (Range.isCollapsed(slate.selection!)) {
+    if (Range.isExpanded(slate.selection)) {
+      Object.values(editor.formats).forEach((mark) => {
+        if (mark.hotkey && isKeyHotkey(mark.hotkey)(event)) {
+          if (Range.isCollapsed(slate.selection!)) {
+            // break from array
+          }
+
+          event.preventDefault();
+          TextFormats.toggle(editor, mark);
           // break from array
         }
-
-        event.preventDefault();
-        TextFormats.toggle(editor, mark);
-        // break from array
-      }
-    });
+      });
+    }
 
     if (HOTKEYS.isBackspace(event)) {
       const parentPath = Path.parent(slate.selection.anchor.path);
+
+      // [TODO] - parent path should have only one element in selection. Ex. tables
+      if (parentPath.length > 1) {
+        return;
+      }
+
       const text = Editor.string(slate, parentPath);
       const isStart = Editor.isStart(slate, slate.selection.anchor, slate.selection.anchor.path);
 
       if (text.length === 0 && isStart) {
         event.preventDefault();
-        const prevPath = editor.selection ? [editor.selection[0] - 1] : [0];
-        console.log('prevPath', prevPath);
-        console.log('editor.selection', editor.selection);
+        const prevBlockPath = editor.selection ? [editor.selection[0] - 1] : [0];
 
         // [TODO] - Create helper function to get the previous, next, current block
-        const prevBlock = Object.values(editor.children).find((block) => block.meta.order === prevPath[0]);
+        const prevBlock = Object.values(editor.children).find((block) => block.meta.order === prevBlockPath[0]);
 
         editor.deleteBlock({ at: editor.selection });
         // [TODO] - Argument should be path, not a block id
