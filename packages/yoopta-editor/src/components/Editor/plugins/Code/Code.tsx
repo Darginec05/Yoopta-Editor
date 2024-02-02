@@ -45,7 +45,7 @@ const Code = createPlugin({
     code: {
       render: CodeEditor,
       options: {
-        isVoid: true,
+        nodeType: 'void',
       },
     },
   },

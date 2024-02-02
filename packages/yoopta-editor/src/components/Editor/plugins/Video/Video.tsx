@@ -51,7 +51,7 @@ const Video = createPlugin<VideoSlateElementProps>({
         poster: undefined,
       },
       options: {
-        isVoid: true,
+        nodeType: 'void',
       },
     },
   },

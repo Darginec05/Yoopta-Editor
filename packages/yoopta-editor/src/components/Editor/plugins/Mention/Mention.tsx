@@ -41,7 +41,7 @@ const Mention = createPlugin<Mention>({
         rel: 'noreferrer',
       },
       options: {
-        isInline: true,
+        nodeType: 'inline',
       },
     },
   },
