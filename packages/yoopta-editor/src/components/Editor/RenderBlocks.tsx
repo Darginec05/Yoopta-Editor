@@ -61,7 +61,7 @@ const RenderBlocks = ({ editor, plugins, marks }: Props) => {
       if (plugin.elements) {
         Object.keys(plugin.elements).forEach((type) => {
           const element = plugin.elements[type];
-          if (element.options?.isInline) inlineTopLevelPlugins[type] = element;
+          if (element.options?.nodeType === 'inline') inlineTopLevelPlugins[type] = element;
         });
       }
 
@@ -80,7 +80,7 @@ const RenderBlocks = ({ editor, plugins, marks }: Props) => {
 
   const blocks: JSX.Element[] = [];
 
-  console.log('Plugins', PLUGINS_MAP);
+  console.log('PLUGINS_MAP', PLUGINS_MAP);
 
   for (let i = 0; i < childrenKeys.length; i++) {
     const childrenId = childrenKeys[i];

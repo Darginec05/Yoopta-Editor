@@ -95,6 +95,34 @@ export const YOOPTA_ULTRA_VALUES: Record<
     ],
     meta,
   }),
+  numberedList: (id, meta, children) => ({
+    id,
+    type: 'NumberedListPlugin',
+    value: [
+      {
+        id: generateId(),
+        type: 'numbered-list',
+        children: [
+          {
+            id: generateId(),
+            type: 'list-item',
+            children: [{ text: 'Select the text you want to change into a list.' }],
+          },
+          {
+            id: generateId(),
+            type: 'list-item',
+            children: [{ text: 'To complete your list, press Enter until the bullets or numbering switch off.' }],
+          },
+          {
+            id: generateId(),
+            type: 'list-item',
+            children: [{ text: 'Type* and a space before your text, and Word will make a bulleted list.' }],
+          },
+        ],
+      },
+    ],
+    meta,
+  }),
   table: (id, meta, children) => ({
     id,
     type: 'Table',
@@ -297,15 +325,15 @@ export const FAKE_YOOPTA_EDITOR_CHILDREN = {
       text: ` Then use slate's Range.end(editor.selection) to get the current cursor position. Note the current cursor position. From current cursor and keep going left until the character doesn't match regexp.`,
     },
   ]),
-  callout_4: YOOPTA_ULTRA_VALUES.callout('callout_4', { order: 4, depth: 0 }, [
+  callout_4: YOOPTA_ULTRA_VALUES.callout('callout_4', { order: 5, depth: 0 }, [
     {
       text: `To note, Redux has RTK, which helps with precisely this type of structure. It also has lots of helper functions to help you organize, select and update each entity. It's not an ORM, but you can use an ORM on top of it.`,
     },
   ]),
-  HGQj3faHJkbMGFcBJNUgj_6: YOOPTA_ULTRA_VALUES.blockquote('HGQj3faHJkbMGFcBJNUgj_6', { order: 6, depth: 0 }),
-  table_7: YOOPTA_ULTRA_VALUES.table('table_7', { order: 7, depth: 0 }),
+  HGQj3faHJkbMGFcBJNUgj_6: YOOPTA_ULTRA_VALUES.blockquote('HGQj3faHJkbMGFcBJNUgj_6', { order: 7, depth: 0 }),
+  table_7: YOOPTA_ULTRA_VALUES.table('table_7', { order: 8, depth: 0 }),
   HGQj3faHJkbMGFcasdaBJNUgj_5: YOOPTA_ULTRA_VALUES.video('HGQj3faHJkbMGFcasdaBJNUgj_5', {
-    order: 5,
+    order: 6,
     depth: 0,
   }),
   anotherway_3: YOOPTA_ULTRA_VALUES.blockquote(
@@ -320,5 +348,6 @@ export const FAKE_YOOPTA_EDITOR_CHILDREN = {
       },
     ],
   ),
+  numbered_list_id: YOOPTA_ULTRA_VALUES.numberedList('numbered_list_id', { order: 4, depth: 0 }),
   // HGQj3faHJkbMGFcasdLINK: YOOPTA_ULTRA_VALUES.link('HGQj3faHJkbMGFcasdLINK', { type: 'inline' }),
 };

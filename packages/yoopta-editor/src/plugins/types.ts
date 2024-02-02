@@ -15,8 +15,9 @@ export type Plugin = {
 };
 
 export type PluginElementOptions = {
-  isVoid?: boolean;
-  isInline?: boolean;
+  nodeType?: 'block' | 'inline' | 'void';
+  depth?: number;
+  maxDepth?: number;
 };
 
 export type CustomEditorProps = Omit<RenderPluginProps, 'elements'> & Pick<Plugin, 'type'> & { editor: SlateEditor };

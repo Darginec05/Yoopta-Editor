@@ -41,7 +41,7 @@ const Link = createPlugin<LinkElementProps>({
         rel: 'noreferrer',
       },
       options: {
-        isInline: true,
+        nodeType: 'inline',
       },
     },
   },

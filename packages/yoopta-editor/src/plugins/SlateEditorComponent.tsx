@@ -36,8 +36,8 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks }: Props<T
     const elementTypes = Object.keys(elements);
 
     elementTypes.forEach((elementType) => {
-      const isInline = elements[elementType].options?.isInline;
-      const isVoid = elements[elementType].options?.isVoid;
+      const isInline = elements[elementType].options?.nodeType === 'inline';
+      const isVoid = elements[elementType].options?.nodeType === 'void';
       if (isVoid) slateEditor.isVoid = (element) => element.type === elementType;
       if (isInline) {
         slateEditor.isInline = (element) => element.type === elementType;
