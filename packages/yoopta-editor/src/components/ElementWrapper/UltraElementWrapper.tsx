@@ -10,7 +10,7 @@ import { CSS } from '@dnd-kit/utilities';
 import s from './UltraElementWrapper.module.scss';
 import { useState } from 'react';
 
-const Actions = ({ plugin, editor, dragHandleProps }) => {
+const Actions = ({ plugin, editor, dragHandleProps, show }) => {
   const { setActivatorNodeRef, attributes, listeners } = dragHandleProps;
 
   const onPlusClick = () => {
@@ -22,7 +22,7 @@ const Actions = ({ plugin, editor, dragHandleProps }) => {
   };
 
   return (
-    <div contentEditable={false} className={cx(s.actions, { [s.hovered]: false }, 'yoopta-element-actions')}>
+    <div contentEditable={false} className={cx(s.actions, { [s.hovered]: show }, 'yoopta-element-actions')}>
       <button
         type="button"
         onClick={onPlusClick}
@@ -57,21 +57,37 @@ const UltraElementWrapper = ({ children, plugin, pluginId }) => {
     over,
     isOver,
     isDragging,
-  } = useSortable({
-    id: pluginId,
-  });
+  } = useSortable({ id: pluginId });
 
   const style = {
     transform: CSS.Translate.toString(transform),
     transition,
     opacity: isDragging ? 0.7 : 1,
-    // // implement selected state by mouse area
+    // [TODO] = handle max depth
+    paddingLeft: `${plugin.meta.depth * 20}px`,
+    // // implement selected state by mouse select  area
     // backgroundColor: selected ? 'rgba(35, 131, 226, 0.14)' : undefined,
   };
 
+  const handleMouseEnter = () => setIsHovered(true);
+  const handleMouseLeave = () => setIsHovered(false);
+
   return (
-    <div className={s.root} data-yoopta-plugin-id={pluginId} style={style} data-yoopta-plugin ref={setNodeRef}>
-      <Actions plugin={plugin} editor={editor} dragHandleProps={{ setActivatorNodeRef, attributes, listeners }} />
+    <div
+      className={s.root}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      data-yoopta-plugin-id={pluginId}
+      style={style}
+      data-yoopta-plugin
+      ref={setNodeRef}
+    >
+      <Actions
+        plugin={plugin}
+        editor={editor}
+        dragHandleProps={{ setActivatorNodeRef, attributes, listeners }}
+        show={isHovered}
+      />
       <div
         className={s.content}
         // [TODO] - check in what direction is dragging

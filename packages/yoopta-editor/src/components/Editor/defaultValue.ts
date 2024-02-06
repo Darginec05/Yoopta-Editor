@@ -283,9 +283,9 @@ export const getDefaultYooptaChildren = () => {
 export const FAKE_YOOPTA_EDITOR_CHILDREN = {
   li3D16cCB7Ze5jxy8OwrN_0: YOOPTA_ULTRA_VALUES.paragraph('li3D16cCB7Ze5jxy8OwrN_0', { order: 0, depth: 0 }),
   // [TODO]
-  ir9BOyBAjjXB3NyjXfZXm: YOOPTA_ULTRA_VALUES.code('ir9BOyBAjjXB3NyjXfZXm', { order: 7, depth: 0 }),
-  'Gci1KGGfnlup_h4Ta-AOI_1': YOOPTA_ULTRA_VALUES.blockquote(
-    'Gci1KGGfnlup_h4Ta-AOI_1',
+  code_7: YOOPTA_ULTRA_VALUES.code('code_7', { order: 7, depth: 0 }),
+  blockquote_1: YOOPTA_ULTRA_VALUES.blockquote(
+    'blockquote_1',
     {
       order: 1,
       depth: 0,
@@ -296,7 +296,7 @@ export const FAKE_YOOPTA_EDITOR_CHILDREN = {
       },
     ],
   ),
-  ATrb0U6MPHzdn8XRTm5M6_2: YOOPTA_ULTRA_VALUES.paragraph('ATrb0U6MPHzdn8XRTm5M6_2', { order: 2, depth: 0 }, [
+  paragraph_2: YOOPTA_ULTRA_VALUES.paragraph('paragraph_2', { order: 2, depth: 0 }, [
     {
       text: `I used slate for a small project last week and enjoyed it quite a bit at the beginning. I also have a sandbox to demonstrate the usage: `,
     },
@@ -330,8 +330,8 @@ export const FAKE_YOOPTA_EDITOR_CHILDREN = {
       text: `To note, Redux has RTK, which helps with precisely this type of structure. It also has lots of helper functions to help you organize, select and update each entity. It's not an ORM, but you can use an ORM on top of it.`,
     },
   ]),
-  HGQj3faHJkbMGFcBJNUgj_6: YOOPTA_ULTRA_VALUES.blockquote('HGQj3faHJkbMGFcBJNUgj_6', { order: 7, depth: 0 }),
-  table_7: YOOPTA_ULTRA_VALUES.table('table_7', { order: 8, depth: 0 }),
+  blockquote_7: YOOPTA_ULTRA_VALUES.blockquote('blockquote_7', { order: 8, depth: 0 }),
+  table_7: YOOPTA_ULTRA_VALUES.table('table_7', { order: 9, depth: 0 }),
   HGQj3faHJkbMGFcasdaBJNUgj_5: YOOPTA_ULTRA_VALUES.video('HGQj3faHJkbMGFcasdaBJNUgj_5', {
     order: 6,
     depth: 0,

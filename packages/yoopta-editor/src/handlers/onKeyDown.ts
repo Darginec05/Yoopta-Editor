@@ -1,8 +1,10 @@
+import { createDraft, finishDraft } from 'immer';
 import { isKeyHotkey } from 'is-hotkey';
 import { Editor, Path, Range } from 'slate';
 import { getDefaultYooptaChildrenValue } from '../components/Editor/defaultValue';
 import { TextFormats } from '../editor';
 import { YooEditor } from '../editor/types';
+import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../utils/generateId';
 import { HOTKEYS } from '../utils/hotkeys';
 
@@ -73,6 +75,35 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
         if (prevBlock) editor.focusBlock(prevBlock.id);
         return;
       }
+      return;
+    }
+
+    if (HOTKEYS.isShiftTab(event)) {
+      event.preventDefault();
+      editor.children = createDraft(editor.children);
+
+      const block = findPluginBlockBySelectionPath(editor);
+      if (!block) return;
+      // [TODO] = add max depth
+      block.meta.depth = block.meta.depth === 0 ? 0 : block.meta.depth - 1;
+
+      editor.children = finishDraft(editor.children);
+      editor.applyChanges();
+
+      return;
+    }
+
+    if (HOTKEYS.isTab(event)) {
+      event.preventDefault();
+      editor.children = createDraft(editor.children);
+
+      const block = findPluginBlockBySelectionPath(editor);
+      if (!block) return;
+      block.meta.depth = block.meta.depth + 1;
+
+      editor.children = finishDraft(editor.children);
+      editor.applyChanges();
+
       return;
     }
   };

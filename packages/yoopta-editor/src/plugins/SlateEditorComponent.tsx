@@ -5,6 +5,7 @@ import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../textFormatters/createYooptaMark';
 import { withInlines } from './extensions';
 import { ExtendedLeafProps, PluginParams } from './types';
+import s from './SlateEditorComponent.module.css';
 
 type Props<T> = PluginParams<T> & { id: string; marks?: YooptaMark<any>[] };
 
@@ -49,10 +50,6 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks }: Props<T
     return slateEditor;
   }, []);
 
-  if (id === 'Gci1KGGfnlup_h4Ta-AOI_1') {
-    console.log('slate.children', slate.children);
-  }
-
   const onChange = useCallback((data) => {
     yooEditor.updateBlock(id, data);
   }, []);
@@ -95,6 +92,7 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks }: Props<T
           // onKeyUp={(event) => console.log('onKEYUP', event.key)}
           placeholder="Enter some rich text…"
           renderLeaf={renderLeaf}
+          className={s.editor}
         />
       </Slate>
     </div>
