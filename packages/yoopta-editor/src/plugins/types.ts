@@ -1,6 +1,6 @@
 import { Descendant, Editor as SlateEditor } from 'slate';
 import { RenderElementProps as RenderSlateElementProps, RenderLeafProps } from 'slate-react';
-import { LeafColorProps, YooptaMark } from '../textFormatters/createYooptaMark';
+import { YooptaMark } from '../textFormatters/createYooptaMark';
 
 export type RenderPluginProps = {
   id: string;
@@ -16,8 +16,6 @@ export type Plugin = {
 
 export type PluginElementOptions = {
   nodeType?: 'block' | 'inline' | 'void';
-  depth?: number;
-  maxDepth?: number;
 };
 
 export type CustomEditorProps = Omit<RenderPluginProps, 'elements'> & Pick<Plugin, 'type'> & { editor: SlateEditor };

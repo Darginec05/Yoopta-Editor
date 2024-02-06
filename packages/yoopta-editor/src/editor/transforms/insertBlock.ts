@@ -1,14 +1,15 @@
 import { createDraft, finishDraft } from 'immer';
-import { createEditor, Editor, Range } from 'slate';
+import { createEditor } from 'slate';
 import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
 import { generateId } from '../../utils/generateId';
 import { YooEditor, YooptaEditorOptions } from '../types';
 
+// [TODO] - handle isStart position. Selected block should be moved to the next path
 export function insertBlock(editor: YooEditor, data, options: YooptaEditorOptions = {}) {
   editor.children = createDraft(editor.children);
 
-  const { at = null, focus = false } = options;
+  const { at = null, focus = false, slate } = options;
 
   const newBlock = {
     id: generateId(),

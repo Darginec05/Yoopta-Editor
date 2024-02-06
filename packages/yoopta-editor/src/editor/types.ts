@@ -16,6 +16,7 @@ export type YooptaBlockType = 'block' | 'inline' | 'void';
 export type YooptaBlockBaseMeta = {
   order: number;
   depth: number;
+  maxDepth: number;
 };
 
 export type YooptaEditorOptions = {
