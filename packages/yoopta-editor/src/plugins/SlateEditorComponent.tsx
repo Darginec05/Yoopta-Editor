@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useRef } from 'react';
-import { DefaultLeaf, Editable, RenderElementProps, RenderLeafProps, Slate } from 'slate-react';
+import { Editable, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useYooptaPlugin } from '../contexts/UltraYooptaContext/UltraYooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../textFormatters/createYooptaMark';
@@ -49,6 +49,10 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks }: Props<T
     return slateEditor;
   }, []);
 
+  if (id === 'Gci1KGGfnlup_h4Ta-AOI_1') {
+    console.log('slate.children', slate.children);
+  }
+
   const onChange = useCallback((data) => {
     yooEditor.updateBlock(id, data);
   }, []);
@@ -88,6 +92,7 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks }: Props<T
         <Editable
           renderElement={renderElement}
           onKeyDown={EVENT_HANDLERS.onKeyDown(yooEditor, slate)}
+          // onKeyUp={(event) => console.log('onKEYUP', event.key)}
           placeholder="Enter some rich text…"
           renderLeaf={renderLeaf}
         />

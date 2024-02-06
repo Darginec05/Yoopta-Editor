@@ -1,5 +1,7 @@
 import { Editor, Element as SlateElement, Transforms, Range } from 'slate';
 
+// [TODO] - JUST FOR TEST
+
 function isUrl(string) {
   try {
     new URL(string);
