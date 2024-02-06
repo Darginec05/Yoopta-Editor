@@ -1,6 +1,5 @@
 import { isKeyHotkey } from 'is-hotkey';
-import { Editor, Path, Range, Transforms } from 'slate';
-import { TextTransforms } from 'slate/dist/interfaces/transforms/text';
+import { Editor, Path, Range } from 'slate';
 import { getDefaultYooptaChildrenValue } from '../components/Editor/defaultValue';
 import { TextFormats } from '../editor';
 import { YooEditor } from '../editor/types';
@@ -10,7 +9,6 @@ import { HOTKEYS } from '../utils/hotkeys';
 export function onKeyDown(editor: YooEditor, slate: Editor) {
   return (event) => {
     if (!slate.selection) return;
-
     if (HOTKEYS.isShiftEnter(event)) {
       if (event.isDefaultPrevented()) return;
 
@@ -22,8 +20,6 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
       if (event.isDefaultPrevented()) return;
       event.preventDefault();
 
-      console.log('collapsed', Range.isExpanded(slate.selection));
-
       // // [TODO] - if is expanded, delete the selection and add insert a new block
       // if (Range.isExpanded(slate.selection)) {
       //   Transforms.delete(slate, { at: slate.selection, unit: 'character' });
@@ -33,31 +29,25 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
       const isStart = Editor.isStart(slate, slate.selection.anchor, slate.selection.anchor.path);
       const isEnd = Editor.isEnd(slate, slate.selection.anchor, slate.selection.anchor.path);
 
-      // Split the node at the cursor
       if (!isStart && !isEnd) {
-        const nextPath = editor.selection ? [editor.selection[0] + 1] : [0];
-        editor.splitBlock({ at: nextPath, focus: true, slate });
+        editor.splitBlock({ slate });
         return;
       }
 
       const defaultBlock = getDefaultYooptaChildrenValue(generateId());
       const nextPath = editor.selection ? [editor.selection[0] + 1] : [0];
-      editor.insertBlock(defaultBlock, { at: nextPath, focus: true });
+      editor.insertBlock(defaultBlock, { at: nextPath, slate, focus: true });
       return;
     }
 
     if (Range.isExpanded(slate.selection)) {
-      Object.values(editor.formats).forEach((mark) => {
+      for (const mark of Object.values(editor.formats)) {
         if (mark.hotkey && isKeyHotkey(mark.hotkey)(event)) {
-          if (Range.isCollapsed(slate.selection!)) {
-            // break from array
-          }
-
           event.preventDefault();
           TextFormats.toggle(editor, mark);
-          // break from array
+          break;
         }
-      });
+      }
     }
 
     if (HOTKEYS.isBackspace(event)) {

@@ -2,47 +2,62 @@ import { createDraft, finishDraft } from 'immer';
 import { createEditor, Editor, Element, Path, Transforms } from 'slate';
 import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
+import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../../utils/generateId';
-import { YooEditor, YooptaEditorOptions } from '../types';
+import { YooEditor, YooptaChildrenValue, YooptaEditorOptions } from '../types';
 
+// [TODO] - handle cases for lists and nested inline elements
 export function splitBlock(editor: YooEditor, options: YooptaEditorOptions = {}) {
-  // editor.children = createDraft(editor.children);
+  const { slate, focus = true } = options;
 
-  const { at = null, focus = false, slate = null } = options;
+  const pluginToSplit = findPluginBlockBySelectionPath(editor);
+  if (!slate || !slate.selection || !pluginToSplit) return;
 
-  if (!slate || !slate.selection) return;
+  Editor.withoutNormalizing(slate, () => {
+    editor.children = createDraft(editor.children);
 
-  const before = Editor.before(slate, slate.selection);
-  const after = Editor.after(slate, slate.selection);
+    const parentPath = Path.parent(slate.selection!.anchor.path);
 
-  const stringBefore = before ? Editor.string(slate, before) : '';
-  const stringAfter = after ? Editor.string(slate, after) : '';
+    Transforms.splitNodes(slate, {
+      at: slate.selection!,
+      match: (n) => Element.isElement(n),
+      always: true,
+      mode: 'highest',
+    });
 
-  console.log('slate.selection before', before);
-  console.log('slate.selection after', after);
-  console.log('stringBefore', stringBefore);
-  console.log('stringAfter', stringAfter);
-  console.log('Editor.nodes', [...Editor.nodes(slate, { match: (n) => !Editor.isEditor(n) })]);
+    const nextChildren = slate.children.slice()[Path.next(parentPath)[0]];
 
-  // const depth = slate.selection.anchor.path.length;
-  // const offsetPosition = slate.selection.anchor.offset;
+    Transforms.removeNodes(slate, {
+      at: [Path.next(parentPath)[0]],
+      match: (n) => Element.isElement(n),
+      mode: 'highest',
+    });
 
-  // console.log('depth', depth);
-  // console.log('offsetPosition', offsetPosition);
+    const newBlock: YooptaChildrenValue = {
+      id: generateId(),
+      type: pluginToSplit.type,
+      meta: {
+        order: pluginToSplit.meta.order + 1,
+        depth: pluginToSplit.meta.depth,
+      },
+      value: [nextChildren],
+    };
 
-  // editor.children = finishDraft(editor.children);
-  // editor.applyChanges();
+    Object.values(editor.children).forEach((plugin) => {
+      if (plugin.meta.order >= newBlock.meta.order) {
+        plugin.meta.order += 1;
+      }
+    });
 
-  // const newBlock = {
-  //   id: generateId(),
-  //   value: [{ text: 'k via the toolbar icon above,@elon.musk' }],
-  //   type: 'ParagraphPlugin',
-  //   meta: {
-  //     // ...data.meta,
-  //     order: 0,
-  //   },
-  // };
+    const newSlateEditor = withHistory(withReact(createEditor()));
+    editor.blockEditorsMap[newBlock.id] = newSlateEditor;
+    editor.children[newBlock.id] = newBlock;
 
-  // editor.insertBlock(newBlock, { at, focus: true });
-  // editor.applyChanges();
+    editor.children = finishDraft(editor.children);
+    editor.applyChanges();
+
+    if (focus) {
+      editor.focusBlock(newBlock.id);
+    }
+  });
 }

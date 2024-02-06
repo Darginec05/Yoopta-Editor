@@ -37,6 +37,8 @@ const useDnd = ({ editor }) => {
 };
 
 const RenderBlocks = ({ editor, plugins, marks }: Props) => {
+  console.log('editor', editor.children);
+
   const { sensors, handleDragEnd } = useDnd({ editor });
   const childrenUnorderedKeys = Object.keys(editor.children);
   const childrenKeys = useMemo(() => {
@@ -79,8 +81,6 @@ const RenderBlocks = ({ editor, plugins, marks }: Props) => {
   }, [plugins]);
 
   const blocks: JSX.Element[] = [];
-
-  console.log('PLUGINS_MAP', PLUGINS_MAP);
 
   for (let i = 0; i < childrenKeys.length; i++) {
     const childrenId = childrenKeys[i];
