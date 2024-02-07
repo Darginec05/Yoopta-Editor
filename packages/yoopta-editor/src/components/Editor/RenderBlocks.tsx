@@ -37,8 +37,6 @@ const useDnd = ({ editor }) => {
 };
 
 const RenderBlocks = ({ editor, plugins, marks }: Props) => {
-  console.log('editor', editor.children);
-
   const { sensors, handleDragEnd } = useDnd({ editor });
   const childrenUnorderedKeys = Object.keys(editor.children);
   const childrenKeys = useMemo(() => {

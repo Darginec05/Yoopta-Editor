@@ -25,10 +25,12 @@ export function splitBlock(editor: YooEditor, options: YooptaEditorOptions = {})
       mode: 'highest',
     });
 
-    const nextChildren = slate.children.slice()[Path.next(parentPath)[0]];
+    const nextParentPathIndex = parentPath[0] + 1;
+    // [TODO] - or deep clone?
+    const nextBlockChildren = slate.children.slice()[nextParentPathIndex];
 
     Transforms.removeNodes(slate, {
-      at: [Path.next(parentPath)[0]],
+      at: [nextParentPathIndex],
       match: (n) => Element.isElement(n),
       mode: 'highest',
     });
@@ -39,8 +41,9 @@ export function splitBlock(editor: YooEditor, options: YooptaEditorOptions = {})
       meta: {
         order: pluginToSplit.meta.order + 1,
         depth: pluginToSplit.meta.depth,
+        maxDepth: pluginToSplit.meta.maxDepth,
       },
-      value: [nextChildren],
+      value: [nextBlockChildren],
     };
 
     Object.values(editor.children).forEach((plugin) => {
