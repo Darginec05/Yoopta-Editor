@@ -3,7 +3,7 @@ import { Editable, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useYooptaPlugin } from '../contexts/UltraYooptaContext/UltraYooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../textFormatters/createYooptaMark';
-import { withInlines } from './extensions';
+import { withInlines } from './extenstions/withInlines';
 import { ExtendedLeafProps, PluginParams } from './types';
 import s from './SlateEditorComponent.module.css';
 
@@ -90,7 +90,7 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks }: Props<T
           renderElement={renderElement}
           onKeyDown={EVENT_HANDLERS.onKeyDown(yooEditor, slate)}
           // onKeyUp={(event) => console.log('onKEYUP', event.key)}
-          placeholder="Enter some rich text…"
+          // placeholder="Enter some rich text…"
           renderLeaf={renderLeaf}
           className={s.editor}
         />

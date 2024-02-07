@@ -2,9 +2,10 @@ import { Editor, Node, NodeEntry, Path, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { YooEditor, YooptaEditorOptions } from '../types';
 
-export function focusBlock(editor: YooEditor, id: string, options: YooptaEditorOptions = {}) {
+// [TODO] - update editor.selection after focus
+export function focusBlock(editor: YooEditor, blockId: string, options: YooptaEditorOptions = {}) {
   const focusTimeout = setTimeout(() => {
-    const slate = editor.blockEditorsMap[id];
+    const slate = editor.blockEditorsMap[blockId];
 
     const [firstEntry] = Editor.nodes(slate, {
       at: [0, 0],
@@ -16,6 +17,7 @@ export function focusBlock(editor: YooEditor, id: string, options: YooptaEditorO
 
     Transforms.select(slate, { path: firstLeafPath, offset: 0 });
     ReactEditor.focus(slate);
+    editor.setSelection([editor.children[blockId].meta.order]);
 
     clearTimeout(focusTimeout);
   }, 0);
