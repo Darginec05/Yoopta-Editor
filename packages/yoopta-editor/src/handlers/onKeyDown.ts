@@ -60,20 +60,25 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
         return;
       }
 
-      const text = Editor.string(slate, parentPath);
       const isStart = Editor.isStart(slate, slate.selection.anchor, slate.selection.anchor.path);
 
-      if (text.length === 0 && isStart) {
-        event.preventDefault();
-        const prevBlockPath = editor.selection ? [editor.selection[0] - 1] : [0];
+      if (isStart) {
+        const text = Editor.string(slate, parentPath);
 
-        // [TODO] - Create helper function to get the previous, next, current block
-        const prevBlock = Object.values(editor.children).find((block) => block.meta.order === prevBlockPath[0]);
+        if (text.length === 0) {
+          event.preventDefault();
+          const prevBlockPath = editor.selection ? [editor.selection[0] - 1] : [0];
 
-        editor.deleteBlock({ at: editor.selection });
-        // [TODO] - Argument should be path, not a block id
-        if (prevBlock) editor.focusBlock(prevBlock.id);
-        return;
+          // [TODO] - Create helper function to get the previous, next, current block
+          const prevBlock = Object.values(editor.children).find((block) => block.meta.order === prevBlockPath[0]);
+
+          editor.deleteBlock({ at: editor.selection });
+          // [TODO] - Argument should be path, not a block id
+          if (prevBlock) editor.focusBlock(prevBlock.id);
+          return;
+        } else {
+          // [TODO] - if current block has text merge nodes with prev block
+        }
       }
       return;
     }
@@ -105,6 +110,16 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
       editor.applyChanges();
 
       return;
+    }
+
+    // [TODO] - handle sharing cursor between blocks
+    if (HOTKEYS.isArrowUp(event)) {
+      console.log('Editor.start', Editor.start(slate, slate.selection.anchor.path));
+    }
+
+    // [TODO] - handle sharing cursor between blocks
+    if (HOTKEYS.isArrowDown(event)) {
+      console.log('Editor.end', Editor.end(slate, slate.selection.anchor.path));
     }
   };
 }

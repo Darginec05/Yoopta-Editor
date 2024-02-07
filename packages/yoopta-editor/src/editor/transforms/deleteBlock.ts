@@ -2,7 +2,7 @@ import { createDraft, finishDraft } from 'immer';
 import { YooEditor, YooptaEditorOptions } from '../types';
 
 export function deleteBlock(editor: YooEditor, options: YooptaEditorOptions = {}) {
-  const { at = null } = options;
+  const { at = editor.selection } = options;
 
   if (!at) return;
 
