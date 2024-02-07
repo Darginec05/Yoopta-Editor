@@ -1,7 +1,6 @@
 import { Editor, Element as SlateElement, Transforms, Range } from 'slate';
 
 // [TODO] - JUST FOR TEST
-
 function isUrl(string) {
   try {
     new URL(string);
@@ -54,9 +53,7 @@ export const withInlines = (editor) => {
   const { insertData, insertText, isInline, isElementReadOnly, isSelectable } = editor;
 
   editor.isInline = (element) => ['link', 'button', 'badge'].includes(element.type) || isInline(element);
-
   editor.isElementReadOnly = (element) => element.type === 'badge' || isElementReadOnly(element);
-
   editor.isSelectable = (element) => element.type !== 'badge' && isSelectable(element);
 
   editor.insertText = (text) => {

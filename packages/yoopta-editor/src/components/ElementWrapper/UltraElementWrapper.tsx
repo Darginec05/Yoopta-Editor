@@ -64,7 +64,7 @@ const UltraElementWrapper = ({ children, plugin, pluginId }) => {
     transition,
     opacity: isDragging ? 0.7 : 1,
     // [TODO] = handle max depth
-    paddingLeft: `${plugin.meta.depth * 20}px`,
+    marginLeft: `${plugin.meta.depth * 20}px`,
     // // implement selected state by mouse select  area
     // backgroundColor: selected ? 'rgba(35, 131, 226, 0.14)' : undefined,
   };
