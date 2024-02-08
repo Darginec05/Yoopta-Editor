@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
@@ -16,7 +16,7 @@ type Props = {
   plugins: Plugin[];
 };
 
-const useDnd = ({ editor }) => {
+const useYooptaDragDrop = ({ editor }) => {
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -24,20 +24,20 @@ const useDnd = ({ editor }) => {
     }),
   );
 
-  const handleDragEnd = (event) => {
+  const handleDragEnd = useCallback((event) => {
     const { active, over } = event;
 
     if (active && over && active.id !== over.id) {
       const newPluginPosition = editor.children[over.id].meta.order;
       editor.moveBlock(active.id, [newPluginPosition]);
     }
-  };
+  }, []);
 
   return { sensors, handleDragEnd };
 };
 
 const RenderBlocks = ({ editor, plugins, marks }: Props) => {
-  const { sensors, handleDragEnd } = useDnd({ editor });
+  const { sensors, handleDragEnd } = useYooptaDragDrop({ editor });
   const childrenUnorderedKeys = Object.keys(editor.children);
   const childrenKeys = useMemo(() => {
     if (childrenUnorderedKeys.length === 0) return DEFAULT_EDITOR_KEYS;
@@ -61,7 +61,10 @@ const RenderBlocks = ({ editor, plugins, marks }: Props) => {
       if (plugin.elements) {
         Object.keys(plugin.elements).forEach((type) => {
           const element = plugin.elements[type];
-          if (element.options?.nodeType === 'inline') inlineTopLevelPlugins[type] = element;
+          const nodeType = element.options?.nodeType;
+          if (nodeType === 'inline' || (Array.isArray(nodeType) && nodeType.includes('inline'))) {
+            inlineTopLevelPlugins[type] = element;
+          }
         });
       }
 

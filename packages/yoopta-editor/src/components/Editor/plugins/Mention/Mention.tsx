@@ -1,9 +1,11 @@
-import { RenderElementProps } from 'slate-react';
+import cx from 'classnames';
+import { RenderElementProps, useSelected } from 'slate-react';
 import { createPlugin } from '../../../../plugins';
 import s from './Mention.module.css';
 
 const MentionRender = (props: RenderElementProps) => {
-  const { url, target, rel } = props.element.data;
+  const { url, target, rel, character } = props.element.data;
+  const selected = useSelected();
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -16,9 +18,10 @@ const MentionRender = (props: RenderElementProps) => {
       rel={rel}
       target={target}
       onClick={handleClick}
-      className={s.mention}
+      className={cx(s.mention, { [s.selected]: selected })}
       {...props.attributes}
     >
+      {character ? `@${character}` : null}
       {props.children}
     </a>
   );
@@ -28,6 +31,7 @@ type Mention = {
   url: string | null;
   target?: string;
   rel?: string;
+  character: string | null;
 };
 
 const Mention = createPlugin<Mention>({
@@ -39,9 +43,10 @@ const Mention = createPlugin<Mention>({
         url: null,
         target: '_blank',
         rel: 'noreferrer',
+        character: null,
       },
       options: {
-        nodeType: 'inline',
+        nodeType: ['inline', 'void'],
       },
     },
   },

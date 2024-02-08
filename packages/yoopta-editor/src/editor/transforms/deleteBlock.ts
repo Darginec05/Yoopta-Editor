@@ -1,8 +1,9 @@
 import { createDraft, finishDraft } from 'immer';
+import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { YooEditor, YooptaEditorOptions } from '../types';
 
 export function deleteBlock(editor: YooEditor, options: YooptaEditorOptions = {}) {
-  const { at = editor.selection } = options;
+  const { at = editor.selection, focus } = options;
 
   if (!at) return;
 
@@ -16,8 +17,18 @@ export function deleteBlock(editor: YooEditor, options: YooptaEditorOptions = {}
     if (plugin.meta.order > position) plugin.meta.order -= 1;
   });
 
-  if (pluginToDeleteId) delete editor.children[pluginToDeleteId];
+  if (pluginToDeleteId) {
+    delete editor.children[pluginToDeleteId];
+    delete editor.blockEditorsMap[pluginToDeleteId];
+  }
 
   editor.children = finishDraft(editor.children);
   editor.applyChanges();
+
+  if (focus) {
+    const prevBlockPathIndex = editor.selection ? editor.selection[0] - 1 : 0;
+    const prevBlock = findPluginBlockBySelectionPath(editor, { at: [prevBlockPathIndex] });
+
+    if (prevBlock) editor.focusBlock(prevBlock.id);
+  }
 }

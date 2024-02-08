@@ -1,11 +1,12 @@
 import { createDraft, finishDraft } from 'immer';
 import { isKeyHotkey } from 'is-hotkey';
-import { Editor, Path, Range } from 'slate';
+import { Editor, Path, Range, Text, Transforms } from 'slate';
 import { getDefaultYooptaChildrenValue } from '../components/Editor/defaultValue';
 import { TextFormats } from '../editor';
 import { YooEditor } from '../editor/types';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../utils/generateId';
+import { getMaxOffsetInElement } from '../utils/getMaxOffsetInElement';
 import { HOTKEYS } from '../utils/hotkeys';
 
 export function onKeyDown(editor: YooEditor, slate: Editor) {
@@ -16,17 +17,13 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
 
       event.preventDefault();
       slate.insertText('\n');
+
+      return;
     }
 
     if (HOTKEYS.isEnter(event)) {
       if (event.isDefaultPrevented()) return;
       event.preventDefault();
-
-      // // [TODO] - if is expanded, delete the selection and add insert a new block
-      // if (Range.isExpanded(slate.selection)) {
-      //   Transforms.delete(slate, { at: slate.selection, unit: 'character' });
-      //   return;
-      // }
 
       const isStart = Editor.isStart(slate, slate.selection.anchor, slate.selection.anchor.path);
       const isEnd = Editor.isEnd(slate, slate.selection.anchor, slate.selection.anchor.path);
@@ -42,42 +39,46 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
       return;
     }
 
-    if (Range.isExpanded(slate.selection)) {
-      for (const mark of Object.values(editor.formats)) {
-        if (mark.hotkey && isKeyHotkey(mark.hotkey)(event)) {
-          event.preventDefault();
-          TextFormats.toggle(editor, mark);
-          break;
-        }
-      }
-    }
-
     if (HOTKEYS.isBackspace(event)) {
       const parentPath = Path.parent(slate.selection.anchor.path);
-
-      // [TODO] - parent path should have only one element in selection. Ex. tables
-      if (parentPath.length > 1) {
-        return;
-      }
-
       const isStart = Editor.isStart(slate, slate.selection.anchor, slate.selection.anchor.path);
 
+      // When the cursor is at the start of the block, delete the block
       if (isStart) {
+        event.preventDefault();
         const text = Editor.string(slate, parentPath);
 
+        // If current block is empty just delete block
         if (text.length === 0) {
-          event.preventDefault();
-          const prevBlockPath = editor.selection ? [editor.selection[0] - 1] : [0];
+          return editor.deleteBlock({ at: editor.selection, focus: true });
+        }
+        // If current block is not empty merge text nodes with previous block
+        else {
+          const prevBlockPathIndex = editor.selection ? editor.selection[0] - 1 : 0;
 
-          // [TODO] - Create helper function to get the previous, next, current block
-          const prevBlock = Object.values(editor.children).find((block) => block.meta.order === prevBlockPath[0]);
+          const prevBlock = findPluginBlockBySelectionPath(editor, { at: [prevBlockPathIndex] });
+          const prevSlate = editor.blockEditorsMap[prevBlock!.id];
+          const prevSlateText = Editor.string(prevSlate, [0]);
 
-          editor.deleteBlock({ at: editor.selection });
-          // [TODO] - Argument should be path, not a block id
-          if (prevBlock) editor.focusBlock(prevBlock.id);
-          return;
-        } else {
-          // [TODO] - if current block has text merge nodes with prev block
+          // If previous block values is empty just delete block
+          if (prevSlateText.length === 0) {
+            return editor.deleteBlock({ at: [prevBlockPathIndex], focus: true });
+          }
+
+          console.log('maxOffsetInElement', getMaxOffsetInElement(prevSlate, [0]));
+
+          const childNodeEntries = Array.from(
+            Editor.nodes(slate, {
+              at: [0],
+              match: (n) => Text.isText(n) || Editor.isInline(slate, n),
+              mode: 'highest',
+            }),
+          );
+
+          const childNodes = childNodeEntries.map(([node]) => node);
+          Transforms.insertNodes(prevSlate, childNodes, { at: Editor.end(prevSlate, []) });
+
+          return editor.deleteBlock({ at: editor.selection, focus: true });
         }
       }
       return;
@@ -110,6 +111,16 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
       editor.applyChanges();
 
       return;
+    }
+
+    if (Range.isExpanded(slate.selection)) {
+      for (const mark of Object.values(editor.formats)) {
+        if (mark.hotkey && isKeyHotkey(mark.hotkey)(event)) {
+          event.preventDefault();
+          TextFormats.toggle(editor, mark);
+          break;
+        }
+      }
     }
 
     // [TODO] - handle sharing cursor between blocks

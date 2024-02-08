@@ -254,11 +254,12 @@ export const INLINE_LINK_ELEMENT = {
 export const INLINE_MENTION_ELEMENT = {
   id: generateId(),
   type: 'mention',
-  children: [{ text: '@elon.musk' }],
+  children: [{ text: '' }],
   data: {
     url: 'https://twitter.com/teo_bale/',
     target: '_blank',
     rel: 'noreferrer',
+    character: 'elon.musk',
   },
 };
 

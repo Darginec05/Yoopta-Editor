@@ -1,4 +1,4 @@
-import { Editor, Node, NodeEntry, Path, Transforms } from 'slate';
+import { Editor, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { YooEditor, YooptaEditorOptions } from '../types';
 
@@ -15,6 +15,7 @@ export function focusBlock(editor: YooEditor, blockId: string, options: YooptaEd
     // [TODO] - handle case when firstEntry is not defined
     const firstLeafPath = firstEntry[1] || [0, 0];
 
+    // [TODO] - handle offset position. Add 'focusAt' property to options
     Transforms.select(slate, { path: firstLeafPath, offset: 0 });
     ReactEditor.focus(slate);
     editor.setSelection([editor.children[blockId].meta.order]);
