@@ -37,11 +37,20 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks }: Props<T
     const elementTypes = Object.keys(elements);
 
     elementTypes.forEach((elementType) => {
-      const isInline = elements[elementType].options?.nodeType === 'inline';
-      const isVoid = elements[elementType].options?.nodeType === 'void';
-      if (isVoid) slateEditor.isVoid = (element) => element.type === elementType;
-      if (isInline) {
+      const nodeType = elements[elementType].options?.nodeType;
+
+      const isInline = nodeType === 'inline';
+      const isVoid = nodeType === 'void';
+      const isInlineVoid = Array.isArray(nodeType) && nodeType.includes('inline') && nodeType.includes('void');
+
+      if (isInlineVoid) {
+        slateEditor.markableVoid = (element) => element.type === elementType;
+      }
+
+      if (isVoid || isInlineVoid) slateEditor.isVoid = (element) => element.type === elementType;
+      if (isInline || isInlineVoid) {
         slateEditor.isInline = (element) => element.type === elementType;
+
         // [TODO] - as test
         slateEditor = withInlines(slateEditor);
       }
