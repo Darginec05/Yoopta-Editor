@@ -14,7 +14,7 @@ export type RenderPluginProps = {
 export type Plugin = {
   type: string;
   renderPlugin: (props: RenderPluginProps) => JSX.Element;
-  elements: PluginParams<string, unknown>['elements'];
+  elements: PluginParams<unknown>['elements'];
 };
 
 export type PluginElementOptions = {
@@ -31,8 +31,8 @@ export type PluginElement<T> = {
   options?: PluginElementOptions;
 };
 
-export type PluginElementsMap<K, T> = {
-  [key in keyof K]: PluginElement<T>;
+export type PluginElementsMap<T> = {
+  string: PluginElement<T>;
 };
 
 type HandlersOptions = {
@@ -48,11 +48,11 @@ type EventHandlers = {
   ) => EditorEventHandlers[key] | void;
 };
 
-export type PluginParams<K extends string = string, T = Descendant> = {
+export type PluginParams<T = Descendant> = {
   type: string;
   render?: (props: RenderSlateElementProps) => JSX.Element;
   customEditor?: (props: CustomEditorProps) => JSX.Element;
-  elements: PluginElementsMap<K, T>;
+  elements: PluginElementsMap<T>;
   events?: EventHandlers;
 };
 
