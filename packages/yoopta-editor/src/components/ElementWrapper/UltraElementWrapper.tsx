@@ -43,8 +43,10 @@ const Actions = ({ plugin, editor, dragHandleProps, show }) => {
   );
 };
 
+// [TODO] - implement selected state by mouse select area
 const UltraElementWrapper = ({ children, plugin, pluginId }) => {
   const editor = useYooptaEditor();
+  // [TODO] - hovered by block id
   const [isHovered, setIsHovered] = useState(false);
   const {
     attributes,

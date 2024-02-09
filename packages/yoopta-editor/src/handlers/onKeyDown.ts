@@ -12,6 +12,7 @@ import { HOTKEYS } from '../utils/hotkeys';
 export function onKeyDown(editor: YooEditor, slate: Editor) {
   return (event) => {
     if (!slate.selection) return;
+
     if (HOTKEYS.isShiftEnter(event)) {
       if (event.isDefaultPrevented()) return;
 
@@ -40,6 +41,8 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
     }
 
     if (HOTKEYS.isBackspace(event)) {
+      if (event.isDefaultPrevented()) return;
+
       const parentPath = Path.parent(slate.selection.anchor.path);
       const isStart = Editor.isStart(slate, slate.selection.anchor, slate.selection.anchor.path);
 
@@ -54,13 +57,20 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
         }
         // If current block is not empty merge text nodes with previous block
         else {
-          const prevBlockPathIndex = editor.selection ? editor.selection[0] - 1 : 0;
+          if (Range.isExpanded(slate.selection)) {
+            return Transforms.delete(slate, { at: slate.selection });
+          }
 
+          const prevBlockPathIndex = editor.selection ? editor.selection[0] - 1 : 0;
           const prevBlock = findPluginBlockBySelectionPath(editor, { at: [prevBlockPathIndex] });
-          const prevSlate = editor.blockEditorsMap[prevBlock!.id];
+
+          // If we try to delete first block do nothing
+          if (!prevBlock) return;
+
+          const prevSlate = editor.blockEditorsMap[prevBlock.id];
           const prevSlateText = Editor.string(prevSlate, [0]);
 
-          // If previous block values is empty just delete block
+          // If previous block values is empty just delete block without merging
           if (prevSlateText.length === 0) {
             return editor.deleteBlock({ at: [prevBlockPathIndex], focus: true });
           }
@@ -85,32 +95,33 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
     }
 
     if (HOTKEYS.isShiftTab(event)) {
+      if (event.isDefaultPrevented()) return;
       event.preventDefault();
-      editor.children = createDraft(editor.children);
 
-      const block = findPluginBlockBySelectionPath(editor);
-      if (!block) return;
-      // [TODO] = add max depth
-      block.meta.depth = block.meta.depth === 0 ? 0 : block.meta.depth - 1;
-
-      editor.children = finishDraft(editor.children);
-      editor.applyChanges();
-
+      editor.decreaseBlockDepth();
       return;
     }
 
     if (HOTKEYS.isTab(event)) {
+      if (event.isDefaultPrevented()) return;
       event.preventDefault();
-      editor.children = createDraft(editor.children);
 
-      const block = findPluginBlockBySelectionPath(editor);
-      if (!block) return;
-      block.meta.depth = block.meta.depth + 1;
-
-      editor.children = finishDraft(editor.children);
-      editor.applyChanges();
-
+      editor.increaseBlockDepth();
       return;
+    }
+
+    // [TODO] - handle sharing cursor between blocks
+    if (HOTKEYS.isArrowUp(event)) {
+      if (event.isDefaultPrevented()) return;
+
+      console.log('Editor.start', Editor.start(slate, slate.selection.anchor.path));
+    }
+
+    // [TODO] - handle sharing cursor between blocks
+    if (HOTKEYS.isArrowDown(event)) {
+      if (event.isDefaultPrevented()) return;
+
+      console.log('Editor.end', Editor.end(slate, slate.selection.anchor.path));
     }
 
     if (Range.isExpanded(slate.selection)) {
@@ -121,16 +132,6 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
           break;
         }
       }
-    }
-
-    // [TODO] - handle sharing cursor between blocks
-    if (HOTKEYS.isArrowUp(event)) {
-      console.log('Editor.start', Editor.start(slate, slate.selection.anchor.path));
-    }
-
-    // [TODO] - handle sharing cursor between blocks
-    if (HOTKEYS.isArrowDown(event)) {
-      console.log('Editor.end', Editor.end(slate, slate.selection.anchor.path));
     }
   };
 }

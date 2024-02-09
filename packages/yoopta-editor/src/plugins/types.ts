@@ -1,6 +1,9 @@
-import { Descendant, Editor as SlateEditor } from 'slate';
+import { Descendant, Editor, Editor as SlateEditor } from 'slate';
 import { RenderElementProps as RenderSlateElementProps, RenderLeafProps } from 'slate-react';
+import { YooEditor } from '../editor/types';
 import { YooptaMark } from '../textFormatters/createYooptaMark';
+import { EditorEventHandlers } from '../types/eventHandlers';
+import { HOTKEYS_TYPE } from '../utils/hotkeys';
 
 export type RenderPluginProps = {
   id: string;
@@ -11,30 +14,46 @@ export type RenderPluginProps = {
 export type Plugin = {
   type: string;
   renderPlugin: (props: RenderPluginProps) => JSX.Element;
-  elements: PluginParams<unknown>['elements'];
+  elements: PluginParams<string, unknown>['elements'];
 };
 
 export type PluginElementOptions = {
   nodeType?: 'block' | 'inline' | 'void' | ['inline', 'void'];
+  draggable?: boolean;
 };
 
 export type CustomEditorProps = Omit<RenderPluginProps, 'elements'> & Pick<Plugin, 'type'> & { editor: SlateEditor };
 
 export type PluginElement<T> = {
   render: (props: RenderSlateElementProps) => JSX.Element;
+  // [TODO] - MAYBE nodeProps(?)
   props?: T;
   options?: PluginElementOptions;
 };
 
-export type PluginElementsMap<T> = {
-  [key: string]: PluginElement<T>;
+export type PluginElementsMap<K, T> = {
+  [key in keyof K]: PluginElement<T>;
 };
 
-export type PluginParams<T = Descendant> = {
+type HandlersOptions = {
+  hotkeys: HOTKEYS_TYPE;
+  defaultNode: Element;
+};
+
+type EventHandlers = {
+  [key in keyof EditorEventHandlers]: (
+    editor: YooEditor,
+    slate: Editor,
+    options: HandlersOptions,
+  ) => EditorEventHandlers[key] | void;
+};
+
+export type PluginParams<K extends string = string, T = Descendant> = {
   type: string;
   render?: (props: RenderSlateElementProps) => JSX.Element;
   customEditor?: (props: CustomEditorProps) => JSX.Element;
-  elements: PluginElementsMap<T>;
+  elements: PluginElementsMap<K, T>;
+  events?: EventHandlers;
 };
 
 export type LeafFormats<K extends string, V> = {

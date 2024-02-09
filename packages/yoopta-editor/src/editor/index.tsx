@@ -9,6 +9,8 @@ import { TextFormat, YooEditor } from './types';
 import { toggle } from './textFormats/toggle';
 import { update } from './textFormats/update';
 import { isActive } from './textFormats/isActive';
+import { increaseBlockDepth } from './transforms/increaseBlockDepth';
+import { decreaseBlockDepth } from './transforms/decreaseBlockDepth';
 
 // export const Transforms = {}
 // export const Selection = {}
@@ -30,6 +32,8 @@ export const createYooptaEditor = (): YooEditor => {
     applyChanges: () => {},
     insertBlock: (...args) => insertBlock(editor, ...args),
     deleteBlock: (...args) => deleteBlock(editor, ...args),
+    increaseBlockDepth: (...args) => increaseBlockDepth(editor, ...args),
+    decreaseBlockDepth: (...args) => decreaseBlockDepth(editor, ...args),
     moveBlock: (...args) => moveBlock(editor, ...args),
     focusBlock: (...args) => focusBlock(editor, ...args),
     // getBlock: (...args) => getBlock(editor, ...args),
