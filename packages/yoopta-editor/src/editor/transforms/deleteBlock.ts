@@ -29,6 +29,7 @@ export function deleteBlock(editor: YooEditor, options: YooptaEditorOptions = {}
     const prevBlockPathIndex = editor.selection ? editor.selection[0] - 1 : 0;
     const prevBlock = findPluginBlockBySelectionPath(editor, { at: [prevBlockPathIndex] });
 
+    // [TODO] - add focusAt property to options to focus at offset
     if (prevBlock) editor.focusBlock(prevBlock.id);
   }
 }

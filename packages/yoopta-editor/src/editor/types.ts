@@ -49,6 +49,8 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   updateBlock: (id: string, data, options?: YooptaEditorOptions) => void;
   deleteBlock: (options?: YooptaEditorOptions) => void;
   getBlock: (options?: YooptaEditorOptions) => void;
+  increaseBlockDepth: (options?: YooptaEditorOptions) => void;
+  decreaseBlockDepth: (options?: YooptaEditorOptions) => void;
   applyChanges: () => void;
   moveBlock: (blockId: string, to: YooptaPath) => void;
   focusBlock: (id: string, options?: YooptaEditorOptions) => void;

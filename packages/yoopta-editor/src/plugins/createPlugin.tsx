@@ -6,7 +6,7 @@ export function createPlugin<T>(plugin: PluginParams<T>): Plugin {
     type: plugin.type,
     elements: plugin.elements,
     renderPlugin: (props) => {
-      const { customEditor, render, type } = plugin;
+      const { customEditor, render, type, events } = plugin;
 
       return (
         <SlateEditorComponent
@@ -16,6 +16,7 @@ export function createPlugin<T>(plugin: PluginParams<T>): Plugin {
           marks={props.marks}
           customEditor={customEditor}
           render={render}
+          events={events}
           // [TODO] - remove elements from plugins. NOTE: top level inline nodes
           elements={props.elements}
         />
