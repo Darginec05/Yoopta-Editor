@@ -3,7 +3,7 @@ import { createPlugin } from '../../../../plugins';
 import s from './Link.module.css';
 
 const LinkRender = (props: RenderElementProps) => {
-  const { url, target, rel } = props.element.data;
+  const { url, target, rel } = props.element.props;
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -35,7 +35,7 @@ const Link = createPlugin<LinkElementProps>({
   elements: {
     link: {
       render: LinkRender,
-      props: {
+      elementProps: {
         url: null,
         target: '_blank',
         rel: 'noreferrer',

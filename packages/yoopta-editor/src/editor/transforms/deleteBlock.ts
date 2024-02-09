@@ -10,6 +10,9 @@ export function deleteBlock(editor: YooEditor, options: YooptaEditorOptions = {}
   editor.children = createDraft(editor.children);
   const [position] = at;
   const pluginKeys = Object.keys(editor.children);
+
+  if (pluginKeys.length === 1) return;
+
   const pluginToDeleteId = pluginKeys.find((id) => editor.children[id].meta.order === position);
 
   pluginKeys.forEach((pluginId) => {

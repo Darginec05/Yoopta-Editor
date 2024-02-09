@@ -86,7 +86,7 @@ export const YOOPTA_ULTRA_VALUES: Record<
         id: generateId(),
         type: 'video',
         children: children || [{ text: '' }],
-        data: {
+        props: {
           src: 'https://www.youtube.com/embed/7FjgBBwKgJA',
           poster: 'https://i.ytimg.com/vi/7FjgBBwKgJA/maxresdefault.jpg',
           height: 315,
@@ -108,19 +108,19 @@ export const YOOPTA_ULTRA_VALUES: Record<
             id: generateId(),
             type: 'list-item',
             children: [{ text: 'Select the text you want to change into a list.' }],
-            data: { depth: 0 },
+            props: { depth: 0 },
           },
           {
             id: generateId(),
             type: 'list-item',
             children: [{ text: 'To complete your list, press Enter until the bullets or numbering switch off.' }],
-            data: { depth: 0 },
+            props: { depth: 0 },
           },
           {
             id: generateId(),
             type: 'list-item',
             children: [{ text: 'Type* and a space before your text, and Word will make a bulleted list.' }],
-            data: { depth: 0 },
+            props: { depth: 0 },
           },
         ],
       },
@@ -226,7 +226,7 @@ export const YOOPTA_ULTRA_VALUES: Record<
   //       id: generateId(),
   //       type: 'link',
   //       children: [{ text: '' }],
-  //       data: {
+  //       props: {
   //         url: 'https://www.youtube.com/embed/7FjgBBwKgJA',
   //         target: '_blank',
   //         rel: 'noreferrer',
@@ -248,7 +248,7 @@ export const INLINE_LINK_ELEMENT = {
   id: generateId(),
   type: 'link',
   children: [{ text: 'Finally, here is our favorite dog video.' }],
-  data: {
+  props: {
     url: 'https://twitter.com/JustMissEmma/status/1448679899531726852',
     target: '_blank',
     rel: 'noreferrer',
@@ -259,7 +259,7 @@ export const INLINE_MENTION_ELEMENT = {
   id: generateId(),
   type: 'mention',
   children: [{ text: '' }],
-  data: {
+  props: {
     url: 'https://twitter.com/teo_bale/',
     target: '_blank',
     rel: 'noreferrer',
@@ -319,7 +319,7 @@ export const FAKE_YOOPTA_EDITOR_CHILDREN = {
     {
       type: 'link',
       children: [{ text: ' https://codesandbox.io/s/slatejs-word-selection-7j7j7' }],
-      data: { url: 'https://codesandbox.io/s/slate-customize-word-f6vkbh' },
+      props: { url: 'https://codesandbox.io/s/slate-customize-word-f6vkbh' },
     },
     { text: ' .But it "word" only consider english letters bugged me when the selection' },
     {
