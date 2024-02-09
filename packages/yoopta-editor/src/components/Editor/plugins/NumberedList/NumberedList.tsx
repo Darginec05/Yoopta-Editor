@@ -13,7 +13,7 @@ const NumberedListRender = (props: RenderElementProps) => {
 };
 
 const ListItemRender = (props: RenderElementProps) => {
-  const { depth = 0 } = props.element.data;
+  const { depth = 0 } = props.element.props;
 
   // [TODO] - handle max depth
   const style = {
@@ -35,7 +35,7 @@ const NumberedList = createPlugin({
     },
     'list-item': {
       render: ListItemRender,
-      props: {
+      elementProps: {
         depth: 0,
       },
     },

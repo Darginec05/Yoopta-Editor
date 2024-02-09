@@ -1,7 +1,7 @@
 import { createPlugin } from '../../../../plugins';
 
 const VideoRender = (props) => {
-  const data = props.element.data;
+  const data = props.element.props;
 
   return (
     <div data-element-type="VideoPluginUltra" {...props.attributes}>
@@ -44,7 +44,7 @@ const Video = createPlugin<VideoSlateElementProps>({
   elements: {
     video: {
       render: VideoRender,
-      props: {
+      elementProps: {
         height: 400,
         width: 400,
         src: null,

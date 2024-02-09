@@ -27,12 +27,12 @@ export type CustomEditorProps = Omit<RenderPluginProps, 'elements'> & Pick<Plugi
 export type PluginElement<T> = {
   render: (props: RenderSlateElementProps) => JSX.Element;
   // [TODO] - MAYBE nodeProps(?)
-  props?: T;
+  elementProps?: T;
   options?: PluginElementOptions;
 };
 
 export type PluginElementsMap<T> = {
-  string: PluginElement<T>;
+  [key: string]: PluginElement<T>;
 };
 
 type HandlersOptions = {

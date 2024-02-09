@@ -4,7 +4,7 @@ import { createPlugin } from '../../../../plugins';
 import s from './Mention.module.css';
 
 const MentionRender = (props: RenderElementProps) => {
-  const { url, target, rel, character } = props.element.data;
+  const { url, target, rel, character } = props.element.props;
   const selected = useSelected();
 
   const handleClick = (e) => {
@@ -39,7 +39,7 @@ const Mention = createPlugin<Mention>({
   elements: {
     mention: {
       render: MentionRender,
-      props: {
+      elementProps: {
         url: null,
         target: '_blank',
         rel: 'noreferrer',

@@ -46,8 +46,9 @@ const Actions = ({ plugin, editor, dragHandleProps, show }) => {
 // [TODO] - implement selected state by mouse select area
 const UltraElementWrapper = ({ children, plugin, pluginId }) => {
   const editor = useYooptaEditor();
+
   // [TODO] - hovered by block id
-  const [isHovered, setIsHovered] = useState(false);
+  const [hoveredBlockId, setHoveredId] = useState<string | null>(null);
   const {
     attributes,
     listeners,
@@ -71,8 +72,10 @@ const UltraElementWrapper = ({ children, plugin, pluginId }) => {
     // backgroundColor: selected ? 'rgba(35, 131, 226, 0.14)' : undefined,
   };
 
-  const handleMouseEnter = () => setIsHovered(true);
-  const handleMouseLeave = () => setIsHovered(false);
+  const isHovered = hoveredBlockId === pluginId;
+
+  const handleMouseEnter = () => setHoveredId(pluginId);
+  const handleMouseLeave = () => setHoveredId(null);
 
   return (
     <div

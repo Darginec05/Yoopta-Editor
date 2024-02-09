@@ -20,6 +20,8 @@ export function focusBlock(editor: YooEditor, blockId: string, options: YooptaEd
     ReactEditor.focus(slate);
     editor.setSelection([editor.children[blockId].meta.order]);
 
+    // editor.applyChanges();
+
     clearTimeout(focusTimeout);
   }, 0);
 }

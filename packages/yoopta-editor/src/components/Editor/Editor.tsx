@@ -3,15 +3,22 @@ import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaCo
 import { RenderBlocks } from './RenderBlocks';
 import { Plugin } from '../../plugins/types';
 import { YooptaMark } from '../../textFormatters/createYooptaMark';
+import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 
 type Props = {
   plugins: Plugin[];
   marks?: YooptaMark<any>[];
+  autoFocus?: boolean;
 };
 
-const Editor = ({ plugins, marks }: Props) => {
+const Editor = ({ plugins, marks, autoFocus = true }: Props) => {
   const editor = useYooptaEditor();
   const yooptaEditorRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const firstBlock = findPluginBlockBySelectionPath(editor, { at: [0] });
+    if (firstBlock) editor.focusBlock(firstBlock.id);
+  }, [autoFocus]);
 
   useEffect(() => {
     const handleSelectionChange = () => {

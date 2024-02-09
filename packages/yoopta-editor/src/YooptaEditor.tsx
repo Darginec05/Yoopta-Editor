@@ -16,7 +16,6 @@ import { Link } from './components/Editor/plugins/Link/Link';
 import NoSSR from './components/NoSsr/NoSsr';
 import { Mention } from './components/Editor/plugins/Mention/Mention';
 import { Bold, CodeMark, Highlight, Italic, Strike, Underline, YooptaMark } from './textFormatters/createYooptaMark';
-import { TextFormats } from './editor';
 import { Table } from './components/Editor/plugins/Table/Table';
 import { NumberedList } from './components/Editor/plugins/NumberedList/NumberedList';
 
@@ -25,6 +24,7 @@ type Props = {
   plugins: Plugin[];
   marks?: YooptaMark<any>[];
   value: YooptaChildren;
+  autoFocus?: boolean;
   onChange?: (value: YooEditor['children']) => void;
 };
 
@@ -32,7 +32,7 @@ const PLUGINS = [Paragraph, Blockquote, Code, Video, Link, Mention, Callout, Tab
 const TEXT_FORMATTERS = [Bold, Italic, Underline, Strike, CodeMark, Highlight];
 const DEFAULT_VALUE = getDefaultYooptaChildren();
 
-const YooptaEditor = ({ editor, value, marks = TEXT_FORMATTERS, plugins = PLUGINS, ...props }: Props) => {
+const YooptaEditor = ({ editor, value, marks = TEXT_FORMATTERS, plugins = PLUGINS, autoFocus, ...props }: Props) => {
   const applyChanges = () => {
     if (props.onChange) props.onChange(editor.children);
     setEditorState((prev) => ({ ...prev, version: prev.version + 1 }));
@@ -51,8 +51,8 @@ const YooptaEditor = ({ editor, value, marks = TEXT_FORMATTERS, plugins = PLUGIN
     });
 
     editor.formats = formats;
-    editor.children = FAKE_YOOPTA_EDITOR_CHILDREN;
-    // editor.children = value || DEFAULT_VALUE;
+    // editor.children = FAKE_YOOPTA_EDITOR_CHILDREN;
+    editor.children = value || DEFAULT_VALUE;
 
     Object.keys(editor.children).forEach((id) => {
       const slate = withHistory(withReact(createEditor()));
@@ -66,7 +66,7 @@ const YooptaEditor = ({ editor, value, marks = TEXT_FORMATTERS, plugins = PLUGIN
     // [TODO] - add SSR support
     <NoSSR>
       <UltraYooptaContextProvider editorState={editorState}>
-        <Editor plugins={plugins} marks={marks} />
+        <Editor plugins={plugins} marks={marks} autoFocus={autoFocus} />
       </UltraYooptaContextProvider>
     </NoSSR>
   );
