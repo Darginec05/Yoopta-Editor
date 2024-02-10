@@ -7,11 +7,8 @@ import { withReact } from 'slate-react';
 import { createEditor } from 'slate';
 import { YooEditor, YooptaChildren } from './editor/types';
 import { Plugin } from './plugins/types';
-import { Paragraph } from './components/Editor/plugins/Paragraph/Paragraph';
-import { Blockquote } from './components/Editor/plugins/Blockquote/Blockquote';
 import { Code } from './components/Editor/plugins/Code/Code';
 import { Video } from './components/Editor/plugins/Video/Video';
-import { Callout } from './components/Editor/plugins/Callout/Callout';
 import { Link } from './components/Editor/plugins/Link/Link';
 import NoSSR from './components/NoSsr/NoSsr';
 import { Mention } from './components/Editor/plugins/Mention/Mention';
@@ -28,11 +25,13 @@ type Props = {
   onChange?: (value: YooEditor['children']) => void;
 };
 
-const PLUGINS = [Paragraph, Blockquote, Code, Video, Link, Mention, Callout, Table, NumberedList];
+const PLUGINS = [Code, Video, Link, Mention, Table, NumberedList];
 const TEXT_FORMATTERS = [Bold, Italic, Underline, Strike, CodeMark, Highlight];
 const DEFAULT_VALUE = getDefaultYooptaChildren();
 
 const YooptaEditor = ({ editor, value, marks = TEXT_FORMATTERS, plugins = PLUGINS, autoFocus, ...props }: Props) => {
+  console.log({ plugins });
+
   const applyChanges = () => {
     if (props.onChange) props.onChange(editor.children);
     setEditorState((prev) => ({ ...prev, version: prev.version + 1 }));

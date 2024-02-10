@@ -1,10 +1,8 @@
-import { YooEditor } from '@yoopta/editor';
+import { Callout } from './plugin';
 import { CalloutElement } from './types';
-import { Callout } from './ui/Callout';
 
 declare module 'slate' {
   interface CustomTypes {
-    Editor: YooEditor;
     Element: CalloutElement;
   }
 }

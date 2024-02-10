@@ -1,10 +1,8 @@
-import { YooEditor } from '@yoopta/editor';
+import { Blockquote } from './plugin';
 import { BlockquoteElement } from './types';
-import { Blockquote } from './ui/Blockquote';
 
 declare module 'slate' {
   interface CustomTypes {
-    Editor: YooEditor;
     Element: BlockquoteElement;
   }
 }

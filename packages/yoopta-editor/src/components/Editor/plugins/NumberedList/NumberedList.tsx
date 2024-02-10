@@ -1,6 +1,6 @@
 import { Editor, Element, Path, Transforms } from 'slate';
 import { RenderElementProps } from 'slate-react';
-import { createPlugin } from '../../../../plugins';
+import { createYooptaPlugin } from '../../../../plugins';
 import { generateId } from '../../../../utils/generateId';
 import s from './NumberedList.module.css';
 
@@ -27,7 +27,7 @@ const ListItemRender = (props: RenderElementProps) => {
   );
 };
 
-const NumberedList = createPlugin({
+const NumberedList = createYooptaPlugin({
   type: 'NumberedListPlugin',
   elements: {
     'numbered-list': {

@@ -4,7 +4,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { githubDark } from '@uiw/codemirror-theme-github';
 import { useYooptaEditor, useYooptaPlugin } from '../../../../contexts/UltraYooptaContext/UltraYooptaContext';
-import { createPlugin } from '../../../../plugins';
+import { createYooptaPlugin } from '../../../../plugins';
 import { CustomEditorProps } from '../../../../plugins/types';
 
 // [TODO] - fix logic with update values
@@ -38,7 +38,7 @@ const CodeEditor = ({ id, type }: CustomEditorProps) => {
   );
 };
 
-const Code = createPlugin({
+const Code = createYooptaPlugin({
   type: 'CodePlugin',
   customEditor: CodeEditor,
   elements: {

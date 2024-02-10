@@ -1,5 +1,5 @@
 import { RenderElementProps } from 'slate-react';
-import { createPlugin } from '../../../../plugins';
+import { createYooptaPlugin } from '../../../../plugins';
 import s from './Link.module.css';
 
 const LinkRender = (props: RenderElementProps) => {
@@ -30,7 +30,7 @@ type LinkElementProps = {
   rel?: string;
 };
 
-const Link = createPlugin<LinkElementProps>({
+const Link = createYooptaPlugin<LinkElementProps>({
   type: 'LinkPlugin',
   elements: {
     link: {

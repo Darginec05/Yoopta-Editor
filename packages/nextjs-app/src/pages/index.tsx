@@ -17,14 +17,13 @@ import Callout from '@yoopta/callout';
 // import ActionMenu, { ActionMenuItem } from '@yoopta/action-menu-list';
 // import LinkTool from '@yoopta/link-tool';
 import { useMemo, useState } from 'react';
-import NextImage from 'next/image';
-import { MediumToolbar } from '../../components/Toolbars/MediumToolbar';
+// import NextImage from 'next/image';
+// import { MediumToolbar } from '../../components/Toolbars/MediumToolbar';
 
-import { Descendant } from 'slate';
-import { uploadToCloudinary } from '../../utils';
-import { NotionActionMenu } from '../../components/SuggestionList/NotionActionMenu';
-import { NotionToolbar } from '../../components/Toolbars/NotionToolbar';
-import s from './styles.module.scss';
+// import { Descendant } from 'slate';
+// import { uploadToCloudinary } from '../../utils';
+// import { NotionActionMenu } from '../../components/SuggestionList/NotionActionMenu';
+// import { NotionToolbar } from '../../components/Toolbars/NotionToolbar';
 
 // type PluginOptions = ImagePluginOptions | Record<string, unknown>;
 // type YooptaValue =

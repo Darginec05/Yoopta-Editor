@@ -1,65 +1,12 @@
-import {
-  generateId,
-  createYooptaPlugin,
-  RenderYooptaElementProps,
-  getElementClassname,
-  YooptaPluginBaseOptions,
-} from '@yoopta/editor';
-import { Transforms } from 'slate';
-import { ParagraphElement } from '../types';
-import s from './Paragraph.module.scss';
+import { RenderElementProps } from 'slate-react';
+import s from './Paragraph.module.css';
 
-const ParagraphRender = ({
-  attributes,
-  children,
-  element,
-  HTMLAttributes,
-}: RenderYooptaElementProps<ParagraphElement>) => {
+const ParagraphRender = (props: RenderElementProps) => {
   return (
-    <p
-      draggable={false}
-      {...HTMLAttributes}
-      className={getElementClassname<ParagraphElement>({ element, HTMLAttributes, className: s.paragraph })}
-      {...attributes}
-    >
-      {children}
+    <p data-element-type="Paragraph" className={s.paragraph} {...props.attributes}>
+      {props.children}
     </p>
   );
 };
 
-ParagraphRender.displayName = 'Paragraph';
-
-const Paragraph = createYooptaPlugin<YooptaPluginBaseOptions, ParagraphElement>({
-  type: 'paragraph',
-  renderer: (editor) => ParagraphRender,
-  defineElement: (): ParagraphElement => ({
-    id: generateId(),
-    type: 'paragraph',
-    children: [{ text: '' }],
-    nodeType: 'block',
-  }),
-  createElement: (editor, elementData) => {
-    const node: ParagraphElement = { ...Paragraph.getPlugin.defineElement(), ...elementData };
-
-    Transforms.setNodes(editor, node, {
-      at: editor.selection?.anchor,
-    });
-  },
-  exports: {
-    markdown: {
-      serialize: (node, text) => `${text}\n`,
-    },
-    html: {
-      serialize: (node, children) => `<p>${children}</p>`,
-      deserialize: {
-        nodeName: 'P',
-      },
-    },
-  },
-  options: {
-    searchString: 'text paragraph',
-    displayLabel: 'Paragraph',
-  },
-});
-
-export { Paragraph };
+export { ParagraphRender };

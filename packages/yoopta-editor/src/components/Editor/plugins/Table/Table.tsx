@@ -1,4 +1,4 @@
-import { createPlugin } from '../../../../plugins';
+import { createYooptaPlugin } from '../../../../plugins';
 
 const TableRender = ({ attributes, children }) => {
   return (
@@ -14,7 +14,7 @@ const TableCellRender = ({ attributes, children }) => {
   return <td {...attributes}>{children}</td>;
 };
 
-export const Table = createPlugin({
+export const Table = createYooptaPlugin({
   type: 'Table',
   elements: {
     table: {
