@@ -1,6 +1,6 @@
 import cx from 'classnames';
 import { RenderElementProps, useSelected } from 'slate-react';
-import { createPlugin } from '../../../../plugins';
+import { createYooptaPlugin } from '../../../../plugins';
 import s from './Mention.module.css';
 
 const MentionRender = (props: RenderElementProps) => {
@@ -34,7 +34,7 @@ type Mention = {
   character: string | null;
 };
 
-const Mention = createPlugin<Mention>({
+const Mention = createYooptaPlugin<Mention>({
   type: 'MentionPlugin',
   elements: {
     mention: {

@@ -1,3 +1,2 @@
-import { YooptaBaseElement } from '@yoopta/editor';
-
-export type ParagraphElement = YooptaBaseElement<'paragraph'>;
+// [TODO] - Define the type of the paragraph element
+export type ParagraphElement = any;

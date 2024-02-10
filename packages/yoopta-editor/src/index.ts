@@ -1,3 +1,4 @@
+export { createYooptaPlugin } from './plugins';
 import { YooptaEditor } from './YooptaEditor';
 
 export { generateId } from './utils/generateId';

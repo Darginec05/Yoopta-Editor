@@ -28,7 +28,8 @@
     "url": "git+https://github.com/Darginec05/Editor-Yoopta.git"
   },
   "scripts": {
-    "test": "node ./__tests__/@yoopta/paragraph.test.js"
+    "test": "node ./__tests__/@yoopta/paragraph.test.js",
+    "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs"
   },
   "bugs": {
     "url": "https://github.com/Darginec05/Editor-Yoopta/issues"

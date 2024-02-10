@@ -1,4 +1,4 @@
-import { createPlugin } from '../../../../plugins';
+import { createYooptaPlugin } from '../../../../plugins';
 
 const VideoRender = (props) => {
   const data = props.element.props;
@@ -39,7 +39,7 @@ export type VideoSlateElementProps = {
   poster?: string;
 };
 
-const Video = createPlugin<VideoSlateElementProps>({
+const Video = createYooptaPlugin<VideoSlateElementProps>({
   type: 'VideoPlugin',
   elements: {
     video: {

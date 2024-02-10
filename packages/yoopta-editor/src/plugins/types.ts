@@ -50,7 +50,7 @@ type EventHandlers = {
 
 export type PluginParams<T = Descendant> = {
   type: string;
-  render?: (props: RenderSlateElementProps) => JSX.Element;
+  // render?: (props: RenderSlateElementProps) => JSX.Element;
   customEditor?: (props: CustomEditorProps) => JSX.Element;
   elements: PluginElementsMap<T>;
   events?: EventHandlers;

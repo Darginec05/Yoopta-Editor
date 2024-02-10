@@ -1,10 +1,8 @@
-import { YooEditor } from '@yoopta/editor';
 import { ParagraphElement } from './types';
-import { Paragraph } from './ui/Paragraph';
+import { Paragraph } from './plugin';
 
 declare module 'slate' {
   interface CustomTypes {
-    Editor: YooEditor;
     Element: ParagraphElement;
   }
 }

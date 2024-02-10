@@ -2,7 +2,7 @@ import { YooptaChildrenValue, YooptaEditorSlateBaseData } from '../../editor/typ
 import { generateId } from '../../utils/generateId';
 
 const codeText = `import { RenderElementProps } from 'slate-react';
-import { createPlugin } from '../../ultraPlugins';
+import { createYooptaPlugin } from '../../ultraPlugins';
 
 const ParagraphRender = (props: RenderElementProps) => {
   return (
@@ -12,7 +12,7 @@ const ParagraphRender = (props: RenderElementProps) => {
   );
 };
 
-const Paragraph = createPlugin({
+const Paragraph = createYooptaPlugin({
   type: 'paragraph',
   render: ParagraphRender,
 });
