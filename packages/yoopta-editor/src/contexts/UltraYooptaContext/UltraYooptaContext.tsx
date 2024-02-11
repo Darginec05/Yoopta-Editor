@@ -4,34 +4,37 @@ import { YooEditor } from '../../editor/types';
 
 export type UltraYooptaContextPluginsEditorMap = Record<string, Editor>;
 
-export type UltraYooEditor = {
+export type YooptaEditorContext = {
   editor: YooEditor;
 };
 
-const DEFAULT_HANDLERS = {
+const DEFAULT_HANDLERS: YooptaEditorContext = {
   editor: {
     getBlock: () => undefined,
     insertBlock: () => undefined,
     updateBlock: () => undefined,
     moveBlock: () => undefined,
+    splitBlock: () => undefined,
     deleteBlock: () => undefined,
-    changeValue: () => undefined,
     focusBlock: () => undefined,
     setSelection: () => undefined,
     applyChanges: () => undefined,
+    decreaseBlockDepth: () => undefined,
+    increaseBlockDepth: () => undefined,
+    formats: {},
     selection: null,
     blockEditorsMap: {},
     children: {},
   },
 };
 
-export const UltraYooptaContext = createContext<UltraYooEditor>(DEFAULT_HANDLERS);
+export const UltraYooptaContext = createContext<YooptaEditorContext>(DEFAULT_HANDLERS);
 
 /**
  *
  */
 const UltraYooptaContextProvider = ({ children, editorState }) => {
-  const contextValueRef = useRef<UltraYooEditor>(DEFAULT_HANDLERS);
+  const contextValueRef = useRef<YooptaEditorContext>(DEFAULT_HANDLERS);
 
   contextValueRef.current = {
     editor: editorState.editor,

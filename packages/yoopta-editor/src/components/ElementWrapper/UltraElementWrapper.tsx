@@ -9,8 +9,16 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import s from './UltraElementWrapper.module.scss';
 import { useState } from 'react';
+import { YooEditor } from '../../editor/types';
 
-const Actions = ({ plugin, editor, dragHandleProps, show }) => {
+type ActionsProps = {
+  plugin: any;
+  editor: YooEditor;
+  dragHandleProps: any;
+  showActions: boolean;
+};
+
+const Actions = ({ plugin, editor, dragHandleProps, showActions }: ActionsProps) => {
   const { setActivatorNodeRef, attributes, listeners } = dragHandleProps;
 
   const onPlusClick = () => {
@@ -18,11 +26,13 @@ const Actions = ({ plugin, editor, dragHandleProps, show }) => {
     const defaultBlock = getDefaultYooptaChildrenValue(generateId());
 
     const nextPath = [pluginIndex + 1];
+
+    editor.setSelection([pluginIndex]);
     editor.insertBlock(defaultBlock, { at: nextPath, focus: true });
   };
 
   return (
-    <div contentEditable={false} className={cx(s.actions, { [s.hovered]: show }, 'yoopta-element-actions')}>
+    <div contentEditable={false} className={cx(s.actions, { [s.hovered]: showActions }, 'yoopta-element-actions')}>
       <button
         type="button"
         onClick={onPlusClick}
@@ -91,7 +101,7 @@ const UltraElementWrapper = ({ children, plugin, pluginId }) => {
         plugin={plugin}
         editor={editor}
         dragHandleProps={{ setActivatorNodeRef, attributes, listeners }}
-        show={isHovered}
+        showActions={isHovered}
       />
       <div
         className={s.content}

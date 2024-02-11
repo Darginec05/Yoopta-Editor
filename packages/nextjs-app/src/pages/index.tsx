@@ -255,7 +255,7 @@ const BasicExample = () => {
   const editor = useMemo(() => createYooptaEditor(), []);
 
   return (
-    <div className={s.container}>
+    <div className="w-[600px] mx-auto">
       <button
         onClick={() => {
           // editor.moveBlock('callout_4', [1]);
@@ -271,6 +271,7 @@ const BasicExample = () => {
       <YooptaEditor
         editor={editor}
         plugins={plugins}
+        className="py-[60px]"
         // onChange={(val) => console.log('on change prop value', val)}
         // placeholder="Type / to open menu"
       />

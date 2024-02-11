@@ -1,21 +1,40 @@
 {
   "compilerOptions": {
+    "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true,
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "incremental": true
   },
+  "references": [
+    { "path": "../yoopta-editor" },
+    { "path": "../yoopta-blockquote" },
+    { "path": "../yoopta-paragraph" },
+    { "path": "../yoopta-callout" },
+    { "path": "../yoopta-code" },
+    { "path": "../yoopta-lists" },
+    { "path": "../yoopta-link" },
+    { "path": "../yoopta-headings" },
+    { "path": "../yoopta-video" },
+    { "path": "../yoopta-image" },
+    { "path": "../actionMenu" },
+    { "path": "../marks" },
+    { "path": "../yoopta-renderer" },
+    { "path": "../yoopta-chatGPT-assistant" },
+    { "path": "../exports" },
+    { "path": "../yoopta-embed" },
+    { "path": "../linkTool" },
+    { "path": "../yoopta-file" }
+  ],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
