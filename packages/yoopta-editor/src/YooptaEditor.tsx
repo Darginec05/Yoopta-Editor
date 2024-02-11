@@ -30,8 +30,6 @@ const TEXT_FORMATTERS = [Bold, Italic, Underline, Strike, CodeMark, Highlight];
 const DEFAULT_VALUE = getDefaultYooptaChildren();
 
 const YooptaEditor = ({ editor, value, marks = TEXT_FORMATTERS, plugins = PLUGINS, autoFocus, ...props }: Props) => {
-  console.log({ plugins });
-
   const applyChanges = () => {
     if (props.onChange) props.onChange(editor.children);
     setEditorState((prev) => ({ ...prev, version: prev.version + 1 }));
@@ -48,10 +46,8 @@ const YooptaEditor = ({ editor, value, marks = TEXT_FORMATTERS, plugins = PLUGIN
         type: mark.type,
       };
     });
-
     editor.formats = formats;
-    // editor.children = FAKE_YOOPTA_EDITOR_CHILDREN;
-    editor.children = value || DEFAULT_VALUE;
+    editor.children = FAKE_YOOPTA_EDITOR_CHILDREN;
 
     Object.keys(editor.children).forEach((id) => {
       const slate = withHistory(withReact(createEditor()));

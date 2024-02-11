@@ -10,7 +10,9 @@ const peerDepsExternal = require('rollup-plugin-peer-deps-external');
 const postcss = require('rollup-plugin-postcss');
 
 const isProd = process.env.NODE_ENV === 'production';
-const isDev = process.env.NODE_ENV === 'development';
+// const isDev = process.env.NODE_ENV === 'development';
+
+const isDev = !isProd;
 
 function getPlugins({ postcssConfig }) {
   return [
@@ -32,10 +34,15 @@ function getPlugins({ postcssConfig }) {
       ...postcssConfig,
     }),
     typescript({
-      clean: isProd,
+      clean: true,
       useTsconfigDeclarationDir: true,
       abortOnError: false,
       tsconfig: `./tsconfig.json`,
+      tsconfigOverride: {
+        compilerOptions: {
+          declaration: isProd,
+        },
+      },
     }),
     sourceMaps(),
     replace({
