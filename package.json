@@ -1,7 +1,7 @@
 {
   "name": "yoopta",
   "workspaces": [
-    "packages/**"
+    "packages/*"
   ],
   "private": true,
   "scripts": {
