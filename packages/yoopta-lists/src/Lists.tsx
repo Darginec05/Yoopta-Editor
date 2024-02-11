@@ -12,7 +12,6 @@ import type {
 
 declare module 'slate' {
   interface CustomTypes {
-    Editor: YooEditor;
     Element:
       | ListChildItemElement
       | TodoListChildItemElement
@@ -29,4 +28,4 @@ const Lists = {
 };
 
 export default Lists;
-export { NumberedList, BulletedList, TodoList, TodoListElement , BulletedListElement, NumberedListElement};
+export { NumberedList, BulletedList, TodoList, TodoListElement, BulletedListElement, NumberedListElement };
