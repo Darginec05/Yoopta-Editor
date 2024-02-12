@@ -1,4 +1,5 @@
 export { createYooptaPlugin } from './plugins';
+export { useYooptaEditor } from './contexts/UltraYooptaContext/UltraYooptaContext';
 import { YooptaEditor } from './YooptaEditor';
 
 export { generateId } from './utils/generateId';

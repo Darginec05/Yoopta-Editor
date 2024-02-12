@@ -24,6 +24,18 @@ export const YOOPTA_ULTRA_VALUES: Record<
   string,
   (id: string, meta: YooptaChildrenValue['meta'], children?: any[]) => YooptaChildrenValue<YooptaEditorSlateBaseData>
 > = {
+  headingOne: (id, meta, children) => ({
+    id,
+    value: [
+      {
+        id: generateId(),
+        type: 'heading-one',
+        children: children || [{ text: 'Разработка опенсорс библиотеки' }],
+      },
+    ],
+    type: 'HeadingOne',
+    meta,
+  }),
   paragraph: (id, meta, children) => ({
     id,
     value: [
@@ -286,7 +298,7 @@ export const getDefaultYooptaChildren = () => {
 };
 
 export const FAKE_YOOPTA_EDITOR_CHILDREN = {
-  li3D16cCB7Ze5jxy8OwrN_0: YOOPTA_ULTRA_VALUES.paragraph('li3D16cCB7Ze5jxy8OwrN_0', { order: 0, depth: 0 }),
+  li3D16cCB7Ze5jxy8OwrN_0: YOOPTA_ULTRA_VALUES.paragraph('li3D16cCB7Ze5jxy8OwrN_0', { order: 10, depth: 0 }),
   // [TODO]
   code_7: YOOPTA_ULTRA_VALUES.code('code_7', { order: 7, depth: 0 }),
   blockquote_1: YOOPTA_ULTRA_VALUES.blockquote(
@@ -354,5 +366,6 @@ export const FAKE_YOOPTA_EDITOR_CHILDREN = {
     ],
   ),
   numbered_list_id: YOOPTA_ULTRA_VALUES.numberedList('numbered_list_id', { order: 4, depth: 0 }),
+  headingOne_0: YOOPTA_ULTRA_VALUES.headingOne('headingOne_0', { order: 0, depth: 0 }),
   // HGQj3faHJkbMGFcasdLINK: YOOPTA_ULTRA_VALUES.link('HGQj3faHJkbMGFcasdLINK', { type: 'inline' }),
 };

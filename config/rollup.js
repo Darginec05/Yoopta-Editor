@@ -1,4 +1,4 @@
-const json = require('rollup-plugin-json');
+// const json = require('rollup-plugin-json');
 const commonjs = require('@rollup/plugin-commonjs');
 const nodeResolve = require('@rollup/plugin-node-resolve');
 const sourceMaps = require('rollup-plugin-sourcemaps');
@@ -10,13 +10,11 @@ const peerDepsExternal = require('rollup-plugin-peer-deps-external');
 const postcss = require('rollup-plugin-postcss');
 
 const isProd = process.env.NODE_ENV === 'production';
-// const isDev = process.env.NODE_ENV === 'development';
-
-const isDev = !isProd;
+const isDev = process.env.NODE_ENV === 'development';
 
 function getPlugins({ postcssConfig }) {
   return [
-    json(),
+    // json(),
     peerDepsExternal(),
     commonjs(),
     nodeResolve(),

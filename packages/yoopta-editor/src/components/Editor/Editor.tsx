@@ -9,9 +9,10 @@ type Props = {
   plugins: Plugin[];
   marks?: YooptaMark<any>[];
   autoFocus?: boolean;
+  className?: string;
 };
 
-const Editor = ({ plugins, marks, autoFocus = true }: Props) => {
+const Editor = ({ plugins, marks, className, autoFocus = true }: Props) => {
   const editor = useYooptaEditor();
   const yooptaEditorRef = useRef<HTMLDivElement>(null);
 
@@ -42,7 +43,7 @@ const Editor = ({ plugins, marks, autoFocus = true }: Props) => {
   }, []);
 
   return (
-    <div id="yoopta-editor" ref={yooptaEditorRef}>
+    <div id="yoopta-editor" className={className} ref={yooptaEditorRef}>
       <RenderBlocks editor={editor} plugins={plugins} marks={marks} />
     </div>
   );

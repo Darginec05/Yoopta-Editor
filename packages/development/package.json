@@ -14,7 +14,8 @@
     "@yoopta/editor": "*",
     "@yoopta/paragraph": "*",
     "@yoopta/blockquote": "*",
-    "@yoopta/callout": "*"
+    "@yoopta/callout": "*",
+    "@yoopta/headings": "*"
   },
   "devDependencies": {
     "typescript": "^5",
