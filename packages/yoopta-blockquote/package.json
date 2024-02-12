@@ -29,7 +29,7 @@
   },
   "scripts": {
     "test": "node ./__tests__/yoopta-blockquote.test.js",
-    "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs"
+    "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development"
   },
   "bugs": {
     "url": "https://github.com/Darginec05/Editor-Yoopta/issues"

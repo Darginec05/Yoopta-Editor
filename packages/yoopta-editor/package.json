@@ -35,7 +35,7 @@
     "slate-react": ">=0.95.0"
   },
   "scripts": {
-    "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs"
+    "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development"
   },
   "keywords": [
     "contenteditable",

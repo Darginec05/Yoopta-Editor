@@ -22,6 +22,7 @@ type Props = {
   marks?: YooptaMark<any>[];
   value: YooptaChildren;
   autoFocus?: boolean;
+  className?: string;
   onChange?: (value: YooEditor['children']) => void;
 };
 
@@ -29,7 +30,15 @@ const PLUGINS = [Code, Video, Link, Mention, Table, NumberedList];
 const TEXT_FORMATTERS = [Bold, Italic, Underline, Strike, CodeMark, Highlight];
 const DEFAULT_VALUE = getDefaultYooptaChildren();
 
-const YooptaEditor = ({ editor, value, marks = TEXT_FORMATTERS, plugins = PLUGINS, autoFocus, ...props }: Props) => {
+const YooptaEditor = ({
+  editor,
+  value,
+  marks = TEXT_FORMATTERS,
+  plugins = PLUGINS,
+  autoFocus,
+  className,
+  ...props
+}: Props) => {
   const applyChanges = () => {
     if (props.onChange) props.onChange(editor.children);
     setEditorState((prev) => ({ ...prev, version: prev.version + 1 }));
@@ -61,7 +70,7 @@ const YooptaEditor = ({ editor, value, marks = TEXT_FORMATTERS, plugins = PLUGIN
     // [TODO] - add SSR support
     <NoSSR>
       <UltraYooptaContextProvider editorState={editorState}>
-        <Editor plugins={plugins} marks={marks} autoFocus={autoFocus} />
+        <Editor plugins={plugins} marks={marks} autoFocus={autoFocus} className={className} />
       </UltraYooptaContextProvider>
     </NoSSR>
   );

@@ -52,6 +52,8 @@ const RenderBlocks = ({ editor, plugins, marks }: Props) => {
     //[TODO] - unnecesary
   }, [childrenUnorderedKeys]);
 
+  console.log('editor.children', editor.children);
+
   // [TODO] - Optimize and remvoe top level inline plugins
   const PLUGINS_MAP = useMemo<Record<string, Plugin>>(() => {
     const pluginsMap = {};
