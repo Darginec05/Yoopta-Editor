@@ -39,6 +39,7 @@ function getPlugins({ postcssConfig }) {
       tsconfigOverride: {
         compilerOptions: {
           declaration: isProd,
+          declarationDir: './dist/types',
         },
       },
     }),
