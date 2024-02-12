@@ -17,14 +17,10 @@
     "noImplicitAny": false,
     "downlevelIteration": true,
     "module": "ESNext",
-    "declaration": false,
-    "declarationDir": "dist",
     "sourceMap": true,
     "outDir": "dist",
     "allowSyntheticDefaultImports": true,
     "preserveSymlinks": false,
     "composite": true
-  },
-  "include": ["react-svg.d.ts", "css-modules.d.ts", "src"],
-  "exclude": ["dist", "src/**/*.test.tsx", "src/**/*.stories.tsx"]
+  }
 }
