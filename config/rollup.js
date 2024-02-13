@@ -8,11 +8,17 @@ const typescript = require('rollup-plugin-typescript2');
 const svgr = require('@svgr/rollup');
 const peerDepsExternal = require('rollup-plugin-peer-deps-external');
 const postcss = require('rollup-plugin-postcss');
+const tailwindcss = require('tailwindcss');
 
+// const tailwindConfig = require('./tailwind.config.js');
 const isProd = process.env.NODE_ENV === 'production';
 const isDev = process.env.NODE_ENV === 'development';
 
-function getPlugins({ postcssConfig }) {
+// console.log('tailwindConfig', tailwindConfig);
+console.log('isDev', isDev);
+console.log('process.cwd', process.cwd);
+
+function getPlugins() {
   return [
     // json(),
     peerDepsExternal(),
@@ -22,6 +28,9 @@ function getPlugins({ postcssConfig }) {
       typescript: true,
     }),
     postcss({
+      config: {
+        path: './postcss.config.js',
+      },
       extract: false,
       modules: {
         generateScopedName: isProd ? '[hash:base64:8]' : '[name]_[local]',
@@ -29,7 +38,15 @@ function getPlugins({ postcssConfig }) {
       autoModules: true,
       minimize: true,
       use: ['sass'],
-      ...postcssConfig,
+      plugins: [
+        tailwindcss({
+          content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
+          theme: {
+            extend: {},
+          },
+          plugins: [],
+        }),
+      ],
     }),
     typescript({
       clean: true,
@@ -56,7 +73,7 @@ function getPlugins({ postcssConfig }) {
 /**
  * @type {import('rollup').RollupOptions}
  */
-export function createRollupConfig({ pkg, postcssConfig }) {
+export function createRollupConfig({ pkg }) {
   return {
     input: `./src/index.ts`,
     output: [
@@ -68,7 +85,7 @@ export function createRollupConfig({ pkg, postcssConfig }) {
         exports: 'named',
       },
     ],
-    plugins: getPlugins({ postcssConfig }),
+    plugins: getPlugins(),
     cache: isDev,
     external: [...Object.keys(pkg.peerDependencies)],
   };

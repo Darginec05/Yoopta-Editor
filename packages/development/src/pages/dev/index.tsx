@@ -28,7 +28,7 @@ const BasicExample = () => {
       <YooptaEditor
         editor={editor}
         plugins={plugins}
-        className="w-[650px] py-20 mx-auto"
+        className="w-[650px] pt-14 pb-20 mx-auto"
         // onChange={(val) => console.log('on change prop value', val)}
         // placeholder="Type / to open menu"
       />

@@ -1,9 +1,8 @@
 import { RenderElementProps } from 'slate-react';
-import s from './Paragraph.module.css';
 
 const ParagraphRender = (props: RenderElementProps) => {
   return (
-    <p data-element-type="Paragraph" className={s.paragraph} {...props.attributes}>
+    <p data-element-type="Paragraph" className="leading-7 mt-4" {...props.attributes}>
       {props.children}
     </p>
   );
