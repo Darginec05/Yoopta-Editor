@@ -3,9 +3,20 @@ import Blockquote from '@yoopta/blockquote';
 import Paragraph from '@yoopta/paragraph';
 import Callout from '@yoopta/callout';
 import Headings from '@yoopta/headings';
+import Mention from '@yoopta/mention';
+import Link from '@yoopta/link';
 import { useMemo } from 'react';
 
-const plugins = [Paragraph, Blockquote, Callout, Headings.HeadingOne, Headings.HeadingTwo, Headings.HeadingThree];
+const plugins = [
+  Headings.HeadingOne,
+  Headings.HeadingTwo,
+  Headings.HeadingThree,
+  Paragraph,
+  Blockquote,
+  Callout,
+  Mention,
+  Link,
+];
 
 const BasicExample = () => {
   const editor = useMemo(() => createYooptaEditor(), []);

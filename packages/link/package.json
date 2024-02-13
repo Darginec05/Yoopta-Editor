@@ -1,0 +1,37 @@
+{
+  "name": "@yoopta/link",
+  "version": "2.0.0",
+  "description": "> TODO: description",
+  "author": "Darginec05 <devopsbanda@gmail.com>",
+  "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
+  "license": "MIT",
+  "private": false,
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "peerDependencies": {
+    "@yoopta/editor": ">=1.9.18-rc",
+    "react": ">=17.0.2",
+    "react-dom": ">=17.0.2",
+    "slate": ">=0.72.3",
+    "slate-react": ">=0.95.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.yarnpkg.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Darginec05/Editor-Yoopta.git"
+  },
+  "scripts": {
+    "test": "node ./__tests__/yoopta-link.test.js",
+    "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development"
+  },
+  "bugs": {
+    "url": "https://github.com/Darginec05/Editor-Yoopta/issues"
+  }
+}
