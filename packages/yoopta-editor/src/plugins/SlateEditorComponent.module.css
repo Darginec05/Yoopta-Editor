@@ -1,5 +1,3 @@
-.editor {
-  &:focus-visible {
-    outline: none;
-  }
+.editor:focus-visible {
+  outline: none;
 }

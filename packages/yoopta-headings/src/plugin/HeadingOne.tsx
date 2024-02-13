@@ -1,9 +1,13 @@
 import { createYooptaPlugin } from '@yoopta/editor';
-import s from './HeadingOne.module.scss';
 
 const HeadingOneRender = ({ attributes, children, element }) => {
   return (
-    <h1 id={element.id} draggable={false} className={s['heading-one']} {...attributes}>
+    <h1
+      id={element.id}
+      draggable={false}
+      className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl"
+      {...attributes}
+    >
       {children}
     </h1>
   );

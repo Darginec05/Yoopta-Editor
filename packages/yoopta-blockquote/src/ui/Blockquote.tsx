@@ -1,9 +1,8 @@
 import { RenderElementProps } from 'slate-react';
-import s from './Blockquote.module.css';
 
 const BlockquoteRender = (props: RenderElementProps) => {
   return (
-    <blockquote data-element-type="Blockquote" {...props.attributes} className={s.blockquote}>
+    <blockquote data-element-type="Blockquote" {...props.attributes} className="mt-4 border-l-2 pl-6 leading-7">
       {props.children}
     </blockquote>
   );

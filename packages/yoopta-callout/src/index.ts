@@ -1,5 +1,6 @@
 import { Callout } from './plugin';
 import { CalloutElement } from './types';
+import './styles.css';
 
 declare module 'slate' {
   interface CustomTypes {

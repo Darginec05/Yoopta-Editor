@@ -1,7 +1,8 @@
-import { HeadingOne } from './plugin/HeadingOne';
 import { HeadingTwo } from './plugin/HeadingTwo';
+import { HeadingOne } from './plugin/HeadingOne';
 import { HeadingThree } from './plugin/HeadingThree';
 import { HeadingOneElement, HeadingThreeElement, HeadingTwoElement } from './types';
+import './styles.css';
 
 declare module 'slate' {
   interface CustomTypes {
