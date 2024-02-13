@@ -14,7 +14,7 @@ const LinkRender = (props: RenderElementProps) => {
       rel={rel}
       target={target}
       onClick={handleClick}
-      className="font-normal underline underline-offset-4 text-[#007AFF] hover:text-[#3b82f6]"
+      className="underline underline-offset-4 text-[#007AFF] hover:text-[#3b82f6]"
       {...props.attributes}
     >
       {props.children}

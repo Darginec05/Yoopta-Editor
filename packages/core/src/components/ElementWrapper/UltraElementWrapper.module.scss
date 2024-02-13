@@ -1,5 +1,3 @@
-// [TODO] - remove unused styles
-
 .root {
   position: relative;
   padding: 0 12px;
@@ -46,57 +44,4 @@
 
 .plusButton {
   width: 24px;
-}
-
-.elementWrapper {
-  position: relative;
-  transition: opacity 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.isDragOver {
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -7px;
-    height: 3px;
-    width: 100%;
-    background-color: #007aff;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-}
-
-.isDragSelf {
-  &::before {
-    content: '';
-    position: absolute;
-    top: -5px;
-    height: 3px;
-    width: 100%;
-    background-color: inherit;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -7px;
-    height: 3px;
-    width: 100%;
-    background-color: inherit;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-}
-
-.isSelected {
-  position: absolute;
-  pointer-events: none;
-  inset: 0px;
-  background: rgba(35, 131, 226, 0.14);
-  z-index: 81;
-  border-radius: 3px;
-  opacity: 1;
-  transition: background-color 0.18s cubic-bezier(0.4, 0, 0.2, 1);
 }
