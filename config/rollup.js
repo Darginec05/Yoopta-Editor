@@ -14,10 +14,6 @@ const tailwindcss = require('tailwindcss');
 const isProd = process.env.NODE_ENV === 'production';
 const isDev = process.env.NODE_ENV === 'development';
 
-// console.log('tailwindConfig', tailwindConfig);
-console.log('isDev', isDev);
-console.log('process.cwd', process.cwd);
-
 function getPlugins() {
   return [
     // json(),

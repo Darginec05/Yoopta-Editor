@@ -15,7 +15,9 @@
     "@yoopta/paragraph": "*",
     "@yoopta/blockquote": "*",
     "@yoopta/callout": "*",
-    "@yoopta/headings": "*"
+    "@yoopta/headings": "*",
+    "@yoopta/mention": "*",
+    "@yoopta/link": "*"
   },
   "devDependencies": {
     "typescript": "^5",
