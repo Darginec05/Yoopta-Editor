@@ -5,7 +5,6 @@ import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../textFormatters/createYooptaMark';
 import { withInlines } from './extenstions/withInlines';
 import { ExtendedLeafProps, PluginParams } from './types';
-import s from './SlateEditorComponent.module.css';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
 
@@ -125,7 +124,7 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
           // onKeyUp={(event) => console.log('onKEYUP', event.key)}
           // placeholder="Enter some rich text…"
           renderLeaf={renderLeaf}
-          className={s.editor}
+          className="focus:outline-none focus-visible:outline-none"
           spellCheck
           {...eventHandlers}
           onKeyDown={onKeyDown}

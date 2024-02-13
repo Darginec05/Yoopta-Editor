@@ -8,6 +8,8 @@ const MentionRender = (props: RenderElementProps) => {
     e.preventDefault();
   };
 
+  const bgColor = selected ? 'bg-[#e2e2e2]' : 'bg-[#f4f4f5]';
+
   return (
     <a
       draggable={false}
@@ -15,8 +17,7 @@ const MentionRender = (props: RenderElementProps) => {
       rel={rel}
       target={target}
       onClick={handleClick}
-      className="relative rounded bg-[#f4f4f5] px-[0.3rem] py-[0.2rem] font-mono color-[#fff] text-sm font-semibold"
-      // className={cx(s.mention, { [s.selected]: selected })}
+      className={`relative rounded cursor-pointer px-[0.3rem] py-[0.2rem] font-mono color-[#fff] text-sm font-semibold ${bgColor}`}
       {...props.attributes}
     >
       {character ? `@${character}` : null}

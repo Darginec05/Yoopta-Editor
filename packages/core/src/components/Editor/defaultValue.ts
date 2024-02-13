@@ -24,16 +24,16 @@ export const YOOPTA_ULTRA_VALUES: Record<
   string,
   (id: string, meta: YooptaChildrenValue['meta'], children?: any[]) => YooptaChildrenValue<YooptaEditorSlateBaseData>
 > = {
-  headingOne: (id, meta, children) => ({
+  headingTwo: (id, meta, children) => ({
     id,
     value: [
       {
         id: generateId(),
-        type: 'heading-one',
+        type: 'heading-two',
         children: children || [{ text: 'Разработка опенсорс библиотеки' }],
       },
     ],
-    type: 'HeadingOne',
+    type: 'HeadingTwo',
     meta,
   }),
   paragraph: (id, meta, children) => ({
@@ -366,6 +366,6 @@ export const FAKE_YOOPTA_EDITOR_CHILDREN = {
     ],
   ),
   numbered_list_id: YOOPTA_ULTRA_VALUES.numberedList('numbered_list_id', { order: 4, depth: 0 }),
-  headingOne_0: YOOPTA_ULTRA_VALUES.headingOne('headingOne_0', { order: 0, depth: 0 }),
+  headingOne_0: YOOPTA_ULTRA_VALUES.headingTwo('headingOne_0', { order: 0, depth: 0 }),
   // HGQj3faHJkbMGFcasdLINK: YOOPTA_ULTRA_VALUES.link('HGQj3faHJkbMGFcasdLINK', { type: 'inline' }),
 };

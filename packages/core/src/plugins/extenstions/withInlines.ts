@@ -34,7 +34,7 @@ const wrapLink = (editor, url: string) => {
   const link = {
     type: 'link',
     children: isCollapsed ? [{ text: url }] : [],
-    data: {
+    props: {
       url,
       target: '_blank',
       rel: 'noreferrer',
