@@ -1,9 +1,9 @@
 import { Editor, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
-import { YooEditor, YooptaEditorOptions } from '../types';
+import { YooEditor, YooptaEditorTransformOptions } from '../types';
 
 // [TODO] - update editor.selection after focus
-export function focusBlock(editor: YooEditor, blockId: string, options: YooptaEditorOptions = {}) {
+export function focusBlock(editor: YooEditor, blockId: string, options: YooptaEditorTransformOptions = {}) {
   const focusTimeout = setTimeout(() => {
     const slate = editor.blockEditorsMap[blockId];
 

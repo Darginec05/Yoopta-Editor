@@ -1,4 +1,4 @@
-import { YooptaChildrenValue, YooptaEditorSlateBaseData } from '../../editor/types';
+import { YooptaChildrenValue, SlateElement } from '../../editor/types';
 import { generateId } from '../../utils/generateId';
 
 const codeText = `import { RenderElementProps } from 'slate-react';
@@ -22,7 +22,7 @@ export { Paragraph };
 
 export const YOOPTA_ULTRA_VALUES: Record<
   string,
-  (id: string, meta: YooptaChildrenValue['meta'], children?: any[]) => YooptaChildrenValue<YooptaEditorSlateBaseData>
+  (id: string, meta: YooptaChildrenValue['meta'], children?: any[]) => YooptaChildrenValue<SlateElement>
 > = {
   headingTwo: (id, meta, children) => ({
     id,
@@ -279,7 +279,7 @@ export const INLINE_MENTION_ELEMENT = {
   },
 };
 
-export const getDefaultYooptaChildrenValue = (id): YooptaChildrenValue => ({
+export const getDefaultChildrenValue = (id): YooptaChildrenValue => ({
   id,
   value: [DEFAULT_ULTRA_PLUGIN_ELEMENT],
   type: 'ParagraphPlugin',
@@ -293,7 +293,7 @@ export const getDefaultYooptaChildren = () => {
   const id = generateId();
 
   return {
-    [id]: getDefaultYooptaChildrenValue(id),
+    [id]: getDefaultChildrenValue(id),
   };
 };
 

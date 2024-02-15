@@ -14,7 +14,7 @@ const plugins = [
   Paragraph,
   Blockquote,
   Callout,
-  Mention,
+  // Mention,
   Link,
 ];
 
@@ -28,13 +28,15 @@ const BasicExample = () => {
         onClick={() => {
           // editor.moveBlock('callout_4', [1]);
 
+          console.log('from component editor', editor.selection);
+
           TextFormats.update(editor, 'highlight', {
             backgroundImage: 'linear-gradient(90deg, rgb(97, 229, 255) 0%, rgb(255, 112, 245) 100%)',
             color: 'rgb(176, 171, 250)',
           });
         }}
       >
-        Move node
+        Highlight text
       </button>
       <YooptaEditor
         editor={editor}

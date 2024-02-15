@@ -1,5 +1,5 @@
-import { useCallback, useMemo, useRef } from 'react';
-import { Editable, RenderElementProps, Slate } from 'slate-react';
+import { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Editable, ReactEditor, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useYooptaPlugin } from '../contexts/UltraYooptaContext/UltraYooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../textFormatters/createYooptaMark';
@@ -7,6 +7,7 @@ import { withInlines } from './extenstions/withInlines';
 import { ExtendedLeafProps, PluginParams } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
+import { ActionMenuList } from '../tools/ActionMenuList';
 
 type Props<T> = PluginParams<T> & { id: string; marks?: YooptaMark<any>[] };
 
@@ -25,6 +26,8 @@ const getMappedMarks = (marks?: YooptaMark<any>[]) => {
 };
 
 const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }: Props<T>) => {
+  const [menuList, setMenuList] = useState<{ open: boolean; style: CSSProperties } | null>(null);
+
   const yooEditor = useYooptaEditor();
   const plugin = useYooptaPlugin(id);
   const initialValue = useRef(plugin.value).current;
@@ -111,9 +114,35 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
     return <span {...attributes}>{children}</span>;
   };
 
-  const onKeyDown = (event) => {
+  const onKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === '/') {
+      const domSelection = window.getSelection();
+      if (!domSelection) return;
+
+      const range = domSelection.getRangeAt(0);
+      const rect = range.getBoundingClientRect();
+
+      const style = {
+        top: `${rect.top + window.scrollY + rect.height + 5}px`,
+        left: `${rect.left + window.scrollX}px`,
+      };
+
+      // event.preventDefault();
+      setMenuList((prev) => ({
+        open: !prev?.open,
+        style,
+      }));
+    }
+
+    if (event.key === 'Escape') setMenuList(null);
+
     eventHandlers.onKeyDown?.(event);
     EVENT_HANDLERS.onKeyDown(yooEditor, slate)(event);
+  };
+
+  const onBlur = () => {
+    ReactEditor.deselect(slate);
+    ReactEditor.blur(slate);
   };
 
   return (
@@ -124,11 +153,13 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
           // onKeyUp={(event) => console.log('onKEYUP', event.key)}
           // placeholder="Enter some rich text…"
           renderLeaf={renderLeaf}
-          className="focus:outline-none focus-visible:outline-none"
+          className="focus-visible:outline-none"
           spellCheck
           {...eventHandlers}
           onKeyDown={onKeyDown}
+          onBlur={onBlur}
         />
+        <ActionMenuList style={menuList?.style} isOpen={menuList?.open} onChangeOpen={() => setMenuList(null)} />
       </Slate>
     </div>
   );

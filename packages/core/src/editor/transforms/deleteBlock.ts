@@ -1,8 +1,8 @@
 import { createDraft, finishDraft } from 'immer';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
-import { YooEditor, YooptaEditorOptions } from '../types';
+import { YooEditor, YooptaEditorTransformOptions } from '../types';
 
-export function deleteBlock(editor: YooEditor, options: YooptaEditorOptions = {}) {
+export function deleteBlock(editor: YooEditor, options: YooptaEditorTransformOptions = {}) {
   const { at = editor.selection, focus } = options;
 
   if (!at) return;

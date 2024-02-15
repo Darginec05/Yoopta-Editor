@@ -43,6 +43,7 @@ export const createYooptaEditor = (): YooEditor => {
     splitBlock: (...args) => splitBlock(editor, ...args),
     setSelection: (...args) => setSelection(editor, ...args),
     blockEditorsMap: {},
+    elements: {},
   };
 
   return editor;

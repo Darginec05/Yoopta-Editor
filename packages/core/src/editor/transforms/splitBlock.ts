@@ -4,10 +4,10 @@ import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../../utils/generateId';
-import { YooEditor, YooptaChildrenValue, YooptaEditorOptions } from '../types';
+import { YooEditor, YooptaChildrenValue, YooptaEditorTransformOptions } from '../types';
 
 // [TODO] - handle cases for lists and nested inline elements
-export function splitBlock(editor: YooEditor, options: YooptaEditorOptions = {}) {
+export function splitBlock(editor: YooEditor, options: YooptaEditorTransformOptions = {}) {
   const { slate, focus = true } = options;
 
   const pluginToSplit = findPluginBlockBySelectionPath(editor);
