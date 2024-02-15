@@ -1,9 +1,12 @@
 import { Editor, Range } from 'slate';
-import { findSlateEditorBySelectionPath } from '../../utils/findSlateEditorBySelectionPath';
+import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { YooEditor } from '../types';
 
 export function update(editor: YooEditor, type: any, value: any) {
-  const slate = findSlateEditorBySelectionPath(editor);
+  const slate = findSlateBySelectionPath(editor);
+
+  console.log('update editor.selection', editor.selection);
+  console.log('text format slate.selection', slate?.selection);
 
   if (!slate || !slate.selection) return;
 

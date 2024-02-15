@@ -1,6 +1,9 @@
-import { YooEditor, YooptaEditorOptions } from '../editor/types';
+import { YooEditor, YooptaEditorTransformOptions } from '../editor/types';
 
-export function findPluginBlockBySelectionPath(editor: YooEditor, options: Pick<YooptaEditorOptions, 'at'> = {}) {
+export function findPluginBlockBySelectionPath(
+  editor: YooEditor,
+  options: Pick<YooptaEditorTransformOptions, 'at'> = {},
+) {
   const childrenKeys = Object.keys(editor.children);
 
   const { at = editor.selection } = options;

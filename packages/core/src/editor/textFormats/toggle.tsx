@@ -1,10 +1,10 @@
 import { Editor } from 'slate';
-import { findSlateEditorBySelectionPath } from '../../utils/findSlateEditorBySelectionPath';
+import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { YooEditor } from '../types';
 import { isActive } from './isActive';
 
 export function toggle(editor: YooEditor, format: any) {
-  const slate = findSlateEditorBySelectionPath(editor);
+  const slate = findSlateBySelectionPath(editor);
   const active = isActive(editor, format);
 
   if (!slate) return;

@@ -1,6 +1,6 @@
 import { YooEditor } from '../editor/types';
 
-export function findSlateEditorBySelectionPath(editor: YooEditor) {
+export function findSlateBySelectionPath(editor: YooEditor) {
   const childrenKeys = Object.keys(editor.children);
 
   const pluginId = childrenKeys.find((childrenId) => {

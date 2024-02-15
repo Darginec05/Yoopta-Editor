@@ -9,3 +9,5 @@ export { createYooptaEditor, TextFormats } from './editor';
 export { YooEditor } from './editor/types';
 
 export default YooptaEditor;
+
+import './styles.css';

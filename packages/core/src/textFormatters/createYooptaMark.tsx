@@ -25,7 +25,7 @@ type BoldMarkProps = YooptaMarkProps<'bold', boolean>;
 export const Bold = createYooptaMark<BoldMarkProps>({
   type: 'bold',
   hotkey: 'mod+b',
-  render: (props) => <strong>{props.children}</strong>,
+  render: (props) => <strong className="bold">{props.children}</strong>,
 });
 
 type ItalicMarkProps = YooptaMarkProps<'italic', boolean>;
@@ -33,7 +33,7 @@ type ItalicMarkProps = YooptaMarkProps<'italic', boolean>;
 export const Italic = createYooptaMark<ItalicMarkProps>({
   type: 'italic',
   hotkey: 'mod+i',
-  render: (props) => <i>{props.children}</i>,
+  render: (props) => <i className="italic">{props.children}</i>,
 });
 
 type UnderlineMarkProps = YooptaMarkProps<'underline', boolean>;
@@ -41,7 +41,7 @@ type UnderlineMarkProps = YooptaMarkProps<'underline', boolean>;
 export const Underline = createYooptaMark<UnderlineMarkProps>({
   type: 'underline',
   hotkey: 'mod+u',
-  render: (props) => <u>{props.children}</u>,
+  render: (props) => <u className="underline">{props.children}</u>,
 });
 
 type StrikeMarkProps = YooptaMarkProps<'strike', boolean>;
@@ -49,7 +49,7 @@ type StrikeMarkProps = YooptaMarkProps<'strike', boolean>;
 export const Strike = createYooptaMark<StrikeMarkProps>({
   type: 'strike',
   hotkey: 'mod+shift+s',
-  render: (props) => <s>{props.children}</s>,
+  render: (props) => <s className="stroke">{props.children}</s>,
 });
 
 type CodeMarkProps = YooptaMarkProps<'code', boolean>;
@@ -57,7 +57,7 @@ type CodeMarkProps = YooptaMarkProps<'code', boolean>;
 export const CodeMark = createYooptaMark<CodeMarkProps>({
   type: 'code',
   hotkey: 'mod+e',
-  render: (props) => <code>{props.children}</code>,
+  render: (props) => <code className="bg-[#87837826] py-[0.2em] px-[0.4em] rounded text-[85%]">{props.children}</code>,
 });
 
 export type LeafColorProps = {
@@ -72,6 +72,8 @@ export const Highlight = createYooptaMark<YooptaMarkProps<'highlight', LeafColor
   type: 'highlight',
   render: (props) => {
     const highlight = props.leaf?.highlight;
+
+    console.log('highlight', highlight);
 
     const style = {
       color: highlight?.color,

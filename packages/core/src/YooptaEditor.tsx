@@ -54,13 +54,13 @@ const YooptaEditor = ({
       };
     });
     editor.formats = formats;
+    editor.blocks = plugins.map((plugin) => ({ type: plugin.type, elements: plugin.elements }));
     editor.children = FAKE_YOOPTA_EDITOR_CHILDREN;
 
     Object.keys(editor.children).forEach((id) => {
       const slate = withHistory(withReact(createEditor()));
       editor.blockEditorsMap[id] = slate;
     });
-
     return { editor, version: 0 };
   });
 

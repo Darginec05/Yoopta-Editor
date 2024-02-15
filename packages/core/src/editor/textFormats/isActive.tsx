@@ -1,10 +1,10 @@
 import { Editor } from 'slate';
 import { YooptaMark } from '../../textFormatters/createYooptaMark';
-import { findSlateEditorBySelectionPath } from '../../utils/findSlateEditorBySelectionPath';
+import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { TextFormat, YooEditor, YooptaPluginsEditorMap } from '../types';
 
 export function isActive(editor: YooEditor, format: YooptaMark<any>) {
-  const slate = findSlateEditorBySelectionPath(editor);
+  const slate = findSlateBySelectionPath(editor);
 
   if (!slate) return false;
   const marks = Editor.marks(slate);

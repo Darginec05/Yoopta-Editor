@@ -4,9 +4,9 @@ import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../../utils/generateId';
-import { YooEditor, YooptaEditorOptions } from '../types';
+import { YooEditor, YooptaEditorTransformOptions } from '../types';
 
-export function insertBlock(editor: YooEditor, data, options: YooptaEditorOptions = {}) {
+export function insertBlock(editor: YooEditor, data, options: YooptaEditorTransformOptions = {}) {
   editor.children = createDraft(editor.children);
   const { at = null, focus = false, slate = null } = options;
 
@@ -57,6 +57,10 @@ export function insertBlock(editor: YooEditor, data, options: YooptaEditorOption
   const currentBlockId = currentBlock!.id;
 
   editor.children[newPluginBlock.id] = newPluginBlock;
+
+  // const newSelection = insertBefore ? [currentBlock?.meta.order || 0] : [newPluginBlock.meta.order];
+  // // editor.setSelection(newSelection);
+
   editor.children = finishDraft(editor.children);
 
   editor.applyChanges();

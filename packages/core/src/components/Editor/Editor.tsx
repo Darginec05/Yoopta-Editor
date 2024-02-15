@@ -16,6 +16,8 @@ const Editor = ({ plugins, marks, className, autoFocus = true }: Props) => {
   const editor = useYooptaEditor();
   const yooptaEditorRef = useRef<HTMLDivElement>(null);
 
+  console.log('editor. selection', editor.selection);
+
   useEffect(() => {
     const firstBlock = findPluginBlockBySelectionPath(editor, { at: [0] });
     if (firstBlock) editor.focusBlock(firstBlock.id);
@@ -35,6 +37,7 @@ const Editor = ({ plugins, marks, className, autoFocus = true }: Props) => {
       const pluginId = pluginElement?.getAttribute('data-yoopta-plugin-id') || '';
 
       const updatedPath = pluginId ? [editor.children[pluginId].meta.order] : null;
+
       editor.setSelection(updatedPath);
     };
 

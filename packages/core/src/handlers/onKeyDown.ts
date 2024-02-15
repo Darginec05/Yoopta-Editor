@@ -1,7 +1,7 @@
 import { createDraft, finishDraft } from 'immer';
 import { isKeyHotkey } from 'is-hotkey';
 import { Editor, Path, Range, Text, Transforms } from 'slate';
-import { getDefaultYooptaChildrenValue } from '../components/Editor/defaultValue';
+import { getDefaultChildrenValue } from '../components/Editor/defaultValue';
 import { TextFormats } from '../editor';
 import { YooEditor } from '../editor/types';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
@@ -34,7 +34,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
         return;
       }
 
-      const defaultBlock = getDefaultYooptaChildrenValue(generateId());
+      const defaultBlock = getDefaultChildrenValue(generateId());
       const nextPath = editor.selection ? [editor.selection[0] + 1] : [0];
       editor.insertBlock(defaultBlock, { at: nextPath, slate, focus: true });
       return;
@@ -50,6 +50,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
       if (isStart) {
         event.preventDefault();
         const text = Editor.string(slate, parentPath);
+        console.log('text', text);
 
         // If current block is empty just delete block
         if (text.length === 0) {

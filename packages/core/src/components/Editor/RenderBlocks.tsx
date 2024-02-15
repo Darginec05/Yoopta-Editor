@@ -82,6 +82,7 @@ const RenderBlocks = ({ editor, plugins, marks }: Props) => {
   }, [plugins]);
 
   console.log('editor.children', editor.children);
+  console.log('editor.selection', editor.selection);
   console.log('PLUGINS_MAP', PLUGINS_MAP);
 
   const blocks: JSX.Element[] = [];

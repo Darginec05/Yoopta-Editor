@@ -3,7 +3,7 @@ import DragIcon from './icons/drag.svg';
 import PlusIcon from './icons/plus.svg';
 import cx from 'classnames';
 import { PLUGIN_INDEX } from '../Editor/utils';
-import { getDefaultYooptaChildrenValue } from '../Editor/defaultValue';
+import { getDefaultChildrenValue } from '../Editor/defaultValue';
 import { generateId } from '../../utils/generateId';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -23,7 +23,7 @@ const Actions = ({ plugin, editor, dragHandleProps, showActions }: ActionsProps)
 
   const onPlusClick = () => {
     const pluginIndex = PLUGIN_INDEX.get(plugin);
-    const defaultBlock = getDefaultYooptaChildrenValue(generateId());
+    const defaultBlock = getDefaultChildrenValue(generateId());
 
     const nextPath = [pluginIndex + 1];
 
