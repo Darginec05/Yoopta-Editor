@@ -4,8 +4,8 @@ import { Editor } from './components/Editor/Editor';
 import { useState } from 'react';
 import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
-import { createEditor } from 'slate';
-import { YooEditor, YooptaChildren } from './editor/types';
+import { createEditor, Editor as SlateEditor, Element, Transforms } from 'slate';
+import { YooEditor, YooptaChildren, YooptaEditorTransformOptions } from './editor/types';
 import { Plugin } from './plugins/types';
 import { Code } from './components/Editor/plugins/Code/Code';
 import { Video } from './components/Editor/plugins/Video/Video';
@@ -13,6 +13,11 @@ import NoSSR from './components/NoSsr/NoSsr';
 import { Bold, CodeMark, Highlight, Italic, Strike, Underline, YooptaMark } from './textFormatters/createYooptaMark';
 import { Table } from './components/Editor/plugins/Table/Table';
 import { NumberedList } from './components/Editor/plugins/NumberedList/NumberedList';
+import { createDraft, finishDraft } from 'immer';
+import { findPluginBlockBySelectionPath } from './utils/findPluginBlockBySelectionPath';
+import { findSlateBySelectionPath } from './utils/findSlateBySelectionPath';
+import { generateId } from './utils/generateId';
+import { applyBlock } from './editor/transforms/applyBlock';
 
 type Props = {
   editor: YooEditor;
@@ -27,6 +32,9 @@ type Props = {
 const PLUGINS = [Code, Video, Table, NumberedList];
 const TEXT_FORMATTERS = [Bold, Italic, Underline, Strike, CodeMark, Highlight];
 const DEFAULT_VALUE = getDefaultYooptaChildren();
+/**/
+
+/**/
 
 const YooptaEditor = ({
   editor,
@@ -46,6 +54,7 @@ const YooptaEditor = ({
     editor.applyChanges = applyChanges;
 
     const formats = {};
+    const blocks: YooEditor['blocks'] = {};
 
     marks.forEach((mark) => {
       formats[mark.type] = {
@@ -54,7 +63,25 @@ const YooptaEditor = ({
       };
     });
     editor.formats = formats;
-    editor.blocks = plugins.map((plugin) => ({ type: plugin.type, elements: plugin.elements }));
+    editor.plugins = plugins.map((plugin) => ({ type: plugin.type, elements: plugin.elements }));
+
+    plugins.forEach((plugin) => {
+      blocks[plugin.type] = {
+        type: plugin.type,
+        elements: plugin.elements,
+        apply: (options) => {
+          applyBlock(editor, plugin.type, options);
+        },
+        update: () => {
+          console.log('plugin.update');
+        },
+        delete: () => {
+          console.log('plugin.delete');
+        },
+      };
+    });
+
+    editor.blocks = blocks;
     editor.children = FAKE_YOOPTA_EDITOR_CHILDREN;
 
     Object.keys(editor.children).forEach((id) => {

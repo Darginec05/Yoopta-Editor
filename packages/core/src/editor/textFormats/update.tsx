@@ -6,7 +6,7 @@ export function update(editor: YooEditor, type: any, value: any) {
   const slate = findSlateBySelectionPath(editor);
 
   console.log('update editor.selection', editor.selection);
-  console.log('text format slate.selection', slate?.selection);
+  console.log('text format slate.selection', slate);
 
   if (!slate || !slate.selection) return;
 

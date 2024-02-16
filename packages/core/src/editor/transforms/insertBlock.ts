@@ -54,15 +54,10 @@ export function insertBlock(editor: YooEditor, data, options: YooptaEditorTransf
     currentBlock.meta.order += 1;
   }
 
+  editor.children[newPluginBlock.id] = newPluginBlock;
   const currentBlockId = currentBlock!.id;
 
-  editor.children[newPluginBlock.id] = newPluginBlock;
-
-  // const newSelection = insertBefore ? [currentBlock?.meta.order || 0] : [newPluginBlock.meta.order];
-  // // editor.setSelection(newSelection);
-
   editor.children = finishDraft(editor.children);
-
   editor.applyChanges();
 
   if (focus) {

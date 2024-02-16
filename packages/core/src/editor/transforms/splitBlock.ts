@@ -10,8 +10,8 @@ import { YooEditor, YooptaChildrenValue, YooptaEditorTransformOptions } from '..
 export function splitBlock(editor: YooEditor, options: YooptaEditorTransformOptions = {}) {
   const { slate, focus = true } = options;
 
-  const pluginToSplit = findPluginBlockBySelectionPath(editor);
-  if (!slate || !slate.selection || !pluginToSplit) return;
+  const currentBlock = findPluginBlockBySelectionPath(editor);
+  if (!slate || !slate.selection || !currentBlock) return;
 
   Editor.withoutNormalizing(slate, () => {
     editor.children = createDraft(editor.children);
@@ -37,11 +37,11 @@ export function splitBlock(editor: YooEditor, options: YooptaEditorTransformOpti
 
     const newBlock: YooptaChildrenValue = {
       id: generateId(),
-      type: pluginToSplit.type,
+      type: currentBlock.type,
       meta: {
-        order: pluginToSplit.meta.order + 1,
-        depth: pluginToSplit.meta.depth,
-        maxDepth: pluginToSplit.meta.maxDepth,
+        order: currentBlock.meta.order + 1,
+        depth: currentBlock.meta.depth,
+        maxDepth: currentBlock.meta.maxDepth,
       },
       value: [nextBlockChildren],
     };
@@ -56,11 +56,12 @@ export function splitBlock(editor: YooEditor, options: YooptaEditorTransformOpti
     editor.blockEditorsMap[newBlock.id] = newSlateEditor;
     editor.children[newBlock.id] = newBlock;
 
+    if (focus) {
+      // [TODO] - check focus for split block function
+      editor.focusBlock(newBlock.id, { slate: newSlateEditor });
+    }
+
     editor.children = finishDraft(editor.children);
     editor.applyChanges();
-
-    if (focus) {
-      editor.focusBlock(newBlock.id);
-    }
   });
 }

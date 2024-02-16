@@ -30,7 +30,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
       const isEnd = Editor.isEnd(slate, slate.selection.anchor, slate.selection.anchor.path);
 
       if (!isStart && !isEnd) {
-        editor.splitBlock({ slate });
+        editor.splitBlock({ slate, focus: true });
         return;
       }
 
