@@ -145,6 +145,10 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
     ReactEditor.blur(slate);
   };
 
+  const onFocus = (event: React.FocusEvent) => {
+    yooEditor.setSelection([plugin.meta.order]);
+  };
+
   return (
     <div data-plugin-id={id} data-plugin-type={type}>
       <Slate editor={slate} initialValue={initialValue} onChange={onChange}>
@@ -157,7 +161,9 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
           spellCheck
           {...eventHandlers}
           onKeyDown={onKeyDown}
-          onBlur={onBlur}
+          // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
+          // onBlur={onBlur}
+          onFocus={onFocus}
         />
         <ActionMenuList style={menuList?.style} isOpen={menuList?.open} onChangeOpen={() => setMenuList(null)} />
       </Slate>

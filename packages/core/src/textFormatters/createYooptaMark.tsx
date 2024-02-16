@@ -73,8 +73,6 @@ export const Highlight = createYooptaMark<YooptaMarkProps<'highlight', LeafColor
   render: (props) => {
     const highlight = props.leaf?.highlight;
 
-    console.log('highlight', highlight);
-
     const style = {
       color: highlight?.color,
       backgroundImage: highlight?.backgroundImage,

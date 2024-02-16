@@ -16,34 +16,12 @@ const Editor = ({ plugins, marks, className, autoFocus = true }: Props) => {
   const editor = useYooptaEditor();
   const yooptaEditorRef = useRef<HTMLDivElement>(null);
 
-  console.log('editor. selection', editor.selection);
+  console.log('Editor editor.children', editor.children);
 
   useEffect(() => {
     const firstBlock = findPluginBlockBySelectionPath(editor, { at: [0] });
     if (firstBlock) editor.focusBlock(firstBlock.id);
   }, [autoFocus]);
-
-  useEffect(() => {
-    const handleSelectionChange = () => {
-      const domSelection = document.getSelection()!;
-      let el = domSelection.anchorNode;
-
-      // [TODO] - do nothing if selection the same
-      while (el && !el.parentElement?.hasAttribute('data-yoopta-plugin')) {
-        el = el.parentNode;
-      }
-
-      const pluginElement = el?.parentElement;
-      const pluginId = pluginElement?.getAttribute('data-yoopta-plugin-id') || '';
-
-      const updatedPath = pluginId ? [editor.children[pluginId].meta.order] : null;
-
-      editor.setSelection(updatedPath);
-    };
-
-    window.document.addEventListener('selectionchange', handleSelectionChange);
-    return () => window.document.removeEventListener('selectionchange', handleSelectionChange);
-  }, []);
 
   return (
     <div id="yoopta-editor" className={className} ref={yooptaEditorRef}>

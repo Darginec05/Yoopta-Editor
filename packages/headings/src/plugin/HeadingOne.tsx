@@ -5,7 +5,7 @@ const HeadingOneRender = ({ attributes, children, element }) => {
     <h1
       id={element.id}
       draggable={false}
-      className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl"
+      className="mt-6 scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl"
       {...attributes}
     >
       {children}

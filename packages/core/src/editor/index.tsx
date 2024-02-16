@@ -28,7 +28,6 @@ export const createYooptaEditor = (): YooEditor => {
   const editor: YooEditor = {
     children: {},
     selection: null,
-    formats: {},
     applyChanges: () => {},
     insertBlock: (...args) => insertBlock(editor, ...args),
     deleteBlock: (...args) => deleteBlock(editor, ...args),
@@ -43,7 +42,8 @@ export const createYooptaEditor = (): YooEditor => {
     splitBlock: (...args) => splitBlock(editor, ...args),
     setSelection: (...args) => setSelection(editor, ...args),
     blockEditorsMap: {},
-    elements: {},
+    blocks: {},
+    formats: {},
   };
 
   return editor;

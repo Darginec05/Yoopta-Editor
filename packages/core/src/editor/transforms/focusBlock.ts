@@ -5,7 +5,7 @@ import { YooEditor, YooptaEditorTransformOptions } from '../types';
 // [TODO] - update editor.selection after focus
 export function focusBlock(editor: YooEditor, blockId: string, options: YooptaEditorTransformOptions = {}) {
   const focusTimeout = setTimeout(() => {
-    const slate = editor.blockEditorsMap[blockId];
+    const slate = options.slate || editor.blockEditorsMap[blockId];
 
     const [firstEntry] = Editor.nodes(slate, {
       at: [0, 0],

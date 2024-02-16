@@ -2,7 +2,12 @@ import { createYooptaPlugin } from '@yoopta/editor';
 
 const HeadingThreeRender = ({ attributes, children, element }) => {
   return (
-    <h3 id={element.id} draggable={false} className="scroll-m-20 text-2xl font-semibold tracking-tight" {...attributes}>
+    <h3
+      id={element.id}
+      draggable={false}
+      className="mt-2 scroll-m-20 text-2xl font-semibold tracking-tight"
+      {...attributes}
+    >
       {children}
     </h3>
   );
