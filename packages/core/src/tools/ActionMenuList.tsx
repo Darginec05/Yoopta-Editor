@@ -10,9 +10,6 @@ import { useTools } from '../contexts/UltraYooptaContext/ToolsContext';
 export const handleActionMenuKeyDown =
   (editor: YooEditor, slate: Editor, { onOpen, onClose, state }) =>
   (event: React.KeyboardEvent) => {
-    console.log('HOTKEYS.isEscape(event)', HOTKEYS.isEscape(event));
-    console.log('state', state);
-
     if (HOTKEYS.isSlashCommand(event)) {
       if (!slate.selection) return;
 
@@ -33,13 +30,10 @@ export const handleActionMenuKeyDown =
         left: `${rect.left + window.scrollX}px`,
       };
 
-      onOpen({
-        open: true,
-        style,
-      });
+      onOpen({ open: true, style });
     }
 
-    if (!state?.open) return;
+    if (!state.open) return;
 
     if (HOTKEYS.isTab(event)) {
       event.preventDefault();
@@ -54,6 +48,12 @@ export const handleActionMenuKeyDown =
     if (HOTKEYS.isArrowUp(event)) {
       event.preventDefault();
       return;
+    }
+
+    if (HOTKEYS.isBackspace(event)) {
+      if (!slate.selection) return;
+      const isStart = Editor.isStart(slate, slate.selection.anchor, slate.selection.focus);
+      if (isStart) return onClose();
     }
 
     if (HOTKEYS.isEscape(event)) {
@@ -75,6 +75,8 @@ export const handleActionMenuKeyUp =
 
     const parentPath = Path.parent(slate.selection.anchor.path);
     const string = Editor.string(slate, parentPath);
+
+    if (string.length === 0) return onClose();
     onChange({ text: string });
   };
 
@@ -158,6 +160,8 @@ const ActionMenuList = ({ trigger = '/' }: Props) => {
           <div data-action-menu-list className="overflow-hidden p-0 text-foreground">
             {actions.map((type, i) => {
               const block = editor.blocks[type];
+              if (!block) return null;
+
               return (
                 <button
                   key={type}
@@ -170,7 +174,7 @@ const ActionMenuList = ({ trigger = '/' }: Props) => {
                     editor.blocks[type].apply({ deleteText: true, focus: true });
                     onClose();
                   }}
-                  className="flex w-full cursor-pointer items-center space-x-2 rounded-md px-1 py-1 mb-0.5 text-left text-sm hover:bg-[#f4f4f5] aria-selected:bg-[#f0f0f0]"
+                  className="flex w-full cursor-pointer items-center space-x-2 rounded-md px-1 py-1 mb-0.5 last:mb-0 text-left text-sm hover:bg-[#f4f4f5] aria-selected:bg-[#f0f0f0]"
                 >
                   <div className="flex h-10 w-10 items-center justify-center rounded-md border border-muted bg-white">
                     <TextIcon />
