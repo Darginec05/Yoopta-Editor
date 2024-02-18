@@ -8,6 +8,9 @@ const Paragraph = createYooptaPlugin({
       render: ParagraphRender,
     },
   },
+  options: {
+    displayLabel: 'Text',
+  },
 });
 
 export { Paragraph };

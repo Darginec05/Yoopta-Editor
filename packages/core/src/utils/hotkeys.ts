@@ -26,6 +26,7 @@ const HOTKEYS_MAP = {
   tab: 'tab',
   cmd: 'mod',
   cmdEnter: 'mod+enter',
+  slashCommand: '/',
   kekCeburek: 'mod+enter',
 };
 
@@ -103,6 +104,7 @@ export const HOTKEYS = {
   isCmdEnter: create('cmdEnter'),
   isCmd: create('cmd'),
   isEscape: create('escape'),
+  isSlashCommand: create('slashCommand'),
   isKekceburek: create('kekCeburek'),
 };
 

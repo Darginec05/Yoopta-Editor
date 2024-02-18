@@ -4,6 +4,7 @@ import { RenderBlocks } from './RenderBlocks';
 import { Plugin } from '../../plugins/types';
 import { YooptaMark } from '../../textFormatters/createYooptaMark';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
+import { ActionMenuList } from '../../tools/ActionMenuList';
 
 type Props = {
   plugins: Plugin[];
@@ -16,8 +17,6 @@ const Editor = ({ plugins, marks, className, autoFocus = true }: Props) => {
   const editor = useYooptaEditor();
   const yooptaEditorRef = useRef<HTMLDivElement>(null);
 
-  console.log('Editor editor.children', editor.children);
-
   useEffect(() => {
     const firstBlock = findPluginBlockBySelectionPath(editor, { at: [0] });
     if (firstBlock) editor.focusBlock(firstBlock.id);
@@ -26,6 +25,7 @@ const Editor = ({ plugins, marks, className, autoFocus = true }: Props) => {
   return (
     <div id="yoopta-editor" className={className} ref={yooptaEditorRef}>
       <RenderBlocks editor={editor} plugins={plugins} marks={marks} />
+      <ActionMenuList />
     </div>
   );
 };

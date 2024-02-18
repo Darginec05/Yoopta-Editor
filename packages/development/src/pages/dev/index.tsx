@@ -8,10 +8,10 @@ import Link from '@yoopta/link';
 import { useMemo } from 'react';
 
 const plugins = [
+  Paragraph,
   Headings.HeadingOne,
   Headings.HeadingTwo,
   Headings.HeadingThree,
-  Paragraph,
   Blockquote,
   Callout,
   // Mention,

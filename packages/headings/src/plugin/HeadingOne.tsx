@@ -25,6 +25,9 @@ const HeadingOne = createYooptaPlugin({
       },
     },
   },
+  options: {
+    displayLabel: 'Heading 1',
+  },
 });
 
 export { HeadingOne };
