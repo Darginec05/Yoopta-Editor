@@ -8,6 +8,9 @@ const Blockquote = createYooptaPlugin({
       render: BlockquoteRender,
     },
   },
+  options: {
+    displayLabel: 'Blockquote',
+  },
 });
 
 export { Blockquote };

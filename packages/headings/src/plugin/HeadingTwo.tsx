@@ -25,6 +25,9 @@ const HeadingTwo = createYooptaPlugin({
       },
     },
   },
+  options: {
+    displayLabel: 'Heading 2',
+  },
 });
 
 export { HeadingTwo };

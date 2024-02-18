@@ -22,6 +22,9 @@ const Link = createYooptaPlugin<LinkElementProps>({
       },
     },
   },
+  options: {
+    displayLabel: 'Link',
+  },
 });
 
 export { Link };

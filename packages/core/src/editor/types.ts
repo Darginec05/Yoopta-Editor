@@ -1,5 +1,5 @@
 import { Descendant, Editor as SlateEditor } from 'slate';
-import { Plugin, PluginElementsMap } from '../plugins/types';
+import { Plugin, PluginElementsMap, PluginOptions } from '../plugins/types';
 import { ApplyBlockOptions } from './transforms/applyBlock';
 
 export type YooptaPath = number[];
@@ -44,6 +44,19 @@ export type TextFormatMap<TKey extends string = any> = {
   [key in TKey]: TextFormat;
 };
 
+export type YooptaBlock = {
+  order: number;
+  type: string;
+  options?: PluginOptions;
+  elements: PluginElementsMap<unknown>;
+  isActive: () => boolean;
+  apply: (options?: ApplyBlockOptions) => void;
+  update: (id: string, data: any) => void;
+  delete: (id: string) => void;
+};
+
+export type YooptaBlocks = Record<string, YooptaBlock>;
+
 // [TODO] - Fix generic and default types
 export type YooEditor<TNodes = any, TKey extends string = any> = {
   insertBlock: (data, options?: YooptaEditorTransformOptions) => void;
@@ -60,16 +73,7 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   children: Record<string, YooptaChildrenValue>;
   setSelection: (path: YooptaPath | null) => void;
   blockEditorsMap: YooptaPluginsEditorMap;
-  blocks: Record<
-    string,
-    {
-      type: string;
-      elements: Plugin['elements'];
-      apply: (options?: ApplyBlockOptions) => void;
-      update: (id: string, data: any) => void;
-      delete: (id: string) => void;
-    }
-  >;
+  blocks: YooptaBlocks;
   formats: {
     [key in TKey]: Pick<TextFormat, 'type' | 'hotkey'>;
   };

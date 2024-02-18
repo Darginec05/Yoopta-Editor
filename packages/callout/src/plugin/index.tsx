@@ -8,6 +8,9 @@ const Callout = createYooptaPlugin({
       render: CalloutRender,
     },
   },
+  options: {
+    displayLabel: 'Callout',
+  },
 });
 
 export { Callout };

@@ -11,10 +11,15 @@ export type RenderPluginProps = {
   marks?: YooptaMark<unknown>[];
 };
 
+export type PluginOptions = {
+  displayLabel?: string;
+};
+
 export type Plugin = {
   type: string;
   renderPlugin: (props: RenderPluginProps) => JSX.Element;
   elements: PluginParams<unknown>['elements'];
+  options?: PluginOptions;
 };
 
 export type PluginElementOptions = {
@@ -54,6 +59,7 @@ export type PluginParams<T = Descendant> = {
   customEditor?: (props: CustomEditorProps) => JSX.Element;
   elements: PluginElementsMap<T>;
   events?: EventHandlers;
+  options?: PluginOptions;
 };
 
 export type LeafFormats<K extends string, V> = {

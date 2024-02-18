@@ -50,7 +50,6 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
       if (isStart) {
         event.preventDefault();
         const text = Editor.string(slate, parentPath);
-        console.log('text', text);
 
         // If current block is empty just delete block
         if (text.length === 0) {
@@ -115,6 +114,9 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
     if (HOTKEYS.isArrowUp(event)) {
       if (event.isDefaultPrevented()) return;
 
+      // const prevPath = editor.selection ? [editor.selection[0] - 1] : [0];
+      // const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevPath });
+      // editor.focusBlock(prevBlock?.id, { at: prevPath });
       console.log('Editor.start', Editor.start(slate, slate.selection.anchor.path));
     }
 

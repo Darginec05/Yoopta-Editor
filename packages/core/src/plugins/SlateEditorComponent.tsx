@@ -1,4 +1,4 @@
-import { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { Editable, ReactEditor, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useYooptaPlugin } from '../contexts/UltraYooptaContext/UltraYooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
@@ -7,7 +7,7 @@ import { withInlines } from './extenstions/withInlines';
 import { ExtendedLeafProps, PluginParams } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
-import { ActionMenuList } from '../tools/ActionMenuList';
+import { useTools } from '../contexts/UltraYooptaContext/ToolsContext';
 
 type Props<T> = PluginParams<T> & { id: string; marks?: YooptaMark<any>[] };
 
@@ -26,18 +26,18 @@ const getMappedMarks = (marks?: YooptaMark<any>[]) => {
 };
 
 const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }: Props<T>) => {
-  const [menuList, setMenuList] = useState<{ open: boolean; style: CSSProperties } | null>(null);
-
-  const yooEditor = useYooptaEditor();
+  const editor = useYooptaEditor();
   const plugin = useYooptaPlugin(id);
   const initialValue = useRef(plugin.value).current;
   const type = plugin.type;
+
+  const { tools } = useTools();
 
   const ELEMENTS_MAP = useMemo(() => getMappedElements(elements), [elements]);
   const MARKS_MAP = useMemo(() => getMappedMarks(marks), [marks]);
 
   const slate = useMemo(() => {
-    let slateEditor = yooEditor.blockEditorsMap[id];
+    let slateEditor = editor.blockEditorsMap[id];
     const elementTypes = Object.keys(elements);
 
     elementTypes.forEach((elementType) => {
@@ -72,17 +72,17 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
     Object.keys(events).forEach((eventType) => {
       eventHandlersMap[eventType] = function handler(event) {
         if (events[eventType]) {
-          const handler = events[eventType](yooEditor, slate, eventHandlersOptions);
+          const handler = events[eventType](editor, slate, eventHandlersOptions);
           handler(event);
         }
       };
     });
 
     return eventHandlersMap;
-  }, [events, yooEditor]);
+  }, [events, editor]);
 
   const onChange = useCallback((data) => {
-    yooEditor.updateBlock(id, data);
+    editor.updateBlock(id, data);
   }, []);
 
   if (typeof customEditor === 'function') {
@@ -115,29 +115,15 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
   };
 
   const onKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === '/') {
-      const domSelection = window.getSelection();
-      if (!domSelection) return;
-
-      const range = domSelection.getRangeAt(0);
-      const rect = range.getBoundingClientRect();
-
-      const style = {
-        top: `${rect.top + window.scrollY + rect.height + 5}px`,
-        left: `${rect.left + window.scrollX}px`,
-      };
-
-      // event.preventDefault();
-      setMenuList((prev) => ({
-        open: !prev?.open,
-        style,
-      }));
-    }
-
-    if (event.key === 'Escape') setMenuList(null);
-
+    const { events, ...options } = tools.actionMenu;
+    events.onKeyDown(editor, slate, options)(event);
     eventHandlers.onKeyDown?.(event);
-    EVENT_HANDLERS.onKeyDown(yooEditor, slate)(event);
+    EVENT_HANDLERS.onKeyDown(editor, slate)(event);
+  };
+
+  const onKeyUp = (event: React.KeyboardEvent) => {
+    const { events, ...options } = tools.actionMenu;
+    events.onKeyUp(editor, slate, options)(event);
   };
 
   const onBlur = () => {
@@ -146,7 +132,7 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
   };
 
   const onFocus = (event: React.FocusEvent) => {
-    yooEditor.setSelection([plugin.meta.order]);
+    editor.setSelection([plugin.meta.order]);
   };
 
   return (
@@ -154,18 +140,17 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
       <Slate editor={slate} initialValue={initialValue} onChange={onChange}>
         <Editable
           renderElement={renderElement}
-          // onKeyUp={(event) => console.log('onKEYUP', event.key)}
           // placeholder="Enter some rich text…"
           renderLeaf={renderLeaf}
           className="focus-visible:outline-none"
           spellCheck
           {...eventHandlers}
           onKeyDown={onKeyDown}
+          onKeyUp={onKeyUp}
           // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
           // onBlur={onBlur}
           onFocus={onFocus}
         />
-        <ActionMenuList style={menuList?.style} isOpen={menuList?.open} onChangeOpen={() => setMenuList(null)} />
       </Slate>
     </div>
   );
