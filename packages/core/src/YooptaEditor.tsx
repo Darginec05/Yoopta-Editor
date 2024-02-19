@@ -16,7 +16,8 @@ import { NumberedList } from './components/Editor/plugins/NumberedList/NumberedL
 import { findPluginBlockBySelectionPath } from './utils/findPluginBlockBySelectionPath';
 import { applyBlock } from './editor/transforms/applyBlock';
 import { ToolsProvider } from './contexts/UltraYooptaContext/ToolsContext';
-import { ActionMenuList } from './tools/ActionMenuList';
+import { ActionMenuList } from './tools/ActionMenuList/ActionMenuList';
+import { Toolbar } from './tools/Toolbar/Toolbar';
 
 type Props = {
   editor: YooEditor;
@@ -114,6 +115,7 @@ const YooptaEditor = ({
         <ToolsProvider>
           <Editor plugins={plugins} marks={marks} autoFocus={autoFocus} className={className} />
           <ActionMenuList />
+          <Toolbar />
         </ToolsProvider>
       </UltraYooptaContextProvider>
     </NoSSR>

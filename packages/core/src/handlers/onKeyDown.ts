@@ -131,6 +131,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
       for (const mark of Object.values(editor.formats)) {
         if (mark.hotkey && isKeyHotkey(mark.hotkey)(event)) {
           event.preventDefault();
+
           TextFormats.toggle(editor, mark);
           break;
         }

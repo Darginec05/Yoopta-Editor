@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Editable, ReactEditor, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useYooptaPlugin } from '../contexts/UltraYooptaContext/UltraYooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
@@ -8,6 +8,8 @@ import { ExtendedLeafProps, PluginParams } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
 import { useTools } from '../contexts/UltraYooptaContext/ToolsContext';
+import { Range } from 'slate';
+import debounce from 'lodash/debounce';
 
 type Props<T> = PluginParams<T> & { id: string; marks?: YooptaMark<any>[] };
 
@@ -29,6 +31,7 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
   const editor = useYooptaEditor();
   const plugin = useYooptaPlugin(id);
   const initialValue = useRef(plugin.value).current;
+  const [value, setValue] = useState(initialValue);
   const type = plugin.type;
 
   const { tools } = useTools();
@@ -82,6 +85,8 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
   }, [events, editor]);
 
   const onChange = useCallback((data) => {
+    console.log('data', data);
+
     editor.updateBlock(id, data);
   }, []);
 
@@ -115,15 +120,27 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
   };
 
   const onKeyDown = (event: React.KeyboardEvent) => {
-    const { events, ...options } = tools.actionMenu;
-    events.onKeyDown(editor, slate, options)(event);
+    if (tools.actionMenu) {
+      const { events, ...options } = tools.actionMenu;
+      events?.onKeyDown(editor, slate, options)(event);
+    }
+
     eventHandlers.onKeyDown?.(event);
     EVENT_HANDLERS.onKeyDown(editor, slate)(event);
   };
 
   const onKeyUp = (event: React.KeyboardEvent) => {
-    const { events, ...options } = tools.actionMenu;
-    events.onKeyUp(editor, slate, options)(event);
+    if (tools.actionMenu) {
+      const { events, ...options } = tools.actionMenu;
+      events?.onKeyUp(editor, slate, options)(event);
+    }
+  };
+
+  const onMouseDown = (event: React.MouseEvent) => {
+    if (tools.toolbar) {
+      const { events, ...options } = tools.toolbar;
+      events?.onMouseDown(editor, slate, options)(event);
+    }
   };
 
   const onBlur = () => {
@@ -135,9 +152,11 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
     editor.setSelection([plugin.meta.order]);
   };
 
+  const activeBlock = Object.values(editor.blocks).find((block) => block.isActive());
+
   return (
     <div data-plugin-id={id} data-plugin-type={type}>
-      <Slate editor={slate} initialValue={initialValue} onChange={onChange}>
+      <Slate key={`slate-${id}`} editor={slate} initialValue={value} onChange={(val) => setValue(val)}>
         <Editable
           renderElement={renderElement}
           // placeholder="Enter some rich text…"
@@ -147,9 +166,13 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
           {...eventHandlers}
           onKeyDown={onKeyDown}
           onKeyUp={onKeyUp}
+          onFocus={onFocus}
+          onMouseDown={onMouseDown}
+          // onMouseUp={onMouseUp}
+          key={`editable-${id}`}
+          id={`editable-${id}`}
           // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
           // onBlur={onBlur}
-          onFocus={onFocus}
         />
       </Slate>
     </div>
