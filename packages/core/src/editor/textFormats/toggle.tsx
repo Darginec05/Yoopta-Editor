@@ -3,6 +3,7 @@ import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { YooEditor } from '../types';
 import { isActive } from './isActive';
 
+// [TODO] - check format argument
 export function toggle(editor: YooEditor, format: any) {
   const slate = findSlateBySelectionPath(editor);
   const active = isActive(editor, format);
@@ -15,5 +16,5 @@ export function toggle(editor: YooEditor, format: any) {
     Editor.removeMark(slate, format.type);
   }
 
-  // editor.applyChanges();
+  editor.applyChanges();
 }

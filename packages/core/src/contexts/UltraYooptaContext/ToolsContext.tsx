@@ -1,12 +1,13 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { cloneElement, createContext, ReactNode, useCallback, useContext, useMemo, useState } from 'react';
 
 export type ToolAPI = {
-  onOpen: (...args: any[]) => void;
-  onClose: (...args: any[]) => void;
-  onChange: (...args: any[]) => void;
+  open: (...args: any[]) => void;
+  close: (...args: any[]) => void;
+  change: (...args: any[]) => void;
+  component: ReactNode;
   state: any;
-  events: {
-    [key: string]: (editor: any, slate: any, options: any) => (event: React.KeyboardEvent) => void;
+  events?: {
+    [key: string]: (editor: any, slate: any, options: any) => (event: any) => void;
   };
 };
 
