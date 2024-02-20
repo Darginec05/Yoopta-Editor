@@ -72,6 +72,7 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   blockEditorsMap: YooptaPluginsEditorMap;
   blocks: YooptaBlocks;
   formats: YooptaFormats;
+  shortcuts: Record<string, YooptaBlock>;
 };
 
 // types for slate value

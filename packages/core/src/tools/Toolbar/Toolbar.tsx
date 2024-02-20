@@ -24,8 +24,9 @@ const Toolbar = () => {
 
     const domRange = domSelection.getRangeAt(0);
     const selectionRect = domRange.getBoundingClientRect();
+    const text = domRange.toString().trim();
 
-    if (domRange) {
+    if (domRange && text.length > 0) {
       refs.setReference({
         getBoundingClientRect: () => selectionRect,
         getClientRects: () => domRange.getClientRects(),

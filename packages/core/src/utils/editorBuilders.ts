@@ -61,17 +61,32 @@ export function buildBlocks(editor, plugins: Plugin[]) {
 export function buildBlockSlateEditors(editor: YooEditor) {
   const blockEditorsMap = {};
 
-  console.log('editor', editor);
-
   Object.keys(editor.children).forEach((id) => {
-    const slate = buildeSlateEditor();
+    const slate = buildeSlateEditor(editor);
     blockEditorsMap[id] = slate;
   });
 
   return blockEditorsMap;
 }
 
-export function buildeSlateEditor(): Editor {
-  const slate = withHistory(withShortcuts(withReact(createEditor())));
+export function buildeSlateEditor(editor: YooEditor): Editor {
+  const slate = withHistory(withShortcuts(editor, withReact(createEditor())));
   return slate;
+}
+
+export function buildBlockShortcuts(editor: YooEditor) {
+  const shortcuts = {};
+
+  Object.values(editor.blocks).forEach((block) => {
+    const hasShortcuts =
+      block.options && Array.isArray(block.options?.shortcuts) && block.options?.shortcuts.length > 0;
+
+    if (hasShortcuts) {
+      block.options?.shortcuts?.forEach((shortcut) => {
+        shortcuts[shortcut] = block;
+      });
+    }
+  });
+
+  return shortcuts;
 }

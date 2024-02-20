@@ -10,6 +10,7 @@ const Callout = createYooptaPlugin({
   },
   options: {
     displayLabel: 'Callout',
+    shortcuts: ['<'],
   },
 });
 

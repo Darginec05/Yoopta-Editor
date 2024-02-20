@@ -132,7 +132,7 @@ const Code = createYooptaPlugin<YooptaPluginBaseOptions, CodeElement>({
     editor: CodeEditor,
     render: CodeRender,
   },
-  shortcut: ['code', '```'],
+  shortcuts: ['code', '```'],
   childPlugin: CodeLine,
   extendEditor(editor) {
     const { normalizeNode } = editor;

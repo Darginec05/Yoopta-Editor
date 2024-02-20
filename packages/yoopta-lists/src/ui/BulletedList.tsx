@@ -34,7 +34,7 @@ const BulletedList = createYooptaPlugin<YooptaPluginBaseOptions, BulletedListEle
   type: BULLETED_LIST_NODE_TYPE,
   renderer: (editor) => BulletedListRender,
   // [TODO] - fix for nested items
-  shortcut: '-',
+  shortcuts: '-',
   childPlugin: ListItemList,
   defineElement: () => ({
     id: generateId(),

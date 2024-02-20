@@ -45,7 +45,7 @@ export function insertBlock(editor: YooEditor, data, options: YooptaEditorTransf
     newPluginBlock.meta.order = newIndex;
   }
 
-  const newSlateEditor = buildeSlateEditor();
+  const newSlateEditor = buildeSlateEditor(editor);
   editor.blockEditorsMap[newPluginBlock.id] = newSlateEditor;
 
   if (insertBefore && currentBlock) {
