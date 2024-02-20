@@ -4,16 +4,16 @@ import { YooEditor } from '../types';
 import { isActive } from './isActive';
 
 // [TODO] - check format argument
-export function toggle(editor: YooEditor, format: any) {
+export function toggle(editor: YooEditor, type: string) {
   const slate = findSlateBySelectionPath(editor);
-  const active = isActive(editor, format);
+  const active = isActive(editor, type);
 
   if (!slate) return;
 
   if (!active) {
-    Editor.addMark(slate, format.type, true);
+    Editor.addMark(slate, type, true);
   } else {
-    Editor.removeMark(slate, format.type);
+    Editor.removeMark(slate, type);
   }
 
   editor.applyChanges();

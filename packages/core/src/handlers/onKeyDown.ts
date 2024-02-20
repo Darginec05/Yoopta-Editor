@@ -2,9 +2,9 @@ import { createDraft, finishDraft } from 'immer';
 import { isKeyHotkey } from 'is-hotkey';
 import { Editor, Path, Range, Text, Transforms } from 'slate';
 import { getDefaultChildrenValue } from '../components/Editor/defaultValue';
-import { TextFormats } from '../editor';
 import { YooEditor } from '../editor/types';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
+import { findSlateBySelectionPath } from '../utils/findSlateBySelectionPath';
 import { generateId } from '../utils/generateId';
 import { getMaxOffsetInElement } from '../utils/getMaxOffsetInElement';
 import { HOTKEYS } from '../utils/hotkeys';
@@ -62,13 +62,18 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
           }
 
           const prevBlockPathIndex = editor.selection ? editor.selection[0] - 1 : 0;
-          const prevBlock = findPluginBlockBySelectionPath(editor, { at: [prevBlockPathIndex] });
+          console.log('editor.selection', editor.selection);
+          console.log('prevBlockPathIndex', prevBlockPathIndex);
+
+          const prevSlate = findSlateBySelectionPath(editor, { at: [prevBlockPathIndex] });
+          console.log('prevSlate', prevSlate?.children);
 
           // If we try to delete first block do nothing
-          if (!prevBlock) return;
+          if (!prevSlate) return;
 
-          const prevSlate = editor.blockEditorsMap[prevBlock.id];
-          const prevSlateText = Editor.string(prevSlate, [0]);
+          const prevSlateText = Editor.string(prevSlate, [0, 0]);
+
+          console.log('prevSlateText', prevSlateText);
 
           // If previous block values is empty just delete block without merging
           if (prevSlateText.length === 0) {
@@ -80,7 +85,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
           const childNodeEntries = Array.from(
             Editor.nodes(slate, {
               at: [0],
-              match: (n) => Text.isText(n) || Editor.isInline(slate, n),
+              match: (n) => !Editor.isEditor(n) && (Text.isText(n) || Editor.isInline(slate, n)),
               mode: 'highest',
             }),
           );
@@ -131,8 +136,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
       for (const mark of Object.values(editor.formats)) {
         if (mark.hotkey && isKeyHotkey(mark.hotkey)(event)) {
           event.preventDefault();
-
-          TextFormats.toggle(editor, mark);
+          editor.formats[mark.type].toggle();
           break;
         }
       }

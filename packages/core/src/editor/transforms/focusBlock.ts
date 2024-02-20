@@ -22,6 +22,6 @@ export function focusBlock(editor: YooEditor, blockId: string, options: YooptaEd
 
     // editor.applyChanges();
 
-    clearTimeout(focusTimeout);
+    // clearTimeout(focusTimeout);
   }, 0);
 }

@@ -1,4 +1,4 @@
-import YooptaEditor, { createYooptaEditor, TextFormats } from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor, YooEditor } from '@yoopta/editor';
 import Blockquote from '@yoopta/blockquote';
 import Paragraph from '@yoopta/paragraph';
 import Callout from '@yoopta/callout';
@@ -19,7 +19,7 @@ const plugins = [
 ];
 
 const BasicExample = () => {
-  const editor = useMemo(() => createYooptaEditor(), []);
+  const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
 
   return (
     <div>
@@ -30,10 +30,7 @@ const BasicExample = () => {
 
           console.log('from component editor', editor.selection);
 
-          TextFormats.update(editor, 'highlight', {
-            // backgroundImage: 'linear-gradient(90deg, rgb(97, 229, 255) 0%, rgb(255, 112, 245) 100%)',
-            color: 'rgb(176, 171, 250)',
-          });
+          editor.formats.highlight?.update({ color: 'rgb(176, 171, 250)' });
         }}
       >
         Highlight text
