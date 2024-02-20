@@ -1,7 +1,6 @@
 import { createDraft, finishDraft } from 'immer';
-import { createEditor, Editor, Element, Path, Transforms } from 'slate';
-import { withHistory } from 'slate-history';
-import { withReact } from 'slate-react';
+import { Editor, Element, Path, Transforms } from 'slate';
+import { buildeSlateEditor } from '../../utils/editorBuilders';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../../utils/generateId';
 import { YooEditor, YooptaChildrenValue, YooptaEditorTransformOptions } from '../types';
@@ -52,7 +51,7 @@ export function splitBlock(editor: YooEditor, options: YooptaEditorTransformOpti
       }
     });
 
-    const newSlateEditor = withHistory(withReact(createEditor()));
+    const newSlateEditor = buildeSlateEditor();
     editor.blockEditorsMap[newBlock.id] = newSlateEditor;
     editor.children[newBlock.id] = newBlock;
 

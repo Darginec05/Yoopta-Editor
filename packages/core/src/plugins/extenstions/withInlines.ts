@@ -52,9 +52,9 @@ const wrapLink = (editor, url: string) => {
 export const withInlines = (editor) => {
   const { insertData, insertText, isInline, isElementReadOnly, isSelectable } = editor;
 
-  editor.isInline = (element) => ['link', 'button', 'badge'].includes(element.type) || isInline(element);
-  editor.isElementReadOnly = (element) => element.type === 'badge' || isElementReadOnly(element);
-  editor.isSelectable = (element) => element.type !== 'badge' && isSelectable(element);
+  editor.isInline = (element) => ['link', 'mention'].includes(element.type) || isInline(element);
+  // editor.isElementReadOnly = (element) => element.type === 'mention' || isElementReadOnly(element);
+  // editor.isSelectable = (element) => element.type === 'mention' && isSelectable(element);
 
   editor.insertText = (text) => {
     if (text && isUrl(text)) {

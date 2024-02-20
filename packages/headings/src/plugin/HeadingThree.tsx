@@ -27,6 +27,7 @@ const HeadingThree = createYooptaPlugin({
   },
   options: {
     displayLabel: 'Heading 3',
+    shortcut: ['h3', '###'],
   },
 });
 

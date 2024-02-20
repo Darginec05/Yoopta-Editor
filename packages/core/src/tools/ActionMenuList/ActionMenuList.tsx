@@ -68,17 +68,17 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
     setActions(blockTypes.filter((type) => filterActionMenuItems(editor.blocks[type], string)));
   };
 
-  useEffect(() => {
-    registerTool('actionMenu', {
-      open: onOpen,
-      close: onClose,
-      change: onFilter,
-      state,
-      component: ActionMenuComponent,
-      events,
-    });
-    return () => unregisterTool('actionMenu');
-  }, [state]);
+  // useEffect(() => {
+  //   registerTool('actionMenu', {
+  //     open: onOpen,
+  //     close: onClose,
+  //     change: onFilter,
+  //     state,
+  //     component: ActionMenuComponent,
+  //     events,
+  //   });
+  //   return () => unregisterTool('actionMenu');
+  // }, [state]);
 
   useEffect(() => {
     if (!isOpen || !tools.actionMenu) return;

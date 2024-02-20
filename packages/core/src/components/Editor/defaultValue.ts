@@ -298,9 +298,9 @@ export const getDefaultYooptaChildren = () => {
 };
 
 export const FAKE_YOOPTA_EDITOR_CHILDREN = {
-  li3D16cCB7Ze5jxy8OwrN_0: YOOPTA_ULTRA_VALUES.paragraph('li3D16cCB7Ze5jxy8OwrN_0', { order: 10, depth: 0 }),
+  li3D16cCB7Ze5jxy8OwrN_0: YOOPTA_ULTRA_VALUES.paragraph('li3D16cCB7Ze5jxy8OwrN_0', { order: 6, depth: 0 }),
   // [TODO]
-  code_7: YOOPTA_ULTRA_VALUES.code('code_7', { order: 7, depth: 0 }),
+  // code_7: YOOPTA_ULTRA_VALUES.code('code_7', { order: 7, depth: 0 }),
   blockquote_1: YOOPTA_ULTRA_VALUES.blockquote(
     'blockquote_1',
     {
@@ -342,17 +342,17 @@ export const FAKE_YOOPTA_EDITOR_CHILDREN = {
       text: ` Then use slate's Range.end(editor.selection) to get the current cursor position. Note the current cursor position. From current cursor and keep going left until the character doesn't match regexp.`,
     },
   ]),
-  callout_4: YOOPTA_ULTRA_VALUES.callout('callout_4', { order: 5, depth: 0 }, [
+  callout_4: YOOPTA_ULTRA_VALUES.callout('callout_4', { order: 4, depth: 0 }, [
     {
       text: `To note, Redux has RTK, which helps with precisely this type of structure. It also has lots of helper functions to help you organize, select and update each entity. It's not an ORM, but you can use an ORM on top of it.`,
     },
   ]),
-  blockquote_7: YOOPTA_ULTRA_VALUES.blockquote('blockquote_7', { order: 8, depth: 0 }),
-  table_7: YOOPTA_ULTRA_VALUES.table('table_7', { order: 9, depth: 0 }),
-  HGQj3faHJkbMGFcasdaBJNUgj_5: YOOPTA_ULTRA_VALUES.video('HGQj3faHJkbMGFcasdaBJNUgj_5', {
-    order: 6,
-    depth: 0,
-  }),
+  blockquote_7: YOOPTA_ULTRA_VALUES.blockquote('blockquote_7', { order: 5, depth: 0 }),
+  table_7: YOOPTA_ULTRA_VALUES.table('table_7', { order: 8, depth: 0 }),
+  // HGQj3faHJkbMGFcasdaBJNUgj_5: YOOPTA_ULTRA_VALUES.video('HGQj3faHJkbMGFcasdaBJNUgj_5', {
+  //   order: 6,
+  //   depth: 0,
+  // }),
   anotherway_3: YOOPTA_ULTRA_VALUES.blockquote(
     'anotherway_3',
     {
@@ -365,7 +365,7 @@ export const FAKE_YOOPTA_EDITOR_CHILDREN = {
       },
     ],
   ),
-  numbered_list_id: YOOPTA_ULTRA_VALUES.numberedList('numbered_list_id', { order: 4, depth: 0 }),
+  // numbered_list_id: YOOPTA_ULTRA_VALUES.numberedList('numbered_list_id', { order: 4, depth: 0 }),
   headingOne_0: YOOPTA_ULTRA_VALUES.headingTwo('headingOne_0', { order: 0, depth: 0 }),
   // HGQj3faHJkbMGFcasdLINK: YOOPTA_ULTRA_VALUES.link('HGQj3faHJkbMGFcasdLINK', { type: 'inline' }),
 };

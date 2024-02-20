@@ -27,6 +27,7 @@ const HeadingOne = createYooptaPlugin({
   },
   options: {
     displayLabel: 'Heading 1',
+    shortcut: ['h1', '#', '*'],
   },
 });
 
