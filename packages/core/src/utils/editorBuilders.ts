@@ -1,0 +1,77 @@
+import { withHistory } from 'slate-history';
+import { withReact } from 'slate-react';
+import { createEditor, Editor } from 'slate';
+import { YooEditor } from '../editor/types';
+import { Plugin } from '../plugins/types';
+import { YooptaMark } from '../textFormatters/createYooptaMark';
+import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
+import { applyBlock } from '../editor/transforms/applyBlock';
+import { getValue } from '../editor/textFormats/getValue';
+import { isActive } from '../editor/textFormats/isActive';
+import { toggle } from '../editor/textFormats/toggle';
+import { update } from '../editor/textFormats/update';
+import { withShortcuts } from '../extenstions/shortcuts';
+
+export function buildMarks(editor, marks: YooptaMark<any>[]) {
+  const formats: YooEditor['formats'] = {};
+
+  marks.forEach((mark) => {
+    const type = mark.type;
+    formats[type] = {
+      hotkey: mark.hotkey,
+      type,
+      getValue: () => getValue(editor, type),
+      isActive: () => isActive(editor, type),
+      toggle: () => toggle(editor, type),
+      update: (props) => update(editor, type, props),
+    };
+  });
+
+  return formats;
+}
+
+export function buildBlocks(editor, plugins: Plugin[]) {
+  const blocks: YooEditor['blocks'] = {};
+
+  plugins.forEach((plugin, index) => {
+    blocks[plugin.type] = {
+      order: index,
+      type: plugin.type,
+      elements: plugin.elements,
+      options: plugin.options,
+      isActive: () => {
+        const block = findPluginBlockBySelectionPath(editor, { at: editor.selection });
+        return block?.type === plugin.type;
+      },
+      apply: (options) => {
+        applyBlock(editor, plugin.type, options);
+      },
+      update: () => {
+        console.log('block.update');
+      },
+      delete: () => {
+        console.log('block.delete');
+      },
+    };
+  });
+
+  return blocks;
+}
+
+export function buildBlockSlateEditors(editor: YooEditor) {
+  const blockEditorsMap = {};
+
+  console.log('editor', editor);
+
+  Object.keys(editor.children).forEach((id) => {
+    const slate = buildeSlateEditor();
+    blockEditorsMap[id] = slate;
+  });
+
+  return blockEditorsMap;
+}
+
+export function buildeSlateEditor(): Editor {
+  const slate = withHistory(withShortcuts(withReact(createEditor())));
+  return slate;
+}

@@ -50,7 +50,7 @@ export const ToolsProvider = ({ children }) => {
       registerTool,
       unregisterTool,
     }),
-    [tools, registerTool, unregisterTool],
+    [tools],
   );
 
   return <ToolsContext.Provider value={value}>{children}</ToolsContext.Provider>;

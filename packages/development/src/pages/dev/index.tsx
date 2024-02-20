@@ -14,7 +14,7 @@ const plugins = [
   Headings.HeadingThree,
   Blockquote,
   Callout,
-  // Mention,
+  Mention,
   Link,
 ];
 

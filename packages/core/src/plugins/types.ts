@@ -13,6 +13,7 @@ export type RenderPluginProps = {
 
 export type PluginOptions = {
   displayLabel?: string;
+  shortcut?: string | string[];
 };
 
 export type Plugin = {

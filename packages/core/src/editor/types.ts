@@ -40,10 +40,6 @@ export type TextFormat = {
   update: (props?: any) => void;
 };
 
-export type TextFormatMap<TKey extends string = any> = {
-  [key in TKey]: TextFormat;
-};
-
 export type YooptaBlock = {
   order: number;
   type: string;

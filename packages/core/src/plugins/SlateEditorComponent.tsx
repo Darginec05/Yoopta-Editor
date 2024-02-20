@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { Editable, ReactEditor, RenderElementProps, Slate } from 'slate-react';
+import { useCallback, useMemo, useRef } from 'react';
+import { Editable, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useYooptaPlugin } from '../contexts/UltraYooptaContext/UltraYooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../textFormatters/createYooptaMark';
@@ -8,8 +8,6 @@ import { ExtendedLeafProps, PluginParams } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
 import { useTools } from '../contexts/UltraYooptaContext/ToolsContext';
-import { Range } from 'slate';
-import debounce from 'lodash/debounce';
 
 type Props<T> = PluginParams<T> & { id: string; marks?: YooptaMark<any>[] };
 
@@ -141,7 +139,7 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
   };
 
   const onBlur = () => {
-    console.log('onBlur');
+    console.log('onBlur from: ', plugin.type);
 
     // ReactEditor.deselect(slate);
     // ReactEditor.blur(slate);
