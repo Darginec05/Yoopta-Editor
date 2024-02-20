@@ -56,12 +56,12 @@ export function splitBlock(editor: YooEditor, options: YooptaEditorTransformOpti
     editor.blockEditorsMap[newBlock.id] = newSlateEditor;
     editor.children[newBlock.id] = newBlock;
 
+    editor.children = finishDraft(editor.children);
+    editor.applyChanges();
+
     if (focus) {
       // [TODO] - check focus for split block function
       editor.focusBlock(newBlock.id, { slate: newSlateEditor });
     }
-
-    editor.children = finishDraft(editor.children);
-    editor.applyChanges();
   });
 }

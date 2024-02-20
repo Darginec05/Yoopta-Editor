@@ -34,10 +34,10 @@ export type YooptaPluginsEditorMap = Record<string, SlateEditor>;
 export type TextFormat = {
   type: string;
   hotkey?: string;
-  value: string;
-  isActive: (editor, format) => boolean;
-  toggle: (editor, format) => void;
-  update: (editor, format, props: any) => void;
+  getValue: (type: string) => null | any;
+  isActive: () => boolean;
+  toggle: () => void;
+  update: (props?: any) => void;
 };
 
 export type TextFormatMap<TKey extends string = any> = {
@@ -56,6 +56,7 @@ export type YooptaBlock = {
 };
 
 export type YooptaBlocks = Record<string, YooptaBlock>;
+export type YooptaFormats = Record<string, TextFormat>;
 
 // [TODO] - Fix generic and default types
 export type YooEditor<TNodes = any, TKey extends string = any> = {
@@ -74,9 +75,7 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   setSelection: (path: YooptaPath | null) => void;
   blockEditorsMap: YooptaPluginsEditorMap;
   blocks: YooptaBlocks;
-  formats: {
-    [key in TKey]: Pick<TextFormat, 'type' | 'hotkey'>;
-  };
+  formats: YooptaFormats;
 };
 
 // types for slate value

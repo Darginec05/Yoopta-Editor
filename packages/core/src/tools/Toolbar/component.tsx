@@ -1,16 +1,20 @@
 import { FontBoldIcon, FontItalicIcon, StrikethroughIcon, CodeIcon, UnderlineIcon } from '@radix-ui/react-icons';
 import { useTools } from '../../contexts/UltraYooptaContext/ToolsContext';
-import { TextFormats } from '../../editor';
 import * as Toolbar from '@radix-ui/react-toolbar';
+import { YooEditor, YooptaBlock } from '../../editor/types';
 
-const ToolbarComponent = ({ activeBlock, editor }) => {
-  const isActive = (type) => TextFormats.isActive(editor, { type });
+type ToolbarComponentProps = {
+  activeBlock?: YooptaBlock;
+  editor: YooEditor;
+};
+
+const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
   const getItemStyle = (type) => ({
-    backgroundColor: isActive(type) ? '#1183ff' : undefined,
-    color: isActive(type) ? '#fff' : undefined,
+    backgroundColor: editor.formats[type]?.isActive() ? '#1183ff' : undefined,
+    color: editor.formats[type]?.isActive() ? '#fff' : undefined,
   });
 
-  const label = activeBlock?.options?.displayLabel || activeBlock?.type;
+  const label = activeBlock?.options?.displayLabel || activeBlock?.type || '';
 
   return (
     <Toolbar.Root className="bg-white flex z-50 p-[5px] rounded-md shadow-md">
@@ -40,7 +44,7 @@ const ToolbarComponent = ({ activeBlock, editor }) => {
           value="bold"
           aria-label="Bold"
           style={getItemStyle('bold')}
-          onClick={() => TextFormats.toggle(editor, { type: 'bold' })}
+          onClick={() => editor.formats.bold.toggle()}
         >
           <FontBoldIcon width={20} height={20} />
         </Toolbar.ToggleItem>
@@ -49,7 +53,7 @@ const ToolbarComponent = ({ activeBlock, editor }) => {
           value="italic"
           aria-label="Italic"
           style={getItemStyle('italic')}
-          onClick={() => TextFormats.toggle(editor, { type: 'italic' })}
+          onClick={() => editor.formats.italic.toggle()}
         >
           <FontItalicIcon width={20} height={20} />
         </Toolbar.ToggleItem>
@@ -58,7 +62,7 @@ const ToolbarComponent = ({ activeBlock, editor }) => {
           value="underline"
           aria-label="Underline"
           style={getItemStyle('underline')}
-          onClick={() => TextFormats.toggle(editor, { type: 'underline' })}
+          onClick={() => editor.formats.underline.toggle()}
         >
           <UnderlineIcon width={20} height={20} />
         </Toolbar.ToggleItem>
@@ -67,7 +71,7 @@ const ToolbarComponent = ({ activeBlock, editor }) => {
           value="strike"
           aria-label="Strike"
           style={getItemStyle('strike')}
-          onClick={() => TextFormats.toggle(editor, { type: 'strike' })}
+          onClick={() => editor.formats.strike.toggle()}
         >
           <StrikethroughIcon width={20} height={20} />
         </Toolbar.ToggleItem>
@@ -76,7 +80,7 @@ const ToolbarComponent = ({ activeBlock, editor }) => {
           value="code"
           aria-label="Code"
           style={getItemStyle('code')}
-          onClick={() => TextFormats.toggle(editor, { type: 'code' })}
+          onClick={() => editor.formats.code.toggle()}
         >
           <CodeIcon width={20} height={20} />
         </Toolbar.ToggleItem>

@@ -31,7 +31,6 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
   const editor = useYooptaEditor();
   const plugin = useYooptaPlugin(id);
   const initialValue = useRef(plugin.value).current;
-  const [value, setValue] = useState(initialValue);
   const type = plugin.type;
 
   const { tools } = useTools();
@@ -85,8 +84,6 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
   }, [events, editor]);
 
   const onChange = useCallback((data) => {
-    console.log('data', data);
-
     editor.updateBlock(id, data);
   }, []);
 
@@ -144,19 +141,19 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
   };
 
   const onBlur = () => {
-    ReactEditor.deselect(slate);
-    ReactEditor.blur(slate);
+    console.log('onBlur');
+
+    // ReactEditor.deselect(slate);
+    // ReactEditor.blur(slate);
   };
 
   const onFocus = (event: React.FocusEvent) => {
     editor.setSelection([plugin.meta.order]);
   };
 
-  const activeBlock = Object.values(editor.blocks).find((block) => block.isActive());
-
   return (
     <div data-plugin-id={id} data-plugin-type={type}>
-      <Slate key={`slate-${id}`} editor={slate} initialValue={value} onChange={(val) => setValue(val)}>
+      <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onChange={onChange}>
         <Editable
           renderElement={renderElement}
           // placeholder="Enter some rich text…"
@@ -168,11 +165,9 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
           onKeyUp={onKeyUp}
           onFocus={onFocus}
           onMouseDown={onMouseDown}
-          // onMouseUp={onMouseUp}
           key={`editable-${id}`}
-          id={`editable-${id}`}
           // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
-          // onBlur={onBlur}
+          onBlur={onBlur}
         />
       </Slate>
     </div>

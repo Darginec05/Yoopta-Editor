@@ -18,6 +18,10 @@ import { applyBlock } from './editor/transforms/applyBlock';
 import { ToolsProvider } from './contexts/UltraYooptaContext/ToolsContext';
 import { ActionMenuList } from './tools/ActionMenuList/ActionMenuList';
 import { Toolbar } from './tools/Toolbar/Toolbar';
+import { getValue } from './editor/textFormats/getValue';
+import { isActive } from './editor/textFormats/isActive';
+import { toggle } from './editor/textFormats/toggle';
+import { update } from './editor/textFormats/update';
 
 type Props = {
   editor: YooEditor;
@@ -33,13 +37,18 @@ const PLUGINS = [Code, Video, Table, NumberedList];
 const TEXT_FORMATTERS = [Bold, Italic, Underline, Strike, CodeMark, Highlight];
 const DEFAULT_VALUE = getDefaultYooptaChildren();
 
-function buildMarks(marks: YooptaMark<any>[]) {
+function buildMarks(editor, marks: YooptaMark<any>[]) {
   const formats: YooEditor['formats'] = {};
 
   marks.forEach((mark) => {
-    formats[mark.type] = {
+    const type = mark.type;
+    formats[type] = {
       hotkey: mark.hotkey,
-      type: mark.type,
+      type,
+      getValue: () => getValue(editor, type),
+      isActive: () => isActive(editor, type),
+      toggle: () => toggle(editor, type),
+      update: (props) => update(editor, type, props),
     };
   });
 
@@ -101,7 +110,7 @@ const YooptaEditor = ({
 
   const [editorState, setEditorState] = useState<{ editor: YooEditor<any, 'hightlight'>; version: number }>(() => {
     editor.applyChanges = applyChanges;
-    editor.formats = buildMarks(marks);
+    editor.formats = buildMarks(editor, marks);
     editor.blocks = buildBlocks(editor, plugins);
     editor.children = FAKE_YOOPTA_EDITOR_CHILDREN;
     editor.blockEditorsMap = buildBlockSlateEditors(editor);
