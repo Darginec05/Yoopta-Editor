@@ -11,7 +11,7 @@ import { Bold, CodeMark, Highlight, Italic, Strike, Underline, YooptaMark } from
 import { Table } from './components/Editor/plugins/Table/Table';
 import { NumberedList } from './components/Editor/plugins/NumberedList/NumberedList';
 import { ToolAPI, ToolsProvider } from './contexts/UltraYooptaContext/ToolsContext';
-import { buildBlocks, buildBlockSlateEditors, buildMarks } from './utils/editorBuilders';
+import { buildBlocks, buildBlockShortcuts, buildBlockSlateEditors, buildMarks } from './utils/editorBuilders';
 import { Toolbar } from './tools/Toolbar/Toolbar';
 import { ActionMenuList } from './tools/ActionMenuList/ActionMenuList';
 
@@ -53,6 +53,7 @@ const YooptaEditor = ({
     editor.blocks = buildBlocks(editor, plugins);
     editor.children = FAKE_YOOPTA_EDITOR_CHILDREN;
     editor.blockEditorsMap = buildBlockSlateEditors(editor);
+    editor.shortcuts = buildBlockShortcuts(editor);
 
     return { editor, version: 0 };
   });

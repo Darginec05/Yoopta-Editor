@@ -1,42 +1,43 @@
 import { Element, NodeEntry, Text } from 'slate';
 import { Editor, Range, Transforms } from 'slate';
-import { SlateElement } from '../editor/types';
+import { SlateElement, YooEditor } from '../editor/types';
 
-export const withShortcuts = (editor: Editor) => {
-  const { insertText } = editor;
+export const withShortcuts = (editor: YooEditor, slate: Editor) => {
+  const { insertText } = slate;
 
-  editor.insertText = (text: string) => {
-    const { selection } = editor;
+  slate.insertText = (text: string) => {
+    const { selection } = slate;
 
     if (text === ' ' && selection && Range.isCollapsed(selection)) {
       const { anchor } = selection;
 
-      const blockEntry: NodeEntry<SlateElement<string>> | undefined = Editor.above(editor, {
-        match: (n) => Element.isElement(n) && Editor.isBlock(editor, n),
+      const blockEntry: NodeEntry<SlateElement<string>> | undefined = Editor.above(slate, {
+        match: (n) => Element.isElement(n) && Editor.isBlock(slate, n),
         mode: 'lowest',
       });
 
       if (!blockEntry) return;
 
       const [, currentNodePath] = blockEntry;
-      const parentEntry = Editor.parent(editor, currentNodePath);
+      const parentEntry = Editor.parent(slate, currentNodePath);
       const [parentNodeElement] = parentEntry;
 
-      if (Element.isElement(parentNodeElement) && !Text.isText(parentNodeElement.children[0])) return insertText(text);
+      if (Element.isElement(parentNodeElement) && !Text.isText(parentNodeElement.children[0])) {
+        return insertText(text);
+      }
 
       const path = blockEntry ? currentNodePath : [];
-      const start = Editor.start(editor, path);
+      const start = Editor.start(slate, path);
       const range = { anchor, focus: start };
-      const beforeText = Editor.string(editor, range);
+      const beforeText = Editor.string(slate, range);
 
-      console.log('withShortcuts beforeText', beforeText);
+      const matchedBlock = editor.shortcuts?.[beforeText];
+      const hasMatchedBlock = !!matchedBlock;
 
-      const mathchedPlugin = editor.shortcuts?.[beforeText];
-
-      if (!!mathchedPlugin) {
-        Transforms.select(editor, range);
-        Transforms.delete(editor);
-        mathchedPlugin.createElement?.(editor);
+      if (hasMatchedBlock && !matchedBlock.isActive()) {
+        Transforms.select(slate, range);
+        Transforms.delete(slate);
+        matchedBlock.apply();
         return;
       }
     }
@@ -44,5 +45,5 @@ export const withShortcuts = (editor: Editor) => {
     insertText(text);
   };
 
-  return editor;
+  return slate;
 };

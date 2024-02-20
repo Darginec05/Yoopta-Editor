@@ -16,6 +16,8 @@ const Editor = ({ plugins, marks, className, autoFocus = true }: Props) => {
   const editor = useYooptaEditor();
   const yooptaEditorRef = useRef<HTMLDivElement>(null);
 
+  console.log('editor', editor);
+
   useEffect(() => {
     const firstBlock = findPluginBlockBySelectionPath(editor, { at: [0] });
     if (firstBlock) editor.focusBlock(firstBlock.id);

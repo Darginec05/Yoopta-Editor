@@ -13,7 +13,7 @@ declare module 'slate' {
 
 const Image = createYooptaPlugin<ImagePluginOptions, ImageElement>({
   type: 'image',
-  shortcut: 'image',
+  shortcuts: 'image',
   renderer: {
     // @ts-ignore [TODO: fix types]
     editor: ImageEditorFactory,
@@ -65,9 +65,8 @@ const Image = createYooptaPlugin<ImagePluginOptions, ImageElement>({
     },
     html: {
       serialize: (node, children) => {
-        return `<img src="${node.data.url}" width="${node.data.size?.width}" height="${
-          node.data.size?.height
-        }" decoding="async" loading="lazy"  alt="${node.data.caption || 'yoopta-html-image'}" />`;
+        return `<img src="${node.data.url}" width="${node.data.size?.width}" height="${node.data.size
+          ?.height}" decoding="async" loading="lazy"  alt="${node.data.caption || 'yoopta-html-image'}" />`;
       },
       deserialize: {
         nodeName: 'IMG',

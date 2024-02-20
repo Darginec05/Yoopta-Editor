@@ -7,7 +7,7 @@ export function createYooptaPlugin<T>(plugin: PluginParams<T>): Plugin {
     elements: plugin.elements,
     options: {
       displayLabel: plugin.options?.displayLabel,
-      shortcut: plugin.options?.shortcut,
+      shortcuts: plugin.options?.shortcuts,
     },
     renderPlugin: (props) => {
       const { customEditor, type, events } = plugin;

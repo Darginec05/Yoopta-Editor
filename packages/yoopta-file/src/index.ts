@@ -13,7 +13,7 @@ declare module 'slate' {
 
 const File = createYooptaPlugin<FilePluginOptions, FileElement>({
   type: 'file',
-  shortcut: 'file',
+  shortcuts: 'file',
   renderer: {
     // @ts-ignore [TODO: fix types]
     editor: FileEditorFactory,

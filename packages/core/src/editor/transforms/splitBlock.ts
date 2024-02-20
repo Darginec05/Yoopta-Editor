@@ -51,7 +51,7 @@ export function splitBlock(editor: YooEditor, options: YooptaEditorTransformOpti
       }
     });
 
-    const newSlateEditor = buildeSlateEditor();
+    const newSlateEditor = buildeSlateEditor(editor);
     editor.blockEditorsMap[newBlock.id] = newSlateEditor;
     editor.children[newBlock.id] = newBlock;
 

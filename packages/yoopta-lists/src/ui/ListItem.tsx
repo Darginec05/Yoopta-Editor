@@ -38,7 +38,7 @@ const ListItemList = createYooptaPlugin<any, ListChildItemElement>({
 
     return editor;
   },
-  shortcut: '-',
+  shortcuts: '-',
   defineElement: (): ListChildItemElement => ({
     id: generateId(),
     type: 'list-item',

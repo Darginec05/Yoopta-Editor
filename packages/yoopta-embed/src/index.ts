@@ -13,7 +13,7 @@ declare module 'slate' {
 
 const Embed = createYooptaPlugin<EmbedPluginOptions, EmbedElement>({
   type: 'embed',
-  shortcut: 'embed',
+  shortcuts: 'embed',
   renderer: {
     // @ts-ignore [TODO: fix types]
     editor: EmbedEditorFactory,
@@ -65,11 +65,9 @@ const Embed = createYooptaPlugin<EmbedPluginOptions, EmbedElement>({
     },
     html: {
       serialize: (node, children) => {
-        return `<iframe src="https://player.vimeo.com/video/807053663?badge=0&amp;byline=0&amp;portrait=0&amp;title=0" frameborder="0" height="${
-          node.data.size?.height
-        }" width="${node.data.size?.width}" allowfullscreen="" url="https://vimeo.com/807053663" provider="${
-          node.data.provider || ''
-        }" />`;
+        return `<iframe src="https://player.vimeo.com/video/807053663?badge=0&amp;byline=0&amp;portrait=0&amp;title=0" frameborder="0" height="${node
+          .data.size?.height}" width="${node.data.size
+          ?.width}" allowfullscreen="" url="https://vimeo.com/807053663" provider="${node.data.provider || ''}" />`;
       },
       deserialize: {
         nodeName: 'IFRAME',
