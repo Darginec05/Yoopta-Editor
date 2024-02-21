@@ -41,7 +41,6 @@ export type TextFormat = {
 };
 
 export type YooptaBlock = {
-  order: number;
   type: string;
   options?: PluginOptions;
   elements: PluginElementsMap<unknown>;

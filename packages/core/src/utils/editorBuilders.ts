@@ -35,7 +35,6 @@ export function buildBlocks(editor, plugins: Plugin[]) {
 
   plugins.forEach((plugin, index) => {
     blocks[plugin.type] = {
-      order: index,
       type: plugin.type,
       elements: plugin.elements,
       options: plugin.options,
