@@ -62,18 +62,12 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
           }
 
           const prevBlockPathIndex = editor.selection ? editor.selection[0] - 1 : 0;
-          console.log('editor.selection', editor.selection);
-          console.log('prevBlockPathIndex', prevBlockPathIndex);
-
           const prevSlate = findSlateBySelectionPath(editor, { at: [prevBlockPathIndex] });
-          console.log('prevSlate', prevSlate?.children);
 
           // If we try to delete first block do nothing
           if (!prevSlate) return;
 
           const prevSlateText = Editor.string(prevSlate, [0, 0]);
-
-          console.log('prevSlateText', prevSlateText);
 
           // If previous block values is empty just delete block without merging
           if (prevSlateText.length === 0) {
@@ -92,7 +86,6 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
 
           const childNodes = childNodeEntries.map(([node]) => node);
           Transforms.insertNodes(prevSlate, childNodes, { at: Editor.end(prevSlate, []) });
-
           return editor.deleteBlock({ at: editor.selection, focus: true });
         }
       }

@@ -138,7 +138,8 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
     }
   };
 
-  const onBlur = () => {
+  const onBlur = (event: React.FocusEvent) => {
+    event.preventDefault();
     console.log('onBlur from: ', plugin.type);
 
     // ReactEditor.deselect(slate);

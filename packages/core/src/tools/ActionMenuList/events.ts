@@ -17,15 +17,17 @@ const handleActionMenuKeyDown = (editor: YooEditor, slate: Editor, options) => (
     const domSelection = window.getSelection();
     if (!domSelection) return;
 
-    const range = domSelection.getRangeAt(0);
-    const rect = range.getBoundingClientRect();
+    const domRange = domSelection.getRangeAt(0);
+    const selectionRect = domRange.getBoundingClientRect();
 
-    const style = {
-      top: `${rect.top + window.scrollY + rect.height + 5}px`,
-      left: `${rect.left + window.scrollX}px`,
-    };
+    if (domRange) {
+      state.refs.setReference({
+        getBoundingClientRect: () => selectionRect,
+        getClientRects: () => domRange.getClientRects(),
+      });
 
-    open({ open: true, style });
+      open();
+    }
   }
 
   if (!state.open) return;

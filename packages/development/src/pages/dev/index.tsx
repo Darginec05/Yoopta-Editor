@@ -4,6 +4,7 @@ import Paragraph from '@yoopta/paragraph';
 import Callout from '@yoopta/callout';
 import Headings from '@yoopta/headings';
 import Mention from '@yoopta/mention';
+import Image from '@yoopta/image';
 import Link from '@yoopta/link';
 import { useMemo } from 'react';
 
@@ -16,10 +17,15 @@ const plugins = [
   Callout,
   Mention,
   Link,
+  Image,
 ];
 
 const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
+
+  const onSubmit = () => {
+    const editorData = editor.getValue();
+  };
 
   return (
     <div>
