@@ -40,11 +40,19 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
     let slateEditor = editor.blockEditorsMap[id];
     const elementTypes = Object.keys(elements);
 
+    console.log('elements', elements);
+    console.log('plugin', plugin);
+
     elementTypes.forEach((elementType) => {
       const nodeType = elements[elementType].options?.nodeType;
 
       const isInline = nodeType === 'inline';
       const isVoid = nodeType === 'void';
+      // console.log('nodeType', nodeType);
+      // if (isVoid) {
+      //   console.log('elementType', elementType);
+      // }
+
       const isInlineVoid = Array.isArray(nodeType) && nodeType.includes('inline') && nodeType.includes('void');
 
       if (isInlineVoid) {

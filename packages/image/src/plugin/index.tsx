@@ -6,13 +6,21 @@ const Image = createYooptaPlugin({
   elements: {
     image: {
       render: ImageRender,
+      elementProps: {
+        src: 'https://images.unsplash.com/photo-1599595344070-c456bea6ee98?q=80&w=1878&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        alt: null,
+        srcSet: null,
+        fit: 'cover',
+        sizes: { width: 500, height: 300, maxWidth: 700, maxHeight: 400 },
+      },
       options: {
         nodeType: 'void',
+        // asRoot: true
       },
     },
   },
   options: {
-    displayLabel: 'Image',
+    displayLabel: 'Image in action',
   },
 });
 

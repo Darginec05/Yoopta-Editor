@@ -32,7 +32,12 @@ export function applyBlock(editor: YooEditor, type: string, options?: ApplyBlock
     const props = element.elementProps || {};
     const node = { id: generateId(), type, children: [{ text: '' }], props };
 
+    console.log('created slate node', node);
+    console.log('is inline', Editor.isInline(slate, node));
+    console.log('is void', Editor.isVoid(slate, node));
+
     const isInlineElement = element?.options?.nodeType === 'inline';
+    console.log('isInlineElement', isInlineElement);
 
     if (isInlineElement) {
     }
