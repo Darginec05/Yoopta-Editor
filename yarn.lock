@@ -3476,6 +3476,14 @@
   resolved "https://registry.yarnpkg.com/@yoopta/headings/-/headings-2.0.1.tgz#853a0723b2cc98e3b7c0d8f220f82567a3b4f4d4"
   integrity sha512-nP6HMZPKSCwR2fjnmya9Gx+crvtJMtMwonz91IdCiRzb5re0MguUa9jKUQ1OXp/OwMktzQGygayYeeII9gldJA==
 
+"@yoopta/image@*":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/image/-/image-2.0.1.tgz#246afc73bd953f0ef7c196f8b741f9646a48e2ce"
+  integrity sha512-qub2l9ChBwh6CS3lECqe0ms7cRLF5PEgIsU+UEaNRkTxf76jEnqf16OglOD8AiTfXGeHnM3OsroGqRpx/Adb0w==
+  dependencies:
+    body-scroll-lock "^4.0.0-beta.0"
+    re-resizable "^6.9.9"
+
 "@yoopta/paragraph@*":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@yoopta/paragraph/-/paragraph-2.0.1.tgz#c1838f34c6de736674561bfcc3f5108bb0dbf03c"

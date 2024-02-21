@@ -1,4 +1,11 @@
-import { FontBoldIcon, FontItalicIcon, StrikethroughIcon, CodeIcon, UnderlineIcon } from '@radix-ui/react-icons';
+import {
+  FontBoldIcon,
+  FontItalicIcon,
+  StrikethroughIcon,
+  CodeIcon,
+  UnderlineIcon,
+  SymbolIcon,
+} from '@radix-ui/react-icons';
 import * as Toolbar from '@radix-ui/react-toolbar';
 import { YooEditor, YooptaBlock } from '../../editor/types';
 

@@ -10,6 +10,7 @@ const Blockquote = createYooptaPlugin({
   },
   options: {
     displayLabel: 'Blockquote',
+    shortcuts: ['>'],
   },
 });
 

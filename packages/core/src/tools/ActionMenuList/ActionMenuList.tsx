@@ -1,13 +1,11 @@
 import { createPortal } from 'react-dom';
-import { TextIcon } from '@radix-ui/react-icons';
 import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
 import { CSSProperties, useEffect, useState } from 'react';
-import { YooEditor, YooptaBlock } from '../../editor/types';
-import { Editor, Path } from 'slate';
-import { HOTKEYS } from '../../utils/hotkeys';
+import { YooptaBlock } from '../../editor/types';
 import { useTools } from '../../contexts/UltraYooptaContext/ToolsContext';
 import { ActionMenuComponent } from './component';
 import { events } from './events';
+import { useFloating, offset, flip, shift, inline, autoUpdate, FloatingPortal } from '@floating-ui/react';
 
 const filterBy = (item: YooptaBlock | YooptaBlock['options'], text: string, field: string) => {
   if (!item || !item?.[field]) return false;
@@ -41,6 +39,15 @@ type ActionMenuState = {
 const ActionMenuList = ({ trigger = '/', render }: Props) => {
   const editor = useYooptaEditor();
   const { registerTool, unregisterTool, tools } = useTools();
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
+  const { refs, floatingStyles } = useFloating({
+    placement: 'top-start',
+    open: isMenuOpen,
+    onOpenChange: setIsMenuOpen,
+    middleware: [inline(), flip(), shift(), offset(10)],
+    whileElementsMounted: autoUpdate,
+  });
 
   const blockTypes = Object.keys(editor.blocks).sort((a, b) => {
     const aOrder = editor.blocks[a].order;
@@ -51,15 +58,9 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
 
   const [selectedAction, setSelectedAction] = useState(blockTypes[0]);
   const [actions, setActions] = useState(blockTypes);
-  const [state, setState] = useState<ActionMenuState>({
-    open: false,
-    style: {},
-  });
 
-  const { open: isOpen, style } = state;
-
-  const onOpen = ({ style }) => setState({ open: true, style });
-  const onClose = () => setState({ open: false, style: {} });
+  const onOpen = () => setIsMenuOpen(true);
+  const onClose = () => setIsMenuOpen(false);
 
   const onFilter = ({ text }) => {
     const string = text.trim().replace(trigger, '');
@@ -68,24 +69,24 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
     setActions(blockTypes.filter((type) => filterActionMenuItems(editor.blocks[type], string)));
   };
 
-  // useEffect(() => {
-  //   registerTool('actionMenu', {
-  //     open: onOpen,
-  //     close: onClose,
-  //     change: onFilter,
-  //     state,
-  //     component: ActionMenuComponent,
-  //     events,
-  //   });
-  //   return () => unregisterTool('actionMenu');
-  // }, [state]);
+  useEffect(() => {
+    registerTool('actionMenu', {
+      open: onOpen,
+      close: onClose,
+      change: onFilter,
+      state: { isMenuOpen, refs },
+      component: ActionMenuComponent,
+      events,
+    });
+    return () => unregisterTool('actionMenu');
+  }, [isMenuOpen]);
 
   useEffect(() => {
-    if (!isOpen || !tools.actionMenu) return;
+    if (!isMenuOpen || !tools.actionMenu) return;
 
     document.addEventListener('click', onClose);
     return () => document.removeEventListener('click', onClose);
-  }, [isOpen, tools.actionMenu]);
+  }, [isMenuOpen, tools.actionMenu]);
 
   const onMouseEnter = (e: React.MouseEvent) => {
     const type = e.currentTarget.getAttribute('data-action-menu-item-type')!;
@@ -93,25 +94,40 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
   };
 
   const isEmpty = actions.length === 0;
-  const positions = { transform: `translate3d(${style?.left}, ${style?.top}, 0)` };
 
-  if (!isOpen) return null;
+  if (!isMenuOpen) return null;
 
   if (render) {
     const getItemProps = (props) => ({ onMouseEnter, selectedAction });
-    return createPortal(render({ actions, isEmpty, positions, onClose, getItemProps }), document.body);
+    return (
+      <FloatingPortal>
+        <div
+          className="absolute z-[9999] m-0 left-0 top-0 right-auto bottom-auto"
+          style={floatingStyles}
+          ref={refs.setFloating}
+        >
+          {render({ getItemProps, actions, editor, onMouseEnter, selectedAction, onClose })}
+        </div>
+      </FloatingPortal>
+    );
   }
 
-  return createPortal(
-    <ActionMenuComponent
-      actions={actions}
-      style={positions}
-      editor={editor}
-      onMouseEnter={onMouseEnter}
-      selectedAction={selectedAction}
-      onClose={onClose}
-    />,
-    document.body,
+  return (
+    <FloatingPortal>
+      <div
+        className="absolute z-[9999] m-0 left-0 top-0 right-auto bottom-auto"
+        style={floatingStyles}
+        ref={refs.setFloating}
+      >
+        <ActionMenuComponent
+          actions={actions}
+          editor={editor}
+          onMouseEnter={onMouseEnter}
+          selectedAction={selectedAction}
+          onClose={onClose}
+        />
+      </div>
+    </FloatingPortal>
   );
 };
 
