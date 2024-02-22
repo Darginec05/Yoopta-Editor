@@ -1,5 +1,5 @@
 import { createDraft, finishDraft } from 'immer';
-import { Editor, Element, Path, Transforms } from 'slate';
+import { Editor, Element, Path, Text, Transforms } from 'slate';
 import { buildeSlateEditor } from '../../utils/editorBuilders';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../../utils/generateId';
@@ -42,6 +42,7 @@ export function splitBlock(editor: YooEditor, options: YooptaEditorTransformOpti
         depth: currentBlock.meta.depth,
         maxDepth: currentBlock.meta.maxDepth,
       },
+      // [TODO] - check for text formats
       value: [nextBlockChildren],
     };
 

@@ -1,15 +1,11 @@
 import { UltraYooptaContextProvider } from './contexts/UltraYooptaContext/UltraYooptaContext';
 import { FAKE_YOOPTA_EDITOR_CHILDREN, getDefaultYooptaChildren } from './components/Editor/defaultValue';
 import { Editor } from './components/Editor/Editor';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { YooEditor, YooptaChildren } from './editor/types';
 import { Plugin } from './plugins/types';
-import { Code } from './components/Editor/plugins/Code/Code';
-import { Video } from './components/Editor/plugins/Video/Video';
 import NoSSR from './components/NoSsr/NoSsr';
 import { Bold, CodeMark, Highlight, Italic, Strike, Underline, YooptaMark } from './textFormatters/createYooptaMark';
-import { Table } from './components/Editor/plugins/Table/Table';
-import { NumberedList } from './components/Editor/plugins/NumberedList/NumberedList';
 import { ToolAPI, ToolsProvider } from './contexts/UltraYooptaContext/ToolsContext';
 import { buildBlocks, buildBlockShortcuts, buildBlockSlateEditors, buildMarks } from './utils/editorBuilders';
 import { Toolbar } from './tools/Toolbar/Toolbar';
@@ -28,7 +24,6 @@ type Props = {
   };
 };
 
-const PLUGINS = [Code, Video, Table, NumberedList];
 const TEXT_FORMATTERS = [Bold, Italic, Underline, Strike, CodeMark, Highlight];
 const DEFAULT_VALUE = getDefaultYooptaChildren();
 
@@ -36,7 +31,7 @@ const YooptaEditor = ({
   editor,
   value,
   marks = TEXT_FORMATTERS,
-  plugins = PLUGINS,
+  plugins,
   autoFocus,
   className,
   tools,
