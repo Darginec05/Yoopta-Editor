@@ -67,6 +67,7 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   focusBlock: (id: string, options?: YooptaEditorTransformOptions) => void;
   selection: YooptaPath | null;
   children: Record<string, YooptaChildrenValue>;
+  getEditorValue: () => TNodes;
   setSelection: (path: YooptaPath | null) => void;
   blockEditorsMap: YooptaPluginsEditorMap;
   blocks: YooptaBlocks;

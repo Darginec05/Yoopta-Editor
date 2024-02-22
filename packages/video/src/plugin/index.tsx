@@ -6,16 +6,13 @@ const Video = createYooptaPlugin({
   elements: {
     video: {
       render: VideoRender,
-      elementProps: {
+      props: {
         src: null,
         alt: null,
         srcSet: null,
         fit: 'cover',
         sizes: { width: 500, height: 300, maxWidth: 700, maxHeight: 400 },
-      },
-      options: {
         nodeType: 'void',
-        // asRoot: true
       },
     },
   },

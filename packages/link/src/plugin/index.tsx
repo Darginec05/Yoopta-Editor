@@ -12,12 +12,10 @@ const Link = createYooptaPlugin<LinkElementProps>({
   elements: {
     link: {
       render: LinkRender,
-      elementProps: {
+      props: {
         url: null,
         target: '_blank',
         rel: 'noreferrer',
-      },
-      options: {
         nodeType: 'inline',
       },
     },

@@ -44,13 +44,11 @@ const Video = createYooptaPlugin<VideoSlateElementProps>({
   elements: {
     video: {
       render: VideoRender,
-      elementProps: {
+      props: {
         height: 400,
         width: 400,
         src: null,
         poster: undefined,
-      },
-      options: {
         nodeType: 'void',
       },
     },

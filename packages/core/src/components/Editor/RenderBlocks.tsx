@@ -61,7 +61,7 @@ const RenderBlocks = ({ editor, plugins, marks }: Props) => {
       if (plugin.elements) {
         Object.keys(plugin.elements).forEach((type) => {
           const element = plugin.elements[type];
-          const nodeType = element.options?.nodeType;
+          const nodeType = element.props?.nodeType;
           if (nodeType === 'inline' || (Array.isArray(nodeType) && nodeType.includes('inline'))) {
             inlineTopLevelPlugins[type] = element;
           }

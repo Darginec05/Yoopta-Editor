@@ -35,7 +35,7 @@ const NumberedList = createYooptaPlugin({
     },
     'list-item': {
       render: ListItemRender,
-      elementProps: {
+      props: {
         depth: 0,
       },
     },
