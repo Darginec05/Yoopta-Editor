@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/video",
-  "version": "1.9.17-rc",
+  "version": "1.9.19-rc",
   "description": "> TODO: description",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
@@ -14,11 +14,11 @@
     "dist/"
   ],
   "peerDependencies": {
-    "@yoopta/editor": ">=1.9.18-rc",
     "react": ">=17.0.2",
     "react-dom": ">=17.0.2",
     "slate": ">=0.72.3",
-    "slate-react": ">=0.95.0"
+    "slate-react": ">=0.95.0",
+    "@yoopta/editor": ">=1.9.18-rc"
   },
   "publishConfig": {
     "registry": "https://registry.yarnpkg.com"
@@ -28,13 +28,10 @@
     "url": "git+https://github.com/Darginec05/Editor-Yoopta.git"
   },
   "scripts": {
-    "test": "node ./__tests__/yoopta-code.test.js"
+    "test": "node ./__tests__/yoopta-video.test.js",
+    "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development"
   },
   "bugs": {
     "url": "https://github.com/Darginec05/Editor-Yoopta/issues"
-  },
-  "dependencies": {
-    "body-scroll-lock": "^4.0.0-beta.0",
-    "re-resizable": "^6.9.9"
   }
 }

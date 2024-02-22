@@ -1,11 +1,11 @@
-# `@yoopta/code`
+# `yoopta-video`
 
 > TODO: description
 
 ## Usage
 
 ```
-const blockquote = require('@yoopta/code');
+const video = require('yoopta-video');
 
 // TODO: DEMONSTRATE API
 ```
