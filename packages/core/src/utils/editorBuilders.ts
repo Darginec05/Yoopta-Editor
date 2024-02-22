@@ -5,7 +5,7 @@ import { YooEditor } from '../editor/types';
 import { Plugin } from '../plugins/types';
 import { YooptaMark } from '../textFormatters/createYooptaMark';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
-import { applyBlock } from '../editor/transforms/applyBlock';
+import { createBlock } from '../editor/transforms/createBlock';
 import { getValue } from '../editor/textFormats/getValue';
 import { isActive } from '../editor/textFormats/isActive';
 import { toggle } from '../editor/textFormats/toggle';
@@ -42,8 +42,8 @@ export function buildBlocks(editor, plugins: Plugin[]) {
         const block = findPluginBlockBySelectionPath(editor, { at: editor.selection });
         return block?.type === plugin.type;
       },
-      apply: (options) => {
-        applyBlock(editor, plugin.type, options);
+      create: (options) => {
+        createBlock(editor, plugin.type, options);
       },
       update: () => {
         console.log('block.update');

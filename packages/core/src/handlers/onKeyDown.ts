@@ -26,8 +26,9 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
       if (event.isDefaultPrevented()) return;
       event.preventDefault();
 
-      const isStart = Editor.isStart(slate, slate.selection.anchor, slate.selection.anchor.path);
-      const isEnd = Editor.isEnd(slate, slate.selection.anchor, slate.selection.anchor.path);
+      const parentPath = Path.parent(slate.selection.anchor.path);
+      const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
+      const isEnd = Editor.isEnd(slate, slate.selection.anchor, parentPath);
 
       if (!isStart && !isEnd) {
         editor.splitBlock({ slate, focus: true });

@@ -1,12 +1,17 @@
-import { RenderElementProps } from 'slate-react';
+import { RenderElementProps, useFocused, useSelected } from 'slate-react';
 
-const VideoRender = (props: RenderElementProps) => {
-  const { src, alt, sources, fit, poster, sizes } = props.element.props;
+const VideoRender = ({ element, attributes, children }: RenderElementProps) => {
+  const { src, alt, sources, fit, poster, sizes } = element.props;
+  const selected = useSelected();
+  const focused = useFocused();
 
-  console.log({ src, alt, sources, fit, sizes });
+  const style = {
+    boxShadow: `${selected && focused ? '0 0 0 3px #B4D5FF' : 'none'}`,
+  };
 
   return (
-    <div data-element-type="VideoPluginUltra" {...props.attributes}>
+    <div contentEditable={false} draggable={false} {...attributes} style={style}>
+      {children}
       <video
         playsInline
         controls
@@ -29,7 +34,6 @@ const VideoRender = (props: RenderElementProps) => {
           type="video/mp4"
         />
       </video>
-      {props.children}
     </div>
   );
 };

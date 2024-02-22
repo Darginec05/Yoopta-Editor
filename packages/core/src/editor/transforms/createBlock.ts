@@ -11,7 +11,7 @@ export type ApplyBlockOptions = YooptaEditorTransformOptions & {
   data?: any;
 };
 
-export function applyBlock(editor: YooEditor, type: string, options?: ApplyBlockOptions) {
+export function createBlock(editor: YooEditor, type: string, options?: ApplyBlockOptions) {
   editor.children = createDraft(editor.children);
 
   const currentBlock = findPluginBlockBySelectionPath(editor);

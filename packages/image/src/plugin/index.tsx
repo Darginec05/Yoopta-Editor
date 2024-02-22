@@ -2,7 +2,7 @@ import { createYooptaPlugin } from '@yoopta/editor';
 import { ImageRender } from '../ui/Image';
 
 const Image = createYooptaPlugin({
-  type: 'ImagePlugin',
+  type: 'Image',
   elements: {
     image: {
       render: ImageRender,
@@ -11,7 +11,7 @@ const Image = createYooptaPlugin({
         alt: null,
         srcSet: null,
         fit: 'cover',
-        sizes: { width: 500, height: 300, maxWidth: 700, maxHeight: 400 },
+        sizes: { width: 626, height: 400, maxWidth: 700, maxHeight: 400 },
         nodeType: 'void',
       },
     },

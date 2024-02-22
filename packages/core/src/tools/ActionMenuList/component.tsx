@@ -17,7 +17,7 @@ const ActionMenuComponent = ({ actions, editor, onMouseEnter, selectedAction, on
                 data-action-menu-item
                 data-action-menu-item-type={type}
                 onClick={() => {
-                  editor.blocks[type].apply({ deleteText: true, focus: true });
+                  editor.blocks[type].create({ deleteText: true, focus: true });
                   onClose();
                 }}
                 className="flex w-full cursor-pointer items-center space-x-2 rounded-md px-1 py-1 mb-0.5 last:mb-0 text-left text-sm hover:bg-[#f4f4f5] aria-selected:bg-[#f0f0f0]"
