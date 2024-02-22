@@ -40,20 +40,17 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
     let slateEditor = editor.blockEditorsMap[id];
     const elementTypes = Object.keys(elements);
 
-    console.log('elements', elements);
-    console.log('plugin', plugin);
-
     elementTypes.forEach((elementType) => {
-      const nodeType = elements[elementType].options?.nodeType;
+      const nodeType = elements[elementType].props?.nodeType;
 
       const isInline = nodeType === 'inline';
       const isVoid = nodeType === 'void';
-      // console.log('nodeType', nodeType);
-      // if (isVoid) {
-      //   console.log('elementType', elementType);
-      // }
-
       const isInlineVoid = Array.isArray(nodeType) && nodeType.includes('inline') && nodeType.includes('void');
+
+      if (isVoid) {
+        console.log('elementType', elementType);
+        console.log('isVoid', elements[elementType]);
+      }
 
       if (isInlineVoid) {
         slateEditor.markableVoid = (element) => element.type === elementType;
@@ -137,6 +134,8 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
       const { events, ...options } = tools.actionMenu;
       events?.onKeyUp(editor, slate, options)(event);
     }
+
+    eventHandlers?.onKeyUp?.(event);
   };
 
   const onMouseDown = (event: React.MouseEvent) => {
@@ -144,9 +143,13 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
       const { events, ...options } = tools.toolbar;
       events?.onMouseDown(editor, slate, options)(event);
     }
+
+    eventHandlers?.onMouseDown?.(event);
   };
 
   const onBlur = (event: React.FocusEvent) => {
+    eventHandlers?.onBlur?.(event);
+
     event.preventDefault();
     console.log('onBlur from: ', plugin.type);
 
@@ -155,6 +158,7 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
   };
 
   const onFocus = (event: React.FocusEvent) => {
+    eventHandlers?.onFocus?.(event);
     editor.setSelection([plugin.meta.order]);
   };
 

@@ -26,7 +26,8 @@ const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
 
   const onSubmit = () => {
-    const editorData = editor.getValue();
+    const editorData = editor.getEditorValue();
+    console.log('editorData', editorData);
   };
 
   return (
@@ -50,6 +51,9 @@ const BasicExample = () => {
         }}
       >
         Add Image
+      </button>
+      <button className="bg-blue-500 text-white px-4 py-2 rounded-md" onClick={onSubmit}>
+        Get editor data
       </button>
       <YooptaEditor
         editor={editor}

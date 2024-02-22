@@ -22,35 +22,34 @@ export function applyBlock(editor: YooEditor, type: string, options?: ApplyBlock
 
   const selectedBlock = editor.blocks[type];
 
-  Editor.withoutNormalizing(slate, () => {
-    const blockSlateElements = Object.entries(selectedBlock.elements);
-    const rootElementFromBlock =
-      blockSlateElements.length === 1 ? blockSlateElements[0] : blockSlateElements.find((elem) => elem[1].isRoot);
+  const blockSlateElements = Object.entries(selectedBlock.elements);
+  const rootElementFromBlock =
+    blockSlateElements.length === 1 ? blockSlateElements[0] : blockSlateElements.find((elem) => elem[1].isRoot);
 
-    const [type, element] = rootElementFromBlock as [string, PluginElement<any>];
+  const [elementType, element] = rootElementFromBlock as [string, PluginElement<unknown>];
 
-    const props = element.elementProps || {};
-    const node = { id: generateId(), type, children: [{ text: '' }], props };
+  const props = element.props || { nodeType: 'block' };
+  const node = { id: generateId(), type: elementType, children: [{ text: '' }], props };
+  const nodeType = node.props.nodeType;
 
-    console.log('created slate node', node);
-    console.log('is inline', Editor.isInline(slate, node));
-    console.log('is void', Editor.isVoid(slate, node));
+  const isInlineElement = nodeType === 'inline';
+  const isVoidElement = nodeType === 'void';
+  const isInlineVoidElement = Array.isArray(nodeType) && nodeType.includes('inline') && nodeType.includes('void');
 
-    const isInlineElement = element?.options?.nodeType === 'inline';
-    console.log('isInlineElement', isInlineElement);
+  if (isInlineElement) {
+    return;
+  }
 
-    if (isInlineElement) {
-    }
-
-    Transforms.setNodes(slate, node, {
-      at: [0],
-      match: (n) => Element.isElement(n),
-      mode: 'highest',
-    });
-
-    if (options?.deleteText) Transforms.delete(slate, { at: [0, 0] });
-    currentBlock.type = selectedBlock.type;
+  Transforms.setNodes(slate, node, {
+    at: [0, 0],
+    match: (n) => Element.isElement(n),
+    mode: 'highest',
   });
+
+  if (options?.deleteText) Transforms.delete(slate, { at: [0, 0] });
+
+  currentBlock.type = selectedBlock.type;
+  currentBlock.value = slate.children;
 
   const currentBlockId = currentBlock!.id;
 

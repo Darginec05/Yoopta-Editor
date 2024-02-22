@@ -4,17 +4,21 @@ import { moveBlock } from './transforms/moveBlock';
 import { focusBlock } from './transforms/focusBlock';
 import { splitBlock } from './transforms/splitBlock';
 import { setSelection } from './selection/setSelection';
-import { TextFormat, YooEditor } from './types';
+import { YooEditor } from './types';
 import { increaseBlockDepth } from './transforms/increaseBlockDepth';
 import { decreaseBlockDepth } from './transforms/decreaseBlockDepth';
+import { getEditorValue } from './core/getEditorValue';
 
-// export const Transforms = {}
+// export const YooEditor = {}
+// export const BlockTransforms = {}
 // export const Selection = {}
+// export const TextFormats = {}
 
 export const createYooptaEditor = (): YooEditor => {
   const editor: YooEditor = {
     children: {},
     selection: null,
+    getEditorValue: () => getEditorValue(editor),
     applyChanges: () => {},
     insertBlock: (...args) => insertBlock(editor, ...args),
     deleteBlock: (...args) => deleteBlock(editor, ...args),
@@ -31,6 +35,7 @@ export const createYooptaEditor = (): YooEditor => {
     blockEditorsMap: {},
     blocks: {},
     formats: {},
+    shortcuts: {},
   };
 
   return editor;

@@ -3,8 +3,6 @@ import { RenderElementProps } from 'slate-react';
 const ImageRender = (props: RenderElementProps) => {
   const { src, alt, srcSet, fit, sizes } = props.element.props;
 
-  console.log({ src, alt, srcSet, fit, sizes });
-
   return (
     <div contentEditable={false} draggable={false}>
       <img

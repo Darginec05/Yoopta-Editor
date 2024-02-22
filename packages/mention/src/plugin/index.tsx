@@ -13,13 +13,11 @@ const Mention = createYooptaPlugin<Mention>({
   elements: {
     mention: {
       render: MentionRender,
-      elementProps: {
+      props: {
         url: null,
         target: '_blank',
         rel: 'noreferrer',
         character: null,
-      },
-      options: {
         nodeType: ['inline', 'void'],
       },
     },

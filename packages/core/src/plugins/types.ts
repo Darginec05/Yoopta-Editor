@@ -24,16 +24,16 @@ export type Plugin = {
 };
 
 export type PluginElementOptions = {
-  nodeType?: 'block' | 'inline' | 'void' | ['inline', 'void'];
   draggable?: boolean;
 };
 
 export type CustomEditorProps = Omit<RenderPluginProps, 'elements'> & Pick<Plugin, 'type'> & { editor: SlateEditor };
 
+export type PluginElementProps<T> = T & { nodeType?: 'block' | 'inline' | 'void' | ['inline', 'void'] };
+
 export type PluginElement<T> = {
   render: (props: RenderSlateElementProps) => JSX.Element;
-  // [TODO] - MAYBE nodeProps(?)
-  elementProps?: T;
+  props?: PluginElementProps<T>;
   options?: PluginElementOptions;
 };
 
@@ -43,10 +43,10 @@ export type PluginElementsMap<T> = {
 
 type HandlersOptions = {
   hotkeys: HOTKEYS_TYPE;
-  defaultNode: Element;
+  defaultPlugin: Plugin;
 };
 
-type EventHandlers = {
+export type EventHandlers = {
   [key in keyof EditorEventHandlers]: (
     editor: YooEditor,
     slate: Editor,
