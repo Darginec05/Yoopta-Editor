@@ -6,6 +6,7 @@ import Headings from '@yoopta/headings';
 import Mention from '@yoopta/mention';
 import Image from '@yoopta/image';
 import Link from '@yoopta/link';
+import Video from '@yoopta/video';
 import { useMemo } from 'react';
 
 const plugins = [
@@ -15,9 +16,10 @@ const plugins = [
   Headings.HeadingThree,
   Blockquote,
   Callout,
+  Image,
+  Video,
   Mention,
   Link,
-  Image,
 ];
 
 const BasicExample = () => {
