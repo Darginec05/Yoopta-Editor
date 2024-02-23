@@ -35,6 +35,8 @@ export type PluginElement<T> = {
   render: (props: RenderSlateElementProps) => JSX.Element;
   props?: PluginElementProps<T>;
   options?: PluginElementOptions;
+  asRoot?: boolean;
+  children?: string[];
 };
 
 export type PluginElementsMap<T> = {

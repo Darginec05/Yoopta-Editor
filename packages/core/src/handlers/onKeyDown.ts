@@ -1,7 +1,7 @@
 import { createDraft, finishDraft } from 'immer';
 import { isKeyHotkey } from 'is-hotkey';
 import { Editor, Path, Range, Text, Transforms } from 'slate';
-import { getDefaultChildrenValue } from '../components/Editor/defaultValue';
+import { getDefaultParagraphBlock } from '../components/Editor/defaultValue';
 import { YooEditor } from '../editor/types';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../utils/findSlateBySelectionPath';
@@ -35,7 +35,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
         return;
       }
 
-      const defaultBlock = getDefaultChildrenValue(generateId());
+      const defaultBlock = getDefaultParagraphBlock(generateId());
       const nextPath = editor.selection ? [editor.selection[0] + 1] : [0];
       editor.insertBlock(defaultBlock, { at: nextPath, slate, focus: true });
       return;

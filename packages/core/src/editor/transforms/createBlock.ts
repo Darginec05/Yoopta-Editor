@@ -23,8 +23,15 @@ export function createBlock(editor: YooEditor, type: string, options?: ApplyBloc
   const selectedBlock = editor.blocks[type];
 
   const blockSlateElements = Object.entries(selectedBlock.elements);
+
   const rootElementFromBlock =
-    blockSlateElements.length === 1 ? blockSlateElements[0] : blockSlateElements.find((elem) => elem[1].isRoot);
+    blockSlateElements.length === 1 ? blockSlateElements[0] : blockSlateElements.find((elem) => elem[1].asRoot);
+
+  console.log('blockSlateElements', blockSlateElements);
+  console.log('rootElementFromBlock', rootElementFromBlock);
+
+  if (!rootElementFromBlock)
+    throw new Error(`No root element found in the block elements. Passed block: ${selectedBlock}`);
 
   const [elementType, element] = rootElementFromBlock as [string, PluginElement<unknown>];
 

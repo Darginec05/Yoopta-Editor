@@ -50,6 +50,7 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
   });
 
   const blockTypes = Object.keys(editor.blocks).sort((a, b) => {
+    // [TODO] - !!!
     const aOrder = editor.blocks[a].order;
     const bOrder = editor.blocks[b].order;
 
@@ -93,7 +94,15 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
     setSelectedAction(type);
   };
 
-  const isEmpty = actions.length === 0;
+  const empty = actions.length === 0;
+
+  useEffect(() => {
+    let timeout = setTimeout(() => {
+      if (empty) onClose();
+    }, 3000);
+
+    return () => clearTimeout(timeout);
+  }, [actions.length]);
 
   if (!isMenuOpen) return null;
 
@@ -106,7 +115,7 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
           style={floatingStyles}
           ref={refs.setFloating}
         >
-          {render({ getItemProps, actions, editor, onMouseEnter, selectedAction, onClose })}
+          {render({ getItemProps, actions, editor, onMouseEnter, selectedAction, onClose, empty })}
         </div>
       </FloatingPortal>
     );
@@ -125,6 +134,7 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
           onMouseEnter={onMouseEnter}
           selectedAction={selectedAction}
           onClose={onClose}
+          empty={empty}
         />
       </div>
     </FloatingPortal>
