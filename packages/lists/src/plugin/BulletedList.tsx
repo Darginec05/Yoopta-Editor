@@ -1,6 +1,7 @@
 import { createYooptaPlugin } from '@yoopta/editor';
 import { ListItemRender } from '../components/ListItem';
 import { BulletedListRender } from '../components/BulletedList';
+import { onKeyDown } from '../events/onKeyDown';
 
 const BulletedList = createYooptaPlugin({
   type: 'BulletedList',
@@ -17,6 +18,9 @@ const BulletedList = createYooptaPlugin({
   options: {
     displayLabel: 'BulletedList',
     shortcuts: ['-'],
+  },
+  events: {
+    onKeyDown,
   },
 });
 

@@ -32,13 +32,13 @@
     "nanoid": "^4.0.1",
     "slate-history": "^0.66.0",
     "slate-hyperscript": "^0.77.0",
-    "tippy.js": "^6.3.7"
+    "tippy.js": "^6.3.7",
+    "slate": ">=0.72.3",
+    "slate-react": ">=0.95.0"
   },
   "peerDependencies": {
     "react": ">=17.0.2",
-    "react-dom": ">=17.0.2",
-    "slate": ">=0.72.3",
-    "slate-react": ">=0.95.0"
+    "react-dom": ">=17.0.2"
   },
   "scripts": {
     "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development"

@@ -1,6 +1,7 @@
 import { createYooptaPlugin } from '@yoopta/editor';
 import { ListItemRender } from '../components/ListItem';
 import { NumberedListRender } from '../components/NumberedList';
+import { onKeyDown } from '../events/onKeyDown';
 
 const NumberedList = createYooptaPlugin({
   type: 'NumberedList',
@@ -16,7 +17,10 @@ const NumberedList = createYooptaPlugin({
   },
   options: {
     displayLabel: 'Numbered List',
-    shortcuts: ['<'],
+    shortcuts: ['1.'],
+  },
+  events: {
+    onKeyDown,
   },
 });
 

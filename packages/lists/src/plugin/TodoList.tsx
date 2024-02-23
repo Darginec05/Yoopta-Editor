@@ -12,11 +12,14 @@ const TodoList = createYooptaPlugin({
     },
     'todo-list-item': {
       render: TodoListItemRender,
+      props: {
+        checked: false,
+      },
     },
   },
   options: {
     displayLabel: 'Todo List',
-    shortcuts: ['<'],
+    shortcuts: ['[]'],
   },
 });
 

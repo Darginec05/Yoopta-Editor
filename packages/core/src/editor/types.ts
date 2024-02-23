@@ -1,6 +1,6 @@
 import { Descendant, Editor as SlateEditor } from 'slate';
 import { Plugin, PluginElementsMap, PluginOptions } from '../plugins/types';
-import { ApplyBlockOptions } from './transforms/createBlock';
+import { CreateBlockOptions } from './transforms/createBlock';
 
 export type YooptaPath = number[];
 
@@ -45,7 +45,7 @@ export type YooptaBlock = {
   options?: PluginOptions;
   elements: PluginElementsMap<unknown>;
   isActive: () => boolean;
-  create: (options?: ApplyBlockOptions) => void;
+  create: (options?: CreateBlockOptions) => void;
   update: (id: string, data: any) => void;
   delete: (id: string) => void;
 };

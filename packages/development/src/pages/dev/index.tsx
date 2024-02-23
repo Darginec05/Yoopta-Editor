@@ -8,7 +8,7 @@ import Mention from '@yoopta/mention';
 import Image from '@yoopta/image';
 import Link from '@yoopta/link';
 import Video from '@yoopta/video';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 const plugins = [
   Paragraph,
@@ -17,13 +17,13 @@ const plugins = [
   Headings.HeadingThree,
   Blockquote,
   Callout,
+  Lists.BulletedList,
+  Lists.NumberedList,
+  Lists.TodoList,
   Image,
   Video,
   Mention,
   Link,
-  Lists.BulletedList,
-  Lists.NumberedList,
-  Lists.TodoList,
 ];
 
 const BasicExample = () => {
@@ -33,6 +33,11 @@ const BasicExample = () => {
     const editorData = editor.getEditorValue();
     console.log('editorData', editorData);
   };
+
+  useEffect(() => {
+    editor.on?.('insertBlock', (e) => {});
+    editor.on?.('insertBlock', (e) => {});
+  }, []);
 
   return (
     <div>
