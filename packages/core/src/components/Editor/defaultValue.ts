@@ -279,7 +279,7 @@ export const INLINE_MENTION_ELEMENT = {
   },
 };
 
-export const getDefaultChildrenValue = (id): YooptaChildrenValue => ({
+export const getDefaultParagraphBlock = (id): YooptaChildrenValue => ({
   id,
   value: [DEFAULT_ULTRA_PLUGIN_ELEMENT],
   type: 'ParagraphPlugin',
@@ -293,7 +293,7 @@ export const getDefaultYooptaChildren = () => {
   const id = generateId();
 
   return {
-    [id]: getDefaultChildrenValue(id),
+    [id]: getDefaultParagraphBlock(id),
   };
 };
 

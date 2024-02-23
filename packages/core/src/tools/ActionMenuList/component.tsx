@@ -1,10 +1,11 @@
 import { TextIcon } from '@radix-ui/react-icons';
 
-const ActionMenuComponent = ({ actions, editor, onMouseEnter, selectedAction, onClose }) => {
+const ActionMenuComponent = ({ actions, editor, onMouseEnter, selectedAction, onClose, empty }) => {
   return (
     <div className="bg-white z-50 h-auto max-h-[330px] max-w-[250px] w-72 overflow-y-auto rounded-md border border-muted bg-background px-1 py-2 transition-all shadow-md">
       <div className="max-h-[300px] overflow-y-auto overflow-x-hidden">
         <div data-action-menu-list className="overflow-hidden p-0 text-foreground">
+          {empty && <div className="text-left text-muted-foreground text-xs px-1 py-1">No actions available</div>}
           {actions.map((type, i) => {
             const block = editor.blocks[type];
             if (!block) return null;
@@ -26,7 +27,7 @@ const ActionMenuComponent = ({ actions, editor, onMouseEnter, selectedAction, on
                   <TextIcon />
                 </div>
                 <div>
-                  <div className="font-medium ">{block.options?.displayLabel || block.type}</div>
+                  <div className="font-medium">{block.options?.displayLabel || block.type}</div>
                   <div className="text-xs text-muted-foreground">Description</div>
                 </div>
               </button>

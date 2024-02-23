@@ -18,7 +18,8 @@
     "@yoopta/headings": "*",
     "@yoopta/mention": "*",
     "@yoopta/link": "*",
-    "@yoopta/image": "*"
+    "@yoopta/image": "*",
+    "@yoopta/lists": "*"
   },
   "devDependencies": {
     "typescript": "^5",

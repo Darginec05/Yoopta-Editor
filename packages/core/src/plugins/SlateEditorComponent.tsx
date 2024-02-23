@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useRef } from 'react';
-import { Editable, ReactEditor, RenderElementProps, Slate } from 'slate-react';
+import { Editable, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useYooptaPlugin } from '../contexts/UltraYooptaContext/UltraYooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../textFormatters/createYooptaMark';
@@ -8,7 +8,6 @@ import { ExtendedLeafProps, PluginParams } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
 import { useTools } from '../contexts/UltraYooptaContext/ToolsContext';
-import { Transforms } from 'slate';
 
 type Props<T> = PluginParams<T> & { id: string; marks?: YooptaMark<any>[] };
 

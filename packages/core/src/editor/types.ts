@@ -34,7 +34,7 @@ export type YooptaPluginsEditorMap = Record<string, SlateEditor>;
 export type TextFormat = {
   type: string;
   hotkey?: string;
-  getValue: (type: string) => null | any;
+  getValue: () => null | any;
   isActive: () => boolean;
   toggle: () => void;
   update: (props?: any) => void;

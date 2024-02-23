@@ -3,6 +3,7 @@ import Blockquote from '@yoopta/blockquote';
 import Paragraph from '@yoopta/paragraph';
 import Callout from '@yoopta/callout';
 import Headings from '@yoopta/headings';
+import Lists from '@yoopta/lists';
 import Mention from '@yoopta/mention';
 import Image from '@yoopta/image';
 import Link from '@yoopta/link';
@@ -20,6 +21,9 @@ const plugins = [
   Video,
   Mention,
   Link,
+  Lists.BulletedList,
+  Lists.NumberedList,
+  Lists.TodoList,
 ];
 
 const BasicExample = () => {
@@ -47,7 +51,7 @@ const BasicExample = () => {
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded-md"
         onClick={() => {
-          editor.blocks.ImagePlugin.apply({});
+          editor.blocks.ImagePlugin.create();
         }}
       >
         Add Image

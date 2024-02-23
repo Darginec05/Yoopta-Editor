@@ -53,13 +53,6 @@ const YooptaEditor = ({
     return { editor, version: 0 };
   });
 
-  // const yooptaTools = useMemo(() => {
-  //   const toolsMap = {};
-  //   Object.keys(tools).forEach((tool) => {
-  //     toolsMap[tool] = tools[tool].component;
-  //   });
-  // }, [tools]);
-
   return (
     <NoSSR>
       <UltraYooptaContextProvider editorState={editorState}>
