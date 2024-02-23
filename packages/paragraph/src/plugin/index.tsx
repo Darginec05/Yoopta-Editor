@@ -2,7 +2,7 @@ import { createYooptaPlugin } from '@yoopta/editor';
 import { ParagraphRender } from '../ui/Paragraph';
 
 const Paragraph = createYooptaPlugin({
-  type: 'ParagraphPlugin',
+  type: 'Paragraph',
   elements: {
     paragraph: {
       render: ParagraphRender,
@@ -10,6 +10,7 @@ const Paragraph = createYooptaPlugin({
   },
   options: {
     displayLabel: 'Text',
+    shortcuts: ['p', 'text'],
   },
 });
 

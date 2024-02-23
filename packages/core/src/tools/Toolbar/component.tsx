@@ -16,7 +16,7 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
   const label = activeBlock?.options?.displayLabel || activeBlock?.type || '';
 
   return (
-    <Toolbar.Root className="bg-white flex z-50 p-[5px] rounded-md shadow-md shadow-y-[4px]">
+    <Toolbar.Root className="bg-white flex z-50 p-[5px] rounded-md shadow-md border shadow-y-[4px]">
       <Toolbar.ToggleGroup className="flex items-center" type="single" aria-label="Block formatting">
         <Toolbar.ToggleItem
           className="h-full px-[10px] py-0 hover:bg-[#f4f4f5] rounded-md"

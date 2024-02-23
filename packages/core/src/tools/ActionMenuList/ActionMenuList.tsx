@@ -9,7 +9,7 @@ import { useFloating, offset, flip, shift, inline, autoUpdate, FloatingPortal } 
 
 const filterBy = (item: YooptaBlock | YooptaBlock['options'], text: string, field: string) => {
   if (!item || !item?.[field]) return false;
-  return (item[field] as string).toLowerCase().indexOf(text) > -1;
+  return (item[field] as string).toLowerCase().indexOf(text.toLowerCase()) > -1;
 };
 
 const filterActionMenuItems = (block: YooptaBlock, text: string) => {

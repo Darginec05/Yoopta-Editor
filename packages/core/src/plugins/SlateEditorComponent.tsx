@@ -86,9 +86,11 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
     return eventHandlersMap;
   }, [events, editor]);
 
-  const onChange = useCallback((data) => {
-    editor.updateBlock(id, data);
-  }, []);
+  // [TODO] - hmmmmmm...
+  const onChange = (data) => {
+    // editor.updateBlock(id, data);
+    // plugin.value = data;
+  };
 
   if (typeof customEditor === 'function') {
     return customEditor({

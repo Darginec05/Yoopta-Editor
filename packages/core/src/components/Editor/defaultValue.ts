@@ -51,7 +51,7 @@ export const YOOPTA_ULTRA_VALUES: Record<
         ],
       },
     ],
-    type: 'ParagraphPlugin',
+    type: 'Paragraph',
     meta,
   }),
   code: (id, meta, children) => ({
@@ -250,11 +250,11 @@ export const YOOPTA_ULTRA_VALUES: Record<
   // }),
 };
 
-export const DEFAULT_ULTRA_PLUGIN_ELEMENT = {
+export const getDefaultParagraphPluginElement = () => ({
   id: generateId(),
   type: 'paragraph',
   children: [{ text: '' }],
-};
+});
 
 export const INLINE_LINK_ELEMENT = {
   id: generateId(),
@@ -279,10 +279,10 @@ export const INLINE_MENTION_ELEMENT = {
   },
 };
 
-export const getDefaultParagraphBlock = (id): YooptaChildrenValue => ({
-  id,
-  value: [DEFAULT_ULTRA_PLUGIN_ELEMENT],
-  type: 'ParagraphPlugin',
+export const getDefaultParagraphBlock = (id?: string): YooptaChildrenValue => ({
+  id: generateId(),
+  value: [getDefaultParagraphPluginElement()],
+  type: 'Paragraph',
   meta: {
     order: 0,
     depth: 0,
