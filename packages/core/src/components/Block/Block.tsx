@@ -5,7 +5,6 @@ import { useState } from 'react';
 import s from './Block.module.scss';
 import { BlockActions } from './BlockActions';
 
-// [TODO] - implement selected state by mouse select area
 const Block = ({ children, plugin, pluginId }) => {
   const editor = useYooptaEditor();
 
