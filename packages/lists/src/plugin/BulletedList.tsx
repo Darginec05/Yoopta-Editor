@@ -1,6 +1,6 @@
 import { createYooptaPlugin } from '@yoopta/editor';
-import { ListItemRender } from '../components/ListItem';
-import { BulletedListRender } from '../components/BulletedList';
+import { ListItemRender } from '../elements/ListItem';
+import { BulletedListRender } from '../elements/BulletedList';
 import { onKeyDown } from '../events/onKeyDown';
 
 const BulletedList = createYooptaPlugin({

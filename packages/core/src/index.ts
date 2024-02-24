@@ -6,7 +6,7 @@ export { generateId } from './utils/generateId';
 export { HOTKEYS } from './utils/hotkeys';
 
 export { createYooptaEditor } from './editor';
-export { YooEditor } from './editor/types';
+export { YooEditor, SlateElement } from './editor/types';
 
 export default YooptaEditor;
 

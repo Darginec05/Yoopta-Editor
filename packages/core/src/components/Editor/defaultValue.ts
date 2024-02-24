@@ -225,6 +225,32 @@ export const YOOPTA_ULTRA_VALUES: Record<
               },
             ],
           },
+          {
+            id: generateId(),
+            type: 'table-row',
+            children: [
+              {
+                id: generateId(),
+                type: 'table-cell',
+                children: [{ text: '# of Lives', bold: true }],
+              },
+              {
+                id: generateId(),
+                type: 'table-cell',
+                children: [{ text: 'Empty', italic: true }],
+              },
+              {
+                id: generateId(),
+                type: 'table-cell',
+                children: [{ text: 'Satisfied' }],
+              },
+              {
+                id: generateId(),
+                type: 'table-cell',
+                children: [{ text: 'Ecstatic' }],
+              },
+            ],
+          },
         ],
       },
     ],

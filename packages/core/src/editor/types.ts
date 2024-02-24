@@ -75,10 +75,10 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   shortcuts: Record<string, YooptaBlock>;
 };
 
-// types for slate value
+// types for slate values
 export type SlateElement<T = unknown> = {
   id: string;
   type: string;
-  children: Descendant[];
+  children: Descendant[] | SlateElement[];
   props?: T;
 };

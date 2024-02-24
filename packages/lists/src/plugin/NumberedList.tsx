@@ -1,6 +1,6 @@
 import { createYooptaPlugin } from '@yoopta/editor';
-import { ListItemRender } from '../components/ListItem';
-import { NumberedListRender } from '../components/NumberedList';
+import { ListItemRender } from '../elements/ListItem';
+import { NumberedListRender } from '../elements/NumberedList';
 import { onKeyDown } from '../events/onKeyDown';
 
 const NumberedList = createYooptaPlugin({

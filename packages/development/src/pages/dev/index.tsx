@@ -8,6 +8,7 @@ import Mention from '@yoopta/mention';
 import Image from '@yoopta/image';
 import Link from '@yoopta/link';
 import Video from '@yoopta/video';
+import Table from '@yoopta/table';
 import { useEffect, useMemo } from 'react';
 
 const plugins = [
@@ -20,6 +21,7 @@ const plugins = [
   Lists.BulletedList,
   Lists.NumberedList,
   Lists.TodoList,
+  Table,
   Image,
   Video,
   Mention,
