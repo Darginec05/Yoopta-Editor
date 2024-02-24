@@ -1,6 +1,6 @@
 import { createYooptaPlugin } from '@yoopta/editor';
-import { TodoListItemRender } from '../components/TodoListItem';
-import { TodoListRender } from '../components/TodoList';
+import { TodoListItemRender } from '../elements/TodoListItem';
+import { TodoListRender } from '../elements/TodoList';
 
 const TodoList = createYooptaPlugin({
   type: 'TodoListPlugin',

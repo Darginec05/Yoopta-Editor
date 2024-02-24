@@ -19,7 +19,8 @@
     "@yoopta/mention": "*",
     "@yoopta/link": "*",
     "@yoopta/image": "*",
-    "@yoopta/lists": "*"
+    "@yoopta/lists": "*",
+    "@yoopta/table": "*"
   },
   "devDependencies": {
     "typescript": "^5",
