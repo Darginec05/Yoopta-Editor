@@ -5,6 +5,9 @@ import DragIcon from './icons/drag.svg';
 import PlusIcon from './icons/plus.svg';
 import { getDefaultParagraphBlock } from '../Editor/defaultValue';
 import s from './Block.module.scss';
+import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
+import { ReactEditor } from 'slate-react';
+import { Transforms } from 'slate';
 
 type ActionsProps = {
   plugin: any;
@@ -27,6 +30,13 @@ const BlockActions = ({ plugin, editor, dragHandleProps, showActions }: ActionsP
 
   const onSelectBlock = (event: React.MouseEvent) => {
     event.stopPropagation();
+
+    const slate = findSlateBySelectionPath(editor, { at: [plugin.meta.order] });
+
+    if (!slate) return;
+    ReactEditor.blur(slate);
+    ReactEditor.deselect(slate);
+    Transforms.deselect(slate);
 
     editor.setSelection([plugin.meta.order]);
     editor.setBlockSelected([plugin.meta.order], { only: true });

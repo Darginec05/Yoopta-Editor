@@ -22,9 +22,12 @@ export type YooptaBlockBaseMeta = {
   maxDepth?: number;
 };
 
+export type FocusAt = 'start' | 'end' | number;
+
 export type YooptaEditorTransformOptions = {
   at?: YooptaPath | null;
   focus?: boolean;
+  focusAt?: FocusAt;
   slate?: SlateEditor;
   pluginId?: string;
 };

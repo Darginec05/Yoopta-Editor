@@ -105,6 +105,11 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
 
       if (Range.isExpanded(slate.selection) && isAllBlockElementsSelected) {
         event.preventDefault();
+
+        ReactEditor.blur(slate);
+        ReactEditor.deselect(slate);
+        Transforms.deselect(slate);
+
         editor.setBlockSelected([], { allSelected: true });
         return;
       }

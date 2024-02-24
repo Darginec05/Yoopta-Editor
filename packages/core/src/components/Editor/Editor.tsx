@@ -1,5 +1,4 @@
 import { CSSProperties, useEffect, useRef } from 'react';
-import { Editor as SlateEditor } from 'slate';
 import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
 import { RenderBlocks } from './RenderBlocks';
 import { Plugin } from '../../plugins/types';
@@ -7,7 +6,6 @@ import { YooptaMark } from '../../textFormatters/createYooptaMark';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { getDefaultParagraphBlock } from './defaultValue';
 import { generateId } from '../../utils/generateId';
-import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 
 type Props = {
   plugins: Plugin[];
