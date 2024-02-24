@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { Editable, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useYooptaPlugin } from '../contexts/UltraYooptaContext/UltraYooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
@@ -150,10 +150,8 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
   };
 
   const onBlur = (event: React.FocusEvent) => {
-    eventHandlers?.onBlur?.(event);
-
     event.preventDefault();
-    // Transforms.deselect(slate);
+    eventHandlers?.onBlur?.(event);
   };
 
   const onFocus = (event: React.FocusEvent) => {
@@ -168,7 +166,7 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
           renderElement={renderElement}
           // placeholder="Enter some rich text…"
           renderLeaf={renderLeaf}
-          className="focus-visible:outline-none"
+          className="focus-visible:outline-none focus:outline-none"
           spellCheck
           {...eventHandlers}
           onKeyDown={onKeyDown}

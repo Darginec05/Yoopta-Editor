@@ -1,5 +1,6 @@
 import { Descendant, Editor as SlateEditor } from 'slate';
 import { Plugin, PluginElementsMap, PluginOptions } from '../plugins/types';
+import { BlockSelectedOptions } from './selection/setBlockSelected';
 import { CreateBlockOptions } from './transforms/createBlock';
 
 export type YooptaPath = number[];
@@ -66,9 +67,11 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   moveBlock: (blockId: string, to: YooptaPath) => void;
   focusBlock: (id: string, options?: YooptaEditorTransformOptions) => void;
   selection: YooptaPath | null;
+  selectedBlocks: YooptaPath | null;
   children: Record<string, YooptaChildrenValue>;
   getEditorValue: () => TNodes;
   setSelection: (path: YooptaPath | null) => void;
+  setBlockSelected: (path: YooptaPath | null, options?: BlockSelectedOptions) => void;
   blockEditorsMap: YooptaPluginsEditorMap;
   blocks: YooptaBlocks;
   formats: YooptaFormats;

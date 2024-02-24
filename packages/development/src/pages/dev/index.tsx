@@ -58,7 +58,7 @@ const BasicExample = () => {
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded-md"
         onClick={() => {
-          editor.blocks.ImagePlugin.create();
+          editor.blocks.Image.create();
         }}
       >
         Add Image
