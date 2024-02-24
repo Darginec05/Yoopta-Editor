@@ -6,9 +6,7 @@ import throttle from 'lodash/throttle';
 
 const Toolbar = () => {
   const editor = useYooptaEditor();
-
   const [isToolbarOpen, setIsToolbarOpen] = useState(false);
-
   const { refs, floatingStyles } = useFloating({
     placement: 'top',
     open: isToolbarOpen,
@@ -19,7 +17,6 @@ const Toolbar = () => {
 
   const handleSelectionChange = () => {
     const domSelection = window.getSelection();
-
     if (!domSelection || domSelection?.isCollapsed) return setIsToolbarOpen(false);
 
     const domRange = domSelection.getRangeAt(0);
@@ -41,16 +38,16 @@ const Toolbar = () => {
   useEffect(() => {
     document.addEventListener('selectionchange', onSelectionChange);
     return () => document.removeEventListener('selectionchange', onSelectionChange);
-  }, [onSelectionChange]);
+  }, [editor.selectedBlocks]);
 
   if (!isToolbarOpen) return null;
 
-  const activeBlock = Object.values(editor.blocks).find((block) => block.isActive());
+  const currentBlock = Object.values(editor.blocks).find((block) => block.isActive());
 
   return (
     <FloatingPortal>
       <div style={floatingStyles} ref={refs.setFloating}>
-        <ToolbarComponent activeBlock={activeBlock} editor={editor} />
+        <ToolbarComponent activeBlock={currentBlock} editor={editor} />
       </div>
     </FloatingPortal>
   );

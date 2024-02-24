@@ -24,8 +24,6 @@ const Editor = ({ plugins, marks, className, autoFocus = true }: Props) => {
   const editor = useYooptaEditor();
   const yooptaEditorRef = useRef<HTMLDivElement>(null);
 
-  console.log('editor.children', editor.children);
-
   useEffect(() => {
     if (!autoFocus) return;
 
@@ -33,7 +31,7 @@ const Editor = ({ plugins, marks, className, autoFocus = true }: Props) => {
     if (firstBlock) editor.focusBlock(firstBlock.id);
   }, [autoFocus]);
 
-  const onEmptyZoneClick = (e: React.MouseEvent) => {
+  const handleEmptyZoneClick = (e: React.MouseEvent) => {
     const editorRef = yooptaEditorRef.current;
     if (!editorRef) return;
 
@@ -48,13 +46,29 @@ const Editor = ({ plugins, marks, className, autoFocus = true }: Props) => {
     }
   };
 
+  const resetSelectedBlocks = () => {
+    if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
+      editor.setBlockSelected(null);
+    }
+  };
+
+  const onClick = (event: React.MouseEvent) => {
+    handleEmptyZoneClick(event);
+    resetSelectedBlocks();
+  };
+
+  const onBlur = () => {
+    resetSelectedBlocks();
+  };
+
   return (
     <div
       id="yoopta-editor"
       className={className}
       style={DEFAULT_STYLES}
       ref={yooptaEditorRef}
-      onClick={onEmptyZoneClick}
+      onClick={onClick}
+      onBlur={onBlur}
     >
       <RenderBlocks editor={editor} plugins={plugins} marks={marks} />
     </div>

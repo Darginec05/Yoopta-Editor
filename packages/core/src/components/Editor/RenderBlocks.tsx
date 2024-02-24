@@ -2,8 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
-import { UltraElementWrapper } from '../ElementWrapper/UltraElementWrapper';
-import { PLUGIN_INDEX } from './utils';
+import { Block } from '../Block/Block';
 import { Plugin, PluginElementsMap } from '../../plugins/types';
 import { YooEditor } from '../../editor/types';
 import { YooptaMark } from '../../textFormatters/createYooptaMark';
@@ -18,7 +17,12 @@ type Props = {
 
 const useYooptaDragDrop = ({ editor }) => {
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 100,
+        tolerance: 1,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     }),
@@ -90,13 +94,11 @@ const RenderBlocks = ({ editor, plugins, marks }: Props) => {
 
     if (pluginRenderer?.renderPlugin) {
       blocks.push(
-        <UltraElementWrapper key={childrenId} plugin={yooptaPlugin} pluginId={childrenId}>
+        <Block key={childrenId} plugin={yooptaPlugin} pluginId={childrenId}>
           {pluginRenderer.renderPlugin({ id: childrenId, elements: pluginRenderer.elements, marks })}
-        </UltraElementWrapper>,
+        </Block>,
       );
     }
-
-    PLUGIN_INDEX.set(yooptaPlugin, i);
   }
 
   return (

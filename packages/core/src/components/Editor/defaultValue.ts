@@ -374,7 +374,7 @@ export const FAKE_YOOPTA_EDITOR_CHILDREN = {
     },
   ]),
   blockquote_7: YOOPTA_ULTRA_VALUES.blockquote('blockquote_7', { order: 5, depth: 0 }),
-  table_7: YOOPTA_ULTRA_VALUES.table('table_7', { order: 8, depth: 0 }),
+  table_7: YOOPTA_ULTRA_VALUES.table('table_7', { order: 7, depth: 0 }),
   // HGQj3faHJkbMGFcasdaBJNUgj_5: YOOPTA_ULTRA_VALUES.video('HGQj3faHJkbMGFcasdaBJNUgj_5', {
   //   order: 6,
   //   depth: 0,

@@ -1,6 +1,7 @@
 import { createDraft, finishDraft } from 'immer';
 import { isKeyHotkey } from 'is-hotkey';
-import { Editor, Path, Range, Text, Transforms } from 'slate';
+import { Editor, Path, Range, select, Text, Transforms } from 'slate';
+import { ReactEditor } from 'slate-react';
 import { getDefaultParagraphBlock } from '../components/Editor/defaultValue';
 import { YooEditor } from '../editor/types';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
@@ -10,7 +11,7 @@ import { getMaxOffsetInElement } from '../utils/getMaxOffsetInElement';
 import { HOTKEYS } from '../utils/hotkeys';
 
 export function onKeyDown(editor: YooEditor, slate: Editor) {
-  return (event) => {
+  return (event: React.KeyboardEvent) => {
     if (!slate.selection) return;
 
     if (HOTKEYS.isShiftEnter(event)) {
@@ -91,6 +92,22 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
         }
       }
       return;
+    }
+
+    if (HOTKEYS.isSelect(event)) {
+      if (event.isDefaultPrevented()) return;
+
+      const [, firstElementPath] = Editor.first(slate, [0]);
+      const [, lastElementPath] = Editor.last(slate, [slate.children.length - 1]);
+
+      const fullRange = Editor.range(slate, firstElementPath, lastElementPath);
+      const isAllBlockElementsSelected = Range.equals(slate.selection, fullRange);
+
+      if (Range.isExpanded(slate.selection) && isAllBlockElementsSelected) {
+        event.preventDefault();
+        editor.setBlockSelected([], { allSelected: true });
+        return;
+      }
     }
 
     if (HOTKEYS.isShiftTab(event)) {
