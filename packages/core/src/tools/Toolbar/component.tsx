@@ -141,9 +141,6 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
         >
           <CodeIcon width={20} height={20} />
         </Toolbar.ToggleItem>
-
-        {/* start */}
-
         <Toolbar.ToggleItem
           className="h-[32px] ml-[2px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
           value="highlight"
@@ -171,9 +168,7 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
           <FloatingPortal>
             <div
               className="min-w-150 bg-white shadow-md p-1 flex flex-col rounded-md"
-              style={{
-                ...floatingStyles,
-              }}
+              style={floatingStyles}
               ref={refs.setFloating}
             >
               <p className="text-sm mx-2 text-gray-500 cursor-default">color</p>
@@ -224,8 +219,6 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
             </div>
           </FloatingPortal>
         )}
-
-        {/* end */}
       </Toolbar.ToggleGroup>
     </Toolbar.Root>
   );
