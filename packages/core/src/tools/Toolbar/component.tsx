@@ -4,7 +4,8 @@ import {
   StrikethroughIcon,
   CodeIcon,
   UnderlineIcon,
-  TextIcon,
+  ChevronUpIcon,
+  ChevronDownIcon,
 } from '@radix-ui/react-icons';
 import * as Toolbar from '@radix-ui/react-toolbar';
 import { YooEditor, YooptaBlock } from '../../editor/types';
@@ -17,8 +18,35 @@ type ToolbarComponentProps = {
   editor: YooEditor;
 };
 
+const colors = [
+  ['Default', 'black'],
+  ['Gray', '#787774'],
+  ['Brown', '#976D57'],
+  ['Orange', '#CC772F'],
+  ['Yellow', '#C29243'],
+  ['Green', '#548064'],
+  ['Blue', '#477DA5'],
+  ['Purple', '#A48BBE'],
+  ['Pink', '#B35588'],
+  ['Red', '#C4554D'],
+];
+
+const backgroundColors = [
+  ['Default', 'unset'],
+  ['Gray', '#F1F1EF'],
+  ['Brown', '#F3EEEE'],
+  ['Orange', '#F8ECDF'],
+  ['Yellow', '#FAF3DD'],
+  ['Green', '#EEF3ED'],
+  ['Blue', '#E9F3F7'],
+  ['Purple', '#F6F3F8'],
+  ['Pink', '#F9F2F5'],
+  ['Red', '#FAECEC'],
+];
+
 const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
   const [isHighlightDropdownOpen, setIsHighlightDropdownOpen] = useState(false);
+  const highlightValue = editor.formats.highlight?.getValue() || {};
 
   const { refs, floatingStyles } = useFloating({
     placement: 'bottom',
@@ -120,65 +148,79 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
           className="h-[32px] ml-[2px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
           value="highlight"
           aria-label="highlight"
-          // style={getItemStyle('highlight')}
-          style={{
-            backgroundColor: editor.formats.highlight?.getValue()?.backgroundColor,
-            color: editor.formats.highlight?.getValue()?.color,
-          }}
           onClick={() => setIsHighlightDropdownOpen((prev) => !prev)}
           ref={refs.setReference}
         >
-          <TextIcon width={20} height={20} />
+          <span
+            className="text-lg px-1 font-serif"
+            style={{
+              backgroundColor: highlightValue.backgroundColor,
+              color: highlightValue.color,
+            }}
+          >
+            A
+          </span>
+          {isHighlightDropdownOpen ? (
+            <ChevronUpIcon width={20} height={20} />
+          ) : (
+            <ChevronDownIcon width={20} height={20} />
+          )}
         </Toolbar.ToggleItem>
 
         {isHighlightDropdownOpen && (
           <FloatingPortal>
             <div
+              className="min-w-150 bg-white shadow-md p-1 flex flex-col rounded-md"
               style={{
                 ...floatingStyles,
-                width: '100px',
-                backgroundColor: '#fff',
               }}
               ref={refs.setFloating}
             >
-              <p>background</p>
-              <button
-                className="bg-[#f4f4f5] text-black px-2 py-1 rounded-md"
-                onClick={() => handleHighlight('backgroundColor', 'rgb(176, 171, 250)')}
-              >
-                purple
-              </button>
-              <button
-                className="bg-[#f4f4f5] text-black px-2 py-1 rounded-md"
-                onClick={() => handleHighlight('backgroundColor', 'yellow')}
-              >
-                yellow
-              </button>
-              <button
-                className="bg-[#f4f4f5] text-black px-2 py-1 rounded-md"
-                onClick={() => handleHighlight('backgroundColor', 'red')}
-              >
-                red
-              </button>
-              <p>color</p>
-              <button
-                className="bg-[#f4f4f5] text-black px-2 py-1 rounded-md"
-                onClick={() => handleHighlight('color', 'rgb(176, 171, 250)')}
-              >
-                purple
-              </button>
-              <button
-                className="bg-[#f4f4f5] text-black px-2 py-1 rounded-md"
-                onClick={() => handleHighlight('color', 'yellow')}
-              >
-                yellow
-              </button>
-              <button
-                className="bg-[#f4f4f5] text-black px-2 py-1 rounded-md"
-                onClick={() => handleHighlight('color', 'red')}
-              >
-                red
-              </button>
+              <p className="text-sm mx-2 text-gray-500 cursor-default">color</p>
+
+              {colors.map(([label, color]) => (
+                <button
+                  key={label}
+                  className={`bg-[${color}] text-black px-2 py-0 rounded-md text-left`}
+                  onClick={() => handleHighlight('color', color)}
+                  style={{
+                    backgroundColor: highlightValue.color === color ? 'ghostwhite' : undefined,
+                  }}
+                >
+                  <span
+                    className="text-lg px-1 font-serif my-1 mx-2"
+                    style={{
+                      color,
+                    }}
+                  >
+                    A
+                  </span>
+                  {label}
+                </button>
+              ))}
+
+              <p className="text-sm mx-2 text-gray-500 cursor-default pt-1">background</p>
+
+              {backgroundColors.map(([label, color]) => (
+                <button
+                  key={label}
+                  className={`bg-[${color}] text-black px-2 py-0 rounded-md text-left`}
+                  onClick={() => handleHighlight('backgroundColor', color)}
+                  style={{
+                    backgroundColor: highlightValue.backgroundColor === color ? 'ghostwhite' : undefined,
+                  }}
+                >
+                  <span
+                    className="text-lg px-1 font-serif mx-2"
+                    style={{
+                      backgroundColor: color,
+                    }}
+                  >
+                    A
+                  </span>
+                  {label}
+                </button>
+              ))}
             </div>
           </FloatingPortal>
         )}
