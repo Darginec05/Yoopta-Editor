@@ -6,6 +6,7 @@ import { YooptaMark } from '../../textFormatters/createYooptaMark';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { getDefaultParagraphBlock } from './defaultValue';
 import { generateId } from '../../utils/generateId';
+import { HOTKEYS } from '../../utils/hotkeys';
 
 type Props = {
   plugins: Plugin[];
@@ -59,6 +60,18 @@ const Editor = ({ plugins, marks, className, autoFocus = true }: Props) => {
     resetSelectedBlocks();
   };
 
+  const onKeyDown = (event: React.KeyboardEvent) => {
+    if (HOTKEYS.isBackspace(event)) {
+      const isAllBlocksSelected = editor.selectedBlocks?.length === Object.keys(editor.children).length;
+
+      if (isAllBlocksSelected) {
+        event.preventDefault();
+        // delete all blocks and insert default block
+        return;
+      }
+    }
+  };
+
   return (
     <div
       id="yoopta-editor"
@@ -67,6 +80,7 @@ const Editor = ({ plugins, marks, className, autoFocus = true }: Props) => {
       ref={yooptaEditorRef}
       onClick={onClick}
       onBlur={onBlur}
+      onKeyDown={onKeyDown}
     >
       <RenderBlocks editor={editor} plugins={plugins} marks={marks} />
     </div>

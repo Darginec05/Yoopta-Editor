@@ -61,7 +61,7 @@ const Block = ({ children, plugin, pluginId }) => {
         {children}
       </div>
       {isSelected && (
-        <div className="absolute left-0 top-0 bg-[#2383e224] z-[90] rounded opacity-100 h-full w-full pointer-events-none" />
+        <div className="absolute left-0 top-0 bg-[#2383e224] z-[90] rounded opacity-100 h-full w-full pointer-events-none yoopta-selection-block" />
       )}
     </div>
   );

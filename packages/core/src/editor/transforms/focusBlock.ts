@@ -3,9 +3,14 @@ import { ReactEditor } from 'slate-react';
 import { YooEditor, YooptaEditorTransformOptions } from '../types';
 
 // [TODO] - update editor.selection after focus
-export function focusBlock(editor: YooEditor, blockId: string, options: YooptaEditorTransformOptions = {}) {
-  const focusTimeout = setTimeout(() => {
+export function focusBlock(
+  editor: YooEditor,
+  blockId: string,
+  options: Pick<YooptaEditorTransformOptions, 'focus' | 'focusAt' | 'slate'> = {},
+) {
+  setTimeout(() => {
     const slate = options.slate || editor.blockEditorsMap[blockId];
+    const block = editor.children[blockId];
 
     const [firstEntry] = Editor.nodes(slate, {
       at: [0, 0],
@@ -18,10 +23,8 @@ export function focusBlock(editor: YooEditor, blockId: string, options: YooptaEd
     // [TODO] - handle offset position. Add 'focusAt' property to options
     Transforms.select(slate, { path: firstLeafPath, offset: 0 });
     ReactEditor.focus(slate);
-    editor.setSelection([editor.children[blockId].meta.order]);
+    editor.setSelection([block.meta.order]);
 
     // editor.applyChanges();
-
-    // clearTimeout(focusTimeout);
   }, 0);
 }

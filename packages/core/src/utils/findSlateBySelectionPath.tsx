@@ -9,6 +9,6 @@ export function findSlateBySelectionPath(editor: YooEditor, options: Pick<Yoopta
     return plugin.meta.order === at?.[0];
   });
 
-  if (!pluginId) return null;
+  if (!pluginId) return undefined;
   return editor.blockEditorsMap[pluginId];
 }
