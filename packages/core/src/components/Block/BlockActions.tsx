@@ -1,5 +1,5 @@
 import cx from 'classnames';
-import { YooEditor } from '../../editor/types';
+import { YooEditor, YooptaChildrenValue } from '../../editor/types';
 import { generateId } from '../../utils/generateId';
 import DragIcon from './icons/drag.svg';
 import PlusIcon from './icons/plus.svg';
@@ -8,20 +8,24 @@ import s from './Block.module.scss';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { ReactEditor } from 'slate-react';
 import { Transforms } from 'slate';
+import { CSSProperties, useState } from 'react';
+import { BlockOptions } from './BlockOptions';
 
 type ActionsProps = {
-  plugin: any;
+  plugin: YooptaChildrenValue;
   editor: YooEditor;
   dragHandleProps: any;
   showActions: boolean;
 };
 
 const BlockActions = ({ plugin, editor, dragHandleProps, showActions }: ActionsProps) => {
+  const [blockOptions, setBlockOptions] = useState<CSSProperties | null>(null);
+  const isBlockOptionsOpen = !!blockOptions;
+
   const { setActivatorNodeRef, attributes, listeners } = dragHandleProps;
 
   const onPlusClick = () => {
     const defaultBlock = getDefaultParagraphBlock(generateId());
-
     const nextPath = [plugin.meta.order + 1];
 
     editor.setSelection([plugin.meta.order]);
@@ -32,14 +36,20 @@ const BlockActions = ({ plugin, editor, dragHandleProps, showActions }: ActionsP
     event.stopPropagation();
 
     const slate = findSlateBySelectionPath(editor, { at: [plugin.meta.order] });
+    editor.focusBlock(plugin.id);
 
     if (!slate) return;
-    ReactEditor.blur(slate);
-    ReactEditor.deselect(slate);
-    Transforms.deselect(slate);
 
-    editor.setSelection([plugin.meta.order]);
-    editor.setBlockSelected([plugin.meta.order], { only: true });
+    setTimeout(() => {
+      ReactEditor.blur(slate);
+      ReactEditor.deselect(slate);
+      Transforms.deselect(slate);
+
+      editor.setBlockSelected([plugin.meta.order], { only: true });
+      editor.setSelection([plugin.meta.order]);
+    }, 10);
+
+    setBlockOptions(null);
   };
 
   return (
@@ -61,6 +71,23 @@ const BlockActions = ({ plugin, editor, dragHandleProps, showActions }: ActionsP
       >
         <DragIcon />
       </button>
+      {/* 
+      <BlockOptions
+        isOpen={isBlockOptionsOpen}
+        onOpenChange={setBlockOptions}
+        trigger={
+          <button
+            type="button"
+            className={cx(s.actionButton, 'yoopta-element-actions-drag')}
+            ref={setActivatorNodeRef}
+            {...attributes}
+            {...listeners}
+            onClick={onSelectBlock}
+          >
+            <DragIcon />
+          </button>
+        }
+      /> */}
     </div>
   );
 };

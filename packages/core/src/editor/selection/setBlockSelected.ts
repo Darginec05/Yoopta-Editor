@@ -19,7 +19,7 @@ export function setBlockSelected(editor: YooEditor, path: YooptaPath | null, opt
     if (only) {
       editor.selectedBlocks = path;
     } else if (allSelected) {
-      const blocks = Object.keys(editor.blocks).map((_, i) => i);
+      const blocks = Object.keys(editor.children).map((_, i) => i);
       editor.selectedBlocks = uniqueArray(blocks);
     } else {
       editor.selectedBlocks = uniqueArray(selectedBlocks.concat(path));

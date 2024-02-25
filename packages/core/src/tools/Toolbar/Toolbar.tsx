@@ -33,7 +33,7 @@ const Toolbar = () => {
     }
   };
 
-  const onSelectionChange = throttle(handleSelectionChange, 100);
+  const onSelectionChange = throttle(handleSelectionChange, 300);
 
   useEffect(() => {
     document.addEventListener('selectionchange', onSelectionChange);
