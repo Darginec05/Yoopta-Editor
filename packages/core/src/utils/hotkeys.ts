@@ -23,6 +23,8 @@ const HOTKEYS_MAP = {
   undo: 'mod+z',
   select: 'mod+a',
   shiftTab: 'shift+tab',
+  shiftArrowUp: 'shift+up',
+  shiftArrowDown: 'shift+down',
   tab: 'tab',
   cmd: 'mod',
   cmdEnter: 'mod+enter',
@@ -105,6 +107,8 @@ export const HOTKEYS = {
   isCmd: create('cmd'),
   isEscape: create('escape'),
   isSlashCommand: create('slashCommand'),
+  isShiftArrowUp: create('shiftArrowUp'),
+  isShiftArrowDown: create('shiftArrowDown'),
   isKekceburek: create('kekCeburek'),
 };
 

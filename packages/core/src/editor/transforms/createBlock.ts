@@ -93,8 +93,8 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
   }
 
   const isInlineElement = nodeType === 'inline';
-  const isVoidElement = nodeType === 'void';
-  const isBlockElement = nodeType === 'block';
+  const isNodeElementVoid = nodeType === 'void';
+  const isNodeElementBlock = nodeType === 'block';
   const isInlineVoidElement = Array.isArray(nodeType) && nodeType.includes('inline') && nodeType.includes('void');
 
   // [TODO] - fix this
@@ -102,8 +102,6 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
   //   const link = rootElementNode;
   //   Transforms.insertNodes(slate, link, { at: slate.selection.anchor.path, mode: 'lowest' });
   // }
-
-  console.log('rootElementNode', rootElementNode);
 
   Transforms.setNodes(slate, rootElementNode, {
     at: [0, 0],
@@ -145,7 +143,7 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
 
   if (options?.deleteText) Transforms.delete(slate, { at: hasRootChildren ? [0, 0, 0] : [0, 0] });
 
-  if (isBlockElement) currentBlock.type = selectedBlock.type;
+  if (isNodeElementBlock || isNodeElementVoid) currentBlock.type = selectedBlock.type;
   currentBlock.value = slate.children;
 
   const currentBlockId = currentBlock!.id;
