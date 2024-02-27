@@ -24,29 +24,34 @@ const DEFAULT_STYLES: CSSProperties = {
 };
 
 type State = {
-  startSelectionToTop: boolean;
-  startSelectionToTopIndex: null | number;
+  selectionStarted: boolean;
+  indexToSelect: null | number;
+  startedIndexToSelect: null | number;
+};
+
+const DEFAULT_STATE: State = {
+  selectionStarted: false,
+  indexToSelect: null,
+  startedIndexToSelect: null,
 };
 
 const Editor = ({ plugins, marks, className, autoFocus = true }: Props) => {
   const editor = useYooptaEditor();
   const yooptaEditorRef = useRef<HTMLDivElement>(null);
 
-  const state = useRef<State>({
-    startSelectionToTop: false,
-    startSelectionToTopIndex: null,
-  });
+  const state = useRef<State>(DEFAULT_STATE);
+
+  useEffect(() => {
+    if (!autoFocus) return;
+    const firstBlock = findPluginBlockBySelectionPath(editor, { at: [0] });
+    if (firstBlock) editor.focusBlock(firstBlock.id);
+  }, [autoFocus]);
 
   useEffect(() => {
     document.addEventListener('keydown', onKeyDown);
 
-    if (!autoFocus) return;
-
-    const firstBlock = findPluginBlockBySelectionPath(editor, { at: [0] });
-    if (firstBlock) editor.focusBlock(firstBlock.id);
-
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [autoFocus]);
+  }, [editor.selectedBlocks]);
 
   const handleEmptyZoneClick = (e: React.MouseEvent) => {
     const editorRef = yooptaEditorRef.current;
@@ -66,7 +71,7 @@ const Editor = ({ plugins, marks, className, autoFocus = true }: Props) => {
         const parentPath = Path.parent(lastSlate.selection.anchor.path);
         const [lastNode] = SlateEditor.node(lastSlate, parentPath);
 
-        if (Element.isElement(lastNode) && lastNode.props.nodeType !== 'void' && string.trim().length === 0) {
+        if (Element.isElement(lastNode) && lastNode.props?.nodeType !== 'void' && string.trim().length === 0) {
           editor.focusBlock(lastBlock.id, { slate: lastSlate });
           return;
         }
@@ -77,6 +82,8 @@ const Editor = ({ plugins, marks, className, autoFocus = true }: Props) => {
       editor.insertBlock(defaultBlock, { at: [nextPath], focus: true });
     }
   };
+
+  console.log('SELECTED BLOCKS', editor.selectedBlocks);
 
   const resetSelectedBlocks = () => {
     if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
@@ -104,30 +111,35 @@ const Editor = ({ plugins, marks, className, autoFocus = true }: Props) => {
     }
 
     if (HOTKEYS.isBackspace(event)) {
-      const isAllBlocksSelected = editor.selectedBlocks?.length === Object.keys(editor.children).length;
+      const isAllBlocksSelected =
+        Array.isArray(editor.selectedBlocks) && editor.selectedBlocks?.length === Object.keys(editor.children).length;
+
       if (isAllBlocksSelected) {
         event.preventDefault();
-
         editor.deleteBlock({ deleteAll: true });
+        return;
+      }
 
-        // // [TODO] - create delete all blocks
-        // Object.keys(editor.children).forEach((key) => {
-        //   const block = editor.children[key];
-        //   editor.deleteBlock({ at: [block.meta.order], focus: false });
-        // });
-
+      if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks?.length > 0) {
+        event.preventDefault();
+        editor.deleteBlock({ fromPaths: editor.selectedBlocks });
         return;
       }
     }
 
     // [TODO] - handle sharing cursor between blocks
     if (HOTKEYS.isShiftArrowUp(event)) {
-      console.log('startSelectionToTop', state.current.startSelectionToTop);
-      let currentIndex = state.current.startSelectionToTopIndex;
-      console.log('currentIndex', currentIndex);
-      console.log('state.current.startSelectionToTopIndex', state.current.startSelectionToTopIndex);
+      const currentIndex = state.current.indexToSelect;
 
-      if (state.current.startSelectionToTop) {
+      console.log('currentIndex', currentIndex);
+
+      if (state.current.selectionStarted && currentIndex) {
+        if (currentIndex <= 0) return;
+
+        state.current.indexToSelect = currentIndex - 1;
+        let prevIndex = currentIndex - 1;
+        editor.setBlockSelected([prevIndex]);
+
         event.preventDefault();
         return;
       }
@@ -149,7 +161,7 @@ const Editor = ({ plugins, marks, className, autoFocus = true }: Props) => {
 
         if (block && prevBlock) {
           event.preventDefault();
-          state.current.startSelectionToTopIndex = block.meta.order;
+          state.current.indexToSelect = block.meta.order;
 
           // setTimeout(() => {
           ReactEditor.blur(slate);
@@ -157,16 +169,38 @@ const Editor = ({ plugins, marks, className, autoFocus = true }: Props) => {
           Transforms.deselect(slate);
 
           editor.setSelection(null);
-          editor.setBlockSelected([block?.meta.order, prevBlock.meta.order]);
-
-          state.current.startSelectionToTopIndex = state.current.startSelectionToTopIndex - 1;
-          state.current.startSelectionToTop = true;
-          // }, 10);
+          editor.setBlockSelected([block?.meta.order]);
+          state.current.selectionStarted = true;
         }
       }
     }
 
     if (HOTKEYS.isShiftArrowDown(event)) {
+      if (state.current.selectionStarted && state.current.indexToSelect !== null) {
+        const currentIndex = state.current.indexToSelect;
+        const nextIndex = currentIndex + 1;
+
+        console.log('currentIndex', currentIndex);
+        console.log('nextIndex', nextIndex);
+
+        if (editor.selectedBlocks && editor.selectedBlocks.includes(currentIndex) && editor.selectedBlocks.length > 1) {
+          console.log(`THIS ${currentIndex} INDEX IS IN BLOCk`, currentIndex);
+          const filtered = editor.selectedBlocks.filter((blockIndex) => blockIndex !== currentIndex);
+
+          editor.setBlockSelected(filtered, { only: true });
+          state.current.indexToSelect = nextIndex;
+          return;
+        }
+
+        state.current.indexToSelect = nextIndex;
+
+        if (nextIndex >= Object.keys(editor.children).length) return;
+
+        editor.setBlockSelected([nextIndex]);
+
+        return;
+      }
+
       const block = findPluginBlockBySelectionPath(editor);
       const slate = findSlateBySelectionPath(editor);
       if (!slate || !slate.selection || !block) return;

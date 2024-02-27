@@ -7,10 +7,27 @@ import { YooEditor, YooptaEditorTransformOptions } from '../types';
 
 export type DeleteBlockOptions = YooptaEditorTransformOptions & {
   deleteAll?: boolean;
+  fromPaths?: number[];
 };
 
 export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {}) {
-  const { at = editor.selection, deleteAll = false, focus } = options;
+  const { at = editor.selection, deleteAll = false, fromPaths, focus } = options;
+
+  if (Array.isArray(fromPaths) && fromPaths.length > 0) {
+    editor.children = createDraft(editor.children);
+
+    fromPaths.forEach((path) => {
+      const plugin = findPluginBlockBySelectionPath(editor, { at: [path] });
+      if (plugin) {
+        delete editor.children[plugin.id];
+        delete editor.blockEditorsMap[plugin.id];
+      }
+    });
+
+    editor.children = finishDraft(editor.children);
+    editor.applyChanges();
+    return;
+  }
 
   if (deleteAll) {
     editor.children = {};
