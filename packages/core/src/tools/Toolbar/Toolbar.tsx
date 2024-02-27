@@ -28,7 +28,7 @@ const Toolbar = () => {
 
     if (!yooptaEditorEl?.contains(ancestor)) return setIsToolbarOpen(false);
 
-    if (domRange && text.length > 0 && !yooptaEditorEl?.contains(ancestor)) {
+    if (domRange && text.length > 0) {
       refs.setReference({
         getBoundingClientRect: () => selectionRect,
         getClientRects: () => domRange.getClientRects(),
