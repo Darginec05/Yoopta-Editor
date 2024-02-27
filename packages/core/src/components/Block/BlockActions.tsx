@@ -12,13 +12,13 @@ import { CSSProperties, useState } from 'react';
 import { BlockOptions } from './BlockOptions';
 
 type ActionsProps = {
-  plugin: YooptaChildrenValue;
+  block: YooptaChildrenValue;
   editor: YooEditor;
   dragHandleProps: any;
   showActions: boolean;
 };
 
-const BlockActions = ({ plugin, editor, dragHandleProps, showActions }: ActionsProps) => {
+const BlockActions = ({ block, editor, dragHandleProps, showActions }: ActionsProps) => {
   const [blockOptions, setBlockOptions] = useState<CSSProperties | null>(null);
   const isBlockOptionsOpen = !!blockOptions;
 
@@ -26,17 +26,17 @@ const BlockActions = ({ plugin, editor, dragHandleProps, showActions }: ActionsP
 
   const onPlusClick = () => {
     const defaultBlock = getDefaultParagraphBlock(generateId());
-    const nextPath = [plugin.meta.order + 1];
+    const nextPath = [block.meta.order + 1];
 
-    editor.setSelection([plugin.meta.order]);
+    editor.setSelection([block.meta.order]);
     editor.insertBlock(defaultBlock, { at: nextPath, focus: true });
   };
 
   const onSelectBlock = (event: React.MouseEvent) => {
     event.stopPropagation();
 
-    const slate = findSlateBySelectionPath(editor, { at: [plugin.meta.order] });
-    editor.focusBlock(plugin.id);
+    const slate = findSlateBySelectionPath(editor, { at: [block.meta.order] });
+    editor.focusBlock(block.id);
 
     if (!slate) return;
 
@@ -45,8 +45,8 @@ const BlockActions = ({ plugin, editor, dragHandleProps, showActions }: ActionsP
       ReactEditor.deselect(slate);
       Transforms.deselect(slate);
 
-      editor.setBlockSelected([plugin.meta.order], { only: true });
-      editor.setSelection([plugin.meta.order]);
+      editor.setBlockSelected([block.meta.order], { only: true });
+      editor.setSelection([block.meta.order]);
     }, 10);
 
     setBlockOptions(null);

@@ -23,7 +23,12 @@ const Toolbar = () => {
     const selectionRect = domRange.getBoundingClientRect();
     const text = domRange.toString().trim();
 
-    if (domRange && text.length > 0) {
+    const yooptaEditorEl = document.getElementById('yoopta-editor');
+    const ancestor = domRange?.commonAncestorContainer;
+
+    if (!yooptaEditorEl?.contains(ancestor)) return setIsToolbarOpen(false);
+
+    if (domRange && text.length > 0 && !yooptaEditorEl?.contains(ancestor)) {
       refs.setReference({
         getBoundingClientRect: () => selectionRect,
         getClientRects: () => domRange.getClientRects(),
@@ -33,11 +38,11 @@ const Toolbar = () => {
     }
   };
 
-  const onSelectionChange = throttle(handleSelectionChange, 300);
+  const onSelectionChange = throttle(handleSelectionChange, 100);
 
   useEffect(() => {
-    document.addEventListener('selectionchange', onSelectionChange);
-    return () => document.removeEventListener('selectionchange', onSelectionChange);
+    window.document.addEventListener('selectionchange', onSelectionChange);
+    return () => window.document.removeEventListener('selectionchange', onSelectionChange);
   }, [editor.selectedBlocks]);
 
   if (!isToolbarOpen) return null;

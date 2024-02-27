@@ -1,6 +1,6 @@
 import { createDraft, finishDraft } from 'immer';
 import { Editor } from 'slate';
-import { buildeSlateEditor } from '../../utils/editorBuilders';
+import { buildSlateEditor } from '../../utils/editorBuilders';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../../utils/generateId';
 import { YooEditor, YooptaEditorTransformOptions } from '../types';
@@ -45,7 +45,7 @@ export function insertBlock(editor: YooEditor, data, options: YooptaEditorTransf
     newPluginBlock.meta.order = newIndex;
   }
 
-  const newSlateEditor = buildeSlateEditor(editor);
+  const newSlateEditor = buildSlateEditor(editor);
   editor.blockEditorsMap[newPluginBlock.id] = newSlateEditor;
 
   if (insertBefore && currentBlock) {

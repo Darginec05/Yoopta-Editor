@@ -1,4 +1,4 @@
-import { YooEditor, YooptaPath } from '../types';
+import { YooEditor, YooptaBlockPath } from '../types';
 
 function uniqueArray<T>(arr: T[]): T[] {
   return Array.from(new Set(arr));
@@ -9,7 +9,7 @@ export type BlockSelectedOptions = {
   allSelected?: boolean;
 };
 
-export function setBlockSelected(editor: YooEditor, path: YooptaPath | null, options: BlockSelectedOptions = {}) {
+export function setBlockSelected(editor: YooEditor, path: number[] | null, options: BlockSelectedOptions = {}) {
   const { only = false, allSelected = false } = options;
   const selectedBlocks = editor.selectedBlocks || [];
 

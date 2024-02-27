@@ -61,14 +61,14 @@ export function buildBlockSlateEditors(editor: YooEditor) {
   const blockEditorsMap = {};
 
   Object.keys(editor.children).forEach((id) => {
-    const slate = buildeSlateEditor(editor);
+    const slate = buildSlateEditor(editor);
     blockEditorsMap[id] = slate;
   });
 
   return blockEditorsMap;
 }
 
-export function buildeSlateEditor(editor: YooEditor): Editor {
+export function buildSlateEditor(editor: YooEditor): Editor {
   const slate = withHistory(withShortcuts(editor, withReact(createEditor())));
   return slate;
 }

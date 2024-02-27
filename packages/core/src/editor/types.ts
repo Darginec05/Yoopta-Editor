@@ -2,11 +2,15 @@ import { Descendant, Editor as SlateEditor } from 'slate';
 import { Plugin, PluginElementsMap, PluginOptions } from '../plugins/types';
 import { BlockSelectedOptions } from './selection/setBlockSelected';
 import { CreateBlockOptions } from './transforms/createBlock';
+import { DeleteBlockOptions } from './transforms/deleteBlock';
+import { FocusBlockOptions } from './transforms/focusBlock';
 
-export type YooptaPath = number[];
+export type YooptaBlockPath = [number];
 
 export type YooptaChildrenKey = string;
 export type YooptaChildren = Record<YooptaChildrenKey, YooptaChildrenValue>;
+
+// [TODO] - rename to block
 export type YooptaChildrenValue<T = Descendant> = {
   id: string;
   value: T[];
@@ -25,7 +29,7 @@ export type YooptaBlockBaseMeta = {
 export type FocusAt = 'start' | 'end' | number;
 
 export type YooptaEditorTransformOptions = {
-  at?: YooptaPath | null;
+  at?: YooptaBlockPath | null;
   focus?: boolean;
   focusAt?: FocusAt;
   slate?: SlateEditor;
@@ -62,19 +66,19 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   insertBlock: (data, options?: YooptaEditorTransformOptions) => void;
   splitBlock: (options?: YooptaEditorTransformOptions) => void;
   updateBlock: (id: string, data, options?: YooptaEditorTransformOptions) => void;
-  deleteBlock: (options?: YooptaEditorTransformOptions) => void;
+  deleteBlock: (options?: DeleteBlockOptions) => void;
   getBlock: (options?: YooptaEditorTransformOptions) => void;
   increaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
   decreaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
   applyChanges: () => void;
-  moveBlock: (blockId: string, to: YooptaPath) => void;
-  focusBlock: (id: string, options?: YooptaEditorTransformOptions) => void;
-  selection: YooptaPath | null;
-  selectedBlocks: YooptaPath | null;
+  moveBlock: (blockId: string, to: YooptaBlockPath) => void;
+  focusBlock: (id: string, options?: FocusBlockOptions) => void;
+  selection: YooptaBlockPath | null;
+  selectedBlocks: number[] | null;
   children: Record<string, YooptaChildrenValue>;
   getEditorValue: () => TNodes;
-  setSelection: (path: YooptaPath | null) => void;
-  setBlockSelected: (path: YooptaPath | null, options?: BlockSelectedOptions) => void;
+  setSelection: (path: YooptaBlockPath | null) => void;
+  setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
   blockEditorsMap: YooptaPluginsEditorMap;
   blocks: YooptaBlocks;
   formats: YooptaFormats;
@@ -82,7 +86,7 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
 };
 
 // types for slate values
-export type SlateElement<T = unknown> = {
+export type SlateElement<T = any> = {
   id: string;
   type: string;
   children: Descendant[] | SlateElement[];

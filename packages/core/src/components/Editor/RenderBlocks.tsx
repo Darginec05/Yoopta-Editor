@@ -1,5 +1,14 @@
 import { useCallback, useMemo } from 'react';
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+  DragStartEvent,
+} from '@dnd-kit/core';
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 import { Block } from '../Block/Block';
@@ -15,7 +24,7 @@ type Props = {
   plugins: Plugin[];
 };
 
-const useYooptaDragDrop = ({ editor }) => {
+const useYooptaDragDrop = ({ editor }: Pick<Props, 'editor'>) => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -28,20 +37,24 @@ const useYooptaDragDrop = ({ editor }) => {
     }),
   );
 
-  const handleDragEnd = useCallback((event) => {
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
     const { active, over } = event;
 
     if (active && over && active.id !== over.id) {
       const newPluginPosition = editor.children[over.id].meta.order;
-      editor.moveBlock(active.id, [newPluginPosition]);
+      editor.moveBlock(active.id as string, [newPluginPosition]);
     }
   }, []);
 
-  return { sensors, handleDragEnd };
+  const handleDragStart = useCallback((event: DragStartEvent) => {
+    editor.setBlockSelected(null);
+  }, []);
+
+  return { sensors, handleDragEnd, handleDragStart };
 };
 
 const RenderBlocks = ({ editor, plugins, marks }: Props) => {
-  const { sensors, handleDragEnd } = useYooptaDragDrop({ editor });
+  const { sensors, handleDragEnd, handleDragStart } = useYooptaDragDrop({ editor });
   const childrenUnorderedKeys = Object.keys(editor.children);
   const childrenKeys = useMemo(() => {
     if (childrenUnorderedKeys.length === 0) return DEFAULT_EDITOR_KEYS;
@@ -102,7 +115,12 @@ const RenderBlocks = ({ editor, plugins, marks }: Props) => {
   }
 
   return (
-    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
       <SortableContext items={childrenKeys} strategy={verticalListSortingStrategy}>
         {blocks}
       </SortableContext>

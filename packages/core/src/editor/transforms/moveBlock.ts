@@ -1,7 +1,7 @@
 import { createDraft, finishDraft } from 'immer';
-import { YooEditor, YooptaPath } from '../types';
+import { YooEditor, YooptaBlockPath } from '../types';
 
-export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: YooptaPath) {
+export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: YooptaBlockPath) {
   editor.children = createDraft(editor.children);
 
   const [newPosition] = newPath;

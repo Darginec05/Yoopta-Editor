@@ -1,4 +1,3 @@
-import { createDraft, finishDraft } from 'immer';
 import { isKeyHotkey } from 'is-hotkey';
 import { Editor, Path, Range, select, Text, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
@@ -76,8 +75,6 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
             return editor.deleteBlock({ at: [prevBlockPathIndex], focus: true });
           }
 
-          console.log('maxOffsetInElement', getMaxOffsetInElement(prevSlate, [0]));
-
           const childNodeEntries = Array.from(
             Editor.nodes(slate, {
               at: [0],
@@ -88,7 +85,11 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
 
           const childNodes = childNodeEntries.map(([node]) => node);
           Transforms.insertNodes(prevSlate, childNodes, { at: Editor.end(prevSlate, []) });
-          return editor.deleteBlock({ at: editor.selection, focus: true });
+          return editor.deleteBlock({
+            at: editor.selection,
+            focus: true,
+            focusAt: 'start',
+          });
         }
       }
       return;
@@ -103,6 +104,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
       const fullRange = Editor.range(slate, firstElementPath, lastElementPath);
       const isAllBlockElementsSelected = Range.equals(slate.selection, fullRange);
 
+      // [TODO] - handle cases for void node elements and when string is empty
       if (Range.isExpanded(slate.selection) && isAllBlockElementsSelected) {
         event.preventDefault();
 
@@ -131,21 +133,34 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
       return;
     }
 
-    // [TODO] - handle sharing cursor between blocks
     if (HOTKEYS.isArrowUp(event)) {
-      if (event.isDefaultPrevented()) return;
+      const textNodes = Editor.nodes(slate, {
+        at: [0],
+        match: (n) => !Editor.isEditor(n) && Text.isText(n),
+        mode: 'highest',
+      });
 
-      // const prevPath = editor.selection ? [editor.selection[0] - 1] : [0];
-      // const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevPath });
-      // editor.focusBlock(prevBlock?.id, { at: prevPath });
-      console.log('Editor.start', Editor.start(slate, slate.selection.anchor.path));
+      console.log('textNodes', Array.from(textNodes));
+      console.log('selection', slate.selection);
+      console.log('collapsed', Range.isCollapsed(slate.selection));
+
+      if (event.isDefaultPrevented()) return;
+      // [TODO] - handle cases for inline node elements
+      const parentPath = Path.parent(slate.selection.anchor.path);
+
+      const prevPath = editor.selection ? [editor.selection[0] - 1] : [0];
+      const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevPath });
+      const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
+
+      if (isStart && prevBlock) {
+        event.preventDefault();
+        editor.focusBlock(prevBlock.id, { focusAt: 3, waitExecution: false });
+      }
     }
 
     // [TODO] - handle sharing cursor between blocks
     if (HOTKEYS.isArrowDown(event)) {
       if (event.isDefaultPrevented()) return;
-
-      console.log('Editor.end', Editor.end(slate, slate.selection.anchor.path));
     }
 
     if (Range.isExpanded(slate.selection)) {

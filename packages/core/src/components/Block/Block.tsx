@@ -2,11 +2,12 @@ import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaCo
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { useState } from 'react';
-import s from './Block.module.scss';
 import { BlockActions } from './BlockActions';
+import s from './Block.module.scss';
 
 const Block = ({ children, plugin, pluginId }) => {
   const editor = useYooptaEditor();
+  const block = plugin;
 
   const [hoveredBlockId, setHoveredId] = useState<string | null>(null);
   const {
@@ -27,11 +28,11 @@ const Block = ({ children, plugin, pluginId }) => {
     transition,
     opacity: isDragging ? 0.7 : 1,
     // [TODO] = handle max depth
-    marginLeft: `${plugin.meta.depth * 20}px`,
+    marginLeft: `${block.meta.depth * 20}px`,
     // // implement selected state by mouse select  area
   };
 
-  const isSelected = editor.selectedBlocks?.includes(plugin.meta.order);
+  const isSelected = editor.selectedBlocks?.includes(block.meta.order);
   const isHovered = hoveredBlockId === pluginId;
 
   const handleMouseEnter = () => setHoveredId(pluginId);
@@ -48,7 +49,7 @@ const Block = ({ children, plugin, pluginId }) => {
       ref={setNodeRef}
     >
       <BlockActions
-        plugin={plugin}
+        block={block}
         editor={editor}
         dragHandleProps={{ setActivatorNodeRef, attributes, listeners }}
         showActions={isHovered}

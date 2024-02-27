@@ -1,13 +1,37 @@
 import { createDraft, finishDraft } from 'immer';
+import { getDefaultParagraphBlock } from '../../components/Editor/defaultValue';
+import { buildSlateEditor } from '../../utils/editorBuilders';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
+import { generateId } from '../../utils/generateId';
 import { YooEditor, YooptaEditorTransformOptions } from '../types';
 
-export function deleteBlock(editor: YooEditor, options: YooptaEditorTransformOptions = {}) {
-  const { at = editor.selection, focus } = options;
+export type DeleteBlockOptions = YooptaEditorTransformOptions & {
+  deleteAll?: boolean;
+};
+
+export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {}) {
+  const { at = editor.selection, deleteAll = false, focus } = options;
+
+  if (deleteAll) {
+    editor.children = {};
+    editor.blockEditorsMap = {};
+    const defaultBlock = getDefaultParagraphBlock(generateId());
+    const slate = buildSlateEditor(editor);
+
+    editor.children[defaultBlock.id] = defaultBlock;
+    editor.blockEditorsMap[defaultBlock.id] = slate;
+
+    editor.setSelection([0]);
+    editor.setBlockSelected(null);
+    editor.focusBlock(defaultBlock.id, { slate, waitExecution: true });
+
+    editor.applyChanges();
+    return;
+  }
 
   if (!at) return;
-
   editor.children = createDraft(editor.children);
+
   const [position] = at;
   const pluginKeys = Object.keys(editor.children);
 
@@ -32,7 +56,6 @@ export function deleteBlock(editor: YooEditor, options: YooptaEditorTransformOpt
     const prevBlockPathIndex = editor.selection ? editor.selection[0] - 1 : 0;
     const prevBlock = findPluginBlockBySelectionPath(editor, { at: [prevBlockPathIndex] });
 
-    // [TODO] - add focusAt property to options to focus at offset
-    if (prevBlock) editor.focusBlock(prevBlock.id);
+    if (prevBlock) editor.focusBlock(prevBlock.id, { focusAt: options.focusAt });
   }
 }

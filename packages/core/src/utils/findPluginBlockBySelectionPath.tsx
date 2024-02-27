@@ -5,7 +5,6 @@ export function findPluginBlockBySelectionPath(
   options: Pick<YooptaEditorTransformOptions, 'at'> = {},
 ) {
   const childrenKeys = Object.keys(editor.children);
-
   const { at = editor.selection } = options;
 
   const pluginId = childrenKeys.find((childrenId) => {

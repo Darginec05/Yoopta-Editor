@@ -276,10 +276,13 @@ export const YOOPTA_ULTRA_VALUES: Record<
   // }),
 };
 
-export const getDefaultParagraphPluginElement = () => ({
+export const getDefaultParagraphPluginElement = (): SlateElement => ({
   id: generateId(),
   type: 'paragraph',
   children: [{ text: '' }],
+  props: {
+    nodeType: 'block',
+  },
 });
 
 export const INLINE_LINK_ELEMENT = {
