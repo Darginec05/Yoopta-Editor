@@ -43,9 +43,9 @@ const Block = ({ children, plugin, pluginId }) => {
       className="relative py-0 px-[2px] mt-[2px] mb-[1px] rounded yoopta-block-wrapper"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      data-yoopta-plugin-id={pluginId}
+      data-yoopta-block-id={pluginId}
       style={style}
-      data-yoopta-plugin
+      data-yoopta-block
       ref={setNodeRef}
     >
       <BlockActions

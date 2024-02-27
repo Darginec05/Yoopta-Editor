@@ -4,6 +4,7 @@ import { ImageRender } from '../ui/Image';
 const Image = createYooptaPlugin({
   type: 'Image',
   elements: {
+    // [TODO] - caption element??,
     image: {
       render: ImageRender,
       props: {
