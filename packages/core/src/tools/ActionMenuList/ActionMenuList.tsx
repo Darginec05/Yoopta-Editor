@@ -1,6 +1,5 @@
-import { createPortal } from 'react-dom';
 import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
-import { CSSProperties, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { YooptaBlock } from '../../editor/types';
 import { useTools } from '../../contexts/UltraYooptaContext/ToolsContext';
 import { ActionMenuComponent } from './component';
@@ -31,17 +30,12 @@ type Props = {
   render?: (props: any) => JSX.Element;
 };
 
-type ActionMenuState = {
-  open: boolean;
-  style: CSSProperties;
-};
-
 const ActionMenuList = ({ trigger = '/', render }: Props) => {
   const editor = useYooptaEditor();
   const { registerTool, unregisterTool, tools } = useTools();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
-  const { refs, floatingStyles, context } = useFloating({
+  const { refs, floatingStyles } = useFloating({
     placement: 'top-start',
     open: isMenuOpen,
     onOpenChange: setIsMenuOpen,
@@ -49,8 +43,8 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
     whileElementsMounted: autoUpdate,
   });
 
+  // [TODO] - !!!
   const blockTypes = Object.keys(editor.blocks).sort((a, b) => {
-    // [TODO] - !!!
     const aOrder = editor.blocks[a].order;
     const bOrder = editor.blocks[b].order;
 
@@ -108,6 +102,7 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
 
   if (render) {
     const getItemProps = (props) => ({ onMouseEnter, selectedAction });
+
     return (
       <FloatingPortal>
         <div

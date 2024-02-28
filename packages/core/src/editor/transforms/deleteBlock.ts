@@ -16,16 +16,18 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
   if (Array.isArray(fromPaths) && fromPaths.length > 0) {
     editor.children = createDraft(editor.children);
 
+    // [TODO] - check deleting blocks from paths before
     fromPaths.forEach((path) => {
-      const plugin = findPluginBlockBySelectionPath(editor, { at: [path] });
-      if (plugin) {
-        delete editor.children[plugin.id];
-        delete editor.blockEditorsMap[plugin.id];
+      const block = findPluginBlockBySelectionPath(editor, { at: [path] });
+      if (block) {
+        delete editor.children[block.id];
+        delete editor.blockEditorsMap[block.id];
       }
     });
 
     // Reorder blocks
     const pluginKeys = Object.keys(editor.children);
+
     pluginKeys.forEach((id, index) => {
       editor.children[id].meta.order = index;
     });
