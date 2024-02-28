@@ -18,6 +18,7 @@ type Props = {
   value: YooptaChildren;
   autoFocus?: boolean;
   className?: string;
+  selectionBoxRoot?: HTMLElement | null | React.MutableRefObject<HTMLElement | null>;
   onChange?: (value: YooEditor['children']) => void;
   tools: {
     [key: string]: ToolAPI;
@@ -35,6 +36,7 @@ const YooptaEditor = ({
   autoFocus,
   className,
   tools,
+  selectionBoxRoot,
   ...props
 }: Props) => {
   const applyChanges = () => {
@@ -57,7 +59,13 @@ const YooptaEditor = ({
     <NoSSR>
       <UltraYooptaContextProvider editorState={editorState}>
         <ToolsProvider>
-          <Editor plugins={plugins} marks={marks} autoFocus={autoFocus} className={className} />
+          <Editor
+            plugins={plugins}
+            marks={marks}
+            autoFocus={autoFocus}
+            className={className}
+            selectionBoxRoot={selectionBoxRoot}
+          />
           {/* {yooptaTools} */}
           <ActionMenuList />
           <Toolbar />

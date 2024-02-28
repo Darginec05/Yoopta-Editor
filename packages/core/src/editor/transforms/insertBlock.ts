@@ -10,7 +10,6 @@ export function insertBlock(editor: YooEditor, data, options: YooptaEditorTransf
   const { at = null, focus = false, slate = null } = options;
 
   const currentBlock = findPluginBlockBySelectionPath(editor);
-
   const nextBlockPath = at;
   const newPluginBlock = {
     id: generateId(),
@@ -54,12 +53,12 @@ export function insertBlock(editor: YooEditor, data, options: YooptaEditorTransf
   }
 
   editor.children[newPluginBlock.id] = newPluginBlock;
-  const currentBlockId = currentBlock!.id;
+  const currentBlockId = currentBlock?.id;
 
   editor.children = finishDraft(editor.children);
   editor.applyChanges();
 
   if (focus) {
-    editor.focusBlock(insertBefore ? currentBlockId : newPluginBlock.id);
+    editor.focusBlock(insertBefore && currentBlockId ? currentBlockId : newPluginBlock.id);
   }
 }

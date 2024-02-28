@@ -2,7 +2,7 @@ import { isKeyHotkey } from 'is-hotkey';
 import { Editor, Path, Range, select, Text, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { getDefaultParagraphBlock } from '../components/Editor/defaultValue';
-import { YooEditor } from '../editor/types';
+import { YooEditor, YooptaBlockPath } from '../editor/types';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../utils/findSlateBySelectionPath';
 import { generateId } from '../utils/generateId';
@@ -36,7 +36,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
       }
 
       const defaultBlock = getDefaultParagraphBlock(generateId());
-      const nextPath = editor.selection ? [editor.selection[0] + 1] : [0];
+      const nextPath: YooptaBlockPath = editor.selection ? [editor.selection[0] + 1] : [0];
       editor.insertBlock(defaultBlock, { at: nextPath, slate, focus: true });
       return;
     }
@@ -148,7 +148,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
       // [TODO] - handle cases for inline node elements
       const parentPath = Path.parent(slate.selection.anchor.path);
 
-      const prevPath = editor.selection ? [editor.selection[0] - 1] : [0];
+      const prevPath: YooptaBlockPath = editor.selection ? [editor.selection[0] - 1] : [0];
       const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevPath });
       const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
 

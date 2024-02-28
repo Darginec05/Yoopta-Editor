@@ -41,7 +41,7 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
   const { registerTool, unregisterTool, tools } = useTools();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
-  const { refs, floatingStyles } = useFloating({
+  const { refs, floatingStyles, context } = useFloating({
     placement: 'top-start',
     open: isMenuOpen,
     onOpenChange: setIsMenuOpen,
@@ -122,7 +122,7 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
   }
 
   return (
-    <FloatingPortal>
+    <FloatingPortal root={document.getElementById('yoopta-editor')}>
       <div
         className="absolute z-[9999] m-0 left-0 top-0 right-auto bottom-auto"
         style={floatingStyles}

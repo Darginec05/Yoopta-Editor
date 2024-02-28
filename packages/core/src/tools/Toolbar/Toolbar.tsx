@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
 import { ToolbarComponent } from './component';
 import { useFloating, offset, flip, shift, inline, autoUpdate, FloatingPortal } from '@floating-ui/react';
@@ -38,7 +38,7 @@ const Toolbar = () => {
     }
   };
 
-  const onSelectionChange = throttle(handleSelectionChange, 300);
+  const onSelectionChange = throttle(handleSelectionChange, 200);
 
   useEffect(() => {
     window.document.addEventListener('selectionchange', onSelectionChange);
@@ -50,7 +50,7 @@ const Toolbar = () => {
   const currentBlock = Object.values(editor.blocks).find((block) => block.isActive());
 
   return (
-    <FloatingPortal>
+    <FloatingPortal root={document.getElementById('yoopta-editor')}>
       <div style={floatingStyles} ref={refs.setFloating}>
         <ToolbarComponent activeBlock={currentBlock} editor={editor} />
       </div>
