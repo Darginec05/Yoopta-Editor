@@ -1,7 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Transforms } from 'slate';
-import { ReactEditor } from 'slate-react';
-import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { RectangeSelectionProps, RectangeSelectionState } from './SelectionBox';
 
 const findBlocksUnderSelection = (origin, coords) => {
@@ -64,13 +61,12 @@ export const useRectangeSelectionBox = ({
 
     if (isInsideEditor) return;
 
-    const slate = findSlateBySelectionPath(editor);
-
-    if (slate) {
-      ReactEditor.blur(slate);
-      ReactEditor.deselect(slate);
-      Transforms.deselect(slate);
-    }
+    // const slate = findSlateBySelectionPath(editor);
+    // if (slate) {
+    // ReactEditor.blur(slate);
+    // ReactEditor.deselect(slate);
+    // Transforms.deselect(slate);
+    // }
 
     setState({
       origin: [event.pageX, event.pageY - window.pageYOffset],
