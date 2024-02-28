@@ -47,11 +47,6 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
       const isVoid = nodeType === 'void';
       const isInlineVoid = Array.isArray(nodeType) && nodeType.includes('inline') && nodeType.includes('void');
 
-      if (isVoid) {
-        console.log('elementType', elementType);
-        console.log('isVoid', elements[elementType]);
-      }
-
       if (isInlineVoid) {
         slateEditor.markableVoid = (element) => element.type === elementType;
       }
@@ -163,8 +158,8 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
     <div data-plugin-id={id} data-plugin-type={type}>
       <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onChange={onChange}>
         <Editable
-          renderElement={renderElement}
           // placeholder="Enter some rich text…"
+          renderElement={renderElement}
           renderLeaf={renderLeaf}
           className="focus-visible:outline-none focus:outline-none"
           spellCheck
