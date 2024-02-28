@@ -24,6 +24,12 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
       }
     });
 
+    // Reorder blocks
+    const pluginKeys = Object.keys(editor.children);
+    pluginKeys.forEach((id, index) => {
+      editor.children[id].meta.order = index;
+    });
+
     editor.children = finishDraft(editor.children);
     editor.applyChanges();
     return;
