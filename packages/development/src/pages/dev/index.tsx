@@ -34,7 +34,7 @@ const BasicExample = () => {
 
   const onSubmit = () => {
     const editorData = editor.getEditorValue();
-    console.log('editorData', editorData);
+    console.log('EDITOR DATA', editorData);
   };
 
   // useEffect(() => {

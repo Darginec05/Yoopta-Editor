@@ -69,7 +69,7 @@ export type YooptaFormats = Record<string, TextFormat>;
 export type YooEditor<TNodes = any, TKey extends string = any> = {
   insertBlock: (data, options?: YooptaEditorTransformOptions) => void;
   splitBlock: (options?: YooptaEditorTransformOptions) => void;
-  updateBlock: (id: string, data, options?: YooptaEditorTransformOptions) => void;
+  updateBlock: (id: string, data: Partial<YooptaChildrenValue>, options?: YooptaEditorTransformOptions) => void;
   deleteBlock: (options?: DeleteBlockOptions) => void;
   duplicateBlock: (options?: DuplicateBlockOptions) => void;
   getBlock: (options?: YooptaEditorTransformOptions) => void;
