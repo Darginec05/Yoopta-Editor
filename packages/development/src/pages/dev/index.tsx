@@ -37,10 +37,10 @@ const BasicExample = () => {
     console.log('editorData', editorData);
   };
 
-  useEffect(() => {
-    editor.on?.('insertBlock', (e) => {});
-    editor.on?.('insertBlock', (e) => {});
-  }, []);
+  // useEffect(() => {
+  //   editor.on?.('insertBlock', (e) => {});
+  //   editor.on?.('insertBlock', (e) => {});
+  // }, []);
 
   return (
     <div className="px-[100px] max-w-[900px] mx-auto my-10" ref={rootRef}>
@@ -48,8 +48,6 @@ const BasicExample = () => {
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded-md"
           onClick={() => {
-            console.log('selection', editor.selection);
-
             editor.formats.highlight?.update({ color: 'rgb(176, 171, 250)' });
           }}
         >
