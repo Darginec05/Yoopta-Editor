@@ -1,4 +1,14 @@
 import { TextIcon } from '@radix-ui/react-icons';
+import { YooEditor } from '../../editor/types';
+
+type Props = {
+  actions: string[];
+  editor: YooEditor;
+  onMouseEnter?: (e: React.MouseEvent) => void;
+  selectedAction: string;
+  onClose: () => void;
+  empty: boolean;
+};
 
 const ActionMenuComponent = ({ actions, editor, onMouseEnter, selectedAction, onClose, empty }) => {
   return (
@@ -7,6 +17,7 @@ const ActionMenuComponent = ({ actions, editor, onMouseEnter, selectedAction, on
         <div data-action-menu-list className="overflow-hidden p-0 text-foreground">
           {empty && <div className="text-left text-muted-foreground text-xs px-1 py-1">No actions available</div>}
           {actions.map((type, i) => {
+            // [TODO] - make action to array of objects
             const block = editor.blocks[type];
             if (!block) return null;
 

@@ -30,7 +30,7 @@ export const YOOPTA_ULTRA_VALUES: Record<
       {
         id: generateId(),
         type: 'heading-two',
-        children: children || [{ text: 'Разработка опенсорс библиотеки' }],
+        children: children || [{ text: 'Open source development' }],
       },
     ],
     type: 'HeadingTwo',

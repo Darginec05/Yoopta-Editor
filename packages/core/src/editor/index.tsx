@@ -10,6 +10,7 @@ import { decreaseBlockDepth } from './transforms/decreaseBlockDepth';
 import { getEditorValue } from './core/getEditorValue';
 import { setBlockSelected } from './selection/setBlockSelected';
 import { duplicateBlock } from './transforms/duplicateBlock';
+import { blur } from './selection/blur';
 
 // export const YooEditor = {}
 // export const BlockTransforms = {}
@@ -37,6 +38,7 @@ export const createYooptaEditor = (): YooEditor => {
     splitBlock: (...args) => splitBlock(editor, ...args),
     setSelection: (...args) => setSelection(editor, ...args),
     setBlockSelected: (...args) => setBlockSelected(editor, ...args),
+    blur: (...args) => blur(editor, ...args),
     blockEditorsMap: {},
     blocks: {},
     formats: {},

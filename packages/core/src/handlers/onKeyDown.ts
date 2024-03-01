@@ -1,15 +1,35 @@
 import { isKeyHotkey } from 'is-hotkey';
-import { Editor, Path, Range, select, Text, Transforms } from 'slate';
+import { Editor, Path, Point, Range, Text, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { getDefaultParagraphBlock } from '../components/Editor/defaultValue';
-import { YooEditor, YooptaBlockPath } from '../editor/types';
+import { SlateEditor, YooEditor, YooptaBlockPath } from '../editor/types';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../utils/findSlateBySelectionPath';
 import { generateId } from '../utils/generateId';
-import { getMaxOffsetInElement } from '../utils/getMaxOffsetInElement';
 import { HOTKEYS } from '../utils/hotkeys';
 
-export function onKeyDown(editor: YooEditor, slate: Editor) {
+/** */
+function getLastNodePoint(slate: SlateEditor, path: Path): Point {
+  const [, lastNodePath] = Editor.last(slate, path);
+  const lastNodeTextLength = Editor.string(slate, lastNodePath).length;
+
+  return {
+    path: lastNodePath,
+    offset: lastNodeTextLength,
+  };
+}
+
+function getNextNodePoint(slate: SlateEditor, path: Path): Point {
+  const [, firstNodePath] = Editor.first(slate, path);
+
+  return {
+    path: firstNodePath,
+    offset: 0,
+  };
+}
+/** */
+
+export function onKeyDown(editor: YooEditor, slate: SlateEditor) {
   return (event: React.KeyboardEvent) => {
     if (!slate.selection) return;
 
@@ -45,16 +65,25 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
       if (event.isDefaultPrevented()) return;
 
       const parentPath = Path.parent(slate.selection.anchor.path);
-      const isStart = Editor.isStart(slate, slate.selection.anchor, slate.selection.anchor.path);
+      const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
 
       // When the cursor is at the start of the block, delete the block
       if (isStart) {
         event.preventDefault();
         const text = Editor.string(slate, parentPath);
+        const prevBlockPathIndex = editor.selection ? editor.selection[0] - 1 : 0;
+        const prevSlate = findSlateBySelectionPath(editor, { at: [prevBlockPathIndex] });
+        let focusAt;
+
+        if (prevSlate) {
+          focusAt = getLastNodePoint(prevSlate, parentPath);
+        }
+
+        console.log({ focusAt });
 
         // If current block is empty just delete block
-        if (text.length === 0) {
-          return editor.deleteBlock({ at: editor.selection, focus: true });
+        if (text.trim().length === 0) {
+          return editor.deleteBlock({ at: editor.selection, focus: true, focusAt });
         }
         // If current block is not empty merge text nodes with previous block
         else {
@@ -62,17 +91,17 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
             return Transforms.delete(slate, { at: slate.selection });
           }
 
-          const prevBlockPathIndex = editor.selection ? editor.selection[0] - 1 : 0;
-          const prevSlate = findSlateBySelectionPath(editor, { at: [prevBlockPathIndex] });
-
           // If we try to delete first block do nothing
           if (!prevSlate) return;
 
           const prevSlateText = Editor.string(prevSlate, [0, 0]);
-
           // If previous block values is empty just delete block without merging
           if (prevSlateText.length === 0) {
-            return editor.deleteBlock({ at: [prevBlockPathIndex], focus: true });
+            return editor.deleteBlock({
+              at: [prevBlockPathIndex],
+              focus: true,
+              focusAt,
+            });
           }
 
           const childNodeEntries = Array.from(
@@ -88,7 +117,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
           return editor.deleteBlock({
             at: editor.selection,
             focus: true,
-            focusAt: 'start',
+            focusAt,
           });
         }
       }
@@ -134,33 +163,48 @@ export function onKeyDown(editor: YooEditor, slate: Editor) {
     }
 
     if (HOTKEYS.isArrowUp(event)) {
-      const textNodes = Editor.nodes(slate, {
-        at: [0],
-        match: (n) => !Editor.isEditor(n) && Text.isText(n),
-        mode: 'highest',
-      });
-
-      console.log('textNodes', Array.from(textNodes));
-      console.log('selection', slate.selection);
-      console.log('collapsed', Range.isCollapsed(slate.selection));
-
       if (event.isDefaultPrevented()) return;
-      // [TODO] - handle cases for inline node elements
       const parentPath = Path.parent(slate.selection.anchor.path);
-
-      const prevPath: YooptaBlockPath = editor.selection ? [editor.selection[0] - 1] : [0];
-      const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevPath });
       const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
 
-      if (isStart && prevBlock) {
-        event.preventDefault();
-        editor.focusBlock(prevBlock.id, { focusAt: 3, waitExecution: false });
+      if (isStart) {
+        const prevPath: YooptaBlockPath | null = editor.selection ? [editor.selection[0] - 1] : null;
+        const prevSlate = findSlateBySelectionPath(editor, { at: prevPath });
+        const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevPath });
+
+        if (prevSlate && prevBlock) {
+          const [, prevLastPath] = Editor.last(prevSlate, [0]);
+          const prevLastNodeTextLength = Editor.string(prevSlate, prevLastPath).length;
+
+          const selection: Point = {
+            path: prevLastPath,
+            offset: prevLastNodeTextLength,
+          };
+
+          event.preventDefault();
+          editor.focusBlock(prevBlock.id, { focusAt: selection, waitExecution: false });
+          return;
+        }
       }
     }
 
-    // [TODO] - handle sharing cursor between blocks
     if (HOTKEYS.isArrowDown(event)) {
-      if (event.isDefaultPrevented()) return;
+      const parentPath = Path.parent(slate.selection.anchor.path);
+      const isEnd = Editor.isEnd(slate, slate.selection.anchor, parentPath);
+
+      if (isEnd) {
+        const nextPath: YooptaBlockPath | null = editor.selection ? [editor.selection[0] + 1] : null;
+        const nextSlate = findSlateBySelectionPath(editor, { at: nextPath });
+        const nextBlock = findPluginBlockBySelectionPath(editor, { at: nextPath });
+
+        if (nextSlate && nextBlock) {
+          const selection: Point = getNextNodePoint(nextSlate, parentPath);
+
+          event.preventDefault();
+          editor.focusBlock(nextBlock.id, { focusAt: selection, waitExecution: false });
+          return;
+        }
+      }
     }
 
     if (Range.isExpanded(slate.selection)) {

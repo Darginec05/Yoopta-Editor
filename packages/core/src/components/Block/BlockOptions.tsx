@@ -1,7 +1,18 @@
 import TurnIcon from './icons/turn.svg';
 import { TrashIcon, CopyIcon, Link2Icon } from '@radix-ui/react-icons';
-import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
 import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
+import { useState } from 'react';
+import {
+  useFloating,
+  offset,
+  flip,
+  shift,
+  inline,
+  autoUpdate,
+  FloatingPortal,
+  FloatingOverlay,
+} from '@floating-ui/react';
+import { ActionMenuComponent } from '../../tools/ActionMenuList/component';
 
 const DropdownMenuGroup = ({ children }) => <div className="flex flex-col">{children}</div>;
 
@@ -22,6 +33,14 @@ const DropdownMenuItem = ({ children }) => (
 
 const BlockOptions = ({ isOpen, onClose, refs, floatingStyles }) => {
   const editor = useYooptaEditor();
+  const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
+  const { refs: actionMenuRefs, floatingStyles: actionMenuFloatingStyles } = useFloating({
+    placement: 'left',
+    open: isActionMenuOpen,
+    onOpenChange: setIsActionMenuOpen,
+    middleware: [inline(), flip(), shift(), offset(10)],
+    whileElementsMounted: autoUpdate,
+  });
 
   if (!isOpen) return null;
 
@@ -73,9 +92,27 @@ const BlockOptions = ({ isOpen, onClose, refs, floatingStyles }) => {
                 </button>
               </DropdownMenuItem>
               <DropdownMenuItem>
+                {isActionMenuOpen && (
+                  <FloatingPortal root={document.getElementById('yoopta-editor')}>
+                    <FloatingOverlay lockScroll className="z-[100]" onClick={() => setIsActionMenuOpen(false)}>
+                      <div style={actionMenuFloatingStyles} ref={actionMenuRefs.setFloating}>
+                        <ActionMenuComponent
+                          actions={Object.keys(editor.blocks)}
+                          editor={editor}
+                          selectedAction={''}
+                          onClose={() => setIsActionMenuOpen(false)}
+                          empty={false}
+                          onMouseEnter={() => undefined}
+                        />
+                      </div>
+                    </FloatingOverlay>
+                  </FloatingPortal>
+                )}
                 <button
                   type="button"
                   className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+                  ref={actionMenuRefs.setReference}
+                  onClick={() => setIsActionMenuOpen((open) => !open)}
                 >
                   <TurnIcon className="w-4 h-4 mr-2" />
                   Turn into

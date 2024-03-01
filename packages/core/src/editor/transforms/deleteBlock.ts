@@ -13,6 +13,8 @@ export type DeleteBlockOptions = YooptaEditorTransformOptions & {
 export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {}) {
   const { at = editor.selection, deleteAll = false, fromPaths, focus } = options;
 
+  console.log('BEFORE options.focusAt', options.focusAt);
+
   if (Array.isArray(fromPaths) && fromPaths.length > 0) {
     editor.children = createDraft(editor.children);
 
@@ -78,6 +80,8 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
   if (focus) {
     const prevBlockPathIndex = editor.selection ? editor.selection[0] - 1 : 0;
     const prevBlock = findPluginBlockBySelectionPath(editor, { at: [prevBlockPathIndex] });
+
+    console.log('AFTER options.focusAt', options.focusAt);
 
     if (prevBlock) editor.focusBlock(prevBlock.id, { focusAt: options.focusAt });
   }

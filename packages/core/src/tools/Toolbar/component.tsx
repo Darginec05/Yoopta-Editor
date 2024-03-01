@@ -1,29 +1,72 @@
 import { FontBoldIcon, FontItalicIcon, StrikethroughIcon, CodeIcon, UnderlineIcon } from '@radix-ui/react-icons';
 import * as Toolbar from '@radix-ui/react-toolbar';
 import { YooEditor, YooptaBlock } from '../../editor/types';
+import { ActionMenuComponent } from '../ActionMenuList/component';
+import {
+  useFloating,
+  offset,
+  flip,
+  shift,
+  inline,
+  autoUpdate,
+  FloatingPortal,
+  FloatingOverlay,
+} from '@floating-ui/react';
+import { useState } from 'react';
 
 type ToolbarComponentProps = {
   activeBlock?: YooptaBlock;
   editor: YooEditor;
 };
 
+const ActionMenu = {
+  component: ActionMenuComponent,
+};
+
 const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
+  const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
+  const { refs, floatingStyles } = useFloating({
+    placement: 'bottom-start',
+    open: isActionMenuOpen,
+    onOpenChange: setIsActionMenuOpen,
+    middleware: [inline(), flip(), shift(), offset(10)],
+    whileElementsMounted: autoUpdate,
+  });
+
   const getItemStyle = (type) => ({
     backgroundColor: editor.formats[type]?.isActive() ? '#1183ff' : undefined,
     color: editor.formats[type]?.isActive() ? '#fff' : undefined,
   });
 
-  const label = activeBlock?.options?.displayLabel || activeBlock?.type || '';
+  const blockLabel = activeBlock?.options?.displayLabel || activeBlock?.type || '';
 
   return (
     <Toolbar.Root className="bg-white flex z-50 p-[5px] rounded-md shadow-md border shadow-y-[4px]">
       <Toolbar.ToggleGroup className="flex items-center" type="single" aria-label="Block formatting">
+        {isActionMenuOpen && (
+          <FloatingPortal root={document.getElementById('yoopta-editor')}>
+            <FloatingOverlay lockScroll className="z-[100]" onClick={() => setIsActionMenuOpen(false)}>
+              <div style={floatingStyles} ref={refs.setFloating}>
+                <ActionMenu.component
+                  actions={Object.keys(editor.blocks)}
+                  editor={editor}
+                  selectedAction={blockLabel}
+                  onClose={() => setIsActionMenuOpen(false)}
+                  empty={false}
+                  onMouseEnter={() => undefined}
+                />
+              </div>
+            </FloatingOverlay>
+          </FloatingPortal>
+        )}
         <Toolbar.ToggleItem
           className="h-full px-[10px] py-0 hover:bg-[#f4f4f5] rounded-md"
-          value={label}
-          aria-label={label}
+          value={blockLabel}
+          aria-label={blockLabel}
+          ref={refs.setReference}
+          onClick={() => setIsActionMenuOpen((open) => !open)}
         >
-          <span className="mr-0">{label}</span>
+          <span className="mr-0">{blockLabel}</span>
         </Toolbar.ToggleItem>
       </Toolbar.ToggleGroup>
       <Toolbar.Separator className="bg-[#dbd8e0] mx-[6px] my-0 w-[1px]" />
