@@ -105,7 +105,12 @@ const Editor = ({ plugins, marks, className, autoFocus = true, selectionBoxRoot 
     resetSelectedBlocks();
   };
 
-  const onBlur = () => {
+  console.log('editor.children', editor.children);
+
+  const onBlur = (event: React.FocusEvent) => {
+    const isInsideEditor = yooptaEditorRef.current?.contains(event.relatedTarget as Node);
+    if (isInsideEditor) return;
+
     resetSelectionState();
     resetSelectedBlocks();
   };

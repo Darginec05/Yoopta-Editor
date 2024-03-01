@@ -3,6 +3,7 @@ import { Plugin, PluginElementsMap, PluginOptions } from '../plugins/types';
 import { BlockSelectedOptions } from './selection/setBlockSelected';
 import { CreateBlockOptions } from './transforms/createBlock';
 import { DeleteBlockOptions } from './transforms/deleteBlock';
+import { DuplicateBlockOptions } from './transforms/duplicateBlock';
 import { FocusBlockOptions } from './transforms/focusBlock';
 
 export type YooptaBlockPath = [number];
@@ -67,6 +68,7 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   splitBlock: (options?: YooptaEditorTransformOptions) => void;
   updateBlock: (id: string, data, options?: YooptaEditorTransformOptions) => void;
   deleteBlock: (options?: DeleteBlockOptions) => void;
+  duplicateBlock: (options?: DuplicateBlockOptions) => void;
   getBlock: (options?: YooptaEditorTransformOptions) => void;
   increaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
   decreaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;

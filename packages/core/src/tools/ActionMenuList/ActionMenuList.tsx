@@ -117,6 +117,7 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
   }
 
   return (
+    // [TODO] - take care about SSR
     <FloatingPortal root={document.getElementById('yoopta-editor')}>
       <div
         className="absolute z-[9999] m-0 left-0 top-0 right-auto bottom-auto"

@@ -9,7 +9,7 @@ const Block = ({ children, plugin, pluginId }) => {
   const editor = useYooptaEditor();
   const block = plugin;
 
-  const [hoveredBlockId, setHoveredId] = useState<string | null>(null);
+  const [activeBlockId, setActiveBlockId] = useState<string | null>(null);
   const {
     attributes,
     listeners,
@@ -33,10 +33,12 @@ const Block = ({ children, plugin, pluginId }) => {
   };
 
   const isSelected = editor.selectedBlocks?.includes(block.meta.order);
-  const isHovered = hoveredBlockId === pluginId;
+  const isHovered = activeBlockId === pluginId;
 
-  const handleMouseEnter = () => setHoveredId(pluginId);
-  const handleMouseLeave = () => setHoveredId(null);
+  const onChangeActiveBlock = (id: string) => setActiveBlockId(id);
+
+  const handleMouseEnter = () => onChangeActiveBlock(pluginId);
+  const handleMouseLeave = () => setActiveBlockId(null);
 
   return (
     <div
@@ -53,6 +55,7 @@ const Block = ({ children, plugin, pluginId }) => {
         editor={editor}
         dragHandleProps={{ setActivatorNodeRef, attributes, listeners }}
         showActions={isHovered}
+        onChangeActiveBlock={onChangeActiveBlock}
       />
       <div
         className={s.content}

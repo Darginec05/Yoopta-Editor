@@ -37,7 +37,7 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
     return;
   }
 
-  if (deleteAll) {
+  if (deleteAll || Object.keys(editor.children).length === 1) {
     editor.children = {};
     editor.blockEditorsMap = {};
     const defaultBlock = getDefaultParagraphBlock(generateId());
@@ -59,8 +59,6 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
 
   const [position] = at;
   const pluginKeys = Object.keys(editor.children);
-
-  if (pluginKeys.length === 1) return;
 
   const pluginToDeleteId = pluginKeys.find((id) => editor.children[id].meta.order === position);
 
