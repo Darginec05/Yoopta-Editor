@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Editable, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useYooptaPlugin } from '../contexts/UltraYooptaContext/UltraYooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
@@ -81,11 +81,7 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
     return eventHandlersMap;
   }, [events, editor]);
 
-  // [TODO] - hmmmmmm...
-  const onChange = (data) => {
-    // editor.updateBlock(id, data);
-    // plugin.value = data;
-  };
+  const onChange = (value) => editor.updateBlock(id, { value });
 
   if (typeof customEditor === 'function') {
     return customEditor({
@@ -158,7 +154,7 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
     <div data-plugin-id={id} data-plugin-type={type}>
       <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onChange={onChange}>
         <Editable
-          // placeholder="Enter some rich text…"
+          placeholder="Enter some rich text…"
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           className="focus-visible:outline-none focus:outline-none"
