@@ -1,5 +1,6 @@
-import { Descendant, Editor as SlateEditor } from 'slate';
+import { Descendant, Editor, Path, Point } from 'slate';
 import { Plugin, PluginElementsMap, PluginOptions } from '../plugins/types';
+import { EditorBlurOptions } from './selection/blur';
 import { BlockSelectedOptions } from './selection/setBlockSelected';
 import { CreateBlockOptions } from './transforms/createBlock';
 import { DeleteBlockOptions } from './transforms/deleteBlock';
@@ -19,6 +20,8 @@ export type YooptaChildrenValue<T = Descendant> = {
   meta: YooptaBlockBaseMeta;
 };
 
+export type SlateEditor = Editor;
+
 export type YooptaBlockType = 'block' | 'inline' | 'void';
 
 export type YooptaBlockBaseMeta = {
@@ -27,7 +30,7 @@ export type YooptaBlockBaseMeta = {
   maxDepth?: number;
 };
 
-export type FocusAt = 'start' | 'end' | number;
+export type FocusAt = Path | Point;
 
 export type YooptaEditorTransformOptions = {
   at?: YooptaBlockPath | null;
@@ -81,6 +84,7 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   getEditorValue: () => TNodes;
   setSelection: (path: YooptaBlockPath | null) => void;
   setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
+  blur: (options?: EditorBlurOptions) => void;
   blockEditorsMap: YooptaPluginsEditorMap;
   blocks: YooptaBlocks;
   formats: YooptaFormats;

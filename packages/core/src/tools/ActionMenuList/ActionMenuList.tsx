@@ -24,7 +24,7 @@ type Props = {
   //   title: 'Insert Image',
   //   description: 'Insert an image into the text',
   //   icon: ImageIcon,
-  //   handler: () => { /* Функция для вставки изображения */ },
+  //   handler: () => {},
   // }
   actions?: YooptaBlock[];
   render?: (props: any) => JSX.Element;
@@ -74,7 +74,7 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
       events,
     });
     return () => unregisterTool('actionMenu');
-  }, [isMenuOpen]);
+  }, [isMenuOpen, refs]);
 
   useEffect(() => {
     if (!isMenuOpen || !tools.actionMenu) return;

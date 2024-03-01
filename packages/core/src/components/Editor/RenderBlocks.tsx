@@ -29,7 +29,7 @@ const useYooptaDragDrop = ({ editor }: Pick<Props, 'editor'>) => {
     useSensor(PointerSensor, {
       activationConstraint: {
         delay: 100,
-        tolerance: 5,
+        tolerance: 0,
       },
     }),
     useSensor(KeyboardSensor, {
