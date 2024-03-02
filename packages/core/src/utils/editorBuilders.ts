@@ -36,15 +36,15 @@ export function buildBlocks(editor, plugins: PluginReturn[]) {
 
   plugins.forEach((plugin, index) => {
     const rootBlockElement = getRootBlockElement(plugin.elements);
-    const isBlock =
-      typeof rootBlockElement?.props?.nodeType === 'undefined' || rootBlockElement?.props?.nodeType === 'block';
+    const nodeType = rootBlockElement?.props?.nodeType;
+    const isInline = nodeType === 'inline' || nodeType === 'inlineVoid';
 
-    if (isBlock) {
+    if (!isInline) {
       blocks[plugin.type] = {
         type: plugin.type,
         elements: plugin.elements,
         order: index,
-        withCustomEditor: !!plugin.customEditor,
+        withCustomEditor: plugin.options?.withCustomEditor,
         options: plugin.options,
         isActive: () => {
           const block = findPluginBlockBySelectionPath(editor, { at: editor.selection });

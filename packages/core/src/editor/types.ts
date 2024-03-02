@@ -1,5 +1,5 @@
 import { Descendant, Editor, Path, Point } from 'slate';
-import { PluginReturn, PluginElementsMap, PluginOptions } from '../plugins/types';
+import { PluginReturn, PluginElementsMap, PluginOptions, PluginElementProps } from '../plugins/types';
 import { EditorBlurOptions } from './selection/blur';
 import { BlockSelectedOptions } from './selection/setBlockSelected';
 import { CreateBlockOptions } from './transforms/createBlock';
@@ -98,5 +98,5 @@ export type SlateElement<T = any> = {
   id: string;
   type: string;
   children: Descendant[] | SlateElement[];
-  props?: T;
+  props?: PluginElementProps<T>;
 };

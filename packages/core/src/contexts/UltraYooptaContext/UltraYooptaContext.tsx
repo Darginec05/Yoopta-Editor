@@ -48,5 +48,6 @@ const useYooptaEditor = (): YooEditor => {
   return editor;
 };
 const useYooptaPlugin = (id: string) => useYooptaEditor().children[id];
+const useYooptaBlock = (id: string) => useYooptaEditor().blocks[id];
 
-export { useYooptaEditor, useYooptaPlugin, UltraYooptaContextProvider };
+export { useYooptaEditor, useYooptaPlugin, useYooptaBlock, UltraYooptaContextProvider };
