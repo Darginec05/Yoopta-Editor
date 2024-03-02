@@ -7,16 +7,17 @@ import { HOTKEYS_TYPE } from '../utils/hotkeys';
 
 export type RenderPluginProps = {
   id: string;
-  elements: Plugin['elements'];
+  elements: PluginReturn['elements'];
   marks?: YooptaMark<unknown>[];
 };
 
 export type PluginOptions = {
   displayLabel?: string;
   shortcuts?: string[];
+  withCustomEditor?: boolean;
 };
 
-export type Plugin = {
+export type PluginReturn = {
   type: string;
   renderPlugin: (props: RenderPluginProps) => JSX.Element;
   elements: PluginParams<unknown>['elements'];
@@ -27,9 +28,10 @@ export type PluginElementOptions = {
   draggable?: boolean;
 };
 
-export type CustomEditorProps = Omit<RenderPluginProps, 'elements'> & Pick<Plugin, 'type'> & { editor: SlateEditor };
+export type CustomEditorProps = Omit<RenderPluginProps, 'elements'> &
+  Pick<PluginReturn, 'type'> & { editor: SlateEditor };
 
-export type PluginElementProps<T> = T & { nodeType?: 'block' | 'inline' | 'void' | ['inline', 'void'] };
+export type PluginElementProps<T> = T & { nodeType?: 'block' | 'inline' | 'void' | 'inlineVoid' };
 
 export type PluginElement<T> = {
   render: (props: RenderSlateElementProps) => JSX.Element;
@@ -45,7 +47,7 @@ export type PluginElementsMap<T> = {
 
 type HandlersOptions = {
   hotkeys: HOTKEYS_TYPE;
-  defaultPlugin: Plugin;
+  defaultPlugin: PluginReturn;
 };
 
 export type EventHandlers = {

@@ -45,7 +45,7 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
 
       const isInline = nodeType === 'inline';
       const isVoid = nodeType === 'void';
-      const isInlineVoid = Array.isArray(nodeType) && nodeType.includes('inline') && nodeType.includes('void');
+      const isInlineVoid = nodeType === 'inlineVoid';
 
       if (isInlineVoid) {
         slateEditor.markableVoid = (element) => element.type === elementType;

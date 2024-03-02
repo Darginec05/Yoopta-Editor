@@ -3,7 +3,7 @@ import { FAKE_YOOPTA_EDITOR_CHILDREN, getDefaultYooptaChildren } from './compone
 import { Editor } from './components/Editor/Editor';
 import { useState } from 'react';
 import { YooEditor, YooptaChildren } from './editor/types';
-import { Plugin } from './plugins/types';
+import { PluginReturn } from './plugins/types';
 import NoSSR from './components/NoSsr/NoSsr';
 import { Bold, CodeMark, Highlight, Italic, Strike, Underline, YooptaMark } from './textFormatters/createYooptaMark';
 import { ToolAPI, ToolsProvider } from './contexts/UltraYooptaContext/ToolsContext';
@@ -13,7 +13,7 @@ import { ActionMenuList } from './tools/ActionMenuList/ActionMenuList';
 
 type Props = {
   editor: YooEditor;
-  plugins: Plugin[];
+  plugins: PluginReturn[];
   marks?: YooptaMark<any>[];
   value: YooptaChildren;
   autoFocus?: boolean;

@@ -12,7 +12,7 @@ import {
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 import { Block } from '../Block/Block';
-import { Plugin, PluginElementsMap } from '../../plugins/types';
+import { PluginReturn, PluginElementsMap } from '../../plugins/types';
 import { YooEditor } from '../../editor/types';
 import { YooptaMark } from '../../textFormatters/createYooptaMark';
 
@@ -21,7 +21,7 @@ const DEFAULT_EDITOR_KEYS = [];
 type Props = {
   editor: YooEditor;
   marks?: YooptaMark<any>[];
-  plugins: Plugin[];
+  plugins: PluginReturn[];
 };
 
 const useYooptaDragDrop = ({ editor }: Pick<Props, 'editor'>) => {
@@ -70,7 +70,7 @@ const RenderBlocks = ({ editor, plugins, marks }: Props) => {
   }, [childrenUnorderedKeys]);
 
   // [TODO] - Optimize and remvoe top level inline plugins
-  const PLUGINS_MAP = useMemo<Record<string, Plugin>>(() => {
+  const PLUGINS_MAP = useMemo<Record<string, PluginReturn>>(() => {
     const pluginsMap = {};
     const inlineTopLevelPlugins: PluginElementsMap<unknown> = {};
 
@@ -79,7 +79,7 @@ const RenderBlocks = ({ editor, plugins, marks }: Props) => {
         Object.keys(plugin.elements).forEach((type) => {
           const element = plugin.elements[type];
           const nodeType = element.props?.nodeType;
-          if (nodeType === 'inline' || (Array.isArray(nodeType) && nodeType.includes('inline'))) {
+          if (nodeType === 'inline' || nodeType === 'inlineVoid') {
             inlineTopLevelPlugins[type] = element;
           }
         });

@@ -2,7 +2,7 @@ import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
 import { createEditor, Editor } from 'slate';
 import { YooEditor } from '../editor/types';
-import { Plugin } from '../plugins/types';
+import { PluginReturn } from '../plugins/types';
 import { YooptaMark } from '../textFormatters/createYooptaMark';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
 import { createBlock } from '../editor/transforms/createBlock';
@@ -11,6 +11,7 @@ import { isActive } from '../editor/textFormats/isActive';
 import { toggle } from '../editor/textFormats/toggle';
 import { update } from '../editor/textFormats/update';
 import { withShortcuts } from '../extenstions/shortcuts';
+import { getRootBlockElement } from './blockElements';
 
 export function buildMarks(editor, marks: YooptaMark<any>[]) {
   const formats: YooEditor['formats'] = {};
@@ -30,28 +31,36 @@ export function buildMarks(editor, marks: YooptaMark<any>[]) {
   return formats;
 }
 
-export function buildBlocks(editor, plugins: Plugin[]) {
+export function buildBlocks(editor, plugins: PluginReturn[]) {
   const blocks: YooEditor['blocks'] = {};
 
   plugins.forEach((plugin, index) => {
-    blocks[plugin.type] = {
-      type: plugin.type,
-      elements: plugin.elements,
-      options: plugin.options,
-      isActive: () => {
-        const block = findPluginBlockBySelectionPath(editor, { at: editor.selection });
-        return block?.type === plugin.type;
-      },
-      create: (options) => {
-        createBlock(editor, plugin.type, options);
-      },
-      update: () => {
-        console.log('block.update');
-      },
-      delete: () => {
-        console.log('block.delete');
-      },
-    };
+    const rootBlockElement = getRootBlockElement(plugin.elements);
+    const isBlock =
+      typeof rootBlockElement?.props?.nodeType === 'undefined' || rootBlockElement?.props?.nodeType === 'block';
+
+    if (isBlock) {
+      blocks[plugin.type] = {
+        type: plugin.type,
+        elements: plugin.elements,
+        order: index,
+        withCustomEditor: !!plugin.customEditor,
+        options: plugin.options,
+        isActive: () => {
+          const block = findPluginBlockBySelectionPath(editor, { at: editor.selection });
+          return block?.type === plugin.type;
+        },
+        create: (options) => {
+          createBlock(editor, plugin.type, options);
+        },
+        update: () => {
+          console.log('block.update');
+        },
+        delete: () => {
+          console.log('block.delete');
+        },
+      };
+    }
   });
 
   return blocks;

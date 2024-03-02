@@ -69,6 +69,27 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
   if (!slate || !slate.selection) return;
 
   const selectedBlock = editor.blocks[type];
+
+  console.log('selectedBlock.withCustomEditor', selectedBlock.withCustomEditor);
+
+  if (selectedBlock.withCustomEditor) {
+    if (options?.deleteText) Transforms.delete(slate, { at: [0, 0] });
+
+    currentBlock.type = selectedBlock.type;
+    currentBlock.value = slate.children;
+
+    const currentBlockId = currentBlock!.id;
+
+    editor.children = finishDraft(editor.children);
+    editor.applyChanges();
+
+    if (options?.focus) {
+      editor.focusBlock(currentBlockId, { slate });
+    }
+
+    return;
+  }
+
   const blockSlateElements = Object.entries(selectedBlock.elements);
   const rootElementFromBlock =
     blockSlateElements.length === 1 ? blockSlateElements[0] : blockSlateElements.find((elem) => elem[1].asRoot);
@@ -95,7 +116,7 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
   const isInlineElement = nodeType === 'inline';
   const isNodeElementVoid = nodeType === 'void';
   const isNodeElementBlock = nodeType === 'block';
-  const isInlineVoidElement = Array.isArray(nodeType) && nodeType.includes('inline') && nodeType.includes('void');
+  const isInlineVoidElement = nodeType === 'inlineVoid';
 
   // [TODO] - fix this
   // if (isInlineElement || isInlineVoidElement) {

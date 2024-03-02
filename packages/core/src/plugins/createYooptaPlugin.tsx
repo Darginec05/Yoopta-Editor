@@ -1,13 +1,14 @@
 import { SlateEditorComponent } from './SlateEditorComponent';
-import { PluginParams, Plugin } from './types';
+import { PluginParams, PluginReturn } from './types';
 
-export function createYooptaPlugin<T>(plugin: PluginParams<T>): Plugin {
+export function createYooptaPlugin<T>(plugin: PluginParams<T>): PluginReturn {
   return {
     type: plugin.type,
     elements: plugin.elements,
     options: {
       displayLabel: plugin.options?.displayLabel,
       shortcuts: plugin.options?.shortcuts,
+      withCustomEditor: !!plugin.customEditor,
     },
     renderPlugin: (props) => {
       const { customEditor, type, events } = plugin;

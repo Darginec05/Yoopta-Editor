@@ -18,7 +18,7 @@ const Mention = createYooptaPlugin<Mention>({
         target: '_blank',
         rel: 'noreferrer',
         character: null,
-        nodeType: ['inline', 'void'],
+        nodeType: 'inlineVoid',
       },
     },
   },

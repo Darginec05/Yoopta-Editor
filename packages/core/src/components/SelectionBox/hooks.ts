@@ -95,14 +95,14 @@ export const useRectangeSelectionBox = ({
     onClose();
   };
 
-  const getRootElement = () => {
+  const getRootBlockElement = () => {
     if (root && 'current' in root) return root.current;
     if (root) return root;
     return document;
   };
 
   useEffect(() => {
-    const elementMouseEl = getRootElement();
+    const elementMouseEl = getRootBlockElement();
 
     if (!elementMouseEl) {
       throw new Error('Root element not found. Please check the `selectionBoxRoot` prop');
