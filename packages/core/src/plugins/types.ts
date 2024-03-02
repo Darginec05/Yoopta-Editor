@@ -31,10 +31,14 @@ export type PluginElementOptions = {
 export type CustomEditorProps = Omit<RenderPluginProps, 'elements'> &
   Pick<PluginReturn, 'type'> & { editor: SlateEditor };
 
+export type PluginElementRenderProps = RenderSlateElementProps & {
+  pluginId: string;
+};
+
 export type PluginElementProps<T> = T & { nodeType?: 'block' | 'inline' | 'void' | 'inlineVoid' };
 
 export type PluginElement<T> = {
-  render: (props: RenderSlateElementProps) => JSX.Element;
+  render: (props: PluginElementRenderProps) => JSX.Element;
   props?: PluginElementProps<T>;
   options?: PluginElementOptions;
   asRoot?: boolean;

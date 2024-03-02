@@ -1,6 +1,7 @@
 export { createYooptaPlugin } from './plugins';
-export { useYooptaEditor } from './contexts/UltraYooptaContext/UltraYooptaContext';
+export { useYooptaEditor, useYooptaPlugin, useYooptaBlock } from './contexts/UltraYooptaContext/UltraYooptaContext';
 import { YooptaEditor } from './YooptaEditor';
+export { UI } from './UI';
 
 export { generateId } from './utils/generateId';
 export { HOTKEYS } from './utils/hotkeys';

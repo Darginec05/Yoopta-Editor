@@ -100,11 +100,9 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
     throw new Error(`No root element found in the block elements. Passed block: ${selectedBlock}`);
   }
 
-  const [rootElementType, rootElement] = rootElementFromBlock as [string, PluginElement<any>];
-
+  const [rootElementType, rootElement] = rootElementFromBlock as [string, PluginElement<unknown>];
   let rootChildrenNodes: Element[] = [];
   const hasRootChildren = Array.isArray(rootElement.children) && rootElement.children.length > 0;
-
   const props = rootElement.props || { nodeType: 'block' };
   const rootElementNode = buildSlateNodeElement(rootElementType, props);
   const nodeType = rootElementNode.props.nodeType;

@@ -12,13 +12,13 @@ const Image = createYooptaPlugin({
         alt: null,
         srcSet: null,
         fit: 'cover',
-        sizes: { width: 626, height: 400, maxWidth: 700, maxHeight: 400 },
+        sizes: { width: 650, height: 400, maxWidth: 650, maxHeight: 400 },
         nodeType: 'void',
       },
     },
   },
   options: {
-    displayLabel: 'Image in action',
+    displayLabel: 'Image',
   },
 });
 

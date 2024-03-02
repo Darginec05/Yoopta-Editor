@@ -8,9 +8,9 @@ import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { ReactEditor } from 'slate-react';
 import { Transforms } from 'slate';
 import { useState } from 'react';
-import { BlockOptions } from './BlockOptions';
-import s from './Block.module.scss';
 import { useFloating, offset, flip, inline, shift } from '@floating-ui/react';
+import { BlockOptions } from '../../UI/BlockOptions/BlockOptions';
+import s from './Block.module.scss';
 
 type ActionsProps = {
   block: YooptaChildrenValue;
@@ -24,7 +24,7 @@ const BlockActions = ({ block, editor, dragHandleProps, showActions, onChangeAct
   const [isBlockOptionsOpen, setIsBlockOptionsOpen] = useState<boolean>(false);
 
   const { refs, floatingStyles } = useFloating({
-    placement: 'left-start',
+    placement: 'right-start',
     open: isBlockOptionsOpen,
     onOpenChange: setIsBlockOptionsOpen,
     middleware: [inline(), flip(), shift(), offset()],
