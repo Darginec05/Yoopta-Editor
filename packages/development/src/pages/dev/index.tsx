@@ -14,10 +14,10 @@ import { useMemo, useRef } from 'react';
 
 const plugins = [
   Paragraph,
+  Code,
   Headings.HeadingOne,
   Headings.HeadingTwo,
   Headings.HeadingThree,
-  Code,
   Blockquote,
   Callout,
   Lists.BulletedList,

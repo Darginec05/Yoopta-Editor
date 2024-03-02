@@ -1,7 +1,7 @@
 import { CSSProperties, useEffect, useRef } from 'react';
 import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
 import { RenderBlocks } from './RenderBlocks';
-import { Plugin } from '../../plugins/types';
+import { PluginReturn } from '../../plugins/types';
 import { YooptaMark } from '../../textFormatters/createYooptaMark';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { getDefaultParagraphBlock } from './defaultValue';
@@ -15,7 +15,7 @@ import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
 
 type Props = {
-  plugins: Plugin[];
+  plugins: PluginReturn[];
   marks?: YooptaMark<any>[];
   selectionBoxRoot?: HTMLElement | null | React.MutableRefObject<HTMLElement | null>;
   autoFocus?: boolean;
@@ -104,6 +104,8 @@ const Editor = ({ plugins, marks, className, autoFocus = true, selectionBoxRoot 
     handleEmptyZoneClick(event);
     resetSelectedBlocks();
   };
+
+  console.log('editor.blocks', editor.blocks);
 
   const onBlur = (event: React.FocusEvent) => {
     const isInsideEditor = yooptaEditorRef.current?.contains(event.relatedTarget as Node);

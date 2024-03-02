@@ -1,5 +1,6 @@
 import { TextIcon } from '@radix-ui/react-icons';
 import { YooEditor } from '../../editor/types';
+import { getRootBlockElement } from '../../utils/blockElements';
 
 type Props = {
   actions: string[];
@@ -10,7 +11,7 @@ type Props = {
   empty: boolean;
 };
 
-const ActionMenuComponent = ({ actions, editor, onMouseEnter, selectedAction, onClose, empty }) => {
+const ActionMenuComponent = ({ actions, editor, onMouseEnter, selectedAction, onClose, empty }: Props) => {
   return (
     <div className="bg-white z-50 h-auto max-h-[330px] max-w-[250px] w-72 overflow-y-auto rounded-md border border-muted bg-background px-1 py-2 transition-all shadow-md">
       <div className="max-h-[300px] overflow-y-auto overflow-x-hidden">

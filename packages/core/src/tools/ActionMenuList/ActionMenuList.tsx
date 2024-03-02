@@ -48,7 +48,7 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
   });
 
   // [TODO] - !!!
-  const blockTypes = Object.keys(editor.blocks).sort((a, b) => {
+  const blockTypes = Object.keys(editor.blocks).sort((a: string, b: string) => {
     const aOrder = editor.blocks[a].order;
     const bOrder = editor.blocks[b].order;
 
