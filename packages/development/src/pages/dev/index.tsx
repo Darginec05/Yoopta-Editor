@@ -9,13 +9,15 @@ import Image from '@yoopta/image';
 import Link from '@yoopta/link';
 import Video from '@yoopta/video';
 import Table from '@yoopta/table';
-import { useEffect, useMemo, useRef } from 'react';
+import Code from '@yoopta/code';
+import { useMemo, useRef } from 'react';
 
 const plugins = [
   Paragraph,
   Headings.HeadingOne,
   Headings.HeadingTwo,
   Headings.HeadingThree,
+  Code,
   Blockquote,
   Callout,
   Lists.BulletedList,

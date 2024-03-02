@@ -1106,6 +1106,19 @@
     "@lezer/common" "^1.0.0"
     "@lezer/javascript" "^1.0.0"
 
+"@codemirror/lang-javascript@^6.2.2":
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/@codemirror/lang-javascript/-/lang-javascript-6.2.2.tgz#7141090b22994bef85bcc5608a3bc1257f2db2ad"
+  integrity sha512-VGQfY+FCc285AhWuwjYxQyUQcYurWlxdKYT4bqwr3Twnd5wP5WSeu52t4tvvuWmljT4EmgEgZCqSieokhtY8hg==
+  dependencies:
+    "@codemirror/autocomplete" "^6.0.0"
+    "@codemirror/language" "^6.6.0"
+    "@codemirror/lint" "^6.0.0"
+    "@codemirror/state" "^6.0.0"
+    "@codemirror/view" "^6.17.0"
+    "@lezer/common" "^1.0.0"
+    "@lezer/javascript" "^1.0.0"
+
 "@codemirror/language@^6.0.0", "@codemirror/language@^6.6.0":
   version "6.9.3"
   resolved "https://registry.yarnpkg.com/@codemirror/language/-/language-6.9.3.tgz#1c127dc43e025d4c9b1ba1b79f4b1ba081d5aeaa"
@@ -3483,6 +3496,19 @@
     "@codemirror/state" "^6.0.0"
     "@codemirror/view" "^6.0.0"
 
+"@uiw/codemirror-extensions-basic-setup@4.21.24":
+  version "4.21.24"
+  resolved "https://registry.yarnpkg.com/@uiw/codemirror-extensions-basic-setup/-/codemirror-extensions-basic-setup-4.21.24.tgz#b936c3daff0100e1a3d5b0500478747cfc80f7db"
+  integrity sha512-TJYKlPxNAVJNclW1EGumhC7I02jpdMgBon4jZvb5Aju9+tUzS44IwORxUx8BD8ZtH2UHmYS+04rE3kLk/BtnCQ==
+  dependencies:
+    "@codemirror/autocomplete" "^6.0.0"
+    "@codemirror/commands" "^6.0.0"
+    "@codemirror/language" "^6.0.0"
+    "@codemirror/lint" "^6.0.0"
+    "@codemirror/search" "^6.0.0"
+    "@codemirror/state" "^6.0.0"
+    "@codemirror/view" "^6.0.0"
+
 "@uiw/codemirror-theme-github@^4.21.21":
   version "4.21.21"
   resolved "https://registry.yarnpkg.com/@uiw/codemirror-theme-github/-/codemirror-theme-github-4.21.21.tgz#0e0fd13500e6c17032a9b9fccb276e13f6681a91"
@@ -3490,10 +3516,26 @@
   dependencies:
     "@uiw/codemirror-themes" "4.21.21"
 
+"@uiw/codemirror-theme-github@^4.21.24":
+  version "4.21.24"
+  resolved "https://registry.yarnpkg.com/@uiw/codemirror-theme-github/-/codemirror-theme-github-4.21.24.tgz#c4da58417cdb5e9c84a8090041e6080219f52a1c"
+  integrity sha512-BggG0qiLpg5j9ijY4DJDnANefLADKh8FseH28J1ljvwtnvlR1GGnO+RZzOl11gLpDqb2DUM5xIaxmbLcKWljUg==
+  dependencies:
+    "@uiw/codemirror-themes" "4.21.24"
+
 "@uiw/codemirror-themes@4.21.21":
   version "4.21.21"
   resolved "https://registry.yarnpkg.com/@uiw/codemirror-themes/-/codemirror-themes-4.21.21.tgz#26efb06ecce9a51aa73d39311c90f8fcb06fdc43"
   integrity sha512-ljVcMGdaxo75UaH+EqxJ+jLyMVVgeSfW2AKyT1VeLy+4SDpuqNQ7wq5XVxktsG6LH+OvgSFndWXgPANf4+gQcA==
+  dependencies:
+    "@codemirror/language" "^6.0.0"
+    "@codemirror/state" "^6.0.0"
+    "@codemirror/view" "^6.0.0"
+
+"@uiw/codemirror-themes@4.21.24":
+  version "4.21.24"
+  resolved "https://registry.yarnpkg.com/@uiw/codemirror-themes/-/codemirror-themes-4.21.24.tgz#69b83d1d77f8ad40a2a8689e8bf54e4b445b88f3"
+  integrity sha512-InY24KWP8YArDBACWHKFZ6ZU+WCvRHf3ZB2cCVxMVN35P1ANUmRzpAP2ernZQ5OIriL1/A/kXgD0Zg3Y65PNgg==
   dependencies:
     "@codemirror/language" "^6.0.0"
     "@codemirror/state" "^6.0.0"
@@ -3509,6 +3551,18 @@
     "@codemirror/state" "^6.1.1"
     "@codemirror/theme-one-dark" "^6.0.0"
     "@uiw/codemirror-extensions-basic-setup" "4.21.21"
+    codemirror "^6.0.0"
+
+"@uiw/react-codemirror@^4.21.24":
+  version "4.21.24"
+  resolved "https://registry.yarnpkg.com/@uiw/react-codemirror/-/react-codemirror-4.21.24.tgz#38b05e0a24d2307313b2e73390b20d0251837170"
+  integrity sha512-8zs5OuxbhikHocHBsVBMuW1vqlv4ccZAkt4rFwr7ebLP2Q6RwHsjpsR9GeGyAigAqonKRoeHugqF78UMrkaTgg==
+  dependencies:
+    "@babel/runtime" "^7.18.6"
+    "@codemirror/commands" "^6.1.0"
+    "@codemirror/state" "^6.1.1"
+    "@codemirror/theme-one-dark" "^6.0.0"
+    "@uiw/codemirror-extensions-basic-setup" "4.21.24"
     codemirror "^6.0.0"
 
 "@ungap/structured-clone@^1.2.0":
@@ -3596,6 +3650,14 @@
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@yoopta/callout/-/callout-2.0.1.tgz#71f70a0d9015ea3dc47e2c2553b49aa65cf8599e"
   integrity sha512-H5Jor5Brz3FIIfZ5KHY4rfBZPtQh364y/n2tRRNx+nbkAuARAfFfhHkQRgXkcovPOpgesKNwlEbwLYSL1kS+Bg==
+
+"@yoopta/code@*":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/code/-/code-2.0.1.tgz#a73be3a15773740beb10a7ae92b30d3f15de7b5e"
+  integrity sha512-3L8LdEuiGH5GpS9c5uanZ3dPXiflDei2LZ0gAOdGF4X381QXxKjyw0s4QsUKwTboPvO+ac38lZD+WBxa0QbsoA==
+  dependencies:
+    prism-material-themes "^1.0.4"
+    prismjs "^1.29.0"
 
 "@yoopta/editor@*":
   version "2.0.1"

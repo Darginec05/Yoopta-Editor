@@ -24,10 +24,10 @@ const BlockActions = ({ block, editor, dragHandleProps, showActions, onChangeAct
   const [isBlockOptionsOpen, setIsBlockOptionsOpen] = useState<boolean>(false);
 
   const { refs, floatingStyles } = useFloating({
-    placement: 'right-start',
+    placement: 'left-start',
     open: isBlockOptionsOpen,
     onOpenChange: setIsBlockOptionsOpen,
-    middleware: [inline(), flip(), shift(), offset(10)],
+    middleware: [inline(), flip(), shift(), offset()],
   });
 
   const { setActivatorNodeRef, attributes, listeners } = dragHandleProps;
@@ -44,7 +44,11 @@ const BlockActions = ({ block, editor, dragHandleProps, showActions, onChangeAct
     event.stopPropagation();
     onChangeActiveBlock(block.id);
 
+    console.log('editor.children', editor.children);
+
     const slate = findSlateBySelectionPath(editor, { at: [block.meta.order] });
+    console.log('block', block);
+    console.log('slate', slate);
     editor.focusBlock(block.id);
 
     if (!slate) return;

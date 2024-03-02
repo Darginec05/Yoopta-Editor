@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import { Editable, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useYooptaPlugin } from '../contexts/UltraYooptaContext/UltraYooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
@@ -83,19 +83,11 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
 
   const onChange = (value) => editor.updateBlock(id, { value });
 
-  if (typeof customEditor === 'function') {
-    return customEditor({
-      id,
-      type,
-      editor: slate,
-    });
-  }
-
   const renderElement = (props: RenderElementProps) => {
     const ElementComponent = ELEMENTS_MAP[props.element.type];
 
     if (!ElementComponent) return <></>;
-    return <ElementComponent {...props} />;
+    return <ElementComponent {...props} pluginId={id} />;
   };
 
   const renderLeaf = (props: ExtendedLeafProps<any, any>) => {
@@ -152,24 +144,65 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
 
   return (
     <div data-plugin-id={id} data-plugin-type={type}>
-      <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onChange={onChange}>
-        <Editable
-          placeholder="Enter some rich text…"
-          renderElement={renderElement}
-          renderLeaf={renderLeaf}
-          className="focus-visible:outline-none focus:outline-none"
-          spellCheck
-          {...eventHandlers}
-          onKeyDown={onKeyDown}
-          onKeyUp={onKeyUp}
-          onFocus={onFocus}
-          onMouseDown={onMouseDown}
-          key={`editable-${id}`}
-          // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
-          onBlur={onBlur}
-        />
-      </Slate>
+      <EditorInstance
+        id={id}
+        slate={slate}
+        initialValue={initialValue}
+        onChange={onChange}
+        renderLeaf={renderLeaf}
+        renderElement={renderElement}
+        eventHandlers={eventHandlers}
+        onKeyDown={onKeyDown}
+        onKeyUp={onKeyUp}
+        onFocus={onFocus}
+        onMouseDown={onMouseDown}
+        onBlur={onBlur}
+        customEditor={customEditor}
+      />
     </div>
+  );
+};
+
+const EditorInstance = ({
+  id,
+  slate,
+  initialValue,
+  onChange,
+  renderLeaf,
+  renderElement,
+  eventHandlers,
+  onKeyDown,
+  onKeyUp,
+  onFocus,
+  onMouseDown,
+  onBlur,
+  customEditor,
+}) => {
+  if (typeof customEditor === 'function') {
+    return customEditor({
+      id,
+      editor: slate,
+    });
+  }
+
+  return (
+    <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onChange={onChange}>
+      <Editable
+        // placeholder={plugin.meta.order === editor.selection?.[0] ? 'Enter some rich text…' : undefined}
+        renderElement={renderElement}
+        renderLeaf={renderLeaf}
+        className="focus-visible:outline-none focus:outline-none"
+        spellCheck
+        {...eventHandlers}
+        onKeyDown={onKeyDown}
+        onKeyUp={onKeyUp}
+        onFocus={onFocus}
+        onMouseDown={onMouseDown}
+        key={`editable-${id}`}
+        // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
+        onBlur={onBlur}
+      />
+    </Slate>
   );
 };
 

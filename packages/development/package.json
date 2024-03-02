@@ -20,7 +20,8 @@
     "@yoopta/link": "*",
     "@yoopta/image": "*",
     "@yoopta/lists": "*",
-    "@yoopta/table": "*"
+    "@yoopta/table": "*",
+    "@yoopta/code": "*"
   },
   "devDependencies": {
     "typescript": "^5",
