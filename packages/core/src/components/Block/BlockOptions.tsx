@@ -35,7 +35,7 @@ const BlockOptions = ({ isOpen, onClose, refs, floatingStyles }) => {
   const editor = useYooptaEditor();
   const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
   const { refs: actionMenuRefs, floatingStyles: actionMenuFloatingStyles } = useFloating({
-    placement: 'left',
+    placement: 'right',
     open: isActionMenuOpen,
     onOpenChange: setIsActionMenuOpen,
     middleware: [inline(), flip(), shift(), offset(10)],

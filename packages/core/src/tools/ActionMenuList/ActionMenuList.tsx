@@ -35,7 +35,11 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
   const { registerTool, unregisterTool, tools } = useTools();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
-  const { refs, floatingStyles } = useFloating({
+  const {
+    refs,
+    floatingStyles,
+    update: updateActionMenuPosition,
+  } = useFloating({
     placement: 'top-start',
     open: isMenuOpen,
     onOpenChange: setIsMenuOpen,
@@ -91,12 +95,14 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
   const empty = actions.length === 0;
 
   useEffect(() => {
+    updateActionMenuPosition();
+
     let timeout = setTimeout(() => {
       if (empty) onClose();
     }, 3000);
 
     return () => clearTimeout(timeout);
-  }, [actions.length]);
+  }, [actions.length, isMenuOpen, refs]);
 
   if (!isMenuOpen) return null;
 

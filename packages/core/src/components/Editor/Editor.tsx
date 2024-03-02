@@ -105,8 +105,6 @@ const Editor = ({ plugins, marks, className, autoFocus = true, selectionBoxRoot 
     resetSelectedBlocks();
   };
 
-  console.log('editor.children', editor.children);
-
   const onBlur = (event: React.FocusEvent) => {
     const isInsideEditor = yooptaEditorRef.current?.contains(event.relatedTarget as Node);
     if (isInsideEditor) return;
@@ -205,10 +203,10 @@ const Editor = ({ plugins, marks, className, autoFocus = true, selectionBoxRoot 
           Transforms.deselect(slate);
 
           editor.setSelection(null);
-          editor.setBlockSelected([block?.meta.order]);
+          editor.setBlockSelected([block?.meta.order, block?.meta.order - 1]);
 
           state.startedIndexToSelect = block.meta.order;
-          state.indexToSelect = block.meta.order;
+          state.indexToSelect = block.meta.order - 1;
           state.selectionStarted = true;
         }
       }
@@ -252,8 +250,6 @@ const Editor = ({ plugins, marks, className, autoFocus = true, selectionBoxRoot 
       // [TODO] - handle cases for inline node elements
       const isEnd = SlateEditor.isEnd(slate, slate.selection.focus, parentPath);
 
-      console.log('Range.isExpanded(slate.selection) && isEnd', Range.isExpanded(slate.selection) && isEnd);
-
       if (Range.isExpanded(slate.selection) && isEnd) {
         const nextPath: YooptaBlockPath = editor.selection ? [editor.selection[0] + 1] : [0];
         const nextBlock = findPluginBlockBySelectionPath(editor, { at: nextPath });
@@ -266,10 +262,10 @@ const Editor = ({ plugins, marks, className, autoFocus = true, selectionBoxRoot 
           Transforms.deselect(slate);
 
           editor.setSelection(null);
-          editor.setBlockSelected([block?.meta.order]);
+          editor.setBlockSelected([block?.meta.order, block?.meta.order + 1]);
 
           state.startedIndexToSelect = block.meta.order;
-          state.indexToSelect = block.meta.order;
+          state.indexToSelect = block.meta.order + 1;
           state.selectionStarted = true;
         }
       }

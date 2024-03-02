@@ -1,7 +1,7 @@
 import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { BlockActions } from './BlockActions';
 import s from './Block.module.scss';
 

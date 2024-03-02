@@ -32,9 +32,6 @@ export function focusBlock(editor: YooEditor, blockId: string, options: FocusBlo
 
     const selectionPath = getSelectionPath(slate, focusAt);
 
-    console.log('selectionPath', selectionPath);
-
-    // [TODO] - handle offset position. Add 'focusAt' property to options
     Transforms.select(slate, selectionPath);
     ReactEditor.focus(slate);
     editor.setSelection([block.meta.order]);
