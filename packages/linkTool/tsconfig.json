@@ -13,7 +13,7 @@
     "isolatedModules": false,
     "jsx": "react-jsx",
     "incremental": true,
-    "rootDir": "src",
+    "rootDir": "./src",
     "noImplicitAny": false,
     "downlevelIteration": true,
     "module": "ESNext",

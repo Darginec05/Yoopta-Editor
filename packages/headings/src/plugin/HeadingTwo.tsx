@@ -20,7 +20,7 @@ const HeadingTwo = createYooptaPlugin({
   elements: {
     'heading-two': {
       render: HeadingTwoRender,
-      options: {
+      props: {
         nodeType: 'block',
       },
     },

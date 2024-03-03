@@ -1,6 +1,6 @@
-import { RenderElementProps } from 'slate-react';
+import { PluginElementRenderProps } from '@yoopta/editor';
 
-const ListItemRender = (props: RenderElementProps) => {
+const ListItemRender = (props: PluginElementRenderProps) => {
   return (
     <li data-element-type="ListItem" {...props.attributes} className="">
       {props.children}

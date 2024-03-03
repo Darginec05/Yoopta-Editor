@@ -40,8 +40,8 @@ const BasicExample = () => {
   };
 
   // useEffect(() => {
-  //   editor.on?.('insertBlock', (e) => {});
-  //   editor.on?.('insertBlock', (e) => {});
+  //   editor.on?.('insertBlock', (e) => Socket.emit('insertBlock', e));
+  //   editor.on?.('deleteBlock', (e) => Socket.emit('insertBlock', e));
   // }, []);
 
   return (
