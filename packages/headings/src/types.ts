@@ -1,8 +1,5 @@
-import { YooptaBaseElement, YooptaPluginBaseOptions } from '@yoopta/editor';
-import { ReactNode } from 'react';
+import { SlateElement } from '@yoopta/editor';
 
-export type HeadingOptions = { anchor?: ReactNode | null | false } & YooptaPluginBaseOptions;
-
-export type HeadingOneElement = YooptaBaseElement<'heading-one'>;
-export type HeadingTwoElement = YooptaBaseElement<'heading-two'>;
-export type HeadingThreeElement = YooptaBaseElement<'heading-three'>;
+export type HeadingOneElement = SlateElement<'heading-one'>;
+export type HeadingTwoElement = SlateElement<'heading-two'>;
+export type HeadingThreeElement = SlateElement<'heading-three'>;

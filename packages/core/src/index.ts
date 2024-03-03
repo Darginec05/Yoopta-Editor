@@ -10,5 +10,6 @@ export { createYooptaEditor } from './editor';
 export { YooEditor, SlateElement } from './editor/types';
 
 export default YooptaEditor;
+export { PluginElementRenderProps } from './plugins/types';
 
 import './styles.css';

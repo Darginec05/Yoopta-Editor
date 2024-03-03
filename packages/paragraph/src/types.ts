@@ -1,2 +1,4 @@
+import { SlateElement } from '@yoopta/editor';
+
 // [TODO] - Define the type of the paragraph element
-export type ParagraphElement = any;
+export type ParagraphElement = SlateElement<'paragraph'>;

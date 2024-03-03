@@ -17,8 +17,9 @@ const Resizer = ({ position }) => (
 );
 
 const ImageRender = ({ element, attributes, pluginId, children }: PluginElementRenderProps) => {
-  const { src, alt, srcSet, fit, sizes } = element.props;
-  // const block = useYooptaBlock('Image');
+  const { src, alt, srcSet, fit, sizes } = element.props || {};
+  const block = useYooptaBlock('Image');
+
   // const [size, setSize] = useState({
   //   width: element.props?.size?.width || 750,
   //   height: element.props?.size?.height || 440,

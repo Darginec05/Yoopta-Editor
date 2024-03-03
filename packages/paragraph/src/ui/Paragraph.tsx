@@ -1,6 +1,6 @@
-import { RenderElementProps } from 'slate-react';
+import { PluginElementRenderProps } from '@yoopta/editor';
 
-const ParagraphRender = (props: RenderElementProps) => {
+const ParagraphRender = (props: PluginElementRenderProps) => {
   return (
     <p data-element-type="Paragraph" className="leading-7 mt-2" {...props.attributes}>
       {props.children}

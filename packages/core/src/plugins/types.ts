@@ -35,7 +35,7 @@ export type PluginElementRenderProps = RenderSlateElementProps & {
   pluginId: string;
 };
 
-export type PluginElementProps<T> = T & { nodeType?: 'block' | 'inline' | 'void' | 'inlineVoid' };
+export type PluginElementProps<T> = { nodeType?: 'block' | 'inline' | 'void' | 'inlineVoid' } & T;
 
 export type PluginElement<T> = {
   render: (props: PluginElementRenderProps) => JSX.Element;

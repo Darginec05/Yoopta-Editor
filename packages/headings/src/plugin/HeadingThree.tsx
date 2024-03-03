@@ -20,7 +20,7 @@ const HeadingThree = createYooptaPlugin({
   elements: {
     'heading-three': {
       render: HeadingThreeRender,
-      options: {
+      props: {
         nodeType: 'block',
       },
     },

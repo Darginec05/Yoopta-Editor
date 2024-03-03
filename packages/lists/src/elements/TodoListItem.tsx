@@ -1,6 +1,6 @@
-import { RenderElementProps } from 'slate-react';
+import { PluginElementRenderProps } from '@yoopta/editor';
 
-const TodoListItemRender = (props: RenderElementProps) => {
+const TodoListItemRender = (props: PluginElementRenderProps) => {
   const { checked } = props.element.props;
 
   const styles = {

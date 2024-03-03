@@ -38,16 +38,14 @@ function getPlugins({ tailwindConfig }) {
       use: ['sass'],
       plugins: [
         postcssNesting(),
-        tailwindcss(
-          tailwindConfig || {
-            // prefix: 'yt-',
-            content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
-            theme: {
-              extend: {},
-            },
-            plugins: [],
+        tailwindcss({
+          content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
+          theme: {
+            extend: {},
           },
-        ),
+          plugins: [],
+          ...tailwindConfig,
+        }),
         autoprefixer(),
       ],
     }),

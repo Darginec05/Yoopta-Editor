@@ -11,18 +11,14 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": false,
-    "jsx": "react-jsx",
+    "declaration": true,
     "incremental": true,
-    "rootDir": "src",
+    "jsx": "react-jsx",
     "noImplicitAny": false,
     "downlevelIteration": true,
     "module": "ESNext",
     "sourceMap": true,
-    "outDir": "dist",
     "allowSyntheticDefaultImports": true,
-    "preserveSymlinks": false,
-    "composite": true
-  },
-  "include": [],
-  "exclude": []
+    "preserveSymlinks": false
+  }
 }
