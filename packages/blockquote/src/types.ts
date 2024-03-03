@@ -1,1 +1,3 @@
-export type BlockquoteElement = any;
+import { SlateElement } from '@yoopta/editor';
+
+export type BlockquoteElement = SlateElement<'blockquote'>;
