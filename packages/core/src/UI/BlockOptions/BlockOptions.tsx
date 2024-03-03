@@ -12,7 +12,7 @@ import {
   FloatingPortal,
   FloatingOverlay,
 } from '@floating-ui/react';
-import { ActionMenuComponent } from '../../tools/ActionMenuList/component';
+import { ActionMenuComponent } from '../../tools/ActionMenuList/ActionMenuComponent';
 
 const DropdownMenuGroup = ({ children }) => <div className="flex flex-col">{children}</div>;
 

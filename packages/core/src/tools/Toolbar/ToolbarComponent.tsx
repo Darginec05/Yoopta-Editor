@@ -1,7 +1,16 @@
-import { FontBoldIcon, FontItalicIcon, StrikethroughIcon, CodeIcon, UnderlineIcon } from '@radix-ui/react-icons';
+import {
+  FontBoldIcon,
+  FontItalicIcon,
+  StrikethroughIcon,
+  CodeIcon,
+  UnderlineIcon,
+  ChevronDownIcon,
+  TextIcon,
+  ChevronUpIcon,
+} from '@radix-ui/react-icons';
 import * as Toolbar from '@radix-ui/react-toolbar';
 import { YooEditor, YooptaBlock } from '../../editor/types';
-import { ActionMenuComponent } from '../ActionMenuList/component';
+import { ActionMenuComponent } from '../ActionMenuList/ActionMenuComponent';
 import {
   useFloating,
   offset,
@@ -12,7 +21,8 @@ import {
   FloatingPortal,
   FloatingOverlay,
 } from '@floating-ui/react';
-import { useState } from 'react';
+import { CSSProperties, MouseEvent, useState } from 'react';
+import { HighlightColor } from './HighlightColor';
 
 type ToolbarComponentProps = {
   activeBlock?: YooptaBlock;
@@ -25,10 +35,20 @@ const ActionMenu = {
 
 const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
   const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
-  const { refs, floatingStyles } = useFloating({
+  const [isHighlightPickerOpen, setIsHighlightPickerOpen] = useState(false);
+
+  const { refs: actionMenuRefs, floatingStyles: actionMenuStyles } = useFloating({
     placement: 'bottom-start',
     open: isActionMenuOpen,
     onOpenChange: setIsActionMenuOpen,
+    middleware: [inline(), flip(), shift(), offset(10)],
+    whileElementsMounted: autoUpdate,
+  });
+
+  const { refs: highlightPickerRefs, floatingStyles: highlightPickerStyles } = useFloating({
+    placement: 'top-end',
+    open: isHighlightPickerOpen,
+    onOpenChange: setIsHighlightPickerOpen,
     middleware: [inline(), flip(), shift(), offset(10)],
     whileElementsMounted: autoUpdate,
   });
@@ -38,6 +58,17 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
     color: editor.formats[type]?.isActive() ? '#fff' : undefined,
   });
 
+  const highlight = editor.formats.highlight;
+  const highlightColors = highlight?.getValue();
+  const getHighlightStyle = (): CSSProperties => {
+    return {
+      color: highlightColors?.color,
+      backgroundColor: highlightColors?.backgroundColor,
+      backgroundImage: highlightColors?.backgroundImage,
+      WebkitTextFillColor: highlightColors?.webkitTextFillColor,
+    };
+  };
+
   const blockLabel = activeBlock?.options?.displayLabel || activeBlock?.type || '';
 
   return (
@@ -46,7 +77,7 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
         {isActionMenuOpen && (
           <FloatingPortal root={document.getElementById('yoopta-editor')}>
             <FloatingOverlay lockScroll className="z-[100]" onClick={() => setIsActionMenuOpen(false)}>
-              <div style={floatingStyles} ref={refs.setFloating}>
+              <div style={actionMenuStyles} ref={actionMenuRefs.setFloating}>
                 <ActionMenu.component
                   actions={Object.keys(editor.blocks)}
                   editor={editor}
@@ -59,11 +90,20 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
             </FloatingOverlay>
           </FloatingPortal>
         )}
+        {isHighlightPickerOpen && (
+          <HighlightColor
+            editor={editor}
+            floatingStyles={highlightPickerStyles}
+            refs={highlightPickerRefs}
+            onClose={() => setIsHighlightPickerOpen(false)}
+            highlightColors={highlightColors}
+          />
+        )}
         <Toolbar.ToggleItem
           className="h-full px-[10px] py-0 hover:bg-[#f4f4f5] rounded-md"
           value={blockLabel}
           aria-label={blockLabel}
-          ref={refs.setReference}
+          ref={actionMenuRefs.setReference}
           onClick={() => setIsActionMenuOpen((open) => !open)}
         >
           <span className="mr-0">{blockLabel}</span>
@@ -125,6 +165,17 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
           onClick={() => editor.formats.code.toggle()}
         >
           <CodeIcon width={20} height={20} />
+        </Toolbar.ToggleItem>
+        <Toolbar.ToggleItem
+          className="h-[32px] ml-[2px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
+          value="code"
+          aria-label="Code"
+          style={getHighlightStyle()}
+          ref={highlightPickerRefs.setReference}
+          onClick={() => setIsHighlightPickerOpen((open) => !open)}
+        >
+          <span className="text-lg px-1 font-serif text-col">A</span>
+          <ChevronDownIcon width={10} />
         </Toolbar.ToggleItem>
       </Toolbar.ToggleGroup>
     </Toolbar.Root>
