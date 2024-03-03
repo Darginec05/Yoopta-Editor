@@ -9,12 +9,12 @@ import Image from '@yoopta/image';
 import Link from '@yoopta/link';
 import Video from '@yoopta/video';
 import Table from '@yoopta/table';
-import Code from '@yoopta/code';
+// import Code from '@yoopta/code';
 import { useMemo, useRef } from 'react';
 
 const plugins = [
   Paragraph,
-  Code,
+  // Code,
   Headings.HeadingOne,
   Headings.HeadingTwo,
   Headings.HeadingThree,
