@@ -75,6 +75,7 @@ export const Highlight = createYooptaMark<YooptaMarkProps<'highlight', LeafColor
 
     const style = {
       color: highlight?.color,
+      backgroundColor: highlight?.backgroundColor,
       backgroundImage: highlight?.backgroundImage,
       WebkitTextFillColor: highlight?.webkitTextFillColor,
       backgroundClip: highlight?.backgroundClip,

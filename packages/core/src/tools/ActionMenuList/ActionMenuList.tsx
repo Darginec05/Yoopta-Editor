@@ -2,7 +2,7 @@ import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaCo
 import { useEffect, useState } from 'react';
 import { YooptaBlock } from '../../editor/types';
 import { useTools } from '../../contexts/UltraYooptaContext/ToolsContext';
-import { ActionMenuComponent } from './component';
+import { ActionMenuComponent } from './ActionMenuComponent';
 import { events } from './events';
 import { useFloating, offset, flip, shift, inline, autoUpdate, FloatingPortal } from '@floating-ui/react';
 

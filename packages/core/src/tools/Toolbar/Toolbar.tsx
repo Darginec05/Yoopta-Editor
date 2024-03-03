@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
-import { ToolbarComponent } from './component';
+import { ToolbarComponent } from './ToolbarComponent';
 import { useFloating, offset, flip, shift, inline, autoUpdate, FloatingPortal } from '@floating-ui/react';
 import throttle from 'lodash/throttle';
 
