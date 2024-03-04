@@ -139,6 +139,26 @@ export const YOOPTA_ULTRA_VALUES: Record<
     ],
     meta,
   }),
+  image: (id, meta, children) => ({
+    id,
+    type: 'Image',
+    value: [
+      {
+        id: generateId(),
+        type: 'image',
+        children: children || [{ text: '' }],
+        props: {
+          src: null,
+          alt: null,
+          srcSet: null,
+          fit: 'cover',
+          sizes: { width: 650, height: 400, maxWidth: 650, maxHeight: 400 },
+          nodeType: 'void',
+        },
+      },
+    ],
+    meta,
+  }),
   table: (id, meta, children) => ({
     id,
     type: 'Table',
@@ -327,21 +347,13 @@ export const getDefaultYooptaChildren = () => {
 };
 
 export const FAKE_YOOPTA_EDITOR_CHILDREN = {
-  li3D16cCB7Ze5jxy8OwrN_0: YOOPTA_ULTRA_VALUES.paragraph('li3D16cCB7Ze5jxy8OwrN_0', { order: 6, depth: 0 }),
+  li3D16cCB7Ze5jxy8OwrN_0: YOOPTA_ULTRA_VALUES.paragraph('li3D16cCB7Ze5jxy8OwrN_0', { order: 6, depth: 1 }),
   // [TODO]
   // code_7: YOOPTA_ULTRA_VALUES.code('code_7', { order: 7, depth: 0 }),
-  blockquote_1: YOOPTA_ULTRA_VALUES.blockquote(
-    'blockquote_1',
-    {
-      order: 1,
-      depth: 0,
-    },
-    [
-      {
-        text: `Finally, we'll need to set up event handlers on the DndContext provider in order to update the order of the items on drag end.`,
-      },
-    ],
-  ),
+  image: YOOPTA_ULTRA_VALUES.image('image', {
+    order: 0,
+    depth: 0,
+  }),
   paragraph_2: YOOPTA_ULTRA_VALUES.paragraph('paragraph_2', { order: 2, depth: 0 }, [
     {
       text: `I used slate for a small project last week and enjoyed it quite a bit at the beginning. I also have a sandbox to demonstrate the usage: `,

@@ -2,7 +2,7 @@ import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
 import { createEditor, Editor } from 'slate';
 import { YooEditor } from '../editor/types';
-import { PluginReturn } from '../plugins/types';
+import { PluginReturn, PluginElement } from '../plugins/types';
 import { YooptaMark } from '../textFormatters/createYooptaMark';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
 import { createBlock } from '../editor/transforms/createBlock';
@@ -31,7 +31,7 @@ export function buildMarks(editor, marks: YooptaMark<any>[]) {
   return formats;
 }
 
-export function buildBlocks(editor, plugins: PluginReturn[]) {
+export function buildBlocks(editor, plugins: PluginReturn<string, PluginElement<unknown>>[]) {
   const blocks: YooEditor['blocks'] = {};
 
   plugins.forEach((plugin, index) => {
@@ -40,12 +40,18 @@ export function buildBlocks(editor, plugins: PluginReturn[]) {
     const isInline = nodeType === 'inline' || nodeType === 'inlineVoid';
 
     if (!isInline) {
+      const elements = {};
+      Object.keys(plugin.elements).forEach((key) => {
+        const { render, ...element } = plugin.elements[key];
+        elements[key] = element;
+      });
+
       blocks[plugin.type] = {
         type: plugin.type,
-        elements: plugin.elements,
+        elements,
         order: index,
-        withCustomEditor: plugin.options?.withCustomEditor,
-        options: plugin.options,
+        // withCustomEditor: plugin.options?.withCustomEditor,
+        // options: plugin.options,
         isActive: () => {
           const block = findPluginBlockBySelectionPath(editor, { at: editor.selection });
           return block?.type === plugin.type;

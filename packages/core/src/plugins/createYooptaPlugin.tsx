@@ -1,15 +1,21 @@
+import { Descendant } from 'slate';
 import { SlateEditorComponent } from './SlateEditorComponent';
-import { PluginParams, PluginReturn } from './types';
+import { PluginOptions, PluginParams, PluginReturn } from './types';
 
-export function createYooptaPlugin<T>(plugin: PluginParams<T>): PluginReturn {
+export function createYooptaPlugin<TKeys extends string, TProps = Descendant, TOptions = Record<string, unknown>>(
+  plugin: PluginParams<TKeys, TProps, TOptions>,
+): PluginReturn<TKeys, TProps, TOptions> {
+  const pluginOptions = {
+    displayLabel: plugin.options?.displayLabel,
+    shortcuts: plugin.options?.shortcuts,
+    ...plugin.options,
+    // withCustomEditor: !!plugin.customEditor,
+  };
+
   return {
     type: plugin.type,
     elements: plugin.elements,
-    options: {
-      displayLabel: plugin.options?.displayLabel,
-      shortcuts: plugin.options?.shortcuts,
-      withCustomEditor: !!plugin.customEditor,
-    },
+    options: pluginOptions,
     renderPlugin: (props) => {
       const { customEditor, type, events } = plugin;
 
@@ -23,6 +29,7 @@ export function createYooptaPlugin<T>(plugin: PluginParams<T>): PluginReturn {
           events={events}
           // [TODO] - remove elements from plugins. NOTE: top level inline nodes
           elements={props.elements}
+          options={pluginOptions}
         />
       );
     },

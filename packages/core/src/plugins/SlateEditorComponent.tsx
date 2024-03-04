@@ -9,7 +9,11 @@ import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
 import { useTools } from '../contexts/UltraYooptaContext/ToolsContext';
 
-type Props<T> = PluginParams<T> & { id: string; marks?: YooptaMark<any>[] };
+type Props<TKeys extends string, TProps, TOptions> = PluginParams<TKeys, TProps, TOptions> & {
+  id: string;
+  marks?: YooptaMark<any>[];
+  options: PluginParams<TKeys, TProps, TOptions>['options'];
+};
 
 const getMappedElements = (elements) => {
   const mappedElements = {};
@@ -25,7 +29,14 @@ const getMappedMarks = (marks?: YooptaMark<any>[]) => {
   return mappedMarks;
 };
 
-const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }: Props<T>) => {
+const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
+  id,
+  customEditor,
+  elements,
+  marks,
+  events,
+  options,
+}: Props<TKeys, TProps, TOptions>) => {
   const editor = useYooptaEditor();
   const plugin = useYooptaPlugin(id);
   const initialValue = useRef(plugin.value).current;
@@ -87,7 +98,7 @@ const SlateEditorComponent = <T,>({ id, customEditor, elements, marks, events }:
     const ElementComponent = ELEMENTS_MAP[props.element.type];
 
     if (!ElementComponent) return <></>;
-    return <ElementComponent {...props} pluginId={id} />;
+    return <ElementComponent {...props} pluginId={id} options={options} />;
   };
 
   const renderLeaf = (props: ExtendedLeafProps<any, any>) => {

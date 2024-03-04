@@ -4,6 +4,8 @@ import { useYooptaPlugin, UI, PluginElementRenderProps, useYooptaBlock } from '@
 import { Resizable, ResizableProps } from 're-resizable';
 import { Transforms } from 'slate';
 import { useMemo, useState } from 'react';
+import { Placeholder } from './Placeholder';
+import { ImagePluginOptions } from '../types';
 
 const Resizer = ({ position }) => (
   <div
@@ -16,9 +18,22 @@ const Resizer = ({ position }) => (
   </div>
 );
 
-const ImageRender = ({ element, attributes, pluginId, children }: PluginElementRenderProps) => {
+const ImageRender = ({
+  element,
+  attributes,
+  pluginId,
+  options,
+  children,
+}: PluginElementRenderProps<ImagePluginOptions>) => {
   const { src, alt, srcSet, fit, sizes } = element.props || {};
   const block = useYooptaBlock('Image');
+  const plugin = useYooptaPlugin(pluginId);
+
+  console.log({
+    block,
+    plugin,
+    options,
+  });
 
   // const [size, setSize] = useState({
   //   width: element.props?.size?.width || 750,
@@ -76,6 +91,12 @@ const ImageRender = ({ element, attributes, pluginId, children }: PluginElementR
   }
   {
     /* </Resizable> */
+  }
+
+  console.log('element.props', element.props);
+
+  if (!src) {
+    return <Placeholder attributes={attributes}>{children}</Placeholder>;
   }
 
   return (

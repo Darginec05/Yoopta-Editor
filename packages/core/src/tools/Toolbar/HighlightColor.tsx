@@ -46,6 +46,17 @@ const itemStyles = {
 };
 
 const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles }) => {
+  const getItemStyles = (type, color) => {
+    if (highlightColors?.[type] === color) {
+      return {
+        border: '2px solid #3b82f6',
+        backgroundColor: color,
+      };
+    }
+
+    return { backgroundColor: color, ...itemStyles };
+  };
+
   return (
     <FloatingPortal root={document.getElementById('yoopta-editor')}>
       <FloatingOverlay lockScroll className="z-[100]" onClick={onClose}>
@@ -62,7 +73,7 @@ const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles
                   title={label}
                   type="button"
                   className="w-[25px] h-[25px] rounded-md mx-[2px] my-[5px] border-[#e3e3e3]"
-                  style={{ backgroundColor: color, ...itemStyles }}
+                  style={getItemStyles('color', color)}
                   onClick={() => editor.formats.highlight.update({ ...highlightColors, color })}
                 />
               ))}
@@ -78,7 +89,7 @@ const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles
                   title={label}
                   type="button"
                   className="w-[25px] h-[25px] rounded-md mx-[2px] my-[5px] border-[#e3e3e3]"
-                  style={{ backgroundColor, ...itemStyles }}
+                  style={getItemStyles('backgroundColor', backgroundColor)}
                   onClick={() => editor.formats.highlight.update({ ...highlightColors, backgroundColor })}
                 />
               ))}
