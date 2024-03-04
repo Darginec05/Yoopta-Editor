@@ -175,7 +175,7 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
           onClick={() => setIsHighlightPickerOpen((open) => !open)}
         >
           <span className="text-lg px-1 font-serif text-col">A</span>
-          <ChevronDownIcon width={10} />
+          {isHighlightPickerOpen ? <ChevronUpIcon width={10} /> : <ChevronDownIcon width={10} />}
         </Toolbar.ToggleItem>
       </Toolbar.ToggleGroup>
     </Toolbar.Root>

@@ -15,21 +15,7 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "references": [
-    { "path": "../core" },
-    { "path": "../blockquote" },
-    { "path": "../paragraph" },
-    { "path": "../callout" },
-    { "path": "../code" },
-    { "path": "../lists" },
-    { "path": "../link" },
-    { "path": "../headings" },
-    { "path": "../video" },
-    { "path": "../image" },
-    { "path": "../actionMenu" },
-    { "path": "../marks" },
-    { "path": "../exports" }
-  ],
+  "references": [{ "path": "../core" }],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

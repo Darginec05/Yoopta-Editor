@@ -94,7 +94,7 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
 };
 
 // types for slate values
-export type SlateElement<K = string, T = any> = {
+export type SlateElement<K extends string = string, T = any> = {
   id: string;
   type: K;
   children: Descendant[] | SlateElement[];

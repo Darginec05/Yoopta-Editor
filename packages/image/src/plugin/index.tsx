@@ -1,14 +1,15 @@
 import { createYooptaPlugin } from '@yoopta/editor';
+import { ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';
 import { ImageRender } from '../ui/Image';
 
-const Image = createYooptaPlugin({
+const Image = createYooptaPlugin<ImagePluginElements, ImageElementProps, ImagePluginOptions>({
   type: 'Image',
   elements: {
     // [TODO] - caption element??,
     image: {
       render: ImageRender,
       props: {
-        src: 'https://images.unsplash.com/photo-1599595344070-c456bea6ee98?q=80&w=1878&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        src: null,
         alt: null,
         srcSet: null,
         fit: 'cover',
@@ -19,6 +20,8 @@ const Image = createYooptaPlugin({
   },
   options: {
     displayLabel: 'Image',
+    onUpload: () => Promise.resolve({ src: null, alt: null }),
+    deviceSizes: [320, 420, 768, 1024, 1200, 1600],
   },
 });
 

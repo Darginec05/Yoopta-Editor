@@ -5,53 +5,53 @@ import { YooptaMark } from '../textFormatters/createYooptaMark';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS_TYPE } from '../utils/hotkeys';
 
-export type RenderPluginProps = {
+export type RenderPluginProps<TKeys extends string, TProps, TOptions> = {
   id: string;
-  elements: PluginReturn['elements'];
+  elements: PluginReturn<TKeys, TProps, TOptions>['elements'];
   marks?: YooptaMark<unknown>[];
 };
 
-export type PluginOptions = {
+export type PluginOptions<T> = {
   displayLabel?: string;
   shortcuts?: string[];
-  withCustomEditor?: boolean;
-};
+} & T;
 
-export type PluginReturn = {
+export type PluginReturn<TKeys extends string, TProps, TOptions = Record<string, unknown>> = {
   type: string;
-  renderPlugin: (props: RenderPluginProps) => JSX.Element;
-  elements: PluginParams<unknown>['elements'];
-  options?: PluginOptions;
+  renderPlugin: (props: RenderPluginProps<TKeys, TProps, TOptions>) => JSX.Element;
+  elements: PluginParams<TKeys, TProps>['elements'];
+  options?: PluginOptions<TOptions>;
 };
 
 export type PluginElementOptions = {
   draggable?: boolean;
 };
 
-export type CustomEditorProps = Omit<RenderPluginProps, 'elements'> &
-  Pick<PluginReturn, 'type'> & { editor: SlateEditor };
+export type CustomEditorProps = Omit<RenderPluginProps<any, any, any>, 'elements'> &
+  Pick<PluginReturn<string, unknown, unknown>, 'type'> & { editor: SlateEditor };
 
-export type PluginElementRenderProps = RenderSlateElementProps & {
+export type PluginElementRenderProps<TPluginOptions> = RenderSlateElementProps & {
   pluginId: string;
+  options?: TPluginOptions;
 };
 
 export type PluginElementProps<T> = { nodeType?: 'block' | 'inline' | 'void' | 'inlineVoid' } & T;
 
-export type PluginElement<T> = {
-  render: (props: PluginElementRenderProps) => JSX.Element;
+export type PluginElement<T, TPluginOptions = Record<string, unknown>> = {
+  render: (props: PluginElementRenderProps<TPluginOptions>) => JSX.Element;
   props?: PluginElementProps<T>;
   options?: PluginElementOptions;
   asRoot?: boolean;
   children?: string[];
 };
 
-export type PluginElementsMap<T> = {
-  [key: string]: PluginElement<T>;
+export type PluginElementsMap<TKeys extends string | number | symbol, TProps> = {
+  [key in TKeys]: PluginElement<TProps>;
 };
 
 type HandlersOptions = {
   hotkeys: HOTKEYS_TYPE;
-  defaultPlugin: PluginReturn;
+  defaultPlugin: PluginReturn<string, unknown, unknown>;
 };
 
 export type EventHandlers = {
@@ -62,13 +62,13 @@ export type EventHandlers = {
   ) => EditorEventHandlers[key] | void;
 };
 
-export type PluginParams<T = Descendant> = {
+export type PluginParams<TKeys extends string = string, TProps = Descendant, TOptions = Record<string, unknown>> = {
   type: string;
   // render?: (props: RenderSlateElementProps) => JSX.Element;
   customEditor?: (props: CustomEditorProps) => JSX.Element;
-  elements: PluginElementsMap<T>;
+  elements: PluginElementsMap<TKeys, TProps>;
   events?: EventHandlers;
-  options?: PluginOptions;
+  options?: PluginOptions<TOptions>;
 };
 
 export type LeafFormats<K extends string, V> = {
