@@ -1,5 +1,5 @@
-import { BlockOptions } from './BlockOptions/BlockOptions';
+import * as BlockOptionsUI from './BlockOptions/BlockOptions';
 
 export const UI = {
-  BlockOptions,
+  ...BlockOptionsUI,
 };

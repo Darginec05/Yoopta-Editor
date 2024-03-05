@@ -17,9 +17,9 @@ import { ActionMenuComponent } from '../../tools/ActionMenuList/ActionMenuCompon
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { getRootBlockElement } from '../../utils/blockElements';
 
-const DropdownMenuGroup = ({ children }) => <div className="flex flex-col">{children}</div>;
+const BlockOptionsMenuGroup = ({ children }) => <div className="flex flex-col">{children}</div>;
 
-const DropdownMenuContent = ({ children }) => (
+const BlockOptionsMenuContent = ({ children }) => (
   <div
     onClick={(e) => e.stopPropagation()}
     className="bg-[#FFF] relative min-w-[200px] w-auto overflow-hidden rounded-md border bg-popover py-[6px] px-0 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
@@ -28,7 +28,7 @@ const DropdownMenuContent = ({ children }) => (
   </div>
 );
 
-const DropdownMenuItem = ({ children }) => (
+const BlockOptionsMenuItem = ({ children }) => (
   <div className="relative flex cursor-default select-none items-center text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
     {children}
   </div>
@@ -81,9 +81,9 @@ const BlockOptions = ({ isOpen, onClose, refs, floatingStyles }) => {
     <FloatingPortal root={document.getElementById('yoopta-editor')}>
       <FloatingOverlay lockScroll className="z-[100]" onClick={onClose}>
         <div style={floatingStyles} ref={refs.setFloating}>
-          <DropdownMenuContent>
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
+          <BlockOptionsMenuContent>
+            <BlockOptionsMenuGroup>
+              <BlockOptionsMenuItem>
                 <button
                   type="button"
                   className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
@@ -92,8 +92,8 @@ const BlockOptions = ({ isOpen, onClose, refs, floatingStyles }) => {
                   <TrashIcon className="w-4 h-4 mr-2" />
                   Delete
                 </button>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
+              </BlockOptionsMenuItem>
+              <BlockOptionsMenuItem>
                 <button
                   type="button"
                   className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
@@ -102,9 +102,9 @@ const BlockOptions = ({ isOpen, onClose, refs, floatingStyles }) => {
                   <CopyIcon className="w-4 h-4 mr-2" />
                   Duplicate
                 </button>
-              </DropdownMenuItem>
+              </BlockOptionsMenuItem>
               {!isVoidElement && (
-                <DropdownMenuItem>
+                <BlockOptionsMenuItem>
                   {isActionMenuOpen && (
                     <FloatingPortal root={document.getElementById('yoopta-editor')}>
                       <FloatingOverlay lockScroll className="z-[100]" onClick={() => setIsActionMenuOpen(false)}>
@@ -130,9 +130,9 @@ const BlockOptions = ({ isOpen, onClose, refs, floatingStyles }) => {
                     <TurnIcon className="w-4 h-4 mr-2" />
                     Turn into
                   </button>
-                </DropdownMenuItem>
+                </BlockOptionsMenuItem>
               )}
-              <DropdownMenuItem>
+              <BlockOptionsMenuItem>
                 <button
                   type="button"
                   className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
@@ -141,13 +141,13 @@ const BlockOptions = ({ isOpen, onClose, refs, floatingStyles }) => {
                   <Link2Icon className="w-4 h-4 mr-2" />
                   Copy link to block
                 </button>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
+              </BlockOptionsMenuItem>
+            </BlockOptionsMenuGroup>
+          </BlockOptionsMenuContent>
         </div>
       </FloatingOverlay>
     </FloatingPortal>
   );
 };
 
-export { BlockOptions };
+export { BlockOptions, BlockOptionsMenuContent, BlockOptionsMenuGroup, BlockOptionsMenuItem };
