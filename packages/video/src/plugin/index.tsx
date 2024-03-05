@@ -1,7 +1,7 @@
-import { createYooptaPlugin } from '@yoopta/editor';
+import { YooptaPlugin } from '@yoopta/editor';
 import { VideoRender } from '../ui/Video';
 
-const Video = createYooptaPlugin({
+const Video = new YooptaPlugin({
   type: 'VideoPlugin',
   elements: {
     video: {

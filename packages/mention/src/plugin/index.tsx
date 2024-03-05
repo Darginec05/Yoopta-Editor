@@ -1,4 +1,4 @@
-import { createYooptaPlugin } from '@yoopta/editor';
+import { YooptaPlugin } from '@yoopta/editor';
 import { MentionRender } from '../ui/MentionRender';
 
 type Mention = {
@@ -8,7 +8,7 @@ type Mention = {
   character: string | null;
 };
 
-const Mention = createYooptaPlugin<Mention>({
+const Mention = new YooptaPlugin<Mention>({
   type: 'MentionPlugin',
   elements: {
     mention: {

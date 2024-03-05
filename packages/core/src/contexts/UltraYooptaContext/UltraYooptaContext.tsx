@@ -54,7 +54,16 @@ const useYooptaEditor = (): YooEditor => {
   const editor = useContext(UltraYooptaContext).editor;
   return editor;
 };
-const useYooptaPlugin = (id: string) => useYooptaEditor().children[id];
-const useYooptaBlock = (id: string) => useYooptaEditor().blocks[id];
+const useBlockData = (id: string) => useYooptaEditor().children[id];
+const useYooptaBlock = (type: string) => useYooptaEditor().blocks[type];
+const useYooptaPlugin = (type: string) => useYooptaEditor().plugins[type];
+const useYooptaPluginOptions = (type: string) => useYooptaPlugin(type).options;
 
-export { useYooptaEditor, useYooptaPlugin, useYooptaBlock, UltraYooptaContextProvider };
+export {
+  useYooptaEditor,
+  useBlockData,
+  useYooptaPlugin,
+  useYooptaPluginOptions,
+  useYooptaBlock,
+  UltraYooptaContextProvider,
+};

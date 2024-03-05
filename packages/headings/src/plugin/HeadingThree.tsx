@@ -1,4 +1,4 @@
-import { createYooptaPlugin } from '@yoopta/editor';
+import { YooptaPlugin } from '@yoopta/editor';
 
 const HeadingThreeRender = ({ attributes, children, element }) => {
   return (
@@ -15,7 +15,7 @@ const HeadingThreeRender = ({ attributes, children, element }) => {
 
 HeadingThreeRender.displayName = 'HeadingThree';
 
-const HeadingThree = createYooptaPlugin({
+const HeadingThree = new YooptaPlugin({
   type: 'HeadingThree',
   elements: {
     'heading-three': {

@@ -12,6 +12,9 @@ const handleActionMenuKeyDown = (editor: YooEditor, slate: Editor, options) => (
     const string = Editor.string(slate, parentPath);
     const isStart = Editor.isStart(slate, slate.selection.anchor, slate.selection.focus);
 
+    console.log('event.key', event.key);
+    console.log('state.open', state.open);
+
     if (!isStart || string.trim().length > 0) return;
 
     const domSelection = window.getSelection();

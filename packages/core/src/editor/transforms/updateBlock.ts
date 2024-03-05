@@ -1,10 +1,10 @@
 import { createDraft, finishDraft } from 'immer';
-import { YooptaEditorTransformOptions, YooEditor, YooptaChildrenValue } from '../types';
+import { YooptaEditorTransformOptions, YooEditor, YooptaBlockData } from '../types';
 
 export function updateBlock(
   editor: YooEditor,
   id: string,
-  data: Partial<YooptaChildrenValue>,
+  data: Partial<YooptaBlockData>,
   options: YooptaEditorTransformOptions,
 ) {
   editor.children = createDraft(editor.children);

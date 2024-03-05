@@ -16,13 +16,6 @@ export type PluginOptions<T> = {
   shortcuts?: string[];
 } & T;
 
-export type PluginReturn<TKeys extends string, TProps, TOptions = Record<string, unknown>> = {
-  type: string;
-  renderPlugin: (props: RenderPluginProps<TKeys, TProps, TOptions>) => JSX.Element;
-  elements: PluginParams<TKeys, TProps>['elements'];
-  options?: PluginOptions<TOptions>;
-};
-
 export type PluginElementOptions = {
   draggable?: boolean;
 };
@@ -35,7 +28,8 @@ export type PluginElementRenderProps<TPluginOptions> = RenderSlateElementProps &
   options?: TPluginOptions;
 };
 
-export type PluginElementProps<T> = { nodeType?: 'block' | 'inline' | 'void' | 'inlineVoid' } & T;
+export type PluginDefaultProps = { nodeType?: 'block' | 'inline' | 'void' | 'inlineVoid' };
+export type PluginElementProps<T> = PluginDefaultProps & T;
 
 export type PluginElement<T, TPluginOptions = Record<string, unknown>> = {
   render: (props: PluginElementRenderProps<TPluginOptions>) => JSX.Element;
@@ -45,7 +39,7 @@ export type PluginElement<T, TPluginOptions = Record<string, unknown>> = {
   children?: string[];
 };
 
-export type PluginElementsMap<TKeys extends string | number | symbol, TProps> = {
+export type PluginElementsMap<TKeys extends string = string, TProps = PluginDefaultProps> = {
   [key in TKeys]: PluginElement<TProps>;
 };
 
@@ -69,6 +63,13 @@ export type PluginParams<TKeys extends string = string, TProps = Descendant, TOp
   elements: PluginElementsMap<TKeys, TProps>;
   events?: EventHandlers;
   options?: PluginOptions<TOptions>;
+};
+
+export type PluginReturn<TKeys extends string, TProps, TOptions = Record<string, unknown>> = {
+  type: string;
+  elements: PluginParams<TKeys, TProps>['elements'];
+  options?: PluginOptions<TOptions>;
+  events?: EventHandlers;
 };
 
 export type LeafFormats<K extends string, V> = {

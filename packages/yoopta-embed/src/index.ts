@@ -1,4 +1,4 @@
-import { generateId, getElementByPath, createYooptaPlugin, YooEditor } from '@yoopta/editor';
+import { generateId, getElementByPath, YooptaPlugin, YooEditor } from '@yoopta/editor';
 import { Transforms } from 'slate';
 import { EmbedElement, EmbedElementData, EmbedPluginOptions } from './types';
 import { Embed as EmbedRender } from './ui/Embed';
@@ -11,7 +11,7 @@ declare module 'slate' {
   }
 }
 
-const Embed = createYooptaPlugin<EmbedPluginOptions, EmbedElement>({
+const Embed = new YooptaPlugin<EmbedPluginOptions, EmbedElement>({
   type: 'embed',
   shortcuts: 'embed',
   renderer: {

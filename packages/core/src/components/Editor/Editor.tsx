@@ -15,7 +15,7 @@ import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
 
 type Props = {
-  plugins: PluginReturn[];
+  plugins: PluginReturn<string, unknown>[];
   marks?: YooptaMark<any>[];
   selectionBoxRoot?: HTMLElement | null | React.MutableRefObject<HTMLElement | null>;
   autoFocus?: boolean;
@@ -45,6 +45,9 @@ const Editor = ({ plugins, marks, className, autoFocus = true, selectionBoxRoot 
   const selectionBox = useRectangeSelectionBox({ editor, yooptaEditorRef, root: selectionBoxRoot });
 
   let state = useRef<State>(DEFAULT_STATE).current;
+
+  console.log('Editor editor.blocks', editor.blocks);
+  console.log('Editor editor.plugins', editor.plugins);
 
   useEffect(() => {
     if (!autoFocus) return;

@@ -1,4 +1,4 @@
-import { generateId, getElementByPath, createYooptaPlugin, YooEditor } from '@yoopta/editor';
+import { generateId, getElementByPath, YooptaPlugin, YooEditor } from '@yoopta/editor';
 import { Transforms } from 'slate';
 import { FileElement, FileElementData, FilePluginOptions } from './types';
 import { File as FileRender } from './ui/File';
@@ -11,7 +11,7 @@ declare module 'slate' {
   }
 }
 
-const File = createYooptaPlugin<FilePluginOptions, FileElement>({
+const File = new YooptaPlugin<FilePluginOptions, FileElement>({
   type: 'file',
   shortcuts: 'file',
   renderer: {

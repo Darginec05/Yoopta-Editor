@@ -1,10 +1,10 @@
-import { createYooptaPlugin } from '@yoopta/editor';
+import { YooptaPlugin } from '@yoopta/editor';
 import { ListItemRender } from '../elements/ListItem';
 import { BulletedListRender } from '../elements/BulletedList';
 import { onKeyDown } from '../events/onKeyDown';
 import { BulletedListElement, BulletedListPluginKeys, ListItemElement } from '../types';
 
-const BulletedList = createYooptaPlugin<BulletedListPluginKeys, BulletedListElement | ListItemElement>({
+const BulletedList = new YooptaPlugin<BulletedListPluginKeys, BulletedListElement | ListItemElement>({
   type: 'BulletedList',
   elements: {
     'bulleted-list': {

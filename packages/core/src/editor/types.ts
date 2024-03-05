@@ -10,10 +10,10 @@ import { FocusBlockOptions } from './transforms/focusBlock';
 export type YooptaBlockPath = [number];
 
 export type YooptaChildrenKey = string;
-export type YooptaChildren = Record<YooptaChildrenKey, YooptaChildrenValue>;
+export type YooptaChildren = Record<YooptaChildrenKey, YooptaBlockData>;
 
 // [TODO] - rename to block
-export type YooptaChildrenValue<T = Descendant> = {
+export type YooptaBlockData<T = Descendant> = {
   id: string;
   value: T[];
   type: string;
@@ -71,7 +71,7 @@ export type YooptaFormats = Record<string, TextFormat>;
 export type YooEditor<TNodes = any, TKey extends string = any> = {
   insertBlock: (data, options?: YooptaEditorTransformOptions) => void;
   splitBlock: (options?: YooptaEditorTransformOptions) => void;
-  updateBlock: (id: string, data: Partial<YooptaChildrenValue>, options?: YooptaEditorTransformOptions) => void;
+  updateBlock: (id: string, data: Partial<YooptaBlockData>, options?: YooptaEditorTransformOptions) => void;
   deleteBlock: (options?: DeleteBlockOptions) => void;
   duplicateBlock: (options?: DuplicateBlockOptions) => void;
   getBlock: (options?: YooptaEditorTransformOptions) => void;
@@ -82,7 +82,7 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   focusBlock: (id: string, options?: FocusBlockOptions) => void;
   selection: YooptaBlockPath | null;
   selectedBlocks: number[] | null;
-  children: Record<string, YooptaChildrenValue>;
+  children: Record<string, YooptaBlockData>;
   getEditorValue: () => TNodes;
   setSelection: (path: YooptaBlockPath | null) => void;
   setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
@@ -91,6 +91,7 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   blocks: YooptaBlocks;
   formats: YooptaFormats;
   shortcuts: Record<string, YooptaBlock>;
+  plugins: Record<string, PluginReturn<string, unknown>>;
 };
 
 // types for slate values

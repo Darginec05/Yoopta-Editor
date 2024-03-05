@@ -1,5 +1,4 @@
-import cx from 'classnames';
-import { YooEditor, YooptaBlockPath, YooptaChildrenValue } from '../../editor/types';
+import { YooEditor, YooptaBlockPath, YooptaBlockData } from '../../editor/types';
 import { generateId } from '../../utils/generateId';
 import DragIcon from './icons/drag.svg';
 import PlusIcon from './icons/plus.svg';
@@ -13,12 +12,16 @@ import { BlockOptions } from '../../UI/BlockOptions/BlockOptions';
 import s from './Block.module.scss';
 
 type ActionsProps = {
-  block: YooptaChildrenValue;
+  block: YooptaBlockData;
   editor: YooEditor;
   dragHandleProps: any;
   showActions: boolean;
   onChangeActiveBlock: (id: string) => void;
 };
+
+function cx(...classNames: (string | undefined)[]) {
+  return classNames.filter(Boolean).join(' ');
+}
 
 const BlockActions = ({ block, editor, dragHandleProps, showActions, onChangeActiveBlock }: ActionsProps) => {
   const [isBlockOptionsOpen, setIsBlockOptionsOpen] = useState<boolean>(false);
@@ -71,7 +74,7 @@ const BlockActions = ({ block, editor, dragHandleProps, showActions, onChangeAct
   };
 
   return (
-    <div contentEditable={false} className={cx(s.actions, { [s.hovered]: showActions }, 'yoopta-element-actions')}>
+    <div contentEditable={false} className={cx(s.actions, showActions && s.hovered, 'yoopta-element-actions')}>
       <button
         type="button"
         onClick={onPlusClick}

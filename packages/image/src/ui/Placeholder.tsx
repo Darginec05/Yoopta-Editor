@@ -26,17 +26,6 @@ const Placeholder = ({ attributes, children }) => {
       {isUploaderOpen && (
         <ImageUploader floatingStyles={floatingStyles} refs={refs} onClose={() => setIsUploaderOpen(false)} />
       )}
-      {/* {uploaderPos !== null && (
-          <EditorUploader
-            onChange={onChangeFile}
-            onEmbed={onEmbed}
-            onClose={toggleUploaderOpen}
-            activeTab={activeTab}
-            switchTab={(tab) => setActiveTab(tab)}
-            style={uploaderPos}
-            accept={accept}
-          />
-        )} */}
       {children}
     </div>
   );

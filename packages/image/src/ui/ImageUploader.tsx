@@ -1,7 +1,7 @@
 import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
 import { CSSProperties, useState } from 'react';
-import { ImageUploaderEmbed } from './ImageUploaderEmbed';
-import { ImageUploaderFile } from './ImageUploaderFile';
+import { ImageEmbedUploader } from './ImageEmbedUploader';
+import { ImageFileUploader } from './ImageFileUploader';
 
 type Props = {
   floatingStyles: CSSProperties;
@@ -19,7 +19,13 @@ const ImageUploader = ({ floatingStyles, refs, onClose }: Props) => {
   const isUploader = activeTab === 'upload';
   const isEmbed = activeTab === 'embed';
 
-  const tabStyles = {};
+  const getTabStyles = (isActive) => ({
+    borderBottom: isActive ? '2px solid #2483e2' : '2px solid transparent',
+  });
+
+  const onEmbedLink = (link) => {
+    console.log('link', link);
+  };
 
   return (
     <FloatingPortal root={document.getElementById('yoopta-editor')}>
@@ -30,25 +36,25 @@ const ImageUploader = ({ floatingStyles, refs, onClose }: Props) => {
               <button
                 type="button"
                 onClick={() => switchTab('upload')}
-                className={`py-[6px] whitespace-nowrap min-w-0 flex-shrink-0 text-[rgb(55,53,47)] relative border-none cursor-pointer user-select-none bg-inherit transition-[height_20ms_ease-in] inline-flex items-center h-full rounded-[4px] text-[14px] leading-[1.2] px-[8px] ${
-                  isUploader ? 'border-bottom' : ''
-                }`}
+                style={getTabStyles(isUploader)}
+                className={`py-[6px] whitespace-nowrap min-w-0 flex-shrink-0 text-[rgb(55,53,47)] relative cursor-pointer user-select-none bg-inherit transition-[height_20ms_ease-in] inline-flex items-center h-full text-[14px] leading-[1.2] px-[8px]`}
               >
                 Upload
               </button>
               <button
                 type="button"
                 onClick={() => switchTab('embed')}
-                className={`py-[6px] whitespace-nowrap min-w-0 flex-shrink-0 text-[rgb(55,53,47)] relative border-none cursor-pointer user-select-none bg-inherit transition-[height_20ms_ease-in] inline-flex items-center h-full rounded-[4px] text-[14px] leading-[1.2] px-[8px] ${
-                  isEmbed ? 'border-bottom' : ''
-                }`}
+                style={getTabStyles(isEmbed)}
+                className={
+                  'py-[6px] whitespace-nowrap min-w-0 flex-shrink-0 text-[rgb(55,53,47)] relative cursor-pointer user-select-none bg-inherit transition-[height_20ms_ease-in] inline-flex items-center h-full text-[14px] leading-[1.2] px-[8px]'
+                }
               >
                 Image link
               </button>
             </div>
             <div className="pt-[6px] pb-[6px] mt-[4px] flex justify-center mr-[12px] ml-[12px]">
-              {isEmbed && <ImageUploaderEmbed />}
-              {isUploader && <ImageUploaderFile />}
+              {isEmbed && <ImageEmbedUploader onEmbedLink={onEmbedLink} />}
+              {isUploader && <ImageFileUploader />}
             </div>
           </div>
         </div>

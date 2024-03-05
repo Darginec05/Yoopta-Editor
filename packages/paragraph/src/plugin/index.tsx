@@ -1,7 +1,7 @@
-import { createYooptaPlugin } from '@yoopta/editor';
+import { YooptaPlugin } from '@yoopta/editor';
 import { ParagraphRender } from '../ui/Paragraph';
 
-const Paragraph = createYooptaPlugin({
+const Paragraph = new YooptaPlugin({
   type: 'Paragraph',
   elements: {
     paragraph: {

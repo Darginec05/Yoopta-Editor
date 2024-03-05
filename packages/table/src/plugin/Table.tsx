@@ -1,9 +1,9 @@
-import { createYooptaPlugin } from '@yoopta/editor';
+import { YooptaPlugin } from '@yoopta/editor';
 import { TableRender } from '../components/Table';
 import { TableCellRender } from '../components/TableCell';
 import { TableRowRender } from '../components/TableRow';
 
-export const Table = createYooptaPlugin({
+export const Table = new YooptaPlugin({
   type: 'Table',
   elements: {
     table: {
