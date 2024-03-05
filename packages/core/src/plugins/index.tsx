@@ -1,1 +1,1 @@
-export { createYooptaPlugin } from './createYooptaPlugin';
+export { YooptaPlugin } from './createYooptaPlugin';

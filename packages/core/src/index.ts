@@ -1,5 +1,11 @@
-export { createYooptaPlugin } from './plugins';
-export { useYooptaEditor, useYooptaPlugin, useYooptaBlock } from './contexts/UltraYooptaContext/UltraYooptaContext';
+export { YooptaPlugin } from './plugins';
+export {
+  useYooptaEditor,
+  useBlockData,
+  useYooptaBlock,
+  useYooptaPlugin,
+  useYooptaPluginOptions,
+} from './contexts/UltraYooptaContext/UltraYooptaContext';
 import { YooptaEditor } from './YooptaEditor';
 export { UI } from './UI';
 

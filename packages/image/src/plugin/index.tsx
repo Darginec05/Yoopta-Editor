@@ -1,8 +1,9 @@
-import { createYooptaPlugin } from '@yoopta/editor';
+import { YooptaPlugin } from '@yoopta/editor';
 import { ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';
 import { ImageRender } from '../ui/Image';
 
-const Image = createYooptaPlugin<ImagePluginElements, ImageElementProps, ImagePluginOptions>({
+// YooptaPlugin
+const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePluginOptions>({
   type: 'Image',
   elements: {
     // [TODO] - caption element??,
@@ -22,7 +23,10 @@ const Image = createYooptaPlugin<ImagePluginElements, ImageElementProps, ImagePl
     displayLabel: 'Image',
     onUpload: () => Promise.resolve({ src: null, alt: null }),
     deviceSizes: [320, 420, 768, 1024, 1200, 1600],
+    accept: 'image/png, image/jpeg, image/gif, image/webp',
   },
 });
+
+// Image.extend({ deviceSizes: [768, 1024, 1200] })
 
 export { Image };

@@ -4,7 +4,7 @@ import { deepClone } from '../../utils/deepClone';
 import { buildSlateEditor } from '../../utils/editorBuilders';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../../utils/generateId';
-import { YooEditor, YooptaChildrenValue, YooptaEditorTransformOptions } from '../types';
+import { YooEditor, YooptaBlockData, YooptaEditorTransformOptions } from '../types';
 
 export type DuplicateBlockOptions = YooptaEditorTransformOptions & {
   blockId?: string;
@@ -17,7 +17,7 @@ export function duplicateBlock(editor: YooEditor, options: DuplicateBlockOptions
     throw new Error('blockId or path should be provided');
   }
 
-  let originalBlock: YooptaChildrenValue | null = null;
+  let originalBlock: YooptaBlockData | null = null;
 
   if (blockId) {
     originalBlock = editor.children[blockId];

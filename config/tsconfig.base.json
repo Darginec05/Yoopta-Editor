@@ -11,7 +11,6 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": false,
-    "declaration": true,
     "incremental": true,
     "jsx": "react-jsx",
     "noImplicitAny": false,
@@ -19,6 +18,9 @@
     "module": "ESNext",
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
-    "preserveSymlinks": false
+    "preserveSymlinks": false,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true
   }
 }

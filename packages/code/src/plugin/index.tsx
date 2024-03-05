@@ -1,7 +1,7 @@
-import { createYooptaPlugin } from '@yoopta/editor';
+import { YooptaPlugin } from '@yoopta/editor';
 import { CodeEditor } from '../ui/Code';
 
-const Code = createYooptaPlugin({
+const Code = new YooptaPlugin({
   type: 'CodePlugin',
   customEditor: CodeEditor,
   // elements: {

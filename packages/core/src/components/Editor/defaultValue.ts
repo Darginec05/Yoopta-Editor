@@ -1,8 +1,8 @@
-import { YooptaChildrenValue, SlateElement } from '../../editor/types';
+import { YooptaBlockData, SlateElement } from '../../editor/types';
 import { generateId } from '../../utils/generateId';
 
 const codeText = `import { RenderElementProps } from 'slate-react';
-import { createYooptaPlugin } from '../../ultraPlugins';
+import { YooptaPlugin } from '../../ultraPlugins';
 
 const ParagraphRender = (props: RenderElementProps) => {
   return (
@@ -22,7 +22,7 @@ export { Paragraph };
 
 export const YOOPTA_ULTRA_VALUES: Record<
   string,
-  (id: string, meta: YooptaChildrenValue['meta'], children?: any[]) => YooptaChildrenValue<SlateElement>
+  (id: string, meta: YooptaBlockData['meta'], children?: any[]) => YooptaBlockData<SlateElement>
 > = {
   headingTwo: (id, meta, children) => ({
     id,
@@ -328,7 +328,7 @@ export const INLINE_MENTION_ELEMENT = {
   },
 };
 
-export const getDefaultParagraphBlock = (id?: string): YooptaChildrenValue => ({
+export const getDefaultParagraphBlock = (id?: string): YooptaBlockData => ({
   id: generateId(),
   value: [getDefaultParagraphPluginElement()],
   type: 'Paragraph',
@@ -407,6 +407,6 @@ export const FAKE_YOOPTA_EDITOR_CHILDREN = {
     ],
   ),
   // numbered_list_id: YOOPTA_ULTRA_VALUES.numberedList('numbered_list_id', { order: 4, depth: 0 }),
-  headingOne_0: YOOPTA_ULTRA_VALUES.headingTwo('headingOne_0', { order: 0, depth: 0 }),
+  headingOne_0: YOOPTA_ULTRA_VALUES.headingTwo('headingOne_0', { order: 1, depth: 0 }),
   // HGQj3faHJkbMGFcasdLINK: YOOPTA_ULTRA_VALUES.link('HGQj3faHJkbMGFcasdLINK', { type: 'inline' }),
 };

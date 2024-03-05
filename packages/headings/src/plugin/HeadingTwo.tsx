@@ -1,4 +1,4 @@
-import { createYooptaPlugin } from '@yoopta/editor';
+import { YooptaPlugin } from '@yoopta/editor';
 
 const HeadingTwoRender = ({ attributes, children, element }) => {
   return (
@@ -15,7 +15,7 @@ const HeadingTwoRender = ({ attributes, children, element }) => {
 
 HeadingTwoRender.displayName = 'HeadingTwo';
 
-const HeadingTwo = createYooptaPlugin({
+const HeadingTwo = new YooptaPlugin({
   type: 'HeadingTwo',
   elements: {
     'heading-two': {

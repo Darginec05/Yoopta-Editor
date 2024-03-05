@@ -3,7 +3,7 @@ import { Editor, Element, Path, Text, Transforms } from 'slate';
 import { buildSlateEditor } from '../../utils/editorBuilders';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../../utils/generateId';
-import { YooEditor, YooptaChildrenValue, YooptaEditorTransformOptions } from '../types';
+import { YooEditor, YooptaBlockData, YooptaEditorTransformOptions } from '../types';
 
 // [TODO] - handle cases for lists and nested inline elements
 export function splitBlock(editor: YooEditor, options: YooptaEditorTransformOptions = {}) {
@@ -34,7 +34,7 @@ export function splitBlock(editor: YooEditor, options: YooptaEditorTransformOpti
       mode: 'highest',
     });
 
-    const newBlock: YooptaChildrenValue = {
+    const newBlock: YooptaBlockData = {
       id: generateId(),
       type: currentBlock.type,
       meta: {

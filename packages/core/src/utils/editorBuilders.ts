@@ -2,7 +2,7 @@ import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
 import { createEditor, Editor } from 'slate';
 import { YooEditor } from '../editor/types';
-import { PluginReturn, PluginElement } from '../plugins/types';
+import { PluginReturn, PluginElement, PluginElementsMap } from '../plugins/types';
 import { YooptaMark } from '../textFormatters/createYooptaMark';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
 import { createBlock } from '../editor/transforms/createBlock';
@@ -103,4 +103,34 @@ export function buildBlockShortcuts(editor: YooEditor) {
   });
 
   return shortcuts;
+}
+
+export function buildPlugins(
+  plugins: PluginReturn<string, PluginElement<unknown>>[],
+): Record<string, PluginReturn<string, unknown>> {
+  const pluginsMap = {};
+  const inlineTopLevelPlugins: PluginElementsMap<string> = {};
+
+  plugins.forEach((plugin) => {
+    if (plugin.elements) {
+      Object.keys(plugin.elements).forEach((type) => {
+        const element = plugin.elements[type];
+        const nodeType = element.props?.nodeType;
+        if (nodeType === 'inline' || nodeType === 'inlineVoid') {
+          inlineTopLevelPlugins[type] = element;
+        }
+      });
+    }
+
+    pluginsMap[plugin.type] = plugin;
+  });
+
+  plugins.forEach((plugin) => {
+    if (plugin.elements) {
+      const elements = { ...plugin.elements, ...inlineTopLevelPlugins };
+      pluginsMap[plugin.type] = { ...plugin, elements };
+    }
+  });
+
+  return pluginsMap;
 }

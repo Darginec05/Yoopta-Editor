@@ -12,11 +12,23 @@ import { setBlockSelected } from './selection/setBlockSelected';
 import { duplicateBlock } from './transforms/duplicateBlock';
 import { blur } from './selection/blur';
 import { updateBlock } from './transforms/updateBlock';
+import { Transforms } from 'slate';
 
 // export const YooEditor = {}
 // export const BlockTransforms = {}
 // export const Selection = {}
 // export const TextFormats = {}
+
+// YooEditor.get(editor, 'children');
+// YooEditor.applyChanges(editor);
+
+// Block.get(editor, 'paragraph');
+// BlockTransforms.update(editor, 'paragraph', { elements: {} });
+// BlockTransforms.create();
+// BlockTransforms.delete();
+
+// TextFormats.get(editor, 'bold');
+// TextFormats.TextFormats.update(editor, 'bold', true);
 
 export const createYooptaEditor = (): YooEditor => {
   const editor: YooEditor = {
@@ -44,6 +56,7 @@ export const createYooptaEditor = (): YooEditor => {
     blocks: {},
     formats: {},
     shortcuts: {},
+    plugins: {},
   };
 
   return editor;

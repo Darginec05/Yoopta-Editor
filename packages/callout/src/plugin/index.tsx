@@ -1,7 +1,7 @@
-import { createYooptaPlugin } from '@yoopta/editor';
+import { YooptaPlugin } from '@yoopta/editor';
 import { CalloutRender } from '../ui/Callout';
 
-const Callout = createYooptaPlugin({
+const Callout = new YooptaPlugin({
   type: 'CalloutPlugin',
   elements: {
     callout: {

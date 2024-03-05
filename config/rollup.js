@@ -51,16 +51,16 @@ function getPlugins({ tailwindConfig }) {
     }),
     typescript({
       clean: true,
-      useTsconfigDeclarationDir: true,
+      useTsconfigDeclarationDir: isProd,
       abortOnError: false,
       tsconfig: `./tsconfig.json`,
 
-      tsconfigOverride: {
-        compilerOptions: {
-          declaration: isProd,
-          declarationDir: './dist/types',
-        },
-      },
+      // tsconfigOverride: {
+      //   compilerOptions: {
+      //     declaration: isProd,
+      //     declarationDir: isProd ? './dist/types' : undefined,
+      //   },
+      // },
     }),
     sourceMaps(),
     replace({

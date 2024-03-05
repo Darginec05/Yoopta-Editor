@@ -3,9 +3,9 @@ import { Editor } from 'slate';
 import { buildSlateEditor } from '../../utils/editorBuilders';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../../utils/generateId';
-import { YooEditor, YooptaEditorTransformOptions, YooptaChildrenValue } from '../types';
+import { YooEditor, YooptaEditorTransformOptions, YooptaBlockData } from '../types';
 
-export function insertBlock(editor: YooEditor, data: YooptaChildrenValue, options: YooptaEditorTransformOptions = {}) {
+export function insertBlock(editor: YooEditor, data: YooptaBlockData, options: YooptaEditorTransformOptions = {}) {
   editor.children = createDraft(editor.children);
   const { at = null, focus = false, slate = null } = options;
 

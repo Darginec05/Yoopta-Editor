@@ -1,6 +1,6 @@
 import { useFocused, useSelected } from 'slate-react';
 import { ImageComponent } from './ImageComponent';
-import { useYooptaPlugin, UI, PluginElementRenderProps, useYooptaBlock } from '@yoopta/editor';
+import { useBlockData, UI, PluginElementRenderProps, useYooptaBlock } from '@yoopta/editor';
 import { Resizable, ResizableProps } from 're-resizable';
 import { Transforms } from 'slate';
 import { useMemo, useState } from 'react';
@@ -18,22 +18,8 @@ const Resizer = ({ position }) => (
   </div>
 );
 
-const ImageRender = ({
-  element,
-  attributes,
-  pluginId,
-  options,
-  children,
-}: PluginElementRenderProps<ImagePluginOptions>) => {
+const ImageRender = ({ element, attributes, children }: PluginElementRenderProps<ImagePluginOptions>) => {
   const { src, alt, srcSet, fit, sizes } = element.props || {};
-  const block = useYooptaBlock('Image');
-  const plugin = useYooptaPlugin(pluginId);
-
-  console.log({
-    block,
-    plugin,
-    options,
-  });
 
   // const [size, setSize] = useState({
   //   width: element.props?.size?.width || 750,
@@ -86,14 +72,6 @@ const ImageRender = ({
   //   }),
   //   [size.width, size.height],
   // );
-  {
-    /* <Resizable {...resizeProps} className="mx-auto my-0"> */
-  }
-  {
-    /* </Resizable> */
-  }
-
-  console.log('element.props', element.props);
 
   if (!src) {
     return <Placeholder attributes={attributes}>{children}</Placeholder>;

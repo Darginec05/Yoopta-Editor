@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react';
 import { Editable, RenderElementProps, Slate } from 'slate-react';
-import { useYooptaEditor, useYooptaPlugin } from '../contexts/UltraYooptaContext/UltraYooptaContext';
+import { useYooptaEditor, useBlockData } from '../contexts/UltraYooptaContext/UltraYooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../textFormatters/createYooptaMark';
 import { withInlines } from './extenstions/withInlines';
@@ -38,9 +38,9 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   options,
 }: Props<TKeys, TProps, TOptions>) => {
   const editor = useYooptaEditor();
-  const plugin = useYooptaPlugin(id);
-  const initialValue = useRef(plugin.value).current;
-  const type = plugin.type;
+  const block = useBlockData(id);
+  const initialValue = useRef(block.value).current;
+  const type = block.type;
 
   const { tools } = useTools();
 
@@ -150,12 +150,12 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
 
   const onFocus = (event: React.FocusEvent) => {
     eventHandlers?.onFocus?.(event);
-    editor.setSelection([plugin.meta.order]);
+    editor.setSelection([block.meta.order]);
   };
 
   return (
     <div data-plugin-id={id} data-plugin-type={type}>
-      <EditorInstance
+      <SlateEditorInstance
         id={id}
         slate={slate}
         initialValue={initialValue}
@@ -174,7 +174,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   );
 };
 
-const EditorInstance = ({
+const SlateEditorInstance = ({
   id,
   slate,
   initialValue,
@@ -199,7 +199,7 @@ const EditorInstance = ({
   return (
     <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onChange={onChange}>
       <Editable
-        // placeholder={plugin.meta.order === editor.selection?.[0] ? 'Enter some rich text…' : undefined}
+        // placeholder={block.meta.order === editor.selection?.[0] ? 'Enter some rich text…' : undefined}
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         className="focus-visible:outline-none focus:outline-none"
