@@ -25,6 +25,7 @@ const ImageRender = ({ element, attributes, children }: PluginElementRenderProps
   //   width: element.props?.size?.width || 750,
   //   height: element.props?.size?.height || 440,
   // });
+
   // const selected = useSelected();
   // const focused = useFocused();
 
@@ -78,8 +79,8 @@ const ImageRender = ({ element, attributes, children }: PluginElementRenderProps
   }
 
   return (
-    <div contentEditable={false} draggable={false} className="mt-4 relative" {...attributes}>
-      <ImageComponent src={src} alt={alt} srcSet={srcSet} fit={fit} width={sizes.width} height={sizes.height} />
+    <div contentEditable={false} draggable={false} className="mt-4 relative flex" {...attributes}>
+      <ImageComponent src={src} alt={alt} srcSet={srcSet} fit={fit} width={sizes?.width} height={sizes?.height} />
       {children}
     </div>
   );

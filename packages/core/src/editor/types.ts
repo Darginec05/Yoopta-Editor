@@ -6,6 +6,7 @@ import { CreateBlockOptions } from './transforms/createBlock';
 import { DeleteBlockOptions } from './transforms/deleteBlock';
 import { DuplicateBlockOptions } from './transforms/duplicateBlock';
 import { FocusBlockOptions } from './transforms/focusBlock';
+import { UpdateBlockElements } from './transforms/updateBlock';
 
 export type YooptaBlockPath = [number];
 
@@ -55,12 +56,16 @@ export type TextFormat = {
 export type YooptaBlock = {
   type: string;
   order: number;
-  options?: PluginOptions;
-  elements: PluginElementsMap<unknown>;
+  options?: PluginOptions<any>;
+  elements: PluginElementsMap<string>;
   withCustomEditor?: boolean;
   isActive: () => boolean;
   create: (options?: CreateBlockOptions) => void;
-  update: (id: string, data: any) => void;
+  update: (id: string, data: Partial<YooptaBlockData>) => void;
+  updateElement: <TElementKeys extends string, TElementProps>(
+    elementType: TElementKeys,
+    elementProps: TElementProps,
+  ) => void;
   delete: (id: string) => void;
 };
 
@@ -71,7 +76,12 @@ export type YooptaFormats = Record<string, TextFormat>;
 export type YooEditor<TNodes = any, TKey extends string = any> = {
   insertBlock: (data, options?: YooptaEditorTransformOptions) => void;
   splitBlock: (options?: YooptaEditorTransformOptions) => void;
-  updateBlock: (id: string, data: Partial<YooptaBlockData>, options?: YooptaEditorTransformOptions) => void;
+  updateBlock: (id: string, data: Partial<YooptaBlockData>) => void;
+  // updateBlockElement: <TElementKeys extends string, TElementProps>(
+  //   // blockId: string,
+  //   elementType: TElementKeys,
+  //   elementProps: TElementProps,
+  // ) => void;
   deleteBlock: (options?: DeleteBlockOptions) => void;
   duplicateBlock: (options?: DuplicateBlockOptions) => void;
   getBlock: (options?: YooptaEditorTransformOptions) => void;

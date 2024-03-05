@@ -12,7 +12,10 @@ import {
   FloatingPortal,
   FloatingOverlay,
 } from '@floating-ui/react';
+import copy from 'copy-to-clipboard';
 import { ActionMenuComponent } from '../../tools/ActionMenuList/ActionMenuComponent';
+import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
+import { getRootBlockElement } from '../../utils/blockElements';
 
 const DropdownMenuGroup = ({ children }) => <div className="flex flex-col">{children}</div>;
 
@@ -44,6 +47,10 @@ const BlockOptions = ({ isOpen, onClose, refs, floatingStyles }) => {
 
   if (!isOpen) return null;
 
+  const currentBlock = findPluginBlockBySelectionPath(editor, { at: editor.selection });
+  const rootElement = getRootBlockElement(editor.blocks[currentBlock?.type || ''].elements);
+  const isVoidElement = rootElement?.props?.nodeType === 'void';
+
   const onDelete = () => {
     const selection = editor.selection;
     editor.deleteBlock({ at: selection });
@@ -61,7 +68,12 @@ const BlockOptions = ({ isOpen, onClose, refs, floatingStyles }) => {
   };
 
   const onCopy = () => {
-    console.log('editor', editor.selectedBlocks);
+    const block = findPluginBlockBySelectionPath(editor);
+    if (block) {
+      copy(`${window.location.origin}${window.location.pathname}#${block.id}`);
+    }
+
+    onClose();
   };
 
   return (
@@ -91,33 +103,35 @@ const BlockOptions = ({ isOpen, onClose, refs, floatingStyles }) => {
                   Duplicate
                 </button>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                {isActionMenuOpen && (
-                  <FloatingPortal root={document.getElementById('yoopta-editor')}>
-                    <FloatingOverlay lockScroll className="z-[100]" onClick={() => setIsActionMenuOpen(false)}>
-                      <div style={actionMenuFloatingStyles} ref={actionMenuRefs.setFloating}>
-                        <ActionMenuComponent
-                          actions={Object.keys(editor.blocks)}
-                          editor={editor}
-                          selectedAction={''}
-                          onClose={() => setIsActionMenuOpen(false)}
-                          empty={false}
-                          onMouseEnter={() => undefined}
-                        />
-                      </div>
-                    </FloatingOverlay>
-                  </FloatingPortal>
-                )}
-                <button
-                  type="button"
-                  className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
-                  ref={actionMenuRefs.setReference}
-                  onClick={() => setIsActionMenuOpen((open) => !open)}
-                >
-                  <TurnIcon className="w-4 h-4 mr-2" />
-                  Turn into
-                </button>
-              </DropdownMenuItem>
+              {!isVoidElement && (
+                <DropdownMenuItem>
+                  {isActionMenuOpen && (
+                    <FloatingPortal root={document.getElementById('yoopta-editor')}>
+                      <FloatingOverlay lockScroll className="z-[100]" onClick={() => setIsActionMenuOpen(false)}>
+                        <div style={actionMenuFloatingStyles} ref={actionMenuRefs.setFloating}>
+                          <ActionMenuComponent
+                            actions={Object.keys(editor.blocks)}
+                            editor={editor}
+                            selectedAction={''}
+                            onClose={() => setIsActionMenuOpen(false)}
+                            empty={false}
+                            onMouseEnter={() => undefined}
+                          />
+                        </div>
+                      </FloatingOverlay>
+                    </FloatingPortal>
+                  )}
+                  <button
+                    type="button"
+                    className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+                    ref={actionMenuRefs.setReference}
+                    onClick={() => setIsActionMenuOpen((open) => !open)}
+                  >
+                    <TurnIcon className="w-4 h-4 mr-2" />
+                    Turn into
+                  </button>
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem>
                 <button
                   type="button"

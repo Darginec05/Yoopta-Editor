@@ -8,9 +8,9 @@ export type ImageSizes = {
 };
 
 export type ImageElementProps = {
-  src: string | null;
-  alt: string | null;
-  srcSet: string | null;
+  src?: string | null;
+  alt?: string | null;
+  srcSet?: string | null;
   fit?: 'contain' | 'cover' | 'fill' | null;
   sizes?: ImageSizes;
 };
