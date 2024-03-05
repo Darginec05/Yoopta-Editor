@@ -1,7 +1,7 @@
 import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
 import { createEditor, Editor } from 'slate';
-import { YooEditor } from '../editor/types';
+import { YooEditor, YooptaBlockData } from '../editor/types';
 import { PluginReturn, PluginElement, PluginElementsMap } from '../plugins/types';
 import { YooptaMark } from '../textFormatters/createYooptaMark';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
@@ -12,6 +12,8 @@ import { toggle } from '../editor/textFormats/toggle';
 import { update } from '../editor/textFormats/update';
 import { withShortcuts } from '../extenstions/shortcuts';
 import { getRootBlockElement } from './blockElements';
+import { updateBlock } from '../editor/transforms/updateBlock';
+import { updateBlockElement } from '../editor/transforms/updateBlockElement';
 
 export function buildMarks(editor, marks: YooptaMark<any>[]) {
   const formats: YooEditor['formats'] = {};
@@ -59,8 +61,11 @@ export function buildBlocks(editor, plugins: PluginReturn<string, PluginElement<
         create: (options) => {
           createBlock(editor, plugin.type, options);
         },
-        update: () => {
-          console.log('block.update');
+        update: <TKeys extends string, TProps>(id: string, data: Partial<Pick<YooptaBlockData, 'meta' | 'value'>>) => {
+          updateBlock(editor, id, data);
+        },
+        updateElement: <TKeys extends string, TProps>(elementType: TKeys, props: TProps) => {
+          updateBlockElement(editor, elementType, props);
         },
         delete: () => {
           console.log('block.delete');

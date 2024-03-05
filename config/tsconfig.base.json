@@ -18,9 +18,9 @@
     "module": "ESNext",
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
-    "preserveSymlinks": false,
-    "composite": true,
-    "declaration": true,
-    "declarationMap": true
+    "preserveSymlinks": false
+    // "composite": true,
+    // "declaration": true,
+    // "declarationMap": true
   }
 }

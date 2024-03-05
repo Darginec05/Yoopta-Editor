@@ -45,7 +45,6 @@ export const createYooptaEditor = (): YooEditor => {
     moveBlock: (...args) => moveBlock(editor, ...args),
     focusBlock: (...args) => focusBlock(editor, ...args),
     // getBlock: (...args) => getBlock(editor, ...args),
-    // updateBlock: (...args) => updateBlock(editor, ...args),
     getBlock: (...args) => undefined,
     updateBlock: (...args) => updateBlock(editor, ...args),
     splitBlock: (...args) => splitBlock(editor, ...args),

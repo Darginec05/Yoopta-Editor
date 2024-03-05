@@ -14,7 +14,7 @@ const Placeholder = ({ attributes, children }) => {
   });
 
   return (
-    <div className="w-full user-select-none m-[20px_0_10px] relative" {...attributes} contentEditable={false}>
+    <div className="w-full user-select-none m-[20px_0_10px] relative flex" {...attributes} contentEditable={false}>
       <button
         className="p-[12px_36px_12px_12px] flex items-center text-left w-full overflow-hidden rounded-[3px] text-[14px] text-[rgba(55,53,47,0.65)] relative cursor-pointer border-none bg-[#efefef] transition-[background-color_100ms_ease-in] hover:bg-[#e3e3e3]"
         onClick={() => setIsUploaderOpen(true)}

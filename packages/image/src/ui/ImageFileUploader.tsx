@@ -1,9 +1,9 @@
 import { useYooptaEditor, useYooptaPluginOptions } from '@yoopta/editor';
-import { Element, Transforms } from 'slate';
-import { ImageElement } from '../types';
+import { Transforms } from 'slate';
+import { ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';
 
 const ImageFileUploader = ({ accept = 'image/*' }) => {
-  const options = useYooptaPluginOptions('Image');
+  const options = useYooptaPluginOptions<ImagePluginOptions>('Image');
   const editor = useYooptaEditor();
 
   const handeUploading = (file: File) => {
@@ -12,39 +12,24 @@ const ImageFileUploader = ({ accept = 'image/*' }) => {
       return;
     }
 
-    const pluginId = 'image';
-    const slate = editor.blockEditorsMap[pluginId];
-
     options
       ?.onUpload(file)
       .then((response) => {
-        editor.blocks.Image.update({
-          elements: {
-            image: {
-              src: response.url,
-              srcSet: response.srcSet,
-              alt: response.alt,
-              sizes: response.sizes,
-            },
-          },
+        const deviceSizes = options.deviceSizes;
+        let srcSet = '';
+
+        if (deviceSizes) {
+          srcSet = deviceSizes.map((size) => `${response.src} ${size}w`).join(', ');
+        }
+
+        console.log('srcSet', srcSet);
+
+        editor.blocks.Image.updateElement<ImagePluginElements, ImageElementProps>('image', {
+          src: response.src,
+          alt: response.alt,
+          srcSet,
+          sizes: response.sizes,
         });
-
-        // Transforms.setNodes<ImageElement>(
-        //   slate,
-        //   {
-        //     props: {
-        //       src: 'https://res.cloudinary.com/ench-app/image/upload/v1709585773/GHuDjvNWkAAD5aU_rxrzfn.jpg',
-        //       srcSet: null,
-        //       alt: 'cloudinary',
-        //       sizes: response.sizes,
-        //     },
-        //   },
-        //   { at: [0], voids: true, match: (n) => Element.isElement(n) && n.type === 'image' },
-        // );
-
-        // editor.applyChanges();
-
-        console.log('slate', slate.children);
       })
       .catch((error) => {
         console.error('error', error);

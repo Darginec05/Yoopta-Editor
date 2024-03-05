@@ -46,8 +46,8 @@ const Editor = ({ plugins, marks, className, autoFocus = true, selectionBoxRoot 
 
   let state = useRef<State>(DEFAULT_STATE).current;
 
-  console.log('Editor editor.blocks', editor.blocks);
-  console.log('Editor editor.plugins', editor.plugins);
+  // console.log('Editor editor.blocks', editor.blocks);
+  // console.log('Editor editor.plugins', editor.plugins);
 
   useEffect(() => {
     if (!autoFocus) return;

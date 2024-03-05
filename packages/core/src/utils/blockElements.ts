@@ -1,6 +1,8 @@
 import { PluginElement, PluginElementsMap } from '../plugins/types';
 
-export function getRootBlockElement(elems: PluginElementsMap<unknown> | undefined): PluginElement<unknown> | undefined {
+export function getRootBlockElement(
+  elems: PluginElementsMap<string, unknown> | undefined,
+): PluginElement<unknown> | undefined {
   if (!elems) return;
 
   const elements = Object.values(elems);

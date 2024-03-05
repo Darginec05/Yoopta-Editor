@@ -1,11 +1,10 @@
 import { createDraft, finishDraft } from 'immer';
-import { YooptaEditorTransformOptions, YooEditor, YooptaBlockData } from '../types';
+import { YooEditor, YooptaBlockData } from '../types';
 
-export function updateBlock(
+export function updateBlock<TElementKeys extends string, TProps>(
   editor: YooEditor,
   id: string,
-  data: Partial<YooptaBlockData>,
-  options: YooptaEditorTransformOptions,
+  data: Partial<Pick<YooptaBlockData, 'meta' | 'value'>>,
 ) {
   editor.children = createDraft(editor.children);
 
@@ -15,8 +14,6 @@ export function updateBlock(
     throw Error(`Block with id ${id} not found`);
   }
 
-  if (data.id) block.id = data.id;
-  if (data.type) block.type = data.type;
   if (data.meta) block.meta = data.meta;
   if (data.value) block.value = data.value;
 

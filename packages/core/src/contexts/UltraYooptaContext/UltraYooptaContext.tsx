@@ -1,6 +1,7 @@
 import { createContext, useContext, useRef } from 'react';
 import { Editor } from 'slate';
 import { YooEditor } from '../../editor/types';
+import { PluginOptions } from '../../plugins/types';
 
 export type UltraYooptaContextPluginsEditorMap = Record<string, Editor>;
 
@@ -57,7 +58,7 @@ const useYooptaEditor = (): YooEditor => {
 const useBlockData = (id: string) => useYooptaEditor().children[id];
 const useYooptaBlock = (type: string) => useYooptaEditor().blocks[type];
 const useYooptaPlugin = (type: string) => useYooptaEditor().plugins[type];
-const useYooptaPluginOptions = (type: string) => useYooptaPlugin(type).options;
+const useYooptaPluginOptions = <TOptions,>(type: string): PluginOptions<TOptions> => useYooptaPlugin(type).options;
 
 export {
   useYooptaEditor,
