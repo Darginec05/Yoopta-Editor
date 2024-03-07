@@ -65,6 +65,6 @@ export function duplicateBlock(editor: YooEditor, options: DuplicateBlockOptions
   editor.applyChanges();
 
   if (focus) {
-    editor.focusBlock(duplicatedId, { waitExecution: true, focusAt: 'start' });
+    editor.focusBlock(duplicatedId, { waitExecution: true });
   }
 }

@@ -23,8 +23,8 @@ export type PluginElementOptions = {
 export type CustomEditorProps = Omit<RenderPluginProps<any, any, any>, 'elements'> &
   Pick<PluginReturn<string, unknown, unknown>, 'type'> & { editor: SlateEditor };
 
-export type PluginElementRenderProps<TPluginOptions> = RenderSlateElementProps & {
-  pluginId: string;
+export type PluginElementRenderProps<TPluginOptions = unknown> = RenderSlateElementProps & {
+  blockId: string;
   options?: TPluginOptions;
 };
 

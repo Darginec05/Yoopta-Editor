@@ -1,46 +1,32 @@
 import { useYooptaEditor, useYooptaPluginOptions } from '@yoopta/editor';
-import { Transforms } from 'slate';
 import { ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';
 
-const ImageFileUploader = ({ accept = 'image/*' }) => {
+const FileUploader = ({ accept = 'image/*', onClose, blockId }) => {
   const options = useYooptaPluginOptions<ImagePluginOptions>('Image');
   const editor = useYooptaEditor();
 
-  const handeUploading = (file: File) => {
+  const upload = async (file: File) => {
     if (!options?.onUpload) {
       console.warn('onUpload not provided');
       return;
     }
 
-    options
-      ?.onUpload(file)
-      .then((response) => {
-        const deviceSizes = options.deviceSizes;
-        let srcSet = '';
+    const response = await options?.onUpload(file);
 
-        if (deviceSizes) {
-          srcSet = deviceSizes.map((size) => `${response.src} ${size}w`).join(', ');
-        }
+    editor.blocks.Image.updateElement<ImagePluginElements, ImageElementProps>(blockId, 'image', {
+      src: response.src,
+      alt: response.alt,
+      sizes: response.sizes,
+      bgColor: response.bgColor,
+      fit: 'contain',
+    });
 
-        console.log('srcSet', srcSet);
-
-        editor.blocks.Image.updateElement<ImagePluginElements, ImageElementProps>('image', {
-          src: response.src,
-          alt: response.alt,
-          srcSet,
-          sizes: response.sizes,
-        });
-      })
-      .catch((error) => {
-        console.error('error', error);
-      });
+    onClose();
   };
 
-  const onChangeFile = (e) => {
+  const onChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      handeUploading(file);
-    }
+    if (file) upload(file);
   };
 
   return (
@@ -54,7 +40,7 @@ const ImageFileUploader = ({ accept = 'image/*' }) => {
           id="image-uploader"
           className="absolute left-0 top-0 invisible"
           accept={options?.accept || accept}
-          onChange={onChangeFile}
+          onChange={onChange}
           multiple={false}
         />
         Upload image
@@ -63,4 +49,4 @@ const ImageFileUploader = ({ accept = 'image/*' }) => {
   );
 };
 
-export { ImageFileUploader };
+export { FileUploader };

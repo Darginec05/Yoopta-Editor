@@ -46,7 +46,7 @@ const RenderBlocks = ({ editor, plugins, marks }: Props) => {
     }
 
     blocks.push(
-      <Block key={childrenId} plugin={block} pluginId={childrenId}>
+      <Block key={childrenId} plugin={block} blockId={childrenId}>
         <SlateEditorComponent
           key={childrenId}
           type={block.type}

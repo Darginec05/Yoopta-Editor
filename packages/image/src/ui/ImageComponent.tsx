@@ -9,9 +9,10 @@ type ImageComponentProps = Omit<ImageElementProps, 'sizes'> & {
 
 type Layout = 'fill' | 'responsive' | 'intrinsic' | 'fixed';
 
-const ImageComponent = ({ width, height, src, alt, fit, layout = 'intrinsic' }: ImageComponentProps) => {
+const ImageComponent = ({ width, height, src, alt, fit, bgColor, layout = 'intrinsic' }: ImageComponentProps) => {
   const style: CSSProperties = {
-    objectFit: fit || 'cover',
+    objectFit: fit || 'contain',
+    backgroundColor: bgColor || 'transparent',
   };
 
   const isResponsive = layout === 'responsive';
@@ -32,31 +33,17 @@ const ImageComponent = ({ width, height, src, alt, fit, layout = 'intrinsic' }: 
   if (isFill) {
     style.width = '100%';
     style.height = '100%';
-    style.objectFit = 'fill';
   }
 
   if (isIntrinsic) {
     style.width = '100%';
     style.height = '100%';
-    style.objectFit = 'contain';
   }
-
-  let srcSet = '';
 
   return (
     <div className="w-full" data-layout={layout}>
       {src && (
-        <img
-          data-element-type="Image"
-          src={src}
-          srcSet={srcSet}
-          width={width}
-          height={height}
-          alt={alt || ''}
-          decoding="async"
-          loading="lazy"
-          style={style}
-        />
+        <img src={src} width={width} height={height} alt={alt || ''} decoding="async" loading="lazy" style={style} />
       )}
     </div>
   );

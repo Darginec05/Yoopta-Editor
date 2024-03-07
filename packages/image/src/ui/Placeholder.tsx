@@ -3,7 +3,7 @@ import { ImageIcon } from '@radix-ui/react-icons';
 import { useRef, useState } from 'react';
 import { ImageUploader } from './ImageUploader';
 
-const Placeholder = ({ attributes, children }) => {
+const Placeholder = ({ attributes, children, blockId }) => {
   const [isUploaderOpen, setIsUploaderOpen] = useState(false);
 
   const { refs, floatingStyles } = useFloating({
@@ -24,7 +24,12 @@ const Placeholder = ({ attributes, children }) => {
         <span className="font-medium">Click to add image</span>
       </button>
       {isUploaderOpen && (
-        <ImageUploader floatingStyles={floatingStyles} refs={refs} onClose={() => setIsUploaderOpen(false)} />
+        <ImageUploader
+          blockId={blockId}
+          floatingStyles={floatingStyles}
+          refs={refs}
+          onClose={() => setIsUploaderOpen(false)}
+        />
       )}
       {children}
     </div>

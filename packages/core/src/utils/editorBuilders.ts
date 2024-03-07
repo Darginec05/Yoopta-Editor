@@ -64,8 +64,8 @@ export function buildBlocks(editor, plugins: PluginReturn<string, PluginElement<
         update: <TKeys extends string, TProps>(id: string, data: Partial<Pick<YooptaBlockData, 'meta' | 'value'>>) => {
           updateBlock(editor, id, data);
         },
-        updateElement: <TKeys extends string, TProps>(elementType: TKeys, props: TProps) => {
-          updateBlockElement(editor, elementType, props);
+        updateElement: <TKeys extends string, TProps>(blockId: string, elementType: TKeys, props: TProps) => {
+          updateBlockElement(editor, blockId, elementType, props);
         },
         delete: () => {
           console.log('block.delete');

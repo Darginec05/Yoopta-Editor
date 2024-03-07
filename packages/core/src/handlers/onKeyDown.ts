@@ -29,9 +29,12 @@ function getNextNodePoint(slate: SlateEditor, path: Path): Point {
 }
 /** */
 
-export function onKeyDown(editor: YooEditor, slate: SlateEditor) {
+export function onKeyDown(editor: YooEditor) {
   return (event: React.KeyboardEvent) => {
-    if (!slate.selection) return;
+    const slate = findSlateBySelectionPath(editor, { at: editor.selection });
+    if (!slate || !slate.selection) return;
+
+    const parentPath = Path.parent(slate.selection.anchor.path);
 
     if (HOTKEYS.isShiftEnter(event)) {
       if (event.isDefaultPrevented()) return;
@@ -46,7 +49,6 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor) {
       if (event.isDefaultPrevented()) return;
       event.preventDefault();
 
-      const parentPath = Path.parent(slate.selection.anchor.path);
       const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
       const isEnd = Editor.isEnd(slate, slate.selection.anchor, parentPath);
 
@@ -78,8 +80,6 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor) {
         if (prevSlate) {
           focusAt = getLastNodePoint(prevSlate, parentPath);
         }
-
-        console.log({ focusAt });
 
         // If current block is empty just delete block
         if (text.trim().length === 0) {
@@ -166,6 +166,10 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor) {
       if (event.isDefaultPrevented()) return;
       const parentPath = Path.parent(slate.selection.anchor.path);
       const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
+
+      console.log('isStart', isStart);
+      console.log('parentPath', parentPath);
+      console.log('slate.children', slate.children);
 
       if (isStart) {
         const prevPath: YooptaBlockPath | null = editor.selection ? [editor.selection[0] - 1] : null;

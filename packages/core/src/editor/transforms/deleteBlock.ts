@@ -64,8 +64,8 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
 
   const pluginToDeleteId = pluginKeys.find((id) => editor.children[id].meta.order === position);
 
-  pluginKeys.forEach((pluginId) => {
-    const plugin = editor.children[pluginId];
+  pluginKeys.forEach((blockId) => {
+    const plugin = editor.children[blockId];
     if (plugin.meta.order > position) plugin.meta.order -= 1;
   });
 

@@ -1,17 +1,18 @@
 import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
 import { CSSProperties, useState } from 'react';
-import { ImageEmbedUploader } from './ImageEmbedUploader';
-import { ImageFileUploader } from './ImageFileUploader';
+import { EmbedUploader } from './EmbedUploader';
+import { FileUploader } from './FileUploader';
 
 type Props = {
   floatingStyles: CSSProperties;
   refs: any;
+  blockId: string;
   onClose: () => void;
 };
 
 type Tab = 'upload' | 'embed';
 
-const ImageUploader = ({ floatingStyles, refs, onClose }: Props) => {
+const ImageUploader = ({ floatingStyles, refs, onClose, blockId }: Props) => {
   const [activeTab, setActiveTab] = useState<Tab>('upload');
 
   const switchTab = (tab: Tab) => setActiveTab(tab);
@@ -22,10 +23,6 @@ const ImageUploader = ({ floatingStyles, refs, onClose }: Props) => {
   const getTabStyles = (isActive) => ({
     borderBottom: isActive ? '2px solid #2483e2' : '2px solid transparent',
   });
-
-  const onEmbedLink = (link) => {
-    console.log('link', link);
-  };
 
   return (
     <FloatingPortal root={document.getElementById('yoopta-editor')}>
@@ -53,8 +50,8 @@ const ImageUploader = ({ floatingStyles, refs, onClose }: Props) => {
               </button>
             </div>
             <div className="pt-[6px] pb-[6px] mt-[4px] flex justify-center mr-[12px] ml-[12px]">
-              {isEmbed && <ImageEmbedUploader onEmbedLink={onEmbedLink} />}
-              {isUploader && <ImageFileUploader />}
+              {isEmbed && <EmbedUploader onClose={onClose} blockId={blockId} />}
+              {isUploader && <FileUploader onClose={onClose} blockId={blockId} />}
             </div>
           </div>
         </div>

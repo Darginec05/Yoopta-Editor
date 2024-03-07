@@ -1,6 +1,5 @@
 import { createDraft, finishDraft } from 'immer';
 import { Editor, Element, Range, Transforms } from 'slate';
-import { getDefaultParagraphBlock } from '../../components/Editor/defaultValue';
 import { PluginElement, PluginElementProps } from '../../plugins/types';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
@@ -70,25 +69,25 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
 
   const selectedBlock = editor.blocks[type];
 
-  console.log('selectedBlock.withCustomEditor', selectedBlock.withCustomEditor);
+  // console.log('selectedBlock.withCustomEditor', selectedBlock.withCustomEditor);
 
-  if (selectedBlock.withCustomEditor) {
-    if (options?.deleteText) Transforms.delete(slate, { at: [0, 0] });
+  // if (selectedBlock.withCustomEditor) {
+  //   if (options?.deleteText) Transforms.delete(slate, { at: [0, 0] });
 
-    currentBlock.type = selectedBlock.type;
-    currentBlock.value = slate.children;
+  //   currentBlock.type = selectedBlock.type;
+  //   currentBlock.value = slate.children;
 
-    const currentBlockId = currentBlock!.id;
+  //   const currentBlockId = currentBlock!.id;
 
-    editor.children = finishDraft(editor.children);
-    editor.applyChanges();
+  //   editor.children = finishDraft(editor.children);
+  //   editor.applyChanges();
 
-    if (options?.focus) {
-      editor.focusBlock(currentBlockId, { slate });
-    }
+  //   if (options?.focus) {
+  //     editor.focusBlock(currentBlockId, { slate });
+  //   }
 
-    return;
-  }
+  //   return;
+  // }
 
   const blockSlateElements = Object.entries(selectedBlock.elements);
   const rootElementFromBlock =
