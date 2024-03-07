@@ -9,9 +9,35 @@ type Props = {
   selectedAction: string;
   onClose: () => void;
   empty: boolean;
+  mode?: 'toggle' | 'create';
 };
 
-const ActionMenuComponent = ({ actions, editor, onMouseEnter, selectedAction, onClose, empty }: Props) => {
+const ActionMenuComponent = ({
+  actions: actionsProps,
+  editor,
+  onMouseEnter,
+  selectedAction,
+  onClose,
+  empty,
+  mode = 'create',
+}: Props) => {
+  const getActions = () => {
+    if (mode === 'toggle') {
+      return actionsProps.filter((type) => {
+        const block = editor.blocks[type];
+        if (!block) return false;
+
+        const rootBlock = getRootBlockElement(block.elements);
+        if (rootBlock?.props?.nodeType === 'void') return false;
+        return true;
+      });
+    }
+
+    return actionsProps;
+  };
+
+  const actions = getActions();
+
   return (
     <div className="bg-white z-50 h-auto max-h-[330px] max-w-[250px] w-72 overflow-y-auto rounded-md border border-muted bg-background px-1 py-2 transition-all shadow-md">
       <div className="max-h-[300px] overflow-y-auto overflow-x-hidden">

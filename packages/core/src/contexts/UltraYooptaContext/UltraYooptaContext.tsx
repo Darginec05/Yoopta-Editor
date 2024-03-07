@@ -1,7 +1,8 @@
 import { createContext, useContext, useRef } from 'react';
 import { Editor } from 'slate';
-import { YooEditor } from '../../editor/types';
+import { YooEditor, YooptaBlockPath } from '../../editor/types';
 import { PluginOptions } from '../../plugins/types';
+import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 
 export type UltraYooptaContextPluginsEditorMap = Record<string, Editor>;
 
@@ -53,13 +54,39 @@ const UltraYooptaContextProvider = ({ children, editorState }) => {
 };
 
 const useYooptaEditor = (): YooEditor => {
-  const editor = useContext(UltraYooptaContext).editor;
-  return editor;
+  const context = useContext(UltraYooptaContext);
+
+  if (!context) {
+    throw new Error('useYooptaEditor must be used within a YooptaEditorContext');
+  }
+
+  return context.editor;
 };
 const useBlockData = (id: string) => useYooptaEditor().children[id];
 const useYooptaBlock = (type: string) => useYooptaEditor().blocks[type];
 const useYooptaPlugin = (type: string) => useYooptaEditor().plugins[type];
 const useYooptaPluginOptions = <TOptions,>(type: string): PluginOptions<TOptions> => useYooptaPlugin(type).options;
+
+type UseBlockSelectedProps = { blockId: string; path?: YooptaBlockPath } | { path: YooptaBlockPath; blockId?: string };
+const useBlockSelected = ({ blockId, path }: UseBlockSelectedProps) => {
+  const editor = useYooptaEditor();
+
+  if (!blockId && !path) {
+    throw new Error('useBlockSelected must receive either blockId or path');
+  }
+
+  let block;
+
+  if (blockId) {
+    block = editor.children[blockId];
+  }
+
+  if (path) {
+    block = findPluginBlockBySelectionPath(editor, { at: path });
+  }
+
+  return editor.selection?.[0] === block?.meta.order;
+};
 
 export {
   useYooptaEditor,
@@ -67,5 +94,6 @@ export {
   useYooptaPlugin,
   useYooptaPluginOptions,
   useYooptaBlock,
+  useBlockSelected,
   UltraYooptaContextProvider,
 };

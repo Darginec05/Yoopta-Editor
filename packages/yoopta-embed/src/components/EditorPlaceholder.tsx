@@ -2,9 +2,8 @@ import { ReactEditor } from 'slate-react';
 import UploadIcon from './icons/upload.svg';
 import { MouseEvent, useRef, useState } from 'react';
 import { EditorUploader } from './EditorUploader';
-import { Editor, Element, Transforms } from 'slate';
+import { Element, Transforms } from 'slate';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import s from './EditorPlaceholder.module.scss';
 import { RenderYooptaElementProps, YooEditor } from '@yoopta/editor';
 import { EmbedElement } from '../types';
 import {
@@ -15,6 +14,7 @@ import {
   getVimeoId,
   getYoutubeId,
 } from '../utils/parsers';
+import s from './EditorPlaceholder.module.scss';
 
 type Props = RenderYooptaElementProps<EmbedElement> & {
   editor: YooEditor;

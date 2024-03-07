@@ -1,5 +1,5 @@
 import { useYooptaEditor, useYooptaPluginOptions } from '@yoopta/editor';
-import { ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';
+import { VideoElementProps, VideoPluginElements, VideoPluginOptions } from '../types';
 
 type Props = {
   onClose: () => void;
@@ -8,8 +8,8 @@ type Props = {
   onSetLoading: (_s: boolean) => void;
 };
 
-const FileUploader = ({ accept = 'image/*', onClose, blockId, onSetLoading }: Props) => {
-  const options = useYooptaPluginOptions<ImagePluginOptions>('Image');
+const FileUploader = ({ accept = 'video/*', onClose, blockId, onSetLoading }: Props) => {
+  const options = useYooptaPluginOptions<VideoPluginOptions>('Video');
   const editor = useYooptaEditor();
 
   const upload = async (file: File) => {
@@ -23,7 +23,7 @@ const FileUploader = ({ accept = 'image/*', onClose, blockId, onSetLoading }: Pr
     try {
       const data = await options?.onUpload(file);
 
-      editor.blocks.Image.updateElement<ImagePluginElements, ImageElementProps>(blockId, 'image', {
+      editor.blocks.Video.updateElement<VideoPluginElements, VideoElementProps>(blockId, 'video', {
         src: data.src,
         alt: data.alt,
         sizes: data.sizes,
@@ -44,18 +44,18 @@ const FileUploader = ({ accept = 'image/*', onClose, blockId, onSetLoading }: Pr
   return (
     <div className="user-select-none transition-bg duration-20 ease-in white-space-nowrap rounded-[4px] h-[32px] px-[12px] border border-[rgba(55,53,47,0.16)] w-full cursor-pointer">
       <label
-        htmlFor="image-uploader"
+        htmlFor="video-uploader"
         className="text-[14px] leading-[1.2] font-medium cursor-pointer w-full flex items-center justify-center h-full"
       >
         <input
           type="file"
-          id="image-uploader"
+          id="video-uploader"
           className="absolute left-0 top-0 invisible"
           accept={options?.accept || accept}
           onChange={onChange}
           multiple={false}
         />
-        Upload image
+        Upload video
       </label>
     </div>
   );

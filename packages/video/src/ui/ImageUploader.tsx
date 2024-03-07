@@ -13,7 +13,7 @@ type Props = {
 
 type Tab = 'upload' | 'embed';
 
-const ImageUploader = ({ floatingStyles, refs, onClose, blockId, onSetLoading }: Props) => {
+const VideoUploader = ({ floatingStyles, refs, onClose, blockId, onSetLoading }: Props) => {
   const [activeTab, setActiveTab] = useState<Tab>('upload');
 
   const switchTab = (tab: Tab) => setActiveTab(tab);
@@ -47,7 +47,7 @@ const ImageUploader = ({ floatingStyles, refs, onClose, blockId, onSetLoading }:
                   'py-[6px] whitespace-nowrap min-w-0 flex-shrink-0 text-[rgb(55,53,47)] relative cursor-pointer user-select-none bg-inherit transition-[height_20ms_ease-in] inline-flex items-center h-full text-[14px] leading-[1.2] px-[8px]'
                 }
               >
-                Image link
+                Video link
               </button>
             </div>
             <div className="pt-[6px] pb-[6px] mt-[4px] flex justify-center mr-[12px] ml-[12px]">
@@ -61,4 +61,4 @@ const ImageUploader = ({ floatingStyles, refs, onClose, blockId, onSetLoading }:
   );
 };
 
-export { ImageUploader };
+export { VideoUploader };

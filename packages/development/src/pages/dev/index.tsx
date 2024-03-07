@@ -32,7 +32,7 @@ const plugins = [
       return {
         src: data.secure_url,
         alt: 'cloudinary',
-        bgColor: 'rgb(176, 171, 250)',
+        // bgColor: 'rgb(176, 171, 250)',
         sizes: {
           width: data.width,
           height: data.height,

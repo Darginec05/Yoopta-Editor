@@ -8,11 +8,14 @@ import { CustomEditorProps, ExtendedLeafProps, PluginParams } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
 import { useTools } from '../contexts/UltraYooptaContext/ToolsContext';
+import { Editor, Element, NodeEntry, Path, Range } from 'slate';
+import { TextLeaf } from '../components/TextLeaf/TextLeaf';
 
 type Props<TKeys extends string, TProps, TOptions> = PluginParams<TKeys, TProps, TOptions> & {
   id: string;
   marks?: YooptaMark<any>[];
   options: PluginParams<TKeys, TProps, TOptions>['options'];
+  placeholder?: string;
 };
 
 const getMappedElements = (elements) => {
@@ -36,6 +39,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   marks,
   events,
   options,
+  placeholder = `Type '/' for commands`,
 }: Props<TKeys, TProps, TOptions>) => {
   const editor = useYooptaEditor();
   const block = useBlockData(id);
@@ -62,11 +66,14 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
         slateEditor.markableVoid = (element) => element.type === elementType;
       }
 
-      if (isVoid || isInlineVoid) slateEditor.isVoid = (element) => element.type === elementType;
+      if (isVoid || isInlineVoid) {
+        slateEditor.isVoid = (element) => element.type === elementType;
+      }
       if (isInline || isInlineVoid) {
         slateEditor.isInline = (element) => element.type === elementType;
 
         // [TODO] - as test
+        // [TODO] - should extend all slate editors for every block
         slateEditor = withInlines(slateEditor);
       }
     });
@@ -105,6 +112,8 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     let { children, leaf, attributes } = props;
     const { text, ...formats } = leaf;
 
+    const isBlockSelected = editor.selection?.[0] === block.meta.order;
+
     if (formats) {
       Object.keys(formats).forEach((format) => {
         const mark = MARKS_MAP[format];
@@ -112,7 +121,14 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       });
     }
 
-    return <span {...attributes}>{children}</span>;
+    const isParentElementVoid = props.children?.props?.parent?.props?.nodeType === 'void';
+    const showPlaceholder = !isParentElementVoid && isBlockSelected && leaf.withPlaceholder;
+
+    return (
+      <TextLeaf attributes={attributes} placeholder={showPlaceholder ? placeholder : undefined}>
+        {children}
+      </TextLeaf>
+    );
   };
 
   const onKeyDown = (event: React.KeyboardEvent) => {
@@ -156,6 +172,28 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     eventHandlers?.onFocus?.(event);
   };
 
+  const decorate = (nodeEntry: NodeEntry) => {
+    const ranges = [] as NodeEntry[] & { withPlaceholder?: boolean }[];
+    const [node, path] = nodeEntry;
+    const isCurrent = editor.selection?.[0] === block.meta.order;
+
+    if (slate.selection && isCurrent) {
+      if (
+        !Editor.isEditor(node) &&
+        Editor.string(slate, [path[0]]) === '' &&
+        Range.includes(slate.selection, path) &&
+        Range.isCollapsed(slate.selection)
+      ) {
+        ranges.push({
+          ...slate.selection,
+          withPlaceholder: true,
+        });
+      }
+    }
+
+    return ranges;
+  };
+
   return (
     <div data-plugin-id={id} data-plugin-type={type}>
       <SlateEditorInstance
@@ -163,6 +201,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
         slate={slate}
         initialValue={initialValue}
         onChange={onChange}
+        decorate={decorate}
         renderLeaf={renderLeaf}
         renderElement={renderElement}
         eventHandlers={eventHandlers}
@@ -172,7 +211,6 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
         onMouseDown={onMouseDown}
         onBlur={onBlur}
         customEditor={customEditor}
-        isCurrent={editor.selection?.[0] === block.meta.order}
       />
     </div>
   );
@@ -182,7 +220,6 @@ type SlateEditorInstanceProps = {
   id: string;
   slate: any;
   initialValue: any;
-  isCurrent?: boolean;
   onChange: (value: any) => void;
   renderLeaf: (props: ExtendedLeafProps<any, any>) => JSX.Element;
   renderElement: (props: RenderElementProps) => JSX.Element;
@@ -193,6 +230,7 @@ type SlateEditorInstanceProps = {
   onMouseDown: (event: React.MouseEvent) => void;
   onBlur: (event: React.FocusEvent) => void;
   customEditor?: (props: CustomEditorProps) => JSX.Element;
+  decorate: (nodeEntry: NodeEntry) => any[];
 };
 
 const SlateEditorInstance = memo<SlateEditorInstanceProps>(
@@ -210,11 +248,12 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     onMouseDown,
     onBlur,
     customEditor,
-    isCurrent,
+    decorate,
   }) => {
     if (typeof customEditor === 'function') {
       return customEditor({
         id,
+        type: '',
         editor: slate,
       });
     }
@@ -222,7 +261,6 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     return (
       <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onChange={onChange}>
         <Editable
-          placeholder={isCurrent ? `Type '/' for commands` : undefined}
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           className="focus-visible:outline-none focus:outline-none"
@@ -233,6 +271,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
           onFocus={onFocus}
           onMouseDown={onMouseDown}
           key={`editable-${id}`}
+          decorate={decorate}
           // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
           onBlur={onBlur}
         />

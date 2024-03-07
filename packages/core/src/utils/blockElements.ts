@@ -1,6 +1,7 @@
 import { Editor, Element, NodeEntry, Path } from 'slate';
 import { SlateElement } from '../editor/types';
-import { PluginElement, PluginElementsMap } from '../plugins/types';
+import { PluginElement, PluginElementProps, PluginElementsMap } from '../plugins/types';
+import { generateId } from './generateId';
 
 export function getRootBlockElement(
   elems: PluginElementsMap<string, unknown> | undefined,
@@ -11,6 +12,11 @@ export function getRootBlockElement(
   const rootElement = elements.length === 1 ? elements[0] : elements.find((el) => el.asRoot);
 
   return rootElement;
+}
+
+export function isRootElementVoid(elems: PluginElementsMap<string, unknown> | undefined): boolean {
+  const rootElement = getRootBlockElement(elems);
+  return rootElement?.props?.nodeType === 'void';
 }
 
 export function getBlockElementNode(slate): NodeEntry<SlateElement> | undefined {
@@ -26,4 +32,11 @@ export function getBlockElementNode(slate): NodeEntry<SlateElement> | undefined 
     const [nodeEntry] = nodes;
     return nodeEntry as NodeEntry<SlateElement>;
   }
+}
+
+export function buildSlateNodeElement(
+  type: string,
+  props: PluginElementProps<unknown> = { nodeType: 'block' },
+): SlateElement<any> {
+  return { id: generateId(), type, children: [{ text: '' }], props: props };
 }

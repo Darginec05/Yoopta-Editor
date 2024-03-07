@@ -124,6 +124,7 @@ const BlockOptions = ({ isOpen, onClose, refs, floatingStyles, children }) => {
                             onClose={() => setIsActionMenuOpen(false)}
                             empty={false}
                             onMouseEnter={() => undefined}
+                            mode="toggle"
                           />
                         </div>
                       </FloatingOverlay>
