@@ -1,14 +1,8 @@
 import { YooptaPlugin } from '@yoopta/editor';
+import { MentionElementProps, PluginElementKeys } from '../types';
 import { MentionRender } from '../ui/MentionRender';
 
-type Mention = {
-  url: string | null;
-  target?: string;
-  rel?: string;
-  character: string | null;
-};
-
-const Mention = new YooptaPlugin<Mention>({
+const Mention = new YooptaPlugin<PluginElementKeys, MentionElementProps>({
   type: 'MentionPlugin',
   elements: {
     mention: {

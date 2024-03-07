@@ -29,6 +29,7 @@ const DEFAULT_HANDLERS: YooptaEditorContext = {
     blur: () => undefined,
     blocks: {},
     shortcuts: {},
+    plugins: {},
     formats: {},
     selection: null,
     blockEditorsMap: {},

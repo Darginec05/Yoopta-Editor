@@ -6,7 +6,7 @@ import { YooEditor, YooptaBaseElement, EmptyText } from './types';
 declare module 'slate' {
   interface CustomTypes {
     Editor: ReactEditor & BaseEditor;
-    Element: SlateElement;
+    Element: SlateElement<string>;
     Text: EmptyText;
   }
 }

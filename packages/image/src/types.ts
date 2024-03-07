@@ -3,14 +3,13 @@ import { type SlateElement } from '@yoopta/editor';
 export type ImageSizes = {
   width: number;
   height: number;
-  maxWidth?: number;
-  maxHeight?: number;
 };
 
 export type ImageElementProps = {
   src?: string | null;
   alt?: string | null;
   srcSet?: string | null;
+  bgColor?: string | null;
   fit?: 'contain' | 'cover' | 'fill' | null;
   sizes?: ImageSizes;
 };
@@ -18,10 +17,19 @@ export type ImageElementProps = {
 export type ImagePluginElements = 'image';
 export type ImageElement = SlateElement<'image', ImageElementProps>;
 
-type onUploadResponse = Omit<ImageElementProps, 'fit' | 'srcSet'>;
+export type onUploadResponse = Omit<ImageElementProps, 'fit' | 'srcSet'>;
+
+export type ImageOptimizationFields = {
+  deviceSizes?: number[];
+  provider?: 'imgix' | 'cloudinary' | 'akamai';
+};
 
 export type ImagePluginOptions = {
   onUpload: (file: File) => Promise<onUploadResponse>;
   accept?: string;
-  deviceSizes?: number[];
+  optimizations?: ImageOptimizationFields;
+  maxSizes?: {
+    maxWidth?: number;
+    maxHeight?: number;
+  };
 };

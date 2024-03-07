@@ -19,10 +19,20 @@ const plugins = [
   Image.extend({
     deviceSizes: [768, 1024, 1200],
     onUpload: async (file: File) => {
+      // return {
+      //   src: 'https://res.cloudinary.com/ench-app/image/upload/v1709585773/GHuDjvNWkAAD5aU_rxrzfn.jpg',
+      //   alt: 'cloudinary',
+      //   sizes: {
+      //     width: 1200,
+      //     height: 800,
+      //   },
+      // };
+
       const data = await uploadToCloudinary(file);
       return {
         src: data.secure_url,
         alt: 'cloudinary',
+        bgColor: 'rgb(176, 171, 250)',
         sizes: {
           width: data.width,
           height: data.height,

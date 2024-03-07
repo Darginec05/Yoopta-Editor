@@ -40,7 +40,7 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
     floatingStyles,
     update: updateActionMenuPosition,
   } = useFloating({
-    placement: 'top-start',
+    placement: 'bottom-start',
     open: isMenuOpen,
     onOpenChange: setIsMenuOpen,
     middleware: [inline(), flip(), shift(), offset(10)],

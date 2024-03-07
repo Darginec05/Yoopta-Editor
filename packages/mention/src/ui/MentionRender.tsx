@@ -1,7 +1,8 @@
-import { RenderElementProps, useSelected } from 'slate-react';
+import { PluginElementRenderProps } from '@yoopta/editor';
+import { useSelected } from 'slate-react';
 
-const MentionRender = (props: RenderElementProps) => {
-  const { url, target, rel, character } = props.element.props;
+const MentionRender = (props: PluginElementRenderProps<unknown>) => {
+  const { url, target, rel, character } = props.element.props || {};
   const selected = useSelected();
 
   const handleClick = (e) => {
@@ -13,7 +14,7 @@ const MentionRender = (props: RenderElementProps) => {
   return (
     <a
       draggable={false}
-      href={url}
+      href={url || ''}
       rel={rel}
       target={target}
       onClick={handleClick}

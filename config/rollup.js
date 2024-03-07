@@ -39,7 +39,6 @@ function getPlugins({ tailwindConfig }) {
       plugins: [
         postcssNesting(),
         tailwindcss({
-          content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
           theme: {
             extend: {},
           },
@@ -51,8 +50,7 @@ function getPlugins({ tailwindConfig }) {
     }),
     typescript({
       clean: true,
-      useTsconfigDeclarationDir: true,
-      // useTsconfigDeclarationDir: isProd,
+      useTsconfigDeclarationDir: isProd,
       abortOnError: false,
       tsconfig: `./tsconfig.json`,
 

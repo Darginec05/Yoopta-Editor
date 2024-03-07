@@ -1,5 +1,6 @@
 import { generateId } from '@yoopta/editor';
 import { Editor, Element, Path, Transforms } from 'slate';
+import { ListItemElement } from '../types';
 
 export function onKeyDown(editor, slate, { hotkeys }) {
   return (event) => {
@@ -58,11 +59,10 @@ export function onKeyDown(editor, slate, { hotkeys }) {
           console.log('listItemPath', listItemPath);
 
           // [TODO] - think about approach to create new nodes from elements
-          const newListItemNode = {
+          const newListItemNode: ListItemElement = {
             id: generateId(),
             type: 'list-item',
             children: [{ text: '' }],
-            data: { depth: 0 },
           };
 
           Transforms.insertNodes(slate, newListItemNode, { at: listItemPath });
@@ -74,11 +74,10 @@ export function onKeyDown(editor, slate, { hotkeys }) {
           console.log('Path.next(listItemPath)', Path.next(listItemPath));
 
           // [TODO] - think about approach to create new nodes from elements
-          const newListItemNode = {
+          const newListItemNode: ListItemElement = {
             id: generateId(),
             type: 'list-item',
             children: [{ text: '' }],
-            data: { depth: 0 },
           };
 
           Transforms.insertNodes(slate, newListItemNode, { at: Path.next(listItemPath) });

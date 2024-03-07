@@ -5,34 +5,42 @@ import { SlateElement, YooEditor } from '../types';
 
 export function updateBlockElement<TElementKeys extends string, TElementProps>(
   editor: YooEditor,
+  blockId: string,
   elementType: TElementKeys,
   elementProps: TElementProps,
 ) {
-  console.log('updateBlockElement ElementType', elementType);
-  console.log('updateBlockElement ElementProps', elementProps);
+  const block = editor.children[blockId];
 
-  const slate = findSlateBySelectionPath(editor);
+  if (!block) {
+    throw new Error(`Block with id ${blockId} not found`);
+  }
+
+  const slate = findSlateBySelectionPath(editor, { at: [block.meta.order] });
 
   if (!slate) {
     console.warn('No slate found');
     return;
   }
+  console.log('slate children', slate.children);
 
   Editor.withoutNormalizing(slate, () => {
-    Transforms.setNodes<SlateElement<TElementKeys, TElementProps>>(
-      slate,
-      {
-        // check if element has props
-        props: elementProps,
-      },
-      {
-        at: [0],
-        match: (n) => {
-          return Element.isElement(n) && n.type === elementType;
-        },
-        mode: 'lowest',
-      },
-    );
+    const [elementEntry] = Editor.nodes<SlateElement>(slate, {
+      at: [0],
+      match: (n) => Element.isElement(n) && n.type === elementType,
+    });
+
+    console.log('elementEntry', elementEntry);
+
+    const element = elementEntry?.[0];
+
+    const props = element?.props || {};
+    const updateNode = { props: { ...props, ...elementProps } };
+
+    Transforms.setNodes<SlateElement>(slate, updateNode, {
+      at: [0],
+      match: (n) => Element.isElement(n) && n.type === elementType,
+      mode: 'lowest',
+    });
 
     editor.applyChanges();
   });

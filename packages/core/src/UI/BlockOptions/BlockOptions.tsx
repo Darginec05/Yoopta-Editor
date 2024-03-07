@@ -34,7 +34,15 @@ const BlockOptionsMenuItem = ({ children }) => (
   </div>
 );
 
-const BlockOptions = ({ isOpen, onClose, refs, floatingStyles }) => {
+type BlockOptionsSeparatorProps = {
+  className?: string;
+};
+
+const BlockOptionsSeparator = ({ className }: BlockOptionsSeparatorProps) => (
+  <div className={`h-[1px] bg-[#37352f14] my-[4px] w-full ${className}`} />
+);
+
+const BlockOptions = ({ isOpen, onClose, refs, floatingStyles, children }) => {
   const editor = useYooptaEditor();
   const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
   const { refs: actionMenuRefs, floatingStyles: actionMenuFloatingStyles } = useFloating({
@@ -143,6 +151,7 @@ const BlockOptions = ({ isOpen, onClose, refs, floatingStyles }) => {
                 </button>
               </BlockOptionsMenuItem>
             </BlockOptionsMenuGroup>
+            {children}
           </BlockOptionsMenuContent>
         </div>
       </FloatingOverlay>
@@ -150,4 +159,4 @@ const BlockOptions = ({ isOpen, onClose, refs, floatingStyles }) => {
   );
 };
 
-export { BlockOptions, BlockOptionsMenuContent, BlockOptionsMenuGroup, BlockOptionsMenuItem };
+export { BlockOptions, BlockOptionsMenuContent, BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptionsSeparator };

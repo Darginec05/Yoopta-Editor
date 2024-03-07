@@ -5,7 +5,7 @@ import { useRef, useState } from 'react';
 import { BlockActions } from './BlockActions';
 import s from './Block.module.scss';
 
-const Block = ({ children, plugin, pluginId }) => {
+const Block = ({ children, plugin, blockId }) => {
   const editor = useYooptaEditor();
   const block = plugin;
 
@@ -21,7 +21,7 @@ const Block = ({ children, plugin, pluginId }) => {
     over,
     isOver,
     isDragging,
-  } = useSortable({ id: pluginId });
+  } = useSortable({ id: blockId });
 
   const style = {
     transform: CSS.Translate.toString(transform),
@@ -33,11 +33,11 @@ const Block = ({ children, plugin, pluginId }) => {
   };
 
   const isSelected = editor.selectedBlocks?.includes(block.meta.order);
-  const isHovered = activeBlockId === pluginId;
+  const isHovered = activeBlockId === blockId;
 
   const onChangeActiveBlock = (id: string) => setActiveBlockId(id);
 
-  const handleMouseEnter = () => onChangeActiveBlock(pluginId);
+  const handleMouseEnter = () => onChangeActiveBlock(blockId);
   const handleMouseLeave = () => setActiveBlockId(null);
 
   return (
@@ -45,7 +45,7 @@ const Block = ({ children, plugin, pluginId }) => {
       className="relative py-0 px-[2px] mt-[2px] mb-[1px] rounded yoopta-block-wrapper"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      data-yoopta-block-id={pluginId}
+      data-yoopta-block-id={blockId}
       style={style}
       data-yoopta-block
       ref={setNodeRef}
