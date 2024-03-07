@@ -1,34 +1,34 @@
 import { UI, YooEditor, YooptaBlockData } from '@yoopta/editor';
 import { RowSpacingIcon, SizeIcon, WidthIcon, DownloadIcon, TextIcon } from '@radix-ui/react-icons';
-import { ImageElementProps, ImagePluginElements } from '../types';
+import { VideoElementProps, VideoPluginElements } from '../types';
 
 const { ExtendedBlockActions, BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptionsSeparator } = UI;
 
 type Props = {
   editor: YooEditor;
   block: YooptaBlockData;
-  props?: ImageElementProps;
+  props?: VideoElementProps;
 };
 
-const ImageBlockOptions = ({ editor, block, props: imageProps }: Props) => {
+const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
   const onCover = () => {
-    editor.blocks.Image.updateElement<ImagePluginElements, ImageElementProps>(block.id, 'image', { fit: 'cover' });
+    editor.blocks.Video.updateElement<VideoPluginElements, VideoElementProps>(block.id, 'video', { fit: 'cover' });
   };
 
   const onFit = () => {
-    editor.blocks.Image.updateElement<ImagePluginElements, ImageElementProps>(block.id, 'image', { fit: 'contain' });
+    editor.blocks.Video.updateElement<VideoPluginElements, VideoElementProps>(block.id, 'video', { fit: 'contain' });
   };
 
   const onFill = () => {
-    editor.blocks.Image.updateElement<ImagePluginElements, ImageElementProps>(block.id, 'image', { fit: 'fill' });
+    editor.blocks.Video.updateElement<VideoPluginElements, VideoElementProps>(block.id, 'video', { fit: 'fill' });
   };
 
   const onDownload = () => {
-    if (!imageProps || !imageProps.src) return;
+    if (!videoProps || !videoProps.src) return;
 
     const link = document.createElement('a');
-    link.href = imageProps.src;
-    link.download = imageProps.alt || imageProps.src;
+    link.href = videoProps.src;
+    link.download = videoProps.alt || videoProps.src;
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
     document.body.appendChild(link);
@@ -101,4 +101,4 @@ const ImageBlockOptions = ({ editor, block, props: imageProps }: Props) => {
   );
 };
 
-export { ImageBlockOptions };
+export { VideoBlockOptions };

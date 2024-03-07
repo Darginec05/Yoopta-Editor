@@ -14,10 +14,9 @@ const DEFAULT_EDITOR_KEYS = [];
 type Props = {
   editor: YooEditor;
   marks?: YooptaMark<any>[];
-  plugins: PluginReturn<string, unknown>[];
 };
 
-const RenderBlocks = ({ editor, plugins, marks }: Props) => {
+const RenderBlocks = ({ editor, marks }: Props) => {
   const { sensors, handleDragEnd, handleDragStart } = useYooptaDragDrop({ editor });
   const childrenUnorderedKeys = Object.keys(editor.children);
   const childrenKeys = useMemo(() => {

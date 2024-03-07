@@ -9,3 +9,17 @@
 ::selection {
   background: #c6ddf8;
 }
+
+.yoopta-placeholder::after {
+  content: attr(data-placeholder);
+  color: #aaa;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  user-select: none;
+  text-indent: 2px;
+  font-size: 75%;
+  padding-left: 5px;
+  font-weight: inherit;
+  font-style: inherit;
+}

@@ -85,6 +85,7 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
                   onClose={() => setIsActionMenuOpen(false)}
                   empty={false}
                   onMouseEnter={() => undefined}
+                  mode="toggle"
                 />
               </div>
             </FloatingOverlay>

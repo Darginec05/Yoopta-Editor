@@ -1,7 +1,7 @@
 import { useFloating, inline, flip, shift, offset } from '@floating-ui/react';
-import { ImageIcon } from '@radix-ui/react-icons';
+import { VideoIcon } from '@radix-ui/react-icons';
 import { CSSProperties, useState } from 'react';
-import { ImageUploader } from './ImageUploader';
+import { VideoUploader } from './VideoUploader';
 import { Loader } from './Loader';
 
 const Placeholder = ({ attributes, children, blockId }) => {
@@ -33,13 +33,13 @@ const Placeholder = ({ attributes, children, blockId }) => {
         {loading ? (
           <Loader className="mr-2 user-select-none" width={24} height={24} />
         ) : (
-          <ImageIcon className="mr-2 user-select-none" width={24} height={24} />
+          <VideoIcon className="mr-2 user-select-none" width={24} height={24} />
         )}
-        <span className="font-medium">{loading ? 'Loading...' : 'Click to add image'}</span>
+        <span className="font-medium">{loading ? 'Loading...' : 'Click to add video'}</span>
         {loading && <div className="absolute top-0 left-0 h-full bg-[rgba(55,53,47,0.16)]" style={loadingStyles} />}
       </button>
       {isUploaderOpen && (
-        <ImageUploader
+        <VideoUploader
           blockId={blockId}
           floatingStyles={floatingStyles}
           refs={refs}

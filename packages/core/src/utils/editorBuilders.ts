@@ -114,13 +114,14 @@ export function buildPlugins(
   plugins: PluginReturn<string, PluginElement<unknown>>[],
 ): Record<string, PluginReturn<string, unknown>> {
   const pluginsMap = {};
-  const inlineTopLevelPlugins: PluginElementsMap<string> = {};
+  const inlineTopLevelPlugins: PluginElementsMap<string, any> = {};
 
   plugins.forEach((plugin) => {
     if (plugin.elements) {
       Object.keys(plugin.elements).forEach((type) => {
         const element = plugin.elements[type];
         const nodeType = element.props?.nodeType;
+
         if (nodeType === 'inline' || nodeType === 'inlineVoid') {
           inlineTopLevelPlugins[type] = element;
         }

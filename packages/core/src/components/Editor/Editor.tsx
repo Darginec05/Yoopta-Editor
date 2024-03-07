@@ -292,7 +292,7 @@ const Editor = ({ plugins, marks, className, autoFocus = true, selectionBoxRoot 
       onBlur={onBlur}
       // onKeyDown={onKeyDown}
     >
-      <RenderBlocks editor={editor} plugins={plugins} marks={marks} />
+      <RenderBlocks editor={editor} marks={marks} />
       <SelectionBox origin={selectionBox.origin} coords={selectionBox.coords} isOpen={selectionBox.selection} />
     </div>
   );

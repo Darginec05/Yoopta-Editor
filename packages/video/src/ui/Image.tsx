@@ -1,4 +1,4 @@
-import { ImageComponent } from './ImageComponent';
+import { VideoComponent } from './VideoComponent';
 import {
   useBlockData,
   PluginElementRenderProps,
@@ -9,15 +9,15 @@ import {
 import { Resizable, ResizableProps } from 're-resizable';
 import { useMemo, useState } from 'react';
 import { Placeholder } from './Placeholder';
-import { ImagePluginOptions } from '../types';
-import { ImageBlockOptions } from './ImageBlockOptions';
+import { VideoPluginOptions } from '../types';
+import { VideoBlockOptions } from './VideoBlockOptions';
 import { Resizer } from './Resizer';
 
-const ImageRender = ({ element, attributes, children, blockId }: PluginElementRenderProps<ImagePluginOptions>) => {
+const VideoRender = ({ element, attributes, children, blockId }: PluginElementRenderProps<VideoPluginOptions>) => {
   const { src, alt, srcSet, bgColor, fit, sizes: propSizes } = element.props || {};
   const block = useBlockData(blockId);
   const editor = useYooptaEditor();
-  const pluginOptions = useYooptaPluginOptions<ImagePluginOptions>('Image');
+  const pluginOptions = useYooptaPluginOptions<VideoPluginOptions>('Video');
 
   const [sizes, setSizes] = useState({
     width: propSizes?.width || 750,
@@ -48,7 +48,7 @@ const ImageRender = ({ element, attributes, children, blockId }: PluginElementRe
         setSizes({ width: ref.offsetWidth, height: ref.offsetHeight });
       },
       onResizeStop: (e, direction, ref) => {
-        editor.blocks.Image.updateElement(blockId, 'image', {
+        editor.blocks.Video.updateElement(blockId, 'video', {
           sizes: { width: ref.offsetWidth, height: ref.offsetHeight },
         });
       },
@@ -74,7 +74,7 @@ const ImageRender = ({ element, attributes, children, blockId }: PluginElementRe
         {blockSelected && (
           <div className="absolute pointer-events-none inset-0 bg-[rgba(35,131,226,0.14)] z-[81] rounded-[3px] opacity-100 transition-opacity duration-150 ease-in" />
         )}
-        <ImageComponent
+        <VideoComponent
           src={src}
           alt={alt}
           srcSet={srcSet}
@@ -83,11 +83,11 @@ const ImageRender = ({ element, attributes, children, blockId }: PluginElementRe
           bgColor={bgColor}
           height={sizes?.height}
         />
-        <ImageBlockOptions block={block} editor={editor} props={element.props} />
+        <VideoBlockOptions block={block} editor={editor} props={element.props} />
         {children}
       </Resizable>
     </div>
   );
 };
 
-export { ImageRender };
+export { VideoRender };
