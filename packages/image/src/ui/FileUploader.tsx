@@ -23,6 +23,8 @@ const FileUploader = ({ accept = 'image/*', onClose, blockId, onSetLoading }: Pr
     try {
       const data = await options?.onUpload(file);
 
+      console.log('data', data);
+
       editor.blocks.Image.updateElement<ImagePluginElements, ImageElementProps>(blockId, 'image', {
         src: data.src,
         alt: data.alt,

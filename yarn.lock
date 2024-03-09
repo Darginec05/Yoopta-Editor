@@ -3368,6 +3368,14 @@
   resolved "https://registry.yarnpkg.com/@yoopta/paragraph/-/paragraph-2.0.1.tgz#c1838f34c6de736674561bfcc3f5108bb0dbf03c"
   integrity sha512-KlxgHhITQ8FWUvcYFW4MCyVLLoDLX4SMIYD50tWg92zBTghm8N5f4XEImPoEUSh+Nji0EYDfvjVLUNaDGrm34Q==
 
+"@yoopta/video@*":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/video/-/video-2.0.1.tgz#12dd3a3f8eb85572e9d2e285ae9fd709dd9f92c4"
+  integrity sha512-GW+zinKTXpIaJMXK3H4/YNNA+B1dIYyDqgBc6SU+xztNdsAG1csk3l9AGkasYK1nvWEaaa/Zndq6VQ9LSFXAZQ==
+  dependencies:
+    body-scroll-lock "^4.0.0-beta.0"
+    re-resizable "^6.9.9"
+
 "@zkochan/js-yaml@0.0.6":
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/@zkochan/js-yaml/-/js-yaml-0.0.6.tgz#975f0b306e705e28b8068a07737fa46d3fc04826"

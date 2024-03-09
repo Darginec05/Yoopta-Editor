@@ -1,4 +1,5 @@
 import { useYooptaEditor, useYooptaPluginOptions } from '@yoopta/editor';
+import { useEffect } from 'react';
 import { VideoElementProps, VideoPluginElements, VideoPluginOptions } from '../types';
 
 type Props = {
@@ -12,23 +13,23 @@ const FileUploader = ({ accept = 'video/*', onClose, blockId, onSetLoading }: Pr
   const options = useYooptaPluginOptions<VideoPluginOptions>('Video');
   const editor = useYooptaEditor();
 
+  useEffect(() => {}, []);
+
   const upload = async (file: File) => {
     if (!options?.onUpload) {
-      console.warn('onUpload not provided');
-      return;
+      throw new Error('onUpload not provided in plugin options. Check Video.extend({}) method');
     }
     onClose();
     onSetLoading(true);
 
     try {
+      // [TODO] - abort controller?
       const data = await options?.onUpload(file);
 
       editor.blocks.Video.updateElement<VideoPluginElements, VideoElementProps>(blockId, 'video', {
         src: data.src,
-        alt: data.alt,
         sizes: data.sizes,
         bgColor: data.bgColor,
-        fit: 'contain',
       });
     } catch (error) {
     } finally {

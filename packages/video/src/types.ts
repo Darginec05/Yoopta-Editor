@@ -5,13 +5,27 @@ export type VideoSizes = {
   height: number;
 };
 
+export type VideoElementSettings = {
+  controls?: boolean;
+  loop?: boolean;
+  muted?: boolean;
+  autoPlay?: boolean;
+};
+
+export type VideoProviderTypes = 'youtube' | 'vimeo' | 'dailymotion' | null;
+export type VideoProvider = {
+  type: VideoProviderTypes;
+  id: string;
+};
+
 export type VideoElementProps = {
   src?: string | null;
-  alt?: string | null;
   srcSet?: string | null;
   bgColor?: string | null;
-  fit?: 'contain' | 'cover' | 'fill' | null;
+  settings?: VideoElementSettings;
   sizes?: VideoSizes;
+  provider?: VideoProvider;
+  poster?: string;
 };
 
 export type VideoPluginElements = 'video';

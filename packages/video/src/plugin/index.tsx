@@ -10,20 +10,23 @@ const Video = new YooptaPlugin<VideoPluginElements, VideoElementProps, VideoPlug
       render: VideoRender,
       props: {
         src: null,
-        alt: null,
         srcSet: null,
         bgColor: null,
-        fit: 'contain',
         sizes: { width: 650, height: 400 },
         nodeType: 'void',
+        settings: {
+          controls: false,
+          loop: true,
+          muted: true,
+          autoPlay: true,
+        },
       },
     },
   },
   options: {
     displayLabel: 'Video',
-    onUpload: () => Promise.resolve({ src: null, alt: null }),
-    accept: 'video/png, video/jpeg, video/gif, video/webp',
-    maxSizes: { maxWidth: 850, maxHeight: 600 },
+    accept: 'video/*',
+    maxSizes: { maxWidth: 650, maxHeight: 550 },
     // optimizations: {
     //   deviceSizes: [320, 420, 768, 1024, 1200, 1600],
     // },

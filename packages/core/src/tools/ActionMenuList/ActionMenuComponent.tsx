@@ -45,7 +45,8 @@ const ActionMenuComponent = ({
           {empty && <div className="text-left text-muted-foreground text-xs px-1 py-1">No actions available</div>}
           {actions.map((type, i) => {
             // [TODO] - make action to array of objects
-            const block = editor.blocks[type];
+            const block = editor.plugins[type];
+
             if (!block) return null;
 
             return (

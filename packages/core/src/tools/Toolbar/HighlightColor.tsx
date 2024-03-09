@@ -1,6 +1,7 @@
 import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
 import { ChevronUpIcon } from '@radix-ui/react-icons';
-import { MouseEvent } from 'react';
+import { CSSProperties, MouseEvent } from 'react';
+import { YooEditor } from '../../editor/types';
 
 const colors = [
   ['Default', 'black'],
@@ -45,7 +46,15 @@ const itemStyles = {
   border: '1px solid #e3e3e3',
 };
 
-const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles }) => {
+type Props = {
+  editor: YooEditor;
+  highlightColors: CSSProperties;
+  onClose: () => void;
+  refs: { setFloating: (el: HTMLElement) => void };
+  floatingStyles: React.CSSProperties;
+};
+
+const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles }: Props) => {
   const getItemStyles = (type, color) => {
     if (highlightColors?.[type] === color) {
       return {
@@ -55,6 +64,16 @@ const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles
     }
 
     return { backgroundColor: color, ...itemStyles };
+  };
+
+  const updateColor = (type, color) => {
+    const value = editor.formats.highlight.getValue();
+    if (value?.[type] === color) {
+      editor.formats.highlight.update({ ...highlightColors, [type]: undefined });
+      return;
+    }
+
+    editor.formats.highlight.update({ ...highlightColors, [type]: color });
   };
 
   return (
@@ -74,7 +93,7 @@ const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles
                   type="button"
                   className="w-[25px] h-[25px] rounded-md mx-[2px] my-[5px] border-[#e3e3e3]"
                   style={getItemStyles('color', color)}
-                  onClick={() => editor.formats.highlight.update({ ...highlightColors, color })}
+                  onClick={() => updateColor('color', color)}
                 />
               ))}
             </div>
@@ -90,7 +109,7 @@ const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles
                   type="button"
                   className="w-[25px] h-[25px] rounded-md mx-[2px] my-[5px] border-[#e3e3e3]"
                   style={getItemStyles('backgroundColor', backgroundColor)}
-                  onClick={() => editor.formats.highlight.update({ ...highlightColors, backgroundColor })}
+                  onClick={() => updateColor('backgroundColor', backgroundColor)}
                 />
               ))}
             </div>
