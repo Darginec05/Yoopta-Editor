@@ -14,7 +14,7 @@ const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePlug
         srcSet: null,
         bgColor: null,
         fit: 'contain',
-        sizes: { width: 650, height: 400 },
+        sizes: { width: 650, height: 500 },
         nodeType: 'void',
       },
     },
@@ -23,7 +23,7 @@ const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePlug
     displayLabel: 'Image',
     onUpload: () => Promise.resolve({ src: null, alt: null }),
     accept: 'image/png, image/jpeg, image/gif, image/webp',
-    maxSizes: { maxWidth: 850, maxHeight: 600 },
+    maxSizes: { maxWidth: 650, maxHeight: 550 },
     // optimizations: {
     //   deviceSizes: [320, 420, 768, 1024, 1200, 1600],
     // },

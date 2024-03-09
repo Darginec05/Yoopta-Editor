@@ -36,7 +36,7 @@ const ImageBlockOptions = ({ editor, block, props: imageProps }: Props) => {
     document.body.removeChild(link);
   };
 
-  const onAlternativeText = () => {};
+  // const onAlternativeText = () => {};
 
   return (
     <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])}>
@@ -86,7 +86,7 @@ const ImageBlockOptions = ({ editor, block, props: imageProps }: Props) => {
             Download
           </button>
         </BlockOptionsMenuItem>
-        <BlockOptionsMenuItem>
+        {/* <BlockOptionsMenuItem>
           <button
             type="button"
             className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
@@ -95,7 +95,7 @@ const ImageBlockOptions = ({ editor, block, props: imageProps }: Props) => {
             <TextIcon width={16} height={16} className="w-4 h-4 mr-2" />
             Alt
           </button>
-        </BlockOptionsMenuItem>
+        </BlockOptionsMenuItem> */}
       </BlockOptionsMenuGroup>
     </ExtendedBlockActions>
   );

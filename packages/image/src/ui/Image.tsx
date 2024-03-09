@@ -7,7 +7,7 @@ import {
   useBlockSelected,
 } from '@yoopta/editor';
 import { Resizable, ResizableProps } from 're-resizable';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Placeholder } from './Placeholder';
 import { ImagePluginOptions } from '../types';
 import { ImageBlockOptions } from './ImageBlockOptions';
@@ -20,12 +20,20 @@ const ImageRender = ({ element, attributes, children, blockId }: PluginElementRe
   const pluginOptions = useYooptaPluginOptions<ImagePluginOptions>('Image');
 
   const [sizes, setSizes] = useState({
-    width: propSizes?.width || 750,
+    width: propSizes?.width || 650,
     height: propSizes?.height || 440,
   });
 
-  const blockSelected = useBlockSelected({ blockId });
+  useEffect(
+    () =>
+      setSizes({
+        width: propSizes?.width || 650,
+        height: propSizes?.height || 440,
+      }),
+    [element.props],
+  );
 
+  const blockSelected = useBlockSelected({ blockId });
   let readOnly = false;
 
   const resizeProps: ResizableProps = useMemo(

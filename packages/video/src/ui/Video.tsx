@@ -7,14 +7,14 @@ import {
   useBlockSelected,
 } from '@yoopta/editor';
 import { Resizable, ResizableProps } from 're-resizable';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Placeholder } from './Placeholder';
 import { VideoPluginOptions } from '../types';
 import { VideoBlockOptions } from './VideoBlockOptions';
 import { Resizer } from './Resizer';
 
 const VideoRender = ({ element, attributes, children, blockId }: PluginElementRenderProps<VideoPluginOptions>) => {
-  const { src, alt, srcSet, bgColor, fit, sizes: propSizes } = element.props || {};
+  const { src, srcSet, bgColor, settings, sizes: propSizes, poster, provider } = element.props || {};
   const block = useBlockData(blockId);
   const editor = useYooptaEditor();
   const pluginOptions = useYooptaPluginOptions<VideoPluginOptions>('Video');
@@ -24,8 +24,16 @@ const VideoRender = ({ element, attributes, children, blockId }: PluginElementRe
     height: propSizes?.height || 440,
   });
 
-  const blockSelected = useBlockSelected({ blockId });
+  useEffect(
+    () =>
+      setSizes({
+        width: propSizes?.width || 650,
+        height: propSizes?.height || 440,
+      }),
+    [element.props],
+  );
 
+  const blockSelected = useBlockSelected({ blockId });
   let readOnly = false;
 
   const resizeProps: ResizableProps = useMemo(
@@ -76,14 +84,15 @@ const VideoRender = ({ element, attributes, children, blockId }: PluginElementRe
         )}
         <VideoComponent
           src={src}
-          alt={alt}
           srcSet={srcSet}
-          fit={fit}
           width={sizes?.width}
+          settings={settings}
           bgColor={bgColor}
           height={sizes?.height}
+          poster={poster}
+          provider={provider}
         />
-        <VideoBlockOptions block={block} editor={editor} props={element.props} />
+        <VideoBlockOptions block={block} editor={editor} settings={settings} props={element.props} />
         {children}
       </Resizable>
     </div>
