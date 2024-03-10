@@ -3,13 +3,22 @@ import { SlateElement } from '../editor/types';
 import { PluginElement, PluginElementProps, PluginElementsMap } from '../plugins/types';
 import { generateId } from './generateId';
 
+export function getRootBlockElementType(elems: PluginElementsMap<string, unknown> | undefined): string | undefined {
+  if (!elems) return;
+
+  const elements = Object.keys(elems);
+  const rootElementType = elements.length === 1 ? elements[0] : elements.find((key) => elems[key].asRoot);
+
+  return rootElementType;
+}
+
 export function getRootBlockElement(
   elems: PluginElementsMap<string, unknown> | undefined,
 ): PluginElement<unknown> | undefined {
   if (!elems) return;
 
-  const elements = Object.values(elems);
-  const rootElement = elements.length === 1 ? elements[0] : elements.find((el) => el.asRoot);
+  const rootElementType = getRootBlockElementType(elems);
+  const rootElement = rootElementType ? elems[rootElementType] : undefined;
 
   return rootElement;
 }
@@ -19,12 +28,30 @@ export function isRootElementVoid(elems: PluginElementsMap<string, unknown> | un
   return rootElement?.props?.nodeType === 'void';
 }
 
-export function getBlockElementNode(slate): NodeEntry<SlateElement> | undefined {
-  const parentPath = Path.parent(slate.selection.anchor.path);
+export type GetBlockElementNodeOptions = {
+  at?: Path;
+  elementType?: string;
+};
 
+export function getBlockElementNode(
+  slate: Editor,
+  options: GetBlockElementNodeOptions = {},
+): NodeEntry<SlateElement> | undefined {
+  const { at, elementType } = options;
+
+  const atPath = at || slate.selection?.anchor.path;
+  if (!atPath) return;
+
+  let match = (n) => !Editor.isEditor(n) && Element.isElement(n);
+
+  if (elementType) {
+    match = (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === elementType;
+  }
+
+  const parentPath = Path.parent(atPath);
   const nodes = Editor.nodes(slate, {
     at: parentPath,
-    match: (n) => !Editor.isEditor(n) && Element.isElement(n),
+    match,
     mode: 'lowest',
   });
 

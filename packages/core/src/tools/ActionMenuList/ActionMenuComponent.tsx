@@ -1,5 +1,5 @@
 import { TextIcon } from '@radix-ui/react-icons';
-import { YooEditor } from '../../editor/types';
+import { YooEditor, YooptaBlock } from '../../editor/types';
 import { getRootBlockElement } from '../../utils/blockElements';
 
 type Props = {
@@ -12,6 +12,14 @@ type Props = {
   mode?: 'toggle' | 'create';
 };
 
+function filterToggleActions(block: YooptaBlock) {
+  if (!block) return false;
+
+  const rootBlock = getRootBlockElement(block.elements);
+  if (rootBlock?.props?.nodeType === 'void') return false;
+  return true;
+}
+
 const ActionMenuComponent = ({
   actions: actionsProps,
   editor,
@@ -21,17 +29,10 @@ const ActionMenuComponent = ({
   empty,
   mode = 'create',
 }: Props) => {
-  const getActions = () => {
-    if (mode === 'toggle') {
-      return actionsProps.filter((type) => {
-        const block = editor.blocks[type];
-        if (!block) return false;
+  const isModeToggle = mode === 'toggle';
 
-        const rootBlock = getRootBlockElement(block.elements);
-        if (rootBlock?.props?.nodeType === 'void') return false;
-        return true;
-      });
-    }
+  const getActions = () => {
+    if (isModeToggle) return actionsProps.filter((type) => filterToggleActions(editor.blocks[type]));
 
     return actionsProps;
   };
@@ -44,8 +45,8 @@ const ActionMenuComponent = ({
         <div data-action-menu-list className="overflow-hidden p-0 text-foreground">
           {empty && <div className="text-left text-muted-foreground text-xs px-1 py-1">No actions available</div>}
           {actions.map((type, i) => {
-            // [TODO] - make action to array of objects
-            const block = editor.plugins[type];
+            // [TODO] - transform string actions to array of objects
+            const block = editor.blocks[type];
 
             if (!block) return null;
 
@@ -57,7 +58,13 @@ const ActionMenuComponent = ({
                 data-action-menu-item
                 data-action-menu-item-type={type}
                 onClick={() => {
-                  editor.blocks[type].create({ deleteText: true, focus: true });
+                  if (isModeToggle) {
+                    // editor.blocks[type].toggle(type, { focus: true });
+                    editor.toggleBlock(type, { focus: true });
+                  } else {
+                    editor.blocks[type].create({ deleteText: true, focus: true });
+                  }
+
                   onClose();
                 }}
                 className="flex w-full cursor-pointer items-center space-x-2 rounded-md px-1 py-1 mb-0.5 last:mb-0 text-left text-sm hover:bg-[#f4f4f5] aria-selected:bg-[#f0f0f0]"

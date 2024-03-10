@@ -10,6 +10,7 @@ import { HOTKEYS } from '../utils/hotkeys';
 import { useTools } from '../contexts/UltraYooptaContext/ToolsContext';
 import { Editor, Element, NodeEntry, Path, Range } from 'slate';
 import { TextLeaf } from '../components/TextLeaf/TextLeaf';
+import { ClipboardEvent } from 'react';
 
 type Props<TKeys extends string, TProps, TOptions> = PluginParams<TKeys, TProps, TOptions> & {
   id: string;
@@ -270,6 +271,11 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
           onKeyUp={onKeyUp}
           onFocus={onFocus}
           onMouseDown={onMouseDown}
+          onPaste={(event: ClipboardEvent) => {
+            event.preventDefault();
+
+            console.log('onPaste', event.clipboardData);
+          }}
           key={`editable-${id}`}
           decorate={decorate}
           // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update

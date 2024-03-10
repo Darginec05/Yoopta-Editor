@@ -13,6 +13,7 @@ import { duplicateBlock } from './transforms/duplicateBlock';
 import { blur } from './selection/blur';
 import { updateBlock } from './transforms/updateBlock';
 import { Transforms } from 'slate';
+import { toggleBlock } from './transforms/toggleBlock';
 
 // export const YooEditor = {}
 // export const BlockTransforms = {}
@@ -40,6 +41,7 @@ export const createYooptaEditor = (): YooEditor => {
     insertBlock: (...args) => insertBlock(editor, ...args),
     deleteBlock: (...args) => deleteBlock(editor, ...args),
     duplicateBlock: (...args) => duplicateBlock(editor, ...args),
+    toggleBlock: (...args) => toggleBlock(editor, ...args),
     increaseBlockDepth: (...args) => increaseBlockDepth(editor, ...args),
     decreaseBlockDepth: (...args) => decreaseBlockDepth(editor, ...args),
     moveBlock: (...args) => moveBlock(editor, ...args),
