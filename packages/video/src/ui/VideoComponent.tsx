@@ -43,9 +43,6 @@ const VideoComponent = ({ width, height, src, settings, bgColor, poster, provide
     attributes['controls'] = true;
   }
 
-  console.log('provider', provider);
-  console.log('is', provider && provider.id && provider.type && PROVIDERS[provider.type]);
-
   if (provider && provider.id && provider.type && PROVIDERS[provider.type]) {
     const Provider = PROVIDERS[provider.type];
     return <Provider videoId={provider.id} width={width} height={height} />;
