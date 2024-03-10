@@ -5,7 +5,6 @@ import { useMemo, useState } from 'react';
 import { YooEditor, YooptaChildren } from './editor/types';
 import { PluginReturn } from './plugins/types';
 import NoSSR from './components/NoSsr/NoSsr';
-import { Bold, CodeMark, Highlight, Italic, Strike, Underline, YooptaMark } from './textFormatters/createYooptaMark';
 import { ToolAPI, ToolsProvider } from './contexts/UltraYooptaContext/ToolsContext';
 import {
   buildBlocks,
@@ -17,6 +16,7 @@ import {
 import { Toolbar } from './tools/Toolbar/Toolbar';
 import { ActionMenuList } from './tools/ActionMenuList/ActionMenuList';
 import { YooptaPlugin } from './plugins';
+import { YooptaMark } from './marks';
 
 type Props = {
   editor: YooEditor;
@@ -32,13 +32,12 @@ type Props = {
   };
 };
 
-const TEXT_FORMATTERS = [Bold, Italic, Underline, Strike, CodeMark, Highlight];
 const DEFAULT_VALUE = getDefaultYooptaChildren();
 
 const YooptaEditor = ({
   editor,
   value,
-  marks = TEXT_FORMATTERS,
+  marks,
   plugins: pluginsProps,
   autoFocus,
   className,
@@ -57,7 +56,7 @@ const YooptaEditor = ({
 
   const [editorState, setEditorState] = useState<{ editor: YooEditor<any, 'hightlight'>; version: number }>(() => {
     editor.applyChanges = applyChanges;
-    editor.formats = buildMarks(editor, marks);
+    if (marks) editor.formats = buildMarks(editor, marks);
     editor.blocks = buildBlocks(editor, plugins);
 
     editor.children = FAKE_YOOPTA_EDITOR_CHILDREN;

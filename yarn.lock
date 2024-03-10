@@ -3363,6 +3363,13 @@
     body-scroll-lock "^4.0.0-beta.0"
     re-resizable "^6.9.9"
 
+"@yoopta/marks@*":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/marks/-/marks-2.0.1.tgz#6938fce35f32dc254a9e3c6c7a18ec1c27cad758"
+  integrity sha512-5icN02UX7dDD1V03ynlfIA5c6x4lwtGB6Oi6nTCk5T8Sok821ryYz4YpWBcuiL0Ga11P1ASIrPo0jXAE8msXag==
+  dependencies:
+    body-scroll-lock "^4.0.0-beta.0"
+
 "@yoopta/paragraph@*":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@yoopta/paragraph/-/paragraph-2.0.1.tgz#c1838f34c6de736674561bfcc3f5108bb0dbf03c"

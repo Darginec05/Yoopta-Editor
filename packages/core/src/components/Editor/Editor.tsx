@@ -1,8 +1,7 @@
 import { CSSProperties, useEffect, useRef } from 'react';
 import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
 import { RenderBlocks } from './RenderBlocks';
-import { PluginReturn } from '../../plugins/types';
-import { YooptaMark } from '../../textFormatters/createYooptaMark';
+import { YooptaMark } from '../../marks';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { getDefaultParagraphBlock } from './defaultValue';
 import { generateId } from '../../utils/generateId';
@@ -112,8 +111,6 @@ const Editor = ({ marks, className, autoFocus = true, selectionBoxRoot }: Props)
     resetSelectedBlocks();
   };
 
-  console.log('editor.plugins', editor.plugins);
-
   const onKeyDown = (event) => {
     // [TODO] - handle shift+click?
 
@@ -133,6 +130,8 @@ const Editor = ({ marks, className, autoFocus = true, selectionBoxRoot }: Props)
     }
 
     if (HOTKEYS.isBackspace(event)) {
+      event.stopPropagation();
+
       const isAllBlocksSelected =
         Array.isArray(editor.selectedBlocks) && editor.selectedBlocks?.length === Object.keys(editor.children).length;
 

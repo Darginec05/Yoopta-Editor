@@ -5,7 +5,7 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { Block } from '../Block/Block';
 import { PluginReturn } from '../../plugins/types';
 import { YooEditor } from '../../editor/types';
-import { YooptaMark } from '../../textFormatters/createYooptaMark';
+import { YooptaMark } from '../../marks/createYooptaMark';
 import { SlateEditorComponent } from '../../plugins/SlateEditorComponent';
 import { useYooptaDragDrop } from './dnd';
 

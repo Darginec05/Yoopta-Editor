@@ -3,14 +3,14 @@ import { withReact } from 'slate-react';
 import { createEditor, Editor } from 'slate';
 import { YooEditor, YooptaBlockData } from '../editor/types';
 import { PluginReturn, PluginElement, PluginElementsMap } from '../plugins/types';
-import { YooptaMark } from '../textFormatters/createYooptaMark';
+import { YooptaMark } from '../marks/createYooptaMark';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
 import { createBlock } from '../editor/transforms/createBlock';
 import { getValue } from '../editor/textFormats/getValue';
 import { isActive } from '../editor/textFormats/isActive';
 import { toggle } from '../editor/textFormats/toggle';
 import { update } from '../editor/textFormats/update';
-import { withShortcuts } from '../extenstions/shortcuts';
+import { withShortcuts } from '../extensions/shortcuts';
 import { getRootBlockElement } from './blockElements';
 import { updateBlock } from '../editor/transforms/updateBlock';
 import { updateBlockElement } from '../editor/transforms/updateBlockElement';
@@ -50,7 +50,7 @@ export function buildBlocks(editor, plugins: PluginReturn<string, PluginElement<
       });
 
       // Omit fetchers and other non-editor related options
-      const { displayLabel, placeholder, align } = plugin.options || {};
+      const { displayLabel, placeholder, align, shortcuts } = plugin.options || {};
 
       blocks[plugin.type] = {
         type: plugin.type,
@@ -61,6 +61,7 @@ export function buildBlocks(editor, plugins: PluginReturn<string, PluginElement<
           displayLabel,
           placeholder,
           align,
+          shortcuts,
         },
         isActive: () => {
           const block = findPluginBlockBySelectionPath(editor, { at: editor.selection });
