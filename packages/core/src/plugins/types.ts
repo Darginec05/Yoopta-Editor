@@ -14,6 +14,7 @@ export type RenderPluginProps<TKeys extends string, TProps, TOptions> = {
 export type PluginOptions<T> = {
   displayLabel?: string;
   shortcuts?: string[];
+  align?: 'left' | 'center' | 'right';
 } & T;
 
 export type PluginElementOptions = {

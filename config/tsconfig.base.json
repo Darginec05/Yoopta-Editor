@@ -6,7 +6,6 @@
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -19,8 +18,8 @@
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "preserveSymlinks": false,
-    // "composite": true,
     "declaration": false,
-    "declarationMap": false
+    "declarationMap": false,
+    "noEmit": true
   }
 }

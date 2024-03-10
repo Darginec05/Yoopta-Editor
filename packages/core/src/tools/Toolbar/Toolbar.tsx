@@ -47,13 +47,13 @@ const Toolbar = () => {
 
   if (!isToolbarOpen) return null;
 
-  const currentBlock = Object.values(editor.blocks).find((block) => block.isActive());
+  const activeBlock = Object.values(editor.blocks).find((block) => block.isActive());
 
   return (
     // [TODO] - take care about SSR
     <FloatingPortal root={document.getElementById('yoopta-editor')}>
       <div style={floatingStyles} ref={refs.setFloating}>
-        <ToolbarComponent activeBlock={currentBlock} editor={editor} />
+        <ToolbarComponent activeBlock={activeBlock} editor={editor} />
       </div>
     </FloatingPortal>
   );

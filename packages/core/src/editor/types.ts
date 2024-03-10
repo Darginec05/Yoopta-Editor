@@ -6,6 +6,7 @@ import { CreateBlockOptions } from './transforms/createBlock';
 import { DeleteBlockOptions } from './transforms/deleteBlock';
 import { DuplicateBlockOptions } from './transforms/duplicateBlock';
 import { FocusBlockOptions } from './transforms/focusBlock';
+import { ToggleBlockOptions } from './transforms/toggleBlock';
 
 export type YooptaBlockPath = [number];
 
@@ -27,7 +28,6 @@ export type YooptaBlockType = 'block' | 'inline' | 'void';
 export type YooptaBlockBaseMeta = {
   order: number;
   depth: number;
-  maxDepth?: number;
 };
 
 export type FocusAt = Path | Point;
@@ -60,6 +60,7 @@ export type YooptaBlock = {
   // withCustomEditor?: boolean;
   isActive: () => boolean;
   create: (options?: CreateBlockOptions) => void;
+  toggle: (to: string, options?: ToggleBlockOptions) => void;
   update: (id: string, data: Partial<YooptaBlockData>) => void;
   updateElement: <TElementKeys extends string, TElementProps>(
     blockId: string,
@@ -80,6 +81,7 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   deleteBlock: (options?: DeleteBlockOptions) => void;
   duplicateBlock: (options?: DuplicateBlockOptions) => void;
   getBlock: (options?: YooptaEditorTransformOptions) => void;
+  toggleBlock: (toBlockType: string, options?: ToggleBlockOptions) => void;
   increaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
   decreaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
   applyChanges: () => void;

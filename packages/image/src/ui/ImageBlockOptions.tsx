@@ -1,5 +1,5 @@
 import { UI, YooEditor, YooptaBlockData } from '@yoopta/editor';
-import { RowSpacingIcon, SizeIcon, WidthIcon, DownloadIcon, TextIcon } from '@radix-ui/react-icons';
+import { RowSpacingIcon, SizeIcon, WidthIcon, DownloadIcon } from '@radix-ui/react-icons';
 import { ImageElementProps, ImagePluginElements } from '../types';
 
 const { ExtendedBlockActions, BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptionsSeparator } = UI;
