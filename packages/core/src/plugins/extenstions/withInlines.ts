@@ -17,15 +17,15 @@ const isLinkActive = (editor) => {
   return !!link;
 };
 
-const unwrapLink = (editor) => {
+const removeLink = (editor) => {
   Transforms.unwrapNodes(editor, {
     match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === 'link',
   });
 };
 
-const wrapLink = (editor, url: string) => {
+const addLink = (editor, url: string) => {
   if (isLinkActive(editor)) {
-    unwrapLink(editor);
+    removeLink(editor);
   }
 
   const { selection } = editor;
@@ -58,7 +58,7 @@ export const withInlines = (editor) => {
 
   editor.insertText = (text) => {
     if (text && isUrl(text)) {
-      wrapLink(editor, text);
+      addLink(editor, text);
     } else {
       insertText(text);
     }
@@ -68,7 +68,7 @@ export const withInlines = (editor) => {
     const text = data.getData('text/plain');
 
     if (text && isUrl(text)) {
-      wrapLink(editor, text);
+      addLink(editor, text);
     } else {
       insertData(data);
     }

@@ -11,6 +11,8 @@ import { useTools } from '../contexts/UltraYooptaContext/ToolsContext';
 import { Editor, Element, NodeEntry, Path, Range } from 'slate';
 import { TextLeaf } from '../components/TextLeaf/TextLeaf';
 import { ClipboardEvent } from 'react';
+import { YooptaBlock, YooptaBlockData } from '../editor/types';
+import { generateId } from '../utils/generateId';
 
 type Props<TKeys extends string, TProps, TOptions> = PluginParams<TKeys, TProps, TOptions> & {
   id: string;
@@ -262,6 +264,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     return (
       <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onChange={onChange}>
         <Editable
+          key={`editable-${id}`}
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           className="focus-visible:outline-none focus:outline-none"
@@ -271,12 +274,47 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
           onKeyUp={onKeyUp}
           onFocus={onFocus}
           onMouseDown={onMouseDown}
-          onPaste={(event: ClipboardEvent) => {
-            event.preventDefault();
+          // onPaste={(event: ClipboardEvent) => {
+          //   // event.preventDefault();
 
-            console.log('onPaste', event.clipboardData);
-          }}
-          key={`editable-${id}`}
+          //   const PLUGIN_TAG_NAMES = {
+          //     Paragraph: ['P', 'DIV'],
+          //     Blockquote: 'BLOCKQUOTE',
+          //     HeadingOne: ['H1'],
+          //     HeadingTwo: ['H2'],
+          //     HeadingThree: ['H3'],
+          //   };
+
+          //   const htmlString = event.clipboardData.getData('text/html');
+          //   const parsed = new DOMParser().parseFromString(htmlString, 'text/html');
+
+          //   console.log('HTML', parsed.body);
+
+          //   const blocks: YooptaBlockData[] = [];
+
+          //   parsed.body.childNodes.forEach((node, i) => {
+          //     // element node
+          //     if (node.nodeType === 1) {
+          //       console.log('element node childNodes', node);
+          //       blocks.push({
+          //         id: generateId(),
+          //         type: 'paragraph',
+          //         value: [],
+          //         meta: {
+          //           order: i,
+          //           depth: 0,
+          //         },
+          //       });
+          //     }
+
+          //     // text node
+          //     if (node.nodeType === 3) {
+          //       console.log('text nodetextContent', node);
+          //     }
+          //   });
+
+          //   // console.log('parsed', parsed);
+          // }}
           decorate={decorate}
           // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
           onBlur={onBlur}

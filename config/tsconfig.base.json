@@ -18,8 +18,8 @@
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "preserveSymlinks": false,
-    "declaration": false,
-    "declarationMap": false,
-    "noEmit": true
+    "noEmit": false,
+    "declaration": true,
+    "declarationMap": true
   }
 }
