@@ -73,13 +73,7 @@ const YooptaEditor = ({
     <NoSSR>
       <UltraYooptaContextProvider editorState={editorState}>
         <ToolsProvider>
-          <Editor
-            plugins={plugins}
-            marks={marks}
-            autoFocus={autoFocus}
-            className={className}
-            selectionBoxRoot={selectionBoxRoot}
-          />
+          <Editor marks={marks} autoFocus={autoFocus} className={className} selectionBoxRoot={selectionBoxRoot} />
           {/* {yooptaTools} */}
           <ActionMenuList />
           <Toolbar />

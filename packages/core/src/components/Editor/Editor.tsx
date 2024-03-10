@@ -15,7 +15,6 @@ import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
 
 type Props = {
-  plugins: PluginReturn<string, unknown>[];
   marks?: YooptaMark<any>[];
   selectionBoxRoot?: HTMLElement | null | React.MutableRefObject<HTMLElement | null>;
   autoFocus?: boolean;
@@ -39,14 +38,12 @@ const DEFAULT_STATE: State = {
   startedIndexToSelect: null,
 };
 
-const Editor = ({ plugins, marks, className, autoFocus = true, selectionBoxRoot }: Props) => {
+const Editor = ({ marks, className, autoFocus = true, selectionBoxRoot }: Props) => {
   const editor = useYooptaEditor();
   const yooptaEditorRef = useRef<HTMLDivElement>(null);
   const selectionBox = useRectangeSelectionBox({ editor, yooptaEditorRef, root: selectionBoxRoot });
 
   let state = useRef<State>(DEFAULT_STATE).current;
-
-  console.log('Editor editor.children', editor.children);
 
   useEffect(() => {
     if (!autoFocus) return;
@@ -115,7 +112,11 @@ const Editor = ({ plugins, marks, className, autoFocus = true, selectionBoxRoot 
     resetSelectedBlocks();
   };
 
+  console.log('editor.plugins', editor.plugins);
+
   const onKeyDown = (event) => {
+    // [TODO] - handle shift+click?
+
     if (HOTKEYS.isSelect(event)) {
       const isAllBlocksSelected = editor.selectedBlocks?.length === Object.keys(editor.children).length;
 

@@ -19,8 +19,9 @@ export function toggleBlock(editor: YooEditor, toBlockType: string, options?: To
   editor.children = createDraft(editor.children);
 
   const fromBlockData = findPluginBlockBySelectionPath(editor, { at: editor.selection });
+
   if (!fromBlockData) throw new Error('Block from not found at current selection');
-  const fromBlock = editor.blocks[fromBlockData.id];
+  const fromBlock = editor.blocks[fromBlockData.type];
   const fromBlockRootElementType = getRootBlockElementType(fromBlock.elements);
 
   // [TODO] - if the same block type transform to default block
@@ -33,8 +34,7 @@ export function toggleBlock(editor: YooEditor, toBlockType: string, options?: To
   // slate editor for the from block
   const slate = findSlateBySelectionPath(editor, { at: [fromBlockData.meta.order] });
 
-  if (!slate || !slate.selection)
-    throw new Error(`Slate from not found for block in position ${fromBlockData.meta.order}`);
+  if (!slate) throw new Error(`Slate not found for block in position ${fromBlockData.meta.order}`);
 
   const toBlock = editor.blocks[toBlockType];
   const toBlockRootElementType = getRootBlockElementType(toBlock.elements);
