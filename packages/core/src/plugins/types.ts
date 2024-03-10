@@ -1,7 +1,7 @@
 import { Descendant, Editor, Editor as SlateEditor } from 'slate';
 import { RenderElementProps as RenderSlateElementProps, RenderLeafProps } from 'slate-react';
-import { YooEditor } from '../editor/types';
-import { YooptaMark } from '../textFormatters/createYooptaMark';
+import { YooEditor, YooptaBlockData } from '../editor/types';
+import { YooptaMark } from '../marks/createYooptaMark';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS_TYPE } from '../utils/hotkeys';
 
@@ -44,17 +44,18 @@ export type PluginElementsMap<TKeys extends string = string, TProps = PluginDefa
   [key in TKeys]: PluginElement<TProps>;
 };
 
-type HandlersOptions = {
-  hotkeys: HOTKEYS_TYPE;
-  defaultPlugin: PluginReturn<string, unknown, unknown>;
-};
-
 export type EventHandlers = {
   [key in keyof EditorEventHandlers]: (
     editor: YooEditor,
     slate: Editor,
-    options: HandlersOptions,
+    options: PluginEventHandlerOptions,
   ) => EditorEventHandlers[key] | void;
+};
+
+export type PluginEventHandlerOptions = {
+  hotkeys: HOTKEYS_TYPE;
+  defaultBlock: YooptaBlockData;
+  currentBlock: YooptaBlockData;
 };
 
 export type PluginParams<TKeys extends string = string, TProps = Descendant, TOptions = Record<string, unknown>> = {

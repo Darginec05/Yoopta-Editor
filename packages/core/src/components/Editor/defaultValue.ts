@@ -276,24 +276,6 @@ export const YOOPTA_ULTRA_VALUES: Record<
     ],
     meta,
   }),
-
-  // link: (id, meta) => ({
-  //   id,
-  //   value: [
-  //     {
-  //       id: generateId(),
-  //       type: 'link',
-  //       children: [{ text: '' }],
-  //       props: {
-  //         url: 'https://www.youtube.com/embed/7FjgBBwKgJA',
-  //         target: '_blank',
-  //         rel: 'noreferrer',
-  //       },
-  //     },
-  //   ],
-  //   type: 'link',
-  //   meta,
-  // }),
 };
 
 export const getDefaultParagraphPluginElement = (): SlateElement => ({

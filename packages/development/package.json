@@ -22,7 +22,8 @@
     "@yoopta/lists": "*",
     "@yoopta/table": "*",
     "@yoopta/code": "*",
-    "@yoopta/video": "*"
+    "@yoopta/video": "*",
+    "@yoopta/marks": "*"
   },
   "devDependencies": {
     "typescript": "^5",

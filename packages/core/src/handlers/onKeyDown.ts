@@ -212,11 +212,14 @@ export function onKeyDown(editor: YooEditor) {
     }
 
     if (Range.isExpanded(slate.selection)) {
-      for (const mark of Object.values(editor.formats)) {
-        if (mark.hotkey && isKeyHotkey(mark.hotkey)(event)) {
-          event.preventDefault();
-          editor.formats[mark.type].toggle();
-          break;
+      const marks = Object.values(editor.formats);
+      if (marks.length > 0) {
+        for (const mark of Object.values(editor.formats)) {
+          if (mark.hotkey && isKeyHotkey(mark.hotkey)(event)) {
+            event.preventDefault();
+            editor.formats[mark.type].toggle();
+            break;
+          }
         }
       }
     }

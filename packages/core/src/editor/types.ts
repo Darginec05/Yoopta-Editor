@@ -74,7 +74,7 @@ export type YooptaFormats = Record<string, TextFormat>;
 
 // [TODO] - Fix generic and default types
 export type YooEditor<TNodes = any, TKey extends string = any> = {
-  insertBlock: (data, options?: YooptaEditorTransformOptions) => void;
+  insertBlock: (data: YooptaBlockData, options?: YooptaEditorTransformOptions) => void;
   splitBlock: (options?: YooptaEditorTransformOptions) => void;
   updateBlock: (id: string, data: Partial<YooptaBlockData>) => void;
   deleteBlock: (options?: DeleteBlockOptions) => void;

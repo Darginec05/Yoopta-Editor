@@ -9,6 +9,7 @@ import Image from '@yoopta/image';
 import Link from '@yoopta/link';
 import Video from '@yoopta/video';
 import Table from '@yoopta/table';
+import { Bold, Italic, Highlight, CodeMark, Strike, Underline } from '@yoopta/marks';
 // import Code from '@yoopta/code';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { uploadToCloudinary } from '../../utils/cloudinary';
@@ -60,6 +61,8 @@ const plugins = [
   Mention,
   Link,
 ];
+
+const MARKS = [Bold, Italic, Highlight, CodeMark, Strike, Underline];
 
 const NoSSR = ({ children }) => {
   const [isMounted, setIsMounted] = useState(false);
@@ -115,6 +118,7 @@ const BasicExample = () => {
           plugins={plugins}
           className="w-[650px] pb-20 mx-auto"
           selectionBoxRoot={rootRef}
+          marks={MARKS}
           // onChange={(val) => console.log('on change prop value', val)}
           // placeholder="Type / to open menu"
         />

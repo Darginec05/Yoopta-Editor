@@ -122,62 +122,74 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
       </Toolbar.ToggleGroup>
       <Toolbar.Separator className="bg-[#dbd8e0] mx-[6px] my-0 w-[1px]" />
       <Toolbar.ToggleGroup className="flex items-center" type="multiple" aria-label="Text formatting">
-        <Toolbar.ToggleItem
-          className="h-[32px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
-          value="bold"
-          aria-label="Bold"
-          style={getItemStyle('bold')}
-          onClick={() => editor.formats.bold.toggle()}
-        >
-          <FontBoldIcon width={20} height={20} />
-        </Toolbar.ToggleItem>
-        <Toolbar.ToggleItem
-          className="h-[32px] ml-[2px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
-          value="italic"
-          aria-label="Italic"
-          style={getItemStyle('italic')}
-          onClick={() => editor.formats.italic.toggle()}
-        >
-          <FontItalicIcon width={20} height={20} />
-        </Toolbar.ToggleItem>
-        <Toolbar.ToggleItem
-          className="h-[32px] ml-[2px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
-          value="underline"
-          aria-label="Underline"
-          style={getItemStyle('underline')}
-          onClick={() => editor.formats.underline.toggle()}
-        >
-          <UnderlineIcon width={20} height={20} />
-        </Toolbar.ToggleItem>
-        <Toolbar.ToggleItem
-          className="h-[32px] ml-[2px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
-          value="strike"
-          aria-label="Strike"
-          style={getItemStyle('strike')}
-          onClick={() => editor.formats.strike.toggle()}
-        >
-          <StrikethroughIcon width={20} height={20} />
-        </Toolbar.ToggleItem>
-        <Toolbar.ToggleItem
-          className="h-[32px] ml-[2px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
-          value="code"
-          aria-label="Code"
-          style={getItemStyle('code')}
-          onClick={() => editor.formats.code.toggle()}
-        >
-          <CodeIcon width={20} height={20} />
-        </Toolbar.ToggleItem>
-        <Toolbar.ToggleItem
-          className="h-[32px] ml-[2px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
-          value="code"
-          aria-label="Code"
-          style={getHighlightStyle()}
-          ref={highlightPickerRefs.setReference}
-          onClick={() => setIsHighlightPickerOpen((open) => !open)}
-        >
-          <span className="text-lg px-1 font-serif text-col">A</span>
-          {isHighlightPickerOpen ? <ChevronUpIcon width={10} /> : <ChevronDownIcon width={10} />}
-        </Toolbar.ToggleItem>
+        {editor.formats.bold && (
+          <Toolbar.ToggleItem
+            className="h-[32px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
+            value="bold"
+            aria-label="Bold"
+            style={getItemStyle('bold')}
+            onClick={() => editor.formats.bold.toggle()}
+          >
+            <FontBoldIcon width={20} height={20} />
+          </Toolbar.ToggleItem>
+        )}
+        {editor.formats.italic && (
+          <Toolbar.ToggleItem
+            className="h-[32px] ml-[2px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
+            value="italic"
+            aria-label="Italic"
+            style={getItemStyle('italic')}
+            onClick={() => editor.formats.italic.toggle()}
+          >
+            <FontItalicIcon width={20} height={20} />
+          </Toolbar.ToggleItem>
+        )}
+        {editor.formats.underline && (
+          <Toolbar.ToggleItem
+            className="h-[32px] ml-[2px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
+            value="underline"
+            aria-label="Underline"
+            style={getItemStyle('underline')}
+            onClick={() => editor.formats.underline.toggle()}
+          >
+            <UnderlineIcon width={20} height={20} />
+          </Toolbar.ToggleItem>
+        )}
+        {editor.formats.strike && (
+          <Toolbar.ToggleItem
+            className="h-[32px] ml-[2px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
+            value="strike"
+            aria-label="Strike"
+            style={getItemStyle('strike')}
+            onClick={() => editor.formats.strike.toggle()}
+          >
+            <StrikethroughIcon width={20} height={20} />
+          </Toolbar.ToggleItem>
+        )}
+        {editor.formats.code && (
+          <Toolbar.ToggleItem
+            className="h-[32px] ml-[2px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
+            value="code"
+            aria-label="Code"
+            style={getItemStyle('code')}
+            onClick={() => editor.formats.code.toggle()}
+          >
+            <CodeIcon width={20} height={20} />
+          </Toolbar.ToggleItem>
+        )}
+        {editor.formats.highlight && (
+          <Toolbar.ToggleItem
+            className="h-[32px] ml-[2px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
+            value="highlight"
+            aria-label="Highlight"
+            style={getHighlightStyle()}
+            ref={highlightPickerRefs.setReference}
+            onClick={() => setIsHighlightPickerOpen((open) => !open)}
+          >
+            <span className="text-lg px-1 font-serif text-col">A</span>
+            {isHighlightPickerOpen ? <ChevronUpIcon width={10} /> : <ChevronDownIcon width={10} />}
+          </Toolbar.ToggleItem>
+        )}
       </Toolbar.ToggleGroup>
     </Toolbar.Root>
   );

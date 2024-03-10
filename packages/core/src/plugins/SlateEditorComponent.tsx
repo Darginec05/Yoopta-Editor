@@ -2,9 +2,9 @@ import { memo, useMemo, useRef } from 'react';
 import { Editable, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useBlockData } from '../contexts/UltraYooptaContext/UltraYooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
-import { YooptaMark } from '../textFormatters/createYooptaMark';
+import { YooptaMark } from '../marks/createYooptaMark';
 import { withInlines } from './extenstions/withInlines';
-import { CustomEditorProps, ExtendedLeafProps, PluginParams } from './types';
+import { CustomEditorProps, ExtendedLeafProps, PluginEventHandlerOptions, PluginParams } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
 import { useTools } from '../contexts/UltraYooptaContext/ToolsContext';
@@ -13,6 +13,7 @@ import { TextLeaf } from '../components/TextLeaf/TextLeaf';
 import { ClipboardEvent } from 'react';
 import { YooptaBlock, YooptaBlockData } from '../editor/types';
 import { generateId } from '../utils/generateId';
+import { getDefaultParagraphBlock } from '../components/Editor/defaultValue';
 
 type Props<TKeys extends string, TProps, TOptions> = PluginParams<TKeys, TProps, TOptions> & {
   id: string;
@@ -87,7 +88,11 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   const eventHandlers = useMemo<EditorEventHandlers>(() => {
     if (!events) return {};
 
-    const eventHandlersOptions = { hotkeys: HOTKEYS };
+    const eventHandlersOptions: PluginEventHandlerOptions = {
+      hotkeys: HOTKEYS,
+      currentBlock: block,
+      defaultBlock: getDefaultParagraphBlock(),
+    };
     const eventHandlersMap = {};
 
     Object.keys(events).forEach((eventType) => {
