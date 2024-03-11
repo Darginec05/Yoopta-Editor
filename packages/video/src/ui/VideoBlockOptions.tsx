@@ -12,28 +12,16 @@ type Props = {
 };
 
 const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
-  const onMute = () => {
-    editor.blocks.Video.updateElement<VideoPluginElements, VideoElementProps>(block.id, 'video', {
-      settings: { muted: true },
-    });
+  const onCover = () => {
+    editor.blocks.Image.updateElement<VideoPluginElements, VideoElementProps>(block.id, 'video', { fit: 'cover' });
   };
 
-  const onAutoplay = () => {
-    editor.blocks.Video.updateElement<VideoPluginElements, VideoElementProps>(block.id, 'video', {
-      settings: { autoPlay: true },
-    });
+  const onFit = () => {
+    editor.blocks.Image.updateElement<VideoPluginElements, VideoElementProps>(block.id, 'video', { fit: 'contain' });
   };
 
-  const onLoop = () => {
-    editor.blocks.Video.updateElement<VideoPluginElements, VideoElementProps>(block.id, 'video', {
-      settings: { loop: true },
-    });
-  };
-
-  const onControls = () => {
-    editor.blocks.Video.updateElement<VideoPluginElements, VideoElementProps>(block.id, 'video', {
-      settings: { controls: true },
-    });
+  const onFill = () => {
+    editor.blocks.Image.updateElement<VideoPluginElements, VideoElementProps>(block.id, 'video', { fit: 'fill' });
   };
 
   const onDownload = () => {
@@ -57,40 +45,30 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
           <button
             type="button"
             className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
-            onClick={onAutoplay}
+            onClick={onFit}
           >
             <RowSpacingIcon width={16} height={16} className="w-4 h-4 mr-2" />
-            Autoplay
+            Fit
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <button
             type="button"
             className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
-            onClick={onLoop}
+            onClick={onFill}
           >
             <WidthIcon width={16} height={16} className="w-4 h-4 mr-2" />
-            Loop
+            Fill
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <button
             type="button"
             className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
-            onClick={onMute}
+            onClick={onCover}
           >
             <SizeIcon width={16} height={16} className="w-4 h-4 mr-2" />
-            Mute
-          </button>
-        </BlockOptionsMenuItem>
-        <BlockOptionsMenuItem>
-          <button
-            type="button"
-            className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
-            onClick={onControls}
-          >
-            <SizeIcon width={16} height={16} className="w-4 h-4 mr-2" />
-            Controls
+            Cover
           </button>
         </BlockOptionsMenuItem>
       </BlockOptionsMenuGroup>

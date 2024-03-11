@@ -15,33 +15,33 @@ const PROVIDERS = {
   dailymotion: DailyMotion,
 };
 
-const VideoComponent = ({ width, height, src, settings, bgColor, poster, provider }: VideoComponentProps) => {
+const VideoComponent = ({ width, height, src, settings, bgColor, poster, provider, fit }: VideoComponentProps) => {
   const style: CSSProperties = {
     backgroundColor: bgColor || 'transparent',
-    objectFit: 'contain',
+    objectFit: fit || 'contain',
   };
 
-  const attributes: VideoHTMLAttributes<HTMLVideoElement> = {};
+  // const attributes: VideoHTMLAttributes<HTMLVideoElement> = {};
 
-  if (settings?.autoPlay) {
-    attributes['autoPlay'] = true;
-    attributes['controls'] = false;
-    attributes['muted'] = false;
-  }
+  // if (settings?.autoPlay) {
+  //   attributes['autoPlay'] = true;
+  //   attributes['controls'] = false;
+  //   attributes['muted'] = false;
+  // }
 
-  if (settings?.loop) {
-    attributes['loop'] = true;
-    attributes['muted'] = true;
-    attributes['controls'] = false;
-  }
+  // if (settings?.loop) {
+  //   attributes['loop'] = true;
+  //   attributes['muted'] = true;
+  //   attributes['controls'] = false;
+  // }
 
-  if (settings?.muted) {
-    attributes['muted'] = true;
-  }
+  // if (settings?.muted) {
+  //   attributes['muted'] = true;
+  // }
 
-  if (settings?.controls) {
-    attributes['controls'] = true;
-  }
+  // if (settings?.controls) {
+  //   attributes['controls'] = true;
+  // }
 
   if (provider && provider.id && provider.type && PROVIDERS[provider.type]) {
     const Provider = PROVIDERS[provider.type];
@@ -61,7 +61,7 @@ const VideoComponent = ({ width, height, src, settings, bgColor, poster, provide
           className="object-cover w-full h-full"
           style={style}
           playsInline
-          {...attributes}
+          controls
         />
       )}
     </div>

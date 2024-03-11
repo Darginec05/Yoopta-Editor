@@ -33,7 +33,8 @@
     "react-dom": ">=17.0.2"
   },
   "scripts": {
-    "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development"
+    "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development",
+    "build": "rollup --config rollup.config.js --bundleConfigAsCjs --environment NODE_ENV:production"
   },
   "keywords": [
     "contenteditable",

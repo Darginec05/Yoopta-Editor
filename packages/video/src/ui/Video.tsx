@@ -14,7 +14,7 @@ import { VideoBlockOptions } from './VideoBlockOptions';
 import { Resizer } from './Resizer';
 
 const VideoRender = ({ element, attributes, children, blockId }: PluginElementRenderProps<VideoPluginOptions>) => {
-  const { src, srcSet, bgColor, settings, sizes: propSizes, poster, provider } = element.props || {};
+  const { src, srcSet, bgColor, settings, sizes: propSizes, poster, provider, fit } = element.props || {};
   const block = useBlockData(blockId);
   const editor = useYooptaEditor();
   const pluginOptions = useYooptaPluginOptions<VideoPluginOptions>('Video');
@@ -91,6 +91,7 @@ const VideoRender = ({ element, attributes, children, blockId }: PluginElementRe
           height={sizes?.height}
           poster={poster}
           provider={provider}
+          fit={fit}
         />
         <VideoBlockOptions block={block} editor={editor} settings={settings} props={element.props} />
         {children}
