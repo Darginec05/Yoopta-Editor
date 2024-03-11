@@ -1,7 +1,7 @@
 import { Descendant, Editor, Editor as SlateEditor } from 'slate';
 import { RenderElementProps as RenderSlateElementProps, RenderLeafProps } from 'slate-react';
 import { YooEditor, YooptaBlockData } from '../editor/types';
-import { YooptaMark } from '../marks/createYooptaMark';
+import { YooptaMark } from '../marks';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS_TYPE } from '../utils/hotkeys';
 

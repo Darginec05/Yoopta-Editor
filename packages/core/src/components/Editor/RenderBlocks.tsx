@@ -5,7 +5,7 @@ import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { Block } from '../Block/Block';
 import { PluginReturn } from '../../plugins/types';
 import { YooEditor } from '../../editor/types';
-import { YooptaMark } from '../../marks/createYooptaMark';
+import { YooptaMark } from '../../marks';
 import { SlateEditorComponent } from '../../plugins/SlateEditorComponent';
 import { useYooptaDragDrop } from './dnd';
 
@@ -51,7 +51,7 @@ const RenderBlocks = ({ editor, marks }: Props) => {
           type={block.type}
           id={childrenId}
           marks={marks}
-          customEditor={plugin.customEditor}
+          // customEditor={plugin.customEditor}
           events={plugin.events}
           elements={plugin.elements}
           options={plugin.options}

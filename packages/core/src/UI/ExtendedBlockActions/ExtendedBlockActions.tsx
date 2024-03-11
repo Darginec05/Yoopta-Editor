@@ -1,14 +1,5 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
-import {
-  useFloating,
-  offset,
-  flip,
-  shift,
-  inline,
-  autoUpdate,
-  FloatingPortal,
-  FloatingOverlay,
-} from '@floating-ui/react';
+import { useFloating, offset, flip, shift, inline, autoUpdate } from '@floating-ui/react';
 import { ReactNode, useState } from 'react';
 import { BlockOptions } from '../BlockOptions/BlockOptions';
 

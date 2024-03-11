@@ -25,6 +25,7 @@ export type VideoElementProps = {
   settings?: VideoElementSettings;
   sizes?: VideoSizes;
   provider?: VideoProvider;
+  fit?: 'contain' | 'cover' | 'fill' | null;
   poster?: string;
 };
 
