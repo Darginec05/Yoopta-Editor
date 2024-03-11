@@ -29,7 +29,8 @@
   },
   "scripts": {
     "test": "node ./__tests__/yoopta-video.test.js",
-    "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development"
+    "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development",
+    "build": "rollup --config rollup.config.js --bundleConfigAsCjs --environment NODE_ENV:production"
   },
   "bugs": {
     "url": "https://github.com/Darginec05/Editor-Yoopta/issues"

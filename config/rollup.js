@@ -16,6 +16,11 @@ const postcssNesting = require('postcss-nesting');
 const isProd = process.env.NODE_ENV === 'production';
 const isDev = process.env.NODE_ENV === 'development';
 
+console.log({
+  isDev,
+  isProd,
+});
+
 function getPlugins({ tailwindConfig }) {
   return [
     // json(),
@@ -50,16 +55,15 @@ function getPlugins({ tailwindConfig }) {
     }),
     typescript({
       clean: true,
-      useTsconfigDeclarationDir: isProd,
+      // useTsconfigDeclarationDir: isProd,
       abortOnError: false,
       tsconfig: `./tsconfig.json`,
 
-      // tsconfigOverride: {
-      //   compilerOptions: {
-      //     declaration: isProd,
-      //     declarationDir: isProd ? './dist/types' : undefined,
-      //   },
-      // },
+      tsconfigOverride: {
+        compilerOptions: {
+          declarationDir: isProd ? './dist/types' : undefined,
+        },
+      },
     }),
     sourceMaps(),
     replace({

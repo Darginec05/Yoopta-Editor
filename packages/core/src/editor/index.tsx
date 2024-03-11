@@ -58,6 +58,10 @@ export const createYooptaEditor = (): YooEditor => {
     formats: {},
     shortcuts: {},
     plugins: {},
+    on: (event, callback) => {},
+    off: (event, callback) => {},
+    emit: (event, ...args) => {},
+    once: (event, callback) => {},
   };
 
   return editor;
