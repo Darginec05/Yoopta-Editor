@@ -21,13 +21,13 @@ function DailyMotion({ embedId, ...other }) {
   }, [embedId]);
 
   return (
-    <div ref={dailyMotionRootRef} className="relative">
+    <div ref={dailyMotionRootRef} className="yoo-video-relative">
       <img
         src={src || ''}
         alt="daylimotion_embed_preview"
         width="100%"
         height="100%"
-        className="absolute top-0 left-0 w-full h-full"
+        className="yoo-video-absolute yoo-video-top-0 yoo-video-left-0 yoo-video-w-full yoo-video-h-full"
         style={{
           opacity: isInViewport && isFrameLoaded ? 0 : 1,
           zIndex: isInViewport && isFrameLoaded ? -1 : 0,
@@ -40,7 +40,7 @@ function DailyMotion({ embedId, ...other }) {
           onLoad={() => setFrameLoaded(true)}
           src={`https://www.dailymotion.com/embed/embed/${embedId}`}
           allowFullScreen
-          className="absolute top-0 left-0"
+          className="yoo-video-absolute yoo-video-top-0 yoo-video-left-0"
           {...other}
         />
       )}

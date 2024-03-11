@@ -2,7 +2,11 @@ import { PluginElementRenderProps } from '@yoopta/editor';
 
 const BlockquoteRender = (props: PluginElementRenderProps) => {
   return (
-    <blockquote data-element-type="Blockquote" {...props.attributes} className="mt-2 border-l-2 pl-6 leading-7">
+    <blockquote
+      data-element-type="Blockquote"
+      {...props.attributes}
+      className="yoo-b-mt-2 yoo-b-border-l-2 yoo-b-pl-6 yoo-b-leading-7"
+    >
       {props.children}
     </blockquote>
   );

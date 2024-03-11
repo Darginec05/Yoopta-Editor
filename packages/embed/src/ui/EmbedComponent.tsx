@@ -35,7 +35,7 @@ const EmbedComponent = ({ width, height, provider, blockId }: EmbedComponentProp
         height="100%"
         frameBorder={0}
         allowFullScreen
-        className="absolute top-0 left-0"
+        className="yoo-video-absolute yoo-video-top-0 yoo-video-left-0"
       />
     </div>
   );

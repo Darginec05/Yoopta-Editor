@@ -5,7 +5,7 @@ const HeadingTwoRender = ({ attributes, children, element }) => {
     <h2
       id={element.id}
       draggable={false}
-      className="scroll-m-20 mt-4 text-3xl font-semibold tracking-tight"
+      className="yoo-h-scroll-m-20 yoo-h-mt-4 yoo-h-text-3xl yoo-h-font-semibold yoo-h-tracking-tight"
       {...attributes}
     >
       {children}
