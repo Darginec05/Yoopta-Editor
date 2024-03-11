@@ -34,8 +34,6 @@ const RenderBlocks = ({ editor, marks }: Props) => {
 
   const blocks: JSX.Element[] = [];
 
-  console.log('editor', editor);
-
   for (let i = 0; i < childrenKeys.length; i++) {
     const childrenId = childrenKeys[i];
     const block = editor.children[childrenId];

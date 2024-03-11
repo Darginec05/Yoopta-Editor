@@ -1,3 +1,4 @@
+import EventEmitter from 'eventemitter3';
 import { UltraYooptaContextProvider } from './contexts/UltraYooptaContext/UltraYooptaContext';
 import { FAKE_YOOPTA_EDITOR_CHILDREN, getDefaultYooptaChildren } from './components/Editor/defaultValue';
 import { Editor } from './components/Editor/Editor';
@@ -34,6 +35,15 @@ type Props = {
 
 const DEFAULT_VALUE = getDefaultYooptaChildren();
 
+const eventEmitter = new EventEmitter();
+
+const Events = {
+  on: (event, fn) => eventEmitter.on(event, fn),
+  once: (event, fn) => eventEmitter.once(event, fn),
+  off: (event, fn) => eventEmitter.off(event, fn),
+  emit: (event, payload) => eventEmitter.emit(event, payload),
+};
+
 const YooptaEditor = ({
   editor,
   value,
@@ -47,6 +57,7 @@ const YooptaEditor = ({
 }: Props) => {
   const applyChanges = () => {
     if (props.onChange) props.onChange(editor.children);
+    editor.emit('change', editor.children);
     setEditorState((prev) => ({ ...prev, version: prev.version + 1 }));
   };
 
@@ -64,6 +75,11 @@ const YooptaEditor = ({
     editor.blockEditorsMap = buildBlockSlateEditors(editor);
     editor.shortcuts = buildBlockShortcuts(editor);
     editor.plugins = buildPlugins(plugins);
+
+    editor.on = Events.on;
+    editor.once = Events.once;
+    editor.off = Events.off;
+    editor.emit = Events.emit;
 
     return { editor, version: 0 };
   });

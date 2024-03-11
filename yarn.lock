@@ -3363,6 +3363,11 @@
     slate-history "^0.66.0"
     slate-hyperscript "^0.77.0"
 
+"@yoopta/embed@*":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/embed/-/embed-2.0.1.tgz#84b7f7edde846eaf1927ce61971147b5512c8692"
+  integrity sha512-E79t1XCoLorMzH4sf3DhRezmkEeD05NHyWj1B6S+iXevz02DWQXlOLc+naTAzPimgxu/LuSEVIwnSU7P5cxWug==
+
 "@yoopta/headings@*":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@yoopta/headings/-/headings-2.0.1.tgz#853a0723b2cc98e3b7c0d8f220f82567a3b4f4d4"
@@ -3375,6 +3380,14 @@
   dependencies:
     body-scroll-lock "^4.0.0-beta.0"
     re-resizable "^6.9.9"
+
+"@yoopta/link@*":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/link/-/link-2.0.1.tgz#f32b03245a2e4595d591bb62515709626fc70d08"
+  integrity sha512-mF0c3qj8XfFGp9ULrKOAL2N6Ii/7VieAjQk1o+ZHIAOthNnmEX13YGk2WBKym9Dcpy/ZnI12yC8LZ3Gnn6Jigw==
+  dependencies:
+    is-url "^1.2.4"
+    prismjs "^1.29.0"
 
 "@yoopta/marks@*":
   version "2.0.1"
@@ -6075,6 +6088,11 @@ eventemitter3@^4.0.4:
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
   integrity sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
 
+eventemitter3@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-5.0.1.tgz#53f5ffd0a492ac800721bb42c66b841de96423c4"
+  integrity sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==
+
 events@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/events/-/events-3.3.0.tgz#31a95ad0a924e2d2c419a813aeb2c4e878ea7400"
@@ -7717,6 +7735,11 @@ is-unicode-supported@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/is-unicode-supported/-/is-unicode-supported-0.1.0.tgz#3f26c76a809593b52bfa2ecb5710ed2779b522a7"
   integrity sha512-knxG2q4UC3u8stRGyAVJCOdxFmv5DZiRcdlIaAQXAbSfJya+OhopNotLQrstBhququ4ZpuKbDc/8S6mgXgPFPw==
+
+is-url@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/is-url/-/is-url-1.2.4.tgz#04a4df46d28c4cff3d73d01ff06abeb318a1aa52"
+  integrity sha512-ITvGim8FhRiYe4IQ5uHSkj7pVaPDrCTkNd3yq3cV7iZAcJdHTUMPMEHcqSOy9xZ9qFenQCvi+2wjH9a1nXqHww==
 
 is-weakmap@^2.0.1:
   version "2.0.1"

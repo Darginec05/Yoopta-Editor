@@ -326,7 +326,7 @@ export const getDefaultYooptaChildren = () => {
 
   return {
     [pId]: getDefaultParagraphBlock(pId),
-    [codeId]: YOOPTA_ULTRA_VALUES.code(codeId, { order: 1, depth: 0 }),
+    // [codeId]: YOOPTA_ULTRA_VALUES.code(codeId, { order: 1, depth: 0 }),
   };
 };
 
