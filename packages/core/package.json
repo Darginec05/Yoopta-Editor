@@ -34,7 +34,8 @@
   },
   "scripts": {
     "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development",
-    "build": "rollup --config rollup.config.js --bundleConfigAsCjs --environment NODE_ENV:production"
+    "build": "rollup --config rollup.config.js --bundleConfigAsCjs --environment NODE_ENV:production",
+    "publish": "yarn build && npm publish --access public"
   },
   "keywords": [
     "contenteditable",
