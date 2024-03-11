@@ -23,7 +23,8 @@
     "@yoopta/table": "*",
     "@yoopta/code": "*",
     "@yoopta/video": "*",
-    "@yoopta/marks": "*"
+    "@yoopta/marks": "*",
+    "@yoopta/embed": "*"
   },
   "devDependencies": {
     "typescript": "^5",

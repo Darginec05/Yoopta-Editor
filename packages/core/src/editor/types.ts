@@ -98,6 +98,10 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   formats: YooptaFormats;
   shortcuts: Record<string, YooptaBlock>;
   plugins: Record<string, PluginReturn<string, unknown>>;
+  on: (event: string, fn: (payload: any) => void) => void;
+  once: (event: string, fn: (payload: any) => void) => void;
+  off: (event: string, fn: (payload: any) => void) => void;
+  emit: (event: string, payload: any) => void;
 };
 
 // types for slate values

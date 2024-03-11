@@ -9,6 +9,7 @@ import Image from '@yoopta/image';
 import Link from '@yoopta/link';
 import Video from '@yoopta/video';
 import Table from '@yoopta/table';
+import Embed from '@yoopta/embed';
 import { Bold, Italic, Highlight, CodeMark, Strike, Underline } from '@yoopta/marks';
 import Code from '@yoopta/code';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -43,6 +44,7 @@ const plugins = [
   Lists.NumberedList,
   Lists.TodoList,
   Table,
+  Embed,
   Video.extend({
     deviceSizes: [768, 1024, 1200],
     onUpload: async (file: File) => {
@@ -83,11 +85,6 @@ const BasicExample = () => {
     const editorData = editor.getEditorValue();
     console.log('EDITOR DATA', editorData);
   };
-
-  // useEffect(() => {
-  //   editor.on?.('insertBlock', (e) => Socket.emit('insertBlock', e));
-  //   editor.on?.('deleteBlock', (e) => Socket.emit('insertBlock', e));
-  // }, []);
 
   return (
     <div className="px-[100px] max-w-[900px] mx-auto my-10" ref={rootRef}>
