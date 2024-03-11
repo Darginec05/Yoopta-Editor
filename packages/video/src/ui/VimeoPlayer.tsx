@@ -1,8 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
-// import s from '../ui/Video.module.scss';
-
-const s = {};
 
 const VIMEO_API_URI = 'https://vimeo.com/api/v2/video';
 
@@ -24,13 +21,13 @@ function VimeoPlayer({ videoId, ...other }) {
   }, [videoId]);
 
   return (
-    <div ref={vimeoRootRef} className="relative">
+    <div ref={vimeoRootRef} className="yoo-video-relative">
       <img
         src={src || ''}
         alt="vimeo_video_preview"
         width="100%"
         height="100%"
-        className="absolute top-0 left-0 w-full h-full"
+        className="yoo-video-absolute yoo-video-top-0 yoo-video-left-0 yoo-video-w-full yoo-video-h-full"
         style={{
           opacity: isInViewport && isFrameLoaded ? 0 : 1,
           zIndex: isInViewport && isFrameLoaded ? -1 : 0,
@@ -44,7 +41,7 @@ function VimeoPlayer({ videoId, ...other }) {
           frameBorder={0}
           allowFullScreen
           onLoad={() => setFrameLoaded(true)}
-          className="absolute top-0 left-0"
+          className="yoo-video-absolute yoo-video-top-0 yoo-video-left-0"
           {...other}
         />
       )}

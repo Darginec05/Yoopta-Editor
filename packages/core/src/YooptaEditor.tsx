@@ -70,8 +70,8 @@ const YooptaEditor = ({
     if (marks) editor.formats = buildMarks(editor, marks);
     editor.blocks = buildBlocks(editor, plugins);
 
-    // editor.children = FAKE_YOOPTA_EDITOR_CHILDREN;
-    editor.children = DEFAULT_VALUE;
+    editor.children = FAKE_YOOPTA_EDITOR_CHILDREN;
+    // editor.children = DEFAULT_VALUE;
     editor.blockEditorsMap = buildBlockSlateEditors(editor);
     editor.shortcuts = buildBlockShortcuts(editor);
     editor.plugins = buildPlugins(plugins);

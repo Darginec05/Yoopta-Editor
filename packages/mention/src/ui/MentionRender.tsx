@@ -9,7 +9,7 @@ const MentionRender = (props: PluginElementRenderProps<unknown>) => {
     e.preventDefault();
   };
 
-  const bgColor = selected ? 'bg-[#e2e2e2]' : 'bg-[#f4f4f5]';
+  const bgColor = selected ? 'yoo-m-bg-[#e2e2e2]' : 'yoo-m-bg-[#f4f4f5]';
 
   return (
     <a
@@ -18,7 +18,7 @@ const MentionRender = (props: PluginElementRenderProps<unknown>) => {
       rel={rel}
       target={target}
       onClick={handleClick}
-      className={`relative rounded cursor-pointer px-[0.3rem] py-[0.2rem] font-mono color-[#fff] text-sm font-semibold ${bgColor}`}
+      className={`yoo-m-relative yoo-m-rounded yoo-m-cursor-pointer yoo-m-px-[0.3rem] yoo-m-py-[0.2rem] yoo-m-font-mono yoo-m-color-[#fff] yoo-m-text-sm yoo-m-font-semibold ${bgColor}`}
       {...props.attributes}
     >
       {character ? `@${character}` : null}

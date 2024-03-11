@@ -10,13 +10,13 @@ const Figma = ({ provider }) => {
   });
 
   return (
-    <div className="relative" ref={figmaRootRef}>
+    <div className="yoo-video-relative" ref={figmaRootRef}>
       {isInViewport && (
         <iframe
           src={`https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(provider.url)}`}
           frameBorder={0}
           allowFullScreen
-          className="absolute top-0 left-0"
+          className="yoo-video-absolute yoo-video-top-0 yoo-video-left-0"
         />
       )}
     </div>
