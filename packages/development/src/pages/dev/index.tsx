@@ -10,13 +10,13 @@ import Link from '@yoopta/link';
 import Video from '@yoopta/video';
 import Table from '@yoopta/table';
 import { Bold, Italic, Highlight, CodeMark, Strike, Underline } from '@yoopta/marks';
-// import Code from '@yoopta/code';
+import Code from '@yoopta/code';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { uploadToCloudinary } from '../../utils/cloudinary';
 
 const plugins = [
   Paragraph,
-  // Code,
+  Code,
   Image.extend({
     deviceSizes: [768, 1024, 1200],
     onUpload: async (file: File) => {

@@ -311,7 +311,7 @@ export const INLINE_MENTION_ELEMENT = {
 };
 
 export const getDefaultParagraphBlock = (id?: string): YooptaBlockData => ({
-  id: generateId(),
+  id: id || generateId(),
   value: [getDefaultParagraphPluginElement()],
   type: 'Paragraph',
   meta: {
@@ -321,10 +321,12 @@ export const getDefaultParagraphBlock = (id?: string): YooptaBlockData => ({
 });
 
 export const getDefaultYooptaChildren = () => {
-  const id = generateId();
+  const pId = generateId();
+  const codeId = generateId();
 
   return {
-    [id]: getDefaultParagraphBlock(id),
+    [pId]: getDefaultParagraphBlock(pId),
+    [codeId]: YOOPTA_ULTRA_VALUES.code(codeId, { order: 1, depth: 0 }),
   };
 };
 

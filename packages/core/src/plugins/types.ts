@@ -21,9 +21,6 @@ export type PluginElementOptions = {
   draggable?: boolean;
 };
 
-export type CustomEditorProps = Omit<RenderPluginProps<any, any, any>, 'elements'> &
-  Pick<PluginReturn<string, unknown, unknown>, 'type'> & { editor: SlateEditor };
-
 export type PluginElementRenderProps<TPluginOptions = unknown> = RenderSlateElementProps & {
   blockId: string;
   options?: TPluginOptions;
@@ -61,7 +58,7 @@ export type PluginEventHandlerOptions = {
 export type PluginParams<TKeys extends string = string, TProps = Descendant, TOptions = Record<string, unknown>> = {
   type: string;
   // render?: (props: RenderSlateElementProps) => JSX.Element;
-  customEditor?: (props: CustomEditorProps) => JSX.Element;
+  customEditor?: (props: PluginElementRenderProps) => JSX.Element;
   elements: PluginElementsMap<TKeys, TProps>;
   events?: EventHandlers;
   options?: PluginOptions<TOptions>;

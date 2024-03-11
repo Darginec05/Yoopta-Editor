@@ -2,9 +2,15 @@ import { memo, useMemo, useRef } from 'react';
 import { Editable, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useBlockData } from '../contexts/UltraYooptaContext/UltraYooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
-import { YooptaMark } from '../marks/createYooptaMark';
+import { YooptaMark } from '../marks';
 import { withInlines } from './extenstions/withInlines';
-import { CustomEditorProps, ExtendedLeafProps, PluginEventHandlerOptions, PluginParams } from './types';
+import {
+  ExtendedLeafProps,
+  PluginElementRenderProps,
+  PluginEventHandlerOptions,
+  PluginParams,
+  RenderPluginProps,
+} from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
 import { useTools } from '../contexts/UltraYooptaContext/ToolsContext';
@@ -237,7 +243,7 @@ type SlateEditorInstanceProps = {
   onFocus: (event: React.FocusEvent) => void;
   onMouseDown: (event: React.MouseEvent) => void;
   onBlur: (event: React.FocusEvent) => void;
-  customEditor?: (props: CustomEditorProps) => JSX.Element;
+  customEditor?: (props: PluginElementRenderProps) => JSX.Element;
   decorate: (nodeEntry: NodeEntry) => any[];
 };
 
@@ -263,6 +269,8 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
         id,
         type: '',
         editor: slate,
+        attributes: {},
+        children: [],
       });
     }
 
