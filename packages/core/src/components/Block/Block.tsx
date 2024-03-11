@@ -5,9 +5,8 @@ import { useRef, useState } from 'react';
 import { BlockActions } from './BlockActions';
 import s from './Block.module.scss';
 
-const Block = ({ children, plugin, blockId }) => {
+const Block = ({ children, block, blockId }) => {
   const editor = useYooptaEditor();
-  const block = plugin;
 
   const [activeBlockId, setActiveBlockId] = useState<string | null>(null);
   const {

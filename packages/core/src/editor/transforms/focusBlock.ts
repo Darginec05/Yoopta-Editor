@@ -30,6 +30,8 @@ export function focusBlock(editor: YooEditor, blockId: string, options: FocusBlo
     const slate = options.slate || editor.blockEditorsMap[blockId];
     const block = editor.children[blockId];
 
+    if (!slate || !block) return;
+
     const selectionPath = getSelectionPath(slate, focusAt);
 
     Transforms.select(slate, selectionPath);

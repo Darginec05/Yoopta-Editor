@@ -34,6 +34,8 @@ const RenderBlocks = ({ editor, marks }: Props) => {
 
   const blocks: JSX.Element[] = [];
 
+  console.log('editor', editor);
+
   for (let i = 0; i < childrenKeys.length; i++) {
     const childrenId = childrenKeys[i];
     const block = editor.children[childrenId];
@@ -45,13 +47,13 @@ const RenderBlocks = ({ editor, marks }: Props) => {
     }
 
     blocks.push(
-      <Block key={childrenId} plugin={block} blockId={childrenId}>
+      <Block key={childrenId} block={block} blockId={childrenId}>
         <SlateEditorComponent
           key={childrenId}
           type={block.type}
           id={childrenId}
           marks={marks}
-          // customEditor={customEditor}
+          customEditor={plugin.customEditor}
           events={plugin.events}
           elements={plugin.elements}
           options={plugin.options}
