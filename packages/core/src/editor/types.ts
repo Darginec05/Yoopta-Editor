@@ -2,6 +2,7 @@ import { Descendant, Editor, Path, Point } from 'slate';
 import { PluginReturn, PluginElementsMap, PluginOptions, PluginElementProps } from '../plugins/types';
 import { EditorBlurOptions } from './selection/blur';
 import { BlockSelectedOptions } from './selection/setBlockSelected';
+import { SetSelectionOptions } from './selection/setSelection';
 import { CreateBlockOptions } from './transforms/createBlock';
 import { DeleteBlockOptions } from './transforms/deleteBlock';
 import { DuplicateBlockOptions } from './transforms/duplicateBlock';
@@ -90,7 +91,7 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   selectedBlocks: number[] | null;
   children: Record<string, YooptaBlockData>;
   getEditorValue: () => TNodes;
-  setSelection: (path: YooptaBlockPath | null) => void;
+  setSelection: (path: YooptaBlockPath | null, options?: SetSelectionOptions) => void;
   setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
   blur: (options?: EditorBlurOptions) => void;
   blockEditorsMap: YooptaPluginsEditorMap;

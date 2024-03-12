@@ -167,10 +167,6 @@ export function onKeyDown(editor: YooEditor) {
       const parentPath = Path.parent(slate.selection.anchor.path);
       const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
 
-      console.log('isStart', isStart);
-      console.log('parentPath', parentPath);
-      console.log('slate.children', slate.children);
-
       if (isStart) {
         const prevPath: YooptaBlockPath | null = editor.selection ? [editor.selection[0] - 1] : null;
         const prevSlate = findSlateBySelectionPath(editor, { at: prevPath });
@@ -186,7 +182,11 @@ export function onKeyDown(editor: YooEditor) {
           };
 
           event.preventDefault();
-          editor.focusBlock(prevBlock.id, { focusAt: selection, waitExecution: false });
+          editor.focusBlock(prevBlock.id, {
+            focusAt: selection,
+            waitExecution: false,
+            shouldUpdateBlockSelection: true,
+          });
           return;
         }
       }

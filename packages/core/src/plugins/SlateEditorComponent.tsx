@@ -269,7 +269,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
         id,
         type: '',
         editor: slate,
-        attributes: {},
+        // attributes: {},
         children: [],
       });
     }
@@ -336,5 +336,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     );
   },
 );
+
+SlateEditorInstance.displayName = 'SlateEditorInstance';
 
 export { SlateEditorComponent };
