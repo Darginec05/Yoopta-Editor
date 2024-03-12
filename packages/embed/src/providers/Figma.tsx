@@ -1,7 +1,8 @@
 import { useRef } from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
+import { ProviderRenderProps } from '../types';
 
-const Figma = ({ provider }) => {
+const Figma = ({ provider, width, height, blockId }: ProviderRenderProps) => {
   const figmaRootRef = useRef<HTMLDivElement>(null);
 
   const { isIntersecting: isInViewport } = useIntersectionObserver(figmaRootRef, {
@@ -17,6 +18,8 @@ const Figma = ({ provider }) => {
           frameBorder={0}
           allowFullScreen
           className="yoo-video-absolute yoo-video-top-0 yoo-video-left-0"
+          width={width}
+          height={height}
         />
       )}
     </div>

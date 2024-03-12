@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
+import { ProviderRenderProps } from '../types';
 
 const VIMEO_API_URI = 'https://vimeo.com/api/v2/embed';
 
-function Vimeo({ embedId, ...other }) {
+function Vimeo({ provider, width, height, blockId }: ProviderRenderProps) {
   const vimeoRootRef = useRef(null);
   const [src, setSrc] = useState(null);
   const [isFrameLoaded, setFrameLoaded] = useState(false);
@@ -14,11 +15,11 @@ function Vimeo({ embedId, ...other }) {
   });
 
   useEffect(() => {
-    fetch(`${VIMEO_API_URI}/${embedId}.json`)
+    fetch(`${VIMEO_API_URI}/${provider.id}.json`)
       .then((data) => data.json())
       .then((data) => setSrc(data[0].thumbnail_medium))
       .catch(() => setSrc(null));
-  }, [embedId]);
+  }, [provider.id]);
 
   return (
     <div ref={vimeoRootRef} className="yoo-video-relative">
@@ -37,12 +38,13 @@ function Vimeo({ embedId, ...other }) {
         <iframe
           title="Embed Player"
           // https://developer.vimeo.com/player/embedding
-          src={`https://player.vimeo.com/embed/${embedId}?badge=0&byline=0&portrait=0&title=0`}
+          src={`https://player.vimeo.com/embed/${provider.embedId}?badge=0&byline=0&portrait=0&title=0`}
           frameBorder={0}
           allowFullScreen
           onLoad={() => setFrameLoaded(true)}
           className="yoo-video-absolute yoo-video-top-0 yoo-video-left-0"
-          {...other}
+          width={width}
+          height={height}
         />
       )}
     </div>

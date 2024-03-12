@@ -5,7 +5,6 @@ import { EmbedRender } from '../ui/Embed';
 const Embed = new YooptaPlugin<EmbedPluginElements, EmbedElementProps, EmbedPluginOptions>({
   type: 'Embed',
   elements: {
-    // [TODO] - caption element??,
     embed: {
       render: EmbedRender,
       props: {
