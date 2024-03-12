@@ -14,10 +14,9 @@ const EmbedLinkUploader = ({ blockId, onClose }) => {
 
     const providerType = getProvider(value);
     const embedId = providerType ? ProviderGetters[providerType]?.(value) : null;
-    const provider: EmbedProvider = { type: providerType, id: embedId };
+    const provider: EmbedProvider = { type: providerType, id: embedId, url: value };
 
     if (!providerType || !embedId) {
-      provider.url = value;
       provider.id = value;
     }
 

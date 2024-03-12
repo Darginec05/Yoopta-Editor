@@ -5,6 +5,7 @@ import { FocusAt, SlateEditor, YooEditor, YooptaEditorTransformOptions } from '.
 export type FocusBlockOptions = Pick<YooptaEditorTransformOptions, 'focusAt' | 'slate'> & {
   waitExecution?: boolean;
   waitExecutionMs?: number;
+  shouldUpdateBlockSelection?: boolean;
 };
 
 function getSelectionPath(slate: SlateEditor, focusAt?: FocusAt): FocusAt {
@@ -24,7 +25,7 @@ function getSelectionPath(slate: SlateEditor, focusAt?: FocusAt): FocusAt {
 
 // [TODO] - update editor.selection after focus
 export function focusBlock(editor: YooEditor, blockId: string, options: FocusBlockOptions = {}) {
-  const { focusAt, waitExecution = true, waitExecutionMs = 0 } = options;
+  const { focusAt, waitExecution = true, waitExecutionMs = 0, shouldUpdateBlockSelection = true } = options;
 
   const focusBlockEditor = () => {
     const slate = options.slate || editor.blockEditorsMap[blockId];
@@ -36,7 +37,11 @@ export function focusBlock(editor: YooEditor, blockId: string, options: FocusBlo
 
     Transforms.select(slate, selectionPath);
     ReactEditor.focus(slate);
-    editor.setSelection([block.meta.order]);
+    if (shouldUpdateBlockSelection) {
+      setTimeout(() => {
+        editor.setSelection([block.meta.order]);
+      }, 0);
+    }
   };
 
   if (waitExecution) {
