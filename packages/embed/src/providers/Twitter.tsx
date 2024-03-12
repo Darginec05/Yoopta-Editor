@@ -1,16 +1,9 @@
 import { useYooptaEditor } from '@yoopta/editor';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
-import { EmbedProvider } from '../types';
+import { EmbedElementProps, EmbedPluginElements, ProviderRenderProps } from '../types';
 
-type Props = {
-  provider: EmbedProvider;
-  blockId: string;
-  width: number;
-  height: number;
-};
-
-function Twitter({ provider, blockId }: Props) {
+function Twitter({ provider, blockId }: ProviderRenderProps) {
   const twitterRootRef = useRef<HTMLDivElement>(null);
   const editor = useYooptaEditor();
 
@@ -20,7 +13,6 @@ function Twitter({ provider, blockId }: Props) {
   });
 
   const elementId = `${blockId}-${provider.id}`;
-  console.log('elementId', elementId);
 
   useEffect(() => {
     if (!isInViewport) return;
@@ -40,7 +32,12 @@ function Twitter({ provider, blockId }: Props) {
           width: 550,
         });
 
-        // editor.blocks.Embed.updateElement()
+        editor.blocks.Embed.updateElement<EmbedPluginElements, EmbedElementProps>(blockId, 'embed', {
+          sizes: {
+            width: 'auto',
+            height: 'auto',
+          },
+        });
       }
     };
   }, [provider.id, isInViewport]);

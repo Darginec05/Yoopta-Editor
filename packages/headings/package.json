@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/headings",
-  "version": "3.9.0-rc",
+  "version": "4.0.0-rc.0",
   "description": "> TODO: description",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
@@ -35,8 +35,8 @@
   "scripts": {
     "test": "node ./__tests__/@yoopta/paragraph.test.js",
     "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development",
-    "build": "rollup --config rollup.config.js --bundleConfigAsCjs --environment NODE_ENV:production",
-    "publish": "yarn build && npm publish --access public"
+    "prepublishOnly": "yarn build",
+    "build": "rollup --config rollup.config.js --bundleConfigAsCjs --environment NODE_ENV:production"
   },
   "bugs": {
     "url": "https://github.com/Darginec05/Editor-Yoopta/issues"

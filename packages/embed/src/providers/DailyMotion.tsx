@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
+import { ProviderRenderProps } from '../types';
 
 const getDayliMotionAPI = (embedId: string) => `https://api.dailymotion.com/embed/${embedId}?fields=thumbnail_url`;
 
-function DailyMotion({ embedId, ...other }) {
+function DailyMotion({ provider, width, height, blockId }: ProviderRenderProps) {
   const dailyMotionRootRef = useRef(null);
   const [src, setSrc] = useState(null);
   const [isFrameLoaded, setFrameLoaded] = useState(false);
@@ -14,11 +15,11 @@ function DailyMotion({ embedId, ...other }) {
   });
 
   useEffect(() => {
-    fetch(getDayliMotionAPI(embedId))
+    fetch(getDayliMotionAPI(provider.id))
       .then((data) => data.json())
       .then((data) => setSrc(data.thumbnail_url))
       .catch(() => setSrc(null));
-  }, [embedId]);
+  }, [provider.id]);
 
   return (
     <div ref={dailyMotionRootRef} className="yoo-video-relative">
@@ -38,10 +39,11 @@ function DailyMotion({ embedId, ...other }) {
           title="Dailymotion Embed Player"
           frameBorder={0}
           onLoad={() => setFrameLoaded(true)}
-          src={`https://www.dailymotion.com/embed/embed/${embedId}`}
+          src={`https://www.dailymotion.com/embed/embed/${provider.id}`}
           allowFullScreen
           className="yoo-video-absolute yoo-video-top-0 yoo-video-left-0"
-          {...other}
+          width={width}
+          height={height}
         />
       )}
     </div>

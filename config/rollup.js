@@ -16,11 +16,6 @@ const postcssNesting = require('postcss-nesting');
 const isProd = process.env.NODE_ENV === 'production';
 const isDev = process.env.NODE_ENV === 'development';
 
-console.log({
-  isDev,
-  isProd,
-});
-
 function getPlugins({ tailwindConfig }) {
   return [
     // json(),

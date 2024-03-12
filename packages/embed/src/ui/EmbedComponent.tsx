@@ -24,7 +24,7 @@ const EmbedComponent = ({ width, height, provider, blockId }: EmbedComponentProp
 
   if (provider && provider.id && provider.type && PROVIDERS[provider.type]) {
     const Provider = PROVIDERS[provider.type];
-    return <Provider embedId={provider.id} provider={provider} width={width} height={height} blockId={blockId} />;
+    return <Provider provider={provider} width={width} height={height} blockId={blockId} />;
   }
 
   return (

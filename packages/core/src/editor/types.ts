@@ -11,7 +11,7 @@ import { ToggleBlockOptions } from './transforms/toggleBlock';
 export type YooptaBlockPath = [number];
 
 export type YooptaBlockDataKey = string;
-export type YooptaChildren = Record<YooptaBlockDataKey, YooptaBlockData>;
+export type YooptaChildrenValue = Record<YooptaBlockDataKey, YooptaBlockData>;
 
 export type YooptaBlockData<T = Descendant> = {
   id: string;

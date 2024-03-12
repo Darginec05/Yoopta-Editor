@@ -1,8 +1,8 @@
 import { type SlateElement } from '@yoopta/editor';
 
 export type EmbedSizes = {
-  width: number;
-  height: number;
+  width: number | 'auto';
+  height: number | 'auto';
 };
 
 export type EmbedProviderTypes = 'youtube' | 'vimeo' | 'dailymotion' | 'twitter' | 'figma' | string | null;
@@ -25,4 +25,11 @@ export type EmbedPluginOptions = {
     maxWidth?: number;
     maxHeight?: number;
   };
+};
+
+export type ProviderRenderProps = {
+  provider: EmbedProvider;
+  blockId: string;
+  width: number;
+  height: number;
 };

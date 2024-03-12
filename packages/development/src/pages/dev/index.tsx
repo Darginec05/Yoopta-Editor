@@ -1,16 +1,16 @@
 import YooptaEditor, { createYooptaEditor, YooEditor } from '@yoopta/editor';
 import Blockquote from '@yoopta/blockquote';
 import Paragraph from '@yoopta/paragraph';
-import Callout from '@yoopta/callout';
 import Headings from '@yoopta/headings';
+import Image from '@yoopta/image';
+import { Bold, Italic, Highlight, CodeMark, Strike, Underline } from '@yoopta/marks';
+import Callout from '@yoopta/callout';
 import Lists from '@yoopta/lists';
 import Mention from '@yoopta/mention';
-import Image from '@yoopta/image';
 import Link from '@yoopta/link';
 import Video from '@yoopta/video';
 import Table from '@yoopta/table';
 import Embed from '@yoopta/embed';
-import { Bold, Italic, Highlight, CodeMark, Strike, Underline } from '@yoopta/marks';
 import Code from '@yoopta/code';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { uploadToCloudinary } from '../../utils/cloudinary';
@@ -86,6 +86,12 @@ const BasicExample = () => {
     console.log('EDITOR DATA', editorData);
   };
 
+  useEffect(() => {
+    editor.once('change', (val) => {
+      console.log('on change value', val);
+    });
+  }, [editor]);
+
   return (
     <div className="px-[100px] max-w-[900px] mx-auto my-10" ref={rootRef}>
       <div className="flex mb-10">
@@ -112,10 +118,12 @@ const BasicExample = () => {
       <NoSSR>
         <YooptaEditor
           editor={editor}
+          value={{}}
           plugins={plugins}
           className="w-[650px] pb-20 mx-auto"
           selectionBoxRoot={rootRef}
           marks={MARKS}
+          autoFocus
           // onChange={(val) => console.log('on change prop value', val)}
           // placeholder="Type / to open menu"
         />

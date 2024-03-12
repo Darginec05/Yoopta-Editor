@@ -3,7 +3,7 @@ import { UltraYooptaContextProvider } from './contexts/UltraYooptaContext/UltraY
 import { getDefaultYooptaChildren } from './components/Editor/defaultValue';
 import { Editor } from './components/Editor/Editor';
 import { useMemo, useState } from 'react';
-import { YooEditor, YooptaChildren } from './editor/types';
+import { YooEditor, YooptaChildrenValue } from './editor/types';
 import { PluginReturn } from './plugins/types';
 import NoSSR from './components/NoSsr/NoSsr';
 import { ToolAPI, ToolsProvider } from './contexts/UltraYooptaContext/ToolsContext';
@@ -23,7 +23,7 @@ type Props = {
   editor: YooEditor;
   plugins: YooptaPlugin[];
   marks?: YooptaMark<any>[];
-  value: YooptaChildren;
+  value: YooptaChildrenValue;
   autoFocus?: boolean;
   className?: string;
   selectionBoxRoot?: HTMLElement | null | React.MutableRefObject<HTMLElement | null>;
@@ -41,6 +41,14 @@ const Events = {
   off: (event, fn) => eventEmitter.off(event, fn),
   emit: (event, payload) => eventEmitter.emit(event, payload),
 };
+
+function isValidateInitialValue(value: any): boolean {
+  if (!value) return false;
+  if (typeof value !== 'object') return false;
+  if (Object.keys(value).length === 0) return false;
+
+  return value;
+}
 
 const YooptaEditor = ({
   editor,
@@ -66,7 +74,7 @@ const YooptaEditor = ({
     if (marks) editor.formats = buildMarks(editor, marks);
     editor.blocks = buildBlocks(editor, plugins);
 
-    editor.children = DEFAULT_VALUE;
+    editor.children = isValidateInitialValue(value) ? value : DEFAULT_VALUE;
     editor.blockEditorsMap = buildBlockSlateEditors(editor);
     editor.shortcuts = buildBlockShortcuts(editor);
     editor.plugins = buildPlugins(plugins);
