@@ -1,5 +1,5 @@
 import { createDraft, finishDraft } from 'immer';
-import { getDefaultParagraphBlock } from '../../components/Editor/defaultValue';
+import { buildBlockData } from '../../components/Editor/utils';
 import { buildSlateEditor } from '../../utils/editorBuilders';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../../utils/generateId';
@@ -42,7 +42,7 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
   if (deleteAll || Object.keys(editor.children).length === 1) {
     editor.children = {};
     editor.blockEditorsMap = {};
-    const defaultBlock = getDefaultParagraphBlock(generateId());
+    const defaultBlock = buildBlockData({ id: generateId() });
     const slate = buildSlateEditor(editor);
 
     editor.children[defaultBlock.id] = defaultBlock;

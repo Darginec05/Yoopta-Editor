@@ -14,7 +14,7 @@ export type YooptaBlockPath = [number];
 export type YooptaBlockDataKey = string;
 export type YooptaChildrenValue = Record<YooptaBlockDataKey, YooptaBlockData>;
 
-export type YooptaBlockData<T = Descendant> = {
+export type YooptaBlockData<T = Descendant | SlateElement> = {
   id: string;
   value: T[];
   type: string;

@@ -2,7 +2,7 @@ import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
 import { createEditor, Editor } from 'slate';
 import { YooEditor, YooptaBlockData } from '../editor/types';
-import { PluginReturn, PluginElement, PluginElementsMap } from '../plugins/types';
+import { PluginReturn, PluginElement, PluginElementsMap, PluginOptions } from '../plugins/types';
 import { YooptaMark } from '../marks';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
 import { createBlock } from '../editor/transforms/createBlock';
@@ -121,6 +121,8 @@ export function buildBlockShortcuts(editor: YooEditor) {
 
   return shortcuts;
 }
+
+// const DEFAULT_PLUGIN_OPTIONS: PluginOptions = {};
 
 export function buildPlugins(
   plugins: PluginReturn<string, PluginElement<unknown>>[],

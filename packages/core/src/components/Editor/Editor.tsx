@@ -3,7 +3,7 @@ import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaCo
 import { RenderBlocks } from './RenderBlocks';
 import { YooptaMark } from '../../marks';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
-import { getDefaultParagraphBlock } from './defaultValue';
+import { buildBlockData } from './utils';
 import { generateId } from '../../utils/generateId';
 import { HOTKEYS } from '../../utils/hotkeys';
 import { Editor as SlateEditor, Element, Path, Range, Transforms } from 'slate';
@@ -44,6 +44,8 @@ const Editor = ({ marks, className, autoFocus = true, selectionBoxRoot }: Props)
 
   let state = useRef<State>(DEFAULT_STATE).current;
 
+  console.log('editor.children', editor.children);
+
   useEffect(() => {
     if (!autoFocus) return;
     const firstBlock = findPluginBlockBySelectionPath(editor, { at: [0] });
@@ -80,7 +82,7 @@ const Editor = ({ marks, className, autoFocus = true, selectionBoxRoot }: Props)
         }
       }
 
-      const defaultBlock = getDefaultParagraphBlock(generateId());
+      const defaultBlock = buildBlockData({ id: generateId() });
       const nextPath = lastPath + 1;
       editor.insertBlock(defaultBlock, { at: [nextPath], focus: true });
     }

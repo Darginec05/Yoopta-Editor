@@ -1,10 +1,14 @@
 import { PluginElementRenderProps } from '@yoopta/editor';
+import { TodoListElementProps } from '../types';
 
-const TodoListRender = (props: PluginElementRenderProps) => {
+const TodoListRender = ({ attributes, element, children }: PluginElementRenderProps) => {
+  const { checked = false } = (element.props || {}) as TodoListElementProps;
+
   return (
-    <ul className="my-4 ml-4 [&>li]:mt-2" data-element-type="TodoList" {...props.attributes}>
-      {props.children}
-    </ul>
+    <div className="flex items-center pl-4 space-x-2 py-[3px]" data-element-type="TodoListItem" {...attributes}>
+      <input type="checkbox" className="form-checkbox min-w-[10px] w-auto" checked={checked} />
+      <div className="flex-grow">{children}</div>
+    </div>
   );
 };
 

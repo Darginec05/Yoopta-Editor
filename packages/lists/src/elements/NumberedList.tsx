@@ -1,10 +1,29 @@
-import { PluginElementRenderProps } from '@yoopta/editor';
+import {
+  findPluginBlockBySelectionPath,
+  PluginElementRenderProps,
+  useBlockData,
+  useYooptaEditor,
+} from '@yoopta/editor';
 
-const NumberedListRender = (props: PluginElementRenderProps<unknown>) => {
+const NumberedListRender = ({ attributes, children, blockId, element }: PluginElementRenderProps<unknown>) => {
+  // const block = useBlockData(blockId);
+  // const editor = useYooptaEditor();
+
+  const getCounter = () => {
+    const counter = typeof element.props?.position === 'number' ? element.props?.position : 0;
+
+    // const prevBlock = findPluginBlockBySelectionPath(editor, { at: [block.meta.order - 1] });
+    // const nextBlock = findPluginBlockBySelectionPath(editor, { at: [block.meta.order + 1] });
+    // console.log({ block, prevBlock, nextBlock });
+
+    return counter + 1;
+  };
+
   return (
-    <ol data-element-type="NumberedList" {...props.attributes} className="my-4 ml-4 pl-4 [&>li]:mt-2 list-decimal">
-      {props.children}
-    </ol>
+    <div {...attributes} className="flex items-center pl-4 space-x-2 py-[3px]">
+      <span className="min-w-[10px] w-auto">{getCounter()}.</span>
+      <span className="flex-grow">{children}</span>
+    </div>
   );
 };
 

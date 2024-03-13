@@ -1,6 +1,6 @@
 import EventEmitter from 'eventemitter3';
 import { UltraYooptaContextProvider } from './contexts/UltraYooptaContext/UltraYooptaContext';
-import { getDefaultYooptaChildren } from './components/Editor/defaultValue';
+import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { Editor } from './components/Editor/Editor';
 import { useMemo, useState } from 'react';
 import { YooEditor, YooptaChildrenValue } from './editor/types';

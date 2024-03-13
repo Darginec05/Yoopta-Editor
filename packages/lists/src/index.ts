@@ -1,16 +1,10 @@
 import { LISTS } from './plugin';
-import {
-  NumberedListElement,
-  BulletedListElement,
-  TodoListElement,
-  ListItemElement,
-  TodoListItemElement,
-} from './types';
+import { NumberedListElement, BulletedListElement, TodoListElement } from './types';
 import './styles.css';
 
 declare module 'slate' {
   interface CustomTypes {
-    Element: NumberedListElement | BulletedListElement | TodoListElement | ListItemElement | TodoListItemElement;
+    Element: NumberedListElement | BulletedListElement | TodoListElement;
   }
 }
 
@@ -24,8 +18,6 @@ export {
   NumberedListElement,
   BulletedListElement,
   TodoListElement,
-  ListItemElement,
-  TodoListItemElement,
   // plugins
   NumberedList,
   BulletedList,

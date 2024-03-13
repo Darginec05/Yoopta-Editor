@@ -2,7 +2,7 @@ import { YooEditor, YooptaBlockPath, YooptaBlockData } from '../../editor/types'
 import { generateId } from '../../utils/generateId';
 import DragIcon from './icons/drag.svg';
 import PlusIcon from './icons/plus.svg';
-import { getDefaultParagraphBlock } from '../Editor/defaultValue';
+import { buildBlockData } from '../Editor/utils';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { ReactEditor } from 'slate-react';
 import { Transforms } from 'slate';
@@ -36,7 +36,7 @@ const BlockActions = ({ block, editor, dragHandleProps, showActions, onChangeAct
   const { setActivatorNodeRef, attributes, listeners } = dragHandleProps;
 
   const onPlusClick = () => {
-    const defaultBlock = getDefaultParagraphBlock(generateId());
+    const defaultBlock = buildBlockData({ id: generateId() });
     const nextPath: YooptaBlockPath = [block.meta.order + 1];
 
     editor.setSelection([block.meta.order]);

@@ -1,5 +1,4 @@
 import { createDraft, finishDraft } from 'immer';
-import { getDefaultParagraphBlock } from '../../components/Editor/defaultValue';
 import { deepClone } from '../../utils/deepClone';
 import { buildSlateEditor } from '../../utils/editorBuilders';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';

@@ -62,10 +62,11 @@ const useYooptaEditor = (): YooEditor => {
 
   return context.editor;
 };
-const useBlockData = (id: string) => useYooptaEditor().children[id];
-const useYooptaBlock = (type: string) => useYooptaEditor().blocks[type];
+const useBlockData = (blockId: string) => useYooptaEditor().children[blockId];
+const useYooptaBlock = (blockType: string) => useYooptaEditor().blocks[blockType];
 const useYooptaPlugin = (type: string) => useYooptaEditor().plugins[type];
-const useYooptaPluginOptions = <TOptions,>(type: string): PluginOptions<TOptions> => useYooptaPlugin(type).options;
+const useYooptaPluginOptions = <TOptions,>(blockId: string): PluginOptions<TOptions> =>
+  useYooptaPlugin(blockId)?.options;
 
 type UseBlockSelectedProps = { blockId: string; path?: YooptaBlockPath } | { path: YooptaBlockPath; blockId?: string };
 const useBlockSelected = ({ blockId, path }: UseBlockSelectedProps) => {

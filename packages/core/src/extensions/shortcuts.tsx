@@ -34,6 +34,9 @@ export const withShortcuts = (editor: YooEditor, slate: Editor) => {
       const matchedBlock = editor.shortcuts?.[beforeText];
       const hasMatchedBlock = !!matchedBlock;
 
+      console.log('beforeText', beforeText);
+      console.log('matchedBlock', matchedBlock);
+
       if (hasMatchedBlock && !matchedBlock.isActive()) {
         Transforms.select(slate, range);
         Transforms.delete(slate);
