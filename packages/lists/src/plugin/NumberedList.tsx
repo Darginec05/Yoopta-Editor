@@ -1,19 +1,17 @@
 import { YooptaPlugin } from '@yoopta/editor';
-import { ListItemRender } from '../elements/ListItem';
 import { NumberedListRender } from '../elements/NumberedList';
 import { onKeyDown } from '../events/onKeyDown';
-import { ListItemElement, NumberedListElement, NumberedListPluginKeys } from '../types';
+import { ListElementProps } from '../types';
 
-const NumberedList = new YooptaPlugin<NumberedListPluginKeys, NumberedListElement | ListItemElement>({
+const NumberedList = new YooptaPlugin<'numbered-list', ListElementProps>({
   type: 'NumberedList',
   elements: {
     'numbered-list': {
       render: NumberedListRender,
-      asRoot: true,
-      children: ['list-item'],
-    },
-    'list-item': {
-      render: ListItemRender,
+      props: {
+        nodeType: 'block',
+        position: 0,
+      },
     },
   },
   options: {

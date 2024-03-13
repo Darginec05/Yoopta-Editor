@@ -1,17 +1,17 @@
 import { SlateElement } from '@yoopta/editor';
 
-export type BulletedListPluginKeys = 'bulleted-list' | 'list-item';
-export type NumberedListPluginKeys = 'numbered-list' | 'list-item';
-export type TodoListPluginKeys = 'todo-list' | 'todo-list-item';
+export type BulletedListPluginKeys = 'bulleted-list';
+export type NumberedListPluginKeys = 'numbered-list';
+export type TodoListPluginKeys = 'todo-list';
 
-export type NumberedListElement = SlateElement<'numbered-list'>;
-export type BulletedListElement = SlateElement<'bulleted-list'>;
-export type TodoListElement = SlateElement<'todo-list'>;
-
-export type ListItemElement = SlateElement<'list-item'>;
-
-type TodoListElementProps = {
-  checked: boolean;
+export type ListElementProps = {
+  position: number;
 };
 
-export type TodoListItemElement = SlateElement<'todo-list-item', TodoListElementProps>;
+export type NumberedListElement = SlateElement<'numbered-list', ListElementProps>;
+export type BulletedListElement = SlateElement<'bulleted-list', ListElementProps>;
+export type TodoListElement = SlateElement<'todo-list', TodoListElementProps>;
+
+export type TodoListElementProps = {
+  checked: boolean;
+};

@@ -69,6 +69,9 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
 
   const selectedBlock = editor.blocks[type];
 
+  console.log('createBlock type', type);
+  console.log('createBlock selectedBlock', selectedBlock);
+
   // console.log('selectedBlock.withCustomEditor', selectedBlock.withCustomEditor);
 
   // if (selectedBlock.withCustomEditor) {

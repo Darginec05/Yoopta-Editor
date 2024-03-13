@@ -3,23 +3,41 @@ import { YooEditor, YooptaBlockData } from '../types';
 
 export function updateBlock<TElementKeys extends string, TProps>(
   editor: YooEditor,
-  id: string,
-  data: Partial<Pick<YooptaBlockData, 'meta' | 'value'>>,
+  blockId: string,
+  data: Partial<YooptaBlockData>,
 ) {
   editor.children = createDraft(editor.children);
+  let shouldApply = false;
 
-  const block = editor.children[id];
-
+  const block = editor.children[blockId];
   if (!block) {
-    throw Error(`Block with id ${id} not found`);
+    throw Error(`Block with id ${blockId} not found`);
   }
 
-  if (data.meta) block.meta = data.meta;
-  if (data.value) block.value = data.value;
+  if (data.id) {
+    block.id = data.id;
+    shouldApply = true;
+  }
+
+  if (data.type) {
+    block.type = data.type;
+    shouldApply = true;
+  }
+
+  if (data.meta) {
+    block.meta = data.meta;
+    shouldApply = true;
+  }
+
+  if (data.value) {
+    block.value = data.value;
+  }
 
   editor.children = finishDraft(editor.children);
-  editor.emit('block:update', { id, data });
+  editor.emit('block:update', { blockId, data });
 
   // [TODO] - optimize applyChanges while updating slate value
-  // editor.applyChanges();
+  if (shouldApply) {
+    editor.applyChanges();
+  }
 }

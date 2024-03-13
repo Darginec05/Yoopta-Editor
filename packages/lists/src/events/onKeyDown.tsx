@@ -1,174 +1,97 @@
-import { generateId, YooEditor, PluginEventHandlerOptions, findPluginBlockBySelectionPath } from '@yoopta/editor';
-import { Editor, Element, Path, Transforms } from 'slate';
-import { ListItemElement } from '../types';
+import {
+  YooEditor,
+  PluginEventHandlerOptions,
+  findPluginBlockBySelectionPath,
+  YooptaBlockData,
+  buildBlockData,
+  buildBlockElement,
+} from '@yoopta/editor';
+import { Editor, Element, Path } from 'slate';
+import { BulletedListElement, NumberedListElement, TodoListElement } from '../types';
 
-export function onKeyDown(
-  editor: YooEditor,
-  slate: Editor,
-  { hotkeys, currentBlock, defaultBlock }: PluginEventHandlerOptions,
-) {
+type ListNode = NumberedListElement | BulletedListElement | TodoListElement;
+
+export function onKeyDown(editor: YooEditor, slate: Editor, { hotkeys, defaultBlock }: PluginEventHandlerOptions) {
   return (event) => {
     Editor.withoutNormalizing(slate, () => {
-      if (!slate.selection) return;
+      const block = findPluginBlockBySelectionPath(editor);
+
+      if (!slate.selection || !block) return;
       const selection = slate.selection;
       const { anchor } = selection;
-
-      if (hotkeys.isBackspace(event)) {
-        // event.preventDefault();
-        return;
-      }
-
-      if (hotkeys.isTab(event)) {
-        event.preventDefault();
-        return;
-      }
-
-      if (hotkeys.isShiftTab(event)) {
-        event.preventDefault();
-        return;
-      }
 
       if (hotkeys.isEnter(event)) {
         event.preventDefault();
 
-        const nodeEntry = Editor.above(slate, {
+        const nodeEntry = Editor.above<ListNode>(slate, {
           at: anchor,
-          match: (n) => Element.isElement(n) && n.type === 'list-item',
+          match: (n) =>
+            !Editor.isEditor(n) &&
+            Element.isElement(n) &&
+            (n.type === 'numbered-list' || n.type === 'bulleted-list' || n.type === 'todo-list'),
+          mode: 'highest',
         });
 
         if (!nodeEntry) return;
 
-        const [listItemNode, listItemPath] = nodeEntry;
-        const [parentNode, parentPath] = Editor.parent(slate, listItemPath);
+        const [listNode, listPath] = nodeEntry as [ListNode, Path];
 
-        const isEnd = Editor.isEnd(slate, anchor, listItemPath);
-        const isStart = Editor.isStart(slate, anchor, listItemPath);
-        const text = Editor.string(slate, listItemPath);
+        const currentListNodePosition = listNode.props?.position || 0;
 
-        console.log({ isStart, isEnd, text, listItemPath });
+        const isEndAtNode = Editor.isEnd(slate, anchor, listPath);
+        const isStartAtNode = Editor.isStart(slate, anchor, listPath);
+        const text = Editor.string(slate, listPath);
 
-        if (text.trim() === '') {
-          const nextListItemPath = Path.next(listItemPath);
-          console.log('nextListItemPath', nextListItemPath);
+        const isBlockIsInFirstDepth = block.meta.depth === 0;
+        const hasText = text.trim().length > 0;
 
-          // check for depth
-          const block = findPluginBlockBySelectionPath(editor, { at: editor.selection });
-          if (!block) return;
+        if (!hasText) {
+          if (isBlockIsInFirstDepth) {
+            const currentOrder = block.meta.order;
 
-          Transforms.removeNodes(slate, {
-            at: listItemPath,
-            match: (n) => Element.isElement(n) && n.type === 'list-item',
-          });
-          editor.insertBlock(defaultBlock, { at: [block.meta.order + 1], focus: true });
+            editor.deleteBlock({ blockId: block.id });
+            editor.insertBlock(defaultBlock, { at: [currentOrder], focus: true });
+            return;
+          }
 
+          editor.decreaseBlockDepth({ blockId: block.id });
           return;
         }
 
-        if (!isStart && !isEnd) {
-          const nextListItemPath = Path.next(listItemPath);
-
-          Transforms.splitNodes(slate, {
-            match: (n) => Element.isElement(n) && n.type === 'list-item',
-            always: true,
+        if (isStartAtNode) {
+          const prevListBlock: YooptaBlockData = buildBlockData({
+            type: block.type,
+            meta: { order: block.meta.order, depth: block.meta.depth },
+            value: [
+              buildBlockElement({
+                type: listNode.type,
+                props: { nodeType: 'block', position: currentListNodePosition - 1 },
+              }),
+            ],
           });
 
-          Transforms.select(slate, { path: nextListItemPath.concat(0), offset: 0 });
+          editor.insertBlock(prevListBlock, { at: [block.meta.order], focus: false });
           return;
         }
 
-        if (isStart && text.trim() !== '') {
-          const nextListItemPath = Path.next(listItemPath);
-          const listItemProps = editor.blocks[currentBlock.type].elements['list-item'];
-
-          const newListItemNode: ListItemElement = {
-            id: generateId(),
-            type: 'list-item',
-            children: [{ text: '' }],
-            props: listItemProps,
-          };
-
-          Transforms.insertNodes(slate, newListItemNode, {
-            at: Path.next(listItemPath),
-            match: (n) => Element.isElement(n) && n.type === 'list-item',
-          });
-          Transforms.select(slate, nextListItemPath);
+        if (hasText && !isStartAtNode && !isEndAtNode) {
+          editor.splitBlock({ slate, focus: true });
           return;
         }
 
-        if (isEnd) {
-          const nextListItemPath = Path.next(listItemPath);
-          const listItemProps = editor.blocks[currentBlock.type].elements['list-item'];
+        const nextListBlock: YooptaBlockData = buildBlockData({
+          type: block.type,
+          meta: { order: block.meta.order + 1, depth: block.meta.depth },
+          value: [
+            buildBlockElement({
+              type: listNode.type,
+              props: { nodeType: 'block', position: currentListNodePosition + 1 },
+            }),
+          ],
+        });
 
-          const newListItemNode: ListItemElement = {
-            id: generateId(),
-            type: 'list-item',
-            children: [{ text: '' }],
-            props: listItemProps,
-          };
-
-          Transforms.insertNodes(slate, newListItemNode, {
-            at: Path.next(listItemPath),
-            match: (n) => Element.isElement(n) && n.type === 'list-item',
-          });
-          Transforms.select(slate, nextListItemPath);
-
-          return;
-        }
-
-        // if (isStart) {
-        //   let previousPath;
-
-        //   try {
-        //     previousPath = Path.previous(listItemPath);
-        //   } catch (error) {
-        //     previousPath = listItemPath;
-        //   }
-
-        //   console.log('Path.previous(listItemPath)', previousPath);
-        //   console.log('listItemPath', listItemPath);
-
-        //   // [TODO] - think about approach to create new nodes from elements
-        //   const newListItemNode: ListItemElement = {
-        //     id: generateId(),
-        //     type: 'list-item',
-        //     children: [{ text: '' }],
-        //   };
-
-        //   Transforms.insertNodes(slate, newListItemNode, { at: listItemPath });
-        //   return;
-        // }
-
-        // if (isEnd) {
-        //   const nextPath = Path.next(listItemPath);
-        //   console.log('Path.next(listItemPath)', Path.next(listItemPath));
-
-        //   // [TODO] - think about approach to create new nodes from elements
-        //   const newListItemNode: ListItemElement = {
-        //     id: generateId(),
-        //     type: 'list-item',
-        //     children: [{ text: '' }],
-        //   };
-
-        //   Transforms.insertNodes(slate, newListItemNode, { at: Path.next(listItemPath) });
-        //   Transforms.select(slate, nextPath);
-        //   return;
-        // }
-
-        // if (!isStart && !isEnd) {
-        //   Transforms.splitNodes(slate, {
-        //     at: anchor,
-        //     match: (n) => Element.isElement(n) && n.type === 'list-item',
-        //   });
-
-        //   Transforms.setNodes(
-        //     slate,
-        //     { id: generateId() },
-        //     {
-        //       match: (n) => Element.isElement(n) && n.type === 'list-item',
-        //     },
-        //   );
-        //   return;
-        // }
+        editor.insertBlock(nextListBlock, { at: [block.meta.order + 1], focus: true });
+        return;
       }
     });
   };

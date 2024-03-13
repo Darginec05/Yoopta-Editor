@@ -19,7 +19,7 @@ import { TextLeaf } from '../components/TextLeaf/TextLeaf';
 import { ClipboardEvent } from 'react';
 import { YooptaBlock, YooptaBlockData } from '../editor/types';
 import { generateId } from '../utils/generateId';
-import { getDefaultParagraphBlock } from '../components/Editor/defaultValue';
+import { buildBlockData } from '../components/Editor/utils';
 
 type Props<TKeys extends string, TProps, TOptions> = PluginParams<TKeys, TProps, TOptions> & {
   id: string;
@@ -97,7 +97,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     const eventHandlersOptions: PluginEventHandlerOptions = {
       hotkeys: HOTKEYS,
       currentBlock: block,
-      defaultBlock: getDefaultParagraphBlock(),
+      defaultBlock: buildBlockData({ id: generateId() }),
     };
     const eventHandlersMap = {};
 
@@ -111,7 +111,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     });
 
     return eventHandlersMap;
-  }, [events, editor]);
+  }, [events, editor, block]);
 
   const onChange = (value) => editor.updateBlock(id, { value });
 

@@ -1,10 +1,13 @@
 import { PluginElementRenderProps } from '@yoopta/editor';
 
-const BulletedListRender = (props: PluginElementRenderProps<unknown>) => {
+const BulletedListRender = ({ attributes, element, children }: PluginElementRenderProps<unknown>) => {
   return (
-    <ul data-element-type="BulletedList" {...props.attributes} className="my-4 ml-4 pl-4 list-disc [&>li]:mt-2">
-      {props.children}
-    </ul>
+    <div className="flex items-center pl-4 space-x-2 py-[3px]" {...attributes}>
+      <span className="min-w-[10px] w-auto" contentEditable={false}>
+        •
+      </span>
+      <span className="flex-grow">{children}</span>
+    </div>
   );
 };
 

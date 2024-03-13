@@ -1,18 +1,13 @@
 import { YooptaPlugin } from '@yoopta/editor';
-import { TodoListItemRender } from '../elements/TodoListItem';
 import { TodoListRender } from '../elements/TodoList';
-import { TodoListElement, TodoListItemElement, TodoListPluginKeys } from '../types';
+import { onKeyDown } from '../events/onKeyDown';
+import { TodoListElementProps, TodoListPluginKeys } from '../types';
 
-const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElement | TodoListItemElement>({
-  type: 'TodoListPlugin',
+const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
+  type: 'TodoList',
   elements: {
     'todo-list': {
       render: TodoListRender,
-      asRoot: true,
-      children: ['todo-list-item'],
-    },
-    'todo-list-item': {
-      render: TodoListItemRender,
       props: {
         checked: false,
       },
@@ -21,6 +16,9 @@ const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElement | TodoList
   options: {
     displayLabel: 'Todo List',
     shortcuts: ['[]'],
+  },
+  events: {
+    onKeyDown,
   },
 });
 
