@@ -3394,6 +3394,11 @@
     is-url "^1.2.4"
     prismjs "^1.29.0"
 
+"@yoopta/lists@*":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/lists/-/lists-2.0.1.tgz#06e21f621e93c6d5fb70c2d1e3a56d90c5cbbcfb"
+  integrity sha512-kyL/BKN4bDsFled/321X34TvRzIjzEWa45H3V6B+eQswFAy50U97vs7cLDM2iustUkREdD+jcO/EcVLLWLf/5g==
+
 "@yoopta/marks@*":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@yoopta/marks/-/marks-2.0.1.tgz#6938fce35f32dc254a9e3c6c7a18ec1c27cad758"

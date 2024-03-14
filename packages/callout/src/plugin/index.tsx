@@ -7,6 +7,9 @@ const Callout = new YooptaPlugin<CalloutPluginElementKeys, CalloutElementProps>(
   elements: {
     callout: {
       render: CalloutRender,
+      props: {
+        theme: 'default',
+      },
     },
   },
   options: {
