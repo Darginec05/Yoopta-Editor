@@ -1,6 +1,9 @@
 import { createDraft, finishDraft } from 'immer';
+import { createEditor } from 'slate';
+import { withHistory } from 'slate-history';
+import { withReact } from 'slate-react';
 import { buildBlockData } from '../../components/Editor/utils';
-import { buildSlateEditor } from '../../utils/editorBuilders';
+import { withShortcuts } from '../../extensions/shortcuts';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../../utils/generateId';
 import { YooEditor, YooptaEditorTransformOptions } from '../types';
@@ -43,7 +46,7 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
     editor.children = {};
     editor.blockEditorsMap = {};
     const defaultBlock = buildBlockData({ id: generateId() });
-    const slate = buildSlateEditor(editor);
+    const slate = withHistory(withShortcuts(editor, withReact(createEditor())));
 
     editor.children[defaultBlock.id] = defaultBlock;
     editor.blockEditorsMap[defaultBlock.id] = slate;

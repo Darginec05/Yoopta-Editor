@@ -5,7 +5,6 @@ import {
   CodeIcon,
   UnderlineIcon,
   ChevronDownIcon,
-  TextIcon,
   ChevronUpIcon,
 } from '@radix-ui/react-icons';
 import * as Toolbar from '@radix-ui/react-toolbar';
@@ -21,7 +20,7 @@ import {
   FloatingPortal,
   FloatingOverlay,
 } from '@floating-ui/react';
-import { CSSProperties, MouseEvent, useState } from 'react';
+import { CSSProperties, useState } from 'react';
 import { HighlightColor } from './HighlightColor';
 
 type ToolbarComponentProps = {

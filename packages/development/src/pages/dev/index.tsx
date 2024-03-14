@@ -21,10 +21,8 @@ const plugins = [
   Paragraph,
   // Code,
   Image.extend({
-    deviceSizes: [768, 1024, 1200],
     onUpload: async (file: File) => {
       const data = await uploadToCloudinary(file);
-      console.log('on load data Image plugin', data);
 
       return {
         src: data.secure_url,
@@ -47,7 +45,6 @@ const plugins = [
   Table,
   Embed,
   Video.extend({
-    deviceSizes: [768, 1024, 1200],
     onUpload: async (file: File) => {
       const data = await uploadToCloudinary(file, 'video');
       return {
@@ -118,9 +115,8 @@ const BasicExample = () => {
       <NoSSR>
         <YooptaEditor
           editor={editor}
-          value={{}}
           plugins={plugins}
-          className="w-[650px] pb-20 mx-auto"
+          // className="w-[650px] pb-20 mx-auto"
           selectionBoxRoot={rootRef}
           marks={MARKS}
           autoFocus

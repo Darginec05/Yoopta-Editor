@@ -3,7 +3,7 @@ import { UltraYooptaContextProvider } from './contexts/UltraYooptaContext/UltraY
 import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { Editor } from './components/Editor/Editor';
 import { useMemo, useState } from 'react';
-import { YooEditor, YooptaChildrenValue } from './editor/types';
+import { YooEditor, YooptaBlockData, YooptaChildrenValue } from './editor/types';
 import { PluginReturn } from './plugins/types';
 import NoSSR from './components/NoSsr/NoSsr';
 import { ToolAPI, ToolsProvider } from './contexts/UltraYooptaContext/ToolsContext';
@@ -23,7 +23,7 @@ type Props = {
   editor: YooEditor;
   plugins: YooptaPlugin[];
   marks?: YooptaMark<any>[];
-  value: YooptaChildrenValue;
+  value?: YooptaChildrenValue;
   autoFocus?: boolean;
   className?: string;
   selectionBoxRoot?: HTMLElement | null | React.MutableRefObject<HTMLElement | null>;
@@ -32,7 +32,7 @@ type Props = {
   };
 };
 
-const DEFAULT_VALUE = getDefaultYooptaChildren();
+const DEFAULT_VALUE: Record<string, YooptaBlockData> = getDefaultYooptaChildren();
 const eventEmitter = new EventEmitter();
 
 const Events = {
@@ -47,7 +47,7 @@ function isValidateInitialValue(value: any): boolean {
   if (typeof value !== 'object') return false;
   if (Object.keys(value).length === 0) return false;
 
-  return value;
+  return true;
 }
 
 const YooptaEditor = ({

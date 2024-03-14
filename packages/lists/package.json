@@ -5,7 +5,7 @@
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -17,8 +17,8 @@
     "@yoopta/editor": ">=4.0.0-rc.0",
     "react": ">=17.0.2",
     "react-dom": ">=17.0.2",
-    "slate": ">=0.72.3",
-    "slate-react": ">=0.95.0"
+    "slate": ">=0.99.0",
+    "slate-react": ">=0.99.0"
   },
   "publishConfig": {
     "registry": "https://registry.yarnpkg.com"

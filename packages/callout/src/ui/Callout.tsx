@@ -13,7 +13,7 @@ const CalloutRender = ({ element, attributes, children, blockId }: PluginElement
       data-element-type={element.type}
       {...attributes}
       style={styles}
-      className={`yoo-c-rounded-md yoo-c-mt-2 yoo-c-p-2 yoo-c-pl-4 yoo-c-leading-7 yoo-c-bg-info yoo-c-text-info-foreground yoopta-callout yoopta-callout-type-${theme}`}
+      className={`yoo-c-rounded-md yoo-c-mt-2 yoo-c-p-2 yoo-c-pl-4 yoo-c-leading-7 yoo-c-bg-info yoo-c-text-info-foreground yoo-c-text-[16px] yoopta-callout yoopta-callout-theme-${theme}`}
     >
       <CalloutBlockOptions block={block} editor={editor} props={element.props} />
       {children}

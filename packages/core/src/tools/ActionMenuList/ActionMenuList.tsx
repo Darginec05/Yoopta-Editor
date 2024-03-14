@@ -1,10 +1,12 @@
 import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
 import { useEffect, useState } from 'react';
 import { YooptaBlock } from '../../editor/types';
-import { useTools } from '../../contexts/UltraYooptaContext/ToolsContext';
 import { ActionMenuComponent } from './ActionMenuComponent';
-import { events } from './events';
 import { useFloating, offset, flip, shift, inline, autoUpdate, FloatingPortal } from '@floating-ui/react';
+import { HOTKEYS } from '../../utils/hotkeys';
+import { Editor, Path } from 'slate';
+import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
+import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 
 const filterBy = (item: YooptaBlock | YooptaBlock['options'], text: string, field: string) => {
   if (!item || !item?.[field]) return false;
@@ -32,7 +34,6 @@ type Props = {
 
 const ActionMenuList = ({ trigger = '/', render }: Props) => {
   const editor = useYooptaEditor();
-  const { registerTool, unregisterTool, tools } = useTools();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   const {
@@ -69,23 +70,115 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
   };
 
   useEffect(() => {
-    registerTool('actionMenu', {
-      open: onOpen,
-      close: onClose,
-      change: onFilter,
-      state: { isMenuOpen, refs },
-      component: ActionMenuComponent,
-      events,
-    });
-    return () => unregisterTool('actionMenu');
-  }, [isMenuOpen, refs]);
+    const yooptaEditorRef = document.getElementById('yoopta-editor');
+    const block = findPluginBlockBySelectionPath(editor, { at: editor.selection });
 
-  useEffect(() => {
-    if (!isMenuOpen || !tools.actionMenu) return;
+    const handleActionMenuKeyUp = (event: KeyboardEvent) => {
+      const slate = findSlateBySelectionPath(editor, { at: editor.selection });
+      const isInsideEditor = yooptaEditorRef?.contains(event.target as Node);
 
-    document.addEventListener('click', onClose);
-    return () => document.removeEventListener('click', onClose);
-  }, [isMenuOpen, tools.actionMenu]);
+      if (!slate || !slate.selection || !isInsideEditor) return;
+
+      const parentPath = Path.parent(slate.selection.anchor.path);
+      const string = Editor.string(slate, parentPath);
+
+      if (string.length === 0) return onClose();
+      onFilter({ text: string });
+    };
+
+    const handleActionMenuKeyDown = (event: KeyboardEvent) => {
+      const slate = findSlateBySelectionPath(editor, { at: editor.selection });
+      const isInsideEditor = yooptaEditorRef?.contains(event.target as Node);
+
+      if (!slate || !slate.selection || !isInsideEditor) return;
+
+      if (HOTKEYS.isSlashCommand(event)) {
+        const parentPath = Path.parent(slate.selection.anchor.path);
+        const string = Editor.string(slate, parentPath);
+        const isStart = Editor.isStart(slate, slate.selection.anchor, slate.selection.focus);
+
+        if (!isStart || string.trim().length > 0) return;
+
+        const domSelection = window.getSelection();
+        if (!domSelection) return;
+
+        const domRange = domSelection.getRangeAt(0);
+        const selectionRect = domRange.getBoundingClientRect();
+
+        if (domRange) {
+          refs.setReference({
+            getBoundingClientRect: () => selectionRect,
+            getClientRects: () => domRange.getClientRects(),
+          });
+
+          onOpen();
+        }
+      }
+
+      if (!isMenuOpen) return;
+
+      if (HOTKEYS.isTab(event)) {
+        event.preventDefault();
+        return;
+      }
+
+      if (HOTKEYS.isArrowUp(event)) {
+        event.preventDefault();
+        return;
+      }
+
+      if (HOTKEYS.isArrowDown(event)) {
+        event.preventDefault();
+        return;
+      }
+
+      if (HOTKEYS.isArrowLeft(event)) {
+        event.preventDefault();
+        return;
+      }
+
+      if (HOTKEYS.isArrowRight(event)) {
+        event.preventDefault();
+        return;
+      }
+
+      if (HOTKEYS.isBackspace(event)) {
+        if (!slate.selection) return;
+        const isStart = Editor.isStart(slate, slate.selection.anchor, slate.selection.focus);
+        if (isStart) return onClose();
+      }
+
+      if (HOTKEYS.isEscape(event)) {
+        event.preventDefault();
+        onClose();
+        return;
+      }
+
+      if (HOTKEYS.isEnter(event)) {
+        event.preventDefault();
+        return;
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('click', onClose);
+    }
+
+    yooptaEditorRef?.addEventListener('keydown', handleActionMenuKeyDown);
+    yooptaEditorRef?.addEventListener('keyup', handleActionMenuKeyUp);
+    return () => {
+      yooptaEditorRef?.removeEventListener('keydown', handleActionMenuKeyDown);
+      yooptaEditorRef?.removeEventListener('keyup', handleActionMenuKeyUp);
+      document.removeEventListener('click', onClose);
+    };
+  }, [actions, isMenuOpen, editor.selection, refs]);
+
+  // useEffect(() => {
+  //   if (!isMenuOpen) return;
+
+  //   document.addEventListener('click', onClose);
+  //   return () => document.removeEventListener('click', onClose);
+  // }, [isMenuOpen]);
 
   const onMouseEnter = (e: React.MouseEvent) => {
     const type = e.currentTarget.getAttribute('data-action-menu-item-type')!;
