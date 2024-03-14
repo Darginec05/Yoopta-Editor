@@ -1,3 +1,5 @@
-export type TableElement = any;
-export type TableCellElement = any;
-export type TableRowElement = any;
+import { SlateElement } from '@yoopta/editor';
+
+export type TableElement = SlateElement;
+export type TableCellElement = SlateElement;
+export type TableRowElement = SlateElement;

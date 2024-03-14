@@ -1,8 +1,8 @@
-import { RenderElementProps } from 'slate-react';
+import { PluginElementRenderProps } from '@yoopta/editor';
 
-const TableRender = ({ attributes, children }: RenderElementProps) => {
+const TableRender = ({ attributes, children, element }: PluginElementRenderProps) => {
   return (
-    <div {...attributes} className="mt-4 mb-2 w-full overflow-y-auto">
+    <div data-element-type={element.type} {...attributes} className="mt-4 mb-2 w-full overflow-y-auto">
       <table>
         <tbody>{children}</tbody>
       </table>

@@ -1,13 +1,8 @@
 import { YooptaPlugin } from '@yoopta/editor';
+import { LinkElementProps, LinkPluginElementKeys } from '../types';
 import { LinkRender } from '../ui/LinkRender';
 
-type LinkElementProps = {
-  url: string | null;
-  target?: string;
-  rel?: string;
-};
-
-const Link = new YooptaPlugin<LinkElementProps>({
+const Link = new YooptaPlugin<LinkPluginElementKeys, LinkElementProps>({
   type: 'LinkPlugin',
   elements: {
     link: {

@@ -10,7 +10,7 @@ const CalloutRender = ({ element, attributes, children, blockId }: PluginElement
 
   return (
     <div
-      data-element-type="Callout"
+      data-element-type={element.type}
       {...attributes}
       style={styles}
       className={`yoo-c-rounded-md yoo-c-mt-2 yoo-c-p-2 yoo-c-pl-4 yoo-c-leading-7 yoo-c-bg-info yoo-c-text-info-foreground yoopta-callout yoopta-callout-type-${theme}`}
