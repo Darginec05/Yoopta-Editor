@@ -20,7 +20,7 @@ const NumberedListRender = ({ attributes, children, blockId, element }: PluginEl
   };
 
   return (
-    <div {...attributes} className="flex items-center pl-4 space-x-2 py-[3px]">
+    <div data-element-type={element.type} {...attributes} className="flex items-center pl-4 space-x-2 py-[3px]">
       <span className="min-w-[10px] w-auto">{getCounter()}.</span>
       <span className="flex-grow">{children}</span>
     </div>

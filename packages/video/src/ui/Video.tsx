@@ -77,7 +77,13 @@ const VideoRender = ({ element, attributes, children, blockId }: PluginElementRe
   }
 
   return (
-    <div contentEditable={false} draggable={false} className="mt-4 relative" {...attributes}>
+    <div
+      data-element-type={element.type}
+      contentEditable={false}
+      draggable={false}
+      className="mt-4 relative"
+      {...attributes}
+    >
       <Resizable {...resizeProps} className="mx-auto my-0 flex">
         {blockSelected && (
           <div className="absolute pointer-events-none inset-0 bg-[rgba(35,131,226,0.14)] z-[81] rounded-[3px] opacity-100 transition-opacity duration-150 ease-in" />
