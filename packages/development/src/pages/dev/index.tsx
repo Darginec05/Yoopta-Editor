@@ -1,3 +1,5 @@
+'use client';
+
 import YooptaEditor, { createYooptaEditor, YooEditor } from '@yoopta/editor';
 import Blockquote from '@yoopta/blockquote';
 import Paragraph from '@yoopta/paragraph';
@@ -6,28 +8,27 @@ import Image from '@yoopta/image';
 import { Bold, Italic, Highlight, CodeMark, Strike, Underline } from '@yoopta/marks';
 import Callout from '@yoopta/callout';
 import Lists from '@yoopta/lists';
-import Mention from '@yoopta/mention';
+// import Mention from '@yoopta/mention';
 import Link from '@yoopta/link';
 import Video from '@yoopta/video';
 import Table from '@yoopta/table';
 import Embed from '@yoopta/embed';
-import Code from '@yoopta/code';
+// import Code from '@yoopta/code';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { uploadToCloudinary } from '../../utils/cloudinary';
 
 const plugins = [
   Paragraph,
-  Code,
+  // Code,
   Image.extend({
     deviceSizes: [768, 1024, 1200],
     onUpload: async (file: File) => {
       const data = await uploadToCloudinary(file);
-      console.log('on load data', data);
+      console.log('on load data Image plugin', data);
 
       return {
         src: data.secure_url,
         alt: 'cloudinary',
-        // bgColor: 'rgb(176, 171, 250)',
         sizes: {
           width: data.width,
           height: data.height,
@@ -52,7 +53,6 @@ const plugins = [
       return {
         src: data.secure_url,
         alt: 'cloudinary',
-        bgColor: 'rgb(176, 171, 250)',
         sizes: {
           width: data.width,
           height: data.height,
@@ -60,7 +60,7 @@ const plugins = [
       };
     },
   }),
-  Mention,
+  // Mention,
   Link,
 ];
 

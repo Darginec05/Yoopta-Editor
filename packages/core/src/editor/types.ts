@@ -67,7 +67,7 @@ export type YooptaBlock = {
     elementType: TElementKeys,
     elementProps: TElementProps,
   ) => void;
-  delete: (id: string) => void;
+  delete: (options: DeleteBlockOptions) => void;
 };
 
 export type YooptaBlocks = Record<string, YooptaBlock>;
