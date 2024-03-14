@@ -1,178 +1,65 @@
 import { createDraft, finishDraft } from 'immer';
-import { Editor, Element, Range, Transforms } from 'slate';
-import { PluginElement, PluginElementProps } from '../../plugins/types';
+import { Element, Transforms } from 'slate';
+import { buildBlockData, buildBlockElement } from '../../components/Editor/utils';
+import { getRootBlockElementType } from '../../utils/blockElements';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { generateId } from '../../utils/generateId';
-import { YooEditor, YooptaEditorTransformOptions, YooptaBlock, SlateElement } from '../types';
+import { YooEditor, YooptaEditorTransformOptions } from '../types';
 
 export type CreateBlockOptions = YooptaEditorTransformOptions & {
   deleteText?: boolean;
 };
 
-// function buildChildrenTree(block: YooptaBlock, children: string[]) {
-//   return children.map((child) => {
-//     const childElement = block.elements[child];
-
-//     const hasChildren = Array.isArray(childElement.children) && childElement.children.length > 0;
-
-//     console.log('hasChildren', hasChildren);
-//     console.log('childElement', childElement);
-
-//     if (hasChildren) {
-//       return {
-//         ...childElement,
-//         children: buildChildrenTree(block, childElement.children!),
-//       };
-//     }
-
-//     return buildSlateNodeElement(child, childElement.props);
-//   });
-// }
-
-function buildSlateNodeElement(
-  type: string,
-  props: PluginElementProps<unknown> = { nodeType: 'block' },
-): SlateElement<any> {
-  return { id: generateId(), type, children: [{ text: '' }], props: props };
-}
-
-// [TODO] - currently build two levels of children depth
-function buildChildrenElementNodes(block: YooptaBlock, children: string[]): SlateElement[] {
-  const nodes: SlateElement[] = [];
-
-  children.forEach((child) => {
-    const childElement = block.elements[child];
-    const hasChildren = Array.isArray(childElement.children) && childElement.children.length > 0;
-
-    if (hasChildren) {
-      const childrenNodes = buildChildrenElementNodes(block, childElement.children!);
-      const node = buildSlateNodeElement(child, childElement.props);
-      node.children = childrenNodes;
-      nodes.push(node);
-    } else {
-      nodes.push(buildSlateNodeElement(child, childElement.props));
-    }
-  });
-
-  return nodes;
-}
-
 export function createBlock(editor: YooEditor, type: string, options?: CreateBlockOptions) {
   editor.children = createDraft(editor.children);
 
-  const currentBlock = findPluginBlockBySelectionPath(editor);
-  if (!currentBlock) throw new Error(`No block found in the current selection path. Passed path: ${editor.selection}`);
+  const block = findPluginBlockBySelectionPath(editor);
+  if (!block) throw new Error(`No block found in the current selection path. Passed path: ${editor.selection}`);
 
-  const slate = findSlateBySelectionPath(editor, { at: [currentBlock?.meta.order] });
+  const slate = options?.slate || findSlateBySelectionPath(editor, { at: [block?.meta.order] });
   if (!slate || !slate.selection) return;
 
   const selectedBlock = editor.blocks[type];
+  const rootBlockElementType = getRootBlockElementType(selectedBlock.elements);
+  const rootBlockElement = selectedBlock.elements[rootBlockElementType!];
 
-  console.log('createBlock type', type);
-  console.log('createBlock selectedBlock', selectedBlock);
+  if (!rootBlockElement) return;
 
-  // console.log('selectedBlock.withCustomEditor', selectedBlock.withCustomEditor);
+  const nodeProps = { nodeType: rootBlockElement.props?.nodeType || 'block', ...rootBlockElement.props };
+  const elementNode = buildBlockElement({
+    id: generateId(),
+    type: rootBlockElementType,
+    props: nodeProps,
+  });
 
-  // if (selectedBlock.withCustomEditor) {
-  //   if (options?.deleteText) Transforms.delete(slate, { at: [0, 0] });
-
-  //   currentBlock.type = selectedBlock.type;
-  //   currentBlock.value = slate.children;
-
-  //   const currentBlockId = currentBlock!.id;
-
-  //   editor.children = finishDraft(editor.children);
-  //   editor.applyChanges();
-
-  //   if (options?.focus) {
-  //     editor.focusBlock(currentBlockId, { slate });
-  //   }
-
-  //   return;
-  // }
-
-  const blockSlateElements = Object.entries(selectedBlock.elements);
-  const rootElementFromBlock =
-    blockSlateElements.length === 1 ? blockSlateElements[0] : blockSlateElements.find((elem) => elem[1].asRoot);
-
-  console.log('rootElementFromBlock', rootElementFromBlock);
-
-  if (!rootElementFromBlock) {
-    throw new Error(`No root element found in the block elements. Passed block: ${selectedBlock}`);
-  }
-
-  const [rootElementType, rootElement] = rootElementFromBlock as [string, PluginElement<unknown>];
-  let rootChildrenNodes: Element[] = [];
-  const hasRootChildren = Array.isArray(rootElement.children) && rootElement.children.length > 0;
-  const props = rootElement.props || { nodeType: 'block' };
-  const rootElementNode = buildSlateNodeElement(rootElementType, props);
-  const nodeType = rootElementNode.props.nodeType;
-
-  if (hasRootChildren) {
-    rootChildrenNodes = buildChildrenElementNodes(selectedBlock, rootElement.children!);
-  }
-
-  const isInlineElement = nodeType === 'inline';
-  const isNodeElementVoid = nodeType === 'void';
-  const isNodeElementBlock = nodeType === 'block';
-  const isInlineVoidElement = nodeType === 'inlineVoid';
-
-  // [TODO] - fix this
-  // if (isInlineElement || isInlineVoidElement) {
-  //   const link = rootElementNode;
-  //   Transforms.insertNodes(slate, link, { at: slate.selection.anchor.path, mode: 'lowest' });
-  // }
-
-  Transforms.setNodes(slate, rootElementNode, {
+  Transforms.setNodes(slate, elementNode, {
     at: [0, 0],
     match: (n) => Element.isElement(n),
     mode: 'highest',
   });
 
-  if (hasRootChildren) {
-    let path = [0, 0];
+  if (options?.deleteText) Transforms.delete(slate, { at: [0, 0] });
 
-    // [TODO] - refactor code to handle more than two levels of children
-    // [TODO] - run it recursively, but take care about max count of operations
-    rootChildrenNodes.forEach((node) => {
-      if (Element.isElement(node)) {
-        Transforms.insertNodes(slate, node, {
-          at: path,
-          match: (n) => Element.isElement(n),
-          mode: 'lowest',
-        });
+  const blockData = buildBlockData({
+    id: block.id,
+    type: selectedBlock.type,
+    meta: {
+      order: block.meta.order,
+      depth: block.meta.depth,
+    },
+    value: [elementNode],
+  });
 
-        path.push(0);
-      }
+  const blockId = blockData.id;
 
-      if (node.children) {
-        node.children.forEach((child) => {
-          if (Element.isElement(child)) {
-            Transforms.insertNodes(slate, child, {
-              at: path,
-              match: (n) => Element.isElement(n),
-              mode: 'lowest',
-            });
-
-            path.push(0);
-          }
-        });
-      }
-    });
-  }
-
-  if (options?.deleteText) Transforms.delete(slate, { at: hasRootChildren ? [0, 0, 0] : [0, 0] });
-
-  if (isNodeElementBlock || isNodeElementVoid) currentBlock.type = selectedBlock.type;
-  currentBlock.value = slate.children;
-
-  const currentBlockId = currentBlock!.id;
+  editor.children[blockId] = blockData;
+  editor.blockEditorsMap[blockId] = slate;
 
   editor.children = finishDraft(editor.children);
   editor.applyChanges();
 
   if (options?.focus) {
-    editor.focusBlock(currentBlockId, { slate });
+    editor.focusBlock(blockId, { slate, waitExecution: true });
   }
 }

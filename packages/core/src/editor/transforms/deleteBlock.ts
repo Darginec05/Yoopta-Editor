@@ -81,8 +81,6 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
     const prevBlockPathIndex = editor.selection ? editor.selection[0] - 1 : 0;
     const prevBlock = findPluginBlockBySelectionPath(editor, { at: [prevBlockPathIndex] });
 
-    console.log('AFTER options.focusAt', options.focusAt);
-
     if (prevBlock) editor.focusBlock(prevBlock.id, { focusAt: options.focusAt });
   }
 }

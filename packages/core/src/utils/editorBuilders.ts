@@ -15,6 +15,7 @@ import { getRootBlockElement } from './blockElements';
 import { updateBlock } from '../editor/transforms/updateBlock';
 import { updateBlockElement } from '../editor/transforms/updateBlockElement';
 import { toggleBlock } from '../editor/transforms/toggleBlock';
+import { deleteBlock, DeleteBlockOptions } from '../editor/transforms/deleteBlock';
 
 export function buildMarks(editor, marks: YooptaMark<any>[]) {
   const formats: YooEditor['formats'] = {};
@@ -49,7 +50,7 @@ export function buildBlocks(editor, plugins: PluginReturn<string, PluginElement<
         elements[key] = element;
       });
 
-      // Omit fetchers and other non-editor related options
+      // Omit fetchers and other non-block related options
       const { displayLabel, placeholder, align, shortcuts } = plugin.options || {};
 
       blocks[plugin.type] = {
@@ -79,8 +80,8 @@ export function buildBlocks(editor, plugins: PluginReturn<string, PluginElement<
         updateElement: <TKeys extends string, TProps>(blockId: string, elementType: TKeys, props: TProps) => {
           updateBlockElement(editor, blockId, elementType, props);
         },
-        delete: () => {
-          console.log('block.delete');
+        delete: (options: DeleteBlockOptions) => {
+          deleteBlock(editor, options);
         },
       };
     }
