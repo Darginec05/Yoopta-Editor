@@ -12,7 +12,8 @@
 
 .yoopta-placeholder::after {
   content: attr(data-placeholder);
-  color: #aaa;
+  opacity: 0.5;
+  color: inherit;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);

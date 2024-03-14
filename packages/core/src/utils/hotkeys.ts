@@ -1,5 +1,4 @@
 import { isKeyHotkey } from 'is-hotkey';
-import { KeyboardEvent } from 'react';
 
 const HOTKEYS_MAP = {
   bold: 'mod+b',
@@ -63,7 +62,7 @@ const create = (key: string) => {
   const isApple = apple && isKeyHotkey(apple);
   const isWindows = windows && isKeyHotkey(windows);
 
-  return (event: KeyboardEvent) => {
+  return (event: React.KeyboardEvent | KeyboardEvent) => {
     if (isGeneric && isGeneric(event)) return true;
     if (isApple && isApple(event)) return true;
     if (isWindows && isWindows(event)) return true;
@@ -113,5 +112,5 @@ export const HOTKEYS = {
 };
 
 export type HOTKEYS_TYPE = {
-  [key in keyof typeof HOTKEYS]: (event: KeyboardEvent) => boolean;
+  [key in keyof typeof HOTKEYS]: (event: React.KeyboardEvent | KeyboardEvent) => boolean;
 };

@@ -1,171 +1,105 @@
 // import { Inter } from 'next/font/google';
-import { CSSProperties, ReactNode, useState } from 'react';
-import YooptaEditor, {
-  createYooptaPlugin,
-  generateId,
-  YooptaBaseElement,
-  RenderYooptaElementProps,
-} from '@yoopta/editor';
+import { useEffect, useMemo } from 'react';
+import YooptaEditor, { createYooptaEditor } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
-import Code from '@yoopta/code';
 import Embed from '@yoopta/embed';
 import Image from '@yoopta/image';
 import Link from '@yoopta/link';
 import Callout from '@yoopta/callout';
 import Video from '@yoopta/video';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
-import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
+import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
+// import File from '@yoopta/file';
+// import Code from '@yoopta/code';
 
-import ActionMenu from '@yoopta/action-menu-list';
+// import LinkTool from '@yoopta/link-tool';
+// import ActionMenu from '@yoopta/action-menu-list';
+// import Toolbar from '@yoopta/toolbar';
+
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import Toolbar from '@yoopta/toolbar';
-import { YooptaValue } from '@/utils/initialData';
-import { AccordionPlugin } from '@/components/CustomAccordeonPlugin/CustomAccordeonPlugin';
-import { Transforms } from 'slate';
 
-/** Custom plugin */
-export type DividerElement = YooptaBaseElement<'divider'>;
-
-type DividerRenderProps = RenderYooptaElementProps<DividerElement>;
-
-const dividerRootStyles: CSSProperties = {
-  display: 'flex',
-  width: '100%',
-  alignItems: 'center',
-  position: 'relative',
-};
-
-const dividerStyles: CSSProperties = {
-  position: 'absolute',
-  width: '100%',
-};
-
-const DividerRender = ({ attributes, element, children, HTMLAttributes }: DividerRenderProps) => {
-  return (
-    <div {...attributes} contentEditable={false} style={dividerRootStyles}>
-      <hr style={dividerStyles} />
-      {children}
-    </div>
-  );
-};
-
-const Divider = createYooptaPlugin<any, DividerElement>({
-  type: 'divider',
-  shortcut: ['---', 'divider'],
-  renderer: () => DividerRender,
-  extendEditor(editor) {
-    const { isVoid } = editor;
-
-    editor.isVoid = (element) => {
-      return element.type === Divider.getPlugin.type ? true : isVoid(element);
-    };
-
-    return editor;
-  },
-  defineElement: (): DividerElement => ({
-    id: generateId(),
-    type: 'divider',
-    nodeType: 'void',
-    children: [{ text: '' }],
-  }),
-  createElement: (editor, elementData) => {
-    const node: DividerElement = { ...Divider.getPlugin.defineElement(), ...elementData };
-
-    Transforms.setNodes(editor, node, {
-      at: editor.selection?.anchor,
-    });
-  },
-  exports: {
-    html: {
-      serialize: (node, children) => {
-        return `<hr />`;
-      },
-      deserialize: {
-        nodeName: 'HR',
-      },
-    },
-  },
-  options: {
-    searchString: 'divider',
-    displayLabel: 'Divider',
-  },
-});
-/** */
-
+// list of plugins should be placed outside component
 const plugins = [
-  AccordionPlugin,
   Paragraph,
   HeadingOne,
   HeadingTwo,
   HeadingThree,
   Blockquote,
   Callout,
-  Code,
+  // Code,
   Link,
   NumberedList,
   BulletedList,
   TodoList,
-  Divider,
-  Embed.extend({
-    options: {
-      maxWidth: 650,
-      maxHeight: 750,
-    },
-  }),
+  // File.extend({
+  //   options: {
+  //     onUpload: async (file: File) => {
+  //       const response = await uploadToCloudinary(file, 'auto');
+  //       return { url: response.url };
+  //     },
+  //   },
+  // }),
+  Embed,
   Image.extend({
-    options: {
-      maxWidth: 650,
-      maxHeight: 650,
-      onUpload: async (file: File) => {
-        const response = await uploadToCloudinary(file, 'image');
-        return { url: response.url, width: response.data.width, height: response.data.height };
-      },
+    onUpload: async (file: File) => {
+      const data = await uploadToCloudinary(file, 'image');
+      return {
+        src: data.secure_url,
+        alt: 'cloudinary',
+        sizes: {
+          width: data.width,
+          height: data.height,
+        },
+      };
     },
   }),
   Video.extend({
-    options: {
-      maxWidth: 650,
-      maxHeight: 650,
-      onUpload: async (file: File) => {
-        const response = await uploadToCloudinary(file, 'video');
-        return { url: response.url, width: response.data.width, height: response.data.height };
-      },
+    onUpload: async (file: File) => {
+      const data = await uploadToCloudinary(file, 'video');
+      return {
+        src: data.secure_url,
+        alt: 'cloudinary',
+        sizes: {
+          width: data.width,
+          height: data.height,
+        },
+      };
     },
   }),
 ];
 
-const TOOLS = {
-  Toolbar: <Toolbar type="bubble" />,
-  ActionMenu: <ActionMenu />,
-};
+// // tools should be placed outside your component
+// const TOOLS = {
+//   Toolbar: <Toolbar />,
+//   ActionMenu: <ActionMenu />,
+//   LinkTool: <LinkTool />,
+// };
 
-const INITIAL_VALUE: YooptaValue[] = [
-  { id: generateId(), type: 'paragraph', nodeType: 'block', children: [{ text: 'Example in progress...' }] },
-];
+const marks = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
-export default function WithCustomPlugin() {
-  const [editorValue, setEditorValue] = useState<YooptaValue[]>(INITIAL_VALUE);
-  const marks = [Bold, Italic, CodeMark, Underline, Strike];
+export default function WithBasicExample() {
+  const editor = useMemo(() => createYooptaEditor(), []);
+
+  useEffect(() => {
+    editor.on('editor:change', (value) => {
+      console.log('CHANGED value', value);
+    });
+
+    editor.on('block:update', (block) => {
+      console.log('BLOCK UPDATED', block);
+    });
+  }, []);
 
   return (
     <main
       style={{ padding: '5rem 0' }}
-      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 `}
+      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24`}
     >
       <div className="w-full h-full">
-        <YooptaEditor<any>
-          value={editorValue}
-          onChange={(val: YooptaValue[]) => setEditorValue(val)}
-          plugins={plugins}
-          marks={marks}
-          placeholder="Start typing..."
-          offline="withCustomPlugin"
-          autoFocus
-          tools={TOOLS}
-        />
+        <YooptaEditor editor={editor} value={{}} plugins={plugins} marks={marks} />
       </div>
     </main>
   );

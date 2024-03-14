@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/editor",
-  "version": "4.0.0-rc.1",
+  "version": "4.0.0-rc.2",
   "license": "MIT",
   "private": false,
   "type": "module",
@@ -23,10 +23,10 @@
     "is-hotkey": "^0.2.0",
     "lodash.clonedeep": "^4.5.0",
     "nanoid": "^4.0.1",
-    "slate": ">=0.72.3",
+    "slate": ">=0.99.0",
     "slate-history": "^0.66.0",
     "slate-hyperscript": "^0.77.0",
-    "slate-react": ">=0.95.0"
+    "slate-react": ">=0.99.0"
   },
   "peerDependencies": {
     "react": ">=17.0.2",

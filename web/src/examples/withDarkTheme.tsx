@@ -1,151 +1,105 @@
 // import { Inter } from 'next/font/google';
-import { useState } from 'react';
-import { Descendant } from 'slate';
-import NextImage from 'next/image';
-import YooptaEditor from '@yoopta/editor';
+import { useEffect, useMemo } from 'react';
+import YooptaEditor, { createYooptaEditor } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
-import Code from '@yoopta/code';
 import Embed from '@yoopta/embed';
 import Image from '@yoopta/image';
 import Link from '@yoopta/link';
 import Callout from '@yoopta/callout';
 import Video from '@yoopta/video';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
-import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
+import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
+// import File from '@yoopta/file';
+// import Code from '@yoopta/code';
 
-import ActionMenu from '@yoopta/action-menu-list';
+// import LinkTool from '@yoopta/link-tool';
+// import ActionMenu from '@yoopta/action-menu-list';
+// import Toolbar from '@yoopta/toolbar';
+
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import Toolbar from '@yoopta/toolbar';
-import { yooptaInitData, YooptaValue } from '@/utils/initialData';
 
+// list of plugins should be placed outside component
 const plugins = [
-  Paragraph.extend({
-    options: {
-      HTMLAttributes: {
-        spellCheck: false,
-        className: 'text-white leading-7',
-      },
-    },
-  }),
+  Paragraph,
+  HeadingOne,
+  HeadingTwo,
+  HeadingThree,
   Blockquote,
   Callout,
-  Code,
+  // Code,
   Link,
-  NumberedList.extend({
-    options: {
-      HTMLAttributes: {
-        spellCheck: false,
-        className: 'font-heading text-4xl',
-      },
-    },
-  }),
-  BulletedList.extend({
-    options: {
-      HTMLAttributes: {
-        spellCheck: false,
-        className: 'font-heading text-4xl',
-      },
-    },
-  }),
-  TodoList.extend({
-    options: {
-      HTMLAttributes: {
-        spellCheck: false,
-        className: 'font-heading text-4xl',
-      },
-    },
-  }),
-  HeadingOne.extend({
-    options: {
-      HTMLAttributes: {
-        spellCheck: false,
-        className: 'font-heading text-4xl',
-      },
-    },
-  }),
-  HeadingTwo.extend({
-    options: {
-      HTMLAttributes: {
-        spellCheck: false,
-        className: 'font-heading text-3xl',
-      },
-    },
-  }),
-  HeadingThree.extend({
-    options: {
-      HTMLAttributes: {
-        spellCheck: false,
-        className: 'font-heading text-2xl',
-      },
-    },
-  }),
-  Embed.extend({
-    options: {
-      maxWidth: 650,
-      maxHeight: 750,
-    },
-  }),
+  NumberedList,
+  BulletedList,
+  TodoList,
+  // File.extend({
+  //   options: {
+  //     onUpload: async (file: File) => {
+  //       const response = await uploadToCloudinary(file, 'auto');
+  //       return { url: response.url };
+  //     },
+  //   },
+  // }),
+  Embed,
   Image.extend({
-    options: {
-      maxWidth: 650,
-      maxHeight: 650,
-      onUpload: async (file: File) => {
-        const response = await uploadToCloudinary(file, 'image');
-        return { url: response.url, width: response.data.width, height: response.data.height };
-      },
+    onUpload: async (file: File) => {
+      const data = await uploadToCloudinary(file, 'image');
+      return {
+        src: data.secure_url,
+        alt: 'cloudinary',
+        sizes: {
+          width: data.width,
+          height: data.height,
+        },
+      };
     },
   }),
   Video.extend({
-    options: {
-      maxWidth: 650,
-      maxHeight: 650,
-      onUpload: async (file: File) => {
-        const response = await uploadToCloudinary(file, 'video');
-        return { url: response.url, width: response.data.width, height: response.data.height };
-      },
+    onUpload: async (file: File) => {
+      const data = await uploadToCloudinary(file, 'video');
+      return {
+        src: data.secure_url,
+        alt: 'cloudinary',
+        sizes: {
+          width: data.width,
+          height: data.height,
+        },
+      };
     },
   }),
 ];
 
-const TOOLS = {
-  Toolbar: <Toolbar />,
-  ActionMenu: <ActionMenu />,
-};
+// // tools should be placed outside your component
+// const TOOLS = {
+//   Toolbar: <Toolbar />,
+//   ActionMenu: <ActionMenu />,
+//   LinkTool: <LinkTool />,
+// };
 
-type Props = {
-  value?: YooptaValue[];
-  onChange?: (val: YooptaValue[]) => void;
-  localStorageName?: string;
-};
+const marks = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
-export default function WithDarkTheme({ value, onChange, localStorageName }: Props) {
-  const [editorValue, setEditorValue] = useState<YooptaValue[]>(value || yooptaInitData);
-  const marks = [Bold, Italic, CodeMark, Underline, Strike];
+export default function WithBasicExample() {
+  const editor = useMemo(() => createYooptaEditor(), []);
 
-  const onChangeValue = (val: YooptaValue[]) => {
-    if (onChange) return onChange(val);
-    setEditorValue(val);
-  };
+  useEffect(() => {
+    editor.on('editor:change', (value) => {
+      console.log('CHANGED value', value);
+    });
+
+    editor.on('block:update', (block) => {
+      console.log('BLOCK UPDATED', block);
+    });
+  }, []);
 
   return (
     <main
-      style={{ backgroundColor: 'hsl(224 71% 4%)', color: 'white', padding: '5rem 0' }}
-      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 `}
+      style={{ padding: '5rem 0' }}
+      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24`}
     >
       <div className="w-full h-full">
-        <YooptaEditor<any>
-          value={editorValue}
-          onChange={onChangeValue}
-          plugins={plugins}
-          marks={marks}
-          placeholder="Start typing..."
-          offline={localStorageName || 'withDarkTheme'}
-          autoFocus
-          tools={TOOLS}
-        />
+        <YooptaEditor editor={editor} value={{}} plugins={plugins} marks={marks} />
       </div>
     </main>
   );

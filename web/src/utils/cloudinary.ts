@@ -1,10 +1,24 @@
 export const CLOUDINARY = {
-  PRESET: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_PRESET! || 'zxlncbgx',
-  API: process.env.NEXT_PUBLIC_CLOUDINARY_API! || 'https://api.cloudinary.com/v1_1/ench-app',
-  CLOUD_NAME: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME! || 'ench-app',
+  PRESET: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_PRESET!,
+  API: process.env.NEXT_PUBLIC_CLOUDINARY_API!,
+  CLOUD_NAME: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!,
 };
 
-export const uploadToCloudinary = async (file: File, type = 'image'): Promise<{ data: any; url: string }> => {
+export type MediaObject = {
+  secure_url: string;
+  url: string;
+  height: number;
+  width: number;
+  asset_id: string;
+  format: string;
+  public_id: string;
+  version_id: string;
+};
+
+export type ImageObject = MediaObject;
+export type VideoObject = MediaObject;
+
+export const uploadToCloudinary = async (file: File, type = 'image'): Promise<MediaObject> => {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('upload_preset', CLOUDINARY.PRESET);
@@ -12,20 +26,16 @@ export const uploadToCloudinary = async (file: File, type = 'image'): Promise<{ 
   try {
     const call = await fetch(`${CLOUDINARY.API}/${type}/upload`, { method: 'POST', body: formData });
     const response = await call.json();
-    const { asset_id, public_id, format, width, height, secure_url } = response;
-
-    const media = {
-      width,
-      height,
-      format,
-      name: public_id,
-      id: asset_id,
-      secure_url,
-    };
 
     return {
-      data: media,
-      url: secure_url,
+      secure_url: response.secure_url,
+      width: response.width,
+      height: response.height,
+      url: response.url,
+      asset_id: response.asset_id,
+      format: response.format,
+      public_id: response.public_id,
+      version_id: response.version_id,
     };
   } catch (error) {
     return Promise.reject(error);

@@ -275,8 +275,6 @@ const Editor = ({ marks, className, autoFocus = true, selectionBoxRoot }: Props)
         }
       }
     }
-
-    // resetSelectionState();
   };
 
   const editorStyles: CSSProperties = getEditorStyles({
@@ -292,7 +290,6 @@ const Editor = ({ marks, className, autoFocus = true, selectionBoxRoot }: Props)
       ref={yooptaEditorRef}
       onClick={onClick}
       onBlur={onBlur}
-      // onKeyDown={onKeyDown}
     >
       <RenderBlocks editor={editor} marks={marks} />
       <SelectionBox origin={selectionBox.origin} coords={selectionBox.coords} isOpen={selectionBox.selection} />

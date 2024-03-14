@@ -1,255 +1,105 @@
 // import { Inter } from 'next/font/google';
-import { useState } from 'react';
-import { Descendant } from 'slate';
-import YooptaEditor from '@yoopta/editor';
+import { useEffect, useMemo } from 'react';
+import YooptaEditor, { createYooptaEditor } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
-import Code from '@yoopta/code';
 import Embed from '@yoopta/embed';
 import Image from '@yoopta/image';
 import Link from '@yoopta/link';
 import Callout from '@yoopta/callout';
 import Video from '@yoopta/video';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
-import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
+import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
+// import File from '@yoopta/file';
+// import Code from '@yoopta/code';
 
-import ActionMenu from '@yoopta/action-menu-list';
+// import LinkTool from '@yoopta/link-tool';
+// import ActionMenu from '@yoopta/action-menu-list';
+// import Toolbar from '@yoopta/toolbar';
+
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import Toolbar from '@yoopta/toolbar';
-import { YooptaValue } from '@/utils/initialData';
 
-const INITIAL_VALUE: YooptaValue[] = [
-  {
-    id: 'lNhZtKVF-gcGmwysrUQCN',
-    type: 'paragraph',
-    nodeType: 'block',
-    children: [
-      {
-        text: 'Here is example how you can rewrite default configuration for any plugin using ',
-      },
-      {
-        text: '<plugin>.extend',
-        code: true,
-      },
-      {
-        text: ' method.',
-      },
-    ],
-  },
-  {
-    id: 'alOjr3e7N3PImo1mvP7np',
-    type: 'code',
-    children: [
-      {
-        id: 'Dcc7j06tHkEepxAla9EXA',
-        type: 'code-line',
-        nodeType: 'block',
-        children: [
-          {
-            text: 'const plugins = [',
-          },
-        ],
-        data: {
-          skipSettings: true,
-          skipDrag: true,
-        },
-      },
-      {
-        id: 'xTArpV-obYMxudaO1ZOOZ',
-        type: 'code-line',
-        nodeType: 'block',
-        data: {
-          skipSettings: true,
-          skipDrag: true,
-        },
-        children: [
-          {
-            text: '  ...otherPlugins,',
-          },
-        ],
-      },
-      {
-        id: 'vS9a0UqrFI-dx2Ff8YY_C',
-        type: 'code-line',
-        nodeType: 'block',
-        data: {
-          skipSettings: true,
-          skipDrag: true,
-        },
-        children: [
-          {
-            text: '  Callout.extend({ ',
-          },
-        ],
-      },
-      {
-        id: 'ivFAlfhiv2AsvwrRJVcZ8',
-        type: 'code-line',
-        nodeType: 'block',
-        data: {
-          skipSettings: true,
-          skipDrag: true,
-        },
-        children: [
-          {
-            text: "    placeholder: 'This is callout placeholder',",
-          },
-        ],
-      },
-      {
-        id: 'z4dXtSolZsvwc4oJufTQp',
-        type: 'code-line',
-        nodeType: 'block',
-        data: {
-          skipSettings: true,
-          skipDrag: true,
-        },
-        children: [
-          {
-            text: "    shortcut: '>>'",
-          },
-        ],
-      },
-      {
-        id: 'PPSH-aRhUDvndKwJF2Vfu',
-        type: 'code-line',
-        nodeType: 'block',
-        data: {
-          skipSettings: true,
-          skipDrag: true,
-        },
-        children: [
-          {
-            text: '  }),',
-          },
-        ],
-      },
-      {
-        id: 'HzQJxCMIfJXMTONNxXEQd',
-        type: 'code-line',
-        nodeType: 'block',
-        data: {
-          skipSettings: true,
-          skipDrag: true,
-        },
-        children: [
-          {
-            text: ']',
-          },
-        ],
-      },
-    ],
-    nodeType: 'block',
-    data: {
-      language: 'javascript',
-    },
-  },
-  {
-    id: 'N7ci7dUzT12oLU1enAo7K',
-    type: 'callout',
-    nodeType: 'block',
-    children: [
-      {
-        text: '',
-      },
-    ],
-  },
-  {
-    id: 'ZeHDWam1jwiK7DE8fJxZS',
-    type: 'paragraph',
-    nodeType: 'block',
-    children: [
-      {
-        text: 'Type ',
-      },
-      {
-        text: '>>',
-        underline: true,
-      },
-      {
-        text: ' and then click on ',
-      },
-      {
-        text: 'space',
-        bold: true,
-      },
-      {
-        text: ' button',
-      },
-    ],
-  },
-];
-
+// list of plugins should be placed outside component
 const plugins = [
   Paragraph,
   HeadingOne,
   HeadingTwo,
   HeadingThree,
   Blockquote,
-  Callout.extend({
-    placeholder: 'This is callout placeholder',
-    shortcut: '>>',
-  }),
-  Code,
+  Callout,
+  // Code,
   Link,
   NumberedList,
   BulletedList,
   TodoList,
-  Embed.extend({
-    options: {
-      maxWidth: 650,
-      maxHeight: 750,
-    },
-  }),
+  // File.extend({
+  //   options: {
+  //     onUpload: async (file: File) => {
+  //       const response = await uploadToCloudinary(file, 'auto');
+  //       return { url: response.url };
+  //     },
+  //   },
+  // }),
+  Embed,
   Image.extend({
-    options: {
-      maxWidth: 650,
-      maxHeight: 650,
-      onUpload: async (file: File) => {
-        const response = await uploadToCloudinary(file, 'image');
-        return { url: response.url, width: response.data.width, height: response.data.height };
-      },
+    onUpload: async (file: File) => {
+      const data = await uploadToCloudinary(file, 'image');
+      return {
+        src: data.secure_url,
+        alt: 'cloudinary',
+        sizes: {
+          width: data.width,
+          height: data.height,
+        },
+      };
     },
   }),
   Video.extend({
-    options: {
-      maxWidth: 650,
-      maxHeight: 650,
-      onUpload: async (file: File) => {
-        const response = await uploadToCloudinary(file, 'video');
-        return { url: response.url, width: response.data.width, height: response.data.height };
-      },
+    onUpload: async (file: File) => {
+      const data = await uploadToCloudinary(file, 'video');
+      return {
+        src: data.secure_url,
+        alt: 'cloudinary',
+        sizes: {
+          width: data.width,
+          height: data.height,
+        },
+      };
     },
   }),
 ];
 
-const TOOLS = {
-  Toolbar: <Toolbar type="bubble" />,
-  ActionMenu: <ActionMenu />,
-};
+// // tools should be placed outside your component
+// const TOOLS = {
+//   Toolbar: <Toolbar />,
+//   ActionMenu: <ActionMenu />,
+//   LinkTool: <LinkTool />,
+// };
 
-export default function WithExtendedPlugin() {
-  const [editorValue, setEditorValue] = useState<YooptaValue[]>(INITIAL_VALUE);
-  const marks = [Bold, Italic, CodeMark, Underline, Strike];
+const marks = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
+
+export default function WithBasicExample() {
+  const editor = useMemo(() => createYooptaEditor(), []);
+
+  useEffect(() => {
+    editor.on('editor:change', (value) => {
+      console.log('CHANGED value', value);
+    });
+
+    editor.on('block:update', (block) => {
+      console.log('BLOCK UPDATED', block);
+    });
+  }, []);
 
   return (
     <main
       style={{ padding: '5rem 0' }}
-      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 `}
+      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24`}
     >
       <div className="w-full h-full">
-        <YooptaEditor
-          value={editorValue}
-          onChange={(val: YooptaValue[]) => setEditorValue(val)}
-          plugins={plugins}
-          marks={marks}
-          placeholder="Start typing..."
-          offline="withExtendedPlugin"
-          autoFocus
-          tools={TOOLS}
-        />
+        <YooptaEditor editor={editor} value={{}} plugins={plugins} marks={marks} />
       </div>
     </main>
   );

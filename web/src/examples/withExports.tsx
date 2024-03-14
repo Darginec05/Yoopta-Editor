@@ -1,27 +1,27 @@
-import { useState } from 'react';
-import { yooptaInitData, YooptaValue } from '@/utils/initialData';
-
 // import { Inter } from 'next/font/google';
-import YooptaEditor from '@yoopta/editor';
+import { useEffect, useMemo } from 'react';
+import YooptaEditor, { createYooptaEditor } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
-import Code from '@yoopta/code';
 import Embed from '@yoopta/embed';
 import Image from '@yoopta/image';
 import Link from '@yoopta/link';
 import Callout from '@yoopta/callout';
 import Video from '@yoopta/video';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
-import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
+import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
+// import File from '@yoopta/file';
+// import Code from '@yoopta/code';
 
-import LinkTool from '@yoopta/link-tool';
-import ActionMenu from '@yoopta/action-menu-list';
-import Toolbar from '@yoopta/toolbar';
+// import LinkTool from '@yoopta/link-tool';
+// import ActionMenu from '@yoopta/action-menu-list';
+// import Toolbar from '@yoopta/toolbar';
+
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { ExportButtons } from '@/components/ExportButtons/ExportButtons';
 
+// list of plugins should be placed outside component
 const plugins = [
   Paragraph,
   HeadingOne,
@@ -29,71 +29,77 @@ const plugins = [
   HeadingThree,
   Blockquote,
   Callout,
-  Code,
+  // Code,
   Link,
   NumberedList,
   BulletedList,
   TodoList,
-  Embed.extend({
-    options: {
-      maxWidth: 650,
-      maxHeight: 750,
-    },
-  }),
+  // File.extend({
+  //   options: {
+  //     onUpload: async (file: File) => {
+  //       const response = await uploadToCloudinary(file, 'auto');
+  //       return { url: response.url };
+  //     },
+  //   },
+  // }),
+  Embed,
   Image.extend({
-    options: {
-      maxWidth: 650,
-      maxHeight: 650,
-      onUpload: async (file: File) => {
-        const response = await uploadToCloudinary(file, 'image');
-        return { url: response.url, width: response.data.width, height: response.data.height };
-      },
+    onUpload: async (file: File) => {
+      const data = await uploadToCloudinary(file, 'image');
+      return {
+        src: data.secure_url,
+        alt: 'cloudinary',
+        sizes: {
+          width: data.width,
+          height: data.height,
+        },
+      };
     },
   }),
   Video.extend({
-    options: {
-      maxWidth: 650,
-      maxHeight: 650,
-      onUpload: async (file: File) => {
-        const response = await uploadToCloudinary(file, 'video');
-        return { url: response.url, width: response.data.width, height: response.data.height };
-      },
+    onUpload: async (file: File) => {
+      const data = await uploadToCloudinary(file, 'video');
+      return {
+        src: data.secure_url,
+        alt: 'cloudinary',
+        sizes: {
+          width: data.width,
+          height: data.height,
+        },
+      };
     },
   }),
 ];
 
-const TOOLS = {
-  Toolbar: <Toolbar />,
-  ActionMenu: <ActionMenu />,
-  LinkTool: <LinkTool />,
-};
+// // tools should be placed outside your component
+// const TOOLS = {
+//   Toolbar: <Toolbar />,
+//   ActionMenu: <ActionMenu />,
+//   LinkTool: <LinkTool />,
+// };
 
-const OFFLINE_KEY = 'withExports';
+const marks = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
-export default function WithExports() {
-  const [editorValue, setEditorValue] = useState<YooptaValue[]>(yooptaInitData);
-  const marks = [Bold, Italic, CodeMark, Underline, Strike];
+export default function WithBasicExample() {
+  const editor = useMemo(() => createYooptaEditor(), []);
 
-  const onChange = (val: YooptaValue[]) => setEditorValue(val);
+  useEffect(() => {
+    editor.on('editor:change', (value) => {
+      console.log('CHANGED value', value);
+    });
 
-  console.log('editorValue', editorValue);
+    editor.on('block:update', (block) => {
+      console.log('BLOCK UPDATED', block);
+    });
+  }, []);
 
   return (
     <main
       style={{ padding: '5rem 0' }}
-      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24 `}
+      className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24`}
     >
       <div className="w-full h-full">
-        <ExportButtons editorValue={editorValue} plugins={plugins} offlineKey={OFFLINE_KEY} onChange={onChange} />
-        <YooptaEditor<any>
-          value={editorValue}
-          onChange={onChange}
-          plugins={plugins}
-          marks={marks}
-          placeholder="Type '/' to start"
-          tools={TOOLS}
-          offline={OFFLINE_KEY}
-        />
+        <YooptaEditor editor={editor} value={{}} plugins={plugins} marks={marks} />
       </div>
     </main>
   );
