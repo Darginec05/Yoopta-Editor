@@ -2,6 +2,6 @@ import { SlateElement } from '@yoopta/editor';
 
 export type CalloutPluginElementKeys = 'callout';
 
-export type CalloutType = 'default' | 'success' | 'warning' | 'error' | 'nostyles';
-export type CalloutElementProps = { type: CalloutType };
+export type CalloutTheme = 'default' | 'success' | 'warning' | 'error' | 'info';
+export type CalloutElementProps = { theme: CalloutTheme };
 export type CalloutElement = SlateElement<'callout', CalloutElementProps>;
