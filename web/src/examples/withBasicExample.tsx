@@ -1,6 +1,6 @@
 // import { Inter } from 'next/font/google';
 import { useEffect, useMemo } from 'react';
-import YooptaEditor, { createYooptaEditor, YooptaPlugin } from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
@@ -16,8 +16,6 @@ import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 // import Code from '@yoopta/code';
 
 // import LinkTool from '@yoopta/link-tool';
-// import ActionMenu from '@yoopta/action-menu-list';
-// import Toolbar from '@yoopta/toolbar';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
