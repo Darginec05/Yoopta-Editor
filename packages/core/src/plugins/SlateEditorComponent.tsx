@@ -13,7 +13,7 @@ import {
 } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
-import { useTools } from '../contexts/UltraYooptaContext/ToolsContext';
+import { useYooptaTools } from '../contexts/UltraYooptaContext/ToolsContext';
 import { Editor, Element, NodeEntry, Path, Range } from 'slate';
 import { TextLeaf } from '../components/TextLeaf/TextLeaf';
 
@@ -54,8 +54,6 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   const block = useBlockData(id);
   const initialValue = useRef(block.value).current;
   const type = block.type;
-
-  const { tools } = useTools();
 
   const ELEMENTS_MAP = useMemo(() => getMappedElements(elements), [elements]);
   const MARKS_MAP = useMemo(() => getMappedMarks(marks), [marks]);
@@ -145,21 +143,11 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   };
 
   const onKeyDown = (event: React.KeyboardEvent) => {
-    if (tools.actionMenu) {
-      const { events, ...options } = tools.actionMenu;
-      events?.onKeyDown(editor, slate, options)(event);
-    }
-
     eventHandlers.onKeyDown?.(event);
     EVENT_HANDLERS.onKeyDown(editor)(event);
   };
 
   const onKeyUp = (event: React.KeyboardEvent) => {
-    if (tools.actionMenu) {
-      const { events, ...options } = tools.actionMenu;
-      events?.onKeyUp(editor, slate, options)(event);
-    }
-
     eventHandlers?.onKeyUp?.(event);
   };
 
@@ -167,12 +155,6 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     if (editor.selection?.[0] !== block.meta.order) {
       editor.setSelection([block.meta.order]);
     }
-
-    if (tools.toolbar) {
-      const { events, ...options } = tools.toolbar;
-      events?.onMouseDown(editor, slate, options)(event);
-    }
-
     eventHandlers?.onMouseDown?.(event);
   };
 

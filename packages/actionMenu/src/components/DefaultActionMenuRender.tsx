@@ -19,7 +19,7 @@ function filterToggleActions(block: YooptaBlock) {
   return true;
 }
 
-const ActionMenuComponent = ({
+const DefaultActionMenuRender = ({
   actions: actionsProps,
   editor,
   onMouseEnter,
@@ -90,4 +90,4 @@ const ActionMenuComponent = ({
   );
 };
 
-export { ActionMenuComponent };
+export { DefaultActionMenuRender };

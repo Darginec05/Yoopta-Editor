@@ -1,5 +1,5 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
-import { useFloating, offset, flip, shift, inline, autoUpdate } from '@floating-ui/react';
+import { useFloating, offset, flip, shift, inline, autoUpdate, useTransitionStyles } from '@floating-ui/react';
 import { ReactNode, useState } from 'react';
 import { BlockOptions } from '../BlockOptions/BlockOptions';
 
@@ -7,7 +7,11 @@ type Props = { className?: string; style?: React.CSSProperties; onClick?: () => 
 
 const ExtendedBlockActions = ({ className, style, onClick, children }: Props) => {
   const [isBlockOptionsOpen, setIsBlockOptionsOpen] = useState(false);
-  const { refs: blockOptionRefs, floatingStyles: blockOptionFloatingStyles } = useFloating({
+  const {
+    refs: blockOptionRefs,
+    floatingStyles: blockOptionFloatingStyles,
+    context,
+  } = useFloating({
     placement: 'bottom-start',
     open: isBlockOptionsOpen,
     onOpenChange: setIsBlockOptionsOpen,
@@ -15,19 +19,25 @@ const ExtendedBlockActions = ({ className, style, onClick, children }: Props) =>
     whileElementsMounted: autoUpdate,
   });
 
+  const { isMounted, styles: blockOptionsTransitionStyles } = useTransitionStyles(context, {
+    duration: 100,
+  });
+
   const onDotsClick = () => {
     onClick?.();
     setIsBlockOptionsOpen(true);
   };
 
+  const blockOptionsStyle = { ...blockOptionsTransitionStyles, ...blockOptionFloatingStyles };
+
   return (
     <>
-      {isBlockOptionsOpen && (
+      {isMounted && (
         <BlockOptions
-          isOpen={isBlockOptionsOpen}
+          isOpen
           onClose={() => setIsBlockOptionsOpen(false)}
           refs={blockOptionRefs}
-          floatingStyles={blockOptionFloatingStyles}
+          style={blockOptionsStyle}
         >
           {children}
         </BlockOptions>

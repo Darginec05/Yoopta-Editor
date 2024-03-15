@@ -6,7 +6,7 @@ import { useMemo, useState } from 'react';
 import { YooEditor, YooptaBlockData, YooptaChildrenValue } from './editor/types';
 import { PluginReturn } from './plugins/types';
 import NoSSR from './components/NoSsr/NoSsr';
-import { ToolAPI, ToolsProvider } from './contexts/UltraYooptaContext/ToolsContext';
+import { Tools, ToolsProvider } from './contexts/UltraYooptaContext/ToolsContext';
 import {
   buildBlocks,
   buildBlockShortcuts,
@@ -26,9 +26,7 @@ type Props = {
   className?: string;
   selectionBoxRoot?: HTMLElement | null | React.MutableRefObject<HTMLElement | null>;
   children?: React.ReactNode;
-  tools?: {
-    [key: string]: ToolAPI;
-  };
+  tools?: Tools;
 };
 
 const DEFAULT_VALUE: Record<string, YooptaBlockData> = getDefaultYooptaChildren();
@@ -90,7 +88,7 @@ const YooptaEditor = ({
   return (
     <NoSSR>
       <UltraYooptaContextProvider editorState={editorState}>
-        <ToolsProvider>
+        <ToolsProvider tools={tools}>
           <Editor marks={marks} autoFocus={autoFocus} className={className} selectionBoxRoot={selectionBoxRoot} />
           {children}
         </ToolsProvider>

@@ -12,6 +12,7 @@ import { ReactEditor } from 'slate-react';
 import { YooptaBlockPath } from '../../editor/types';
 import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
+import { useYooptaTools } from '../../contexts/UltraYooptaContext/ToolsContext';
 
 type Props = {
   marks?: YooptaMark<any>[];

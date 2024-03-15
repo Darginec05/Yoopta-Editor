@@ -20,7 +20,7 @@ import {
 } from '@floating-ui/react';
 import { CSSProperties, useState } from 'react';
 import { HighlightColor } from './HighlightColor';
-import { YooEditor, YooptaBlock } from '@yoopta/editor';
+import { useYooptaTools, YooEditor, YooptaBlock } from '@yoopta/editor';
 
 type ToolbarComponentProps = {
   activeBlock?: YooptaBlock;
@@ -31,9 +31,10 @@ const ActionMenu = {
   // component: ActionMenuComponent,
 };
 
-const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
+const DefaultToolbarRender = ({ activeBlock, editor }: ToolbarComponentProps) => {
   const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
   const [isHighlightPickerOpen, setIsHighlightPickerOpen] = useState(false);
+  const tools = useYooptaTools();
 
   const { refs: actionMenuRefs, floatingStyles: actionMenuStyles } = useFloating({
     placement: 'bottom-start',
@@ -68,6 +69,7 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
   };
 
   const blockLabel = activeBlock?.options?.displayLabel || activeBlock?.type || '';
+  const ActionMenuList = tools.ActionMenu;
 
   return (
     <Toolbar.Root className="yoo-toolbar-bg-white yoo-toolbar-flex yoo-toolbar-z-50 yoo-toolbar-p-[5px] yoo-toolbar-rounded-md yoo-toolbar-shadow-md yoo-toolbar-border yoo-toolbar-shadow-y-[4px]">
@@ -76,11 +78,11 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
         type="single"
         aria-label="Block formatting"
       >
-        {isActionMenuOpen && (
+        {isActionMenuOpen && !!ActionMenuList && (
           <FloatingPortal root={document.getElementById('yoopta-editor')}>
             <FloatingOverlay lockScroll className="yoo-toolbar-z-[100]" onClick={() => setIsActionMenuOpen(false)}>
               <div style={actionMenuStyles} ref={actionMenuRefs.setFloating}>
-                <ActionMenu.component
+                <ActionMenuList
                   actions={Object.keys(editor.blocks)}
                   editor={editor}
                   selectedAction={blockLabel}
@@ -103,7 +105,7 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
           />
         )}
         <Toolbar.ToggleItem
-          className="yoo-toolbar-h-full yoo-toolbar-px-[10px] yoo-toolbar-py-0 yoo-toolbar-hover:bg-[#f4f4f5] yoo-toolbar-rounded-md"
+          className="yoo-toolbar-h-full yoo-toolbar-px-[10px] yoo-toolbar-py-0 hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md"
           value={blockLabel}
           aria-label={blockLabel}
           ref={actionMenuRefs.setReference}
@@ -119,7 +121,7 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
         aria-label="Block formatting"
       >
         <Toolbar.ToggleItem
-          className="yoo-toolbar-h-full yoo-toolbar-px-[10px] yoo-toolbar-py-0 yoo-toolbar-hover:bg-[#f4f4f5] yoo-toolbar-rounded-md"
+          className="yoo-toolbar-h-full yoo-toolbar-px-[10px] yoo-toolbar-py-0 hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md"
           value="LinkTool"
           aria-label="LinkTool"
         >
@@ -134,7 +136,7 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
       >
         {editor.formats.bold && (
           <Toolbar.ToggleItem
-            className="yoo-toolbar-h-[32px] hover:bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
+            className="yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
             value="bold"
             aria-label="Bold"
             style={getItemStyle('bold')}
@@ -145,7 +147,7 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
         )}
         {editor.formats.italic && (
           <Toolbar.ToggleItem
-            className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
+            className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
             value="italic"
             aria-label="Italic"
             style={getItemStyle('italic')}
@@ -156,7 +158,7 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
         )}
         {editor.formats.underline && (
           <Toolbar.ToggleItem
-            className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
+            className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
             value="underline"
             aria-label="Underline"
             style={getItemStyle('underline')}
@@ -167,7 +169,7 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
         )}
         {editor.formats.strike && (
           <Toolbar.ToggleItem
-            className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
+            className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
             value="strike"
             aria-label="Strike"
             style={getItemStyle('strike')}
@@ -178,7 +180,7 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
         )}
         {editor.formats.code && (
           <Toolbar.ToggleItem
-            className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
+            className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
             value="code"
             aria-label="Code"
             style={getItemStyle('code')}
@@ -189,7 +191,7 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
         )}
         {editor.formats.highlight && (
           <Toolbar.ToggleItem
-            className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
+            className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
             value="highlight"
             aria-label="Highlight"
             style={getHighlightStyle()}
@@ -205,4 +207,4 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
   );
 };
 
-export { ToolbarComponent };
+export { DefaultToolbarRender };

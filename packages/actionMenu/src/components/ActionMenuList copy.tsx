@@ -1,19 +1,14 @@
+import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
 import { useEffect, useState } from 'react';
-import { DefaultActionMenuRender } from './DefaultActionMenuRender';
-import {
-  useFloating,
-  offset,
-  flip,
-  shift,
-  inline,
-  autoUpdate,
-  FloatingPortal,
-  useTransitionStyles,
-} from '@floating-ui/react';
+import { YooptaBlock } from '../../editor/types';
+import { ActionMenuComponent } from './DefaultActionMenuRender';
+import { useFloating, offset, flip, shift, inline, autoUpdate, FloatingPortal } from '@floating-ui/react';
+import { HOTKEYS } from '../../utils/hotkeys';
 import { Editor, Path } from 'slate';
-import { YooptaBlockData, YooptaBlock, useYooptaEditor, findSlateBySelectionPath, HOTKEYS } from '@yoopta/editor';
+import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
+import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 
-const filterBy = (item: YooptaBlockData | YooptaBlock['options'], text: string, field: string) => {
+const filterBy = (item: YooptaBlock | YooptaBlock['options'], text: string, field: string) => {
   if (!item || !item?.[field]) return false;
   return (item[field] as string).toLowerCase().indexOf(text.toLowerCase()) > -1;
 };
@@ -24,15 +19,15 @@ const filterActionMenuItems = (block: YooptaBlock, text: string) => {
   return filterBy(block, text, 'type') || filterBy(block.options, text, 'displayLabel');
 };
 
-// {
-//   id: 'insertImage',
-//   title: 'Insert Image',
-//   description: 'Insert an image into the text',
-//   icon: ImageIcon,
-//   handler: () => {},
-// }
 type Props = {
   trigger?: string;
+  // {
+  //   id: 'insertImage',
+  //   title: 'Insert Image',
+  //   description: 'Insert an image into the text',
+  //   icon: ImageIcon,
+  //   handler: () => {},
+  // }
   actions?: YooptaBlock[];
   render?: (props: any) => JSX.Element;
 };
@@ -45,7 +40,6 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
     refs,
     floatingStyles,
     update: updateActionMenuPosition,
-    context,
   } = useFloating({
     placement: 'bottom-start',
     open: isMenuOpen,
@@ -54,10 +48,7 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
     whileElementsMounted: autoUpdate,
   });
 
-  const { isMounted, styles: transitionStyles } = useTransitionStyles(context, {
-    duration: 100,
-  });
-
+  // [TODO] - !!!
   const blockTypes = Object.keys(editor.blocks).sort((a: string, b: string) => {
     const aOrder = editor.blocks[a].order;
     const bOrder = editor.blocks[b].order;
@@ -79,9 +70,8 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
   };
 
   useEffect(() => {
-    updateActionMenuPosition();
-
     const yooptaEditorRef = document.getElementById('yoopta-editor');
+    const block = findPluginBlockBySelectionPath(editor, { at: editor.selection });
 
     const handleActionMenuKeyUp = (event: KeyboardEvent) => {
       const slate = findSlateBySelectionPath(editor, { at: editor.selection });
@@ -134,30 +124,12 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
 
       if (HOTKEYS.isArrowUp(event)) {
         event.preventDefault();
-        const currentSelected = selectedAction;
-        const currentIndex = actions.indexOf(currentSelected);
-        const prevIndex = currentIndex - 1;
-        const prevSelected = actions[prevIndex];
-
-        if (!prevSelected) {
-          return setSelectedAction(blockTypes[blockTypes.length - 1]);
-        }
-
-        return setSelectedAction(prevSelected);
+        return;
       }
 
       if (HOTKEYS.isArrowDown(event)) {
         event.preventDefault();
-        const currentSelected = selectedAction;
-        const currentIndex = actions.indexOf(currentSelected);
-        const nextIndex = currentIndex + 1;
-        const nextSelected = actions[nextIndex];
-
-        if (!nextSelected) {
-          return setSelectedAction(blockTypes[0]);
-        }
-
-        return setSelectedAction(nextSelected);
+        return;
       }
 
       if (HOTKEYS.isArrowLeft(event)) {
@@ -184,13 +156,7 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
 
       if (HOTKEYS.isEnter(event)) {
         event.preventDefault();
-
-        const selected = document.querySelector('[data-action-menu-item][aria-selected=true]') as HTMLElement;
-        const type = selected?.dataset.actionMenuItemType;
-        if (!type) return;
-
-        editor.blocks[type].create({ deleteText: true, focus: true });
-        return onClose();
+        return;
       }
     };
 
@@ -207,6 +173,13 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
     };
   }, [actions, isMenuOpen, editor.selection, refs]);
 
+  // useEffect(() => {
+  //   if (!isMenuOpen) return;
+
+  //   document.addEventListener('click', onClose);
+  //   return () => document.removeEventListener('click', onClose);
+  // }, [isMenuOpen]);
+
   const onMouseEnter = (e: React.MouseEvent) => {
     const type = e.currentTarget.getAttribute('data-action-menu-item-type')!;
     setSelectedAction(type);
@@ -215,6 +188,8 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
   const empty = actions.length === 0;
 
   useEffect(() => {
+    updateActionMenuPosition();
+
     let timeout = setTimeout(() => {
       if (empty) onClose();
     }, 3000);
@@ -222,9 +197,7 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
     return () => clearTimeout(timeout);
   }, [actions.length, isMenuOpen, refs]);
 
-  if (!isMounted) return null;
-
-  const style = { ...floatingStyles, ...transitionStyles };
+  if (!isMenuOpen) return null;
 
   if (render) {
     const getItemProps = (props) => ({ onMouseEnter, selectedAction });
@@ -232,8 +205,8 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
     return (
       <FloatingPortal>
         <div
-          className="yoo-action-menu-absolute yoo-action-menu-z-[9999] yoo-action-menu-m-0 yoo-action-menu-left-0 yoo-action-menu-top-0 yoo-action-menu-right-auto yoo-action-menu-bottom-auto"
-          style={style}
+          className="absolute z-[9999] m-0 left-0 top-0 right-auto bottom-auto"
+          style={floatingStyles}
           ref={refs.setFloating}
         >
           {render({ getItemProps, actions, editor, onMouseEnter, selectedAction, onClose, empty })}
@@ -246,11 +219,11 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
     // [TODO] - take care about SSR
     <FloatingPortal root={document.getElementById('yoopta-editor')}>
       <div
-        className="yoo-action-menu-absolute yoo-action-menu-z-[9999] yoo-action-menu-m-0 yoo-action-menu-left-0 yoo-action-menu-top-0 yoo-action-menu-right-auto yoo-action-menu-bottom-auto"
-        style={style}
+        className="absolute z-[9999] m-0 left-0 top-0 right-auto bottom-auto"
+        style={floatingStyles}
         ref={refs.setFloating}
       >
-        <DefaultActionMenuRender
+        <ActionMenuComponent
           actions={actions}
           editor={editor}
           onMouseEnter={onMouseEnter}
