@@ -1,6 +1,6 @@
 // import { Inter } from 'next/font/google';
 import { useEffect, useMemo } from 'react';
-import YooptaEditor, { createYooptaEditor } from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor, YooptaPlugin } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';

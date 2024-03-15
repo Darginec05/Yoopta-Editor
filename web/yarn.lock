@@ -1733,20 +1733,20 @@
     "@typescript-eslint/types" "5.62.0"
     eslint-visitor-keys "^3.3.0"
 
-"@yoopta/blockquote@^4.0.0-rc.0":
-  version "4.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@yoopta/blockquote/-/blockquote-4.0.0-rc.0.tgz#8244754becccf567782060704a19dba3b50ddd59"
-  integrity sha512-s3CcKT1iihWIcPD45vtxaSwVV7P2+bIHoaShC8SLMrVlpyvFyFxuKWVDUVTl+JmyC9pYzt8jP0aVzGmEh5gNSQ==
-
-"@yoopta/callout@^4.0.0-rc.1":
+"@yoopta/blockquote@^4.0.0-rc.1":
   version "4.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@yoopta/callout/-/callout-4.0.0-rc.1.tgz#e0771f1020d138dc4175087818a73fa3af494698"
-  integrity sha512-nhnZ1nCQhrLEhlrQQ5+tJ9AQLGyW2JkqSTUe2kcaLCRPHbNPCgyRRzNKf4ASt4EtAQcsHlOZC/Kn6njKkXzDsA==
+  resolved "https://registry.yarnpkg.com/@yoopta/blockquote/-/blockquote-4.0.0-rc.1.tgz#2c51104c45e4d6f391dd3283b48abe790139731b"
+  integrity sha512-geQEHvFGgT28D5NRPZvEKLpvVpq8MFVdjGxujvm/zYefPBBXBIaBrBR0gIO84x24kuenLSF6Y849yHv/kg7IJg==
 
-"@yoopta/editor@^4.0.0-rc.2":
+"@yoopta/callout@^4.0.0-rc.2":
   version "4.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@yoopta/editor/-/editor-4.0.0-rc.2.tgz#d6f121f09c7c8e322c9a86214e494dc6c300cb32"
-  integrity sha512-W/nZ14Tqvm0QSx8zaAydhxu60BTYov11FgLOSvISg8kUHs9bvHTIfSMlbnVkc+v/4klKqNjl78kqqQk42EKOZQ==
+  resolved "https://registry.yarnpkg.com/@yoopta/callout/-/callout-4.0.0-rc.2.tgz#db3d21fd789c627895c9f005c902608f6958f282"
+  integrity sha512-ezOW1ZEyq9acAtdcWmNpfw35XyJ/3MqzkMoP0TpSRMqdaj170xHRzXGMVeAkZSaaYKjnxtUwttw4VJo0AZTiHw==
+
+"@yoopta/editor@^4.0.0-rc.3":
+  version "4.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/editor/-/editor-4.0.0-rc.3.tgz#87dbcbe111c8e64eee90aa5f6e82d67573d46bef"
+  integrity sha512-WQVs87ZjGuwnt+Z6ucxDgk92ruBXQVgzzN0aAtZr47lvT4ldWQpzrnEjg1L2ursns1ahYZvAUxKCh3iEmtU1FA==
   dependencies:
     "@dnd-kit/core" "^6.1.0"
     "@dnd-kit/sortable" "^8.0.0"
@@ -1760,60 +1760,60 @@
     is-hotkey "^0.2.0"
     lodash.clonedeep "^4.5.0"
     nanoid "^4.0.1"
-    slate ">=0.72.3"
+    slate ">=0.99.0"
     slate-history "^0.66.0"
     slate-hyperscript "^0.77.0"
-    slate-react ">=0.95.0"
+    slate-react ">=0.99.0"
 
-"@yoopta/embed@^4.0.0-rc.0":
-  version "4.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@yoopta/embed/-/embed-4.0.0-rc.0.tgz#d59ce16ee8f5237f378218dcfed7104c899af659"
-  integrity sha512-8IML20vPihL5mRn5KoESgY6UwbbKbhvtqxri1luDIwgJM7HHAuhYgiRDrg5EMsTnXAs7rgUEme6t+h1XgMK9LQ==
+"@yoopta/embed@^4.0.0-rc.1":
+  version "4.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/embed/-/embed-4.0.0-rc.1.tgz#6025fcb618d1cf72fea8eeefdb06bbbf18a2d6d4"
+  integrity sha512-fgCD/hjxtBlQBKm/SewcId2MTlMvGiQeQCAhW9s3vxxPF7bJntr57pD6q8coTD5xObiw5XA5da5OhCtXRkje2Q==
   dependencies:
     "@floating-ui/react" "^0.26.9"
     "@radix-ui/react-icons" "^1.3.0"
     re-resizable "^6.9.11"
 
-"@yoopta/headings@^4.0.0-rc.0":
-  version "4.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@yoopta/headings/-/headings-4.0.0-rc.0.tgz#8c1d218d1f43dd1e76bc3afb767d229162849599"
-  integrity sha512-zhK9+P90dMho0XC4nQsbMQ2T3+hSTopw7/lF9pRyBk9q3/2LGCXc0/thenhysD/dOzlOW5ibVx+z8a3r9kThTg==
+"@yoopta/headings@^4.0.0-rc.1":
+  version "4.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/headings/-/headings-4.0.0-rc.1.tgz#1f0e7c7ede085171c76b9580bde1bc10340472bd"
+  integrity sha512-AzpltWUSTE451xWoHvklP21VuluCIv8RKwrm0tTjHlfWGmFsuRzEX4tlT0mR0vwx0QLD+PavpBFf3AJFwvlHeg==
 
-"@yoopta/image@^4.0.0-rc.0":
-  version "4.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@yoopta/image/-/image-4.0.0-rc.0.tgz#c6ebe66e47f1357e116a43fa768c5d189d0f021b"
-  integrity sha512-t/QIxcc/oOJI5udxXhMmmeWnmIiFX5B1uody9y2Ybo0S8bZp1igzOg9IqHuPKzZ91LcC/rmUT5ttUYci2Ybkxw==
+"@yoopta/image@^4.0.0-rc.1":
+  version "4.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/image/-/image-4.0.0-rc.1.tgz#38c53da76431923a72abd6db42d5291b579d4331"
+  integrity sha512-HXamQq/k6LtnR/G3KINJ7GwKGXUpE1aagBxe9l3QdsNF9uVFWtbuYK4n/o+Fjtkg9yPJ74s4TBqM483rieO+KA==
   dependencies:
     "@floating-ui/react" "^0.26.9"
     "@radix-ui/react-icons" "^1.3.0"
     re-resizable "^6.9.11"
 
-"@yoopta/link@^4.0.0-rc.0":
-  version "4.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@yoopta/link/-/link-4.0.0-rc.0.tgz#564e0075d4f0eeed9cc64c717c3497edc400c4c3"
-  integrity sha512-pCSOpuNwKc80EDSKR9cw/diRGKKtVTYjMlVG3PrnVdVGEqr+O/6Q/lCrbRS3HJQoz34tZAq8Q25Fjwv90iOphQ==
+"@yoopta/link@^4.0.0-rc.1":
+  version "4.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/link/-/link-4.0.0-rc.1.tgz#613462d00af55ee07705dcb703bea1dd175047ee"
+  integrity sha512-jMpClzysmTlXpt5emqIv44LfONK53ATitWt0nFPt0hO3TJS5b076UhlGlW3RgsBOSZ+s6vvqNc15aFw7K8e1oQ==
 
-"@yoopta/lists@^4.0.0-rc.0":
-  version "4.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@yoopta/lists/-/lists-4.0.0-rc.0.tgz#079f2ba5159c3afe3ce753186dc9a763554d262a"
-  integrity sha512-A9vnqbnPUymSpP3GOsJj22hZPtySkMJACN0grdpMn8V394vgh9flopUdYgj5LCqBERfO25cRPh8mMrsBmbrzaw==
+"@yoopta/lists@^4.0.0-rc.1":
+  version "4.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/lists/-/lists-4.0.0-rc.1.tgz#6264d58dc188aa10ede29948322b683f33950e46"
+  integrity sha512-WDRIO212gSe2Nf73/6moEyS6lXZShxANwSxSy7ley3m792hUEnRnVIm4gPg5ugbu6ETZoqTjZ2wVOPOKZiu4fw==
 
-"@yoopta/marks@^4.0.0-rc.0":
-  version "4.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@yoopta/marks/-/marks-4.0.0-rc.0.tgz#7876470090a3a395084991917f2e0bc8a7e2e56e"
-  integrity sha512-46sFdzfXOvzeLhyWruK2eyjh4qNlGl/XEsXCKCU9rmrpPlfVTF/ih/Lk8XQbnNJ3hDPHsHhCmu2R9lIG1FxfeA==
+"@yoopta/marks@^4.0.0-rc.1":
+  version "4.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/marks/-/marks-4.0.0-rc.1.tgz#ff2a6330c1c45e422cdad1a120f8f55e4d1018b4"
+  integrity sha512-8eraDKK6ynocLDsBEweJp22xPXIgHwupZlS+sn3pbzhurrWNOxaL7wFd7nm0PQ2/vunFitQRu5ge+d8zze3q+w==
   dependencies:
     body-scroll-lock "^4.0.0-beta.0"
 
-"@yoopta/paragraph@^4.0.0-rc.0":
-  version "4.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@yoopta/paragraph/-/paragraph-4.0.0-rc.0.tgz#4a99ca44268051b1e3117614668c4f330b52d8f9"
-  integrity sha512-mWapbEAV5NoMCOD+OX15vBhEFREejEdJFlwOy0qtQfdfizZ9e/8ZEsqYwdnkogANZPpDufGqyrtCj1bhPdhSMQ==
+"@yoopta/paragraph@^4.0.0-rc.1":
+  version "4.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/paragraph/-/paragraph-4.0.0-rc.1.tgz#88d28976bdafade930f2c679549b90d641a16b04"
+  integrity sha512-vv2vZpo/KLbHYB+qwqKMgqkR70vfuhwIO4SbfgYw/ikMpHc8VpEZ3WpOvBxC9TlO8IdC7T3KlB9jY9ntCos2/g==
 
-"@yoopta/video@^4.0.0-rc.0":
-  version "4.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@yoopta/video/-/video-4.0.0-rc.0.tgz#461531a05ee6f627f8ad6db74d89f9d5c1f3adc1"
-  integrity sha512-+AQaSLjQTZxKrxvrQ2R8oO/FTC6a1c2rxKtB9Vif1Jo/Z1XjnxtBQDz5+k2To6O2phKmx5mQYiDn6vqpYmrZ2Q==
+"@yoopta/video@^4.0.0-rc.1":
+  version "4.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/video/-/video-4.0.0-rc.1.tgz#1a3a6a5ad9ac6f51aa1ba2369be77cd8c1c9370e"
+  integrity sha512-4EDlXaB4ERZM/JvZNO/0NafCbiJRbGuusFEh4SJTWZ90BKaCH+J1fy5M1s87/gEH08t0/5KDGojQmwoP6ENE4A==
   dependencies:
     "@floating-ui/react" "^0.26.9"
     "@radix-ui/react-icons" "^1.3.0"
@@ -4219,7 +4219,7 @@ slate-hyperscript@^0.77.0:
   dependencies:
     is-plain-object "^5.0.0"
 
-slate-react@>=0.95.0:
+slate-react@>=0.99.0:
   version "0.102.0"
   resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.102.0.tgz#8f4539055f336019abbbe8b52acc23ff02c9601b"
   integrity sha512-SAcFsK5qaOxXjm0hr/t2pvIxfRv6HJGzmWkG58TdH4LdJCsgKS1n6hQOakHPlRVCwPgwvngB6R+t3pPjv8MqwA==
@@ -4234,7 +4234,7 @@ slate-react@>=0.95.0:
     scroll-into-view-if-needed "^3.1.0"
     tiny-invariant "1.3.1"
 
-slate@>=0.72.3:
+slate@>=0.99.0:
   version "0.102.0"
   resolved "https://registry.yarnpkg.com/slate/-/slate-0.102.0.tgz#400e5ab773633bc857f069cc2ef2faa4302c6834"
   integrity sha512-RT+tHgqOyZVB1oFV9Pv99ajwh4OUCN9p28QWdnDTIzaN/kZxMsHeQN39UNAgtkZTVVVygFqeg7/R2jiptCvfyA==
@@ -4249,6 +4249,7 @@ slate@>=0.72.3:
   integrity sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==
 
 "string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0:
+  name string-width-cjs
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
