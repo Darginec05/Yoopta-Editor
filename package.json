@@ -8,7 +8,7 @@
     "start": "yarn lerna run start --parallel --ignore development",
     "build": "yarn clean && yarn lerna run build --parallel --ignore development",
     "clean": "find ./packages -type d -name dist ! -path './packages/development/*' -exec rm -rf {} +",
-    "serve": "cd ./packages/development && yarn dev",
+    "serve": "cd ./packages/development && yarn build && yarn next start",
     "coverage": "vitest run --coverage",
     "test": "vitest",
     "dev": "npm-run-all --parallel start serve",
