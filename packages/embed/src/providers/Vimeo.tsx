@@ -38,7 +38,7 @@ function Vimeo({ provider, width, height, blockId }: ProviderRenderProps) {
         <iframe
           title="Embed Player"
           // https://developer.vimeo.com/player/embedding
-          src={`https://player.vimeo.com/embed/${provider.embedId}?badge=0&byline=0&portrait=0&title=0`}
+          src={`https://player.vimeo.com/embed/${provider.id}?badge=0&byline=0&portrait=0&title=0`}
           frameBorder={0}
           allowFullScreen
           onLoad={() => setFrameLoaded(true)}

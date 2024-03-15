@@ -1,11 +1,11 @@
-import { YooEditor, YooptaBaseElement } from '@yoopta/editor';
+import { SlateElement } from '@yoopta/editor';
 import { ActionMenuList } from './components/ActionMenuList';
-export type { ActionMenuItem, ActionMenuRenderProps } from './types';
+
+import './styles.css';
 
 declare module 'slate' {
   interface CustomTypes {
-    Editor: YooEditor;
-    Element: YooptaBaseElement<string>;
+    Element: SlateElement<string>;
   }
 }
 

@@ -59,8 +59,7 @@ const ActionMenuComponent = ({
                 data-action-menu-item-type={type}
                 onClick={() => {
                   if (isModeToggle) {
-                    // editor.blocks[type].toggle(type, { focus: true });
-                    editor.toggleBlock(type, { focus: true });
+                    editor.blocks[type].toggle(type, { focus: true });
                   } else {
                     editor.blocks[type].create({ deleteText: true, focus: true });
                   }

@@ -14,8 +14,6 @@ import {
   buildMarks,
   buildPlugins,
 } from './utils/editorBuilders';
-import { Toolbar } from './tools/Toolbar/Toolbar';
-import { ActionMenuList } from './tools/ActionMenuList/ActionMenuList';
 import { YooptaPlugin } from './plugins';
 import { YooptaMark } from './marks';
 
@@ -27,6 +25,7 @@ type Props = {
   autoFocus?: boolean;
   className?: string;
   selectionBoxRoot?: HTMLElement | null | React.MutableRefObject<HTMLElement | null>;
+  children?: React.ReactNode;
   tools?: {
     [key: string]: ToolAPI;
   };
@@ -59,6 +58,7 @@ const YooptaEditor = ({
   className,
   tools,
   selectionBoxRoot,
+  children,
 }: Props) => {
   const applyChanges = () => {
     editor.emit('change', editor.children);
@@ -74,7 +74,7 @@ const YooptaEditor = ({
     if (marks) editor.formats = buildMarks(editor, marks);
     editor.blocks = buildBlocks(editor, plugins);
 
-    editor.children = isValidateInitialValue(value) ? value : DEFAULT_VALUE;
+    editor.children = (isValidateInitialValue(value) ? value : DEFAULT_VALUE) as YooptaChildrenValue;
     editor.blockEditorsMap = buildBlockSlateEditors(editor);
     editor.shortcuts = buildBlockShortcuts(editor);
     editor.plugins = buildPlugins(plugins);
@@ -92,9 +92,7 @@ const YooptaEditor = ({
       <UltraYooptaContextProvider editorState={editorState}>
         <ToolsProvider>
           <Editor marks={marks} autoFocus={autoFocus} className={className} selectionBoxRoot={selectionBoxRoot} />
-          {/* {yooptaTools} */}
-          <ActionMenuList />
-          <Toolbar />
+          {children}
         </ToolsProvider>
       </UltraYooptaContextProvider>
     </NoSSR>

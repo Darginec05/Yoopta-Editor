@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/action-menu-list",
-  "version": "2.0.1",
+  "version": "4.0.0-rc.0",
   "description": "> TODO: description",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
@@ -26,12 +26,17 @@
     "url": "git+https://github.com/Darginec05/Editor-Yoopta.git"
   },
   "scripts": {
-    "test": "node ./__tests__/@yoopta/paragraph.test.js"
+    "test": "node ./__tests__/yoopta-action-menu-list.test.js",
+    "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development",
+    "prepublishOnly": "yarn build",
+    "build": "rollup --config rollup.config.js --bundleConfigAsCjs --environment NODE_ENV:production"
   },
   "bugs": {
     "url": "https://github.com/Darginec05/Editor-Yoopta/issues"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.26.9",
+    "@radix-ui/react-icons": "^1.3.0",
     "body-scroll-lock": "^4.0.0-beta.0"
   }
 }
