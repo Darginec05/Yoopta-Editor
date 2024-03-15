@@ -3398,6 +3398,11 @@
     body-scroll-lock "^4.0.0-beta.0"
     re-resizable "^6.9.9"
 
+"@yoopta/link-tool@*":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/link-tool/-/link-tool-2.0.1.tgz#065bd443a1b094ba95d18a0e53d9ab781c11bc45"
+  integrity sha512-8CPlBzD97tOGNeyH2SMnjzLogEU9okHxfsfvJK+hJtON959X/6yi2wndWbTUlRMIGR/gpIdPLejoO9RRlof/xA==
+
 "@yoopta/link@*":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@yoopta/link/-/link-2.0.1.tgz#f32b03245a2e4595d591bb62515709626fc70d08"

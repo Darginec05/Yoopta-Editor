@@ -20,6 +20,8 @@ import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 // import Toolbar from '@yoopta/toolbar';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
+import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
+import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 
 // list of plugins should be placed outside component
 const plugins = [
@@ -71,12 +73,16 @@ const plugins = [
   }),
 ];
 
-// // tools should be placed outside your component
-// const TOOLS = {
-//   Toolbar: <Toolbar />,
-//   ActionMenu: <ActionMenu />,
-//   LinkTool: <LinkTool />,
-// };
+const TOOLS = {
+  ActionMenu: {
+    render: DefaultActionMenuRender,
+    tool: ActionMenuList,
+  },
+  Toolbar: {
+    render: DefaultToolbarRender,
+    tool: Toolbar,
+  },
+};
 
 const marks = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
@@ -99,7 +105,7 @@ export default function WithBasicExample() {
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24`}
     >
       <div className="w-full h-full">
-        <YooptaEditor editor={editor} value={{}} plugins={plugins} marks={marks} />
+        <YooptaEditor editor={editor} plugins={plugins} marks={marks} tools={TOOLS} />
       </div>
     </main>
   );
