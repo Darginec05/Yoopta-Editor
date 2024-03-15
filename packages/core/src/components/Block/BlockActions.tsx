@@ -7,7 +7,7 @@ import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { ReactEditor } from 'slate-react';
 import { Transforms } from 'slate';
 import { useState } from 'react';
-import { useFloating, offset, flip, inline, shift } from '@floating-ui/react';
+import { useFloating, offset, flip, inline, shift, useTransitionStyles } from '@floating-ui/react';
 import { BlockOptions } from '../../UI/BlockOptions/BlockOptions';
 import s from './Block.module.scss';
 
@@ -26,11 +26,15 @@ function cx(...classNames: (string | undefined)[]) {
 const BlockActions = ({ block, editor, dragHandleProps, showActions, onChangeActiveBlock }: ActionsProps) => {
   const [isBlockOptionsOpen, setIsBlockOptionsOpen] = useState<boolean>(false);
 
-  const { refs, floatingStyles } = useFloating({
+  const { refs, floatingStyles, context } = useFloating({
     placement: 'right-start',
     open: isBlockOptionsOpen,
     onOpenChange: setIsBlockOptionsOpen,
     middleware: [inline(), flip(), shift(), offset()],
+  });
+
+  const { isMounted, styles: blockOptionsTransitionStyles } = useTransitionStyles(context, {
+    duration: 100,
   });
 
   const { setActivatorNodeRef, attributes, listeners } = dragHandleProps;
@@ -73,6 +77,8 @@ const BlockActions = ({ block, editor, dragHandleProps, showActions, onChangeAct
     refs.setReference(node);
   };
 
+  const style = { ...floatingStyles, ...blockOptionsTransitionStyles };
+
   return (
     <div contentEditable={false} className={cx(s.actions, showActions && s.hovered, 'yoopta-element-actions')}>
       <button
@@ -92,12 +98,7 @@ const BlockActions = ({ block, editor, dragHandleProps, showActions, onChangeAct
       >
         <DragIcon />
       </button>
-      <BlockOptions
-        isOpen={isBlockOptionsOpen}
-        refs={refs}
-        floatingStyles={floatingStyles}
-        onClose={() => setIsBlockOptionsOpen(false)}
-      />
+      <BlockOptions isOpen={isMounted} refs={refs} style={style} onClose={() => setIsBlockOptionsOpen(false)} />
     </div>
   );
 };

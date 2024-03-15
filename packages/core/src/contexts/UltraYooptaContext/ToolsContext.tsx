@@ -1,65 +1,56 @@
-import { cloneElement, createContext, ReactNode, useCallback, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 
-export type ToolAPI = {
-  open: (...args: any[]) => void;
-  close: (...args: any[]) => void;
-  change: (...args: any[]) => void;
-  component: ReactNode;
-  state: any;
-  events?: {
-    [key: string]: (editor: any, slate: any, options: any) => (event: any) => void;
-  };
+export type ToolProps = {
+  render: React.ComponentType<any>;
+  tool: React.ComponentType<any>;
 };
 
 export type Tools = {
-  [key: string]: ToolAPI;
+  [key: string]: ToolProps;
 };
 
-type ToolsContextType = {
-  tools: Tools;
-  registerTool: (name: string, tool: ToolAPI) => void;
-  unregisterTool: (name: string) => void;
+export type ToolsContextType = {
+  [key: string]: ToolProps['render'];
 };
 
 const ToolsContext = createContext<ToolsContextType | undefined>(undefined);
 
-export const ToolsProvider = ({ children }) => {
-  const [tools, setTools] = useState<Tools>({});
-
-  const registerTool = useCallback(
-    (name: string, tool: ToolAPI): void => {
-      setTools((prev) => ({ ...prev, [name]: tool }));
-    },
-    [tools],
-  );
-
-  const unregisterTool = useCallback(
-    (name: string) => {
-      setTools((prev) => {
-        const newTools = { ...prev };
-        delete newTools[name];
-        return newTools;
-      });
-    },
-    [tools],
-  );
-
-  const value = useMemo(
-    () => ({
-      tools,
-      registerTool,
-      unregisterTool,
-    }),
-    [tools],
-  );
-
-  return <ToolsContext.Provider value={value}>{children}</ToolsContext.Provider>;
+type Props = {
+  tools?: Tools;
+  children: React.ReactNode;
 };
 
-export const useTools = (): ToolsContextType => {
+export const ToolsProvider = ({ children, tools }: Props) => {
+  const value = useMemo(() => {
+    if (!tools) return {};
+
+    return Object.keys(tools).reduce((acc, key) => {
+      return {
+        ...acc,
+        [key]: tools[key].render,
+      };
+    }, {});
+  }, [tools]);
+
+  return (
+    <ToolsContext.Provider value={value}>
+      <>
+        {tools &&
+          Object.keys(tools).map((key) => {
+            const Tool = tools[key].tool;
+            return <Tool key={key} />;
+          })}
+        {children}
+      </>
+    </ToolsContext.Provider>
+  );
+};
+
+export const useYooptaTools = (): ToolsContextType => {
   const context = useContext(ToolsContext);
   if (context === undefined) {
-    throw new Error('useTools must be used within a ToolsProvider');
+    throw new Error('useYooptaTools must be used within a ToolsProvider');
   }
+
   return context;
 };

@@ -13,8 +13,8 @@ import Link from '@yoopta/link';
 import Video from '@yoopta/video';
 import Table from '@yoopta/table';
 import Embed from '@yoopta/embed';
-import ActionMenuList from '@yoopta/action-menu-list';
-import Toolbar from '@yoopta/toolbar';
+import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
+import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 // import Code from '@yoopta/code';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { uploadToCloudinary } from '../../utils/cloudinary';
@@ -76,9 +76,16 @@ const NoSSR = ({ children }) => {
   return children;
 };
 
-// const TOOLS = {
-//   ActionMenuList
-// }
+const TOOLS = {
+  ActionMenu: {
+    render: DefaultActionMenuRender,
+    tool: ActionMenuList,
+  },
+  Toolbar: {
+    render: DefaultToolbarRender,
+    tool: Toolbar,
+  },
+};
 
 const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
@@ -126,10 +133,8 @@ const BasicExample = () => {
           marks={MARKS}
           autoFocus
           placeholder="Type / to open menu"
-        >
-          <ActionMenuList />
-          <Toolbar />
-        </YooptaEditor>
+          tools={TOOLS}
+        />
       </NoSSR>
     </div>
   );

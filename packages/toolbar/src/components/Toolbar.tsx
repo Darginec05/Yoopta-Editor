@@ -1,13 +1,22 @@
 import { useEffect, useState } from 'react';
-import { ToolbarComponent } from './ToolbarComponent';
-import { useFloating, offset, flip, shift, inline, autoUpdate, FloatingPortal } from '@floating-ui/react';
+import { DefaultToolbarRender } from './DefaultToolbarRender';
+import {
+  useFloating,
+  offset,
+  flip,
+  shift,
+  inline,
+  autoUpdate,
+  FloatingPortal,
+  useTransitionStyles,
+} from '@floating-ui/react';
 import throttle from 'lodash.throttle';
 import { useYooptaEditor } from '@yoopta/editor';
 
 const Toolbar = () => {
   const editor = useYooptaEditor();
   const [isToolbarOpen, setIsToolbarOpen] = useState(false);
-  const { refs, floatingStyles } = useFloating({
+  const { refs, floatingStyles, context } = useFloating({
     placement: 'top',
     open: isToolbarOpen,
     onOpenChange: setIsToolbarOpen,
@@ -15,7 +24,11 @@ const Toolbar = () => {
     whileElementsMounted: autoUpdate,
   });
 
-  const handleSelectionChange = () => {
+  const { isMounted, styles: transitionStyles } = useTransitionStyles(context, {
+    duration: 100,
+  });
+
+  const selectionChange = () => {
     const domSelection = window.getSelection();
     if (!domSelection || domSelection?.isCollapsed) return setIsToolbarOpen(false);
 
@@ -38,22 +51,23 @@ const Toolbar = () => {
     }
   };
 
-  const onSelectionChange = throttle(handleSelectionChange, 200);
+  const onSelectionChange = throttle(selectionChange, 200);
 
   useEffect(() => {
     window.document.addEventListener('selectionchange', onSelectionChange);
     return () => window.document.removeEventListener('selectionchange', onSelectionChange);
   }, [editor.selectedBlocks]);
 
-  if (!isToolbarOpen) return null;
+  if (!isMounted) return null;
 
   const activeBlock = Object.values(editor.blocks).find((block) => block.isActive());
+  const style = { ...floatingStyles, ...transitionStyles };
 
   return (
     // [TODO] - take care about SSR
     <FloatingPortal root={document.getElementById('yoopta-editor')}>
-      <div style={floatingStyles} ref={refs.setFloating}>
-        <ToolbarComponent activeBlock={activeBlock} editor={editor} />
+      <div style={style} ref={refs.setFloating}>
+        <DefaultToolbarRender activeBlock={activeBlock} editor={editor} />
       </div>
     </FloatingPortal>
   );

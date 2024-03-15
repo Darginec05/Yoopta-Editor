@@ -1,7 +1,7 @@
 import TurnIcon from './icons/turn.svg';
 import { TrashIcon, CopyIcon, Link2Icon } from '@radix-ui/react-icons';
 import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
-import { useState } from 'react';
+import { CSSProperties, useState } from 'react';
 import {
   useFloating,
   offset,
@@ -11,11 +11,12 @@ import {
   autoUpdate,
   FloatingPortal,
   FloatingOverlay,
+  useTransitionStyles,
 } from '@floating-ui/react';
 import copy from 'copy-to-clipboard';
-import { ActionMenuComponent } from '../../tools/ActionMenuList/ActionMenuComponent';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { getRootBlockElement } from '../../utils/blockElements';
+import { useYooptaTools } from '../../contexts/UltraYooptaContext/ToolsContext';
 
 const BlockOptionsMenuGroup = ({ children }) => <div className="flex flex-col">{children}</div>;
 
@@ -42,15 +43,32 @@ const BlockOptionsSeparator = ({ className }: BlockOptionsSeparatorProps) => (
   <div className={`h-[1px] bg-[#37352f14] my-[4px] w-full ${className}`} />
 );
 
-const BlockOptions = ({ isOpen, onClose, refs, floatingStyles, children }) => {
+type BlockOptionsProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  refs: any;
+  style: CSSProperties;
+  children?: React.ReactNode;
+};
+
+const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsProps) => {
   const editor = useYooptaEditor();
+  const tools = useYooptaTools();
   const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
-  const { refs: actionMenuRefs, floatingStyles: actionMenuFloatingStyles } = useFloating({
+  const {
+    refs: actionMenuRefs,
+    floatingStyles: actionMenuFloatingStyles,
+    context,
+  } = useFloating({
     placement: 'right',
     open: isActionMenuOpen,
     onOpenChange: setIsActionMenuOpen,
     middleware: [inline(), flip(), shift(), offset(10)],
     whileElementsMounted: autoUpdate,
+  });
+
+  const { isMounted, styles: actionMenuTransitionStyles } = useTransitionStyles(context, {
+    duration: 100,
   });
 
   if (!isOpen) return null;
@@ -84,11 +102,14 @@ const BlockOptions = ({ isOpen, onClose, refs, floatingStyles, children }) => {
     onClose();
   };
 
+  const ActionMenu = tools.ActionMenu;
+  const actionMenuStyles = { ...actionMenuFloatingStyles, ...actionMenuTransitionStyles };
+
   return (
     // [TODO] - take care about SSR
     <FloatingPortal root={document.getElementById('yoopta-editor')}>
       <FloatingOverlay lockScroll className="z-[100]" onClick={onClose}>
-        <div style={floatingStyles} ref={refs.setFloating}>
+        <div style={style} ref={refs.setFloating}>
           <BlockOptionsMenuContent>
             <BlockOptionsMenuGroup>
               <BlockOptionsMenuItem>
@@ -113,11 +134,11 @@ const BlockOptions = ({ isOpen, onClose, refs, floatingStyles, children }) => {
               </BlockOptionsMenuItem>
               {!isVoidElement && (
                 <BlockOptionsMenuItem>
-                  {isActionMenuOpen && (
+                  {isMounted && !!ActionMenu && (
                     <FloatingPortal root={document.getElementById('yoopta-editor')}>
                       <FloatingOverlay lockScroll className="z-[100]" onClick={() => setIsActionMenuOpen(false)}>
-                        <div style={actionMenuFloatingStyles} ref={actionMenuRefs.setFloating}>
-                          <ActionMenuComponent
+                        <div style={actionMenuStyles} ref={actionMenuRefs.setFloating}>
+                          <ActionMenu
                             actions={Object.keys(editor.blocks)}
                             editor={editor}
                             selectedAction={''}

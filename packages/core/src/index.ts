@@ -10,6 +10,8 @@ export {
 import { YooptaEditor } from './YooptaEditor';
 export { UI } from './UI';
 
+export { useYooptaTools, Tools } from './contexts/UltraYooptaContext/ToolsContext';
+
 export { generateId } from './utils/generateId';
 export { HOTKEYS } from './utils/hotkeys';
 export { getRootBlockElementType, getRootBlockElement } from './utils/blockElements';
