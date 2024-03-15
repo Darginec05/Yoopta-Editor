@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/callout",
-  "version": "4.0.0-rc.1",
+  "version": "4.0.0-rc.2",
   "description": "> TODO: description",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
@@ -35,6 +35,5 @@
   },
   "bugs": {
     "url": "https://github.com/Darginec05/Editor-Yoopta/issues"
-  },
-  "dependencies": {}
+  }
 }
