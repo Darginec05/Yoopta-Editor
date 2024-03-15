@@ -1,6 +1,5 @@
 import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
 import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import { useRef, useState } from 'react';
 import { BlockActions } from './BlockActions';
 import s from './Block.module.scss';
@@ -23,7 +22,7 @@ const Block = ({ children, block, blockId }) => {
   } = useSortable({ id: blockId });
 
   const style = {
-    transform: CSS.Translate.toString(transform),
+    transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : 'none',
     transition,
     opacity: isDragging ? 0.7 : 1,
     // [TODO] = handle max depth

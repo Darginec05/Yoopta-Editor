@@ -8,8 +8,6 @@ import {
   ChevronUpIcon,
 } from '@radix-ui/react-icons';
 import * as Toolbar from '@radix-ui/react-toolbar';
-import { YooEditor, YooptaBlock } from '../../editor/types';
-import { ActionMenuComponent } from '../ActionMenuList/ActionMenuComponent';
 import {
   useFloating,
   offset,
@@ -22,6 +20,7 @@ import {
 } from '@floating-ui/react';
 import { CSSProperties, useState } from 'react';
 import { HighlightColor } from './HighlightColor';
+import { YooEditor, YooptaBlock } from '@yoopta/editor';
 
 type ToolbarComponentProps = {
   activeBlock?: YooptaBlock;
@@ -29,7 +28,7 @@ type ToolbarComponentProps = {
 };
 
 const ActionMenu = {
-  component: ActionMenuComponent,
+  // component: ActionMenuComponent,
 };
 
 const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
@@ -71,11 +70,15 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
   const blockLabel = activeBlock?.options?.displayLabel || activeBlock?.type || '';
 
   return (
-    <Toolbar.Root className="bg-white flex z-50 p-[5px] rounded-md shadow-md border shadow-y-[4px]">
-      <Toolbar.ToggleGroup className="flex items-center" type="single" aria-label="Block formatting">
+    <Toolbar.Root className="yoo-toolbar-bg-white yoo-toolbar-flex yoo-toolbar-z-50 yoo-toolbar-p-[5px] yoo-toolbar-rounded-md yoo-toolbar-shadow-md yoo-toolbar-border yoo-toolbar-shadow-y-[4px]">
+      <Toolbar.ToggleGroup
+        className="yoo-toolbar-flex yoo-toolbar-items-center"
+        type="single"
+        aria-label="Block formatting"
+      >
         {isActionMenuOpen && (
           <FloatingPortal root={document.getElementById('yoopta-editor')}>
-            <FloatingOverlay lockScroll className="z-[100]" onClick={() => setIsActionMenuOpen(false)}>
+            <FloatingOverlay lockScroll className="yoo-toolbar-z-[100]" onClick={() => setIsActionMenuOpen(false)}>
               <div style={actionMenuStyles} ref={actionMenuRefs.setFloating}>
                 <ActionMenu.component
                   actions={Object.keys(editor.blocks)}
@@ -100,7 +103,7 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
           />
         )}
         <Toolbar.ToggleItem
-          className="h-full px-[10px] py-0 hover:bg-[#f4f4f5] rounded-md"
+          className="yoo-toolbar-h-full yoo-toolbar-px-[10px] yoo-toolbar-py-0 yoo-toolbar-hover:bg-[#f4f4f5] yoo-toolbar-rounded-md"
           value={blockLabel}
           aria-label={blockLabel}
           ref={actionMenuRefs.setReference}
@@ -109,21 +112,29 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
           <span className="mr-0">{blockLabel}</span>
         </Toolbar.ToggleItem>
       </Toolbar.ToggleGroup>
-      <Toolbar.Separator className="bg-[#dbd8e0] mx-[6px] my-0 w-[1px]" />
-      <Toolbar.ToggleGroup className="flex items-center" type="single" aria-label="Block formatting">
+      <Toolbar.Separator className="yoo-toolbar-bg-[#dbd8e0] yoo-toolbar-mx-[6px] yoo-toolbar-my-0 yoo-toolbar-w-[1px]" />
+      <Toolbar.ToggleGroup
+        className="yoo-toolbar-flex yoo-toolbar-items-center"
+        type="single"
+        aria-label="Block formatting"
+      >
         <Toolbar.ToggleItem
-          className="h-full px-[10px] py-0 hover:bg-[#f4f4f5] rounded-md"
+          className="yoo-toolbar-h-full yoo-toolbar-px-[10px] yoo-toolbar-py-0 yoo-toolbar-hover:bg-[#f4f4f5] yoo-toolbar-rounded-md"
           value="LinkTool"
           aria-label="LinkTool"
         >
           <span className="mr-0">Link</span>
         </Toolbar.ToggleItem>
       </Toolbar.ToggleGroup>
-      <Toolbar.Separator className="bg-[#dbd8e0] mx-[6px] my-0 w-[1px]" />
-      <Toolbar.ToggleGroup className="flex items-center" type="multiple" aria-label="Text formatting">
+      <Toolbar.Separator className="yoo-toolbar-bg-[#dbd8e0] yoo-toolbar-mx-[6px] yoo-toolbar-my-0 yoo-toolbar-w-[1px]" />
+      <Toolbar.ToggleGroup
+        className="yoo-toolbar-flex yoo-toolbar-items-center"
+        type="multiple"
+        aria-label="Text formatting"
+      >
         {editor.formats.bold && (
           <Toolbar.ToggleItem
-            className="h-[32px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
+            className="yoo-toolbar-h-[32px] hover:bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
             value="bold"
             aria-label="Bold"
             style={getItemStyle('bold')}
@@ -134,7 +145,7 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
         )}
         {editor.formats.italic && (
           <Toolbar.ToggleItem
-            className="h-[32px] ml-[2px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
+            className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
             value="italic"
             aria-label="Italic"
             style={getItemStyle('italic')}
@@ -145,7 +156,7 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
         )}
         {editor.formats.underline && (
           <Toolbar.ToggleItem
-            className="h-[32px] ml-[2px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
+            className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
             value="underline"
             aria-label="Underline"
             style={getItemStyle('underline')}
@@ -156,7 +167,7 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
         )}
         {editor.formats.strike && (
           <Toolbar.ToggleItem
-            className="h-[32px] ml-[2px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
+            className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
             value="strike"
             aria-label="Strike"
             style={getItemStyle('strike')}
@@ -167,7 +178,7 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
         )}
         {editor.formats.code && (
           <Toolbar.ToggleItem
-            className="h-[32px] ml-[2px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
+            className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
             value="code"
             aria-label="Code"
             style={getItemStyle('code')}
@@ -178,14 +189,14 @@ const ToolbarComponent = ({ activeBlock, editor }: ToolbarComponentProps) => {
         )}
         {editor.formats.highlight && (
           <Toolbar.ToggleItem
-            className="h-[32px] ml-[2px] hover:bg-[#f4f4f5] rounded-md cursor-pointer inline-flex px-[5px] py-0 items-center justify-center"
+            className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
             value="highlight"
             aria-label="Highlight"
             style={getHighlightStyle()}
             ref={highlightPickerRefs.setReference}
             onClick={() => setIsHighlightPickerOpen((open) => !open)}
           >
-            <span className="text-lg px-1 font-serif text-col">A</span>
+            <span className="yoo-toolbar-text-lg yoo-toolbar-px-1 yoo-toolbar-font-serif yoo-toolbar-text-col">A</span>
             {isHighlightPickerOpen ? <ChevronUpIcon width={10} /> : <ChevronDownIcon width={10} />}
           </Toolbar.ToggleItem>
         )}

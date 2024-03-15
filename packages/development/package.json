@@ -24,7 +24,9 @@
     "@yoopta/code": "*",
     "@yoopta/video": "*",
     "@yoopta/marks": "*",
-    "@yoopta/embed": "*"
+    "@yoopta/embed": "*",
+    "@yoopta/action-menu-list": "*",
+    "@yoopta/toolbar": "*"
   },
   "devDependencies": {
     "typescript": "^5",

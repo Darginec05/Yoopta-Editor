@@ -4,7 +4,13 @@ import { useYooptaEditor, useBlockData } from '../contexts/UltraYooptaContext/Ul
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../marks';
 import { withInlines } from './extenstions/withInlines';
-import { ExtendedLeafProps, PluginElementRenderProps, PluginEventHandlerOptions, PluginParams } from './types';
+import {
+  ExtendedLeafProps,
+  PluginElementRenderProps,
+  PluginEventHandlerOptions,
+  PluginParams,
+  PluginReturn,
+} from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
 import { useTools } from '../contexts/UltraYooptaContext/ToolsContext';
@@ -283,11 +289,27 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
           decorate={decorate}
           // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
           onBlur={onBlur}
+          // onPaste={(event) => {
+          //   const html = event.clipboardData.getData('text/html');
+          //   const parsetHTML = new DOMParser().parseFromString(html, 'text/html');
+          //   if (parsetHTML.body.childNodes.length > 0) {
+          //     event.preventDefault();
+          //     console.log(parsetHTML.body);
+          //   }
+          // }}
         />
       </Slate>
     );
   },
 );
+
+function deserialize(node: Node, pluginsMap: any) {}
+
+function deserializeHtml(htmlString: string, plugins: PluginReturn<string, unknown>[]) {
+  const pluginsMap = {};
+  const parsedHtml = new DOMParser().parseFromString(htmlString, 'text/html');
+  return deserialize(parsedHtml.body, pluginsMap);
+}
 
 SlateEditorInstance.displayName = 'SlateEditorInstance';
 

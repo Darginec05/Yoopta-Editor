@@ -1,6 +1,10 @@
+import { Editor } from 'slate';
 import { YooEditor, YooptaEditorTransformOptions } from '../editor/types';
 
-export function findSlateBySelectionPath(editor: YooEditor, options: Pick<YooptaEditorTransformOptions, 'at'> = {}) {
+export function findSlateBySelectionPath(
+  editor: YooEditor,
+  options: Pick<YooptaEditorTransformOptions, 'at'> = {},
+): Editor | undefined {
   const childrenKeys = Object.keys(editor.children);
   const { at = editor.selection } = options;
 

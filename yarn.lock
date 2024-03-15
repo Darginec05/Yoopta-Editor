@@ -3340,6 +3340,13 @@
     js-yaml "^3.10.0"
     tslib "^2.4.0"
 
+"@yoopta/action-menu-list@*":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/action-menu-list/-/action-menu-list-2.0.1.tgz#025c989064fbbb5164f5d8aa9289d36218436d70"
+  integrity sha512-PQvJR3chHYaaU33jDDexb4lrlDo3E/ARUontniPj2QSHLLFNF6RRIZOlVNFcK8aJQ560oezt76LhGGrbKLOlvQ==
+  dependencies:
+    body-scroll-lock "^4.0.0-beta.0"
+
 "@yoopta/blockquote@*":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@yoopta/blockquote/-/blockquote-2.0.1.tgz#118b7ebf8d05c4763ead6b418c66ac2a731d2afe"
@@ -3415,6 +3422,13 @@
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@yoopta/paragraph/-/paragraph-2.0.1.tgz#c1838f34c6de736674561bfcc3f5108bb0dbf03c"
   integrity sha512-KlxgHhITQ8FWUvcYFW4MCyVLLoDLX4SMIYD50tWg92zBTghm8N5f4XEImPoEUSh+Nji0EYDfvjVLUNaDGrm34Q==
+
+"@yoopta/toolbar@*":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/toolbar/-/toolbar-2.0.1.tgz#7173d0e5d72596734d0714402796877187b1f937"
+  integrity sha512-FZ+uLmyXMsPqOLJAXq4XmBWgymDBFzfBaV9XsMrOKtpCGN6owIdkZS2yBN7mWvqliYGMHx9kUuQCfm3bF3t3Rw==
+  dependencies:
+    body-scroll-lock "^4.0.0-beta.0"
 
 "@yoopta/video@*":
   version "2.0.1"
@@ -8331,6 +8345,11 @@ lodash.merge@^4.6.2:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
+
+lodash.throttle@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  integrity sha512-wIkUCfVKpVsWo3JSZlc+8MB5it+2AN5W8J7YVMST30UrvcQNZ1Okbj+rbVniijTWE6FGYy4XJq/rHkas8qJMLQ==
 
 lodash.uniq@^4.5.0:
   version "4.5.0"

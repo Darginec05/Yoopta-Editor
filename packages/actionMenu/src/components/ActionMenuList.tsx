@@ -1,362 +1,249 @@
-import {
-  HOTKEYS,
-  YooEditor,
-  YooptaBaseElement,
-  YooptaPluginType,
-  useElements,
-  cx,
-  YooptaBaseToolProps,
-} from '@yoopta/editor';
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import { CSSProperties, MouseEvent, ReactNode, useEffect, useMemo, useRef, useState } from 'react';
-import { Element, Editor, Path, Point, Transforms, Text } from 'slate';
-import { useSlate } from 'slate-react';
-import { getRectByCurrentSelection } from '../utils/selectionRect';
-import {
-  ActionMenuItem,
-  ActionMenuRenderItem,
-  ActionMenuRenderRootProps,
-  ActionMenuRenderProps,
-  ActionMenuRenderItemProps,
-  Groups,
-} from '../types';
-import { DefaultMenuRender } from './DefaultMenuRender';
-import s from './DefaultMenuRender.module.scss';
+import { useEffect, useState } from 'react';
+import { ActionMenuComponent } from './ActionMenuComponent';
+import { useFloating, offset, flip, shift, inline, autoUpdate, FloatingPortal } from '@floating-ui/react';
+import { Editor, Path } from 'slate';
+import { YooptaBlockData, YooptaBlock, useYooptaEditor, findSlateBySelectionPath, HOTKEYS } from '@yoopta/editor';
 
-const checkIsMenuOpen = (style: CSSProperties, point: Point | null) =>
-  style.opacity === 1 && !!style.top && !!style.right && point !== null;
-
-type ToggleOptions = {
-  shouldDeleteText?: boolean;
-};
-
-type Props = YooptaBaseToolProps & {
-  items?: ActionMenuItem<Record<string, unknown>>[];
-  render?: (props: ActionMenuRenderProps) => JSX.Element;
-  trigger?: string | null | ((event: KeyboardEvent) => boolean);
-  options?: ToggleOptions;
-  [x: string]: any;
-} & (
-    | {
-        items?: ActionMenuItem<Record<string, unknown>>[];
-        plugins?: YooptaPluginType[];
-        [x: string]: any;
-        options?: ToggleOptions;
-      }
-    | { plugins?: YooptaPluginType[]; items?: never; [x: string]: any; options?: ToggleOptions }
-  );
-
-type MenuProps = { fixedStyle: CSSProperties; absoluteStyle: CSSProperties; point: Point | null };
-
-const getDefaultMenuPropsState = (style?: CSSProperties): MenuProps => ({
-  fixedStyle: { position: 'fixed', opacity: 0, zIndex: 6, left: -1000, bottom: -1000, ...style },
-  absoluteStyle: { left: 0, bottom: 0, top: 'auto', right: 'auto' },
-  point: null,
-});
-
-const filterBy = (item: ActionMenuRenderItem | ActionMenuRenderItem['options'], text: string, field: string) => {
+const filterBy = (item: YooptaBlockData | YooptaBlock['options'], text: string, field: string) => {
   if (!item || !item?.[field]) return false;
-  return (item[field] as string).toLowerCase().indexOf(text) > -1;
+  return (item[field] as string).toLowerCase().indexOf(text.toLowerCase()) > -1;
 };
 
-const ACTION_MENU_ITEM_DATA_ATTR = 'data-action-menu-item';
+const filterActionMenuItems = (block: YooptaBlock, text: string) => {
+  if (!text) return true;
 
-const ActionMenuList = ({ items, render, plugins, trigger = '/', on, ...rest }: Props): JSX.Element => {
-  const editor = useSlate() as YooEditor;
-  const elements = useElements();
-  const actionMenuRef = useRef<HTMLDivElement>(null);
-  const [menuProps, setMenuProps] = useState<MenuProps>(() => getDefaultMenuPropsState(rest?.style));
-  const [searchString, setSearchString] = useState('');
-  const [focusableElement, setFocusableElement] = useState(0);
+  return filterBy(block, text, 'type') || filterBy(block.options, text, 'displayLabel');
+};
 
-  const showActionMenu = () => {
-    if (!editor.selection) return;
+// {
+//   id: 'insertImage',
+//   title: 'Insert Image',
+//   description: 'Insert an image into the text',
+//   icon: ImageIcon,
+//   handler: () => {},
+// }
+type Props = {
+  trigger?: string;
+  actions?: YooptaBlock[];
+  render?: (props: any) => JSX.Element;
+};
 
-    const selectionRect = getRectByCurrentSelection();
-    const actionMenuHeight = actionMenuRef.current!.clientHeight;
+const ActionMenuList = ({ trigger = '/', render }: Props) => {
+  const editor = useYooptaEditor();
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
-    const showAtTop = selectionRect.top + selectionRect.height + actionMenuHeight > window.innerHeight;
+  const {
+    refs,
+    floatingStyles,
+    update: updateActionMenuPosition,
+  } = useFloating({
+    placement: 'bottom-start',
+    open: isMenuOpen,
+    onOpenChange: setIsMenuOpen,
+    middleware: [inline(), flip(), shift(), offset(10)],
+    whileElementsMounted: autoUpdate,
+  });
 
-    disableBodyScroll(document.body, { reserveScrollBarGap: true });
-    const parentPath = Path.parent(editor.selection.anchor.path);
+  const blockTypes = Object.keys(editor.blocks).sort((a: string, b: string) => {
+    const aOrder = editor.blocks[a].order;
+    const bOrder = editor.blocks[b].order;
 
-    const absoluteStyle = showAtTop
-      ? { left: 0, bottom: 5, top: 'auto', right: 'auto' }
-      : { left: 0, bottom: 'auto', top: selectionRect.height + 5, right: 'auto' };
+    return aOrder - bOrder;
+  });
 
-    setMenuProps({
-      absoluteStyle,
-      fixedStyle: {
-        ...menuProps.fixedStyle,
-        left: selectionRect.left,
-        top: selectionRect.top,
-        right: 'auto',
-        bottom: 'auto',
-        opacity: 1,
-        position: 'fixed',
-      },
-      point: { path: parentPath, offset: editor.selection.anchor.offset },
-    });
-  };
+  const [selectedAction, setSelectedAction] = useState(blockTypes[0]);
+  const [actions, setActions] = useState(blockTypes);
 
-  const hideActionMenu = () => {
-    enableBodyScroll(document.body);
-    setMenuProps(getDefaultMenuPropsState(rest?.style));
-    setSearchString('');
-    setFocusableElement(0);
+  const onOpen = () => setIsMenuOpen(true);
+  const onClose = () => setIsMenuOpen(false);
 
-    const childNodes = document.querySelectorAll(`[${ACTION_MENU_ITEM_DATA_ATTR}]`);
-    childNodes.forEach((childNode) => childNode?.setAttribute('aria-selected', 'false'));
+  const onFilter = ({ text }) => {
+    const string = text.trim().replace(trigger, '');
 
-    const firstNodeEl = childNodes?.[0] as HTMLLIElement | undefined;
-    firstNodeEl?.setAttribute('aria-selected', 'true');
-
-    if (firstNodeEl?.nodeType === 1) {
-      firstNodeEl?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    }
-  };
-
-  const isMenuOpen = checkIsMenuOpen(menuProps.fixedStyle, menuProps.point);
-
-  const filterMenuList = (item: ActionMenuRenderItem) => {
-    let filterText = searchString;
-
-    if (typeof trigger === 'string') {
-      filterText = searchString.replace(trigger || '', '');
-    }
-
-    return (
-      filterBy(item, filterText, 'type') ||
-      filterBy(item, filterText, 'displayLabel') ||
-      filterBy(item, filterText, 'searchString') ||
-      filterBy(item.options, filterText, 'displayLabel') ||
-      filterBy(item.options, filterText, 'searchString')
-    );
-  };
-
-  const mapCustomMenuItems = (item: ActionMenuItem<Record<string, unknown>>) => {
-    const { plugin, ...rest } = item;
-    const { type, createElement, defineElement, options = {} } = plugin.getPlugin;
-    const { displayLabel, searchString } = options;
-
-    return { displayLabel, searchString, ...rest, type, createElement, defineElement, options };
-  };
-
-  const filterInlineNodes = (item: Pick<YooptaPluginType, 'type' | 'createElement' | 'defineElement' | 'options'>) =>
-    item.defineElement().nodeType !== 'inline';
-
-  const renderMenuItems = useMemo<ActionMenuRenderItem[]>(() => {
-    let menuList: ActionMenuRenderItem[];
-
-    if (items) {
-      menuList = items.map(mapCustomMenuItems).filter(filterInlineNodes);
-    } else {
-      menuList = (plugins as YooptaPluginType[])
-        .filter((item) => !item.hasParent)
-        .filter(filterInlineNodes)
-        .map(({ type, createElement, defineElement, options }) => ({ type, createElement, defineElement, options }));
-    }
-
-    return menuList.filter(filterMenuList);
-  }, [items, plugins, searchString]);
-
-  const groupRenderItems = useMemo<Groups>(() => {
-    const groups: Groups = { texts: [], voids: [], inlines: [] };
-
-    renderMenuItems.forEach((plugin) => {
-      const element = plugin.defineElement();
-      if (editor.isVoid(element)) groups.voids.push(plugin);
-      else if (editor.isInline(element)) groups.inlines.push(plugin);
-      else groups.texts.push(plugin);
-    });
-
-    return groups;
-  }, [renderMenuItems]);
-
-  const moveDown = () => {
-    const childNodes = document.querySelectorAll(`[${ACTION_MENU_ITEM_DATA_ATTR}]`);
-    const currentNodeEl = childNodes?.[focusableElement] as HTMLLIElement | undefined;
-    currentNodeEl?.setAttribute('aria-selected', 'false');
-
-    let nextElementIndex = focusableElement + 1;
-    const isLast = nextElementIndex === childNodes?.length;
-    if (isLast) nextElementIndex = 0;
-
-    const selectedNodeEl = childNodes?.[nextElementIndex] as HTMLLIElement | undefined;
-
-    if (selectedNodeEl?.nodeType === 1) {
-      selectedNodeEl?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    }
-
-    selectedNodeEl?.setAttribute('aria-selected', 'true');
-    setFocusableElement(nextElementIndex);
-  };
-
-  const moveUp = () => {
-    const childNodes = document.querySelectorAll(`[${ACTION_MENU_ITEM_DATA_ATTR}]`);
-    const currentNodeEl = childNodes?.[focusableElement] as HTMLLIElement | undefined;
-    currentNodeEl?.setAttribute('aria-selected', 'false');
-
-    let prevElementIndex = focusableElement - 1;
-    const isFirst = focusableElement === 0;
-
-    if (isFirst) prevElementIndex = childNodes!.length - 1;
-    const selectedNodeEl = childNodes?.[prevElementIndex] as HTMLLIElement | undefined;
-
-    if (selectedNodeEl?.nodeType === 1) {
-      selectedNodeEl?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    }
-
-    selectedNodeEl?.setAttribute('aria-selected', 'true');
-    setFocusableElement(prevElementIndex);
-  };
-
-  const handleKeydown = (event) => {
-    if (HOTKEYS.isEscape(event)) {
-      event.preventDefault();
-      return hideActionMenu();
-    }
-
-    if (HOTKEYS.isEnter(event)) {
-      const childNodes = document.querySelectorAll(`[${ACTION_MENU_ITEM_DATA_ATTR}]`);
-      const selectedType = childNodes[focusableElement]?.getAttribute('data-element-type') as string;
-
-      if (!selectedType) return;
-
-      toggleElement(selectedType);
-
-      event.preventDefault();
-      event.stopPropagation();
-      return;
-    }
-
-    if (HOTKEYS.isTab(event) || HOTKEYS.isArrowDown(event)) {
-      event.preventDefault();
-      return moveDown();
-    }
-
-    if (HOTKEYS.isShiftTab(event) || HOTKEYS.isArrowUp(event)) {
-      event.preventDefault();
-      return moveUp();
-    }
-  };
-
-  const handleKeyup = (event) => {
-    if (!editor.selection || !trigger) return;
-
-    const parentPath = Path.parent(editor.selection.anchor.path);
-    const string = Editor.string(editor, parentPath);
-
-    if (typeof trigger === 'function' && trigger(event)) {
-      event.preventDefault();
-      return showActionMenu();
-    }
-
-    if (!isMenuOpen && string === trigger && string.includes(event.key)) {
-      event.preventDefault();
-      return showActionMenu();
-    }
-
-    if (isMenuOpen) return setSearchString(string);
+    if (string.length === 0 || string === trigger) return setActions(blockTypes);
+    setActions(blockTypes.filter((type) => filterActionMenuItems(editor.blocks[type], string)));
   };
 
   useEffect(() => {
-    if (!isMenuOpen) return;
+    const yooptaEditorRef = document.getElementById('yoopta-editor');
 
-    if (!editor.selection || !menuProps.point) return hideActionMenu();
+    const handleActionMenuKeyUp = (event: KeyboardEvent) => {
+      const slate = findSlateBySelectionPath(editor, { at: editor.selection });
+      const isInsideEditor = yooptaEditorRef?.contains(event.target as Node);
 
-    const parentPath: Path = Path.parent(editor.selection.anchor.path);
-    const selectionPoint: Point = { path: parentPath, offset: editor.selection.anchor.offset };
+      if (!slate || !slate.selection || !isInsideEditor) return;
 
-    if (!Path.equals(selectionPoint.path, menuProps.point.path) || Point.isBefore(selectionPoint, menuProps.point)) {
-      hideActionMenu();
-    }
-  }, [editor.selection, menuProps.point]);
+      const parentPath = Path.parent(slate.selection.anchor.path);
+      const string = Editor.string(slate, parentPath);
 
-  const isNotFound = renderMenuItems.length === 0;
-
-  useEffect(() => {
-    let timeout;
-
-    if (isNotFound) {
-      timeout = setTimeout(() => {
-        hideActionMenu();
-      }, 1500);
-    }
-
-    if (focusableElement > renderMenuItems.length - 1) setFocusableElement(0);
-
-    const contentEditor = document.querySelector('#yoopta-contenteditable');
-    contentEditor?.addEventListener('keyup', handleKeyup);
-
-    if (isMenuOpen) document.addEventListener('keydown', handleKeydown, true);
-    return () => {
-      clearTimeout(timeout);
-      contentEditor?.removeEventListener('keyup', handleKeyup);
-      if (isMenuOpen) document.removeEventListener('keydown', handleKeydown, true);
+      if (string.length === 0) return onClose();
+      onFilter({ text: string });
     };
-  }, [editor, isMenuOpen, focusableElement, renderMenuItems]);
 
-  const toggleElement = (type: string) => {
-    const menuItem = renderMenuItems.find((item) => item.type === type);
-    if (!menuItem) return;
-    elements[type]?.toggle({
-      shouldDeleteText: typeof rest.options?.shouldDeleteText === 'boolean' ? rest.options?.shouldDeleteText : true,
-    });
+    const handleActionMenuKeyDown = (event: KeyboardEvent) => {
+      const slate = findSlateBySelectionPath(editor, { at: editor.selection });
+      const isInsideEditor = yooptaEditorRef?.contains(event.target as Node);
 
-    on?.toggle?.(type);
+      if (!slate || !slate.selection || !isInsideEditor) return;
+
+      if (HOTKEYS.isSlashCommand(event)) {
+        const parentPath = Path.parent(slate.selection.anchor.path);
+        const string = Editor.string(slate, parentPath);
+        const isStart = Editor.isStart(slate, slate.selection.anchor, slate.selection.focus);
+
+        if (!isStart || string.trim().length > 0) return;
+
+        const domSelection = window.getSelection();
+        if (!domSelection) return;
+
+        const domRange = domSelection.getRangeAt(0);
+        const selectionRect = domRange.getBoundingClientRect();
+
+        if (domRange) {
+          refs.setReference({
+            getBoundingClientRect: () => selectionRect,
+            getClientRects: () => domRange.getClientRects(),
+          });
+
+          onOpen();
+        }
+      }
+
+      if (!isMenuOpen) return;
+
+      if (HOTKEYS.isTab(event)) {
+        event.preventDefault();
+        return;
+      }
+
+      if (HOTKEYS.isArrowUp(event)) {
+        event.preventDefault();
+        const currentSelected = selectedAction;
+        const currentIndex = actions.indexOf(currentSelected);
+        const prevIndex = currentIndex - 1;
+        const prevSelected = actions[prevIndex];
+
+        if (!prevSelected) {
+          return setSelectedAction(blockTypes[blockTypes.length - 1]);
+        }
+
+        return setSelectedAction(prevSelected);
+      }
+
+      if (HOTKEYS.isArrowDown(event)) {
+        event.preventDefault();
+        const currentSelected = selectedAction;
+        const currentIndex = actions.indexOf(currentSelected);
+        const nextIndex = currentIndex + 1;
+        const nextSelected = actions[nextIndex];
+
+        if (!nextSelected) {
+          return setSelectedAction(blockTypes[0]);
+        }
+
+        return setSelectedAction(nextSelected);
+      }
+
+      if (HOTKEYS.isArrowLeft(event)) {
+        event.preventDefault();
+        return;
+      }
+
+      if (HOTKEYS.isArrowRight(event)) {
+        event.preventDefault();
+        return;
+      }
+
+      if (HOTKEYS.isBackspace(event)) {
+        if (!slate.selection) return;
+        const isStart = Editor.isStart(slate, slate.selection.anchor, slate.selection.focus);
+        if (isStart) return onClose();
+      }
+
+      if (HOTKEYS.isEscape(event)) {
+        event.preventDefault();
+        onClose();
+        return;
+      }
+
+      if (HOTKEYS.isEnter(event)) {
+        event.preventDefault();
+
+        const selected = document.querySelector('[data-action-menu-item][aria-selected=true]') as HTMLElement;
+        const type = selected?.dataset.actionMenuItemType;
+        if (!type) return;
+
+        editor.blocks[type].create({ deleteText: true, focus: true });
+        return onClose();
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('click', onClose);
+    }
+
+    yooptaEditorRef?.addEventListener('keydown', handleActionMenuKeyDown);
+    yooptaEditorRef?.addEventListener('keyup', handleActionMenuKeyUp);
+    return () => {
+      yooptaEditorRef?.removeEventListener('keydown', handleActionMenuKeyDown);
+      yooptaEditorRef?.removeEventListener('keyup', handleActionMenuKeyUp);
+      document.removeEventListener('click', onClose);
+    };
+  }, [actions, isMenuOpen, editor.selection, refs]);
+
+  const onMouseEnter = (e: React.MouseEvent) => {
+    const type = e.currentTarget.getAttribute('data-action-menu-item-type')!;
+    setSelectedAction(type);
   };
 
-  const getRootProps = (): ActionMenuRenderRootProps => ({
-    ref: actionMenuRef,
-  });
+  const empty = actions.length === 0;
 
-  const getItemProps = (type: string): ActionMenuRenderItemProps => ({
-    onClick: () => toggleElement(type),
-    [ACTION_MENU_ITEM_DATA_ATTR]: true,
-    'data-element-active': elements[type]?.isActive,
-    'aria-selected': false,
-    'data-element-type': type,
-  });
+  useEffect(() => {
+    updateActionMenuPosition();
 
-  const renderProps: ActionMenuRenderProps = {
-    items: renderMenuItems,
-    groups: groupRenderItems,
-    isNotFound,
-    getRootProps,
-    getItemProps,
-    className: 'yoopta-action-menu-list-inner',
-  };
+    let timeout = setTimeout(() => {
+      if (empty) onClose();
+    }, 3000);
 
-  if (typeof render === 'function') {
+    return () => clearTimeout(timeout);
+  }, [actions.length, isMenuOpen, refs]);
+
+  if (!isMenuOpen) return null;
+
+  if (render) {
+    const getItemProps = (props) => ({ onMouseEnter, selectedAction });
+
     return (
-      <div role={'dialog'} aria-modal style={menuProps.fixedStyle}>
-        <div className={s.relative}>
-          <div className={cx(s.absolute, 'yoopta-action-menu-list')} style={menuProps.absoluteStyle}>
-            {render(renderProps)}
-          </div>
+      <FloatingPortal>
+        <div
+          className="yoo-action-menu-absolute yoo-action-menu-z-[9999] yoo-action-menu-m-0 yoo-action-menu-left-0 yoo-action-menu-top-0 yoo-action-menu-right-auto yoo-action-menu-bottom-auto"
+          style={floatingStyles}
+          ref={refs.setFloating}
+        >
+          {render({ getItemProps, actions, editor, onMouseEnter, selectedAction, onClose, empty })}
         </div>
-      </div>
+      </FloatingPortal>
     );
   }
 
   return (
-    <div role={'dialog'} aria-modal style={menuProps.fixedStyle}>
-      <div className={s.relative}>
-        <div className={cx(s.absolute, 'yoopta-action-menu-list')} style={menuProps.absoluteStyle}>
-          <DefaultMenuRender {...renderProps} />
-        </div>
+    // [TODO] - take care about SSR
+    <FloatingPortal root={document.getElementById('yoopta-editor')}>
+      <div
+        className="yoo-action-menu-absolute yoo-action-menu-z-[9999] yoo-action-menu-m-0 yoo-action-menu-left-0 yoo-action-menu-top-0 yoo-action-menu-right-auto yoo-action-menu-bottom-auto"
+        style={floatingStyles}
+        ref={refs.setFloating}
+      >
+        <ActionMenuComponent
+          actions={actions}
+          editor={editor}
+          onMouseEnter={onMouseEnter}
+          selectedAction={selectedAction}
+          onClose={onClose}
+          empty={empty}
+        />
       </div>
-    </div>
+    </FloatingPortal>
   );
 };
 
