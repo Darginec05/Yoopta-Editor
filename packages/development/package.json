@@ -26,7 +26,8 @@
     "@yoopta/marks": "*",
     "@yoopta/embed": "*",
     "@yoopta/action-menu-list": "*",
-    "@yoopta/toolbar": "*"
+    "@yoopta/toolbar": "*",
+    "@yoopta/link-tool": "*"
   },
   "devDependencies": {
     "typescript": "^5",

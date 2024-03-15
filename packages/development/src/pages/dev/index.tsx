@@ -1,6 +1,6 @@
 'use client';
 
-import YooptaEditor, { createYooptaEditor, YooEditor } from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor, Tools, YooEditor } from '@yoopta/editor';
 import Blockquote from '@yoopta/blockquote';
 import Paragraph from '@yoopta/paragraph';
 import Headings from '@yoopta/headings';
@@ -8,16 +8,18 @@ import Image from '@yoopta/image';
 import { Bold, Italic, Highlight, CodeMark, Strike, Underline } from '@yoopta/marks';
 import Callout from '@yoopta/callout';
 import Lists from '@yoopta/lists';
-// import Mention from '@yoopta/mention';
 import Link from '@yoopta/link';
 import Video from '@yoopta/video';
 import Table from '@yoopta/table';
 import Embed from '@yoopta/embed';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
+import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
-// import Code from '@yoopta/code';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { uploadToCloudinary } from '../../utils/cloudinary';
+
+// import Code from '@yoopta/code';
+// import Mention from '@yoopta/mention';
 
 const plugins = [
   Paragraph,
@@ -76,7 +78,7 @@ const NoSSR = ({ children }) => {
   return children;
 };
 
-const TOOLS = {
+const TOOLS: Tools = {
   ActionMenu: {
     render: DefaultActionMenuRender,
     tool: ActionMenuList,
@@ -84,6 +86,10 @@ const TOOLS = {
   Toolbar: {
     render: DefaultToolbarRender,
     tool: Toolbar,
+  },
+  LinkTool: {
+    render: DefaultLinkToolRender,
+    tool: LinkTool,
   },
 };
 
