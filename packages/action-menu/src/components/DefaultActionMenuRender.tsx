@@ -72,7 +72,7 @@ const DefaultActionMenuRender = ({
                 </div>
                 <div>
                   <div className="yoo-action-menu-font-medium">{title}</div>
-                  <div className="yoo-action-menu-text-xs yoo-action-menu-text-muted-foreground yoo-action-menu-truncate yoo-action-menu-text-ellipsis">
+                  <div className="yoo-action-menu-text-xs yoo-action-menu-text-muted-foreground yoo-action-menu-truncate yoo-action-menu-text-ellipsis yoo-action-menu-max-w-[200px]">
                     {description}
                   </div>
                 </div>
