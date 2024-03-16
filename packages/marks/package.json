@@ -34,7 +34,5 @@
   "bugs": {
     "url": "https://github.com/Darginec05/Editor-Yoopta/issues"
   },
-  "dependencies": {
-    "body-scroll-lock": "^4.0.0-beta.0"
-  }
+  "dependencies": {}
 }
