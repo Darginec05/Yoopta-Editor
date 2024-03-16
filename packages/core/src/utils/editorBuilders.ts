@@ -56,7 +56,6 @@ export function buildBlocks(editor, plugins: PluginReturn<string, PluginElement<
       blocks[plugin.type] = {
         type: plugin.type,
         elements,
-        order: index,
         // withCustomEditor: plugin.options?.withCustomEditor,
         options: {
           display,

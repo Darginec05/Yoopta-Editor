@@ -46,20 +46,20 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
     duration: 100,
   });
 
+  // .sort((a: string, b: string) => {
+  //   const aOrder = editor.blocks[a]
+  //   const bOrder = editor.blocks[b]
+  //   return aOrder - bOrder;
+  // })
+  // [TODO] - add ordering and render specific actions
   const blockTypes: ActionMenuToolItem[] =
     items ||
-    Object.keys(editor.blocks)
-      .sort((a: string, b: string) => {
-        const aOrder = editor.blocks[a].order;
-        const bOrder = editor.blocks[b].order;
-        return aOrder - bOrder;
-      })
-      .map((type) => ({
-        type,
-        title: editor.blocks[type].options?.display?.title || type,
-        description: editor.blocks[type].options?.display?.description || '',
-        icon: editor.blocks[type].options?.display?.icon || '',
-      }));
+    Object.keys(editor.blocks).map((type) => ({
+      type,
+      title: editor.blocks[type].options?.display?.title || type,
+      description: editor.blocks[type].options?.display?.description || '',
+      icon: editor.blocks[type].options?.display?.icon || '',
+    }));
 
   const [selectedAction, setSelectedAction] = useState<ActionMenuToolItem>(blockTypes[0]);
   const [actions, setActions] = useState<ActionMenuToolItem[]>(blockTypes);
@@ -88,7 +88,7 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
       const parentPath = Path.parent(slate.selection.anchor.path);
       const string = Editor.string(slate, parentPath);
 
-      if (string.length === 0) return onClose();
+      if (string.length === 0 || !isMenuOpen) return onClose();
       onFilter({ text: string });
     };
 
@@ -131,12 +131,14 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
       if (HOTKEYS.isArrowUp(event)) {
         event.preventDefault();
         const currentSelected = selectedAction;
-        const currentIndex = actions.indexOf(currentSelected);
+        const actionKeys = actions.map((item) => item.type);
+        const currentIndex = actionKeys.indexOf(currentSelected.type);
+
         const prevIndex = currentIndex - 1;
         const prevSelected = actions[prevIndex];
 
         if (!prevSelected) {
-          return setSelectedAction(blockTypes[blockTypes.length - 1]);
+          return setSelectedAction(actions[actions.length - 1]);
         }
 
         return setSelectedAction(prevSelected);
@@ -145,12 +147,14 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
       if (HOTKEYS.isArrowDown(event)) {
         event.preventDefault();
         const currentSelected = selectedAction;
-        const currentIndex = actions.indexOf(currentSelected);
+        const actionKeys = actions.map((item) => item.type);
+        const currentIndex = actionKeys.indexOf(currentSelected.type);
+
         const nextIndex = currentIndex + 1;
         const nextSelected = actions[nextIndex];
 
         if (!nextSelected) {
-          return setSelectedAction(blockTypes[0]);
+          return setSelectedAction(actions[0]);
         }
 
         return setSelectedAction(nextSelected);
@@ -233,6 +237,7 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
           style={style}
           ref={refs.setFloating}
         >
+          {/* [TODO] - pass on key down handler */}
           {render({ getItemProps, actions, editor, onMouseEnter, selectedAction, onClose, empty })}
         </div>
       </FloatingPortal>

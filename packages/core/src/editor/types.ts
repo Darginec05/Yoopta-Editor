@@ -54,7 +54,6 @@ export type TextFormat = {
 
 export type YooptaBlock = {
   type: string;
-  order: number;
   options?: PluginOptions<any>;
   elements: PluginElementsMap<string>;
   // withCustomEditor?: boolean;

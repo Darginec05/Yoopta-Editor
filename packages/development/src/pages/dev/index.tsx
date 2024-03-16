@@ -22,8 +22,9 @@ import { uploadToCloudinary } from '../../utils/cloudinary';
 // import Mention from '@yoopta/mention';
 
 const plugins = [
-  Paragraph,
   // Code,
+  // Mention,
+  Paragraph,
   Image.extend({
     onUpload: async (file: File) => {
       const data = await uploadToCloudinary(file);
@@ -61,36 +62,15 @@ const plugins = [
       };
     },
   }),
-  // Mention,
   Link,
 ];
 
 const MARKS = [Bold, Italic, Highlight, CodeMark, Strike, Underline];
 
-const NoSSR = ({ children }) => {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) return null;
-  return children;
-};
-
 const TOOLS: Tools = {
   ActionMenu: {
     render: DefaultActionMenuRender,
     tool: ActionMenuList,
-    props: {
-      //     items: [{
-      // id: 'insertImage',
-      // title: 'Insert Image',
-      // description: 'Insert an image into the text',
-      // icon: ImageIcon,
-      // handler: () => {},
-      //      }],
-    },
   },
   Toolbar: {
     render: DefaultToolbarRender,
@@ -140,17 +120,15 @@ const BasicExample = () => {
           Get editor data
         </button>
       </div>
-      <NoSSR>
-        <YooptaEditor
-          editor={editor}
-          plugins={plugins}
-          selectionBoxRoot={rootRef}
-          marks={MARKS}
-          autoFocus
-          placeholder="Type / to open menu"
-          tools={TOOLS}
-        />
-      </NoSSR>
+      <YooptaEditor
+        editor={editor}
+        plugins={plugins}
+        selectionBoxRoot={rootRef}
+        marks={MARKS}
+        autoFocus
+        placeholder="Type / to open menu"
+        tools={TOOLS}
+      />
     </div>
   );
 };
