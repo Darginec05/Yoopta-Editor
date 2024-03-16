@@ -34,7 +34,7 @@ export function updateBlock<TElementKeys extends string, TProps>(
   }
 
   editor.children = finishDraft(editor.children);
-  editor.emit('block:update', { blockId, data });
+  editor.emit('change', editor.children);
 
   // [TODO] - optimize applyChanges while updating slate value
   if (shouldApply) {

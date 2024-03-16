@@ -11,7 +11,10 @@ const BulletedList = new YooptaPlugin<BulletedListPluginKeys, BulletedListElemen
     },
   },
   options: {
-    displayLabel: 'BulletedList',
+    display: {
+      title: 'Bulleted List',
+      description: 'Create bullet list',
+    },
     shortcuts: ['-'],
   },
   events: {

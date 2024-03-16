@@ -15,7 +15,7 @@ import Embed from '@yoopta/embed';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { ComponentType, useEffect, useMemo, useRef, useState } from 'react';
 import { uploadToCloudinary } from '../../utils/cloudinary';
 
 // import Code from '@yoopta/code';
@@ -82,6 +82,15 @@ const TOOLS: Tools = {
   ActionMenu: {
     render: DefaultActionMenuRender,
     tool: ActionMenuList,
+    props: {
+      //     items: [{
+      // id: 'insertImage',
+      // title: 'Insert Image',
+      // description: 'Insert an image into the text',
+      // icon: ImageIcon,
+      // handler: () => {},
+      //      }],
+    },
   },
   Toolbar: {
     render: DefaultToolbarRender,

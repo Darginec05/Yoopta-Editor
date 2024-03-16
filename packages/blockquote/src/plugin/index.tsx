@@ -2,7 +2,7 @@ import { YooptaPlugin } from '@yoopta/editor';
 import { BlockquoteRender } from '../ui/Blockquote';
 
 const Blockquote = new YooptaPlugin({
-  type: 'BlockquotePlugin',
+  type: 'Blockquote',
   elements: {
     blockquote: {
       render: BlockquoteRender,
@@ -22,7 +22,10 @@ const Blockquote = new YooptaPlugin({
   //   }
   // },
   options: {
-    displayLabel: 'Blockquote',
+    display: {
+      title: 'Blockquote',
+      description: 'Capture quote',
+    },
     shortcuts: ['>'],
   },
 });

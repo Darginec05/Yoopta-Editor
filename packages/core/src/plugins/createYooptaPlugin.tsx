@@ -1,5 +1,5 @@
 import { Descendant } from 'slate';
-import { PluginOptions, PluginParams, PluginReturn } from './types';
+import { PluginOptions, PluginParams } from './types';
 
 export class YooptaPlugin<TKeys extends string = string, TProps = Descendant, TOptions = Record<string, unknown>> {
   private readonly plugin: PluginParams<TKeys, TProps, TOptions>;

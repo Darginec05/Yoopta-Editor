@@ -9,7 +9,10 @@ const Paragraph = new YooptaPlugin({
     },
   },
   options: {
-    displayLabel: 'Text',
+    display: {
+      title: 'Text',
+      description: 'Start writing plain text.',
+    },
     shortcuts: ['p', 'text'],
   },
 });

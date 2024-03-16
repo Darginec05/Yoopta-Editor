@@ -81,7 +81,9 @@ const File = new YooptaPlugin<FilePluginOptions, FileElement>({
   },
   options: {
     searchString: 'file url',
-    displayLabel: 'File',
+    display: {
+      title: 'File',
+    },
   },
 });
 

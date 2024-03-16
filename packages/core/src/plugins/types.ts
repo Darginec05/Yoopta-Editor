@@ -1,3 +1,4 @@
+import { ReactElement, ReactNode } from 'react';
 import { Descendant, Editor, Editor as SlateEditor } from 'slate';
 import { RenderElementProps as RenderSlateElementProps, RenderLeafProps } from 'slate-react';
 import { YooEditor, YooptaBlockData } from '../editor/types';
@@ -12,7 +13,11 @@ export type RenderPluginProps<TKeys extends string, TProps, TOptions> = {
 };
 
 export type PluginOptions<T> = {
-  displayLabel?: string;
+  display?: {
+    title?: string;
+    description?: string;
+    icon?: string | ReactNode | ReactElement;
+  };
   shortcuts?: string[];
   align?: 'left' | 'center' | 'right';
 } & T;

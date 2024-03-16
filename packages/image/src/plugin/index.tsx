@@ -20,7 +20,10 @@ const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePlug
     },
   },
   options: {
-    displayLabel: 'Image',
+    display: {
+      title: 'Image',
+      description: 'Upload from device or embed with link',
+    },
     onUpload: () => Promise.resolve({ src: null, alt: null }),
     accept: 'image/png, image/jpeg, image/gif, image/webp',
     maxSizes: { maxWidth: 650, maxHeight: 550 },

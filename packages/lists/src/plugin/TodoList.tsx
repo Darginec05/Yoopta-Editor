@@ -14,7 +14,10 @@ const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
     },
   },
   options: {
-    displayLabel: 'Todo List',
+    display: {
+      title: 'Todo List',
+      description: 'Track tasks',
+    },
     shortcuts: ['[]'],
   },
   events: {

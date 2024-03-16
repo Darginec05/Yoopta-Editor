@@ -68,7 +68,7 @@ const DefaultToolbarRender = ({ activeBlock, editor }: ToolbarComponentProps) =>
     };
   };
 
-  const blockLabel = activeBlock?.options?.displayLabel || activeBlock?.type || '';
+  const blockLabel = activeBlock?.options?.display?.title || activeBlock?.type || '';
   const ActionMenuList = tools.ActionMenu;
 
   return (
