@@ -1,6 +1,6 @@
 // import { Inter } from 'next/font/google';
 import { useEffect, useMemo } from 'react';
-import YooptaEditor, { createYooptaEditor } from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor, generateId, SlateElement, YooptaBlockData } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
@@ -84,16 +84,39 @@ const TOOLS = {
 
 const marks = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
+const getDefaultBlockData = (): YooptaBlockData => {
+  const id = generateId();
+  const slateValue: SlateElement[] = [
+    {
+      id: generateId(),
+      type: 'paragraph',
+      children: [{ text: 'asdsdadads' }],
+      props: {
+        nodeType: 'block',
+      },
+    },
+  ];
+
+  return {
+    id,
+    type: 'Paragraph',
+    value: slateValue,
+    meta: {
+      order: 0,
+      depth: 0,
+    },
+  };
+};
+
+const defaultBlock = getDefaultBlockData();
+const value = { [defaultBlock.id]: defaultBlock };
+
 export default function WithBasicExample() {
   const editor = useMemo(() => createYooptaEditor(), []);
 
   useEffect(() => {
-    editor.on('editor:change', (value) => {
+    editor.on('change', (value) => {
       console.log('CHANGED value', value);
-    });
-
-    editor.on('block:update', (block) => {
-      console.log('BLOCK UPDATED', block);
     });
   }, []);
 
@@ -103,7 +126,7 @@ export default function WithBasicExample() {
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24`}
     >
       <div className="w-full h-full">
-        <YooptaEditor editor={editor} plugins={plugins} marks={marks} tools={TOOLS} />
+        <YooptaEditor editor={editor} plugins={plugins} value={value} marks={marks} tools={TOOLS} autoFocus={false} />
       </div>
     </main>
   );

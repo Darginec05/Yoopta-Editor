@@ -51,7 +51,7 @@ export function buildBlocks(editor, plugins: PluginReturn<string, PluginElement<
       });
 
       // Omit fetchers and other non-block related options
-      const { displayLabel, placeholder, align, shortcuts } = plugin.options || {};
+      const { display, placeholder, align, shortcuts } = plugin.options || {};
 
       blocks[plugin.type] = {
         type: plugin.type,
@@ -59,7 +59,7 @@ export function buildBlocks(editor, plugins: PluginReturn<string, PluginElement<
         order: index,
         // withCustomEditor: plugin.options?.withCustomEditor,
         options: {
-          displayLabel,
+          display,
           placeholder,
           align,
           shortcuts,

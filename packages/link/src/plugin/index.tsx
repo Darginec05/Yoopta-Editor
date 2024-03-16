@@ -16,7 +16,10 @@ const Link = new YooptaPlugin<LinkPluginElementKeys, LinkElementProps>({
     },
   },
   options: {
-    displayLabel: 'Link',
+    display: {
+      title: 'Link',
+      description: 'Create link',
+    },
   },
 });
 

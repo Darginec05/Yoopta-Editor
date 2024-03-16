@@ -59,8 +59,8 @@ const YooptaEditor = ({
   children,
 }: Props) => {
   const applyChanges = () => {
-    editor.emit('change', editor.children);
     setEditorState((prev) => ({ ...prev, version: prev.version + 1 }));
+    editor.emit('change', editor.children);
   };
 
   const plugins = useMemo(() => {

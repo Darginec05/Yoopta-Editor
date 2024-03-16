@@ -3,7 +3,7 @@ import { CalloutElementProps, CalloutPluginElementKeys } from '../types';
 import { CalloutRender } from '../ui/Callout';
 
 const Callout = new YooptaPlugin<CalloutPluginElementKeys, CalloutElementProps>({
-  type: 'CalloutPlugin',
+  type: 'Callout',
   elements: {
     callout: {
       render: CalloutRender,
@@ -13,7 +13,10 @@ const Callout = new YooptaPlugin<CalloutPluginElementKeys, CalloutElementProps>(
     },
   },
   options: {
-    displayLabel: 'Callout',
+    display: {
+      title: 'Callout',
+      description: 'Make writing stand out',
+    },
     shortcuts: ['<'],
   },
 });

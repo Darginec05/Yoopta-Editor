@@ -15,7 +15,10 @@ const NumberedList = new YooptaPlugin<'numbered-list', ListElementProps>({
     },
   },
   options: {
-    displayLabel: 'Numbered List',
+    display: {
+      title: 'Numbered List',
+      description: 'Create list with numbering',
+    },
     shortcuts: ['1.'],
   },
   events: {

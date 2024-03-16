@@ -1,15 +1,6 @@
-import { TextIcon } from '@radix-ui/react-icons';
-import { getRootBlockElement, YooEditor, YooptaBlock } from '@yoopta/editor';
-
-type Props = {
-  actions: string[];
-  editor: YooEditor;
-  onMouseEnter?: (e: React.MouseEvent) => void;
-  selectedAction: string;
-  onClose: () => void;
-  empty: boolean;
-  mode?: 'toggle' | 'create';
-};
+import { getRootBlockElement, YooptaBlock } from '@yoopta/editor';
+import { ActionMenuRenderProps } from '../types';
+import { DEFAULT_ICONS_MAP } from './icons';
 
 function filterToggleActions(block: YooptaBlock) {
   if (!block) return false;
@@ -27,19 +18,18 @@ const DefaultActionMenuRender = ({
   onClose,
   empty,
   mode = 'create',
-}: Props) => {
+}: ActionMenuRenderProps) => {
   const isModeToggle = mode === 'toggle';
 
   const getActions = () => {
-    if (isModeToggle) return actionsProps.filter((type) => filterToggleActions(editor.blocks[type]));
-
+    if (isModeToggle) return actionsProps.filter((action) => filterToggleActions(editor.blocks[action.type]));
     return actionsProps;
   };
 
   const actions = getActions();
 
   return (
-    <div className="yoo-action-menu-bg-white yoo-action-menu-z-50 yoo-action-menu-h-auto yoo-action-menu-max-h-[330px] yoo-action-menu-max-w-[250px] yoo-action-menu-w-72 yoo-action-menu-overflow-y-auto yoo-action-menu-rounded-md yoo-action-menu-border yoo-action-menu-border-muted yoo-action-menu-bg-background yoo-action-menu-px-1 yoo-action-menu-py-2 yoo-action-menu-transition-all yoo-action-menu-shadow-md">
+    <div className="yoo-action-menu-bg-white yoo-action-menu-z-50 yoo-action-menu-h-auto yoo-action-menu-max-h-[330px] yoo-action-menu-max-w-[270px] yoo-action-menu-w-72 yoo-action-menu-overflow-y-auto yoo-action-menu-rounded-md yoo-action-menu-border yoo-action-menu-border-muted yoo-action-menu-bg-background yoo-action-menu-px-1 yoo-action-menu-py-2 yoo-action-menu-transition-all yoo-action-menu-shadow-md">
       <div className="yoo-action-menu-max-h-[300px] yoo-action-menu-overflow-y-auto yoo-action-menu-overflow-x-hidden">
         <div
           data-action-menu-list
@@ -50,36 +40,41 @@ const DefaultActionMenuRender = ({
               No actions available
             </div>
           )}
-          {actions.map((type, i) => {
-            // [TODO] - transform string actions to array of objects
-            const block = editor.blocks[type];
+          {actions.map((action, i) => {
+            const block = editor.blocks[action.type];
+            const Icon = DEFAULT_ICONS_MAP[action.type];
 
             if (!block) return null;
 
+            const title = block.options?.display?.title || block.type;
+            const description = block.options?.display?.description || '';
+
             return (
               <button
-                key={type}
+                key={action.type}
                 onMouseEnter={onMouseEnter}
-                aria-selected={type === selectedAction}
+                aria-selected={action.type === selectedAction.type}
                 data-action-menu-item
-                data-action-menu-item-type={type}
+                data-action-menu-item-type={action.type}
                 onClick={() => {
                   if (isModeToggle) {
-                    editor.blocks[type].toggle(type, { focus: true });
+                    editor.blocks[action.type].toggle(action.type, { focus: true });
                   } else {
-                    editor.blocks[type].create({ deleteText: true, focus: true });
+                    editor.blocks[action.type].create({ deleteText: true, focus: true });
                   }
 
                   onClose();
                 }}
                 className="yoo-action-menu-flex yoo-action-menu-w-full yoo-action-menu-cursor-pointer yoo-action-menu-items-center yoo-action-menu-space-x-2 yoo-action-menu-rounded-md yoo-action-menu-px-1 yoo-action-menu-py-1 yoo-action-menu-mb-0.5 last:yoo-action-menu-mb-0 yoo-action-menu-text-left yoo-action-menu-text-sm hover:yoo-action-menu-bg-[#f4f4f5] aria-selected:yoo-action-menu-bg-[#f0f0f0]"
               >
-                <div className="yoo-action-menu-flex yoo-action-menu-h-10 yoo-action-menu-w-10 yoo-action-menu-items-center yoo-action-menu-justify-center yoo-action-menu-rounded-md yoo-action-menu-border yoo-action-menu-border-muted yoo-action-menu-bg-white">
-                  <TextIcon />
+                <div className="yoo-action-menu-flex yoo-action-menu-h-10 yoo-action-menu-w-10 yoo-action-menu-items-center yoo-action-menu-justify-center yoo-action-menu-rounded-md yoo-action-menu-border yoo-action-menu-border-muted yoo-action-menu-bg-white yoo-action-menu-min-w-[40px]">
+                  {Icon && <Icon />}
                 </div>
                 <div>
-                  <div className="yoo-action-menu-font-medium">{block.options?.displayLabel || block.type}</div>
-                  <div className="yoo-action-menu-text-xs yoo-action-menu-text-muted-foreground">Description</div>
+                  <div className="yoo-action-menu-font-medium">{title}</div>
+                  <div className="yoo-action-menu-text-xs yoo-action-menu-text-muted-foreground yoo-action-menu-truncate yoo-action-menu-text-ellipsis">
+                    {description}
+                  </div>
                 </div>
               </button>
             );

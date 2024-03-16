@@ -27,7 +27,10 @@ const HeadingTwo = new YooptaPlugin({
     },
   },
   options: {
-    displayLabel: 'Heading 2',
+    display: {
+      title: 'Heading 2',
+      description: 'Medium section heading',
+    },
     shortcuts: ['h2', '##'],
   },
 });

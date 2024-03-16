@@ -24,7 +24,10 @@ const Video = new YooptaPlugin<VideoPluginElements, VideoElementProps, VideoPlug
     },
   },
   options: {
-    displayLabel: 'Video',
+    display: {
+      title: 'Video',
+      description: 'Upload from device, embed from Youtube, Vimeo',
+    },
     accept: 'video/*',
     maxSizes: { maxWidth: 650, maxHeight: 550 },
     // optimizations: {

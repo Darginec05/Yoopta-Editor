@@ -1,11 +1,15 @@
 import { createContext, useContext, useMemo } from 'react';
 
-export type ToolProps = {
-  render: React.ComponentType<any>;
-  tool: React.ComponentType<any>;
+export type ToolProps<RenderProps = any, ToolProps = any> = {
+  render: React.ComponentType<RenderProps>;
+  tool: React.ComponentType<ToolProps>;
+  props?: Record<string, unknown>;
 };
 
 export type Tools = {
+  ActionMenu: ToolProps;
+  Toolbar: ToolProps;
+  LinkTool: ToolProps;
   [key: string]: ToolProps;
 };
 
@@ -16,30 +20,38 @@ export type ToolsContextType = {
 const ToolsContext = createContext<ToolsContextType | undefined>(undefined);
 
 type Props = {
-  tools?: Tools;
+  tools?: Partial<Tools>;
   children: React.ReactNode;
 };
 
 export const ToolsProvider = ({ children, tools }: Props) => {
-  const value = useMemo(() => {
+  const contextValues = useMemo(() => {
     if (!tools) return {};
 
-    return Object.keys(tools).reduce((acc, key) => {
+    return Object.keys(tools).reduce((acc, toolname) => {
       return {
         ...acc,
-        [key]: tools[key].render,
+        [toolname]: tools[toolname]?.render,
       };
     }, {});
   }, [tools]);
 
+  const toolsRender = useMemo(() => {
+    if (!tools) return null;
+
+    return Object.keys(tools).map((toolname) => {
+      const Tool = tools?.[toolname]?.tool;
+      const render = tools?.[toolname]?.render;
+      const props = tools?.[toolname]?.props;
+      if (!Tool) return null;
+      return <Tool key={toolname} render={render} {...props} />;
+    });
+  }, [useMemo]);
+
   return (
-    <ToolsContext.Provider value={value}>
+    <ToolsContext.Provider value={contextValues}>
       <>
-        {tools &&
-          Object.keys(tools).map((key) => {
-            const Tool = tools[key].tool;
-            return <Tool key={key} />;
-          })}
+        {toolsRender}
         {children}
       </>
     </ToolsContext.Provider>

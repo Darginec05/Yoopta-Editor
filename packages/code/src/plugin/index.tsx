@@ -13,7 +13,10 @@ const Code = new YooptaPlugin({
     },
   },
   options: {
-    displayLabel: 'Code',
+    display: {
+      title: 'Code',
+      description: 'Write bugs',
+    },
     shortcuts: ['```'],
   },
 });

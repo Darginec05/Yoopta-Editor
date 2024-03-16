@@ -27,7 +27,10 @@ const HeadingThree = new YooptaPlugin({
     },
   },
   options: {
-    displayLabel: 'Heading 3',
+    display: {
+      title: 'Heading 3',
+      description: 'Small section heading',
+    },
     shortcuts: ['h3', '###'],
   },
 });

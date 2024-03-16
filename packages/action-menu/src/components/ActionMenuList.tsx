@@ -12,6 +12,7 @@ import {
 } from '@floating-ui/react';
 import { Editor, Path } from 'slate';
 import { YooptaBlockData, YooptaBlock, useYooptaEditor, findSlateBySelectionPath, HOTKEYS } from '@yoopta/editor';
+import { ActionMenuToolItem, ActionMenuToolProps } from '../types';
 
 const filterBy = (item: YooptaBlockData | YooptaBlock['options'], text: string, field: string) => {
   if (!item || !item?.[field]) return false;
@@ -20,24 +21,11 @@ const filterBy = (item: YooptaBlockData | YooptaBlock['options'], text: string, 
 
 const filterActionMenuItems = (block: YooptaBlock, text: string) => {
   if (!text) return true;
-
-  return filterBy(block, text, 'type') || filterBy(block.options, text, 'displayLabel');
+  return filterBy(block, text, 'type') || filterBy(block.options?.display, text, 'title');
 };
 
-// {
-//   id: 'insertImage',
-//   title: 'Insert Image',
-//   description: 'Insert an image into the text',
-//   icon: ImageIcon,
-//   handler: () => {},
-// }
-type Props = {
-  trigger?: string;
-  actions?: YooptaBlock[];
-  render?: (props: any) => JSX.Element;
-};
-
-const ActionMenuList = ({ trigger = '/', render }: Props) => {
+// [TODO] - should have default render for prop items
+const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) => {
   const editor = useYooptaEditor();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
@@ -58,15 +46,23 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
     duration: 100,
   });
 
-  const blockTypes = Object.keys(editor.blocks).sort((a: string, b: string) => {
-    const aOrder = editor.blocks[a].order;
-    const bOrder = editor.blocks[b].order;
+  const blockTypes: ActionMenuToolItem[] =
+    items ||
+    Object.keys(editor.blocks)
+      .sort((a: string, b: string) => {
+        const aOrder = editor.blocks[a].order;
+        const bOrder = editor.blocks[b].order;
+        return aOrder - bOrder;
+      })
+      .map((type) => ({
+        type,
+        title: editor.blocks[type].options?.display?.title || type,
+        description: editor.blocks[type].options?.display?.description || '',
+        icon: editor.blocks[type].options?.display?.icon || '',
+      }));
 
-    return aOrder - bOrder;
-  });
-
-  const [selectedAction, setSelectedAction] = useState(blockTypes[0]);
-  const [actions, setActions] = useState(blockTypes);
+  const [selectedAction, setSelectedAction] = useState<ActionMenuToolItem>(blockTypes[0]);
+  const [actions, setActions] = useState<ActionMenuToolItem[]>(blockTypes);
 
   const onOpen = () => setIsMenuOpen(true);
   const onClose = () => setIsMenuOpen(false);
@@ -75,7 +71,7 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
     const string = text.trim().replace(trigger, '');
 
     if (string.length === 0 || string === trigger) return setActions(blockTypes);
-    setActions(blockTypes.filter((type) => filterActionMenuItems(editor.blocks[type], string)));
+    setActions(actions.filter((action) => filterActionMenuItems(editor.blocks[action.type], string)));
   };
 
   useEffect(() => {
@@ -209,7 +205,8 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
 
   const onMouseEnter = (e: React.MouseEvent) => {
     const type = e.currentTarget.getAttribute('data-action-menu-item-type')!;
-    setSelectedAction(type);
+    const action = blockTypes.find((item) => item.type === type)!;
+    setSelectedAction(action);
   };
 
   const empty = actions.length === 0;
@@ -227,7 +224,7 @@ const ActionMenuList = ({ trigger = '/', render }: Props) => {
   const style = { ...floatingStyles, ...transitionStyles };
 
   if (render) {
-    const getItemProps = (props) => ({ onMouseEnter, selectedAction });
+    const getItemProps = () => ({ onMouseEnter, selectedAction });
 
     return (
       <FloatingPortal>

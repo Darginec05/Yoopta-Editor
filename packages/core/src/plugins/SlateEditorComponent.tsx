@@ -1,9 +1,11 @@
+'use client';
+
 import { memo, useMemo, useRef } from 'react';
 import { Editable, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useBlockData } from '../contexts/UltraYooptaContext/UltraYooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../marks';
-import { withInlines } from './extenstions/withInlines';
+
 import {
   ExtendedLeafProps,
   PluginElementRenderProps,
@@ -19,6 +21,10 @@ import { TextLeaf } from '../components/TextLeaf/TextLeaf';
 
 import { generateId } from '../utils/generateId';
 import { buildBlockData } from '../components/Editor/utils';
+
+// [TODO] - test
+import { withInlines } from './extenstions/withInlines';
+import { ErrorBoundary } from 'react-error-boundary';
 
 type Props<TKeys extends string, TProps, TOptions> = PluginParams<TKeys, TProps, TOptions> & {
   id: string;
@@ -76,6 +82,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       if (isVoid || isInlineVoid) {
         slateEditor.isVoid = (element) => element.type === elementType;
       }
+
       if (isInline || isInlineVoid) {
         slateEditor.isInline = (element) => element.type === elementType;
 
@@ -189,25 +196,32 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     return ranges;
   };
 
+  const logError = (error: Error, info: { componentStack: string }) => {
+    console.log('ERROR IN SLATE EDITOR', error);
+    console.log('INFO FOR ERROR', info);
+  };
+
   return (
-    <div data-plugin-id={id} data-plugin-type={type}>
-      <SlateEditorInstance
-        id={id}
-        slate={slate}
-        initialValue={initialValue}
-        onChange={onChange}
-        decorate={decorate}
-        renderLeaf={renderLeaf}
-        renderElement={renderElement}
-        eventHandlers={eventHandlers}
-        onKeyDown={onKeyDown}
-        onKeyUp={onKeyUp}
-        onFocus={onFocus}
-        onMouseDown={onMouseDown}
-        onBlur={onBlur}
-        customEditor={customEditor}
-      />
-    </div>
+    <ErrorBoundary onError={logError} fallbackRender={() => <div>Something went wrong with Editor</div>}>
+      <div data-plugin-id={id} data-plugin-type={type}>
+        <SlateEditorInstance
+          id={id}
+          slate={slate}
+          initialValue={initialValue}
+          onChange={onChange}
+          decorate={decorate}
+          renderLeaf={renderLeaf}
+          renderElement={renderElement}
+          eventHandlers={eventHandlers}
+          onKeyDown={onKeyDown}
+          onKeyUp={onKeyUp}
+          onFocus={onFocus}
+          onMouseDown={onMouseDown}
+          onBlur={onBlur}
+          customEditor={customEditor}
+        />
+      </div>
+    </ErrorBoundary>
   );
 };
 
@@ -228,6 +242,7 @@ type SlateEditorInstanceProps = {
   decorate: (nodeEntry: NodeEntry) => any[];
 };
 
+// [TODO] - no need memo
 const SlateEditorInstance = memo<SlateEditorInstanceProps>(
   ({
     id,
@@ -245,15 +260,15 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     customEditor,
     decorate,
   }) => {
-    if (typeof customEditor === 'function') {
-      return customEditor({
-        id,
-        type: '',
-        editor: slate,
-        // attributes: {},
-        children: [],
-      });
-    }
+    // if (typeof customEditor === 'function') {
+    //   return customEditor({
+    //     id,
+    //     type: '',
+    //     editor: slate,
+    //     // attributes: {},
+    //     children: [],
+    //   });
+    // }
 
     return (
       <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onChange={onChange}>
@@ -284,14 +299,6 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     );
   },
 );
-
-function deserialize(node: Node, pluginsMap: any) {}
-
-function deserializeHtml(htmlString: string, plugins: PluginReturn<string, unknown>[]) {
-  const pluginsMap = {};
-  const parsedHtml = new DOMParser().parseFromString(htmlString, 'text/html');
-  return deserialize(parsedHtml.body, pluginsMap);
-}
 
 SlateEditorInstance.displayName = 'SlateEditorInstance';
 

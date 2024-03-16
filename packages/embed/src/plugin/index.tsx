@@ -14,7 +14,10 @@ const Embed = new YooptaPlugin<EmbedPluginElements, EmbedElementProps, EmbedPlug
     },
   },
   options: {
-    displayLabel: 'Embed',
+    display: {
+      title: 'Embed',
+      description: 'For embed videos, google maps and more',
+    },
     maxSizes: { maxWidth: 650, maxHeight: 550 },
     // optimizations: {
     //   deviceSizes: [320, 420, 768, 1024, 1200, 1600],
