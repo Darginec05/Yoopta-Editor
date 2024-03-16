@@ -26,7 +26,7 @@ type Props = {
   className?: string;
   selectionBoxRoot?: HTMLElement | null | React.MutableRefObject<HTMLElement | null>;
   children?: React.ReactNode;
-  tools?: Tools;
+  tools?: Partial<Tools>;
 };
 
 const DEFAULT_VALUE: Record<string, YooptaBlockData> = getDefaultYooptaChildren();
