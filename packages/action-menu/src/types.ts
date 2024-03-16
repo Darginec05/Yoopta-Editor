@@ -2,7 +2,7 @@ import { YooEditor, YooptaBlock } from '@yoopta/editor';
 import { ReactElement, ReactNode } from 'react';
 
 export type ActionMenuRenderProps = {
-  actions: ActionMenuToolItem[];
+  actions: ActionMenuToolItem[] | string[];
   editor: YooEditor;
   onMouseEnter?: (e: React.MouseEvent) => void;
   selectedAction: ActionMenuToolItem;

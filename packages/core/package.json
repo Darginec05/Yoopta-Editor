@@ -22,9 +22,9 @@
     "lodash.clonedeep": "^4.5.0",
     "nanoid": "^4.0.1",
     "react-error-boundary": "^4.0.13",
-    "slate": ">=0.99.0",
-    "slate-history": "^0.66.0",
-    "slate-react": ">=0.99.0"
+    "slate": "^0.102.0",
+    "slate-history": "^0.100.0",
+    "slate-react": "^0.102.0"
   },
   "peerDependencies": {
     "react": ">=17.0.2",

@@ -130,7 +130,9 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
 
       if (HOTKEYS.isArrowUp(event)) {
         event.preventDefault();
-        const currentSelected = selectedAction;
+        const currentSelected = selectedAction || actions[0];
+        if (!currentSelected) return;
+
         const actionKeys = actions.map((item) => item.type);
         const currentIndex = actionKeys.indexOf(currentSelected.type);
 
@@ -146,7 +148,9 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
 
       if (HOTKEYS.isArrowDown(event)) {
         event.preventDefault();
-        const currentSelected = selectedAction;
+        const currentSelected = selectedAction || actions[0];
+        if (!currentSelected) return;
+
         const actionKeys = actions.map((item) => item.type);
         const currentIndex = actionKeys.indexOf(currentSelected.type);
 

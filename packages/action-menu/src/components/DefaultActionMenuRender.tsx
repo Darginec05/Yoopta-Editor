@@ -1,5 +1,5 @@
 import { getRootBlockElement, YooptaBlock } from '@yoopta/editor';
-import { ActionMenuRenderProps } from '../types';
+import { ActionMenuRenderProps, ActionMenuToolItem } from '../types';
 import { DEFAULT_ICONS_MAP } from './icons';
 
 function filterToggleActions(block: YooptaBlock) {
@@ -21,9 +21,18 @@ const DefaultActionMenuRender = ({
 }: ActionMenuRenderProps) => {
   const isModeToggle = mode === 'toggle';
 
-  const getActions = () => {
-    if (isModeToggle) return actionsProps.filter((action) => filterToggleActions(editor.blocks[action.type]));
-    return actionsProps;
+  const getActions = (): ActionMenuToolItem[] => {
+    const items = actionsProps.map((action) => {
+      if (typeof action === 'string') {
+        const title = editor.blocks[action].options?.display?.title || action;
+        const description = editor.blocks[action].options?.display?.description;
+        return { type: action, title, description };
+      }
+      return action;
+    });
+
+    if (isModeToggle) return items.filter((action) => filterToggleActions(editor.blocks[action?.type]));
+    return items;
   };
 
   const actions = getActions();
@@ -42,7 +51,7 @@ const DefaultActionMenuRender = ({
           )}
           {actions.map((action, i) => {
             const block = editor.blocks[action.type];
-            const Icon = DEFAULT_ICONS_MAP[action.type];
+            const Icon = action.icon || DEFAULT_ICONS_MAP[action.type];
 
             if (!block) return null;
 
