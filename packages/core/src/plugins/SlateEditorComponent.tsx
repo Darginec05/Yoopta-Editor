@@ -270,6 +270,9 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     //   });
     // }
 
+    console.log('Slate instance', slate);
+    console.log('Slate initialValue', initialValue);
+
     return (
       <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onChange={onChange}>
         <Editable

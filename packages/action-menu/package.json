@@ -36,7 +36,6 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.26.9",
-    "@radix-ui/react-icons": "^1.3.0",
-    "body-scroll-lock": "^4.0.0-beta.0"
+    "@radix-ui/react-icons": "^1.3.0"
   }
 }
