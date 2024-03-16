@@ -17,7 +17,7 @@ type Props = {
 
 const CalloutBlockOptions = ({ editor, block, props: calloutProps }: Props) => {
   const onChangeTheme = (theme: CalloutTheme) => {
-    editor.blocks.Image.updateElement<CalloutPluginElementKeys, CalloutElementProps>(block.id, 'callout', {
+    editor.blocks.Callout.updateElement<CalloutPluginElementKeys, CalloutElementProps>(block.id, 'callout', {
       theme,
     });
   };

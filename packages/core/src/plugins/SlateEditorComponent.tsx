@@ -88,7 +88,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
 
         // [TODO] - as test
         // [TODO] - should extend all slate editors for every block
-        slateEditor = withInlines(slateEditor);
+        // slateEditor = withInlines(slateEditor);
       }
     });
 
@@ -269,9 +269,6 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     //     children: [],
     //   });
     // }
-
-    console.log('Slate instance', slate);
-    console.log('Slate initialValue', initialValue);
 
     return (
       <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onChange={onChange}>

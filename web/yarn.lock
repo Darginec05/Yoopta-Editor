@@ -1733,14 +1733,13 @@
     "@typescript-eslint/types" "5.62.0"
     eslint-visitor-keys "^3.3.0"
 
-"@yoopta/action-menu-list@^4.0.0-rc.1":
-  version "4.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@yoopta/action-menu-list/-/action-menu-list-4.0.0-rc.1.tgz#6660721e65adca21af9504b7ea502dd6c317e920"
-  integrity sha512-H27AOfjvHTxbh6yjFkFcryltwt/juH/mHSd89/ViaHFyjsuvVUAzNyHdmhwALEUpmU+F2lXpHiRnHmgTkkGAqQ==
+"@yoopta/action-menu-list@^4.0.0-rc.3":
+  version "4.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/action-menu-list/-/action-menu-list-4.0.0-rc.3.tgz#f8051a01d2444bf2dab5d4617b399c576a00c04d"
+  integrity sha512-hDcyj4aexnfCvN+r8XYrK3dnR1SNaKpOyEqaBcxsfjoIEMk5x8hzTU8AX1RCUByClPYtJp6xTZP/G/EQ5wrspA==
   dependencies:
     "@floating-ui/react" "^0.26.9"
     "@radix-ui/react-icons" "^1.3.0"
-    body-scroll-lock "^4.0.0-beta.0"
 
 "@yoopta/blockquote@^4.0.0-rc.3":
   version "4.0.0-rc.3"
@@ -1752,10 +1751,10 @@
   resolved "https://registry.yarnpkg.com/@yoopta/callout/-/callout-4.0.0-rc.4.tgz#6d9066f34814667efb999ee1d3e46a67bf250193"
   integrity sha512-95hAYLDEdo0/yUdMpZWakRuz/fxougdGVbr+L66HrDldqOsG3EtEarszz9fgO6MswsUVW8dPqCvurxCsnPeoKA==
 
-"@yoopta/editor@^4.0.0-rc.8":
-  version "4.0.0-rc.8"
-  resolved "https://registry.yarnpkg.com/@yoopta/editor/-/editor-4.0.0-rc.8.tgz#9aaf2ec338624f99cbd2686ecac4403b25cd1c56"
-  integrity sha512-0wpSdYsgh+uhMU+0oh1ne+67L68pBEug03sTRha26JmU50s7UEO6/OYm+0O9M1Bgv85Y1YhEbMiyY6mLBLB5jw==
+"@yoopta/editor@^4.0.0-rc.10":
+  version "4.0.0-rc.10"
+  resolved "https://registry.yarnpkg.com/@yoopta/editor/-/editor-4.0.0-rc.10.tgz#049fadb3fcf5b9b2586244b32bca7e8ddbd98445"
+  integrity sha512-0THz6dAkw+Nh7Kv58CRr0c/rSHvIjUnMePPm/gk5i0AaFwflYOme36yGHMyCGWqFkGU1ho+dvrLwQJ9ibE/S2g==
   dependencies:
     "@dnd-kit/core" "^6.1.0"
     "@dnd-kit/sortable" "^8.0.0"
@@ -1768,9 +1767,9 @@
     lodash.clonedeep "^4.5.0"
     nanoid "^4.0.1"
     react-error-boundary "^4.0.13"
-    slate ">=0.99.0"
-    slate-history "^0.66.0"
-    slate-react ">=0.99.0"
+    slate "^0.102.0"
+    slate-history "^0.100.0"
+    slate-react "^0.102.0"
 
 "@yoopta/embed@^4.0.0-rc.4":
   version "4.0.0-rc.4"
@@ -1805,12 +1804,10 @@
   resolved "https://registry.yarnpkg.com/@yoopta/lists/-/lists-4.0.0-rc.3.tgz#94361301eda46680e9b40c7e8c8c121683a157d4"
   integrity sha512-dl7GC6J5rtqiiBAJ0OGnvYiFGYa6T99FIiLEiLRFp/L6X9mOX/5NUifVKN7ymL45E2m89DZ+i9vEOPFWEedEmA==
 
-"@yoopta/marks@^4.0.0-rc.2":
-  version "4.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@yoopta/marks/-/marks-4.0.0-rc.2.tgz#6b32ba1afe0519a7f393cc1d000ee714c6ea2ff7"
-  integrity sha512-/OiYAm7JWe0xkxqHOMdDn0Ogmo4Yi5fQ5Hp/SBZzgRFqhim6mRy75ivDixQ85s6uFvshq5s9prvxtZK5JgTI0g==
-  dependencies:
-    body-scroll-lock "^4.0.0-beta.0"
+"@yoopta/marks@^4.0.0-rc.4":
+  version "4.0.0-rc.4"
+  resolved "https://registry.yarnpkg.com/@yoopta/marks/-/marks-4.0.0-rc.4.tgz#1033d6c5bf23a9f015680ce68241e70a0481f0df"
+  integrity sha512-+a7npScEydm7O6TE5P8VdZR1E7A+otWlCs5lE8nmNiSNkIf8gPDq3iNQkdJw7XKV7cuGVwy5FYeIIGXZrt5Myw==
 
 "@yoopta/paragraph@^4.0.0-rc.3":
   version "4.0.0-rc.3"
@@ -2096,11 +2093,6 @@ binary-extensions@^2.0.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.3.0.tgz#f6e14a97858d327252200242d4ccfe522c445522"
   integrity sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==
-
-body-scroll-lock@^4.0.0-beta.0:
-  version "4.0.0-beta.0"
-  resolved "https://registry.yarnpkg.com/body-scroll-lock/-/body-scroll-lock-4.0.0-beta.0.tgz#4f78789d10e6388115c0460cd6d7d4dd2bbc4f7e"
-  integrity sha512-a7tP5+0Mw3YlUJcGAKUqIBkYYGlYxk2fnCasq/FUph1hadxlTRjF+gAcZksxANnaMnALjxEddmSi/H3OR8ugcQ==
 
 boolbase@^1.0.0:
   version "1.0.0"
@@ -4311,14 +4303,14 @@ slash@^3.0.0:
   resolved "https://registry.yarnpkg.com/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
   integrity sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
 
-slate-history@^0.66.0:
-  version "0.66.0"
-  resolved "https://registry.yarnpkg.com/slate-history/-/slate-history-0.66.0.tgz#ac63fddb903098ceb4c944433e3f75fe63acf940"
-  integrity sha512-6MWpxGQZiMvSINlCbMW43E2YBSVMCMCIwQfBzGssjWw4kb0qfvj0pIdblWNRQZD0hR6WHP+dHHgGSeVdMWzfng==
+slate-history@^0.100.0:
+  version "0.100.0"
+  resolved "https://registry.yarnpkg.com/slate-history/-/slate-history-0.100.0.tgz#a8549af61182a18db2dfedff6ebab7452c841666"
+  integrity sha512-x5rUuWLNtH97hs9PrFovGgt3Qc5zkTm/5mcUB+0NR/TK923eLax4HsL6xACLHMs245nI6aJElyM1y6hN0y5W/Q==
   dependencies:
     is-plain-object "^5.0.0"
 
-slate-react@>=0.99.0:
+slate-react@^0.102.0:
   version "0.102.0"
   resolved "https://registry.yarnpkg.com/slate-react/-/slate-react-0.102.0.tgz#8f4539055f336019abbbe8b52acc23ff02c9601b"
   integrity sha512-SAcFsK5qaOxXjm0hr/t2pvIxfRv6HJGzmWkG58TdH4LdJCsgKS1n6hQOakHPlRVCwPgwvngB6R+t3pPjv8MqwA==
@@ -4333,7 +4325,7 @@ slate-react@>=0.99.0:
     scroll-into-view-if-needed "^3.1.0"
     tiny-invariant "1.3.1"
 
-slate@>=0.99.0:
+slate@^0.102.0:
   version "0.102.0"
   resolved "https://registry.yarnpkg.com/slate/-/slate-0.102.0.tgz#400e5ab773633bc857f069cc2ef2faa4302c6834"
   integrity sha512-RT+tHgqOyZVB1oFV9Pv99ajwh4OUCN9p28QWdnDTIzaN/kZxMsHeQN39UNAgtkZTVVVygFqeg7/R2jiptCvfyA==
