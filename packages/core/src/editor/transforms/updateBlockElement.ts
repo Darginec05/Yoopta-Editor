@@ -31,8 +31,6 @@ export function updateBlockElement<TElementKeys extends string, TElementProps>(
     const props = element?.props || {};
     const updatedNode = { props: { ...props, ...elementProps } };
 
-    console.log('updatedNode', updatedNode);
-
     Transforms.setNodes<SlateElement>(slate, updatedNode, {
       at: [0],
       match: (n) => Element.isElement(n) && n.type === elementType,
@@ -42,5 +40,6 @@ export function updateBlockElement<TElementKeys extends string, TElementProps>(
     // block.value = slate.children;
 
     editor.applyChanges();
+    editor.emit('change', editor.children);
   });
 }

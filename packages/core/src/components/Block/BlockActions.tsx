@@ -51,11 +51,7 @@ const BlockActions = ({ block, editor, dragHandleProps, showActions, onChangeAct
     event.stopPropagation();
     onChangeActiveBlock(block.id);
 
-    console.log('editor.children', editor.children);
-
     const slate = findSlateBySelectionPath(editor, { at: [block.meta.order] });
-    console.log('block', block);
-    console.log('slate', slate);
     editor.focusBlock(block.id);
 
     if (!slate) return;

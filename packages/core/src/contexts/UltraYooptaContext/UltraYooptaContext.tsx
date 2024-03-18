@@ -18,6 +18,7 @@ const DEFAULT_HANDLERS: YooptaEditorContext = {
     moveBlock: () => undefined,
     splitBlock: () => undefined,
     deleteBlock: () => undefined,
+    toggleBlock: () => undefined,
     focusBlock: () => undefined,
     setSelection: () => undefined,
     applyChanges: () => undefined,
@@ -35,6 +36,10 @@ const DEFAULT_HANDLERS: YooptaEditorContext = {
     selection: null,
     blockEditorsMap: {},
     children: {},
+    emit: () => undefined,
+    on: () => undefined,
+    off: () => undefined,
+    once: () => undefined,
   },
 };
 

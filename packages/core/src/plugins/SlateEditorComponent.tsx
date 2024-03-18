@@ -4,13 +4,7 @@ import { useYooptaEditor, useBlockData } from '../contexts/UltraYooptaContext/Ul
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../marks';
 
-import {
-  ExtendedLeafProps,
-  PluginElementRenderProps,
-  PluginEventHandlerOptions,
-  PluginParams,
-  PluginReturn,
-} from './types';
+import { ExtendedLeafProps, PluginElementRenderProps, PluginEventHandlerOptions, PluginParams } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
 import { Editor, NodeEntry, Range } from 'slate';
@@ -275,14 +269,15 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
           decorate={decorate}
           // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
           onBlur={onBlur}
-          // onPaste={(event) => {
-          //   const html = event.clipboardData.getData('text/html');
-          //   const parsetHTML = new DOMParser().parseFromString(html, 'text/html');
-          //   if (parsetHTML.body.childNodes.length > 0) {
-          //     event.preventDefault();
-          //     console.log(parsetHTML.body);
-          //   }
-          // }}
+          onPaste={(event) => {
+            const html = event.clipboardData.getData('text/html');
+            const parsetHTML = new DOMParser().parseFromString(html, 'text/html');
+            if (parsetHTML.body.childNodes.length > 0) {
+              event.preventDefault();
+              // [TODO] - link https://github.com/rollup/plugins/issues/1122 to test
+              console.log(parsetHTML.body);
+            }
+          }}
         />
       </Slate>
     );

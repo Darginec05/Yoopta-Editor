@@ -17,4 +17,5 @@ export function toggle(editor: YooEditor, type: string) {
   }
 
   editor.applyChanges();
+  editor.emit('change', editor.children);
 }

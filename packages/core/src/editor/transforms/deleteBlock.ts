@@ -39,6 +39,7 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
 
     editor.children = finishDraft(editor.children);
     editor.applyChanges();
+    editor.emit('change', editor.children);
     return;
   }
 
@@ -57,6 +58,7 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
     editor.focusBlock(defaultBlock.id, { slate, waitExecution: true });
 
     editor.applyChanges();
+    editor.emit('change', editor.children);
     return;
   }
 
@@ -80,6 +82,7 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
 
   editor.children = finishDraft(editor.children);
   editor.applyChanges();
+  editor.emit('change', editor.children);
 
   if (focus) {
     const prevBlockPathIndex = editor.selection ? editor.selection[0] - 1 : 0;

@@ -58,6 +58,7 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
 
   editor.children = finishDraft(editor.children);
   editor.applyChanges();
+  editor.emit('change', editor.children);
 
   if (options?.focus) {
     editor.focusBlock(blockId, { slate, waitExecution: true });

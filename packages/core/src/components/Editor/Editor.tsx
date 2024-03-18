@@ -45,9 +45,6 @@ const Editor = ({ marks, className, autoFocus = true, selectionBoxRoot }: Props)
 
   let state = useRef<State>(DEFAULT_STATE).current;
 
-  console.log('editor.children', editor.children);
-  console.log('editor.blockEditorsMap', editor.blockEditorsMap);
-
   useEffect(() => {
     if (!autoFocus) return;
     const firstBlock = findPluginBlockBySelectionPath(editor, { at: [0] });

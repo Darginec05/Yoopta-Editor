@@ -105,6 +105,11 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
   const ActionMenu = tools.ActionMenu;
   const actionMenuStyles = { ...actionMenuFloatingStyles, ...actionMenuTransitionStyles };
 
+  const onCloseActionMenu = () => {
+    setIsActionMenuOpen(false);
+    onClose();
+  };
+
   return (
     // [TODO] - take care about SSR
     <FloatingPortal root={document.getElementById('yoopta-editor')}>
@@ -142,7 +147,7 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
                             actions={Object.keys(editor.blocks)}
                             editor={editor}
                             selectedAction={''}
-                            onClose={() => setIsActionMenuOpen(false)}
+                            onClose={onCloseActionMenu}
                             empty={false}
                             onMouseEnter={() => undefined}
                             mode="toggle"

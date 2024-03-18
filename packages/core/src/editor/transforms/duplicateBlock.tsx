@@ -62,6 +62,7 @@ export function duplicateBlock(editor: YooEditor, options: DuplicateBlockOptions
 
   editor.children = finishDraft(editor.children);
   editor.applyChanges();
+  editor.emit('change', editor.children);
 
   if (focus) {
     editor.focusBlock(duplicatedId, { waitExecution: true });
