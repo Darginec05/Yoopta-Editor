@@ -1,5 +1,3 @@
-'use client';
-
 import { memo, useMemo, useRef } from 'react';
 import { Editable, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useBlockData } from '../contexts/UltraYooptaContext/UltraYooptaContext';
@@ -15,8 +13,7 @@ import {
 } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
-import { useYooptaTools } from '../contexts/UltraYooptaContext/ToolsContext';
-import { Editor, Element, NodeEntry, Path, Range } from 'slate';
+import { Editor, NodeEntry, Range } from 'slate';
 import { TextLeaf } from '../components/TextLeaf/TextLeaf';
 
 import { generateId } from '../utils/generateId';
@@ -24,7 +21,6 @@ import { buildBlockData } from '../components/Editor/utils';
 
 // [TODO] - test
 import { withInlines } from './extenstions/withInlines';
-import { ErrorBoundary } from 'react-error-boundary';
 
 type Props<TKeys extends string, TProps, TOptions> = PluginParams<TKeys, TProps, TOptions> & {
   id: string;
@@ -196,32 +192,25 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     return ranges;
   };
 
-  const logError = (error: Error, info: { componentStack: string }) => {
-    console.log('ERROR IN SLATE EDITOR', error);
-    console.log('INFO FOR ERROR', info);
-  };
-
   return (
-    <ErrorBoundary onError={logError} fallbackRender={() => <div>Something went wrong with Editor</div>}>
-      <div data-plugin-id={id} data-plugin-type={type}>
-        <SlateEditorInstance
-          id={id}
-          slate={slate}
-          initialValue={initialValue}
-          onChange={onChange}
-          decorate={decorate}
-          renderLeaf={renderLeaf}
-          renderElement={renderElement}
-          eventHandlers={eventHandlers}
-          onKeyDown={onKeyDown}
-          onKeyUp={onKeyUp}
-          onFocus={onFocus}
-          onMouseDown={onMouseDown}
-          onBlur={onBlur}
-          customEditor={customEditor}
-        />
-      </div>
-    </ErrorBoundary>
+    <div data-plugin-id={id} data-plugin-type={type}>
+      <SlateEditorInstance
+        id={id}
+        slate={slate}
+        initialValue={initialValue}
+        onChange={onChange}
+        decorate={decorate}
+        renderLeaf={renderLeaf}
+        renderElement={renderElement}
+        eventHandlers={eventHandlers}
+        onKeyDown={onKeyDown}
+        onKeyUp={onKeyUp}
+        onFocus={onFocus}
+        onMouseDown={onMouseDown}
+        onBlur={onBlur}
+        customEditor={customEditor}
+      />
+    </div>
   );
 };
 

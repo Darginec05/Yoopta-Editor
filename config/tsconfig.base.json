@@ -20,6 +20,7 @@
     "preserveSymlinks": false,
     "noEmit": false,
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "composite": true
   }
 }
