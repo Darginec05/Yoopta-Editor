@@ -27,7 +27,9 @@
     "@yoopta/embed": "*",
     "@yoopta/action-menu-list": "*",
     "@yoopta/toolbar": "*",
-    "@yoopta/link-tool": "*"
+    "@yoopta/link-tool": "*",
+    "slate": "^0.102.0",
+    "slate-react": "^0.102.0"
   },
   "devDependencies": {
     "typescript": "^5",
