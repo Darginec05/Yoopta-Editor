@@ -57,6 +57,7 @@ export function insertBlock(editor: YooEditor, data: YooptaBlockData, options: Y
 
   editor.children = finishDraft(editor.children);
   editor.applyChanges();
+  editor.emit('change', editor.children);
 
   if (focus) {
     editor.focusBlock(insertBefore && currentBlockId ? currentBlockId : newPluginBlock.id);

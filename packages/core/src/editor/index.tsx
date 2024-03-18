@@ -12,7 +12,6 @@ import { setBlockSelected } from './selection/setBlockSelected';
 import { duplicateBlock } from './transforms/duplicateBlock';
 import { blur } from './selection/blur';
 import { updateBlock } from './transforms/updateBlock';
-import { Transforms } from 'slate';
 import { toggleBlock } from './transforms/toggleBlock';
 
 // export const YooEditor = {}

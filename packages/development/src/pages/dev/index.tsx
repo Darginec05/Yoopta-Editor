@@ -1,5 +1,3 @@
-'use client';
-
 import YooptaEditor, { createYooptaEditor, Tools, YooEditor } from '@yoopta/editor';
 import Blockquote from '@yoopta/blockquote';
 import Paragraph from '@yoopta/paragraph';
@@ -92,7 +90,7 @@ const BasicExample = () => {
   };
 
   useEffect(() => {
-    editor.once('change', (val) => {
+    editor.on('change', (val) => {
       console.log('on change value', val);
     });
   }, [editor]);

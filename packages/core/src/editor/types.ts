@@ -72,6 +72,8 @@ export type YooptaBlock = {
 export type YooptaBlocks = Record<string, YooptaBlock>;
 export type YooptaFormats = Record<string, TextFormat>;
 
+export type YooEditorEvents = 'change';
+
 // [TODO] - Fix generic and default types
 export type YooEditor<TNodes = any, TKey extends string = any> = {
   insertBlock: (data: YooptaBlockData, options?: YooptaEditorTransformOptions) => void;
@@ -98,8 +100,8 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   formats: YooptaFormats;
   shortcuts: Record<string, YooptaBlock>;
   plugins: Record<string, PluginReturn<string, unknown>>;
-  on: (event: string, fn: (payload: any) => void) => void;
-  once: (event: string, fn: (payload: any) => void) => void;
+  on: (event: YooEditorEvents, fn: (payload: any) => void) => void;
+  once: (event: YooEditorEvents, fn: (payload: any) => void) => void;
   off: (event: string, fn: (payload: any) => void) => void;
   emit: (event: string, payload: any) => void;
 };

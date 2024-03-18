@@ -24,16 +24,16 @@ import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 // list of plugins should be placed outside component
 const plugins = [
   Paragraph,
-  // HeadingOne,
-  // HeadingTwo,
-  // HeadingThree,
-  // Blockquote,
+  HeadingOne,
+  HeadingTwo,
+  HeadingThree,
+  Blockquote,
   Callout,
   // Code,
-  // Link,
-  // NumberedList,
-  // BulletedList,
-  // TodoList,
+  Link,
+  NumberedList,
+  BulletedList,
+  TodoList,
   // File.extend({
   //   options: {
   //     onUpload: async (file: File) => {
@@ -42,33 +42,33 @@ const plugins = [
   //     },
   //   },
   // }),
-  // Embed,
-  // Image.extend({
-  //   onUpload: async (file: File) => {
-  //     const data = await uploadToCloudinary(file, 'image');
-  //     return {
-  //       src: data.secure_url,
-  //       alt: 'cloudinary',
-  //       sizes: {
-  //         width: data.width,
-  //         height: data.height,
-  //       },
-  //     };
-  //   },
-  // }),
-  // Video.extend({
-  //   onUpload: async (file: File) => {
-  //     const data = await uploadToCloudinary(file, 'video');
-  //     return {
-  //       src: data.secure_url,
-  //       alt: 'cloudinary',
-  //       sizes: {
-  //         width: data.width,
-  //         height: data.height,
-  //       },
-  //     };
-  //   },
-  // }),
+  Embed,
+  Image.extend({
+    onUpload: async (file: File) => {
+      const data = await uploadToCloudinary(file, 'image');
+      return {
+        src: data.secure_url,
+        alt: 'cloudinary',
+        sizes: {
+          width: data.width,
+          height: data.height,
+        },
+      };
+    },
+  }),
+  Video.extend({
+    onUpload: async (file: File) => {
+      const data = await uploadToCloudinary(file, 'video');
+      return {
+        src: data.secure_url,
+        alt: 'cloudinary',
+        sizes: {
+          width: data.width,
+          height: data.height,
+        },
+      };
+    },
+  }),
 ];
 
 const TOOLS = {
@@ -126,7 +126,7 @@ export default function WithBasicExample() {
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24`}
     >
       <div className="w-full h-full">
-        <YooptaEditor editor={editor} plugins={plugins} value={value} marks={marks} tools={TOOLS} autoFocus={false} />
+        <YooptaEditor editor={editor} plugins={plugins} marks={marks} tools={TOOLS} autoFocus={false} />
       </div>
     </main>
   );

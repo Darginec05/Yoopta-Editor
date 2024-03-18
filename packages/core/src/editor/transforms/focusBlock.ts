@@ -35,10 +35,10 @@ export function focusBlock(editor: YooEditor, blockId: string, options: FocusBlo
 
     const selectionPath = getSelectionPath(slate, focusAt);
 
+    Transforms.select(slate, selectionPath);
     ReactEditor.focus(slate);
     if (shouldUpdateBlockSelection) {
       setTimeout(() => {
-        Transforms.select(slate, selectionPath);
         editor.setSelection([block.meta.order]);
       }, 0);
     }

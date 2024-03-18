@@ -57,6 +57,7 @@ export function splitBlock(editor: YooEditor, options: YooptaEditorTransformOpti
 
     editor.children = finishDraft(editor.children);
     editor.applyChanges();
+    editor.emit('change', editor.children);
 
     if (focus) {
       // [TODO] - check focus for split block function

@@ -69,6 +69,7 @@ export function toggleBlock(editor: YooEditor, toBlockType: string, options?: To
 
     editor.children = finishDraft(editor.children);
     editor.applyChanges();
+    editor.emit('change', editor.children);
 
     // if (options?.focus) {
     //   editor.focusBlock(currentBlockId, { slate });

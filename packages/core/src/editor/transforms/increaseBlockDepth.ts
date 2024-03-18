@@ -15,4 +15,5 @@ export function increaseBlockDepth(editor: YooEditor, options: YooptaEditorTrans
 
   editor.children = finishDraft(editor.children);
   editor.applyChanges();
+  editor.emit('change', editor.children);
 }

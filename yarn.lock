@@ -10141,7 +10141,7 @@ re-resizable@^6.9.11, re-resizable@^6.9.9:
   resolved "https://registry.yarnpkg.com/re-resizable/-/re-resizable-6.9.11.tgz#f356e27877f12d926d076ab9ad9ff0b95912b475"
   integrity sha512-a3hiLWck/NkmyLvGWUuvkAmN1VhwAz4yOhS6FdMTaxCUVN9joIWkT11wsO68coG/iEYuwn+p/7qAmfQzRhiPLQ==
 
-react-dom@>=17.0.2, react-dom@^18:
+react-dom@^18, react-dom@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"
   integrity sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==
@@ -10180,7 +10180,7 @@ react-syntax-highlighter@^15.5.0:
     prismjs "^1.27.0"
     refractor "^3.6.0"
 
-react@>=17.0.2, react@^18:
+react@^18, react@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react/-/react-18.2.0.tgz#555bd98592883255fa00de14f1151a917b5d77d5"
   integrity sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==

@@ -30,4 +30,5 @@ export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: Yo
 
   editor.children = finishDraft(editor.children);
   editor.applyChanges();
+  editor.emit('change', editor.children);
 }
