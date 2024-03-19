@@ -20,6 +20,21 @@ export function onKeyDown(editor: YooEditor, slate: Editor, { hotkeys, defaultBl
       const selection = slate.selection;
       const { anchor } = selection;
 
+      if (hotkeys.isCmdEnter(event)) {
+        const nodeEntry = Editor.above<TodoListElement>(slate, {
+          at: anchor,
+          match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'todo-list',
+          mode: 'highest',
+        });
+
+        if (!nodeEntry) return;
+
+        const [todoListNode] = nodeEntry as [TodoListElement, Path];
+        const checked = todoListNode.props?.checked || false;
+        editor.blocks.TodoList.updateElement(block.id, 'todo-list', { checked: !checked });
+        return;
+      }
+
       if (hotkeys.isEnter(event)) {
         event.preventDefault();
 
@@ -36,7 +51,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor, { hotkeys, defaultBl
 
         const [listNode, listPath] = nodeEntry as [ListNode, Path];
 
-        const currentListNodePosition = listNode.props?.position || 0;
+        const currentListCount = listNode.props?.count || 0;
 
         const isEndAtNode = Editor.isEnd(slate, anchor, listPath);
         const isStartAtNode = Editor.isStart(slate, anchor, listPath);
@@ -65,7 +80,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor, { hotkeys, defaultBl
             value: [
               buildBlockElement({
                 type: listNode.type,
-                props: { nodeType: 'block', position: currentListNodePosition - 1 },
+                props: { nodeType: 'block', count: currentListCount - 1 },
               }),
             ],
           });
@@ -85,7 +100,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor, { hotkeys, defaultBl
           value: [
             buildBlockElement({
               type: listNode.type,
-              props: { nodeType: 'block', position: currentListNodePosition + 1 },
+              props: { nodeType: 'block', count: currentListCount + 1 },
             }),
           ],
         });
