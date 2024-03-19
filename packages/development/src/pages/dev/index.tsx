@@ -89,11 +89,11 @@ const BasicExample = () => {
     console.log('EDITOR DATA', editorData);
   };
 
-  useEffect(() => {
-    editor.on('change', (val) => {
-      console.log('on change value', val);
-    });
-  }, [editor]);
+  // useEffect(() => {
+  //   editor.on('change', (val) => {
+  //     console.log('on change value', val);
+  //   });
+  // }, [editor]);
 
   return (
     <div className="px-[100px] max-w-[900px] mx-auto my-10" ref={rootRef}>

@@ -5,7 +5,7 @@ export type NumberedListPluginKeys = 'numbered-list';
 export type TodoListPluginKeys = 'todo-list';
 
 export type ListElementProps = {
-  position: number;
+  count: number;
 };
 
 export type NumberedListElement = SlateElement<'numbered-list', ListElementProps>;
