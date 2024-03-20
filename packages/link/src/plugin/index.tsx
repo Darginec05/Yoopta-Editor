@@ -12,6 +12,7 @@ const Link = new YooptaPlugin<LinkPluginElementKeys, LinkElementProps>({
         target: '_blank',
         rel: 'noreferrer',
         nodeType: 'inline',
+        title: null,
       },
     },
   },

@@ -1,5 +1,5 @@
 const LinkTool = () => {
-  return <div></div>;
+  return null;
 };
 
 export { LinkTool };

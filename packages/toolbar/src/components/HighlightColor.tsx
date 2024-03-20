@@ -77,45 +77,43 @@ const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles
   };
 
   return (
-    <FloatingPortal root={document.getElementById('yoopta-editor')}>
-      <FloatingOverlay lockScroll className="z-[100]" onClick={onClose}>
-        <div style={floatingStyles} ref={refs.setFloating} onClick={(e: MouseEvent) => e.stopPropagation()}>
-          <div className="yoo-toolbar-bg-white yoo-toolbar-p-[5px] yoo-toolbar-rounded-md yoo-toolbar-shadow-md yoo-toolbar-border yoo-toolbar-shadow-y-[4px]">
-            <div className="yoo-toolbar-flex yoo-toolbar-items-center yoo-toolbar-justify-between">
-              <span className="yoo-toolbar-text-xs">Text color</span>
-              <ChevronUpIcon width={14} height={14} />
-            </div>
-            <div className="yoo-toolbar-flex yoo-toolbar-items-center">
-              {colors.map(([label, color]) => (
-                <button
-                  key={label}
-                  title={label}
-                  type="button"
-                  className="yoo-toolbar-w-[25px] yoo-toolbar-h-[25px] yoo-toolbar-rounded-md yoo-toolbar-mx-[2px] yoo-toolbar-my-[5px] yoo-toolbar-border-[#e3e3e3]"
-                  style={getItemStyles('color', color)}
-                  onClick={() => updateColor('color', color)}
-                />
-              ))}
-            </div>
-            <div className="yoo-toolbar-flex yoo-toolbar-items-center yoo-toolbar-justify-between yoo-toolbar-mt-1">
-              <span className="yoo-toolbar-text-xs">Background color</span>
-              <ChevronUpIcon width={14} height={14} />
-            </div>
-            <div className="yoo-toolbar-flex yoo-toolbar-items-center">
-              {backgroundColors.map(([label, backgroundColor]) => (
-                <button
-                  key={label}
-                  title={label}
-                  type="button"
-                  className="yoo-toolbar-w-[25px] yoo-toolbar-h-[25px] yoo-toolbar-rounded-md yoo-toolbar-mx-[2px] yoo-toolbar-my-[5px] yoo-toolbar-border-[#e3e3e3]"
-                  style={getItemStyles('backgroundColor', backgroundColor)}
-                  onClick={() => updateColor('backgroundColor', backgroundColor)}
-                />
-              ))}
-            </div>
+    <FloatingPortal id="highlight-color-portal" root={document.getElementById('yoopta-editor')}>
+      <div style={floatingStyles} ref={refs.setFloating} onClick={(e: MouseEvent) => e.stopPropagation()}>
+        <div className="yoo-toolbar-bg-white yoo-toolbar-p-[5px] yoo-toolbar-rounded-md yoo-toolbar-shadow-md yoo-toolbar-border yoo-toolbar-shadow-y-[4px]">
+          <div className="yoo-toolbar-flex yoo-toolbar-items-center yoo-toolbar-justify-between">
+            <span className="yoo-toolbar-text-xs">Text color</span>
+            <ChevronUpIcon width={14} height={14} />
+          </div>
+          <div className="yoo-toolbar-flex yoo-toolbar-items-center">
+            {colors.map(([label, color]) => (
+              <button
+                key={label}
+                title={label}
+                type="button"
+                className="yoo-toolbar-w-[25px] yoo-toolbar-h-[25px] yoo-toolbar-rounded-md yoo-toolbar-mx-[2px] yoo-toolbar-my-[5px] yoo-toolbar-border-[#e3e3e3]"
+                style={getItemStyles('color', color)}
+                onClick={() => updateColor('color', color)}
+              />
+            ))}
+          </div>
+          <div className="yoo-toolbar-flex yoo-toolbar-items-center yoo-toolbar-justify-between yoo-toolbar-mt-1">
+            <span className="yoo-toolbar-text-xs">Background color</span>
+            <ChevronUpIcon width={14} height={14} />
+          </div>
+          <div className="yoo-toolbar-flex yoo-toolbar-items-center">
+            {backgroundColors.map(([label, backgroundColor]) => (
+              <button
+                key={label}
+                title={label}
+                type="button"
+                className="yoo-toolbar-w-[25px] yoo-toolbar-h-[25px] yoo-toolbar-rounded-md yoo-toolbar-mx-[2px] yoo-toolbar-my-[5px] yoo-toolbar-border-[#e3e3e3]"
+                style={getItemStyles('backgroundColor', backgroundColor)}
+                onClick={() => updateColor('backgroundColor', backgroundColor)}
+              />
+            ))}
           </div>
         </div>
-      </FloatingOverlay>
+      </div>
     </FloatingPortal>
   );
 };

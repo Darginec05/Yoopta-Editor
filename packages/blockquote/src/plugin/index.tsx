@@ -8,19 +8,6 @@ const Blockquote = new YooptaPlugin({
       render: BlockquoteRender,
     },
   },
-  // parsers: {
-  //   html: {
-  //     deserialize: (el, next) => {
-  //       if (el.tagName.toLowerCase() === 'blockquote') {
-  //         return {
-  //           object: 'block',
-  //           type: 'blockquote',
-  //           nodes: next(el.childNodes),
-  //         };
-  //       }
-  //     }
-  //   }
-  // },
   options: {
     display: {
       title: 'Blockquote',

@@ -30,6 +30,8 @@ const Toolbar = () => {
 
   const selectionChange = () => {
     const domSelection = window.getSelection();
+    console.log('is collapsed', domSelection?.isCollapsed);
+
     if (!domSelection || domSelection?.isCollapsed) return setIsToolbarOpen(false);
 
     const domRange = domSelection.getRangeAt(0);
@@ -65,8 +67,8 @@ const Toolbar = () => {
 
   return (
     // [TODO] - take care about SSR
-    <FloatingPortal root={document.getElementById('yoopta-editor')}>
-      <div style={style} ref={refs.setFloating}>
+    <FloatingPortal id="toolbar-portal" root={document.getElementById('yoopta-editor')}>
+      <div style={style} ref={refs.setFloating} onClick={(e) => e.stopPropagation()}>
         <DefaultToolbarRender activeBlock={activeBlock} editor={editor} />
       </div>
     </FloatingPortal>

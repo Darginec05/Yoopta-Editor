@@ -1,4 +1,10 @@
-import { PluginElementRenderProps } from '@yoopta/editor';
+import { PluginElementRenderProps, useYooptaTools } from '@yoopta/editor';
+
+const Link = (props: PluginElementRenderProps) => {
+  const tools = useYooptaTools();
+
+  const LinkTool = tools.LinkTool;
+};
 
 const LinkRender = (props: PluginElementRenderProps) => {
   const { url, target, rel } = props.element.props || {};
