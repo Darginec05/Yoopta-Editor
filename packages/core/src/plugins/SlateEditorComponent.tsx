@@ -275,7 +275,39 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
             if (parsetHTML.body.childNodes.length > 0) {
               event.preventDefault();
               // [TODO] - link https://github.com/rollup/plugins/issues/1122 to test
-              console.log(parsetHTML.body);
+
+              const HTML_NODENAME_MATCHERS = {
+                H1: 'HeadingOne',
+                H2: 'HeadingTwo',
+                H3: 'HeadingThree',
+                P: 'Paragraph',
+                OL: 'NumberedList',
+                UL: 'BulletedList',
+                BLOCKQUOTE: 'Blockquote',
+              };
+
+              const nodes = Array.from(parsetHTML.body.childNodes)
+                .map((node, i) => {
+                  if (HTML_NODENAME_MATCHERS[node.nodeName]) {
+                    const blockType = HTML_NODENAME_MATCHERS[node.nodeName];
+
+                    const blockData = buildBlockData({
+                      id: generateId(),
+                      type: blockType,
+                      value: [],
+                      meta: {
+                        order: i,
+                        depth: 0,
+                      },
+                    });
+
+                    return blockData;
+                  }
+                })
+                .filter(Boolean);
+
+              console.log('nodes', nodes);
+              console.log('parsetHTML.body', parsetHTML.body);
             }
           }}
         />

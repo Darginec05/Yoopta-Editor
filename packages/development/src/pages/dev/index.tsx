@@ -13,7 +13,7 @@ import Embed from '@yoopta/embed';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
-import { ComponentType, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import { uploadToCloudinary } from '../../utils/cloudinary';
 
 // import Code from '@yoopta/code';
@@ -24,20 +24,55 @@ const plugins = [
   // Mention,
   Paragraph,
   Image.extend({
-    onUpload: async (file: File) => {
-      const data = await uploadToCloudinary(file);
+    // renders: {
+    //   image: ({ attributes, children, element, blockId }) => {
+    //     return (
+    //       <div>
+    //         <img
+    //           draggable={false}
+    //           data-element-type={element.type}
+    //           className="yoo-h-mt-6 yoo-h-scroll-m-20"
+    //           {...attributes}
+    //         />
+    //         {children}
+    //       </div>
+    //     );
+    //   },
+    // },
+    options: {
+      onUpload: async (file: File) => {
+        const data = await uploadToCloudinary(file);
 
-      return {
-        src: data.secure_url,
-        alt: 'cloudinary',
-        sizes: {
-          width: data.width,
-          height: data.height,
-        },
-      };
+        return {
+          src: data.secure_url,
+          alt: 'cloudinary',
+          sizes: {
+            width: data.width,
+            height: data.height,
+          },
+        };
+      },
     },
   }),
-  Headings.HeadingOne,
+  Headings.HeadingOne.extend({
+    renders: {
+      'heading-one': ({ attributes, children, element, blockId }) => {
+        return (
+          <h1
+            id={element.id}
+            draggable={false}
+            data-element-type={element.type}
+            className="yoo-h-mt-6 yoo-h-scroll-m-20 yoo-h-text-4xl yoo-h-font-bold yoo-h-tracking-tight yoo-h-lg:text-5xl"
+            {...attributes}
+          >
+            {children}
+          </h1>
+        );
+
+        // return defaultRenderer({ attributes, children, element, blockId });
+      },
+    },
+  }),
   Headings.HeadingTwo,
   Headings.HeadingThree,
   Blockquote,
@@ -48,16 +83,18 @@ const plugins = [
   Table,
   Embed,
   Video.extend({
-    onUpload: async (file: File) => {
-      const data = await uploadToCloudinary(file, 'video');
-      return {
-        src: data.secure_url,
-        alt: 'cloudinary',
-        sizes: {
-          width: data.width,
-          height: data.height,
-        },
-      };
+    options: {
+      onUpload: async (file: File) => {
+        const data = await uploadToCloudinary(file, 'video');
+        return {
+          src: data.secure_url,
+          alt: 'cloudinary',
+          sizes: {
+            width: data.width,
+            height: data.height,
+          },
+        };
+      },
     },
   }),
   Link,
