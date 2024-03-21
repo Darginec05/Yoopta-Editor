@@ -8,15 +8,25 @@ import {
   ChevronUpIcon,
 } from '@radix-ui/react-icons';
 import * as Toolbar from '@radix-ui/react-toolbar';
-import { useFloating, offset, flip, shift, inline, autoUpdate, FloatingPortal } from '@floating-ui/react';
-import { CSSProperties, useEffect, useState } from 'react';
+import {
+  useFloating,
+  offset,
+  flip,
+  shift,
+  inline,
+  autoUpdate,
+  FloatingPortal,
+  FloatingOverlay,
+} from '@floating-ui/react';
+import { CSSProperties, MouseEvent, useEffect, useRef, useState } from 'react';
 import { HighlightColor } from './HighlightColor';
 import { findSlateBySelectionPath, SlateElement, useYooptaTools, YooEditor, YooptaBlock } from '@yoopta/editor';
-import { Editor, Element, Transforms } from 'slate';
+import { Editor, Element, NodeEntry, Range, Transforms } from 'slate';
 
 type ToolbarComponentProps = {
   activeBlock?: YooptaBlock;
   editor: YooEditor;
+  onHoldToolbarChange?: (hold: boolean) => void;
 };
 
 type LinkValues = {
@@ -24,12 +34,21 @@ type LinkValues = {
   url: string;
 };
 
+const getLinkEntry = (slate) => {
+  const [link] = Editor.nodes(slate, {
+    match: (n) => !Editor.isEditor(n) && Element.isElement(n) && (n as SlateElement).type === 'link',
+  });
+
+  return link;
+};
+
 const DEFAULT_MODALS = { link: false, highlight: false, actionMenu: false };
 type ModalsState = typeof DEFAULT_MODALS;
 
-const DefaultToolbarRender = ({ activeBlock, editor }: ToolbarComponentProps) => {
+const DefaultToolbarRender = ({ activeBlock, editor, onHoldToolbarChange }: ToolbarComponentProps) => {
   const [modals, setModals] = useState<ModalsState>({ link: false, highlight: false, actionMenu: false });
   const [linkValues, setLinkValues] = useState<LinkValues>({ title: '', url: '' });
+  const lastSelection = useRef<Range | null>(null);
 
   const tools = useYooptaTools();
 
@@ -80,6 +99,7 @@ const DefaultToolbarRender = ({ activeBlock, editor }: ToolbarComponentProps) =>
   };
 
   const blockLabel = activeBlock?.options?.display?.title || activeBlock?.type || '';
+
   const ActionMenuList = tools.ActionMenu;
   const LinkTool = tools.LinkTool;
 
@@ -88,10 +108,20 @@ const DefaultToolbarRender = ({ activeBlock, editor }: ToolbarComponentProps) =>
       const slate = findSlateBySelectionPath(editor);
       if (!slate || !slate.selection) return;
 
+      lastSelection.current = slate.selection;
+
       const title = Editor.string(slate, slate?.selection);
-      setLinkValues((p) => ({ ...p, title }));
+      const linkNodeEntry = getLinkEntry(slate);
+      const link: LinkValues = { title, url: '' };
+
+      if (linkNodeEntry) {
+        const [linkNode] = linkNodeEntry as NodeEntry<SlateElement>;
+        link.url = linkNode.props.url;
+      }
+
+      setLinkValues(link);
     }
-  }, [editor.selection, modals.link]);
+  }, [editor.selection, editor.children, modals.link]);
 
   const onUpdateLink = (link: LinkValues) => {
     const slate = findSlateBySelectionPath(editor);
@@ -100,44 +130,97 @@ const DefaultToolbarRender = ({ activeBlock, editor }: ToolbarComponentProps) =>
     Editor.withoutNormalizing(slate, () => {
       if (!slate.selection) return;
 
-      const linkNode = {
-        type: 'link',
-        children: [{ text: link.title }],
-        props: {
-          url: link.url,
-          target: '_blank',
-          rel: 'noreferrer',
-          nodeType: 'inline',
-          title: link.title,
-        },
-      } as SlateElement;
+      const linkNodeEntry = getLinkEntry(slate);
+      console.log('linkNodeEntry', linkNodeEntry?.[0]);
 
-      Transforms.wrapNodes(slate, linkNode, { split: true, at: slate.selection });
-      Transforms.setNodes(
-        slate,
-        { text: link.title },
-        {
-          at: slate.selection,
-          mode: 'lowest',
-          match: (n) => !Editor.isEditor(n) && Element.isElement(n) && (n as SlateElement).type === 'link',
-        },
-      );
+      if (linkNodeEntry) {
+        const [linkNode] = linkNodeEntry as NodeEntry<SlateElement>;
+        const updatedNode = { props: { ...linkNode?.props, url: link.url, title: link.title } };
 
-      Editor.insertText(slate, link.title || link.url, { at: slate.selection });
-      Transforms.collapse(slate, { edge: 'end' });
+        Transforms.setNodes<SlateElement>(slate, updatedNode, {
+          match: (n) => Element.isElement(n) && (n as SlateElement).type === 'link',
+        });
+
+        Editor.insertText(slate, link.title || link.url, { at: slate.selection });
+        Transforms.collapse(slate, { edge: 'end' });
+      } else {
+        const linkNode = {
+          type: 'link',
+          children: [{ text: link.title }],
+          props: {
+            target: '_blank',
+            rel: 'noreferrer',
+            nodeType: 'inline',
+            url: link.url,
+            title: link.title,
+          },
+        } as SlateElement;
+
+        Transforms.wrapNodes(slate, linkNode, { split: true, at: slate.selection });
+        Transforms.setNodes(
+          slate,
+          { text: link.title },
+          {
+            at: slate.selection,
+            mode: 'lowest',
+            match: (n) => !Editor.isEditor(n) && Element.isElement(n) && (n as SlateElement).type === 'link',
+          },
+        );
+
+        Editor.insertText(slate, link.title || link.url, { at: slate.selection });
+        Transforms.collapse(slate, { edge: 'end' });
+      }
 
       editor.applyChanges();
       editor.emit('change', editor.children);
+
       onChangeModal('link', false);
+      setLinkValues({ title: '', url: '' });
+      onHoldToolbarChange?.(false);
+
+      // if (lastSelection.current) {
+      //   try {
+      //     Transforms.select(slate, lastSelection.current);
+      //     Transforms.setSelection(slate, lastSelection.current);
+      //     lastSelection.current = null;
+      //   } catch (error) {}
+      // }
     });
   };
 
-  const onDeleteLink = () => {};
+  const onDeleteLink = () => {
+    const slate = findSlateBySelectionPath(editor);
+    if (!slate || !slate.selection) return;
+    const linkNodeEntry = getLinkEntry(slate);
+    if (linkNodeEntry) {
+      Transforms.unwrapNodes(slate, {
+        match: (n) => !Editor.isEditor(n) && Element.isElement(n) && (n as SlateElement).type === 'link',
+      });
+    }
+    onChangeModal('link', false);
+    setLinkValues({ title: '', url: '' });
+    onHoldToolbarChange?.(false);
+  };
+
+  const onClickLinkOverlay = (e: MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    if (linkToolRefs.floating.current?.contains(e.target as Node)) return;
+
+    onHoldToolbarChange?.(false);
+    setModals(DEFAULT_MODALS);
+  };
 
   const isActiveTriggerModal = (modal: keyof ModalsState) => modals[modal];
   const getModalTriggerStyle = (modal: keyof ModalsState) => ({
     backgroundColor: isActiveTriggerModal(modal) ? '#f4f4f5' : undefined,
   });
+
+  const onToggleMark = (format: string) => {
+    setModals(DEFAULT_MODALS);
+    editor.formats[format].toggle();
+  };
 
   return (
     <Toolbar.Root className="yoo-toolbar-bg-white yoo-toolbar-flex yoo-toolbar-z-50 yoo-toolbar-p-[5px] yoo-toolbar-rounded-md yoo-toolbar-shadow-md yoo-toolbar-border yoo-toolbar-shadow-y-[4px]">
@@ -157,7 +240,7 @@ const DefaultToolbarRender = ({ activeBlock, editor }: ToolbarComponentProps) =>
           <span className="yoo-toolbar-mr-0">{blockLabel}</span>
           {modals.actionMenu && !!ActionMenuList && (
             <FloatingPortal id="action-menu-list-portal" root={document.getElementById('yoopta-editor')}>
-              <div style={actionMenuStyles} ref={actionMenuRefs.setFloating}>
+              <div style={actionMenuStyles} ref={actionMenuRefs.setFloating} onClick={(e) => e.stopPropagation()}>
                 <ActionMenuList
                   actions={Object.keys(editor.blocks)}
                   editor={editor}
@@ -183,17 +266,20 @@ const DefaultToolbarRender = ({ activeBlock, editor }: ToolbarComponentProps) =>
           value="LinkTool"
           aria-label="LinkTool"
           ref={linkToolRefs.setReference}
-          onClick={() => onChangeModal('link', !modals.link)}
+          onClick={() => {
+            onChangeModal('link', !modals.link);
+            onHoldToolbarChange?.(true);
+          }}
           style={getModalTriggerStyle('link')}
         >
           <span className="yoo-toolbar-mr-0">Link</span>
           {modals.link && !!LinkTool && (
             <FloatingPortal id="link-tool-portal" root={document.getElementById('yoopta-editor')}>
-              {/* <FloatingOverlay lockScroll className="z-[100]"> */}
-              <div style={linkToolStyles} ref={linkToolRefs.setFloating} onClick={(e) => e.stopPropagation()}>
-                <LinkTool link={linkValues} onSave={onUpdateLink} />
-              </div>
-              {/* </FloatingOverlay> */}
+              <FloatingOverlay lockScroll className="z-[100]" onClick={onClickLinkOverlay}>
+                <div style={linkToolStyles} ref={linkToolRefs.setFloating}>
+                  <LinkTool link={linkValues} onSave={onUpdateLink} onDelete={onDeleteLink} />
+                </div>
+              </FloatingOverlay>
             </FloatingPortal>
           )}
         </Toolbar.ToggleItem>
@@ -210,7 +296,7 @@ const DefaultToolbarRender = ({ activeBlock, editor }: ToolbarComponentProps) =>
             value="bold"
             aria-label="Bold"
             style={getItemStyle('bold')}
-            onClick={() => editor.formats.bold.toggle()}
+            onClick={() => onToggleMark('bold')}
           >
             <FontBoldIcon width={20} height={20} />
           </Toolbar.ToggleItem>
@@ -221,7 +307,7 @@ const DefaultToolbarRender = ({ activeBlock, editor }: ToolbarComponentProps) =>
             value="italic"
             aria-label="Italic"
             style={getItemStyle('italic')}
-            onClick={() => editor.formats.italic.toggle()}
+            onClick={() => onToggleMark('italic')}
           >
             <FontItalicIcon width={20} height={20} />
           </Toolbar.ToggleItem>
@@ -232,7 +318,7 @@ const DefaultToolbarRender = ({ activeBlock, editor }: ToolbarComponentProps) =>
             value="underline"
             aria-label="Underline"
             style={getItemStyle('underline')}
-            onClick={() => editor.formats.underline.toggle()}
+            onClick={() => onToggleMark('underline')}
           >
             <UnderlineIcon width={20} height={20} />
           </Toolbar.ToggleItem>
@@ -243,7 +329,7 @@ const DefaultToolbarRender = ({ activeBlock, editor }: ToolbarComponentProps) =>
             value="strike"
             aria-label="Strike"
             style={getItemStyle('strike')}
-            onClick={() => editor.formats.strike.toggle()}
+            onClick={() => onToggleMark('strike')}
           >
             <StrikethroughIcon width={20} height={20} />
           </Toolbar.ToggleItem>
@@ -254,7 +340,7 @@ const DefaultToolbarRender = ({ activeBlock, editor }: ToolbarComponentProps) =>
             value="code"
             aria-label="Code"
             style={getItemStyle('code')}
-            onClick={() => editor.formats.code.toggle()}
+            onClick={() => onToggleMark('code')}
           >
             <CodeIcon width={20} height={20} />
           </Toolbar.ToggleItem>

@@ -6,11 +6,11 @@ export {
   useYooptaPlugin,
   useYooptaPluginOptions,
   useBlockSelected,
-} from './contexts/UltraYooptaContext/UltraYooptaContext';
+} from './contexts/YooptaContext/YooptaContext';
 import { YooptaEditor } from './YooptaEditor';
 export { UI } from './UI';
 
-export { useYooptaTools, Tools } from './contexts/UltraYooptaContext/ToolsContext';
+export { useYooptaTools, Tools } from './contexts/YooptaContext/ToolsContext';
 
 export { generateId } from './utils/generateId';
 export { HOTKEYS } from './utils/hotkeys';

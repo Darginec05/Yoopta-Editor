@@ -1,4 +1,3 @@
-import { useYooptaEditor } from '@yoopta/editor';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { LinkToolRenderProps, Link } from '../types';
 
@@ -6,6 +5,15 @@ const DEFAULT_LINK_VALUE: Link = {
   url: '',
   title: '',
 };
+
+function isUrl(string: any): boolean {
+  try {
+    new URL(string);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
 
 const DefaultLinkToolRender = (props: LinkToolRenderProps) => {
   const [link, setLink] = useState(props?.link || DEFAULT_LINK_VALUE);
@@ -45,6 +53,7 @@ const DefaultLinkToolRender = (props: LinkToolRenderProps) => {
           value={link.title}
           onChange={onChange}
           placeholder="Edit link title"
+          autoComplete="off"
         />
       </div>
       <div className="yoo-link-tool-mt-2">
@@ -62,20 +71,20 @@ const DefaultLinkToolRender = (props: LinkToolRenderProps) => {
           value={link.url}
           onChange={onChange}
           placeholder="Edit link URL"
+          autoComplete="off"
         />
       </div>
       <div className="yoo-link-tool-mt-2 yoo-link-tool-flex yoo-link-tool-justify-between">
         <button
           className="yoo-link-tool-bg-[#1183ff] yoo-link-tool-text-[#fff] yoo-link-tool-text-sm yoo-link-tool-font-medium yoo-link-tool-py-[5px] yoo-link-tool-px-[10px] yoo-link-tool-rounded-md yoo-link-tool-shadow-sm disabled:yoo-link-tool-opacity-50"
-          disabled={!link.url}
+          disabled={!link.url || !isUrl(link.url)}
           onClick={onSave}
         >
-          Save
+          Add
         </button>
         <button
           className="yoo-link-tool-ml-2 yoo-link-tool-bg-[#f4f4f5] yoo-link-tool-text-[#000] yoo-link-tool-text-sm yoo-link-tool-font-medium yoo-link-tool-py-[5px] yoo-link-tool-px-[10px] yoo-link-tool-rounded-md yoo-link-tool-shadow-sm disabled:yoo-link-tool-opacity-50"
           onClick={onDelete}
-          disabled={!link.url && !link.title}
         >
           Delete link
         </button>

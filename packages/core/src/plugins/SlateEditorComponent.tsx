@@ -1,6 +1,6 @@
 import { memo, useMemo, useRef } from 'react';
 import { Editable, RenderElementProps, Slate } from 'slate-react';
-import { useYooptaEditor, useBlockData } from '../contexts/UltraYooptaContext/UltraYooptaContext';
+import { useYooptaEditor, useBlockData } from '../contexts/YooptaContext/YooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../marks';
 
@@ -78,7 +78,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
 
         // [TODO] - as test
         // [TODO] - should extend all slate editors for every block
-        // slateEditor = withInlines(slateEditor);
+        slateEditor = withInlines(slateEditor);
       }
     });
 

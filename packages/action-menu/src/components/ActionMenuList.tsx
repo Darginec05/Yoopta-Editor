@@ -241,7 +241,7 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
           style={style}
           ref={refs.setFloating}
         >
-          {/* [TODO] - pass on key down handler */}
+          {/* [TODO] - pass key down handler */}
           {render({ getItemProps, actions, editor, onMouseEnter, selectedAction, onClose, empty })}
         </div>
       </FloatingPortal>

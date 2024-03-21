@@ -1,5 +1,5 @@
 import { CSSProperties, useEffect, useRef } from 'react';
-import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
+import { useYooptaEditor } from '../../contexts/YooptaContext/YooptaContext';
 import { RenderBlocks } from './RenderBlocks';
 import { YooptaMark } from '../../marks';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
@@ -12,7 +12,7 @@ import { ReactEditor } from 'slate-react';
 import { YooptaBlockPath } from '../../editor/types';
 import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
-import { useYooptaTools } from '../../contexts/UltraYooptaContext/ToolsContext';
+import { useYooptaTools } from '../../contexts/YooptaContext/ToolsContext';
 
 type Props = {
   marks?: YooptaMark<any>[];
