@@ -1,6 +1,6 @@
 import TurnIcon from './icons/turn.svg';
 import { TrashIcon, CopyIcon, Link2Icon } from '@radix-ui/react-icons';
-import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
+import { useYooptaEditor } from '../../contexts/YooptaContext/YooptaContext';
 import { CSSProperties, useState } from 'react';
 import {
   useFloating,
@@ -16,7 +16,7 @@ import {
 import copy from 'copy-to-clipboard';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { getRootBlockElement } from '../../utils/blockElements';
-import { useYooptaTools } from '../../contexts/UltraYooptaContext/ToolsContext';
+import { useYooptaTools } from '../../contexts/YooptaContext/ToolsContext';
 
 const BlockOptionsMenuGroup = ({ children }) => <div className="flex flex-col">{children}</div>;
 

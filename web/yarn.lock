@@ -1741,20 +1741,20 @@
     "@floating-ui/react" "^0.26.9"
     "@radix-ui/react-icons" "^1.3.0"
 
-"@yoopta/blockquote@^4.0.0-rc.3":
-  version "4.0.0-rc.3"
-  resolved "https://registry.yarnpkg.com/@yoopta/blockquote/-/blockquote-4.0.0-rc.3.tgz#77b4a26bac04116de02cc3979dfd375ca6d8e6c7"
-  integrity sha512-wnLnO8v5ekWnylSSAENVIRl6NFMA2ASfWk+Y0j0eTC8ZB59MYTBOa5ldTO+m7c9KaSJW0wZab0ga0KYWaxB3Jw==
+"@yoopta/blockquote@^4.0.0-rc.4":
+  version "4.0.0-rc.4"
+  resolved "https://registry.yarnpkg.com/@yoopta/blockquote/-/blockquote-4.0.0-rc.4.tgz#296bee43ed2a61dcfd24457a501723169eddf068"
+  integrity sha512-70dxVQyQ37ABPDfBu26bjgOOVHgvBX7tzWhTIKlLvAS5JdEvuhMtMcL9miw5vWDkGJi0KlvLQ82LqAEzkGIqLw==
 
 "@yoopta/callout@^4.0.0-rc.5":
   version "4.0.0-rc.5"
   resolved "https://registry.yarnpkg.com/@yoopta/callout/-/callout-4.0.0-rc.5.tgz#81b52b40e412c5cbefa5d18e403a5455c059086d"
   integrity sha512-SaK+lnLwNJuAy3jhla2YH6eVPDL4PtUc05c/izXqFVdcTaJytMBpvv7FkYtAxAmLNIV3WKuHAQ+ukohBMafPWw==
 
-"@yoopta/editor@^4.0.0-rc.11":
-  version "4.0.0-rc.11"
-  resolved "https://registry.yarnpkg.com/@yoopta/editor/-/editor-4.0.0-rc.11.tgz#3098cdf082a43ce6dc4b342fdfad412b93b8af34"
-  integrity sha512-vAf+r5lEaNfbIGiplmt+6Dkj93YZl+GcccVnGZqWA78CviPCu2eP5TZEYNVdpoYRfX+hX4OB7aVruTA0QTJslQ==
+"@yoopta/editor@^4.0.0-rc.12":
+  version "4.0.0-rc.12"
+  resolved "https://registry.yarnpkg.com/@yoopta/editor/-/editor-4.0.0-rc.12.tgz#b71ade6fc99a277f7c43035c3702b5a72d3cc1ea"
+  integrity sha512-Yiy3OyxVNwqhgIQPJP4OgWtRRw2fYGS3ZAzgeq8IaYB+xeQAJXKAMMTjsBGOhLKbAbcTdiImE+kKew7LcgrkNA==
   dependencies:
     "@dnd-kit/core" "^6.1.0"
     "@dnd-kit/sortable" "^8.0.0"
@@ -1791,15 +1791,20 @@
     "@radix-ui/react-icons" "^1.3.0"
     re-resizable "^6.9.11"
 
-"@yoopta/link@^4.0.0-rc.3":
-  version "4.0.0-rc.3"
-  resolved "https://registry.yarnpkg.com/@yoopta/link/-/link-4.0.0-rc.3.tgz#c142737794d8af3a929477e9aaf16d06bcd9073d"
-  integrity sha512-t7n5Glw7AnQwl+44/WQ2nZ+0t62qd44IeBZOLZU2HlyQXk/R6BS6iMp3HYI0gpYGG8OG1qE6ICi6YiKtVngsEw==
+"@yoopta/link-tool@^4.0.0-rc.1":
+  version "4.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/link-tool/-/link-tool-4.0.0-rc.1.tgz#9ea85bc513e1d37d5a595867824cccb9b05aacf9"
+  integrity sha512-9k4YDpVh2KWwYMSsl7yxJY1Zj7jyUM9lTNNHWaHgMcJOUjGgT6S5twkoZaCST65Hz49rcoig+7GZ1BYXX7e6xg==
 
-"@yoopta/lists@^4.0.0-rc.3":
-  version "4.0.0-rc.3"
-  resolved "https://registry.yarnpkg.com/@yoopta/lists/-/lists-4.0.0-rc.3.tgz#94361301eda46680e9b40c7e8c8c121683a157d4"
-  integrity sha512-dl7GC6J5rtqiiBAJ0OGnvYiFGYa6T99FIiLEiLRFp/L6X9mOX/5NUifVKN7ymL45E2m89DZ+i9vEOPFWEedEmA==
+"@yoopta/link@^4.0.0-rc.4":
+  version "4.0.0-rc.4"
+  resolved "https://registry.yarnpkg.com/@yoopta/link/-/link-4.0.0-rc.4.tgz#93fc036697e6c317d6e35fa1104d343877cdc264"
+  integrity sha512-ckpZoktHYcyEd4606d2XdlubCTeXgtIthPdSjip1HmQ0o9lBUX7Psg6vaepEsvt+MM+OPuiSg8jWaGh4IODbJg==
+
+"@yoopta/lists@^4.0.0-rc.4":
+  version "4.0.0-rc.4"
+  resolved "https://registry.yarnpkg.com/@yoopta/lists/-/lists-4.0.0-rc.4.tgz#dea1477b6f8c26a5a9e718d7e0f9c64169fa79d7"
+  integrity sha512-O9mccEQq+Xr60TriN8DlZ2Kbtz70ugosdjaGqT6iNtN+0Gr2IHhIZvoR0KH4/URRdzor44Tn7mwxviRQoqTC6A==
 
 "@yoopta/marks@^4.0.0-rc.5":
   version "4.0.0-rc.5"
@@ -1811,10 +1816,10 @@
   resolved "https://registry.yarnpkg.com/@yoopta/paragraph/-/paragraph-4.0.0-rc.3.tgz#2f0ece5c78530c8c9e843be1b579fefcc6caff7a"
   integrity sha512-ObYoePpNfMtdyC7d6OzyQtxhp5yXHmvD8OLqY/fK7sCumEt9nxhQvZEPkTuZ2k0mIglJ60DBYSN9PFY1wYgbBA==
 
-"@yoopta/toolbar@^4.0.0-rc.1":
-  version "4.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/@yoopta/toolbar/-/toolbar-4.0.0-rc.1.tgz#0df3ac1aef7f7dde4c8b7a4bd821e58b252200a0"
-  integrity sha512-jFfnuG245kdV5cbqqRJR6XOTy2UzBzN5YwrOmkn8srx28qhHD+qxlcS8ODE7N28CTIf1uyjYLdiSf43ab+Qi5A==
+"@yoopta/toolbar@^4.0.0-rc.2":
+  version "4.0.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@yoopta/toolbar/-/toolbar-4.0.0-rc.2.tgz#024d5aa538c979539f211c8bdd01a3b6b71713ef"
+  integrity sha512-8RxQrEGPA39qNP0DJk58P1633zkfWJwkoq+IqoEYzJ/fu+wCJ4cc5itidbT37F9OJmoD4aENILoy9slNZB3OwQ==
   dependencies:
     "@floating-ui/react" "^0.26.9"
     "@radix-ui/react-icons" "^1.3.0"

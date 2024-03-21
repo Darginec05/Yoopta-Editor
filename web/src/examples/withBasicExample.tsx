@@ -20,20 +20,11 @@ import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
+import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 
 // list of plugins should be placed outside component
 const plugins = [
-  Paragraph,
-  HeadingOne,
-  HeadingTwo,
-  HeadingThree,
-  Blockquote,
-  Callout,
   // Code,
-  Link,
-  NumberedList,
-  BulletedList,
-  TodoList,
   // File.extend({
   //   options: {
   //     onUpload: async (file: File) => {
@@ -42,31 +33,45 @@ const plugins = [
   //     },
   //   },
   // }),
+  Paragraph,
+  HeadingOne,
+  HeadingTwo,
+  HeadingThree,
+  Blockquote,
+  Callout,
+  Link,
+  NumberedList,
+  BulletedList,
+  TodoList,
   Embed,
   Image.extend({
-    onUpload: async (file: File) => {
-      const data = await uploadToCloudinary(file, 'image');
-      return {
-        src: data.secure_url,
-        alt: 'cloudinary',
-        sizes: {
-          width: data.width,
-          height: data.height,
-        },
-      };
+    options: {
+      onUpload: async (file: File) => {
+        const data = await uploadToCloudinary(file, 'image');
+        return {
+          src: data.secure_url,
+          alt: 'cloudinary',
+          sizes: {
+            width: data.width,
+            height: data.height,
+          },
+        };
+      },
     },
   }),
   Video.extend({
-    onUpload: async (file: File) => {
-      const data = await uploadToCloudinary(file, 'video');
-      return {
-        src: data.secure_url,
-        alt: 'cloudinary',
-        sizes: {
-          width: data.width,
-          height: data.height,
-        },
-      };
+    options: {
+      onUpload: async (file: File) => {
+        const data = await uploadToCloudinary(file, 'video');
+        return {
+          src: data.secure_url,
+          alt: 'cloudinary',
+          sizes: {
+            width: data.width,
+            height: data.height,
+          },
+        };
+      },
     },
   }),
 ];
@@ -79,6 +84,10 @@ const TOOLS = {
   Toolbar: {
     render: DefaultToolbarRender,
     tool: Toolbar,
+  },
+  LinkTool: {
+    render: DefaultLinkToolRender,
+    tool: LinkTool,
   },
 };
 

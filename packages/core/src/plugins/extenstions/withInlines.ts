@@ -50,9 +50,9 @@ const addLink = (editor, url: string) => {
 };
 
 export const withInlines = (editor) => {
-  const { insertData, insertText, isInline } = editor;
+  const { insertData, insertText } = editor;
 
-  editor.isInline = (element) => ['link', 'mention'].includes(element.type) || isInline(element);
+  // editor.isInline = (element) => ['link', 'mention'].includes(element.type) || isInline(element);
 
   editor.insertText = (text) => {
     if (text && isUrl(text)) {

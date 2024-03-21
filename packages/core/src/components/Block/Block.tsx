@@ -1,4 +1,4 @@
-import { useYooptaEditor } from '../../contexts/UltraYooptaContext/UltraYooptaContext';
+import { useYooptaEditor } from '../../contexts/YooptaContext/YooptaContext';
 import { useSortable } from '@dnd-kit/sortable';
 import { useRef, useState } from 'react';
 import { BlockActions } from './BlockActions';
@@ -27,7 +27,6 @@ const Block = ({ children, block, blockId }) => {
     opacity: isDragging ? 0.7 : 1,
     // [TODO] = handle max depth
     marginLeft: `${block.meta.depth * 20}px`,
-    // // implement selected state by mouse select  area
   };
 
   const isSelected = editor.selectedBlocks?.includes(block.meta.order);

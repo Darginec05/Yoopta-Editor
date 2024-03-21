@@ -16,6 +16,8 @@ import { useYooptaEditor } from '@yoopta/editor';
 const Toolbar = () => {
   const editor = useYooptaEditor();
   const [isToolbarOpen, setIsToolbarOpen] = useState(false);
+  const [hold, setHold] = useState(false);
+
   const { refs, floatingStyles, context } = useFloating({
     placement: 'top',
     open: isToolbarOpen,
@@ -29,8 +31,9 @@ const Toolbar = () => {
   });
 
   const selectionChange = () => {
+    if (hold) return;
+
     const domSelection = window.getSelection();
-    console.log('is collapsed', domSelection?.isCollapsed);
 
     if (!domSelection || domSelection?.isCollapsed) return setIsToolbarOpen(false);
 
@@ -58,18 +61,20 @@ const Toolbar = () => {
   useEffect(() => {
     window.document.addEventListener('selectionchange', onSelectionChange);
     return () => window.document.removeEventListener('selectionchange', onSelectionChange);
-  }, [editor.selectedBlocks]);
+  }, [editor.selectedBlocks, hold]);
 
   if (!isMounted) return null;
 
   const activeBlock = Object.values(editor.blocks).find((block) => block.isActive());
   const style = { ...floatingStyles, ...transitionStyles };
 
+  const onHoldToolbarChange = (hold: boolean) => setHold(hold);
+
   return (
     // [TODO] - take care about SSR
     <FloatingPortal id="toolbar-portal" root={document.getElementById('yoopta-editor')}>
       <div style={style} ref={refs.setFloating} onClick={(e) => e.stopPropagation()}>
-        <DefaultToolbarRender activeBlock={activeBlock} editor={editor} />
+        <DefaultToolbarRender activeBlock={activeBlock} editor={editor} onHoldToolbarChange={onHoldToolbarChange} />
       </div>
     </FloatingPortal>
   );
