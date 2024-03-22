@@ -8,18 +8,8 @@ const Block = ({ children, block, blockId }) => {
   const editor = useYooptaEditor();
 
   const [activeBlockId, setActiveBlockId] = useState<string | null>(null);
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    setActivatorNodeRef,
-    transform,
-    transition,
-    active,
-    over,
-    isOver,
-    isDragging,
-  } = useSortable({ id: blockId });
+  const { attributes, listeners, setNodeRef, setActivatorNodeRef, transform, transition, isOver, isDragging } =
+    useSortable({ id: blockId, disabled: editor.readOnly });
 
   const style = {
     transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : 'none',
@@ -34,8 +24,16 @@ const Block = ({ children, block, blockId }) => {
 
   const onChangeActiveBlock = (id: string) => setActiveBlockId(id);
 
-  const handleMouseEnter = () => onChangeActiveBlock(blockId);
-  const handleMouseLeave = () => setActiveBlockId(null);
+  const handleMouseEnter = () => {
+    if (editor.readOnly) return;
+    setActiveBlockId(blockId);
+  };
+  const handleMouseLeave = () => {
+    if (editor.readOnly) return;
+    setActiveBlockId(null);
+  };
+
+  const contentStyles = { borderBottom: isOver && !isDragging ? '2px solid #007aff' : 'none' };
 
   return (
     <div
@@ -47,21 +45,23 @@ const Block = ({ children, block, blockId }) => {
       data-yoopta-block
       ref={setNodeRef}
     >
-      <BlockActions
-        block={block}
-        editor={editor}
-        dragHandleProps={{ setActivatorNodeRef, attributes, listeners }}
-        showActions={isHovered}
-        onChangeActiveBlock={onChangeActiveBlock}
-      />
+      {!editor.readOnly && (
+        <BlockActions
+          block={block}
+          editor={editor}
+          dragHandleProps={{ setActivatorNodeRef, attributes, listeners }}
+          showActions={isHovered}
+          onChangeActiveBlock={onChangeActiveBlock}
+        />
+      )}
       <div
         className={s.content}
-        // [TODO] - check in what direction is dragging
-        style={{ borderBottom: isOver && !isDragging ? '2px solid #007aff' : 'none' }}
+        // [TODO] - check in which direction is dragging
+        style={contentStyles}
       >
         {children}
       </div>
-      {isSelected && (
+      {isSelected && !editor.readOnly && (
         <div className="absolute left-0 top-0 bg-[#2383e224] z-[90] rounded opacity-100 h-full w-full pointer-events-none yoopta-selection-block" />
       )}
     </div>

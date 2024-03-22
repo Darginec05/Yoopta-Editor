@@ -5,6 +5,7 @@ import {
   useYooptaEditor,
   useYooptaPluginOptions,
   useBlockSelected,
+  useYooptaReadOnly,
 } from '@yoopta/editor';
 import { Resizable, ResizableProps } from 're-resizable';
 import { useEffect, useMemo, useState } from 'react';
@@ -13,11 +14,12 @@ import { VideoPluginOptions } from '../types';
 import { VideoBlockOptions } from './VideoBlockOptions';
 import { Resizer } from './Resizer';
 
-const VideoRender = ({ element, attributes, children, blockId }: PluginElementRenderProps<VideoPluginOptions>) => {
+const VideoRender = ({ element, attributes, children, blockId }: PluginElementRenderProps) => {
   const { src, srcSet, bgColor, settings, sizes: propSizes, poster, provider, fit } = element.props || {};
   const block = useBlockData(blockId);
   const editor = useYooptaEditor();
   const pluginOptions = useYooptaPluginOptions<VideoPluginOptions>('Video');
+  const isReadOnly = useYooptaReadOnly();
 
   const [sizes, setSizes] = useState({
     width: propSizes?.width || 750,
@@ -34,7 +36,6 @@ const VideoRender = ({ element, attributes, children, blockId }: PluginElementRe
   );
 
   const blockSelected = useBlockSelected({ blockId });
-  let readOnly = false;
 
   const resizeProps: ResizableProps = useMemo(
     () => ({
@@ -45,8 +46,8 @@ const VideoRender = ({ element, attributes, children, blockId }: PluginElementRe
       lockAspectRatio: true,
       resizeRatio: 2,
       enable: {
-        left: !readOnly,
-        right: !readOnly,
+        left: !isReadOnly,
+        right: !isReadOnly,
       },
       handleStyles: {
         left: { left: 0 },
@@ -99,7 +100,7 @@ const VideoRender = ({ element, attributes, children, blockId }: PluginElementRe
           provider={provider}
           fit={fit}
         />
-        <VideoBlockOptions block={block} editor={editor} settings={settings} props={element.props} />
+        {!isReadOnly && <VideoBlockOptions block={block} editor={editor} settings={settings} props={element.props} />}
         {children}
       </Resizable>
     </div>

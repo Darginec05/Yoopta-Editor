@@ -1,11 +1,12 @@
 export { YooptaPlugin } from './plugins';
 export {
-  useYooptaEditor,
   useBlockData,
   useYooptaBlock,
+  useYooptaEditor,
   useYooptaPlugin,
-  useYooptaPluginOptions,
   useBlockSelected,
+  useYooptaReadOnly,
+  useYooptaPluginOptions,
 } from './contexts/YooptaContext/YooptaContext';
 import { YooptaEditor } from './YooptaEditor';
 export { UI } from './UI';

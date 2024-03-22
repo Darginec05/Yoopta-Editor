@@ -47,6 +47,8 @@ export const useRectangeSelectionBox = ({
   });
 
   const onMouseDown = (event) => {
+    if (editor.readOnly) return;
+
     const isInsideEditor = yooptaEditorRef.current?.contains(event.target as Node);
 
     if (
@@ -76,7 +78,7 @@ export const useRectangeSelectionBox = ({
   };
 
   const onMouseMove = (event) => {
-    if (!state.selection) return;
+    if (!state.selection || editor.readOnly) return;
 
     setState((prevState) => ({
       ...prevState,
@@ -92,6 +94,8 @@ export const useRectangeSelectionBox = ({
   };
 
   const onMouseUp = () => {
+    if (editor.readOnly) return;
+
     onClose();
   };
 
@@ -102,6 +106,8 @@ export const useRectangeSelectionBox = ({
   };
 
   useEffect(() => {
+    if (editor.readOnly) return;
+
     const elementMouseEl = getRootBlockElement();
 
     if (!elementMouseEl) {
@@ -125,7 +131,7 @@ export const useRectangeSelectionBox = ({
       elementMouseEl.removeEventListener('mousemove', onMouseMove);
       elementMouseEl.removeEventListener('mouseup', onMouseUp);
     };
-  }, [editor.selectedBlocks, state, root]);
+  }, [editor.selectedBlocks, state, root, editor.readOnly]);
 
   const onClose = () => {
     setState({

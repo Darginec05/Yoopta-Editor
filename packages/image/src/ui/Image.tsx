@@ -5,6 +5,7 @@ import {
   useYooptaEditor,
   useYooptaPluginOptions,
   useBlockSelected,
+  useYooptaReadOnly,
 } from '@yoopta/editor';
 import { Resizable, ResizableProps } from 're-resizable';
 import { useEffect, useMemo, useState } from 'react';
@@ -13,10 +14,12 @@ import { ImagePluginOptions } from '../types';
 import { ImageBlockOptions } from './ImageBlockOptions';
 import { Resizer } from './Resizer';
 
-const ImageRender = ({ element, attributes, children, blockId }: PluginElementRenderProps<ImagePluginOptions>) => {
+const ImageRender = ({ element, attributes, children, blockId }: PluginElementRenderProps) => {
   const { src, alt, srcSet, bgColor, fit, sizes: propSizes } = element.props || {};
   const block = useBlockData(blockId);
   const editor = useYooptaEditor();
+  const isReadOnly = useYooptaReadOnly();
+
   const pluginOptions = useYooptaPluginOptions<ImagePluginOptions>('Image');
 
   const [sizes, setSizes] = useState({
@@ -34,7 +37,6 @@ const ImageRender = ({ element, attributes, children, blockId }: PluginElementRe
   );
 
   const blockSelected = useBlockSelected({ blockId });
-  let readOnly = false;
 
   const resizeProps: ResizableProps = useMemo(
     () => ({
@@ -45,30 +47,34 @@ const ImageRender = ({ element, attributes, children, blockId }: PluginElementRe
       lockAspectRatio: true,
       resizeRatio: 2,
       enable: {
-        left: !readOnly,
-        right: !readOnly,
+        left: !isReadOnly,
+        right: !isReadOnly,
       },
       handleStyles: {
         left: { left: 0 },
         right: { right: 0 },
       },
       onResize: (e, direction, ref) => {
+        if (isReadOnly) return;
         setSizes({ width: ref.offsetWidth, height: ref.offsetHeight });
       },
       onResizeStop: (e, direction, ref) => {
+        if (isReadOnly) return;
         editor.blocks.Image.updateElement(blockId, 'image', {
           sizes: { width: ref.offsetWidth, height: ref.offsetHeight },
         });
       },
       handleComponent: {
-        left: <Resizer position="left" />,
-        right: <Resizer position="right" />,
+        left: isReadOnly ? <></> : <Resizer position="left" />,
+        right: isReadOnly ? <></> : <Resizer position="right" />,
       },
     }),
     [sizes.width, sizes.height],
   );
 
   if (!src) {
+    if (isReadOnly) return null;
+
     return (
       <Placeholder attributes={attributes} blockId={blockId}>
         {children}
@@ -97,7 +103,8 @@ const ImageRender = ({ element, attributes, children, blockId }: PluginElementRe
           bgColor={bgColor}
           height={sizes?.height}
         />
-        <ImageBlockOptions block={block} editor={editor} props={element.props} />
+        {!isReadOnly && <ImageBlockOptions block={block} editor={editor} props={element.props} />}
+
         {children}
       </Resizable>
     </div>

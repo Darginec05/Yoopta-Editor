@@ -35,6 +35,7 @@ export const createYooptaEditor = (): YooEditor => {
     children: {},
     selection: null,
     selectedBlocks: null,
+    readOnly: false,
     getEditorValue: () => getEditorValue(editor),
     applyChanges: () => {},
     insertBlock: (...args) => insertBlock(editor, ...args),
