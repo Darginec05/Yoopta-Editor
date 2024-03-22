@@ -137,7 +137,7 @@ export default function WithBasicExample() {
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24`}
     >
       <div className="w-full h-full">
-        <YooptaEditor editor={editor} plugins={plugins} marks={marks} tools={TOOLS} autoFocus={false} />
+        <YooptaEditor editor={editor} plugins={plugins} value={value} marks={marks} tools={TOOLS} autoFocus />
       </div>
     </main>
   );

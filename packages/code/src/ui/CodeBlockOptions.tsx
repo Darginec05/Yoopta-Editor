@@ -12,8 +12,6 @@ import copy from 'copy-to-clipboard';
 import { getCodeElementText } from '../utils/element';
 import { useState } from 'react';
 
-const { ExtendedBlockActions, BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptionsSeparator } = UI_HELPERS;
-
 type Props = {
   editor: YooEditor;
   block: YooptaBlockData;
@@ -39,45 +37,5 @@ export const CodeBlockOptions = ({ block, editor, element }: Props) => {
     setTimeout(() => setIsCopied(false), 2000);
   };
 
-  return (
-    <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])} className="yoopta-code-options">
-      <BlockOptionsSeparator />
-      <BlockOptionsMenuGroup>
-        <BlockOptionsMenuItem>
-          <button
-            type="button"
-            className="yoo-code-rounded-sm hover:yoo-code-bg-[#37352f14] yoo-code-leading-[120%] yoo-code-px-2 yoo-code-py-1.5 yoo-code-mx-[4px] yoo-code-cursor-pointer yoo-code-w-full yoo-code-flex yoo-code-justify-start"
-            onClick={onCopy}
-          >
-            <CopyIcon className="yoo-code-w-4 yoo-code-h-4 yoo-code-mr-2" />
-            {isCopied ? 'Copied' : 'Copy'}
-          </button>
-        </BlockOptionsMenuItem>
-        <BlockOptionsMenuItem>
-          <Select
-            options={Object.keys(themes).map((theme) => ({ value: theme, label: theme }))}
-            onChange={onChangeTheme}
-            value={element.props?.theme || 'VSCode'}
-          >
-            <Trigger className="yoo-code-rounded-sm hover:yoo-code-bg-[#37352f14] yoo-code-leading-[120%] yoo-code-px-2 yoo-code-py-1.5 yoo-code-mx-[4px] yoo-code-cursor-pointer yoo-code-w-full yoo-code-flex yoo-code-justify-start">
-              <ThemeIcon className="yoo-code-w-4 yoo-code-h-4 yoo-code-mr-2" />
-              Theme
-            </Trigger>
-          </Select>
-        </BlockOptionsMenuItem>
-        <BlockOptionsMenuItem>
-          <Select
-            options={Object.keys(LANGUAGES).map((lang) => ({ value: lang, label: lang }))}
-            onChange={onChangeLanguage}
-            value={element.props?.language || 'JavaScript'}
-          >
-            <Trigger className="yoo-code-rounded-sm hover:yoo-code-bg-[#37352f14] yoo-code-leading-[120%] yoo-code-px-2 yoo-code-py-1.5 yoo-code-mx-[4px] yoo-code-cursor-pointer yoo-code-w-full yoo-code-flex yoo-code-justify-start">
-              <CodeIcon className="yoo-code-w-4 yoo-code-h-4 yoo-code-mr-2" />
-              Language
-            </Trigger>
-          </Select>
-        </BlockOptionsMenuItem>
-      </BlockOptionsMenuGroup>
-    </ExtendedBlockActions>
-  );
+  return null;
 };
