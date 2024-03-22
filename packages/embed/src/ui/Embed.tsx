@@ -5,6 +5,7 @@ import {
   useYooptaEditor,
   useYooptaPluginOptions,
   useBlockSelected,
+  useYooptaReadOnly,
 } from '@yoopta/editor';
 import { Resizable, ResizableProps } from 're-resizable';
 import { useEffect, useMemo, useState } from 'react';
@@ -18,6 +19,7 @@ const EmbedRender = ({ element, attributes, children, blockId }: PluginElementRe
   const block = useBlockData(blockId);
   const editor = useYooptaEditor();
   const pluginOptions = useYooptaPluginOptions<EmbedPluginOptions>('Embed');
+  const isReadOnly = useYooptaReadOnly();
 
   const [sizes, setSizes] = useState({
     width: propSizes?.width || 750,
@@ -34,7 +36,6 @@ const EmbedRender = ({ element, attributes, children, blockId }: PluginElementRe
   );
 
   const blockSelected = useBlockSelected({ blockId });
-  let readOnly = false;
 
   const resizeProps: ResizableProps = useMemo(
     () => ({
@@ -45,8 +46,8 @@ const EmbedRender = ({ element, attributes, children, blockId }: PluginElementRe
       lockAspectRatio: true,
       resizeRatio: 2,
       enable: {
-        left: !readOnly,
-        right: !readOnly,
+        left: !isReadOnly,
+        right: !isReadOnly,
       },
       handleStyles: {
         left: { left: 0 },
@@ -89,7 +90,7 @@ const EmbedRender = ({ element, attributes, children, blockId }: PluginElementRe
           <div className="absolute pointer-events-none inset-0 bg-[rgba(35,131,226,0.14)] z-[81] rounded-[3px] opacity-100 transition-opacity duration-150 ease-in" />
         )}
         <EmbedComponent width={sizes?.width} height={sizes?.height} provider={provider} blockId={blockId} />
-        <EmbedBlockOptions block={block} editor={editor} props={element.props} />
+        {!isReadOnly && <EmbedBlockOptions block={block} editor={editor} props={element.props} />}
         {children}
       </Resizable>
     </div>

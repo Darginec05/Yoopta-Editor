@@ -1,5 +1,5 @@
 import EventEmitter from 'eventemitter3';
-import { UltraYooptaContextProvider } from './contexts/YooptaContext/YooptaContext';
+import { YooptaContextProvider } from './contexts/YooptaContext/YooptaContext';
 import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { Editor } from './components/Editor/Editor';
 import { useMemo, useState } from 'react';
@@ -29,6 +29,7 @@ type Props = {
   children?: React.ReactNode;
   tools?: Partial<Tools>;
   placeholder?: string;
+  readOnly?: boolean;
 };
 
 const DEFAULT_VALUE: Record<string, YooptaBlockData> = getDefaultYooptaChildren();
@@ -60,6 +61,7 @@ const YooptaEditor = ({
   selectionBoxRoot,
   children,
   placeholder,
+  readOnly,
 }: Props) => {
   const applyChanges = () => {
     setEditorState((prev) => ({ ...prev, version: prev.version + 1 }));
@@ -76,6 +78,7 @@ const YooptaEditor = ({
 
   const [editorState, setEditorState] = useState<{ editor: YooEditor<any, 'hightlight'>; version: number }>(() => {
     editor.applyChanges = applyChanges;
+    editor.readOnly = readOnly || false;
     if (marks) editor.formats = buildMarks(editor, marks);
     editor.blocks = buildBlocks(editor, plugins);
 
@@ -94,7 +97,7 @@ const YooptaEditor = ({
 
   return (
     <NoSSR>
-      <UltraYooptaContextProvider editorState={editorState}>
+      <YooptaContextProvider editorState={editorState}>
         <ToolsProvider tools={tools}>
           <Editor
             placeholder={placeholder}
@@ -105,7 +108,7 @@ const YooptaEditor = ({
           />
           {children}
         </ToolsProvider>
-      </UltraYooptaContextProvider>
+      </YooptaContextProvider>
     </NoSSR>
   );
 };

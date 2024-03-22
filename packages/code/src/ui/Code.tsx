@@ -1,4 +1,4 @@
-import { useBlockData, useYooptaEditor, PluginCustomEditorRenderProps } from '@yoopta/editor';
+import { useBlockData, useYooptaEditor, PluginCustomEditorRenderProps, useYooptaReadOnly } from '@yoopta/editor';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 
 import { useState } from 'react';
@@ -18,6 +18,7 @@ const codeMirrorSetup: BasicSetupOptions = {
 
 const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
   const editor = useYooptaEditor();
+  const isReadOnly = useYooptaReadOnly();
   const block = useBlockData(blockId);
   const [code, setCode] = useState(() => getCodeElementText(block) || '');
 
@@ -29,6 +30,14 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
   const onChange = (value: string) => {
     setCode(value);
     editor.updateBlock(blockId, { value: [{ ...element, children: [{ text: value }] }] });
+  };
+
+  const onClick = () => {
+    if (isReadOnly) return;
+
+    if (editor.selection?.[0] !== block.meta.order) {
+      editor.setSelection([block.meta.order]);
+    }
   };
 
   return (
@@ -47,14 +56,12 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
           theme={themes[theme]}
           className="yoopta-code-cm-editor"
           basicSetup={codeMirrorSetup}
-          onClick={() => {
-            if (editor.selection?.[0] !== block.meta.order) {
-              editor.setSelection([block.meta.order]);
-            }
-          }}
+          editable={!isReadOnly}
+          readOnly={isReadOnly}
+          onClick={onClick}
         />
       </div>
-      <CodeBlockOptions block={block} editor={editor} element={element} />
+      {!isReadOnly && <CodeBlockOptions block={block} editor={editor} element={element} />}
     </div>
   );
 };

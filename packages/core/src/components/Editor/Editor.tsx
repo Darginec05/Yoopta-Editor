@@ -1,5 +1,5 @@
 import { CSSProperties, useEffect, useRef } from 'react';
-import { useYooptaEditor } from '../../contexts/YooptaContext/YooptaContext';
+import { useYooptaEditor, useYooptaReadOnly } from '../../contexts/YooptaContext/YooptaContext';
 import { RenderBlocks } from './RenderBlocks';
 import { YooptaMark } from '../../marks';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
@@ -12,7 +12,6 @@ import { ReactEditor } from 'slate-react';
 import { YooptaBlockPath } from '../../editor/types';
 import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
-import { useYooptaTools } from '../../contexts/YooptaContext/ToolsContext';
 
 type Props = {
   marks?: YooptaMark<any>[];
@@ -41,22 +40,25 @@ const DEFAULT_STATE: State = {
 
 const Editor = ({ placeholder, marks, className, autoFocus = true, selectionBoxRoot }: Props) => {
   const editor = useYooptaEditor();
+  const isReadOnly = useYooptaReadOnly();
   const yooptaEditorRef = useRef<HTMLDivElement>(null);
   const selectionBox = useRectangeSelectionBox({ editor, yooptaEditorRef, root: selectionBoxRoot });
 
   let state = useRef<State>(DEFAULT_STATE).current;
 
   useEffect(() => {
-    if (!autoFocus) return;
+    if (!autoFocus || isReadOnly) return;
     const firstBlock = findPluginBlockBySelectionPath(editor, { at: [0] });
 
     if (firstBlock) editor.focusBlock(firstBlock.id, { waitExecution: true });
-  }, [autoFocus]);
+  }, [autoFocus, isReadOnly]);
 
   useEffect(() => {
+    if (isReadOnly) return;
+
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [editor.selectedBlocks]);
+  }, [editor.selectedBlocks, isReadOnly]);
 
   const handleEmptyZoneClick = (e: React.MouseEvent) => {
     const editorRef = yooptaEditorRef.current;
@@ -94,6 +96,8 @@ const Editor = ({ placeholder, marks, className, autoFocus = true, selectionBoxR
   };
 
   const resetSelectedBlocks = () => {
+    if (isReadOnly) return;
+
     if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
       editor.setBlockSelected(null);
     }
@@ -106,6 +110,8 @@ const Editor = ({ placeholder, marks, className, autoFocus = true, selectionBoxR
   };
 
   const onClick = (event: React.MouseEvent) => {
+    if (isReadOnly) return;
+
     resetSelectionState();
     handleEmptyZoneClick(event);
     resetSelectedBlocks();
@@ -113,15 +119,16 @@ const Editor = ({ placeholder, marks, className, autoFocus = true, selectionBoxR
 
   const onBlur = (event: React.FocusEvent) => {
     const isInsideEditor = yooptaEditorRef.current?.contains(event.relatedTarget as Node);
-    if (isInsideEditor) return;
+    if (isInsideEditor || isReadOnly) return;
 
     resetSelectionState();
     resetSelectedBlocks();
   };
 
   const onKeyDown = (event) => {
-    // [TODO] - handle shift+click?
+    if (isReadOnly) return;
 
+    // [TODO] - handle shift+click?
     if (HOTKEYS.isSelect(event)) {
       const isAllBlocksSelected = editor.selectedBlocks?.length === Object.keys(editor.children).length;
 
@@ -297,7 +304,11 @@ const Editor = ({ placeholder, marks, className, autoFocus = true, selectionBoxR
       onBlur={onBlur}
     >
       <RenderBlocks editor={editor} marks={marks} placeholder={placeholder} />
-      <SelectionBox origin={selectionBox.origin} coords={selectionBox.coords} isOpen={selectionBox.selection} />
+      <SelectionBox
+        origin={selectionBox.origin}
+        coords={selectionBox.coords}
+        isOpen={selectionBox.selection && !isReadOnly}
+      />
     </div>
   );
 };

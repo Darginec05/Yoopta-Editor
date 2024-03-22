@@ -7,6 +7,7 @@ import { YooEditor } from '../../editor/types';
 import { YooptaMark } from '../../marks';
 import { SlateEditorComponent } from '../../plugins/SlateEditorComponent';
 import { useYooptaDragDrop } from './dnd';
+import { useYooptaReadOnly } from '../../contexts/YooptaContext/YooptaContext';
 
 const DEFAULT_EDITOR_KEYS = [];
 
@@ -17,6 +18,7 @@ type Props = {
 };
 
 const RenderBlocks = ({ editor, marks, placeholder }: Props) => {
+  const isReadOnly = useYooptaReadOnly();
   const { sensors, handleDragEnd, handleDragStart } = useYooptaDragDrop({ editor });
   const childrenUnorderedKeys = Object.keys(editor.children);
   const childrenKeys = useMemo(() => {
@@ -61,6 +63,8 @@ const RenderBlocks = ({ editor, marks, placeholder }: Props) => {
     );
   }
 
+  if (isReadOnly) return <>{blocks}</>;
+
   return (
     <DndContext
       sensors={sensors}
@@ -68,7 +72,7 @@ const RenderBlocks = ({ editor, marks, placeholder }: Props) => {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <SortableContext items={childrenKeys} strategy={verticalListSortingStrategy}>
+      <SortableContext disabled={isReadOnly} items={childrenKeys} strategy={verticalListSortingStrategy}>
         {blocks}
       </SortableContext>
     </DndContext>

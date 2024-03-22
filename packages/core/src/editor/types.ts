@@ -70,7 +70,7 @@ export type YooptaBlock = {
 export type YooptaBlocks = Record<string, YooptaBlock>;
 export type YooptaFormats = Record<string, TextFormat>;
 
-export type YooEditorEvents = 'change';
+export type YooEditorEvents = 'change' | 'block:copy';
 
 // [TODO] - Fix generic and default types
 export type YooEditor<TNodes = any, TKey extends string = any> = {
@@ -102,6 +102,7 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   once: (event: YooEditorEvents, fn: (payload: any) => void) => void;
   off: (event: string, fn: (payload: any) => void) => void;
   emit: (event: string, payload: any) => void;
+  readOnly: boolean;
 };
 
 // types for slate values

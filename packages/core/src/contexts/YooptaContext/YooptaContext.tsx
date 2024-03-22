@@ -1,10 +1,7 @@
 import { createContext, useContext, useRef } from 'react';
-import { Editor } from 'slate';
 import { YooEditor, YooptaBlockPath } from '../../editor/types';
 import { PluginOptions } from '../../plugins/types';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
-
-export type UltraYooptaContextPluginsEditorMap = Record<string, Editor>;
 
 export type YooptaEditorContext = {
   editor: YooEditor;
@@ -34,6 +31,7 @@ const DEFAULT_HANDLERS: YooptaEditorContext = {
     plugins: {},
     formats: {},
     selection: null,
+    readOnly: false,
     blockEditorsMap: {},
     children: {},
     emit: () => undefined,
@@ -43,23 +41,23 @@ const DEFAULT_HANDLERS: YooptaEditorContext = {
   },
 };
 
-export const UltraYooptaContext = createContext<YooptaEditorContext>(DEFAULT_HANDLERS);
+export const YooptaContext = createContext<YooptaEditorContext>(DEFAULT_HANDLERS);
 
 /**
  *
  */
-const UltraYooptaContextProvider = ({ children, editorState }) => {
+const YooptaContextProvider = ({ children, editorState }) => {
   const contextValueRef = useRef<YooptaEditorContext>(DEFAULT_HANDLERS);
 
   contextValueRef.current = {
     editor: editorState.editor,
   };
 
-  return <UltraYooptaContext.Provider value={contextValueRef.current}>{children}</UltraYooptaContext.Provider>;
+  return <YooptaContext.Provider value={contextValueRef.current}>{children}</YooptaContext.Provider>;
 };
 
 const useYooptaEditor = (): YooEditor => {
-  const context = useContext(UltraYooptaContext);
+  const context = useContext(YooptaContext);
 
   if (!context) {
     throw new Error('useYooptaEditor must be used within a YooptaEditorContext');
@@ -67,11 +65,13 @@ const useYooptaEditor = (): YooEditor => {
 
   return context.editor;
 };
+
 const useBlockData = (blockId: string) => useYooptaEditor().children[blockId];
 const useYooptaBlock = (blockType: string) => useYooptaEditor().blocks[blockType];
 const useYooptaPlugin = (type: string) => useYooptaEditor().plugins[type];
+const useYooptaReadOnly = () => useYooptaEditor().readOnly;
 const useYooptaPluginOptions = <TOptions,>(blockId: string): PluginOptions<TOptions> =>
-  useYooptaPlugin(blockId)?.options;
+  useYooptaPlugin(blockId)?.options as PluginOptions<TOptions>;
 
 type UseBlockSelectedProps = { blockId: string; path?: YooptaBlockPath } | { path: YooptaBlockPath; blockId?: string };
 const useBlockSelected = ({ blockId, path }: UseBlockSelectedProps) => {
@@ -101,5 +101,6 @@ export {
   useYooptaPluginOptions,
   useYooptaBlock,
   useBlockSelected,
-  UltraYooptaContextProvider,
+  useYooptaReadOnly,
+  YooptaContextProvider,
 };

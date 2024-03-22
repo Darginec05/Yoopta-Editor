@@ -2,10 +2,12 @@ import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { useFloating, offset, flip, shift, inline, autoUpdate, useTransitionStyles } from '@floating-ui/react';
 import { ReactNode, useState } from 'react';
 import { BlockOptions } from '../BlockOptions/BlockOptions';
+import { useYooptaReadOnly } from '../../contexts/YooptaContext/YooptaContext';
 
 type Props = { className?: string; style?: React.CSSProperties; onClick?: () => void; children: ReactNode };
 
 const ExtendedBlockActions = ({ className, style, onClick, children }: Props) => {
+  const isReadOnly = useYooptaReadOnly();
   const [isBlockOptionsOpen, setIsBlockOptionsOpen] = useState(false);
   const {
     refs: blockOptionRefs,
@@ -29,6 +31,8 @@ const ExtendedBlockActions = ({ className, style, onClick, children }: Props) =>
   };
 
   const blockOptionsStyle = { ...blockOptionsTransitionStyles, ...blockOptionFloatingStyles };
+
+  if (isReadOnly) return null;
 
   return (
     <>

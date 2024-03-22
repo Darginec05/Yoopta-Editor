@@ -4,13 +4,7 @@ import { useYooptaEditor, useBlockData } from '../contexts/YooptaContext/YooptaC
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../marks';
 
-import {
-  ExtendedLeafProps,
-  PluginCustomEditorRenderProps,
-  PluginElementRenderProps,
-  PluginEventHandlerOptions,
-  PluginParams,
-} from './types';
+import { ExtendedLeafProps, PluginCustomEditorRenderProps, PluginEventHandlerOptions, PluginParams } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
 import { Editor, NodeEntry, Range } from 'slate';
@@ -92,7 +86,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   }, []);
 
   const eventHandlers = useMemo<EditorEventHandlers>(() => {
-    if (!events) return {};
+    if (!events || editor.readOnly) return {};
 
     const eventHandlersOptions: PluginEventHandlerOptions = {
       hotkeys: HOTKEYS,
@@ -146,15 +140,21 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   };
 
   const onKeyDown = (event: React.KeyboardEvent) => {
+    if (editor.readOnly) return;
+
     eventHandlers.onKeyDown?.(event);
     EVENT_HANDLERS.onKeyDown(editor)(event);
   };
 
   const onKeyUp = (event: React.KeyboardEvent) => {
+    if (editor.readOnly) return;
+
     eventHandlers?.onKeyUp?.(event);
   };
 
   const onClick = (event: React.MouseEvent) => {
+    if (editor.readOnly) return;
+
     if (editor.selection?.[0] !== block.meta.order) {
       editor.setSelection([block.meta.order]);
     }
@@ -162,16 +162,22 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   };
 
   const onBlur = (event: React.FocusEvent) => {
+    if (editor.readOnly) return;
+
     event.preventDefault();
     eventHandlers?.onBlur?.(event);
   };
 
   const onFocus = (event: React.FocusEvent) => {
+    if (editor.readOnly) return;
+
     eventHandlers?.onFocus?.(event);
   };
 
   const decorate = (nodeEntry: NodeEntry) => {
     const ranges = [] as NodeEntry[] & { withPlaceholder?: boolean }[];
+    if (editor.readOnly) return ranges;
+
     const [node, path] = nodeEntry;
     const isCurrent = editor.selection?.[0] === block.meta.order;
 
@@ -209,6 +215,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
         onClick={onClick}
         onBlur={onBlur}
         customEditor={customEditor}
+        readOnly={editor.readOnly}
       />
     </div>
   );
@@ -217,6 +224,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
 type SlateEditorInstanceProps = {
   id: string;
   slate: any;
+  readOnly: boolean;
   initialValue: any;
   onChange: (value: any) => void;
   renderLeaf: (props: ExtendedLeafProps<any, any>) => JSX.Element;
@@ -248,6 +256,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     onBlur,
     customEditor,
     decorate,
+    readOnly,
   }) => {
     if (typeof customEditor === 'function') {
       return customEditor({
@@ -271,6 +280,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
           decorate={decorate}
           // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
           onBlur={onBlur}
+          readOnly={readOnly}
           onPaste={(event) => {
             const html = event.clipboardData.getData('text/html');
             const parsetHTML = new DOMParser().parseFromString(html, 'text/html');

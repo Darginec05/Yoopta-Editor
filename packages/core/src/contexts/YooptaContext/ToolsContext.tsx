@@ -1,4 +1,5 @@
 import { createContext, useContext, useMemo } from 'react';
+import { useYooptaReadOnly } from './YooptaContext';
 
 export type ToolProps<RenderProps = any, ToolProps = any> = {
   render: React.ComponentType<RenderProps>;
@@ -25,6 +26,8 @@ type Props = {
 };
 
 export const ToolsProvider = ({ children, tools }: Props) => {
+  const isReadOnly = useYooptaReadOnly();
+
   const contextValues = useMemo(() => {
     if (!tools) return {};
 
@@ -37,7 +40,7 @@ export const ToolsProvider = ({ children, tools }: Props) => {
   }, [tools]);
 
   const toolsRender = useMemo(() => {
-    if (!tools) return null;
+    if (!tools || isReadOnly) return null;
 
     return Object.keys(tools).map((toolname) => {
       const Tool = tools?.[toolname]?.tool;
