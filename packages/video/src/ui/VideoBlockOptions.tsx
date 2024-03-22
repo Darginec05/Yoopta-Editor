@@ -38,7 +38,7 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
   };
 
   return (
-    <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])}>
+    <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])} className="yoopta-video-options">
       <BlockOptionsSeparator />
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>

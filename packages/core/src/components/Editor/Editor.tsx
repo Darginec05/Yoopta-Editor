@@ -64,6 +64,7 @@ const Editor = ({ marks, className, autoFocus = true, selectionBoxRoot }: Props)
     const { bottom } = editorRef.getBoundingClientRect();
     const paddingBottom = parseInt(getComputedStyle(editorRef).paddingBottom, 10);
     const paddingBottomAreaTop = bottom - paddingBottom;
+    const defaultBlock = buildBlockData({ id: generateId() });
 
     if (e.clientY >= paddingBottomAreaTop) {
       const lastPath = Object.keys(editor.children).length - 1;
@@ -75,13 +76,17 @@ const Editor = ({ marks, className, autoFocus = true, selectionBoxRoot }: Props)
         const parentPath = Path.parent(lastSlate.selection.anchor.path);
         const [lastNode] = SlateEditor.node(lastSlate, parentPath);
 
-        if (Element.isElement(lastNode) && lastNode.props?.nodeType !== 'void' && string.trim().length === 0) {
+        if (
+          lastBlock.type === defaultBlock.type &&
+          Element.isElement(lastNode) &&
+          lastNode.props?.nodeType !== 'void' &&
+          string.trim().length === 0
+        ) {
           editor.focusBlock(lastBlock.id, { slate: lastSlate });
           return;
         }
       }
 
-      const defaultBlock = buildBlockData({ id: generateId() });
       const nextPath = lastPath + 1;
       editor.insertBlock(defaultBlock, { at: [nextPath], focus: true });
     }

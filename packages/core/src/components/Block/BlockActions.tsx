@@ -57,9 +57,13 @@ const BlockActions = ({ block, editor, dragHandleProps, showActions, onChangeAct
     if (!slate) return;
 
     setTimeout(() => {
-      ReactEditor.blur(slate);
-      ReactEditor.deselect(slate);
-      Transforms.deselect(slate);
+      const currentBlock = editor.blocks[block.type];
+
+      if (!currentBlock.hasCustomEditor) {
+        ReactEditor.blur(slate);
+        ReactEditor.deselect(slate);
+        Transforms.deselect(slate);
+      }
 
       editor.setBlockSelected([block.meta.order], { only: true });
       editor.setSelection([block.meta.order]);

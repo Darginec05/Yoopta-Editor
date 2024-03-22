@@ -22,12 +22,10 @@ const CalloutBlockOptions = ({ editor, block, props: calloutProps }: Props) => {
     });
   };
 
-  const styles = CALLOUT_THEME_STYLES[calloutProps?.theme || 'default'];
-
   const isActiveTheme = (theme: CalloutTheme) => calloutProps?.theme === theme;
 
   return (
-    <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])}>
+    <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])} className="yoopta-callout-options">
       <BlockOptionsSeparator />
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>
