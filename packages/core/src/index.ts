@@ -25,6 +25,11 @@ export { YooEditor, SlateElement, YooptaBlockData, YooptaBlock } from './editor/
 export { buildBlockData, buildBlockElement } from './components/Editor/utils';
 
 export default YooptaEditor;
-export { PluginElementRenderProps, PluginEventHandlerOptions, YooptaMarkProps } from './plugins/types';
+export {
+  PluginElementRenderProps,
+  PluginEventHandlerOptions,
+  PluginCustomEditorRenderProps,
+  YooptaMarkProps,
+} from './plugins/types';
 
 import './styles.css';

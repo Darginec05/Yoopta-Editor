@@ -19,6 +19,7 @@ type Props = {
   selectionBoxRoot?: HTMLElement | null | React.MutableRefObject<HTMLElement | null>;
   autoFocus?: boolean;
   className?: string;
+  placeholder?: string;
 };
 
 const getEditorStyles = (styles) => ({
@@ -38,7 +39,7 @@ const DEFAULT_STATE: State = {
   startedIndexToSelect: null,
 };
 
-const Editor = ({ marks, className, autoFocus = true, selectionBoxRoot }: Props) => {
+const Editor = ({ placeholder, marks, className, autoFocus = true, selectionBoxRoot }: Props) => {
   const editor = useYooptaEditor();
   const yooptaEditorRef = useRef<HTMLDivElement>(null);
   const selectionBox = useRectangeSelectionBox({ editor, yooptaEditorRef, root: selectionBoxRoot });
@@ -295,7 +296,7 @@ const Editor = ({ marks, className, autoFocus = true, selectionBoxRoot }: Props)
       onClick={onClick}
       onBlur={onBlur}
     >
-      <RenderBlocks editor={editor} marks={marks} />
+      <RenderBlocks editor={editor} marks={marks} placeholder={placeholder} />
       <SelectionBox origin={selectionBox.origin} coords={selectionBox.coords} isOpen={selectionBox.selection} />
     </div>
   );

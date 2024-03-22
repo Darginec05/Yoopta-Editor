@@ -30,6 +30,10 @@ export type PluginElementRenderProps = RenderSlateElementProps & {
   blockId: string;
 };
 
+export type PluginCustomEditorRenderProps = {
+  blockId: string;
+};
+
 export type PluginDefaultProps = { nodeType?: 'block' | 'inline' | 'void' | 'inlineVoid' };
 export type PluginElementProps<T> = PluginDefaultProps & T;
 
@@ -61,18 +65,19 @@ export type PluginEventHandlerOptions = {
 
 export type PluginParams<TKeys extends string = string, TProps = Descendant, TOptions = Record<string, unknown>> = {
   type: string;
-  // render?: (props: RenderSlateElementProps) => JSX.Element;
-  customEditor?: (props: PluginElementRenderProps) => JSX.Element;
+  customEditor?: (props: PluginCustomEditorRenderProps) => JSX.Element;
   elements: PluginElementsMap<TKeys, TProps>;
   events?: EventHandlers;
   options?: PluginOptions<TOptions>;
 };
 
-export type PluginReturn<TKeys extends string, TProps, TOptions = Record<string, unknown>> = {
+// [TODO] - the same type as PluginParams
+export type PluginReturn<TKeys extends string, TProps = Descendant, TOptions = Record<string, unknown>> = {
   type: string;
   elements: PluginParams<TKeys, TProps>['elements'];
   options?: PluginOptions<TOptions>;
   events?: EventHandlers;
+  customEditor?: (props: PluginCustomEditorRenderProps) => JSX.Element;
 };
 
 export type LeafFormats<K extends string, V> = {

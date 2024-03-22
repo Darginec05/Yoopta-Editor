@@ -6,7 +6,7 @@ const Code = new YooptaPlugin({
   customEditor: CodeEditor,
   elements: {
     code: {
-      render: () => null,
+      render: () => <div />,
       props: {
         nodeType: 'void',
         language: 'JavaScript',

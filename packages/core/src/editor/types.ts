@@ -23,8 +23,6 @@ export type YooptaBlockData<T = Descendant | SlateElement> = {
 
 export type SlateEditor = Editor;
 
-export type YooptaBlockType = 'block' | 'inline' | 'void';
-
 export type YooptaBlockBaseMeta = {
   order: number;
   depth: number;

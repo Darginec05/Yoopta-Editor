@@ -1,7 +1,7 @@
 import { withReact } from 'slate-react';
 import { createEditor, Editor } from 'slate';
 import { YooEditor, YooptaBlockData } from '../editor/types';
-import { PluginReturn, PluginElement, PluginElementsMap, PluginOptions } from '../plugins/types';
+import { PluginReturn, PluginElement, PluginElementsMap } from '../plugins/types';
 import { YooptaMark } from '../marks';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
 import { createBlock } from '../editor/transforms/createBlock';

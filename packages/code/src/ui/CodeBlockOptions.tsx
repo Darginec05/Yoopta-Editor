@@ -1,4 +1,4 @@
-import { UI, YooEditor, YooptaBlockData } from '@yoopta/editor';
+import { UI as UI_HELPERS, YooEditor, YooptaBlockData } from '@yoopta/editor';
 import { Select } from './Select';
 import { themes } from '../utils/themes';
 
@@ -12,7 +12,7 @@ import copy from 'copy-to-clipboard';
 import { getCodeElementText } from '../utils/element';
 import { useState } from 'react';
 
-const { ExtendedBlockActions, BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptionsSeparator } = UI;
+const { ExtendedBlockActions, BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptionsSeparator } = UI_HELPERS;
 
 type Props = {
   editor: YooEditor;
@@ -40,7 +40,7 @@ export const CodeBlockOptions = ({ block, editor, element }: Props) => {
   };
 
   return (
-    <ExtendedBlockActions className="yoopta-code-options">
+    <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])} className="yoopta-code-options">
       <BlockOptionsSeparator />
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>
