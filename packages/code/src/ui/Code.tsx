@@ -1,4 +1,4 @@
-import { PluginElementRenderProps, useBlockData, useYooptaEditor, YooptaBlockData } from '@yoopta/editor';
+import { useBlockData, useYooptaEditor, PluginCustomEditorRenderProps } from '@yoopta/editor';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 
 import { useState } from 'react';
@@ -16,7 +16,7 @@ const codeMirrorSetup: BasicSetupOptions = {
   highlightActiveLine: false,
 };
 
-const CodeEditor = ({ blockId, attributes, children }: PluginElementRenderProps) => {
+const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
   const editor = useYooptaEditor();
   const block = useBlockData(blockId);
   const [code, setCode] = useState(() => getCodeElementText(block) || '');
@@ -36,7 +36,6 @@ const CodeEditor = ({ blockId, attributes, children }: PluginElementRenderProps)
       data-element-type="Code"
       data-custom-editor
       className="yoo-code-rounded-md yoo-code-mt-2 yoo-code-p-0 yoopta-code"
-      {...attributes}
     >
       <div contentEditable={false}>
         <CodeMirror
@@ -48,10 +47,14 @@ const CodeEditor = ({ blockId, attributes, children }: PluginElementRenderProps)
           theme={themes[theme]}
           className="yoopta-code-cm-editor"
           basicSetup={codeMirrorSetup}
+          onClick={() => {
+            if (editor.selection?.[0] !== block.meta.order) {
+              editor.setSelection([block.meta.order]);
+            }
+          }}
         />
       </div>
       <CodeBlockOptions block={block} editor={editor} element={element} />
-      {children}
     </div>
   );
 };

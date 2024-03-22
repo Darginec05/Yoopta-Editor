@@ -18,7 +18,7 @@
     "@yoopta/action-menu-list": "^4.0.0-rc.6",
     "@yoopta/blockquote": "^4.0.0-rc.4",
     "@yoopta/callout": "^4.0.0-rc.6",
-    "@yoopta/code": "^4.0.0-rc.0",
+    "@yoopta/code": "^4.0.0-rc.1",
     "@yoopta/editor": "^4.0.0-rc.14",
     "@yoopta/embed": "^4.0.0-rc.5",
     "@yoopta/headings": "^4.0.0-rc.4",

@@ -125,6 +125,10 @@ export default function WithBasicExample() {
     editor.on('change', (value) => {
       console.log('CHANGED value', value);
     });
+
+    editor.on('block:copy', (block) => {
+      console.log('COPY block', block);
+    });
   }, []);
 
   return (

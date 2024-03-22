@@ -4,7 +4,13 @@ import { useYooptaEditor, useBlockData } from '../contexts/YooptaContext/YooptaC
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../marks';
 
-import { ExtendedLeafProps, PluginElementRenderProps, PluginEventHandlerOptions, PluginParams } from './types';
+import {
+  ExtendedLeafProps,
+  PluginCustomEditorRenderProps,
+  PluginElementRenderProps,
+  PluginEventHandlerOptions,
+  PluginParams,
+} from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
 import { Editor, NodeEntry, Range } from 'slate';
@@ -148,11 +154,11 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     eventHandlers?.onKeyUp?.(event);
   };
 
-  const onMouseDown = (event: React.MouseEvent) => {
+  const onClick = (event: React.MouseEvent) => {
     if (editor.selection?.[0] !== block.meta.order) {
       editor.setSelection([block.meta.order]);
     }
-    eventHandlers?.onMouseDown?.(event);
+    eventHandlers?.onClick?.(event);
   };
 
   const onBlur = (event: React.FocusEvent) => {
@@ -200,7 +206,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
         onKeyDown={onKeyDown}
         onKeyUp={onKeyUp}
         onFocus={onFocus}
-        onMouseDown={onMouseDown}
+        onClick={onClick}
         onBlur={onBlur}
         customEditor={customEditor}
       />
@@ -219,9 +225,9 @@ type SlateEditorInstanceProps = {
   onKeyDown: (event: React.KeyboardEvent) => void;
   onKeyUp: (event: React.KeyboardEvent) => void;
   onFocus: (event: React.FocusEvent) => void;
-  onMouseDown: (event: React.MouseEvent) => void;
+  onClick: (event: React.MouseEvent) => void;
   onBlur: (event: React.FocusEvent) => void;
-  customEditor?: (props: PluginElementRenderProps) => JSX.Element;
+  customEditor?: (props: PluginCustomEditorRenderProps) => JSX.Element;
   decorate: (nodeEntry: NodeEntry) => any[];
 };
 
@@ -238,7 +244,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     onKeyDown,
     onKeyUp,
     onFocus,
-    onMouseDown,
+    onClick,
     onBlur,
     customEditor,
     decorate,
@@ -261,7 +267,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
           onKeyDown={onKeyDown}
           onKeyUp={onKeyUp}
           onFocus={onFocus}
-          onMouseDown={onMouseDown}
+          onClick={onClick}
           decorate={decorate}
           // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
           onBlur={onBlur}

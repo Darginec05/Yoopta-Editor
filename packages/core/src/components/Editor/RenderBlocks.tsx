@@ -3,7 +3,6 @@ import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 import { Block } from '../Block/Block';
-import { PluginReturn } from '../../plugins/types';
 import { YooEditor } from '../../editor/types';
 import { YooptaMark } from '../../marks';
 import { SlateEditorComponent } from '../../plugins/SlateEditorComponent';
@@ -14,9 +13,10 @@ const DEFAULT_EDITOR_KEYS = [];
 type Props = {
   editor: YooEditor;
   marks?: YooptaMark<any>[];
+  placeholder?: string;
 };
 
-const RenderBlocks = ({ editor, marks }: Props) => {
+const RenderBlocks = ({ editor, marks, placeholder }: Props) => {
   const { sensors, handleDragEnd, handleDragStart } = useYooptaDragDrop({ editor });
   const childrenUnorderedKeys = Object.keys(editor.children);
   const childrenKeys = useMemo(() => {
@@ -55,6 +55,7 @@ const RenderBlocks = ({ editor, marks }: Props) => {
           events={plugin.events}
           elements={plugin.elements}
           options={plugin.options}
+          placeholder={placeholder}
         />
       </Block>,
     );
