@@ -1,5 +1,5 @@
 // import { Inter } from 'next/font/google';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import YooptaEditor, { createYooptaEditor, generateId, SlateElement, YooptaBlockData } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
@@ -118,6 +118,18 @@ const getDefaultBlockData = (): YooptaBlockData => {
 const defaultBlock = getDefaultBlockData();
 const value = { [defaultBlock.id]: defaultBlock };
 
+const NoSSR = ({ children }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  return children;
+};
+
 export default function WithBasicExample() {
   const editor = useMemo(() => createYooptaEditor(), []);
 
@@ -137,7 +149,9 @@ export default function WithBasicExample() {
       className={`flex min-h-screen w-full h-full flex-col items-center justify-between p-24`}
     >
       <div className="w-full h-full">
-        <YooptaEditor editor={editor} plugins={plugins} value={value} marks={marks} tools={TOOLS} autoFocus />
+        <NoSSR>
+          <YooptaEditor editor={editor} plugins={plugins} value={value} marks={marks} tools={TOOLS} autoFocus />
+        </NoSSR>
       </div>
     </main>
   );
