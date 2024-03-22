@@ -1,29 +1,57 @@
-import { PluginElementRenderProps, useYooptaEditor } from '@yoopta/editor';
-import CodeMirror, { ViewUpdate } from '@uiw/react-codemirror';
-import { javascript } from '@codemirror/lang-javascript';
-import { githubDark } from '@uiw/codemirror-theme-github';
+import { PluginElementRenderProps, useBlockData, useYooptaEditor, YooptaBlockData } from '@yoopta/editor';
+import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 
-const CodeEditor = ({ element, blockId, attributes, children }: PluginElementRenderProps) => {
+import { useState } from 'react';
+import { themes } from '../utils/themes';
+import { CodeBlockOptions } from './CodeBlockOptions';
+import { LANGUAGES } from '../utils/languages';
+import { CodeElement } from '../types';
+import { getCodeElement, getCodeElementText } from '../utils/element';
+
+const codeMirrorSetup: BasicSetupOptions = {
+  lineNumbers: false,
+  autocompletion: false,
+  foldGutter: false,
+  highlightActiveLineGutter: false,
+  highlightActiveLine: false,
+};
+
+const CodeEditor = ({ blockId, attributes, children }: PluginElementRenderProps) => {
   const editor = useYooptaEditor();
+  const block = useBlockData(blockId);
+  const [code, setCode] = useState(() => getCodeElementText(block) || '');
 
-  const onChange = (value: string, viewUpdate: ViewUpdate) => {
-    console.log('value', value);
+  const element = getCodeElement(block) as CodeElement;
+
+  const theme = element.props?.theme || 'VSCode';
+  const language = element.props?.language || 'JavaScript';
+
+  const onChange = (value: string) => {
+    setCode(value);
+    editor.updateBlock(blockId, { value: [{ ...element, children: [{ text: value }] }] });
   };
 
   return (
-    <div data-element-type="Code" className="rounded-md mt-2 p-0">
-      <CodeMirror
-        value={''}
-        height="500px"
-        extensions={[javascript({ jsx: true })]}
-        onChange={onChange}
-        theme={githubDark}
-        basicSetup={{
-          lineNumbers: false,
-        }}
-        // ref={console.log}
-      />
-      {/* {children} */}
+    <div
+      data-element-type="Code"
+      data-custom-editor
+      className="yoo-code-rounded-md yoo-code-mt-2 yoo-code-p-0 yoopta-code"
+      {...attributes}
+    >
+      <div contentEditable={false}>
+        <CodeMirror
+          value={code}
+          height="auto"
+          extensions={[LANGUAGES[language]]}
+          onChange={onChange}
+          width="100%"
+          theme={themes[theme]}
+          className="yoopta-code-cm-editor"
+          basicSetup={codeMirrorSetup}
+        />
+      </div>
+      <CodeBlockOptions block={block} editor={editor} element={element} />
+      {children}
     </div>
   );
 };

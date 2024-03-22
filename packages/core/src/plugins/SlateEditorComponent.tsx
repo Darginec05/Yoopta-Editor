@@ -243,15 +243,11 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     customEditor,
     decorate,
   }) => {
-    // if (typeof customEditor === 'function') {
-    //   return customEditor({
-    //     id,
-    //     type: '',
-    //     editor: slate,
-    //     // attributes: {},
-    //     children: [],
-    //   });
-    // }
+    if (typeof customEditor === 'function') {
+      return customEditor({
+        blockId: id,
+      });
+    }
 
     return (
       <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onChange={onChange}>

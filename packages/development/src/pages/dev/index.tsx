@@ -16,11 +16,11 @@ import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import { useMemo, useRef } from 'react';
 import { uploadToCloudinary } from '../../utils/cloudinary';
 
-// import Code from '@yoopta/code';
+import Code from '@yoopta/code';
 // import Mention from '@yoopta/mention';
 
 const plugins = [
-  // Code,
+  Code,
   // Mention,
   Paragraph,
   Image.extend({
@@ -117,6 +117,31 @@ const TOOLS: Tools = {
   },
 };
 
+const defaultEditorBlock = {
+  id: '5e7WPDNzpUFnL0b4ZXh90',
+  value: [
+    {
+      id: 'ncADBSizIkLaOWxk_kl5Y',
+      type: 'code',
+      children: [
+        {
+          text: "import { UI, YooEditor, YooptaBlockData } from '@yoopta/editor';\nimport { Select } from './Select';\nimport { themes } from '../utils/themes';\n\nimport { Trigger } from '@radix-ui/react-select';\nimport { LANGUAGES } from '../utils/languages';\nimport CopyIcon from '../icons/copy.svg';\nimport CodeIcon from '../icons/code.svg';\nimport ThemeIcon from '../icons/theme.svg';\nimport { CodeElement } from '../types';\n\nconst { ExtendedBlockActions, BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptionsSeparator } = UI;\n\ntype Props = {\n  editor: YooEditor;\n  block: YooptaBlockData;\n  element: CodeElement;\n};\n\nexport const CodeBlockOptions = ({ block, editor, element }: Props) => {\n  const onChangeTheme = (theme: string) => {\n    editor.updateBlock(block.id, { value: [{ ...element, props: { ...element.props, theme } }] });\n  };\n\n  const onChangeLanguage = (language: string) => {\n    editor.updateBlock(block.id, { value: [{ ...element, props: { ...element.props, language } }] });\n  };\n\n  return (\n    <ExtendedBlockActions className=\"yoopta-code-options\">\n      <BlockOptionsSeparator />\n      <BlockOptionsMenuGroup>\n        <BlockOptionsMenuItem>\n          <button\n            type=\"button\"\n            className=\"yoo-code-rounded-sm hover:yoo-code-bg-[#37352f14] yoo-code-leading-[120%] yoo-code-px-2 yoo-code-py-1.5 yoo-code-mx-[4px] yoo-code-cursor-pointer yoo-code-w-full yoo-code-flex yoo-code-justify-start\"\n          >\n            <CopyIcon className=\"yoo-code-w-4 yoo-code-h-4 yoo-code-mr-2\" />\n            Copy code content\n          </button>\n        </BlockOptionsMenuItem>\n        <BlockOptionsMenuItem>\n          <Select\n            options={Object.keys(LANGUAGES).map((lang) => ({ value: lang, label: lang }))}\n            onChange={onChangeLanguage}\n            value={element.props?.language || 'JavaScript'}\n          >\n            <Trigger className=\"yoo-code-rounded-sm hover:yoo-code-bg-[#37352f14] yoo-code-leading-[120%] yoo-code-px-2 yoo-code-py-1.5 yoo-code-mx-[4px] yoo-code-cursor-pointer yoo-code-w-full yoo-code-flex yoo-code-justify-start\">\n              <CodeIcon className=\"yoo-code-w-4 yoo-code-h-4 yoo-code-mr-2\" />\n              Language\n            </Trigger>\n          </Select>\n        </BlockOptionsMenuItem>\n        <BlockOptionsMenuItem>\n          <Select\n            options={Object.keys(themes).map((theme) => ({ value: theme, label: theme }))}\n            onChange={onChangeTheme}\n            value={element.props?.theme || 'VSCode'}\n          >\n            <Trigger className=\"yoo-code-rounded-sm hover:yoo-code-bg-[#37352f14] yoo-code-leading-[120%] yoo-code-px-2 yoo-code-py-1.5 yoo-code-mx-[4px] yoo-code-cursor-pointer yoo-code-w-full yoo-code-flex yoo-code-justify-start\">\n              <ThemeIcon className=\"yoo-code-w-4 yoo-code-h-4 yoo-code-mr-2\" />\n              Theme\n            </Trigger>\n          </Select>\n        </BlockOptionsMenuItem>\n      </BlockOptionsMenuGroup>\n    </ExtendedBlockActions>\n  );\n};\n",
+        },
+      ],
+      props: {
+        nodeType: 'void',
+        language: 'JavaScript',
+        theme: 'VSCode',
+      },
+    },
+  ],
+  type: 'Code',
+  meta: {
+    order: 0,
+    depth: 0,
+  },
+};
+
 const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -158,6 +183,7 @@ const BasicExample = () => {
       <YooptaEditor
         editor={editor}
         plugins={plugins}
+        value={{ [defaultEditorBlock.id]: defaultEditorBlock }}
         selectionBoxRoot={rootRef}
         marks={MARKS}
         autoFocus

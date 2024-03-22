@@ -1,1 +1,10 @@
 @tailwind utilities;
+
+.yoopta-image .yoopta-image-options {
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.yoopta-image:hover .yoopta-image-options {
+  opacity: 1;
+}

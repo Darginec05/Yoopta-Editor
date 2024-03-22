@@ -2,13 +2,15 @@ import { YooptaPlugin } from '@yoopta/editor';
 import { CodeEditor } from '../ui/Code';
 
 const Code = new YooptaPlugin({
-  type: 'CodePlugin',
+  type: 'Code',
   customEditor: CodeEditor,
   elements: {
     code: {
-      render: CodeEditor,
+      render: () => null,
       props: {
         nodeType: 'void',
+        language: 'JavaScript',
+        theme: 'VSCode',
       },
     },
   },

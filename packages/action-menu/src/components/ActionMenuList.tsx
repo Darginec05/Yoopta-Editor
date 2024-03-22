@@ -95,8 +95,10 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
     const handleActionMenuKeyDown = (event: KeyboardEvent) => {
       const slate = findSlateBySelectionPath(editor, { at: editor.selection });
       const isInsideEditor = yooptaEditorRef?.contains(event.target as Node);
+      const pluginWithCustomEditor = document.querySelector('[data-custom-editor]');
+      const isInsideCustomEditor = pluginWithCustomEditor?.contains(event.target as Node);
 
-      if (!slate || !slate.selection || !isInsideEditor) return;
+      if (isInsideCustomEditor || !slate || !slate.selection || !isInsideEditor) return;
 
       if (HOTKEYS.isSlashCommand(event)) {
         const parentPath = Path.parent(slate.selection.anchor.path);

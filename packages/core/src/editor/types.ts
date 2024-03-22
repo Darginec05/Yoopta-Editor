@@ -56,7 +56,7 @@ export type YooptaBlock = {
   type: string;
   options?: PluginOptions<any>;
   elements: PluginElementsMap<string>;
-  // withCustomEditor?: boolean;
+  hasCustomEditor?: boolean;
   isActive: () => boolean;
   create: (options?: CreateBlockOptions) => void;
   toggle: (to: string, options?: ToggleBlockOptions) => void;

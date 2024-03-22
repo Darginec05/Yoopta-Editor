@@ -41,10 +41,13 @@ const Toolbar = () => {
     const selectionRect = domRange.getBoundingClientRect();
     const text = domRange.toString().trim();
 
+    const pluginWithCustomEditor = document.querySelector('[data-custom-editor]');
     const yooptaEditorEl = document.getElementById('yoopta-editor');
     const ancestor = domRange?.commonAncestorContainer;
 
-    if (!yooptaEditorEl?.contains(ancestor)) return setIsToolbarOpen(false);
+    if (!yooptaEditorEl?.contains(ancestor) || pluginWithCustomEditor?.contains(ancestor)) {
+      return setIsToolbarOpen(false);
+    }
 
     if (domRange && text.length > 0) {
       refs.setReference({

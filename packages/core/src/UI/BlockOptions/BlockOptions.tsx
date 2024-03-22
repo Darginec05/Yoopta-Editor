@@ -97,6 +97,7 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
     const block = findPluginBlockBySelectionPath(editor);
     if (block) {
       copy(`${window.location.origin}${window.location.pathname}#${block.id}`);
+      editor.emit('block:copy', block);
     }
 
     onClose();
@@ -137,7 +138,7 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
                   Duplicate
                 </button>
               </BlockOptionsMenuItem>
-              {!isVoidElement && (
+              {!isVoidElement && !editor.blocks[currentBlock?.type || '']?.hasCustomEditor && (
                 <BlockOptionsMenuItem>
                   {isMounted && !!ActionMenu && (
                     <FloatingPortal root={document.getElementById('yoopta-editor')}>

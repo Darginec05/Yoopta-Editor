@@ -45,9 +45,11 @@ const ExtendedBlockActions = ({ className, style, onClick, children }: Props) =>
       <button
         type="button"
         ref={blockOptionRefs.setReference}
-        className={`absolute right-[10px] top-[10px] flex items-center justify-between z-10 opacity-1 bg-[#eee] w-[22px] h-[22px] transition-opacity duration-150 ease-in border-none cursor-pointer rounded-[2px] p-[0_4px] ${className}`}
+        className={`absolute right-[8px] top-[8px] flex items-center justify-between z-10 opacity-1 bg-[#eee] w-[22px] h-[22px] transition-opacity duration-150 ease-in border-none cursor-pointer rounded-[2px] p-[0_4px] ${
+          className || ''
+        } yoopta-extended-block-actions`}
         onClick={onDotsClick}
-        style={style}
+        style={isBlockOptionsOpen ? { ...style, opacity: 1 } : style}
       >
         <DotsHorizontalIcon />
       </button>

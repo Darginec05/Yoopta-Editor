@@ -81,7 +81,7 @@ const EmbedRender = ({ element, attributes, children, blockId }: PluginElementRe
       data-element-type={element.type}
       contentEditable={false}
       draggable={false}
-      className="mt-4 relative"
+      className="mt-4 relative yoopta-embed"
       {...attributes}
     >
       <Resizable {...resizeProps} className="mx-auto my-0 flex">

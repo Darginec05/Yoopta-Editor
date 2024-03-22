@@ -1,11 +1,11 @@
 {
   "name": "@yoopta/code",
-  "version": "1.9.15-rc",
+  "version": "4.0.0-rc.0",
   "description": "> TODO: description",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -26,16 +26,27 @@
     "url": "git+https://github.com/Darginec05/Editor-Yoopta.git"
   },
   "scripts": {
-    "test": "node ./__tests__/yoopta-code.test.js",
-    "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development"
+    "test": "node ./__tests__/yoopta-callout.test.js",
+    "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development",
+    "prepublishOnly": "yarn build",
+    "build": "rollup --config rollup.config.js --bundleConfigAsCjs --environment NODE_ENV:production"
   },
   "bugs": {
     "url": "https://github.com/Darginec05/Editor-Yoopta/issues"
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.2",
+    "@radix-ui/react-select": "^2.0.0",
+    "@uiw/codemirror-theme-basic": "^4.21.24",
+    "@uiw/codemirror-theme-copilot": "^4.21.24",
+    "@uiw/codemirror-theme-dracula": "^4.21.24",
     "@uiw/codemirror-theme-github": "^4.21.24",
+    "@uiw/codemirror-theme-material": "^4.21.24",
+    "@uiw/codemirror-theme-monokai-dimmed": "^4.21.24",
+    "@uiw/codemirror-theme-okaidia": "^4.21.24",
+    "@uiw/codemirror-theme-sublime": "^4.21.24",
+    "@uiw/codemirror-theme-vscode": "^4.21.24",
     "@uiw/react-codemirror": "^4.21.24",
-    "@uiw/react-textarea-code-editor": "^3.0.2"
+    "copy-to-clipboard": "^3.3.3"
   }
 }

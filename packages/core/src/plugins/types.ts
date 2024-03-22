@@ -26,16 +26,15 @@ export type PluginElementOptions = {
   draggable?: boolean;
 };
 
-export type PluginElementRenderProps<TPluginOptions = unknown> = RenderSlateElementProps & {
+export type PluginElementRenderProps = RenderSlateElementProps & {
   blockId: string;
-  options?: TPluginOptions;
 };
 
 export type PluginDefaultProps = { nodeType?: 'block' | 'inline' | 'void' | 'inlineVoid' };
 export type PluginElementProps<T> = PluginDefaultProps & T;
 
 export type PluginElement<T, TPluginOptions = Record<string, unknown>> = {
-  render: (props: PluginElementRenderProps<TPluginOptions>) => JSX.Element;
+  render: (props: PluginElementRenderProps) => JSX.Element;
   props?: PluginElementProps<T>;
   options?: PluginElementOptions;
   asRoot?: boolean;
