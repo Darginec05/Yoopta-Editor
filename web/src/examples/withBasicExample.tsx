@@ -12,10 +12,8 @@ import Video from '@yoopta/video';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
+import Code from '@yoopta/code';
 // import File from '@yoopta/file';
-// import Code from '@yoopta/code';
-
-// import LinkTool from '@yoopta/link-tool';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
@@ -24,7 +22,6 @@ import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 
 // list of plugins should be placed outside component
 const plugins = [
-  // Code,
   // File.extend({
   //   options: {
   //     onUpload: async (file: File) => {
@@ -33,6 +30,7 @@ const plugins = [
   //     },
   //   },
   // }),
+  Code,
   Paragraph,
   HeadingOne,
   HeadingTwo,
