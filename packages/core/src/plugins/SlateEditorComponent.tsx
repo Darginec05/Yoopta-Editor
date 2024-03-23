@@ -259,6 +259,8 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     readOnly,
   }) => {
     if (typeof customEditor === 'function') {
+      console.log('customEditor', customEditor);
+
       return customEditor({
         blockId: id,
       });
