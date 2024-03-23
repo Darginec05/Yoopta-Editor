@@ -1,16 +1,14 @@
 'use client';
 
 import { useBlockData, useYooptaEditor, PluginCustomEditorRenderProps, useYooptaReadOnly } from '@yoopta/editor';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { themes } from '../utils/themes';
-import { CodeBlockOptions } from './CodeBlockOptions';
 import { LANGUAGES } from '../utils/languages';
 import { CodeElement } from '../types';
 import { getCodeElement, getCodeElementText } from '../utils/element';
-import { ReactCodeMirror } from '../library/editor';
 import { ErrorBoundary } from 'react-error-boundary';
-
-console.log('ReactCodeMirror RENDER', ReactCodeMirror);
+import { useCodeMirror } from '../library/hooks';
+import { CodeBlockOptions } from './CodeBlockOptions';
 
 const codeMirrorSetup: any = {
   lineNumbers: false,
@@ -18,6 +16,67 @@ const codeMirrorSetup: any = {
   foldGutter: false,
   highlightActiveLineGutter: false,
   highlightActiveLine: false,
+};
+
+const ReactCodeMirror = (props: any) => {
+  const {
+    className,
+    value = '',
+    selection,
+    extensions = [],
+    onChange,
+    onStatistics,
+    onCreateEditor,
+    onUpdate,
+    autoFocus,
+    theme = 'light',
+    height,
+    minHeight,
+    maxHeight,
+    width,
+    minWidth,
+    maxWidth,
+    basicSetup,
+    placeholder,
+    indentWithTab,
+    editable,
+    readOnly,
+    root,
+    initialState,
+    ...other
+  } = props;
+  const codeMirrorRef = useRef<HTMLDivElement>(null);
+  const { state, view, container } = useCodeMirror({
+    container: codeMirrorRef.current,
+    root,
+    value,
+    autoFocus,
+    theme,
+    height,
+    minHeight,
+    maxHeight,
+    width,
+    minWidth,
+    maxWidth,
+    basicSetup,
+    placeholder,
+    indentWithTab,
+    editable,
+    readOnly,
+    selection,
+    onChange,
+    onCreateEditor,
+    onUpdate,
+    extensions,
+    initialState,
+  });
+
+  // console.log('codeMirrorRef', codeMirrorRef);
+  // console.log('other', other);
+  // console.log({ state, view, container });
+
+  const defaultClassNames = typeof theme === 'string' ? `cm-theme-${theme}` : 'cm-theme';
+  return <div ref={codeMirrorRef} className={`${defaultClassNames}${className ? ` ${className}` : ''}`} {...other} />;
 };
 
 const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
@@ -71,5 +130,9 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
     </div>
   );
 };
+
+console.log('ReactCodeMirror RENDER', ReactCodeMirror);
+console.log('ReactCodeMirror?.[0] RENDER', ReactCodeMirror?.[0]);
+console.log('CodeEditor', CodeEditor);
 
 export { CodeEditor };

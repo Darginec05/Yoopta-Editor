@@ -1009,6 +1009,13 @@
   resolved "https://registry.yarnpkg.com/@babel/regjsgen/-/regjsgen-0.8.0.tgz#f0ba69b075e1f05fb2825b7fad991e7adbb18310"
   integrity sha512-x/rqGMdzj+fWZvCOYForTghzbtqPDZ5gPwaoNGHdgDfF2QA/XZbCBp4Moo5scrkAMPhB7z26XM/AaHuIJdgauA==
 
+"@babel/runtime@^7.12.5":
+  version "7.24.1"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.1.tgz#431f9a794d173b53720e69a6464abc6f0e2a5c57"
+  integrity sha512-+BIznRzyqBf+2wCTxcKE3wDjfGeCoVE61KSHGpkzqrLi8qxqFwBeUFyId2cxkTmm55fzDGnm0+yCxaxygrLUnQ==
+  dependencies:
+    regenerator-runtime "^0.14.0"
+
 "@babel/runtime@^7.13.10", "@babel/runtime@^7.23.2", "@babel/runtime@^7.8.4":
   version "7.24.0"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.0.tgz#584c450063ffda59697021430cb47101b085951e"
@@ -2344,10 +2351,10 @@
   resolved "https://registry.yarnpkg.com/@yoopta/callout/-/callout-4.0.0-rc.7.tgz#f03e119fe15858debd0198153ebe2fef86554ad8"
   integrity sha512-3OUONSC7Q3OjWxmW6oBhyr+O34AYnHM8+/W0PLb2AFItgjCvwhv744lA0hvlsUQklMYeDsjtE+ySuINb/Mr2Ng==
 
-"@yoopta/code@^4.0.0-rc.12":
-  version "4.0.0-rc.12"
-  resolved "https://registry.yarnpkg.com/@yoopta/code/-/code-4.0.0-rc.12.tgz#89461132aca90a504d3e6a6d63d302a39ed78d08"
-  integrity sha512-sD9mSaAel/sYfMHmubV1LYi/Cyto/2+H93JyJ/DjIrPg4NxuqZdAiHTByO+vfmjd8myfA8R9Xw0LJsHLO2fUJw==
+"@yoopta/code@^4.0.0-rc.13":
+  version "4.0.0-rc.13"
+  resolved "https://registry.yarnpkg.com/@yoopta/code/-/code-4.0.0-rc.13.tgz#cc0127a1edf58e78857b24a9801f15fa8931ac15"
+  integrity sha512-EEU/HT2cze+4vLOXIB9uchAtJdyZ0XRLjyDZQh2CgesIWySCWD8ho2C3MMFnPEz4GPtKBTuPP8GPLSTIh/VMeQ==
   dependencies:
     "@codemirror/lang-angular" "^0.1.3"
     "@codemirror/lang-cpp" "^6.0.2"
@@ -2380,6 +2387,7 @@
     "@uiw/codemirror-theme-vscode" "^4.21.24"
     codemirror "^6.0.1"
     copy-to-clipboard "^3.3.3"
+    react-error-boundary "^4.0.13"
 
 "@yoopta/editor@^4.0.0-rc.15":
   version "4.0.0-rc.15"
@@ -4727,6 +4735,13 @@ react-dom@18.2.0:
   dependencies:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
+
+react-error-boundary@^4.0.13:
+  version "4.0.13"
+  resolved "https://registry.yarnpkg.com/react-error-boundary/-/react-error-boundary-4.0.13.tgz#80386b7b27b1131c5fbb7368b8c0d983354c7947"
+  integrity sha512-b6PwbdSv8XeOSYvjt8LpgpKrZ0yGdtZokYwkwV2wlcZbxgopHX/hgPl5VgpnoVOWd868n1hktM8Qm4b+02MiLQ==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
 
 react-is@^16.13.1:
   version "16.13.1"
