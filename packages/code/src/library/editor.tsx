@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-// import { useCodeMirror } from './hooks';
 import { ReactCodeMirrorProps } from './types';
 
 const ReactCodeMirror = (props: ReactCodeMirrorProps) => {
@@ -29,9 +28,9 @@ const ReactCodeMirror = (props: ReactCodeMirrorProps) => {
     initialState,
     ...other
   } = props;
-  const editor = useRef<HTMLDivElement>(null);
+  const codeMirrorRef = useRef<HTMLDivElement>(null);
   // const { state, view, container } = useCodeMirror({
-  //   container: editor.current,
+  //   container: codeMirrorRef.current,
   //   root,
   //   value,
   //   autoFocus,
@@ -59,12 +58,11 @@ const ReactCodeMirror = (props: ReactCodeMirrorProps) => {
     return null;
   }
 
-  console.log('editor', editor);
+  console.log('codeMirrorRef', codeMirrorRef);
   console.log('other', other);
   // console.log({ state, view, container });
 
-  const defaultClassNames = typeof theme === 'string' ? `cm-theme-${theme}` : 'cm-theme';
-  return <div ref={editor} className={`${defaultClassNames}${className ? ` ${className}` : ''}`} {...other}></div>;
+  return <div ref={codeMirrorRef} />;
 };
 
 ReactCodeMirror.displayName = 'CodeMirror';
