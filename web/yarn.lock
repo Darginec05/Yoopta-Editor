@@ -2363,10 +2363,10 @@
   resolved "https://registry.yarnpkg.com/@yoopta/callout/-/callout-4.0.0-rc.7.tgz#f03e119fe15858debd0198153ebe2fef86554ad8"
   integrity sha512-3OUONSC7Q3OjWxmW6oBhyr+O34AYnHM8+/W0PLb2AFItgjCvwhv744lA0hvlsUQklMYeDsjtE+ySuINb/Mr2Ng==
 
-"@yoopta/code@4.0.0-rc.5":
-  version "4.0.0-rc.5"
-  resolved "https://registry.yarnpkg.com/@yoopta/code/-/code-4.0.0-rc.5.tgz#3e91e15a0709c4493bd0fdb42d1e2c480237f266"
-  integrity sha512-OGgU0tl9+kBVT9uwSOz/cHNvmq8jhRYeL3fGb0PYaZala6MdyLogB1nwyVffhgBFQz5BS6tS/B7D2WBytIz5PQ==
+"@yoopta/code@4.0.0-rc.6":
+  version "4.0.0-rc.6"
+  resolved "https://registry.yarnpkg.com/@yoopta/code/-/code-4.0.0-rc.6.tgz#051edad0cac6d887e57c2afada7e64a906690d82"
+  integrity sha512-rnFBuFpv9iPo9eKMCXWLT6KyaiHw/3ceAkvqHaThb3XT+KAX1brj1wseYIxNMQSJ1GUAGrBjkOd5Apdu7wiFZQ==
   dependencies:
     "@babel/runtime" "^7.24.1"
     "@codemirror/lang-angular" "^0.1.3"
