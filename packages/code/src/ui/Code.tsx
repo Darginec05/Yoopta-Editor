@@ -1,5 +1,6 @@
-import { useBlockData, useYooptaEditor, PluginCustomEditorRenderProps, useYooptaReadOnly } from '@yoopta/editor';
+'use client';
 
+import { useBlockData, useYooptaEditor, PluginCustomEditorRenderProps, useYooptaReadOnly } from '@yoopta/editor';
 import { useState } from 'react';
 import { themes } from '../utils/themes';
 import { CodeBlockOptions } from './CodeBlockOptions';
@@ -7,6 +8,9 @@ import { LANGUAGES } from '../utils/languages';
 import { CodeElement } from '../types';
 import { getCodeElement, getCodeElementText } from '../utils/element';
 import { ReactCodeMirror } from '../library/editor';
+import { ErrorBoundary } from 'react-error-boundary';
+
+console.log('ReactCodeMirror RENDER', ReactCodeMirror);
 
 const codeMirrorSetup: any = {
   lineNumbers: false,
@@ -47,19 +51,21 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
       className="yoo-code-rounded-md yoo-code-mt-2 yoo-code-p-0 yoopta-code"
     >
       <div contentEditable={false}>
-        <ReactCodeMirror
-          value={code}
-          height="auto"
-          extensions={[LANGUAGES[language]]}
-          onChange={onChange}
-          width="100%"
-          theme={themes[theme]}
-          className="yoopta-code-cm-editor"
-          basicSetup={codeMirrorSetup}
-          editable={!isReadOnly}
-          readOnly={isReadOnly}
-          onClick={onClick}
-        />
+        <ErrorBoundary fallback={<div>Something went wrong</div>}>
+          <ReactCodeMirror
+            value={code}
+            height="auto"
+            extensions={[LANGUAGES[language]]}
+            onChange={onChange}
+            width="100%"
+            theme={themes[theme]}
+            className="yoopta-code-cm-editor"
+            basicSetup={codeMirrorSetup}
+            editable={!isReadOnly}
+            readOnly={isReadOnly}
+            onClick={onClick}
+          />
+        </ErrorBoundary>
       </div>
       {!isReadOnly && <CodeBlockOptions block={block} editor={editor} element={element} />}
     </div>

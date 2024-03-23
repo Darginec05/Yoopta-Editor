@@ -54,17 +54,11 @@ const ReactCodeMirror = (props: ReactCodeMirrorProps) => {
   //   initialState,
   // });
 
-  if (typeof value !== 'string') {
-    return null;
-  }
-
   console.log('codeMirrorRef', codeMirrorRef);
   console.log('other', other);
   // console.log({ state, view, container });
 
   return <div ref={codeMirrorRef} />;
 };
-
-ReactCodeMirror.displayName = 'CodeMirror';
 
 export { ReactCodeMirror };
