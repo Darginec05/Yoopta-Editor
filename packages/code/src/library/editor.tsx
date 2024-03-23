@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { useCodeMirror } from './hooks';
+// import { useCodeMirror } from './hooks';
 import { ReactCodeMirrorProps } from './types';
 
 const ReactCodeMirror = (props: ReactCodeMirrorProps) => {
@@ -30,37 +30,38 @@ const ReactCodeMirror = (props: ReactCodeMirrorProps) => {
     ...other
   } = props;
   const editor = useRef<HTMLDivElement>(null);
-  const { state, view, container } = useCodeMirror({
-    container: editor.current,
-    root,
-    value,
-    autoFocus,
-    theme,
-    height,
-    minHeight,
-    maxHeight,
-    width,
-    minWidth,
-    maxWidth,
-    basicSetup,
-    placeholder,
-    indentWithTab,
-    editable,
-    readOnly,
-    selection,
-    onChange,
-    onCreateEditor,
-    onUpdate,
-    extensions,
-    initialState,
-  });
+  // const { state, view, container } = useCodeMirror({
+  //   container: editor.current,
+  //   root,
+  //   value,
+  //   autoFocus,
+  //   theme,
+  //   height,
+  //   minHeight,
+  //   maxHeight,
+  //   width,
+  //   minWidth,
+  //   maxWidth,
+  //   basicSetup,
+  //   placeholder,
+  //   indentWithTab,
+  //   editable,
+  //   readOnly,
+  //   selection,
+  //   onChange,
+  //   onCreateEditor,
+  //   onUpdate,
+  //   extensions,
+  //   initialState,
+  // });
 
   if (typeof value !== 'string') {
-    throw new Error(`value must be typeof string but got ${typeof value}`);
+    return null;
   }
 
   console.log('editor', editor);
-  console.log({ state, view, container });
+  console.log('other', other);
+  // console.log({ state, view, container });
 
   const defaultClassNames = typeof theme === 'string' ? `cm-theme-${theme}` : 'cm-theme';
   return <div ref={editor} className={`${defaultClassNames}${className ? ` ${className}` : ''}`} {...other}></div>;

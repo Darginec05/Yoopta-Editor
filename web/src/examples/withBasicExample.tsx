@@ -30,7 +30,7 @@ const plugins = [
   //     },
   //   },
   // }),
-  Code,
+  // Code,
   Paragraph,
   HeadingOne,
   HeadingTwo,
@@ -134,6 +134,7 @@ export default function WithBasicExample() {
   const editor = useMemo(() => createYooptaEditor(), []);
 
   useEffect(() => {
+    Code.getPlugin;
     editor.on('change', (value) => {
       console.log('CHANGED value', value);
     });
