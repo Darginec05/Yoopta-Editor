@@ -1,5 +1,5 @@
 import { useBlockData, useYooptaEditor, PluginCustomEditorRenderProps, useYooptaReadOnly } from '@yoopta/editor';
-import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
+import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror/esm/index';
 
 import { useState } from 'react';
 import { themes } from '../utils/themes';
