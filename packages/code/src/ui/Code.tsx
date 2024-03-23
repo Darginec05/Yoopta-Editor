@@ -1,5 +1,4 @@
 import { useBlockData, useYooptaEditor, PluginCustomEditorRenderProps, useYooptaReadOnly } from '@yoopta/editor';
-import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror/esm/index';
 
 import { useState } from 'react';
 import { themes } from '../utils/themes';
@@ -7,8 +6,9 @@ import { CodeBlockOptions } from './CodeBlockOptions';
 import { LANGUAGES } from '../utils/languages';
 import { CodeElement } from '../types';
 import { getCodeElement, getCodeElementText } from '../utils/element';
+import { ReactCodeMirror } from '../library/editor';
 
-const codeMirrorSetup: BasicSetupOptions = {
+const codeMirrorSetup: any = {
   lineNumbers: false,
   autocompletion: false,
   foldGutter: false,
@@ -47,7 +47,7 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
       className="yoo-code-rounded-md yoo-code-mt-2 yoo-code-p-0 yoopta-code"
     >
       <div contentEditable={false}>
-        <CodeMirror
+        <ReactCodeMirror
           value={code}
           height="auto"
           extensions={[LANGUAGES[language]]}
@@ -61,7 +61,7 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
           onClick={onClick}
         />
       </div>
-      {/* {!isReadOnly && <CodeBlockOptions block={block} editor={editor} element={element} />} */}
+      {!isReadOnly && <CodeBlockOptions block={block} editor={editor} element={element} />}
     </div>
   );
 };
