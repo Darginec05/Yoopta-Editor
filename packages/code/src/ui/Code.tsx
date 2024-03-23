@@ -16,6 +16,8 @@ const codeMirrorSetup: BasicSetupOptions = {
   highlightActiveLine: false,
 };
 
+console.log('Code plugin CodeMirror', CodeMirror);
+
 const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
@@ -47,7 +49,7 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
       className="yoo-code-rounded-md yoo-code-mt-2 yoo-code-p-0 yoopta-code"
     >
       <div contentEditable={false}>
-        <CodeMirror
+        {/* <CodeMirror
           value={code}
           height="auto"
           extensions={[LANGUAGES[language]]}
@@ -59,7 +61,7 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
           editable={!isReadOnly}
           readOnly={isReadOnly}
           onClick={onClick}
-        />
+        /> */}
       </div>
       {!isReadOnly && <CodeBlockOptions block={block} editor={editor} element={element} />}
     </div>

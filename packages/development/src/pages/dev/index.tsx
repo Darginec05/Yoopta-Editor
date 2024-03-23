@@ -13,7 +13,7 @@ import Embed from '@yoopta/embed';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { uploadToCloudinary } from '../../utils/cloudinary';
 
 import Code from '@yoopta/code';
@@ -238,17 +238,12 @@ const value = {
 const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
   const rootRef = useRef<HTMLDivElement>(null);
+  const [readOnly, setReadOnly] = useState(false);
 
   const onSubmit = () => {
     const editorData = editor.getEditorValue();
     console.log('EDITOR DATA', editorData);
   };
-
-  // useEffect(() => {
-  //   editor.on('change', (val) => {
-  //     console.log('on change value', val);
-  //   });
-  // }, [editor]);
 
   return (
     <div className="px-[100px] max-w-[900px] mx-auto my-10" ref={rootRef}>
@@ -269,8 +264,11 @@ const BasicExample = () => {
         >
           Add Image
         </button>
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-md" onClick={onSubmit}>
+        <button className="bg-blue-500 mr-4 text-white px-4 py-2 rounded-md" onClick={onSubmit}>
           Get editor data
+        </button>
+        <button className="bg-blue-500 text-white px-4 py-2 rounded-md" onClick={() => setReadOnly((p) => !p)}>
+          Switch readOnly mode
         </button>
       </div>
       <YooptaEditor
@@ -282,7 +280,7 @@ const BasicExample = () => {
         placeholder="Type / to open menu"
         tools={TOOLS}
         value={value}
-        readOnly
+        readOnly={readOnly}
       />
     </div>
   );
