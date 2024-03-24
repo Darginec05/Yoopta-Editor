@@ -1,5 +1,5 @@
 import { Descendant } from 'slate';
-import { PluginElementRenderProps, PluginParams } from './types';
+import { PluginElementRenderProps, Plugin } from './types';
 
 export type ExtendPluginRender<TKeys extends string> = {
   [x in TKeys]: (props: PluginElementRenderProps) => JSX.Element;
@@ -11,9 +11,9 @@ export type ExtendPlugin<TKeys extends string, TOptions = Record<string, unknown
 };
 
 export class YooptaPlugin<TKeys extends string = string, TProps = Descendant, TOptions = Record<string, unknown>> {
-  private readonly plugin: PluginParams<TKeys, TProps, TOptions>;
+  private readonly plugin: Plugin<TKeys, TProps, TOptions>;
 
-  constructor(plugin: PluginParams<TKeys, TProps, TOptions>) {
+  constructor(plugin: Plugin<TKeys, TProps, TOptions>) {
     this.plugin = plugin;
   }
 
@@ -40,18 +40,8 @@ export class YooptaPlugin<TKeys extends string = string, TProps = Descendant, TO
       type: this.plugin.type,
       elements: elements,
       events: this.plugin.events,
+      parsers: this.plugin.parsers,
       options: extendedOptions,
     });
   }
-
-  // extend(options: Partial<PluginOptions<TOptions>>): YooptaPlugin<TKeys, TProps, TOptions> {
-  //   const extendedOptions = { ...this.plugin.options, ...options };
-
-  //   return new YooptaPlugin<TKeys, TProps, TOptions>({
-  //     type: this.plugin.type,
-  //     elements: this.plugin.elements,
-  //     events: this.plugin.events,
-  //     options: extendedOptions,
-  //   });
-  // }
 }

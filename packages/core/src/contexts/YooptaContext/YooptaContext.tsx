@@ -11,6 +11,7 @@ const DEFAULT_HANDLERS: YooptaEditorContext = {
   editor: {
     getBlock: () => undefined,
     insertBlock: () => undefined,
+    insertBlocks: () => undefined,
     updateBlock: () => undefined,
     moveBlock: () => undefined,
     splitBlock: () => undefined,

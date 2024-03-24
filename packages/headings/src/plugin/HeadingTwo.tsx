@@ -33,6 +33,13 @@ const HeadingTwo = new YooptaPlugin({
     },
     shortcuts: ['h2', '##'],
   },
+  parsers: {
+    html: {
+      deserialize: {
+        nodeNames: ['H2'],
+      },
+    },
+  },
 });
 
 export { HeadingTwo };

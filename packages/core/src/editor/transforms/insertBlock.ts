@@ -5,7 +5,7 @@ import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySel
 import { generateId } from '../../utils/generateId';
 import { YooEditor, YooptaEditorTransformOptions, YooptaBlockData } from '../types';
 
-export function insertBlock(editor: YooEditor, data: YooptaBlockData, options: YooptaEditorTransformOptions = {}) {
+export function insertBlock(editor: YooEditor, blockData: YooptaBlockData, options: YooptaEditorTransformOptions = {}) {
   editor.children = createDraft(editor.children);
   const { at = null, focus = false, slate = null } = options;
 
@@ -13,10 +13,10 @@ export function insertBlock(editor: YooEditor, data: YooptaBlockData, options: Y
   const nextBlockPath = at;
   const newPluginBlock = {
     id: generateId(),
-    value: data.value,
-    type: data.type,
+    value: blockData.value,
+    type: blockData.type,
     meta: {
-      ...data.meta,
+      ...blockData.meta,
       order: 0,
     },
   };

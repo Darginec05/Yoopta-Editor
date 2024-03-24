@@ -279,7 +279,6 @@ const BasicExample = () => {
         autoFocus
         placeholder="Type / to open menu"
         tools={TOOLS}
-        value={value}
         readOnly={readOnly}
       />
     </div>

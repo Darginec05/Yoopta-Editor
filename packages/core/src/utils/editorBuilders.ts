@@ -1,7 +1,7 @@
 import { withReact } from 'slate-react';
 import { createEditor, Editor } from 'slate';
 import { YooEditor, YooptaBlockData } from '../editor/types';
-import { PluginReturn, PluginElement, PluginElementsMap } from '../plugins/types';
+import { Plugin, PluginElement, PluginElementsMap } from '../plugins/types';
 import { YooptaMark } from '../marks';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
 import { createBlock } from '../editor/transforms/createBlock';
@@ -34,7 +34,7 @@ export function buildMarks(editor, marks: YooptaMark<any>[]) {
   return formats;
 }
 
-export function buildBlocks(editor, plugins: PluginReturn<string, PluginElement<unknown>>[]) {
+export function buildBlocks(editor, plugins: Plugin<string, PluginElement<unknown>>[]) {
   const blocks: YooEditor['blocks'] = {};
 
   plugins.forEach((plugin, index) => {
@@ -125,8 +125,8 @@ export function buildBlockShortcuts(editor: YooEditor) {
 // const DEFAULT_PLUGIN_OPTIONS: PluginOptions = {};
 
 export function buildPlugins(
-  plugins: PluginReturn<string, PluginElement<unknown>>[],
-): Record<string, PluginReturn<string, unknown>> {
+  plugins: Plugin<string, PluginElement<unknown>>[],
+): Record<string, Plugin<string, unknown>> {
   const pluginsMap = {};
   const inlineTopLevelPlugins: PluginElementsMap<string, any> = {};
 

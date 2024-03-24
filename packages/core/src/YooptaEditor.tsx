@@ -4,7 +4,7 @@ import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { Editor } from './components/Editor/Editor';
 import { useMemo, useState } from 'react';
 import { YooEditor, YooptaBlockData, YooptaChildrenValue } from './editor/types';
-import { PluginReturn } from './plugins/types';
+import { Plugin } from './plugins/types';
 import NoSSR from './components/NoSsr/NoSsr';
 import { Tools, ToolsProvider } from './contexts/YooptaContext/ToolsContext';
 import {
@@ -73,7 +73,7 @@ const YooptaEditor = ({
   }, [marksProps]);
 
   const plugins = useMemo(() => {
-    return pluginsProps.map((plugin) => plugin.getPlugin as PluginReturn<string, any, any>);
+    return pluginsProps.map((plugin) => plugin.getPlugin as Plugin<string, any, any>);
   }, [pluginsProps]);
 
   const [editorState, setEditorState] = useState<{ editor: YooEditor<any, 'hightlight'>; version: number }>(() => {

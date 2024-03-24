@@ -15,6 +15,13 @@ const Blockquote = new YooptaPlugin({
     },
     shortcuts: ['>'],
   },
+  parsers: {
+    html: {
+      deserialize: {
+        nodeNames: ['BLOCKQUOTE'],
+      },
+    },
+  },
 });
 
 export { Blockquote };

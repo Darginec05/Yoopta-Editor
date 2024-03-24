@@ -13,6 +13,7 @@ import { duplicateBlock } from './transforms/duplicateBlock';
 import { blur } from './selection/blur';
 import { updateBlock } from './transforms/updateBlock';
 import { toggleBlock } from './transforms/toggleBlock';
+import { insertBlocks } from './transforms/insertBlocks';
 
 // export const YooEditor = {}
 // export const BlockTransforms = {}
@@ -39,6 +40,7 @@ export const createYooptaEditor = (): YooEditor => {
     getEditorValue: () => getEditorValue(editor),
     applyChanges: () => {},
     insertBlock: (...args) => insertBlock(editor, ...args),
+    insertBlocks: (...args) => insertBlocks(editor, ...args),
     deleteBlock: (...args) => deleteBlock(editor, ...args),
     duplicateBlock: (...args) => duplicateBlock(editor, ...args),
     toggleBlock: (...args) => toggleBlock(editor, ...args),

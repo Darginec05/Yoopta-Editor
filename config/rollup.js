@@ -50,6 +50,7 @@ function getPlugins({ tailwindConfig }) {
     }),
     typescript({
       clean: true,
+      check: true,
       // useTsconfigDeclarationDir: isProd,
       abortOnError: false,
       tsconfig: `./tsconfig.json`,
