@@ -1,12 +1,9 @@
-'use client';
-
 import { useBlockData, useYooptaEditor, PluginCustomEditorRenderProps, useYooptaReadOnly } from '@yoopta/editor';
 import { useRef, useState } from 'react';
 import { themes } from '../utils/themes';
 import { LANGUAGES } from '../utils/languages';
 import { CodeElement } from '../types';
 import { getCodeElement, getCodeElementText } from '../utils/element';
-import { ErrorBoundary } from 'react-error-boundary';
 import { useCodeMirror } from '../library/hooks';
 import { CodeBlockOptions } from './CodeBlockOptions';
 
@@ -110,29 +107,23 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
       className="yoo-code-rounded-md yoo-code-mt-2 yoo-code-p-0 yoopta-code"
     >
       <div contentEditable={false}>
-        <ErrorBoundary fallback={<div>Something went wrong</div>}>
-          <ReactCodeMirror
-            value={code}
-            height="auto"
-            extensions={[LANGUAGES[language]]}
-            onChange={onChange}
-            width="100%"
-            theme={themes[theme]}
-            className="yoopta-code-cm-editor"
-            basicSetup={codeMirrorSetup}
-            editable={!isReadOnly}
-            readOnly={isReadOnly}
-            onClick={onClick}
-          />
-        </ErrorBoundary>
+        <ReactCodeMirror
+          value={code}
+          height="auto"
+          extensions={[LANGUAGES[language]]}
+          onChange={onChange}
+          width="100%"
+          theme={themes[theme]}
+          className="yoopta-code-cm-editor"
+          basicSetup={codeMirrorSetup}
+          editable={!isReadOnly}
+          readOnly={isReadOnly}
+          onClick={onClick}
+        />
       </div>
       {!isReadOnly && <CodeBlockOptions block={block} editor={editor} element={element} />}
     </div>
   );
 };
-
-console.log('ReactCodeMirror RENDER', ReactCodeMirror);
-console.log('ReactCodeMirror?.[0] RENDER', ReactCodeMirror?.[0]);
-console.log('CodeEditor', CodeEditor);
 
 export { CodeEditor };

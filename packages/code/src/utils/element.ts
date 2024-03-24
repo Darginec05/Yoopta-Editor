@@ -7,5 +7,11 @@ export const getCodeElement = (block: YooptaBlockData) => {
 
 export const getCodeElementText = (block: YooptaBlockData) => {
   const element = getCodeElement(block) as CodeElement;
-  return element.children[0].text;
+  let text = '';
+
+  element.children.forEach((child) => {
+    text += `${child.text}\n`;
+  });
+
+  return text;
 };

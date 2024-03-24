@@ -1,10 +1,10 @@
-import { memo, useMemo, useRef } from 'react';
+import React, { memo, useMemo, useRef } from 'react';
 import { Editable, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useBlockData } from '../contexts/YooptaContext/YooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../marks';
 
-import { ExtendedLeafProps, PluginCustomEditorRenderProps, PluginEventHandlerOptions, PluginParams } from './types';
+import { ExtendedLeafProps, PluginCustomEditorRenderProps, PluginEventHandlerOptions, Plugin } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
 import { Editor, NodeEntry, Range } from 'slate';
@@ -15,11 +15,12 @@ import { buildBlockData } from '../components/Editor/utils';
 
 // [TODO] - test
 import { withInlines } from './extenstions/withInlines';
+import { deserializers } from '../utils/deserializers';
 
-type Props<TKeys extends string, TProps, TOptions> = PluginParams<TKeys, TProps, TOptions> & {
+type Props<TKeys extends string, TProps, TOptions> = Plugin<TKeys, TProps, TOptions> & {
   id: string;
   marks?: YooptaMark<any>[];
-  options: PluginParams<TKeys, TProps, TOptions>['options'];
+  options: Plugin<TKeys, TProps, TOptions>['options'];
   placeholder?: string;
 };
 
@@ -174,6 +175,26 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     eventHandlers?.onFocus?.(event);
   };
 
+  const onPaste = (event: React.ClipboardEvent) => {
+    eventHandlers?.onPaste?.(event);
+
+    const html = event.clipboardData.getData('text/html');
+    const parsedHTML = new DOMParser().parseFromString(html, 'text/html');
+
+    if (parsedHTML.body.childNodes.length > 0) {
+      event.preventDefault();
+      console.log('parsedHTML', parsedHTML.body);
+
+      const blocks = deserializers.html(editor, parsedHTML.body);
+      console.log('blocks', blocks);
+
+      if (blocks.length > 0) {
+        editor.insertBlocks(blocks, { at: editor.selection, focus: true });
+        return;
+      }
+    }
+  };
+
   const decorate = (nodeEntry: NodeEntry) => {
     const ranges = [] as NodeEntry[] & { withPlaceholder?: boolean }[];
     if (editor.readOnly) return ranges;
@@ -216,6 +237,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
         onBlur={onBlur}
         customEditor={customEditor}
         readOnly={editor.readOnly}
+        onPaste={onPaste}
       />
     </div>
   );
@@ -235,6 +257,7 @@ type SlateEditorInstanceProps = {
   onFocus: (event: React.FocusEvent) => void;
   onClick: (event: React.MouseEvent) => void;
   onBlur: (event: React.FocusEvent) => void;
+  onPaste: (event: React.ClipboardEvent) => void;
   customEditor?: (props: PluginCustomEditorRenderProps) => JSX.Element;
   decorate: (nodeEntry: NodeEntry) => any[];
 };
@@ -254,13 +277,12 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     onFocus,
     onClick,
     onBlur,
+    onPaste,
     customEditor,
     decorate,
     readOnly,
   }) => {
     if (typeof customEditor === 'function') {
-      console.log('customEditor', customEditor);
-
       return customEditor({
         blockId: id,
       });
@@ -283,47 +305,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
           // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
           onBlur={onBlur}
           readOnly={readOnly}
-          onPaste={(event) => {
-            const html = event.clipboardData.getData('text/html');
-            const parsetHTML = new DOMParser().parseFromString(html, 'text/html');
-            if (parsetHTML.body.childNodes.length > 0) {
-              event.preventDefault();
-              // [TODO] - link https://github.com/rollup/plugins/issues/1122 to test
-
-              const HTML_NODENAME_MATCHERS = {
-                H1: 'HeadingOne',
-                H2: 'HeadingTwo',
-                H3: 'HeadingThree',
-                P: 'Paragraph',
-                OL: 'NumberedList',
-                UL: 'BulletedList',
-                BLOCKQUOTE: 'Blockquote',
-              };
-
-              const nodes = Array.from(parsetHTML.body.childNodes)
-                .map((node, i) => {
-                  if (HTML_NODENAME_MATCHERS[node.nodeName]) {
-                    const blockType = HTML_NODENAME_MATCHERS[node.nodeName];
-
-                    const blockData = buildBlockData({
-                      id: generateId(),
-                      type: blockType,
-                      value: [],
-                      meta: {
-                        order: i,
-                        depth: 0,
-                      },
-                    });
-
-                    return blockData;
-                  }
-                })
-                .filter(Boolean);
-
-              console.log('nodes', nodes);
-              console.log('parsetHTML.body', parsetHTML.body);
-            }
-          }}
+          onPaste={onPaste}
         />
       </Slate>
     );

@@ -33,6 +33,13 @@ const HeadingThree = new YooptaPlugin({
     },
     shortcuts: ['h3', '###'],
   },
+  parsers: {
+    html: {
+      deserialize: {
+        nodeNames: ['H3'],
+      },
+    },
+  },
 });
 
 export { HeadingThree };

@@ -23,6 +23,13 @@ const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
   events: {
     onKeyDown,
   },
+  // parsers: {
+  //   html: {
+  //     deserialize: {
+  //       nodeNames: ['UL', 'LI'],
+  //     },
+  //   },
+  // },
 });
 
 export { TodoList };

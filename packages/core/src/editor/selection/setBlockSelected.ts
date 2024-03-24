@@ -9,20 +9,26 @@ export type BlockSelectedOptions = {
   allSelected?: boolean;
 };
 
-export function setBlockSelected(editor: YooEditor, path: number[] | null, options: BlockSelectedOptions = {}) {
+export function setBlockSelected(
+  editor: YooEditor,
+  paths: YooptaBlockPath | YooptaBlockPath[] | null,
+  options: BlockSelectedOptions = {},
+) {
   const { only = false, allSelected = false } = options;
   const selectedBlocks = editor.selectedBlocks || [];
 
-  if (path === null) {
+  if (paths === null) {
     editor.selectedBlocks = null;
   } else {
-    if (only) {
-      editor.selectedBlocks = path;
+    if (paths.length > 1) {
+      editor.selectedBlocks = paths.flat();
+    } else if (only) {
+      editor.selectedBlocks = paths.flat();
     } else if (allSelected) {
       const blocks = Object.keys(editor.children).map((_, i) => i);
       editor.selectedBlocks = uniqueArray(blocks);
     } else {
-      editor.selectedBlocks = uniqueArray(selectedBlocks.concat(path));
+      editor.selectedBlocks = uniqueArray(selectedBlocks.concat(paths.flat()));
     }
   }
 

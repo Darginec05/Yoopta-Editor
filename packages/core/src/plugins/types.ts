@@ -1,14 +1,14 @@
 import { ReactElement, ReactNode } from 'react';
-import { Descendant, Editor, Editor as SlateEditor } from 'slate';
+import { Descendant, Editor } from 'slate';
 import { RenderElementProps as RenderSlateElementProps, RenderLeafProps } from 'slate-react';
-import { YooEditor, YooptaBlockData } from '../editor/types';
+import { SlateElement, YooEditor, YooptaBlockData } from '../editor/types';
 import { YooptaMark } from '../marks';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS_TYPE } from '../utils/hotkeys';
 
 export type RenderPluginProps<TKeys extends string, TProps, TOptions> = {
   id: string;
-  elements: PluginReturn<TKeys, TProps, TOptions>['elements'];
+  elements: Plugin<TKeys, TProps, TOptions>['elements'];
   marks?: YooptaMark<unknown>[];
 };
 
@@ -37,7 +37,7 @@ export type PluginCustomEditorRenderProps = {
 export type PluginDefaultProps = { nodeType?: 'block' | 'inline' | 'void' | 'inlineVoid' };
 export type PluginElementProps<T> = PluginDefaultProps & T;
 
-export type PluginElement<T, TPluginOptions = Record<string, unknown>> = {
+export type PluginElement<T> = {
   render: (props: PluginElementRenderProps) => JSX.Element;
   props?: PluginElementProps<T>;
   options?: PluginElementOptions;
@@ -63,21 +63,22 @@ export type PluginEventHandlerOptions = {
   currentBlock: YooptaBlockData;
 };
 
-export type PluginParams<TKeys extends string = string, TProps = Descendant, TOptions = Record<string, unknown>> = {
+export type Plugin<TKeys extends string = string, TProps = Descendant, TOptions = Record<string, unknown>> = {
   type: string;
   customEditor?: (props: PluginCustomEditorRenderProps) => JSX.Element;
   elements: PluginElementsMap<TKeys, TProps>;
   events?: EventHandlers;
   options?: PluginOptions<TOptions>;
+  parsers?: Partial<Record<PluginParserTypes, Record<PluginParserValues, PluginParsers>>>;
 };
 
-// [TODO] - the same type as PluginParams
-export type PluginReturn<TKeys extends string, TProps = Descendant, TOptions = Record<string, unknown>> = {
-  type: string;
-  elements: PluginParams<TKeys, TProps>['elements'];
-  options?: PluginOptions<TOptions>;
-  events?: EventHandlers;
-  customEditor?: (props: PluginCustomEditorRenderProps) => JSX.Element;
+export type PluginParserTypes = 'html' | 'markdown';
+// export type PluginParserValues = 'deserialize' | 'serialize';
+export type PluginParserValues = 'deserialize';
+
+export type PluginParsers = {
+  nodeNames: string[];
+  parse?: (el: HTMLElement) => SlateElement<string, any> | void;
 };
 
 export type LeafFormats<K extends string, V> = {

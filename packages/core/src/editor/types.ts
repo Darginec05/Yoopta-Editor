@@ -1,5 +1,5 @@
 import { Descendant, Editor, Path, Point } from 'slate';
-import { PluginReturn, PluginElementsMap, PluginOptions, PluginElementProps } from '../plugins/types';
+import { Plugin, PluginElementsMap, PluginOptions, PluginElementProps } from '../plugins/types';
 import { EditorBlurOptions } from './selection/blur';
 import { BlockSelectedOptions } from './selection/setBlockSelected';
 import { SetSelectionOptions } from './selection/setSelection';
@@ -12,14 +12,14 @@ import { ToggleBlockOptions } from './transforms/toggleBlock';
 export type YooptaBlockPath = [number];
 
 export type YooptaBlockDataKey = string;
-export type YooptaChildrenValue = Record<YooptaBlockDataKey, YooptaBlockData>;
-
 export type YooptaBlockData<T = Descendant | SlateElement> = {
   id: string;
   value: T[];
   type: string;
   meta: YooptaBlockBaseMeta;
 };
+
+export type YooptaChildrenValue = Record<YooptaBlockDataKey, YooptaBlockData>;
 
 export type SlateEditor = Editor;
 
@@ -75,6 +75,7 @@ export type YooEditorEvents = 'change' | 'block:copy';
 // [TODO] - Fix generic and default types
 export type YooEditor<TNodes = any, TKey extends string = any> = {
   insertBlock: (data: YooptaBlockData, options?: YooptaEditorTransformOptions) => void;
+  insertBlocks: (blocks: YooptaBlockData[], options?: YooptaEditorTransformOptions) => void;
   splitBlock: (options?: YooptaEditorTransformOptions) => void;
   updateBlock: (id: string, data: Partial<YooptaBlockData>) => void;
   deleteBlock: (options?: DeleteBlockOptions) => void;
@@ -91,13 +92,13 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   children: Record<string, YooptaBlockData>;
   getEditorValue: () => TNodes;
   setSelection: (path: YooptaBlockPath | null, options?: SetSelectionOptions) => void;
-  setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
+  setBlockSelected: (path: YooptaBlockPath | YooptaBlockPath[] | null, options?: BlockSelectedOptions) => void;
   blur: (options?: EditorBlurOptions) => void;
   blockEditorsMap: YooptaPluginsEditorMap;
   blocks: YooptaBlocks;
   formats: YooptaFormats;
   shortcuts: Record<string, YooptaBlock>;
-  plugins: Record<string, PluginReturn<string, unknown>>;
+  plugins: Record<string, Plugin<string, unknown>>;
   on: (event: YooEditorEvents, fn: (payload: any) => void) => void;
   once: (event: YooEditorEvents, fn: (payload: any) => void) => void;
   off: (event: string, fn: (payload: any) => void) => void;

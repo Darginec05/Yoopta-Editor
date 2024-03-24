@@ -1,22 +1,17 @@
 import { createDraft, finishDraft } from 'immer';
-import { createEditor } from 'slate';
-// import { withHistory } from 'slate-history';
-import { withReact } from 'slate-react';
 import { buildBlockData } from '../../components/Editor/utils';
-import { withShortcuts } from '../../extensions/shortcuts';
+import { buildSlateEditor } from '../../utils/editorBuilders';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../../utils/generateId';
 import { YooEditor, YooptaEditorTransformOptions } from '../types';
 
-export type DeleteBlockOptions = YooptaEditorTransformOptions & {
+export type DeleteBlockOptions = Omit<YooptaEditorTransformOptions, 'blockId'> & {
   deleteAll?: boolean;
   fromPaths?: number[];
 };
 
 export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {}) {
   const { at = editor.selection, deleteAll = false, fromPaths, focus } = options;
-
-  console.log('BEFORE options.focusAt', options.focusAt);
 
   if (Array.isArray(fromPaths) && fromPaths.length > 0) {
     editor.children = createDraft(editor.children);
@@ -46,16 +41,15 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
   if (deleteAll || Object.keys(editor.children).length === 1) {
     editor.children = {};
     editor.blockEditorsMap = {};
-    const defaultBlock = buildBlockData({ id: generateId() });
-    // [TODO] - TEST BUILD ERRORS
-    const slate = withShortcuts(editor, withReact(createEditor()));
+    const block = buildBlockData({ id: generateId() });
+    const slate = buildSlateEditor(editor);
 
-    editor.children[defaultBlock.id] = defaultBlock;
-    editor.blockEditorsMap[defaultBlock.id] = slate;
+    editor.children[block.id] = block;
+    editor.blockEditorsMap[block.id] = slate;
 
     editor.setSelection([0]);
     editor.setBlockSelected(null);
-    editor.focusBlock(defaultBlock.id, { slate, waitExecution: true });
+    editor.focusBlock(block.id, { slate, waitExecution: true });
 
     editor.applyChanges();
     editor.emit('change', editor.children);

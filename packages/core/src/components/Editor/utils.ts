@@ -24,10 +24,8 @@ export const buildBlockData = (block?: Partial<YooptaBlockData>): YooptaBlockDat
 
 export const getDefaultYooptaChildren = () => {
   const pId = generateId();
-  // const codeId = generateId();
 
   return {
     [pId]: buildBlockData({ id: pId }),
-    // [codeId]: YOOPTA_ULTRA_VALUES.code(codeId, { order: 1, depth: 0 }),
   };
 };

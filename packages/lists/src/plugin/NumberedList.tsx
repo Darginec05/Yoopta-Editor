@@ -24,6 +24,13 @@ const NumberedList = new YooptaPlugin<'numbered-list', ListElementProps>({
   events: {
     onKeyDown,
   },
+  parsers: {
+    html: {
+      deserialize: {
+        nodeNames: ['OL'],
+      },
+    },
+  },
 });
 
 export { NumberedList };

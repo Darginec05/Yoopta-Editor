@@ -20,6 +20,13 @@ const BulletedList = new YooptaPlugin<BulletedListPluginKeys, BulletedListElemen
   events: {
     onKeyDown,
   },
+  parsers: {
+    html: {
+      deserialize: {
+        nodeNames: ['UL'],
+      },
+    },
+  },
 });
 
 export { BulletedList };

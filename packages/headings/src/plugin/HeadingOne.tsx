@@ -33,6 +33,13 @@ const HeadingOne = new YooptaPlugin({
     },
     shortcuts: ['h1', '#', '*'],
   },
+  parsers: {
+    html: {
+      deserialize: {
+        nodeNames: ['H1'],
+      },
+    },
+  },
 });
 
 export { HeadingOne };

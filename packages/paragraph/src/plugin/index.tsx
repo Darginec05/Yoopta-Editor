@@ -15,6 +15,13 @@ const Paragraph = new YooptaPlugin({
     },
     shortcuts: ['p', 'text'],
   },
+  parsers: {
+    html: {
+      deserialize: {
+        nodeNames: ['P'],
+      },
+    },
+  },
 });
 
 export { Paragraph };

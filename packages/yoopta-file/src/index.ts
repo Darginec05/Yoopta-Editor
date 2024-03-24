@@ -70,7 +70,7 @@ const File = new YooptaPlugin<FilePluginOptions, FileElement>({
       // [TODO] - research how to deserialize html for file
       // deserialize: {
       //   nodeName: 'A',
-      //   parse: (el) => {
+      //   parse (el) => {
       //     return {
       //       url: el.getAttribute('href'),
       //       name: el.textContent as string,
