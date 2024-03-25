@@ -72,15 +72,6 @@ export function insertBlocks(editor: YooEditor, blocks: YooptaBlockData[], optio
   editor.children = finishDraft(editor.children);
   editor.applyChanges();
 
-  console.log(
-    'editor.children orders',
-    Object.keys(editor.children)
-      .map((key) => editor.children[key].meta.order)
-      .sort((a, b) => a - b),
-  );
-
-  console.log('editor.children', editor.children);
-
   if (focus) {
     editor.setBlockSelected(newPaths);
   }

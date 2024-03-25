@@ -1,9 +1,10 @@
+import { Element } from 'slate';
 import { buildBlockData } from '../components/Editor/utils';
 import { SlateElement, YooEditor, YooptaBlockData } from '../editor/types';
-import { PluginParsers } from '../plugins/types';
-import { getRootBlockElementType } from './blockElements';
-import { generateId } from './generateId';
-import { isYooptaBlock } from './validators';
+import { PluginDeserializeParser } from '../plugins/types';
+import { getRootBlockElementType } from '../utils/blockElements';
+import { generateId } from '../utils/generateId';
+import { isYooptaBlock } from '../utils/validators';
 
 const MARKS_NODE_NAME_MATCHERS_MAP = {
   B: { type: 'bold' },
@@ -15,7 +16,7 @@ const MARKS_NODE_NAME_MATCHERS_MAP = {
   EM: { type: 'code' },
 };
 
-type PluginsMapByNodeNames = Record<string, { type: string; parse: PluginParsers['parse'] }>;
+type PluginsMapByNodeNames = Record<string, { type: string; parse: PluginDeserializeParser['parse'] }>;
 
 function getMappedPluginByNodeNames(editor: YooEditor): PluginsMapByNodeNames {
   const PLUGINS_NODE_NAME_MATCHERS_MAP: PluginsMapByNodeNames = {};
@@ -48,7 +49,7 @@ function getMappedPluginByNodeNames(editor: YooEditor): PluginsMapByNodeNames {
   return PLUGINS_NODE_NAME_MATCHERS_MAP;
 }
 
-export function deserializeHTML(editor: YooEditor, pluginsMap: PluginsMapByNodeNames, el: HTMLElement | ChildNode) {
+export function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames, el: HTMLElement | ChildNode) {
   if (el.nodeType === 3) {
     const text = el.textContent?.replace(/[\t\n\r\f\v]+/g, ' ');
     return text;
@@ -61,7 +62,7 @@ export function deserializeHTML(editor: YooEditor, pluginsMap: PluginsMapByNodeN
   const parent = el;
 
   let children = Array.from(parent.childNodes)
-    .map((node) => deserializeHTML(editor, pluginsMap, node))
+    .map((node) => deserialize(editor, pluginsMap, node))
     .flat();
 
   if (MARKS_NODE_NAME_MATCHERS_MAP[el.nodeName]) {
@@ -79,7 +80,7 @@ export function deserializeHTML(editor: YooEditor, pluginsMap: PluginsMapByNodeN
 
     const isVoid = rootElement.props?.nodeType === 'void';
 
-    let rootNode: SlateElement<string, any> = {
+    let rootNode: SlateElement<string, any> | YooptaBlockData[] = {
       id: generateId(),
       type: rootElementType,
       children: isVoid && !block.hasCustomEditor ? [{ text: '' }] : children.map(mapNodeChildren),
@@ -87,8 +88,16 @@ export function deserializeHTML(editor: YooEditor, pluginsMap: PluginsMapByNodeN
     };
 
     if (plugin.parse) {
-      const nodeElement = plugin.parse(el as HTMLElement);
-      if (nodeElement) rootNode = nodeElement;
+      const nodeElementOrBlocks = plugin.parse(el as HTMLElement);
+
+      if (nodeElementOrBlocks) {
+        if (Element.isElement(nodeElementOrBlocks)) {
+          rootNode = nodeElementOrBlocks;
+        } else if (Array.isArray(nodeElementOrBlocks)) {
+          const blocks = nodeElementOrBlocks;
+          return blocks;
+        }
+      }
     }
 
     if (rootNode.children.length === 0) {
@@ -135,17 +144,12 @@ function mapNodeChildren(child) {
     return { text };
   }
 
-  return { text: '\n' };
+  return { text: '' };
 }
 
-function deserializeMarkdown() {}
+export function deserializeHTML(editor: YooEditor, el: HTMLElement) {
+  const PLUGINS_NODE_NAME_MATCHERS_MAP = getMappedPluginByNodeNames(editor);
+  const blocks = deserialize(editor, PLUGINS_NODE_NAME_MATCHERS_MAP, el).filter(isYooptaBlock) as YooptaBlockData[];
 
-export const deserializers = {
-  html: (editor: YooEditor, el: HTMLElement) => {
-    const PLUGINS_NODE_NAME_MATCHERS_MAP = getMappedPluginByNodeNames(editor);
-    return deserializeHTML(editor, PLUGINS_NODE_NAME_MATCHERS_MAP, el).filter(isYooptaBlock) as YooptaBlockData[];
-  },
-  markdown: (editor: YooEditor) => {
-    return deserializeMarkdown();
-  },
-};
+  return blocks;
+}

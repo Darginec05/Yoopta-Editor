@@ -1,6 +1,6 @@
 import { PluginElementRenderProps } from '@yoopta/editor';
 
-const BulletedListRender = ({ attributes, element, children }: PluginElementRenderProps<unknown>) => {
+const BulletedListRender = ({ attributes, element, children }: PluginElementRenderProps) => {
   return (
     <div
       data-element-type={element.type}

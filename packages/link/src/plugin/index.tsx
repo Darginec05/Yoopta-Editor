@@ -1,4 +1,4 @@
-import { YooptaPlugin } from '@yoopta/editor';
+import { generateId, YooptaPlugin } from '@yoopta/editor';
 import { LinkElementProps, LinkPluginElementKeys } from '../types';
 import { LinkRender } from '../ui/LinkRender';
 
@@ -22,6 +22,34 @@ const Link = new YooptaPlugin<LinkPluginElementKeys, LinkElementProps>({
       description: 'Create link',
     },
   },
+  parsers: {
+    // html: {
+    // deserialize: {
+    //   nodeNames: ['A'],
+    //   parse: (el) => {
+    //     if (el.nodeName === 'A') {
+    //       const url = el.getAttribute('href');
+    //       const target = el.getAttribute('target') || '';
+    //       const rel = el.getAttribute('rel') || '';
+    //       const title = el.textContent || '';
+    //       const props: LinkElementProps = {
+    //         url,
+    //         target,
+    //         rel,
+    //         title,
+    //         nodeType: 'inline',
+    //       };
+    //       return {
+    //         id: generateId(),
+    //         type: 'link',
+    //         props,
+    //         children: [{ text: title }],
+    //       };
+    //     }
+    //   },
+    // },
+  },
+  // },
 });
 
 export { Link };

@@ -9,6 +9,7 @@ export type BlockSelectedOptions = {
   allSelected?: boolean;
 };
 
+// [TODO] - FIXXXXXXXX
 export function setBlockSelected(
   editor: YooEditor,
   paths: YooptaBlockPath | YooptaBlockPath[] | null,

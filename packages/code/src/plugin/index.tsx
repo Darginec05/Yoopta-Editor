@@ -30,8 +30,11 @@ const Code = new YooptaPlugin<CodePluginElements, CodeElementProps>({
         nodeNames: ['PRE'],
         parse(el) {
           if (el.nodeName === 'PRE') {
+            const code = el.querySelector('code');
+            const textContent = (code ? code.textContent : el.textContent) || '';
+
             return {
-              children: [{ text: el.textContent || '' }],
+              children: [{ text: textContent }],
               type: 'code',
               id: generateId(),
               props: {

@@ -39,7 +39,7 @@ const Video = new YooptaPlugin<VideoPluginElements, VideoElementProps, VideoPlug
   parsers: {
     html: {
       deserialize: {
-        nodeNames: ['VIDEO', 'A'],
+        nodeNames: ['VIDEO'],
         parse: (el) => {
           if (el.nodeName === 'VIDEO') {
             const src = el.getAttribute('src');

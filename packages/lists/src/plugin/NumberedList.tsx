@@ -1,4 +1,4 @@
-import { YooptaPlugin } from '@yoopta/editor';
+import { YooptaPlugin, buildBlockData, YooptaBlockData, generateId } from '@yoopta/editor';
 import { NumberedListRender } from '../elements/NumberedList';
 import { onKeyDown } from '../events/onKeyDown';
 import { ListElementProps } from '../types';
@@ -10,7 +10,7 @@ const NumberedList = new YooptaPlugin<'numbered-list', ListElementProps>({
       render: NumberedListRender,
       props: {
         nodeType: 'block',
-        position: 0,
+        count: 0,
       },
     },
   },
@@ -28,6 +28,37 @@ const NumberedList = new YooptaPlugin<'numbered-list', ListElementProps>({
     html: {
       deserialize: {
         nodeNames: ['OL'],
+        parse(el) {
+          if (el.nodeName === 'OL') {
+            const listItems = el.querySelectorAll('li');
+
+            const numberedListBlocks: YooptaBlockData[] = Array.from(listItems)
+              .filter((listItem) => {
+                const textContent = listItem.textContent || '';
+                const isTodoListItem = /\[\s*\S?\s*\]/.test(textContent);
+
+                return !isTodoListItem;
+              })
+              .map((listItem, i) => {
+                const textContent = listItem.textContent || '';
+
+                return buildBlockData({
+                  id: generateId(),
+                  type: 'NumberedList',
+                  value: [
+                    {
+                      id: generateId(),
+                      type: 'numbered-list',
+                      children: [{ text: textContent }],
+                      props: { nodeType: 'block', count: i },
+                    },
+                  ],
+                  meta: { order: 0, depth: 0 },
+                });
+              });
+            if (numberedListBlocks.length > 1) return numberedListBlocks;
+          }
+        },
       },
     },
   },
