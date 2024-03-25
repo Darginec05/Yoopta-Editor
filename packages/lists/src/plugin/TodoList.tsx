@@ -27,7 +27,8 @@ const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
     html: {
       deserialize: {
         // add ignore or continue statement
-        nodeNames: ['OL', 'UL'],
+        nodeNames: [],
+        // nodeNames: ['OL', 'UL'],
         parse(el) {
           if (el.nodeName === 'OL' || el.nodeName === 'UL') {
             const listItems = el.querySelectorAll('li');
@@ -42,6 +43,7 @@ const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
               .map((listItem) => {
                 const textContent = listItem.textContent || '';
                 const checked = /\[\s*x\s*\]/i.test(textContent);
+                const clearedContent = textContent.replace(/\[\s*\S?\s*\]/, '').trim();
 
                 return buildBlockData({
                   id: generateId(),
@@ -50,7 +52,7 @@ const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
                     {
                       id: generateId(),
                       type: 'todo-list',
-                      children: [{ text: textContent }],
+                      children: [{ text: clearedContent }],
                       props: { nodeType: 'block', checked: checked },
                     },
                   ],

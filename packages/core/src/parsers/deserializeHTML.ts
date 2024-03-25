@@ -150,6 +150,7 @@ function mapNodeChildren(child) {
 export function deserializeHTML(editor: YooEditor, el: HTMLElement) {
   const PLUGINS_NODE_NAME_MATCHERS_MAP = getMappedPluginByNodeNames(editor);
   const blocks = deserialize(editor, PLUGINS_NODE_NAME_MATCHERS_MAP, el).filter(isYooptaBlock) as YooptaBlockData[];
+  console.log('html', el);
 
   return blocks;
 }

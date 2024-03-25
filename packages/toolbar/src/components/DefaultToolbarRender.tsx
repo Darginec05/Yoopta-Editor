@@ -131,7 +131,6 @@ const DefaultToolbarRender = ({ activeBlock, editor, onHoldToolbarChange }: Tool
       if (!slate.selection) return;
 
       const linkNodeEntry = getLinkEntry(slate);
-      console.log('linkNodeEntry', linkNodeEntry?.[0]);
 
       if (linkNodeEntry) {
         const [linkNode] = linkNodeEntry as NodeEntry<SlateElement>;

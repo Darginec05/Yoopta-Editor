@@ -176,9 +176,14 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   };
 
   const onPaste = (event: React.ClipboardEvent) => {
+    if (editor.readOnly) return;
+
     eventHandlers?.onPaste?.(event);
 
-    const html = event.clipboardData.getData('text/html');
+    const data = event.clipboardData;
+    // const text = data.getData('text/plain');
+
+    const html = data.getData('text/html');
     const parsedHTML = new DOMParser().parseFromString(html, 'text/html');
 
     if (parsedHTML.body.childNodes.length > 0) {
@@ -193,6 +198,8 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   };
 
   const onCopy = (event: React.ClipboardEvent) => {
+    if (editor.readOnly) return;
+
     eventHandlers?.onCopy?.(event);
   };
 

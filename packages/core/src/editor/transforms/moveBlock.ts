@@ -8,8 +8,6 @@ export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: Yo
   const draggedBlock = editor.children[draggedBlockId!];
   const blockInNewPosition = Object.values(editor.children).find((item) => item.meta.order === newPosition)!;
 
-  console.log('blockInNewPosition meta', Object.assign({}, blockInNewPosition).meta.depth);
-
   const dragFromTopToBottom = draggedBlock.meta.order < blockInNewPosition.meta.order;
   const dragFromBottomToTop = draggedBlock.meta.order > blockInNewPosition.meta.order;
 

@@ -104,7 +104,6 @@ const ImageRender = ({ element, attributes, children, blockId }: PluginElementRe
           height={sizes?.height}
         />
         {!isReadOnly && <ImageBlockOptions block={block} editor={editor} props={element.props} />}
-
         {children}
       </Resizable>
     </div>
