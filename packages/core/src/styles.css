@@ -1,4 +1,6 @@
-/* @tailwind base; */
+/* SHOULD BE REMOVED */
+@tailwind base;
+
 @tailwind components;
 @tailwind utilities;
 
