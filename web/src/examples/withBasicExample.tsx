@@ -12,7 +12,7 @@ import Video from '@yoopta/video';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
-// import Code from '@yoopta/code';
+import Code from '@yoopta/code';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
@@ -30,7 +30,7 @@ const plugins = [
   //     },
   //   },
   // }),
-  // Code,
+  Code,
   Paragraph,
   HeadingOne,
   HeadingTwo,
@@ -44,8 +44,10 @@ const plugins = [
   Embed,
   Image.extend({
     options: {
-      onUpload: async (file: File) => {
+      async onUpload(file) {
         const data = await uploadToCloudinary(file, 'image');
+        console.log('data', data);
+
         return {
           src: data.secure_url,
           alt: 'cloudinary',

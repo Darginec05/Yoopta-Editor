@@ -71,6 +71,7 @@ export function insertBlocks(editor: YooEditor, blocks: YooptaBlockData[], optio
 
   editor.children = finishDraft(editor.children);
   editor.applyChanges();
+  editor.emit('change', editor.children);
 
   if (focus) {
     editor.setBlockSelected(newPaths);

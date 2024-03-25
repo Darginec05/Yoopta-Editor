@@ -7,81 +7,82 @@ import {
   generateId,
 } from '@yoopta/editor';
 import { KeyboardEvent, useRef, useState } from 'react';
-import { themes } from '../utils/themes';
-import { LANGUAGES } from '../utils/languages';
+// import { themes } from '../utils/themes';
+// import { LANGUAGES } from '../utils/languages';
 import { CodeElement } from '../types';
 import { getCodeElement, getCodeElementText } from '../utils/element';
-import { useCodeMirror } from '../library/hooks';
-import { CodeBlockOptions } from './CodeBlockOptions';
+// import { useCodeMirror } from '../library/hooks';
+// import { CodeBlockOptions } from './CodeBlockOptions';
+import CodeTextEditor from '@uiw/react-textarea-code-editor';
 
-const codeMirrorSetup: any = {
-  lineNumbers: false,
-  autocompletion: false,
-  foldGutter: false,
-  highlightActiveLineGutter: false,
-  highlightActiveLine: false,
-};
+// const codeMirrorSetup: any = {
+//   lineNumbers: false,
+//   autocompletion: false,
+//   foldGutter: false,
+//   highlightActiveLineGutter: false,
+//   highlightActiveLine: false,
+// };
 
-const ReactCodeMirror = (props: any) => {
-  const {
-    className,
-    value = '',
-    selection,
-    extensions = [],
-    onChange,
-    onStatistics,
-    onCreateEditor,
-    onUpdate,
-    autoFocus,
-    theme = 'light',
-    height,
-    minHeight,
-    maxHeight,
-    width,
-    minWidth,
-    maxWidth,
-    basicSetup,
-    placeholder,
-    indentWithTab,
-    editable,
-    readOnly,
-    root,
-    initialState,
-    ...other
-  } = props;
-  const codeMirrorRef = useRef<HTMLDivElement>(null);
-  const { state, view, container } = useCodeMirror({
-    container: codeMirrorRef.current,
-    root,
-    value,
-    autoFocus,
-    theme,
-    height,
-    minHeight,
-    maxHeight,
-    width,
-    minWidth,
-    maxWidth,
-    basicSetup,
-    placeholder,
-    indentWithTab,
-    editable,
-    readOnly,
-    selection,
-    onChange,
-    onCreateEditor,
-    onUpdate,
-    extensions,
-    initialState,
-  });
+// const ReactCodeMirror = (props: any) => {
+//   const {
+//     className,
+//     value = '',
+//     selection,
+//     extensions = [],
+//     onChange,
+//     onStatistics,
+//     onCreateEditor,
+//     onUpdate,
+//     autoFocus,
+//     theme = 'light',
+//     height,
+//     minHeight,
+//     maxHeight,
+//     width,
+//     minWidth,
+//     maxWidth,
+//     basicSetup,
+//     placeholder,
+//     indentWithTab,
+//     editable,
+//     readOnly,
+//     root,
+//     initialState,
+//     ...other
+//   } = props;
+//   const codeMirrorRef = useRef<HTMLDivElement>(null);
+//   const { state, view, container } = useCodeMirror({
+//     container: codeMirrorRef.current,
+//     root,
+//     value,
+//     autoFocus,
+//     theme,
+//     height,
+//     minHeight,
+//     maxHeight,
+//     width,
+//     minWidth,
+//     maxWidth,
+//     basicSetup,
+//     placeholder,
+//     indentWithTab,
+//     editable,
+//     readOnly,
+//     selection,
+//     onChange,
+//     onCreateEditor,
+//     onUpdate,
+//     extensions,
+//     initialState,
+//   });
 
-  // console.log('codeMirrorRef', codeMirrorRef);
-  // console.log('other', other);
-  // console.log({ state, view, container });
+//   // console.log('codeMirrorRef', codeMirrorRef);
+//   // console.log('other', other);
+//   // console.log({ state, view, container });
 
-  const defaultClassNames = typeof theme === 'string' ? `cm-theme-${theme}` : 'cm-theme';
-  return <div ref={codeMirrorRef} className={`${defaultClassNames}${className ? ` ${className}` : ''}`} {...other} />;
-};
+//   const defaultClassNames = typeof theme === 'string' ? `cm-theme-${theme}` : 'cm-theme';
+//   return <div ref={codeMirrorRef} className={`${defaultClassNames}${className ? ` ${className}` : ''}`} {...other} />;
+// };
 
 const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
   const editor = useYooptaEditor();
@@ -94,7 +95,8 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
   const theme = element.props?.theme || 'VSCode';
   const language = element.props?.language || 'JavaScript';
 
-  const onChange = (value: string) => {
+  const onChange = (e) => {
+    const value = e.target.value;
     setCode(value);
     editor.updateBlock(blockId, { value: [{ ...element, children: [{ text: value }] }] });
   };
@@ -114,18 +116,22 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
       className="yoo-code-rounded-md yoo-code-mt-2 yoo-code-p-0 yoopta-code"
     >
       <div contentEditable={false}>
-        <ReactCodeMirror
+        <CodeTextEditor
           value={code}
-          height="auto"
-          extensions={[LANGUAGES[language]]}
+          // height="auto"
+          // extensions={[LANGUAGES[language]]}
           onChange={onChange}
-          width="100%"
-          theme={themes[theme]}
+          // width="100%"
+          // theme={themes[theme]}
           className="yoopta-code-cm-editor"
-          basicSetup={codeMirrorSetup}
-          editable={!isReadOnly}
+          // basicSetup={codeMirrorSetup}
+          // editable={!isReadOnly}
           readOnly={isReadOnly}
+          language="js"
           onClick={onClick}
+          style={{
+            fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+          }}
           onKeyDown={(event: KeyboardEvent) => {
             const isShiftEnter = event.shiftKey && event.keyCode === 13;
 
@@ -139,7 +145,7 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
           }}
         />
       </div>
-      {!isReadOnly && <CodeBlockOptions block={block} editor={editor} element={element} />}
+      {/* {!isReadOnly && <CodeBlockOptions block={block} editor={editor} element={element} />} */}
     </div>
   );
 };
