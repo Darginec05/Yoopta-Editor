@@ -125,6 +125,34 @@ const Editor = ({ placeholder, marks, className, autoFocus = true, selectionBoxR
     resetSelectedBlocks();
   };
 
+  const onCopy = (event: React.ClipboardEvent) => {
+    // function escapeHtml(text) {
+    //   const map = {
+    //     '&': '&amp;',
+    //     '<': '&lt;',
+    //     '>': '&gt;',
+    //     '"': '&quot;',
+    //     "'": '&#039;',
+    //   };
+    //   return text.replace(/[&<>"']/g, (m) => map[m]);
+    // }
+    // function serializeNode(node, plugins) {
+    //   if (Text.isText(node)) {
+    //     return escapeHtml(node.text);
+    //   }
+    //   const children = node.children.map((node) => serializeNode(node, plugins)).join('');
+    //   const plugin = plugins[node.type];
+    //   if (typeof plugin.exports?.html?.serialize === 'function') {
+    //     return plugin.exports.html.serialize(node, children);
+    //   }
+    //   return children;
+    // }
+    // export function serializeHtml(data: Descendant[], pluginsMap) {
+    //   const html = data.map((node) => serializeNode(node, pluginsMap)).join('');
+    //   return html;
+    // }
+  };
+
   const onKeyDown = (event) => {
     if (isReadOnly) return;
 
@@ -220,7 +248,7 @@ const Editor = ({ placeholder, marks, className, autoFocus = true, selectionBoxR
           Transforms.deselect(slate);
 
           editor.setSelection(null);
-          editor.setBlockSelected([block?.meta.order, block?.meta.order - 1]);
+          editor.setBlockSelected([block?.meta.order, block.meta.order - 1]);
 
           state.startedIndexToSelect = block.meta.order;
           state.indexToSelect = block.meta.order - 1;

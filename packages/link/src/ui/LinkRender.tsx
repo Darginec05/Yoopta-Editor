@@ -1,15 +1,19 @@
-import { PluginElementRenderProps, useYooptaTools } from '@yoopta/editor';
+import { PluginElementRenderProps, useYooptaReadOnly } from '@yoopta/editor';
 
-const Link = (props: PluginElementRenderProps) => {
-  const tools = useYooptaTools();
+// const Link = (props: PluginElementRenderProps) => {
+//   const tools = useYooptaTools();
 
-  const LinkTool = tools.LinkTool;
-};
+//   const LinkTool = tools.LinkTool;
+// };
 
 const LinkRender = (props: PluginElementRenderProps) => {
   const { url, target, rel } = props.element.props || {};
+  const isReadOnly = useYooptaReadOnly();
 
-  const onClick = (e) => e.preventDefault();
+  const onClick = (e) => {
+    if (isReadOnly) return;
+    e.preventDefault();
+  };
 
   return (
     <a

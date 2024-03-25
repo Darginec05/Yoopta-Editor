@@ -69,16 +69,22 @@ export type Plugin<TKeys extends string = string, TProps = Descendant, TOptions 
   elements: PluginElementsMap<TKeys, TProps>;
   events?: EventHandlers;
   options?: PluginOptions<TOptions>;
-  parsers?: Partial<Record<PluginParserTypes, Record<PluginParserValues, PluginParsers>>>;
+  parsers?: Partial<Record<PluginParserTypes, PluginParsers>>;
+};
+
+export type PluginParsers = {
+  deserialize?: PluginDeserializeParser;
+  serialize?: PluginserializeParser;
 };
 
 export type PluginParserTypes = 'html' | 'markdown';
-// export type PluginParserValues = 'deserialize' | 'serialize';
-export type PluginParserValues = 'deserialize';
+export type PluginParserValues = 'deserialize' | 'serialize';
 
-export type PluginParsers = {
+export type PluginserializeParser = (block) => string;
+
+export type PluginDeserializeParser = {
   nodeNames: string[];
-  parse?: (el: HTMLElement) => SlateElement<string, any> | void;
+  parse?: (el: HTMLElement) => SlateElement<string, any> | YooptaBlockData[] | void;
 };
 
 export type LeafFormats<K extends string, V> = {

@@ -1,5 +1,5 @@
 import { Descendant } from 'slate';
-import { PluginElementRenderProps, Plugin } from './types';
+import { PluginElementRenderProps, Plugin, PluginOptions } from './types';
 
 export type ExtendPluginRender<TKeys extends string> = {
   [x in TKeys]: (props: PluginElementRenderProps) => JSX.Element;
@@ -41,7 +41,7 @@ export class YooptaPlugin<TKeys extends string = string, TProps = Descendant, TO
       elements: elements,
       events: this.plugin.events,
       parsers: this.plugin.parsers,
-      options: extendedOptions,
+      options: extendedOptions as PluginOptions<TOptions>,
     });
   }
 }

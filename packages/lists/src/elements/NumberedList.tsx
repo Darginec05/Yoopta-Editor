@@ -1,8 +1,9 @@
 import { PluginElementRenderProps, useBlockData, useYooptaEditor } from '@yoopta/editor';
 
-const NumberedListRender = ({ attributes, children, blockId, element }: PluginElementRenderProps<unknown>) => {
+const NumberedListRender = ({ attributes, children, blockId, element }: PluginElementRenderProps) => {
   const renderCount = () => {
-    const counter = typeof element.props?.count === 'number' ? element.props?.count : 0;
+    const counter =
+      element.type === 'numbered-list' && typeof element.props?.count === 'number' ? element.props?.count : 0;
     return counter + 1;
   };
 

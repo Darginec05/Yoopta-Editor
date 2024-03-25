@@ -15,7 +15,7 @@ import { buildBlockData } from '../components/Editor/utils';
 
 // [TODO] - test
 import { withInlines } from './extenstions/withInlines';
-import { deserializers } from '../utils/deserializers';
+import { parsers } from '../parsers';
 
 type Props<TKeys extends string, TProps, TOptions> = Plugin<TKeys, TProps, TOptions> & {
   id: string;
@@ -183,16 +183,17 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
 
     if (parsedHTML.body.childNodes.length > 0) {
       event.preventDefault();
-      console.log('parsedHTML', parsedHTML.body);
-
-      const blocks = deserializers.html(editor, parsedHTML.body);
-      console.log('blocks', blocks);
+      const blocks = parsers.html.deserialize(editor, parsedHTML.body);
 
       if (blocks.length > 0) {
         editor.insertBlocks(blocks, { at: editor.selection, focus: true });
         return;
       }
     }
+  };
+
+  const onCopy = (event: React.ClipboardEvent) => {
+    eventHandlers?.onCopy?.(event);
   };
 
   const decorate = (nodeEntry: NodeEntry) => {
@@ -238,6 +239,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
         customEditor={customEditor}
         readOnly={editor.readOnly}
         onPaste={onPaste}
+        onCopy={onCopy}
       />
     </div>
   );
@@ -258,6 +260,7 @@ type SlateEditorInstanceProps = {
   onClick: (event: React.MouseEvent) => void;
   onBlur: (event: React.FocusEvent) => void;
   onPaste: (event: React.ClipboardEvent) => void;
+  onCopy: (event: React.ClipboardEvent) => void;
   customEditor?: (props: PluginCustomEditorRenderProps) => JSX.Element;
   decorate: (nodeEntry: NodeEntry) => any[];
 };

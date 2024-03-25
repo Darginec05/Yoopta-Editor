@@ -1,5 +1,12 @@
-import { useBlockData, useYooptaEditor, PluginCustomEditorRenderProps, useYooptaReadOnly } from '@yoopta/editor';
-import { useRef, useState } from 'react';
+import {
+  useBlockData,
+  useYooptaEditor,
+  PluginCustomEditorRenderProps,
+  useYooptaReadOnly,
+  buildBlockData,
+  generateId,
+} from '@yoopta/editor';
+import { KeyboardEvent, useRef, useState } from 'react';
 import { themes } from '../utils/themes';
 import { LANGUAGES } from '../utils/languages';
 import { CodeElement } from '../types';
@@ -119,6 +126,17 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
           editable={!isReadOnly}
           readOnly={isReadOnly}
           onClick={onClick}
+          onKeyDown={(event: KeyboardEvent) => {
+            const isShiftEnter = event.shiftKey && event.keyCode === 13;
+
+            if (isShiftEnter) {
+              event.preventDefault();
+              const defaultBlock = buildBlockData({ id: generateId() });
+              const nextPath = [block.meta.order + 1] as [number];
+
+              editor.insertBlock(defaultBlock, { at: nextPath, focus: true });
+            }
+          }}
         />
       </div>
       {!isReadOnly && <CodeBlockOptions block={block} editor={editor} element={element} />}

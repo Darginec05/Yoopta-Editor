@@ -1,4 +1,4 @@
-import { YooptaPlugin } from '@yoopta/editor';
+import { buildBlockData, generateId, YooptaBlockData, YooptaPlugin } from '@yoopta/editor';
 import { TodoListRender } from '../elements/TodoList';
 import { onKeyDown } from '../events/onKeyDown';
 import { TodoListElementProps, TodoListPluginKeys } from '../types';
@@ -23,13 +23,47 @@ const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
   events: {
     onKeyDown,
   },
-  // parsers: {
-  //   html: {
-  //     deserialize: {
-  //       nodeNames: ['UL', 'LI'],
-  //     },
-  //   },
-  // },
+  parsers: {
+    html: {
+      deserialize: {
+        // add ignore or continue statement
+        nodeNames: ['OL', 'UL'],
+        parse(el) {
+          if (el.nodeName === 'OL' || el.nodeName === 'UL') {
+            const listItems = el.querySelectorAll('li');
+
+            const todoListBlocks: YooptaBlockData[] = Array.from(listItems)
+              .filter((listItem) => {
+                const textContent = listItem.textContent || '';
+                const isTodoListItem = /\[\s*\S?\s*\]/.test(textContent);
+
+                return isTodoListItem;
+              })
+              .map((listItem) => {
+                const textContent = listItem.textContent || '';
+                const checked = /\[\s*x\s*\]/i.test(textContent);
+
+                return buildBlockData({
+                  id: generateId(),
+                  type: 'TodoList',
+                  value: [
+                    {
+                      id: generateId(),
+                      type: 'todo-list',
+                      children: [{ text: textContent }],
+                      props: { nodeType: 'block', checked: checked },
+                    },
+                  ],
+                  meta: { order: 0, depth: 0 },
+                });
+              });
+
+            if (todoListBlocks.length > 1) return todoListBlocks;
+          }
+        },
+      },
+    },
+  },
 });
 
 export { TodoList };
