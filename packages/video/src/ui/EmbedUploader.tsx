@@ -15,8 +15,6 @@ const EmbedUploader = ({ blockId, onClose }) => {
     const providerType = getProvider(value);
     const videoId = providerType ? ProviderGetters[providerType]?.(value) : null;
 
-    console.log({ type: providerType, id: videoId });
-
     if (!providerType || !videoId) return console.warn('Unsopperted video provider or video id is not found.');
 
     editor.blocks.Video.updateElement<VideoPluginElements, VideoElementProps>(blockId, 'video', {

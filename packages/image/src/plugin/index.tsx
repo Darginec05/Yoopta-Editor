@@ -1,4 +1,4 @@
-import { generateId, YooptaPlugin } from '@yoopta/editor';
+import { buildBlockData, generateId, YooptaPlugin } from '@yoopta/editor';
 import { ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';
 import { ImageRender } from '../ui/Image';
 
@@ -33,8 +33,6 @@ const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePlug
       deserialize: {
         nodeNames: ['IMG'],
         parse: (el) => {
-          console.log('el.nodeName', el.nodeName);
-
           if (el.nodeName === 'IMG') {
             const props = {
               src: el.getAttribute('src') || '',
@@ -46,14 +44,14 @@ const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePlug
               },
             };
 
-            console.log('props', props);
-
-            return {
+            const node = {
               id: generateId(),
               type: 'image',
               children: [{ text: '' }],
               props,
             };
+
+            return node;
           }
         },
       },

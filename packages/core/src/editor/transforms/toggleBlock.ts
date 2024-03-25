@@ -42,8 +42,6 @@ export function toggleBlock(editor: YooEditor, toBlockType: string, options?: To
   Editor.withoutNormalizing(slate, () => {
     const node = getBlockElementNode(slate, { elementType: fromBlockRootElementType });
 
-    console.log({ fromBlockRootElementType, node });
-
     Transforms.setNodes(
       slate,
       { type: toBlockRootElementType },

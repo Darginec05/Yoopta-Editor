@@ -5,8 +5,6 @@ export function getMaxOffsetInElement(editor, elementPath) {
 
   for (const [node] of Node.descendants(Editor.node(editor, elementPath)[0], { from: elementPath })) {
     if (Text.isText(node)) {
-      console.log('node', node);
-
       totalLength += node.text.length;
     }
   }

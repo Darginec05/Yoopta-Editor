@@ -28,8 +28,6 @@ const BulletedList = new YooptaPlugin<BulletedListPluginKeys, BulletedListElemen
           if (el.nodeName === 'UL') {
             const listItems = el.querySelectorAll('li');
 
-            console.log('listItems', listItems);
-
             const bulletListBlocks: YooptaBlockData[] = Array.from(listItems)
               .filter((listItem) => {
                 const textContent = listItem.textContent || '';
@@ -54,8 +52,6 @@ const BulletedList = new YooptaPlugin<BulletedListPluginKeys, BulletedListElemen
                   meta: { order: 0, depth: 0 },
                 });
               });
-
-            console.log('bulletListBlocks', bulletListBlocks);
 
             if (bulletListBlocks.length > 1) return bulletListBlocks;
           }
