@@ -2389,10 +2389,10 @@
     copy-to-clipboard "^3.3.3"
     react-error-boundary "^4.0.13"
 
-"@yoopta/editor@^4.0.0-rc.17":
-  version "4.0.0-rc.17"
-  resolved "https://registry.yarnpkg.com/@yoopta/editor/-/editor-4.0.0-rc.17.tgz#7ed1f479294559ebca1452a987a42a9bc5fa68e2"
-  integrity sha512-YSlXLFS2DQhuLZg0qAo9Lxo4YHzXS918SdLV/unFRppSRO6uKnDEsgh4onG5puDf70Zdw86UaP1aY6iUpOQSYw==
+"@yoopta/editor@^4.0.0-rc.18":
+  version "4.0.0-rc.18"
+  resolved "https://registry.yarnpkg.com/@yoopta/editor/-/editor-4.0.0-rc.18.tgz#f984eafa0af9561cd5c92c82710ccd3e2fd0bf0e"
+  integrity sha512-0bmK1wYseP33oYtBbi+bVqItyzR8g1QmVh/STxD69bnSZVf0P8coPS+1vkk+CHPe69ZU3p3jguei+by6XbHLaw==
   dependencies:
     "@dnd-kit/core" "^6.1.0"
     "@dnd-kit/sortable" "^8.0.0"

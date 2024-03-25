@@ -335,7 +335,7 @@ const Editor = ({ placeholder, marks, className, autoFocus = true, selectionBoxR
       <SelectionBox
         origin={selectionBox.origin}
         coords={selectionBox.coords}
-        isOpen={selectionBox.selection && !isReadOnly}
+        isOpen={(selectionBox.selection && !isReadOnly) || selectionBoxRoot === null}
       />
     </div>
   );
