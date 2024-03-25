@@ -13,7 +13,7 @@ import Embed from '@yoopta/embed';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { uploadToCloudinary } from '../../utils/cloudinary';
 
 import Code from '@yoopta/code';
@@ -2620,6 +2620,10 @@ const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
   const rootRef = useRef<HTMLDivElement>(null);
   const [readOnly, setReadOnly] = useState(false);
+
+  useEffect(() => {
+    editor.on('block:copy', (value) => console.log('BLOCK COPY', value));
+  }, []);
 
   const onSubmit = () => {
     const editorData = editor.getEditorValue();

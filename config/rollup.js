@@ -43,9 +43,10 @@ function getPlugins({ tailwindConfig }) {
             extend: {},
           },
           plugins: [],
-          corePlugins: {
-            preflight: false,
-          },
+          /* SHOULD BE REMOVED */
+          // corePlugins: {
+          //   preflight: false,
+          // },
           ...tailwindConfig,
         }),
         autoprefixer(),
