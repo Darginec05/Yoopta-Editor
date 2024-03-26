@@ -44,6 +44,8 @@ const Editor = ({ placeholder, marks, className, autoFocus = true, selectionBoxR
   const yooptaEditorRef = useRef<HTMLDivElement>(null);
   const selectionBox = useRectangeSelectionBox({ editor, yooptaEditorRef, root: selectionBoxRoot });
 
+  console.log('editor', editor.blocks);
+
   let state = useRef<State>(DEFAULT_STATE).current;
 
   useEffect(() => {
