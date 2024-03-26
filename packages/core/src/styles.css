@@ -12,6 +12,11 @@
   background: #c6ddf8;
 }
 
+#yoopta-editor {
+  min-width: 400px;
+  height: auto;
+}
+
 .yoopta-placeholder::after {
   content: attr(data-placeholder);
   opacity: 0.5;

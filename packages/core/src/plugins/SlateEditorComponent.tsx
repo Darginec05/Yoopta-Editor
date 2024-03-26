@@ -181,13 +181,11 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     eventHandlers?.onPaste?.(event);
 
     const data = event.clipboardData;
-    // const text = data.getData('text/plain');
 
     const html = data.getData('text/html');
     const parsedHTML = new DOMParser().parseFromString(html, 'text/html');
 
     if (parsedHTML.body.childNodes.length > 0) {
-      event.preventDefault();
       const blocks = parsers.html.deserialize(editor, parsedHTML.body);
 
       if (blocks.length > 0) {

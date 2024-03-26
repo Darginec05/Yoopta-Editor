@@ -1,12 +1,8 @@
 import { PluginElementRenderProps, useYooptaReadOnly } from '@yoopta/editor';
 
-// const Link = (props: PluginElementRenderProps) => {
-//   const tools = useYooptaTools();
-
-//   const LinkTool = tools.LinkTool;
-// };
-
 const LinkRender = (props: PluginElementRenderProps) => {
+  const { className, ...htmlAttrs } = props.HTMLAttributes || {};
+
   const { url, target, rel } = props.element.props || {};
   const isReadOnly = useYooptaReadOnly();
 
@@ -23,7 +19,8 @@ const LinkRender = (props: PluginElementRenderProps) => {
       rel={rel}
       target={target}
       onClick={onClick}
-      className="underline underline-offset-4 text-[#007AFF] hover:text-[#3b82f6]"
+      className={`underline underline-offset-4 text-[#007AFF] hover:text-[#3b82f6] ${className}`}
+      {...htmlAttrs}
       {...props.attributes}
     >
       {props.children}

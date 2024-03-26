@@ -17,11 +17,12 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { uploadToCloudinary } from '../../utils/cloudinary';
 
 import Code from '@yoopta/code';
+import { YooptaBlockData, YooptaChildrenValue } from '@yoopta/editor/dist/editor/types';
 // import Mention from '@yoopta/mention';
 
 const plugins = [
-  Code,
   // Mention,
+  Code,
   Paragraph.extend({
     options: {
       HTMLAttributes: {
@@ -99,8 +100,6 @@ const plugins = [
       HTMLAttributes: {
         className: 'video-element',
       },
-    },
-    options: {
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file, 'video');
         return {
@@ -140,7 +139,7 @@ const TOOLS: Tools = {
   },
 };
 
-const value = {
+const value: Record<string, unknown> = {
   IzTviZdDzHGBl2Z77o9UN: {
     id: 'IzTviZdDzHGBl2Z77o9UN',
     value: [
@@ -152,6 +151,7 @@ const value = {
             text: 'Next.js offers far more than standard server-side rendering capabilities. Software engineers can ',
           },
           {
+            id: 'f05KwYCe',
             type: 'link',
             children: [
               {
@@ -2641,7 +2641,7 @@ const value = {
 
 const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
-  const rootRef = useRef<HTMLDivElement>(null);
+  const rectangleSelectionRef = useRef<HTMLDivElement>(null);
   const [readOnly, setReadOnly] = useState(false);
 
   useEffect(() => {
@@ -2654,7 +2654,7 @@ const BasicExample = () => {
   };
 
   return (
-    <div className="px-[100px] max-w-[900px] mx-auto my-10" ref={rootRef}>
+    <div className="px-[100px] max-w-[900px] mx-auto my-10" ref={rectangleSelectionRef}>
       <div className="flex mb-10">
         <button
           className="bg-blue-500 mr-4 text-white px-4 py-2 rounded-md"
@@ -2682,13 +2682,13 @@ const BasicExample = () => {
       <YooptaEditor
         editor={editor}
         plugins={plugins}
-        selectionBoxRoot={rootRef}
+        selectionBoxRoot={rectangleSelectionRef}
         marks={MARKS}
         autoFocus
         placeholder="Type / to open menu"
         tools={TOOLS}
         readOnly={readOnly}
-        // value={value}
+        value={value}
       />
     </div>
   );

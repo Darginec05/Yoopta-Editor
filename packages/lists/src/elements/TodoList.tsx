@@ -1,8 +1,9 @@
 import { PluginElementRenderProps, useYooptaEditor } from '@yoopta/editor';
 import { TodoListElementProps } from '../types';
 
-const TodoListRender = ({ attributes, element, children, blockId }: PluginElementRenderProps) => {
+const TodoListRender = ({ attributes, element, children, blockId, HTMLAttributes = {} }: PluginElementRenderProps) => {
   const editor = useYooptaEditor();
+  const { className, ...htmlAttrs } = HTMLAttributes;
   const { checked = false } = (element.props || {}) as TodoListElementProps;
 
   const style = {
@@ -12,8 +13,9 @@ const TodoListRender = ({ attributes, element, children, blockId }: PluginElemen
   return (
     <div
       data-element-type={element.type}
-      className="flex items-center pl-4 space-x-2 py-[3px] text-[16px] relative"
+      className={`flex items-center pl-4 space-x-2 py-[3px] text-[16px] relative ${className}`}
       data-checked={checked}
+      {...htmlAttrs}
       {...attributes}
     >
       <span

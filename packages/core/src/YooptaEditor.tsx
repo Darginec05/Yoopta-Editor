@@ -25,11 +25,12 @@ type Props = {
   value?: YooptaChildrenValue;
   autoFocus?: boolean;
   className?: string;
-  selectionBoxRoot?: HTMLElement | null | React.MutableRefObject<HTMLElement | null>;
+  selectionBoxRoot?: HTMLElement | React.MutableRefObject<HTMLElement | null> | false;
   children?: React.ReactNode;
   tools?: Partial<Tools>;
   placeholder?: string;
   readOnly?: boolean;
+  width?: number;
 };
 
 const DEFAULT_VALUE: Record<string, YooptaBlockData> = getDefaultYooptaChildren();
@@ -62,6 +63,7 @@ const YooptaEditor = ({
   children,
   placeholder,
   readOnly,
+  width,
 }: Props) => {
   const applyChanges = () => {
     setEditorState((prev) => ({ ...prev, version: prev.version + 1 }));
@@ -105,6 +107,7 @@ const YooptaEditor = ({
             autoFocus={autoFocus}
             className={className}
             selectionBoxRoot={selectionBoxRoot}
+            width={width}
           />
           {children}
         </ToolsProvider>

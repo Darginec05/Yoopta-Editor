@@ -13,13 +13,16 @@ import Video from '@yoopta/video';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
-import Code from '@yoopta/code';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 // import File from '@yoopta/file';
+
+import Code from '@yoopta/code';
+console.log('Code', Code);
+console.log('Callout', Callout);
 
 // list of plugins should be placed outside component
 const plugins = [
@@ -31,7 +34,13 @@ const plugins = [
   //     },
   //   },
   // }),
-  // Code,
+  // Code.extend({
+  //   options: {
+  //     HTMLAttributes: {
+  //       className: 'text-blue-500',
+  //     },
+  //   },
+  // }),
   Paragraph,
   HeadingOne.extend({
     options: {
@@ -39,6 +48,7 @@ const plugins = [
         className: 'text-red-500',
         draggable: true,
         'aria-haspopup': true,
+        'aria-atomic': true,
       },
     },
   }),
