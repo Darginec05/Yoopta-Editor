@@ -22,7 +22,7 @@ const codeMirrorSetup: any = {
   highlightActiveLine: false,
 };
 
-const ReactCodeMirror = ({ extensions, className, value = '', onChange, ...props }) => {
+const ReactCodeMirror = ({ extensions, className, value = '', onChange, theme, ...props }) => {
   const editor = useRef<HTMLDivElement>(null);
 
   const { state, view, container } = useCodeMirror({
@@ -53,8 +53,9 @@ const ReactCodeMirror = ({ extensions, className, value = '', onChange, ...props
   });
 
   console.log('ReactCodeMirror editor', { editor, container, state, view });
+  const defaultClassNames = typeof theme === 'string' ? `cm-theme-${theme}` : 'cm-theme';
 
-  return <div ref={editor} className={className} />;
+  return <div ref={editor} className={`${defaultClassNames}${className ? ` ${className}` : ''}`} />;
 };
 
 const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {

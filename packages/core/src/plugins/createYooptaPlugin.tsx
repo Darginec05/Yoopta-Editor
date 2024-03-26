@@ -5,9 +5,9 @@ export type ExtendPluginRender<TKeys extends string> = {
   [x in TKeys]: (props: PluginElementRenderProps) => JSX.Element;
 };
 
-export type ExtendPlugin<TKeys extends string, TOptions = Record<string, unknown>> = {
+export type ExtendPlugin<TKeys extends string, TOptions> = {
   renders?: ExtendPluginRender<TKeys>;
-  options?: TOptions;
+  options?: PluginOptions<TOptions>;
 };
 
 export class YooptaPlugin<TKeys extends string = string, TProps = Descendant, TOptions = Record<string, unknown>> {
@@ -23,8 +23,6 @@ export class YooptaPlugin<TKeys extends string = string, TProps = Descendant, TO
 
   extend(extendPlugin: ExtendPlugin<TKeys, TOptions>): YooptaPlugin<TKeys, TProps, TOptions> {
     const { renders, options } = extendPlugin;
-
-    console.log('YooptaPlugin.extend', { renders, options });
 
     const extendedOptions = { ...this.plugin.options, ...options };
     const elements = { ...this.plugin.elements };

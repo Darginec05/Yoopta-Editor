@@ -1,4 +1,5 @@
-// import { Inter } from 'next/font/google';
+'use client';
+
 import { useEffect, useMemo, useState } from 'react';
 import YooptaEditor, { createYooptaEditor, generateId, SlateElement, YooptaBlockData } from '@yoopta/editor';
 
@@ -30,9 +31,17 @@ const plugins = [
   //     },
   //   },
   // }),
-  Code,
+  // Code,
   Paragraph,
-  HeadingOne,
+  HeadingOne.extend({
+    options: {
+      HTMLAttributes: {
+        className: 'text-red-500',
+        draggable: true,
+        'aria-haspopup': true,
+      },
+    },
+  }),
   HeadingTwo,
   HeadingThree,
   Blockquote,
@@ -152,7 +161,15 @@ export default function WithBasicExample() {
     >
       <div className="w-full h-full">
         <NoSSR>
-          <YooptaEditor editor={editor} plugins={plugins} value={value} marks={marks} tools={TOOLS} autoFocus />
+          <YooptaEditor
+            editor={editor}
+            plugins={plugins}
+            value={value}
+            marks={marks}
+            tools={TOOLS}
+            autoFocus
+            selectionBoxRoot={null}
+          />
         </NoSSR>
       </div>
     </main>
