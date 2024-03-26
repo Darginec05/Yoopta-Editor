@@ -83,11 +83,18 @@ export function createRollupConfig({ pkg, tailwindConfig }) {
     input: `./src/index.ts`,
     output: [
       {
-        format: 'esm',
+        format: 'es',
         sourcemap: isDev,
         globals: { react: 'React' },
         file: `./${pkg.module}`,
         exports: 'named',
+      },
+      {
+        file: `./${pkg.main}`,
+        format: 'cjs',
+        globals: { react: 'React' },
+        exports: 'named',
+        sourcemap: isDev,
       },
     ],
     plugins: getPlugins({ tailwindConfig }),

@@ -293,8 +293,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     readOnly,
   }) => {
     if (typeof customEditor === 'function') {
-      // return customEditor({ blockId: id });
-      return <CustomEditor blockId={id} customEditor={customEditor} />;
+      return customEditor({ blockId: id });
     }
 
     return (
@@ -320,11 +319,6 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     );
   },
 );
-
-const CustomEditor = ({ blockId, customEditor }) => {
-  const Component = () => customEditor({ blockId });
-  return <Component />;
-};
 
 SlateEditorInstance.displayName = 'SlateEditorInstance';
 
