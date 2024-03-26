@@ -11,7 +11,6 @@ import { ToggleBlockOptions } from './transforms/toggleBlock';
 
 export type YooptaBlockPath = [number];
 
-export type YooptaBlockDataKey = string;
 export type YooptaBlockData<T = Descendant | SlateElement> = {
   id: string;
   value: T[];
@@ -19,7 +18,7 @@ export type YooptaBlockData<T = Descendant | SlateElement> = {
   meta: YooptaBlockBaseMeta;
 };
 
-export type YooptaChildrenValue = Record<YooptaBlockDataKey, YooptaBlockData>;
+export type YooptaChildrenValue = Record<string, YooptaBlockData>;
 
 export type SlateEditor = Editor;
 
@@ -92,7 +91,7 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   children: Record<string, YooptaBlockData>;
   getEditorValue: () => TNodes;
   setSelection: (path: YooptaBlockPath | null, options?: SetSelectionOptions) => void;
-  setBlockSelected: (path: YooptaBlockPath | YooptaBlockPath[] | null, options?: BlockSelectedOptions) => void;
+  setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
   blur: (options?: EditorBlurOptions) => void;
   blockEditorsMap: YooptaPluginsEditorMap;
   blocks: YooptaBlocks;

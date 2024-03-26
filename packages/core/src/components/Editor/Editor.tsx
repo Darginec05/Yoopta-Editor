@@ -15,10 +15,11 @@ import { SelectionBox } from '../SelectionBox/SelectionBox';
 
 type Props = {
   marks?: YooptaMark<any>[];
-  selectionBoxRoot?: HTMLElement | null | React.MutableRefObject<HTMLElement | null>;
+  selectionBoxRoot?: HTMLElement | React.MutableRefObject<HTMLElement | null> | false;
   autoFocus?: boolean;
   className?: string;
   placeholder?: string;
+  width?: number;
 };
 
 const getEditorStyles = (styles) => ({
@@ -38,7 +39,7 @@ const DEFAULT_STATE: State = {
   startedIndexToSelect: null,
 };
 
-const Editor = ({ placeholder, marks, className, autoFocus = true, selectionBoxRoot }: Props) => {
+const Editor = ({ placeholder, marks, className, selectionBoxRoot, width, autoFocus = true }: Props) => {
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
   const yooptaEditorRef = useRef<HTMLDivElement>(null);
@@ -320,6 +321,7 @@ const Editor = ({ placeholder, marks, className, autoFocus = true, selectionBoxR
   const editorStyles: CSSProperties = getEditorStyles({
     userSelect: selectionBox.selection ? 'none' : 'auto',
     pointerEvents: selectionBox.selection ? 'none' : 'auto',
+    width,
   });
 
   return (
@@ -332,11 +334,13 @@ const Editor = ({ placeholder, marks, className, autoFocus = true, selectionBoxR
       onBlur={onBlur}
     >
       <RenderBlocks editor={editor} marks={marks} placeholder={placeholder} />
-      <SelectionBox
-        origin={selectionBox.origin}
-        coords={selectionBox.coords}
-        isOpen={(selectionBox.selection && !isReadOnly) || selectionBoxRoot === null}
-      />
+      {selectionBoxRoot !== false && (
+        <SelectionBox
+          origin={selectionBox.origin}
+          coords={selectionBox.coords}
+          isOpen={selectionBox.selection && !isReadOnly}
+        />
+      )}
     </div>
   );
 };

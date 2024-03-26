@@ -38,7 +38,7 @@ export function insertBlocks(editor: YooEditor, blocks: YooptaBlockData[], optio
     }
   });
 
-  const newPaths: YooptaBlockPath[] = [];
+  const newPaths: number[] = [];
 
   blocks.forEach((blockData, index) => {
     const newPluginBlock = {
@@ -51,7 +51,7 @@ export function insertBlocks(editor: YooEditor, blocks: YooptaBlockData[], optio
       },
     };
 
-    newPaths.push([newPluginBlock.meta.order]);
+    newPaths.push(newPluginBlock.meta.order);
 
     editor.children[newPluginBlock.id] = newPluginBlock;
     const newSlateEditor = buildSlateEditor(editor);

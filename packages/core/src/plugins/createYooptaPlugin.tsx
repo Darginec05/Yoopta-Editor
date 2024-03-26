@@ -7,7 +7,7 @@ export type ExtendPluginRender<TKeys extends string> = {
 
 export type ExtendPlugin<TKeys extends string, TOptions> = {
   renders?: ExtendPluginRender<TKeys>;
-  options?: PluginOptions<TOptions>;
+  options?: Partial<PluginOptions<TOptions>>;
 };
 
 export class YooptaPlugin<TKeys extends string = string, TProps = Descendant, TOptions = Record<string, unknown>> {

@@ -21,6 +21,10 @@ export const Highlight = createYooptaMark<YooptaMarkProps<'highlight', LeafColor
       backgroundClip: highlight?.backgroundClip,
     };
 
-    return <span style={style}>{props.children}</span>;
+    return (
+      <span style={style} className="yoopta-mark-highlight">
+        {props.children}
+      </span>
+    );
   },
 });
