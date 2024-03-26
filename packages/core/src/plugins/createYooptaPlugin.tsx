@@ -24,6 +24,8 @@ export class YooptaPlugin<TKeys extends string = string, TProps = Descendant, TO
   extend(extendPlugin: ExtendPlugin<TKeys, TOptions>): YooptaPlugin<TKeys, TProps, TOptions> {
     const { renders, options } = extendPlugin;
 
+    console.log('YooptaPlugin.extend', { renders, options });
+
     const extendedOptions = { ...this.plugin.options, ...options };
     const elements = { ...this.plugin.elements };
 
