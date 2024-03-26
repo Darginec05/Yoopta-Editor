@@ -1,12 +1,15 @@
-import { YooptaPlugin } from '@yoopta/editor';
+import { YooptaPlugin, PluginElementRenderProps } from '@yoopta/editor';
 
-const HeadingOneRender = ({ attributes, children, element }) => {
+const HeadingOneRender = ({ attributes, children, element, HTMLAttributes = {} }: PluginElementRenderProps) => {
+  const { className, ...htmlAttrs } = HTMLAttributes;
+
   return (
     <h1
       id={element.id}
       draggable={false}
       data-element-type={element.type}
-      className="yoo-h-mt-6 yoo-h-scroll-m-20 yoo-h-text-4xl yoo-h-font-bold yoo-h-tracking-tight yoo-h-lg:text-5xl"
+      className={`yoo-h-mt-6 yoo-h-scroll-m-20 yoo-h-text-4xl yoo-h-font-bold yoo-h-tracking-tight yoo-h-lg:text-5x ${className}`}
+      {...htmlAttrs}
       {...attributes}
     >
       {children}

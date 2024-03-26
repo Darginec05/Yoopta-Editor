@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react';
+import { HTMLAttributes, ReactElement, ReactNode } from 'react';
 import { Descendant, Editor } from 'slate';
 import { RenderElementProps as RenderSlateElementProps, RenderLeafProps } from 'slate-react';
 import { SlateElement, YooEditor, YooptaBlockData } from '../editor/types';
@@ -20,6 +20,7 @@ export type PluginOptions<T> = {
   };
   shortcuts?: string[];
   align?: 'left' | 'center' | 'right';
+  HTMLAttributes?: HTMLAttributes<HTMLElement>;
 } & T;
 
 export type PluginElementOptions = {
@@ -28,6 +29,7 @@ export type PluginElementOptions = {
 
 export type PluginElementRenderProps = RenderSlateElementProps & {
   blockId: string;
+  HTMLAttributes?: HTMLAttributes<HTMLElement>;
 };
 
 export type PluginCustomEditorRenderProps = {

@@ -22,7 +22,13 @@ import Code from '@yoopta/code';
 const plugins = [
   Code,
   // Mention,
-  Paragraph,
+  Paragraph.extend({
+    options: {
+      HTMLAttributes: {
+        className: 'paragraph-element',
+      },
+    },
+  }),
   Image.extend({
     // renders: {
     //   image: ({ attributes, children, element, blockId }) => {
@@ -40,6 +46,9 @@ const plugins = [
     //   },
     // },
     options: {
+      HTMLAttributes: {
+        className: 'image-element',
+      },
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file);
 
@@ -55,34 +64,42 @@ const plugins = [
     },
   }),
   Headings.HeadingOne.extend({
-    renders: {
-      'heading-one': ({ attributes, children, element, blockId }) => {
-        return (
-          <h1
-            id={element.id}
-            draggable={false}
-            data-element-type={element.type}
-            className="yoo-h-mt-6 yoo-h-scroll-m-20 yoo-h-text-4xl yoo-h-font-bold yoo-h-tracking-tight yoo-h-lg:text-5xl"
-            {...attributes}
-          >
-            {children}
-          </h1>
-        );
-
-        // return defaultRenderer({ attributes, children, element, blockId });
+    options: {
+      HTMLAttributes: {
+        className: 'heading-one-element',
+        style: {
+          color: 'red !important',
+        },
       },
     },
   }),
-  Headings.HeadingTwo,
+  Headings.HeadingTwo.extend({
+    options: {
+      HTMLAttributes: {
+        className: 'heading-two-element',
+      },
+    },
+  }),
   Headings.HeadingThree,
   Blockquote,
   Callout,
-  Lists.BulletedList,
+  Lists.BulletedList.extend({
+    options: {
+      HTMLAttributes: {
+        className: 'bulleted-list-element',
+      },
+    },
+  }),
   Lists.NumberedList,
   Lists.TodoList,
   // Table,
   Embed,
   Video.extend({
+    options: {
+      HTMLAttributes: {
+        className: 'video-element',
+      },
+    },
     options: {
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file, 'video');
@@ -97,7 +114,13 @@ const plugins = [
       },
     },
   }),
-  Link,
+  Link.extend({
+    options: {
+      HTMLAttributes: {
+        className: 'link-element',
+      },
+    },
+  }),
 ];
 
 const MARKS = [Bold, Italic, Highlight, CodeMark, Strike, Underline];

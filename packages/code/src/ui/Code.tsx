@@ -6,7 +6,7 @@ import {
   buildBlockData,
   generateId,
 } from '@yoopta/editor';
-import { KeyboardEvent, useState } from 'react';
+import { KeyboardEvent, useRef, useState } from 'react';
 import { themes } from '../utils/themes';
 import { LANGUAGES } from '../utils/languages';
 import { CodeElement } from '../types';
@@ -22,10 +22,39 @@ const codeMirrorSetup: any = {
   highlightActiveLine: false,
 };
 
-const ReactCodeMirror = ({ extensions, className }) => {
-  const { ref } = useCodeMirror({ extensions });
+const ReactCodeMirror = ({ extensions, className, value = '', onChange, ...props }) => {
+  const editor = useRef<HTMLDivElement>(null);
 
-  return <div ref={ref} className={className} />;
+  const { state, view, container } = useCodeMirror({
+    // root,
+    // autoFocus,
+    // theme,
+    // height,
+    // minHeight,
+    // maxHeight,
+    // width,
+    // minWidth,
+    // maxWidth,
+    // basicSetup,
+    // placeholder,
+    // indentWithTab,
+    // editable,
+    // readOnly,
+    // selection,
+    // onStatistics,
+    // onCreateEditor,
+    // onUpdate,
+    // initialState,
+    container: editor.current,
+    value,
+    onChange,
+    extensions,
+    ...props,
+  });
+
+  console.log('ReactCodeMirror editor', { editor, container, state, view });
+
+  return <div ref={editor} className={className} />;
 };
 
 const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {

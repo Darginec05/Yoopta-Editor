@@ -1,5 +1,5 @@
 import React, { memo, useMemo, useRef } from 'react';
-import { Editable, RenderElementProps, Slate } from 'slate-react';
+import { DefaultElement, Editable, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useBlockData } from '../contexts/YooptaContext/YooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../marks';
@@ -113,8 +113,8 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   const renderElement = (props: RenderElementProps) => {
     const ElementComponent = ELEMENTS_MAP[props.element.type];
 
-    if (!ElementComponent) return <></>;
-    return <ElementComponent {...props} blockId={id} options={options} />;
+    if (!ElementComponent) return <DefaultElement {...props} />;
+    return <ElementComponent {...props} blockId={id} HTMLAttributes={options?.HTMLAttributes} />;
   };
 
   const renderLeaf = (props: ExtendedLeafProps<any, any>) => {
@@ -293,9 +293,8 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     readOnly,
   }) => {
     if (typeof customEditor === 'function') {
-      return customEditor({
-        blockId: id,
-      });
+      // return customEditor({ blockId: id });
+      return <CustomEditor blockId={id} customEditor={customEditor} />;
     }
 
     return (
@@ -321,6 +320,11 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     );
   },
 );
+
+const CustomEditor = ({ blockId, customEditor }) => {
+  const Component = () => customEditor({ blockId });
+  return <Component />;
+};
 
 SlateEditorInstance.displayName = 'SlateEditorInstance';
 
