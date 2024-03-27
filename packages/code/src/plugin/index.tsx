@@ -1,8 +1,8 @@
 import { generateId, YooptaPlugin } from '@yoopta/editor';
-import { CodeElementProps, CodePluginElements } from '../types';
+import { CodeElementProps, CodePluginBlockOptions, CodePluginElements } from '../types';
 import { CodeEditor } from '../ui/Code';
 
-const Code = new YooptaPlugin<CodePluginElements, CodeElementProps>({
+const Code = new YooptaPlugin<CodePluginElements, CodeElementProps, CodePluginBlockOptions>({
   type: 'Code',
   customEditor: CodeEditor,
   elements: {
@@ -12,7 +12,7 @@ const Code = new YooptaPlugin<CodePluginElements, CodeElementProps>({
       },
       props: {
         nodeType: 'void',
-        language: 'JavaScript',
+        language: 'javascript',
         theme: 'VSCode',
       },
     },
@@ -23,6 +23,8 @@ const Code = new YooptaPlugin<CodePluginElements, CodeElementProps>({
       description: 'Write bugs',
     },
     shortcuts: ['```'],
+    defaultLanguage: 'javascript',
+    defaultTheme: 'VSCode',
   },
   parsers: {
     html: {
@@ -31,10 +33,10 @@ const Code = new YooptaPlugin<CodePluginElements, CodeElementProps>({
         parse(el) {
           if (el.nodeName === 'PRE') {
             const code = el.querySelector('code');
-            const textContent = (code ? code.textContent : el.textContent) || '';
+            const textContent = code ? code.textContent : el.textContent;
 
             return {
-              children: [{ text: textContent }],
+              children: [{ text: textContent || '' }],
               type: 'code',
               id: generateId(),
               props: {

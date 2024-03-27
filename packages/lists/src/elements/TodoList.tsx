@@ -13,7 +13,7 @@ const TodoListRender = ({ attributes, element, children, blockId, HTMLAttributes
   return (
     <div
       data-element-type={element.type}
-      className={`flex items-center pl-4 space-x-2 py-[3px] text-[16px] relative ${className}`}
+      className={`yoo-lists-flex yoo-lists-items-center yoo-lists-pl-4 yoo-lists-space-x-2 yoo-lists-py-[1px] yoo-lists-text-[16px] yoo-lists-relative ${className}`}
       data-checked={checked}
       {...htmlAttrs}
       {...attributes}
@@ -21,11 +21,15 @@ const TodoListRender = ({ attributes, element, children, blockId, HTMLAttributes
       <span
         onClick={() => editor.blocks.TodoList.updateElement(blockId, 'todo-list', { checked: !checked })}
         contentEditable={false}
-        className="select-none cursor-pointer absolute left-0 top-[3px]"
+        className="yoo-lists-select-none yoo-lists-cursor-pointer yoo-lists-absolute yoo-lists-left-0 yoo-lists-top-[3px]"
       >
-        <input type="checkbox" className="form-checkbox min-w-[10px] w-auto" checked={checked} />
+        <input
+          type="checkbox"
+          className="yoo-lists-form-checkbox yoo-lists-min-w-[10px] yoo-lists-w-auto"
+          checked={checked}
+        />
       </span>
-      <div className="flex-grow" style={style}>
+      <div className="yoo-lists-flex-grow" style={style}>
         {children}
       </div>
     </div>

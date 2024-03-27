@@ -6,14 +6,17 @@ const BulletedListRender = ({ attributes, element, children, HTMLAttributes = {}
   return (
     <div
       data-element-type={element.type}
-      className={`flex items-center pl-4 space-x-2 py-[3px] text-[16px] leading-7 relative ${className}`}
+      className={`yoo-lists-flex yoo-lists-items-center yoo-lists-pl-4 yoo-lists-space-x-2 yoo-lists-py-[1px] yoo-lists-text-[16px] yoo-lists-leading-7 yoo-lists-relative ${className}`}
       {...htmlAttrs}
       {...attributes}
     >
-      <span className="min-w-[10px] w-auto select-none absolute left-0 top-[3px]" contentEditable={false}>
+      <span
+        className="yoo-lists-min-w-[10px] yoo-lists-w-auto yoo-lists-select-none yoo-lists-absolute yoo-lists-left-0 yoo-lists-top-[3px]"
+        contentEditable={false}
+      >
         •
       </span>
-      <span className="flex-grow">{children}</span>
+      <span className="yoo-lists-flex-grow">{children}</span>
     </div>
   );
 };

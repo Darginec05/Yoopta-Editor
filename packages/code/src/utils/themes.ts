@@ -8,7 +8,7 @@ import { dracula } from '@uiw/codemirror-theme-dracula';
 import { copilot } from '@uiw/codemirror-theme-copilot';
 import { basicDark, basicLight } from '@uiw/codemirror-theme-basic';
 
-export const themes = {
+export const THEMES_MAP = {
   BasicLight: basicLight,
   BasicDark: basicDark,
   VSCode: vscodeDark,

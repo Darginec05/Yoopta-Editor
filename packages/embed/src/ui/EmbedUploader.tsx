@@ -16,21 +16,21 @@ const EmbedUploader = ({ floatingStyles, refs, onClose, blockId }: Props) => {
 
   return (
     <FloatingPortal root={document.getElementById('yoopta-editor')}>
-      <FloatingOverlay lockScroll className="z-[100]" onClick={onClose}>
+      <FloatingOverlay lockScroll className="yoo-embed-z-[100]" onClick={onClose}>
         <div ref={refs.setFloating} style={floatingStyles} onClick={(e) => e.stopPropagation()}>
-          <div className="flex flex-col min-w-[540px] max-w-[calc(100vw-24px)] h-full max-h-[420px] bg-white shadow-[rgb(15_15_15_/5%)_0px_0px_0px_1px,_rgb(15_15_15_/10%)_0px_3px_6px,_rgb(15_15_15_/20%)_0px_9px_24px]">
-            <div className="w-full flex text-[14px] p-[0_8px] shadow-[rgb(55_53_47_/9%)_0px_-1px_0px_inset] relative z-10 h-[40px]">
+          <div className="yoo-embed-flex yoo-embed-flex-col yoo-embed-min-w-[540px] yoo-embed-max-w-[calc(100vw-24px)] yoo-embed-h-full yoo-embed-max-h-[420px] yoo-embed-bg-white yoo-embed-shadow-[rgb(15_15_15_/5%)_0px_0px_0px_1px,_rgb(15_15_15_/10%)_0px_3px_6px,_rgb(15_15_15_/20%)_0px_9px_24px]">
+            <div className="yoo-embed-w-full yoo-embed-flex yoo-embed-text-[14px] yoo-embed-p-[0_8px] yoo-embed-shadow-[rgb(55_53_47_/9%)_0px_-1px_0px_inset] yoo-embed-relative yoo-embed-z-10 yoo-embed-h-[40px]">
               <button
                 type="button"
                 style={getTabStyles()}
                 className={
-                  'py-[6px] whitespace-nowrap min-w-0 flex-shrink-0 text-[rgb(55,53,47)] relative cursor-pointer user-select-none bg-inherit transition-[height_20ms_ease-in] inline-flex items-center h-full text-[14px] leading-[1.2] px-[8px]'
+                  'yoo-embed-py-[6px] yoo-embed-whitespace-nowrap yoo-embed-min-w-0 yoo-embed-flex-shrink-0 yoo-embed-text-[rgb(55,53,47)] yoo-embed-relative yoo-embed-cursor-pointer yoo-embed-user-select-none yoo-embed-bg-inherit yoo-embed-transition-[height_20ms_ease-in] yoo-embed-inline-flex yoo-embed-items-center yoo-embed-h-full yoo-embed-text-[14px] yoo-embed-leading-[1.2] yoo-embed-px-[8px]'
                 }
               >
                 Embed link
               </button>
             </div>
-            <div className="pt-[6px] pb-[6px] mt-[4px] flex justify-center mr-[12px] ml-[12px]">
+            <div className="yoo-embed-pt-[6px] yoo-embed-pb-[6px] yoo-embed-mt-[4px] yoo-embed-flex yoo-embed-justify-center yoo-embed-mr-[12px] yoo-embed-ml-[12px]">
               <EmbedLinkUploader onClose={onClose} blockId={blockId} />
             </div>
           </div>

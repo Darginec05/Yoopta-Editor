@@ -22,10 +22,10 @@ const EmbedBlockOptions = ({ editor, block, props: embedProps }: Props) => {
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+            className="yoo-embed-rounded-sm hover:yoo-embed-bg-[#37352f14] yoo-embed-leading-[120%] yoo-embed-px-2 yoo-embed-py-1.5 yoo-embed-mx-[4px] yoo-embed-cursor-pointer yoo-embed-w-full yoo-embed-flex yoo-embed-justify-start"
             onClick={onOpen}
           >
-            <ExternalLinkIcon width={16} height={16} className="w-4 h-4 mr-2" />
+            <ExternalLinkIcon width={16} height={16} className="yoo-embed-w-4 yoo-embed-h-4 yoo-embed-mr-2" />
             Open
           </button>
         </BlockOptionsMenuItem>

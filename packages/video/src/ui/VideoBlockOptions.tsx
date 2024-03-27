@@ -1,5 +1,5 @@
 import { UI, YooEditor, YooptaBlockData } from '@yoopta/editor';
-import { RowSpacingIcon, SizeIcon, WidthIcon, DownloadIcon } from '@radix-ui/react-icons';
+import { RowSpacingIcon, SizeIcon, WidthIcon, DownloadIcon, ExternalLinkIcon } from '@radix-ui/react-icons';
 import { VideoElementProps, VideoPluginElements } from '../types';
 
 const { ExtendedBlockActions, BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptionsSeparator } = UI;
@@ -24,8 +24,10 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
     editor.blocks.Image.updateElement<VideoPluginElements, VideoElementProps>(block.id, 'video', { fit: 'fill' });
   };
 
+  const isExternalVideo = !!videoProps?.provider?.id;
+
   const onDownload = () => {
-    if (!videoProps || !videoProps.src) return;
+    if (!videoProps || !videoProps.src || isExternalVideo) return;
 
     const link = document.createElement('a');
     link.href = videoProps.src;
@@ -37,6 +39,12 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
     document.body.removeChild(link);
   };
 
+  const onOpen = () => {
+    if (videoProps?.provider?.url) {
+      window.open(videoProps?.provider?.url, '_blank');
+    }
+  };
+
   return (
     <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])} className="yoopta-video-options">
       <BlockOptionsSeparator />
@@ -44,7 +52,7 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+            className="yoo-video-rounded-sm hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start"
             onClick={onFit}
           >
             <RowSpacingIcon width={16} height={16} className="w-4 h-4 mr-2" />
@@ -54,7 +62,7 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+            className="yoo-video-rounded-sm hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start"
             onClick={onFill}
           >
             <WidthIcon width={16} height={16} className="w-4 h-4 mr-2" />
@@ -64,7 +72,7 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+            className="yoo-video-rounded-sm hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start"
             onClick={onCover}
           >
             <SizeIcon width={16} height={16} className="w-4 h-4 mr-2" />
@@ -78,11 +86,20 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
-            onClick={onDownload}
+            className="yoo-video-rounded-sm hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start"
+            onClick={isExternalVideo ? onOpen : onDownload}
           >
-            <DownloadIcon width={16} height={16} className="w-4 h-4 mr-2" />
-            Download
+            {isExternalVideo ? (
+              <>
+                <ExternalLinkIcon width={16} height={16} className="yoo-embed-w-4 yoo-embed-h-4 yoo-embed-mr-2" />
+                Open
+              </>
+            ) : (
+              <>
+                <DownloadIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
+                Download
+              </>
+            )}
           </button>
         </BlockOptionsMenuItem>
       </BlockOptionsMenuGroup>

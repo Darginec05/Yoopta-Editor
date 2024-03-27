@@ -23,20 +23,29 @@ const Placeholder = ({ attributes, children, blockId }) => {
   const onSetLoading = (slate: boolean) => setLoading(slate);
 
   return (
-    <div className="w-full user-select-none m-[20px_0_10px] relative flex" {...attributes} contentEditable={false}>
+    <div
+      className="yoo-video-w-full yoo-video-user-select-none yoo-video-m-[20px_0_10px] yoo-video-relative yoo-video-flex"
+      {...attributes}
+      contentEditable={false}
+    >
       <button
-        className={`p-[12px_36px_12px_12px] flex items-center text-left w-full overflow-hidden rounded-[3px] text-[14px] text-[rgba(55,53,47,0.65)] relative cursor-pointer border-none bg-[#efefef] transition-[background-color_100ms_ease-in] hover:bg-[#e3e3e3]`}
+        className={`yoo-video-p-[12px_36px_12px_12px] yoo-video-flex yoo-video-items-center yoo-video-text-left yoo-video-w-full yoo-video-overflow-hidden yoo-video-rounded-[3px] yoo-video-text-[14px] yoo-video-text-[rgba(55,53,47,0.65)] yoo-video-relative yoo-video-cursor-pointer yoo-video-border-none yoo-video-bg-[#efefef] yoo-video-transition-[background-color_100ms_ease-in] hover:yoo-video-bg-[#e3e3e3]`}
         onClick={() => setIsUploaderOpen(true)}
         disabled={loading}
         ref={refs.setReference}
       >
         {loading ? (
-          <Loader className="mr-2 user-select-none" width={24} height={24} />
+          <Loader className="yoo-video-mr-2 yoo-video-user-select-none" width={24} height={24} />
         ) : (
-          <VideoIcon className="mr-2 user-select-none" width={24} height={24} />
+          <VideoIcon className="yoo-video-mr-2 yoo-video-user-select-none" width={24} height={24} />
         )}
-        <span className="font-medium">{loading ? 'Loading...' : 'Click to add video'}</span>
-        {loading && <div className="absolute top-0 left-0 h-full bg-[rgba(55,53,47,0.16)]" style={loadingStyles} />}
+        <span className="yoo-video-font-medium">{loading ? 'Loading...' : 'Click to add video'}</span>
+        {loading && (
+          <div
+            className="yoo-video-absolute yoo-video-top-0 yoo-video-left-0 yoo-video-h-full yoo-video-bg-[rgba(55,53,47,0.16)]"
+            style={loadingStyles}
+          />
+        )}
       </button>
       {isUploaderOpen && (
         <VideoUploader

@@ -16,6 +16,7 @@ export type VideoProviderTypes = 'youtube' | 'vimeo' | 'dailymotion' | string | 
 export type VideoProvider = {
   type: VideoProviderTypes;
   id: string;
+  url?: string;
 };
 
 export type VideoElementProps = {

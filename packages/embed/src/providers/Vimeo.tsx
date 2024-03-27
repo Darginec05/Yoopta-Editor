@@ -22,13 +22,13 @@ function Vimeo({ provider, width, height, blockId }: ProviderRenderProps) {
   }, [provider.id]);
 
   return (
-    <div ref={vimeoRootRef} className="yoo-video-relative">
+    <div ref={vimeoRootRef} className="yoo-embed-relative">
       <img
         src={src || ''}
         alt="vimeo_embed_preview"
         width="100%"
         height="100%"
-        className="yoo-video-absolute yoo-video-top-0 yoo-video-left-0 yoo-video-w-full yoo-video-h-full"
+        className="yoo-embed-absolute yoo-embed-top-0 yoo-embed-left-0 yoo-embed-w-full yoo-embed-h-full"
         style={{
           opacity: isInViewport && isFrameLoaded ? 0 : 1,
           zIndex: isInViewport && isFrameLoaded ? -1 : 0,
@@ -42,7 +42,7 @@ function Vimeo({ provider, width, height, blockId }: ProviderRenderProps) {
           frameBorder={0}
           allowFullScreen
           onLoad={() => setFrameLoaded(true)}
-          className="yoo-video-absolute yoo-video-top-0 yoo-video-left-0"
+          className="yoo-embed-absolute yoo-embed-top-0 yoo-embed-left-0"
           width={width}
           height={height}
         />

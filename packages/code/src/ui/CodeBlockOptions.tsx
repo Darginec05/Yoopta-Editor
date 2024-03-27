@@ -1,9 +1,9 @@
 import { UI as UI_HELPERS, YooEditor, YooptaBlockData } from '@yoopta/editor';
 import { Select } from './Select';
-import { themes } from '../utils/themes';
+import { THEMES_MAP } from '../utils/themes';
 
 import { Trigger } from '@radix-ui/react-select';
-import { LANGUAGES } from '../utils/languages';
+import { LANGUAGES_MAP } from '../utils/languages';
 import CopyIcon from '../icons/copy.svg';
 import CodeIcon from '../icons/code.svg';
 import ThemeIcon from '../icons/theme.svg';
@@ -55,7 +55,7 @@ export const CodeBlockOptions = ({ block, editor, element }: Props) => {
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <Select
-            options={Object.keys(themes).map((theme) => ({ value: theme, label: theme }))}
+            options={Object.keys(THEMES_MAP).map((theme) => ({ value: theme, label: theme }))}
             onChange={onChangeTheme}
             value={element.props?.theme || 'VSCode'}
           >
@@ -67,7 +67,10 @@ export const CodeBlockOptions = ({ block, editor, element }: Props) => {
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <Select
-            options={Object.keys(LANGUAGES).map((lang) => ({ value: lang, label: lang }))}
+            options={Object.keys(LANGUAGES_MAP).map((key) => ({
+              value: LANGUAGES_MAP[key].type,
+              label: LANGUAGES_MAP[key].name,
+            }))}
             onChange={onChangeLanguage}
             value={element.props?.language || 'JavaScript'}
           >
