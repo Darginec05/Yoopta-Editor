@@ -300,7 +300,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
           key={`editable-${id}`}
           renderElement={renderElement}
           renderLeaf={renderLeaf}
-          className="focus-visible:outline-none focus:outline-none"
+          className="focus-visible:yoo-editor-outline-none focus:yoo-editor-outline-none"
           spellCheck
           {...eventHandlers}
           onKeyDown={onKeyDown}

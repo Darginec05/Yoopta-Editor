@@ -41,7 +41,7 @@ const ImageComponent = ({ width, height, src, alt, fit, bgColor, layout = 'intri
   }
 
   return (
-    <div className="w-full" data-layout={layout}>
+    <div className="yoo-image-w-full" data-layout={layout}>
       {src && (
         <img src={src} width={width} height={height} alt={alt || ''} decoding="async" loading="lazy" style={style} />
       )}

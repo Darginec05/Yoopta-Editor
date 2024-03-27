@@ -11,7 +11,7 @@ const BulletedListRender = ({ attributes, element, children, HTMLAttributes = {}
       {...attributes}
     >
       <span
-        className="yoo-lists-min-w-[10px] yoo-lists-w-auto yoo-lists-select-none yoo-lists-absolute yoo-lists-left-0 yoo-lists-top-[3px]"
+        className="yoo-lists-min-w-[10px] yoo-lists-w-auto yoo-lists-select-none yoo-lists-absolute yoo-lists-left-0 yoo-lists-top-[0px]"
         contentEditable={false}
       >
         •

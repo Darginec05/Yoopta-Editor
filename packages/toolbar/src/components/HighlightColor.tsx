@@ -1,5 +1,5 @@
-import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
-import { ChevronUpIcon } from '@radix-ui/react-icons';
+import { FloatingPortal } from '@floating-ui/react';
+// import { ChevronUpIcon } from '@radix-ui/react-icons';
 import { CSSProperties, MouseEvent } from 'react';
 import { YooEditor } from '@yoopta/editor';
 
@@ -50,7 +50,7 @@ type Props = {
   editor: YooEditor;
   highlightColors: CSSProperties;
   onClose: () => void;
-  refs: { setFloating: (el: HTMLElement) => void };
+  refs: { setFloating: (el: any) => void };
   floatingStyles: React.CSSProperties;
 };
 
@@ -82,7 +82,7 @@ const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles
         <div className="yoo-toolbar-bg-white yoo-toolbar-p-[5px] yoo-toolbar-rounded-md yoo-toolbar-shadow-md yoo-toolbar-border yoo-toolbar-shadow-y-[4px]">
           <div className="yoo-toolbar-flex yoo-toolbar-items-center yoo-toolbar-justify-between">
             <span className="yoo-toolbar-text-xs">Text color</span>
-            <ChevronUpIcon width={14} height={14} />
+            {/* <ChevronUpIcon width={14} height={14} /> */}
           </div>
           <div className="yoo-toolbar-flex yoo-toolbar-items-center">
             {colors.map(([label, color]) => (
@@ -98,7 +98,7 @@ const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles
           </div>
           <div className="yoo-toolbar-flex yoo-toolbar-items-center yoo-toolbar-justify-between yoo-toolbar-mt-1">
             <span className="yoo-toolbar-text-xs">Background color</span>
-            <ChevronUpIcon width={14} height={14} />
+            {/* <ChevronUpIcon width={14} height={14} /> */}
           </div>
           <div className="yoo-toolbar-flex yoo-toolbar-items-center">
             {backgroundColors.map(([label, backgroundColor]) => (

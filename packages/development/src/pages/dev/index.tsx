@@ -2654,10 +2654,10 @@ const BasicExample = () => {
   };
 
   return (
-    <div className="px-[100px] max-w-[900px] mx-auto my-10" ref={rectangleSelectionRef}>
-      <div className="flex mb-10">
+    <div className="px-[100px]  max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={rectangleSelectionRef}>
+      <div className="flex mb-8">
         <button
-          className="bg-blue-500 mr-4 text-white px-4 py-2 rounded-md"
+          className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
           onClick={() => {
             editor.formats.highlight?.update({ color: 'rgb(176, 171, 250)' });
           }}
@@ -2665,17 +2665,17 @@ const BasicExample = () => {
           Highlight text
         </button>
         <button
-          className="bg-blue-500 mr-4 text-white px-4 py-2 rounded-md"
+          className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
           onClick={() => {
             editor.blocks.Image.create();
           }}
         >
           Add Image
         </button>
-        <button className="bg-blue-500 mr-4 text-white px-4 py-2 rounded-md" onClick={onSubmit}>
+        <button className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md" onClick={onSubmit}>
           Get editor data
         </button>
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-md" onClick={() => setReadOnly((p) => !p)}>
+        <button className="bg-[#007aff] text-[#fff] px-4 py-2 rounded-md" onClick={() => setReadOnly((p) => !p)}>
           Switch readOnly mode
         </button>
       </div>
@@ -2689,6 +2689,7 @@ const BasicExample = () => {
         tools={TOOLS}
         readOnly={readOnly}
         value={value}
+        width={750}
       />
     </div>
   );
