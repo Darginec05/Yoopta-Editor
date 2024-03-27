@@ -45,30 +45,30 @@ const ImageBlockOptions = ({ editor, block, props: imageProps }: Props) => {
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+            className="yoo-image-rounded-sm hover:yoo-image-bg-[#37352f14] yoo-image-leading-[120%] yoo-image-px-2 yoo-image-py-1.5 yoo-image-mx-[4px] yoo-image-cursor-pointer yoo-image-w-full yoo-image-flex yoo-image-justify-start"
             onClick={onFit}
           >
-            <RowSpacingIcon width={16} height={16} className="w-4 h-4 mr-2" />
+            <RowSpacingIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
             Fit
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+            className="yoo-image-rounded-sm hover:yoo-image-bg-[#37352f14] yoo-image-leading-[120%] yoo-image-px-2 yoo-image-py-1.5 yoo-image-mx-[4px] yoo-image-cursor-pointer yoo-image-w-full yoo-image-flex yoo-image-justify-start"
             onClick={onFill}
           >
-            <WidthIcon width={16} height={16} className="w-4 h-4 mr-2" />
+            <WidthIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
             Fill
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+            className="yoo-image-rounded-sm hover:yoo-image-bg-[#37352f14] yoo-image-leading-[120%] yoo-image-px-2 yoo-image-py-1.5 yoo-image-mx-[4px] yoo-image-cursor-pointer yoo-image-w-full yoo-image-flex yoo-image-justify-start"
             onClick={onCover}
           >
-            <SizeIcon width={16} height={16} className="w-4 h-4 mr-2" />
+            <SizeIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
             Cover
           </button>
         </BlockOptionsMenuItem>
@@ -79,20 +79,20 @@ const ImageBlockOptions = ({ editor, block, props: imageProps }: Props) => {
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+            className="yoo-image-rounded-sm hover:yoo-image-bg-[#37352f14] yoo-image-leading-[120%] yoo-image-px-2 yoo-image-py-1.5 yoo-image-mx-[4px] yoo-image-cursor-pointer yoo-image-w-full yoo-image-flex yoo-image-justify-start"
             onClick={onDownload}
           >
-            <DownloadIcon width={16} height={16} className="w-4 h-4 mr-2" />
+            <DownloadIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
             Download
           </button>
         </BlockOptionsMenuItem>
         {/* <BlockOptionsMenuItem>
           <button
             type="button"
-            className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+            className="yoo-image-rounded-sm hover:yoo-image-bg-[#37352f14] yoo-image-leading-[120%] yoo-image-px-2 yoo-image-py-1.5 yoo-image-mx-[4px] yoo-image-cursor-pointer yoo-image-w-full yoo-image-flex yoo-image-justify-start"
             onClick={onAlternativeText}
           >
-            <TextIcon width={16} height={16} className="w-4 h-4 mr-2" />
+            <TextIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
             Alt
           </button>
         </BlockOptionsMenuItem> */}

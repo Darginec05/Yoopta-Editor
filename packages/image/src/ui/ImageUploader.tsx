@@ -27,15 +27,15 @@ const ImageUploader = ({ floatingStyles, refs, onClose, blockId, onSetLoading }:
 
   return (
     <FloatingPortal root={document.getElementById('yoopta-editor')}>
-      <FloatingOverlay lockScroll className="z-[100]" onClick={onClose}>
+      <FloatingOverlay lockScroll className="yoo-image-z-[100]" onClick={onClose}>
         <div ref={refs.setFloating} style={floatingStyles} onClick={(e) => e.stopPropagation()}>
-          <div className="flex flex-col min-w-[540px] max-w-[calc(100vw-24px)] h-full max-h-[420px] bg-white shadow-[rgb(15_15_15_/5%)_0px_0px_0px_1px,_rgb(15_15_15_/10%)_0px_3px_6px,_rgb(15_15_15_/20%)_0px_9px_24px]">
-            <div className="w-full flex text-[14px] p-[0_8px] shadow-[rgb(55_53_47_/9%)_0px_-1px_0px_inset] relative z-10 h-[40px]">
+          <div className="yoo-image-flex yoo-image-flex-col yoo-image-min-w-[540px] yoo-image-max-w-[calc(100vw-24px)] yoo-image-h-full yoo-image-max-h-[420px] yoo-image-bg-white yoo-image-shadow-[rgb(15_15_15_/5%)_0px_0px_0px_1px,_rgb(15_15_15_/10%)_0px_3px_6px,_rgb(15_15_15_/20%)_0px_9px_24px]">
+            <div className="yoo-image-w-full yoo-image-flex yoo-image-text-[14px] yoo-image-p-[0_8px] yoo-image-shadow-[rgb(55_53_47_/9%)_0px_-1px_0px_inset] yoo-image-relative yoo-image-z-10 yoo-image-h-[40px]">
               <button
                 type="button"
                 onClick={() => switchTab('upload')}
                 style={getTabStyles(isUploader)}
-                className={`py-[6px] whitespace-nowrap min-w-0 flex-shrink-0 text-[rgb(55,53,47)] relative cursor-pointer user-select-none bg-inherit transition-[height_20ms_ease-in] inline-flex items-center h-full text-[14px] leading-[1.2] px-[8px]`}
+                className={`yoo-image-py-[6px] yoo-image-whitespace-nowrap yoo-image-min-w-0 yoo-image-flex-shrink-0 yoo-image-text-[rgb(55,53,47)] yoo-image-relative yoo-image-cursor-pointer yoo-image-user-select-none yoo-image-bg-inherit yoo-image-transition-[height_20ms_ease-in] yoo-image-inline-flex yoo-image-items-center yoo-image-h-full yoo-image-text-[14px] yoo-image-leading-[1.2] yoo-image-px-[8px]`}
               >
                 Upload
               </button>
@@ -44,13 +44,13 @@ const ImageUploader = ({ floatingStyles, refs, onClose, blockId, onSetLoading }:
                 onClick={() => switchTab('embed')}
                 style={getTabStyles(isEmbed)}
                 className={
-                  'py-[6px] whitespace-nowrap min-w-0 flex-shrink-0 text-[rgb(55,53,47)] relative cursor-pointer user-select-none bg-inherit transition-[height_20ms_ease-in] inline-flex items-center h-full text-[14px] leading-[1.2] px-[8px]'
+                  'yoo-image-py-[6px] yoo-image-whitespace-nowrap yoo-image-min-w-0 yoo-image-flex-shrink-0 yoo-image-text-[rgb(55,53,47)] yoo-image-relative yoo-image-cursor-pointer yoo-image-user-select-none yoo-image-bg-inherit yoo-image-transition-[height_20ms_ease-in] yoo-image-inline-flex yoo-image-items-center yoo-image-h-full yoo-image-text-[14px] yoo-image-leading-[1.2] yoo-image-px-[8px]'
                 }
               >
                 Image link
               </button>
             </div>
-            <div className="pt-[6px] pb-[6px] mt-[4px] flex justify-center mr-[12px] ml-[12px]">
+            <div className="yoo-image-pt-[6px] yoo-image-pb-[6px] yoo-image-mt-[4px] yoo-image-flex yoo-image-justify-center yoo-image-mr-[12px] yoo-image-ml-[12px]">
               {isEmbed && <EmbedUploader onClose={onClose} blockId={blockId} />}
               {isUploader && <FileUploader onClose={onClose} blockId={blockId} onSetLoading={onSetLoading} />}
             </div>

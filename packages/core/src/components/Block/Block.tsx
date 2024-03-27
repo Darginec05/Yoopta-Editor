@@ -37,7 +37,7 @@ const Block = ({ children, block, blockId }) => {
 
   return (
     <div
-      className="relative py-0 px-[2px] mt-[2px] mb-[1px] rounded yoopta-block-wrapper"
+      className="yoo-editor-relative yoo-editor-py-0 yoo-editor-px-[2px] yoo-editor-mt-[2px] yoo-editor-mb-[1px] yoo-editor-rounded yoopta-block-wrapper"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       data-yoopta-block-id={blockId}
@@ -62,7 +62,7 @@ const Block = ({ children, block, blockId }) => {
         {children}
       </div>
       {isSelected && !editor.readOnly && (
-        <div className="absolute left-0 top-0 bg-[#2383e224] z-[90] rounded opacity-100 h-full w-full pointer-events-none yoopta-selection-block" />
+        <div className="yoo-editor-absolute yoo-editor-left-0 yoo-editor-top-0 yoo-editor-bg-[#2383e224] yoo-editor-z-[90] yoo-editor-rounded yoo-editor-opacity-100 yoo-editor-h-full yoo-editor-w-full yoo-editor-pointer-events-none yoopta-selection-block" />
       )}
     </div>
   );

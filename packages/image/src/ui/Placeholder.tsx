@@ -23,20 +23,29 @@ const Placeholder = ({ attributes, children, blockId }) => {
   const onSetLoading = (slate: boolean) => setLoading(slate);
 
   return (
-    <div className="w-full user-select-none m-[20px_0_10px] relative flex" {...attributes} contentEditable={false}>
+    <div
+      className="yoo-image-w-full yoo-image-user-select-none yoo-image-m-[20px_0_10px] yoo-image-relative yoo-image-flex"
+      {...attributes}
+      contentEditable={false}
+    >
       <button
-        className={`p-[12px_36px_12px_12px] flex items-center text-left w-full overflow-hidden rounded-[3px] text-[14px] text-[rgba(55,53,47,0.65)] relative cursor-pointer border-none bg-[#efefef] transition-[background-color_100ms_ease-in] hover:bg-[#e3e3e3]`}
+        className={`yoo-image-p-[12px_36px_12px_12px] yoo-image-flex yoo-image-items-center yoo-image-text-left yoo-image-w-full yoo-image-overflow-hidden yoo-image-rounded-[3px] yoo-image-text-[14px] yoo-image-text-[rgba(55,53,47,0.65)] yoo-image-relative yoo-image-cursor-pointer yoo-image-border-none yoo-image-bg-[#efefef] yoo-image-transition-[background-color_100ms_ease-in] hover:yoo-image-bg-[#e3e3e3]`}
         onClick={() => setIsUploaderOpen(true)}
         disabled={loading}
         ref={refs.setReference}
       >
         {loading ? (
-          <Loader className="mr-2 user-select-none" width={24} height={24} />
+          <Loader className="yoo-image-mr-2 yoo-image-user-select-none" width={24} height={24} />
         ) : (
-          <ImageIcon className="mr-2 user-select-none" width={24} height={24} />
+          <ImageIcon className="yoo-image-mr-2 yoo-image-user-select-none" width={24} height={24} />
         )}
-        <span className="font-medium">{loading ? 'Loading...' : 'Click to add image'}</span>
-        {loading && <div className="absolute top-0 left-0 h-full bg-[rgba(55,53,47,0.16)]" style={loadingStyles} />}
+        <span className="yoo-image-font-medium">{loading ? 'Loading...' : 'Click to add image'}</span>
+        {loading && (
+          <div
+            className="yoo-image-absolute yoo-image-top-0 yoo-image-left-0 yoo-image-h-full yoo-image-bg-[rgba(55,53,47,0.16)]"
+            style={loadingStyles}
+          />
+        )}
       </button>
       {isUploaderOpen && (
         <ImageUploader

@@ -18,19 +18,19 @@ import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySel
 import { getRootBlockElement } from '../../utils/blockElements';
 import { useYooptaTools } from '../../contexts/YooptaContext/ToolsContext';
 
-const BlockOptionsMenuGroup = ({ children }) => <div className="flex flex-col">{children}</div>;
+const BlockOptionsMenuGroup = ({ children }) => <div className="yoo-editor-flex yoo-editor-flex-col">{children}</div>;
 
 const BlockOptionsMenuContent = ({ children }) => (
   <div
     onClick={(e) => e.stopPropagation()}
-    className="bg-[#FFF] relative min-w-[200px] w-auto overflow-hidden rounded-md border bg-popover py-[6px] px-0 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
+    className="yoo-editor-bg-[#FFF] yoo-editor-relative yoo-editor-min-w-[200px] yoo-editor-w-auto yoo-editor-overflow-hidden yoo-editor-rounded-md yoo-editor-border yoo-editor-bg-popover yoo-editor-py-[6px] yoo-editor-px-0 yoo-editor-text-popover-foreground yoo-editor-shadow-md data-[state=open]:yoo-editor-animate-in data-[state=closed]:yoo-editor-animate-out data-[state=closed]:yoo-editor-fade-out-0 data-[state=open]:yoo-editor-fade-in-0 data-[state=closed]:yoo-editor-zoom-out-95 data-[state=open]:yoo-editor-zoom-in-95 data-[side=bottom]:yoo-editor-slide-in-from-top-2 data-[side=left]:yoo-editor-slide-in-from-right-2 data-[side=right]:yoo-editor-slide-in-from-left-2 data-[side=top]:yoo-editor-slide-in-from-bottom-2"
   >
     {children}
   </div>
 );
 
 const BlockOptionsMenuItem = ({ children }) => (
-  <div className="relative flex cursor-default select-none items-center text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+  <div className="yoo-editor-relative yoo-editor-flex yoo-editor-cursor-default yoo-editor-select-none yoo-editor-items-center yoo-editor-text-sm yoo-editor-outline-none yoo-editor-transition-colors focus:yoo-editor-bg-accent focus:yoo-editor-text-accent-foreground data-[disabled]:yoo-editor-pointer-events-none data-[disabled]:yoo-editor-opacity-50">
     {children}
   </div>
 );
@@ -40,7 +40,7 @@ type BlockOptionsSeparatorProps = {
 };
 
 const BlockOptionsSeparator = ({ className }: BlockOptionsSeparatorProps) => (
-  <div className={`h-[1px] bg-[#37352f14] my-[4px] w-full ${className}`} />
+  <div className={`yoo-editor-h-[1px] yoo-editor-bg-[#37352f14] yoo-editor-my-[4px] yoo-editor-w-full ${className}`} />
 );
 
 type BlockOptionsProps = {
@@ -114,27 +114,27 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
   return (
     // [TODO] - take care about SSR
     <FloatingPortal root={document.getElementById('yoopta-editor')}>
-      <FloatingOverlay lockScroll className="z-[100]" onClick={onClose}>
+      <FloatingOverlay lockScroll className="yoo-editor-z-[100]" onClick={onClose}>
         <div style={style} ref={refs.setFloating}>
           <BlockOptionsMenuContent>
             <BlockOptionsMenuGroup>
               <BlockOptionsMenuItem>
                 <button
                   type="button"
-                  className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+                  className="yoo-editor-rounded-sm hover:yoo-editor-bg-[#37352f14] yoo-editor-leading-[120%] yoo-editor-px-2 yoo-editor-py-1.5 yoo-editor-mx-[4px] yoo-editor-cursor-pointer yoo-editor-w-full yoo-editor-flex yoo-editor-justify-start"
                   onClick={onDelete}
                 >
-                  <TrashIcon className="w-4 h-4 mr-2" />
+                  <TrashIcon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
                   Delete
                 </button>
               </BlockOptionsMenuItem>
               <BlockOptionsMenuItem>
                 <button
                   type="button"
-                  className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+                  className="yoo-editor-rounded-sm hover:yoo-editor-bg-[#37352f14] yoo-editor-leading-[120%] yoo-editor-px-2 yoo-editor-py-1.5 yoo-editor-mx-[4px] yoo-editor-cursor-pointer yoo-editor-w-full yoo-editor-flex yoo-editor-justify-start"
                   onClick={onDuplicate}
                 >
-                  <CopyIcon className="w-4 h-4 mr-2" />
+                  <CopyIcon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
                   Duplicate
                 </button>
               </BlockOptionsMenuItem>
@@ -142,7 +142,11 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
                 <BlockOptionsMenuItem>
                   {isMounted && !!ActionMenu && (
                     <FloatingPortal root={document.getElementById('yoopta-editor')}>
-                      <FloatingOverlay lockScroll className="z-[100]" onClick={() => setIsActionMenuOpen(false)}>
+                      <FloatingOverlay
+                        lockScroll
+                        className="yoo-editor-z-[100]"
+                        onClick={() => setIsActionMenuOpen(false)}
+                      >
                         <div style={actionMenuStyles} ref={actionMenuRefs.setFloating}>
                           <ActionMenu
                             actions={Object.keys(editor.blocks)}
@@ -159,11 +163,11 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
                   )}
                   <button
                     type="button"
-                    className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+                    className="yoo-editor-rounded-sm hover:yoo-editor-bg-[#37352f14] yoo-editor-leading-[120%] yoo-editor-px-2 yoo-editor-py-1.5 yoo-editor-mx-[4px] yoo-editor-cursor-pointer yoo-editor-w-full yoo-editor-flex yoo-editor-justify-start"
                     ref={actionMenuRefs.setReference}
                     onClick={() => setIsActionMenuOpen((open) => !open)}
                   >
-                    <TurnIcon className="w-4 h-4 mr-2" />
+                    <TurnIcon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
                     Turn into
                   </button>
                 </BlockOptionsMenuItem>
@@ -171,10 +175,10 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
               <BlockOptionsMenuItem>
                 <button
                   type="button"
-                  className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+                  className="yoo-editor-rounded-sm hover:yoo-editor-bg-[#37352f14] yoo-editor-leading-[120%] yoo-editor-px-2 yoo-editor-py-1.5 yoo-editor-mx-[4px] yoo-editor-cursor-pointer yoo-editor-w-full yoo-editor-flex yoo-editor-justify-start"
                   onClick={onCopy}
                 >
-                  <Link2Icon className="w-4 h-4 mr-2" />
+                  <Link2Icon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
                   Copy link to block
                 </button>
               </BlockOptionsMenuItem>
