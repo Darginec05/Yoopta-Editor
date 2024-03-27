@@ -27,15 +27,15 @@ const VideoUploader = ({ floatingStyles, refs, onClose, blockId, onSetLoading }:
 
   return (
     <FloatingPortal root={document.getElementById('yoopta-editor')}>
-      <FloatingOverlay lockScroll className="z-[100]" onClick={onClose}>
+      <FloatingOverlay lockScroll className="yoo-video-z-[100]" onClick={onClose}>
         <div ref={refs.setFloating} style={floatingStyles} onClick={(e) => e.stopPropagation()}>
-          <div className="flex flex-col min-w-[540px] max-w-[calc(100vw-24px)] h-full max-h-[420px] bg-white shadow-[rgb(15_15_15_/5%)_0px_0px_0px_1px,_rgb(15_15_15_/10%)_0px_3px_6px,_rgb(15_15_15_/20%)_0px_9px_24px]">
-            <div className="w-full flex text-[14px] p-[0_8px] shadow-[rgb(55_53_47_/9%)_0px_-1px_0px_inset] relative z-10 h-[40px]">
+          <div className="yoo-video-flex yoo-video-flex-col yoo-video-min-w-[540px] yoo-video-max-w-[calc(100vw-24px)] yoo-video-h-full yoo-video-max-h-[420px] yoo-video-bg-white yoo-video-shadow-[rgb(15_15_15_/5%)_0px_0px_0px_1px,_rgb(15_15_15_/10%)_0px_3px_6px,_rgb(15_15_15_/20%)_0px_9px_24px]">
+            <div className="yoo-video-w-full yoo-video-flex yoo-video-text-[14px] yoo-video-p-[0_8px] yoo-video-shadow-[rgb(55_53_47_/9%)_0px_-1px_0px_inset] yoo-video-relative yoo-video-z-10 yoo-video-h-[40px]">
               <button
                 type="button"
                 onClick={() => switchTab('upload')}
                 style={getTabStyles(isUploader)}
-                className={`py-[6px] whitespace-nowrap min-w-0 flex-shrink-0 text-[rgb(55,53,47)] relative cursor-pointer user-select-none bg-inherit transition-[height_20ms_ease-in] inline-flex items-center h-full text-[14px] leading-[1.2] px-[8px]`}
+                className={`yoo-video-py-[6px] yoo-video-whitespace-nowrap yoo-video-min-w-0 yoo-video-flex-shrink-0 yoo-video-text-[rgb(55,53,47)] yoo-video-relative yoo-video-cursor-pointer yoo-video-user-select-none yoo-video-bg-inherit yoo-video-transition-[height_20ms_ease-in] yoo-video-inline-flex yoo-video-items-center yoo-video-h-full yoo-video-text-[14px] yoo-video-leading-[1.2] yoo-video-px-[8px]`}
               >
                 Upload
               </button>
@@ -44,13 +44,13 @@ const VideoUploader = ({ floatingStyles, refs, onClose, blockId, onSetLoading }:
                 onClick={() => switchTab('embed')}
                 style={getTabStyles(isEmbed)}
                 className={
-                  'py-[6px] whitespace-nowrap min-w-0 flex-shrink-0 text-[rgb(55,53,47)] relative cursor-pointer user-select-none bg-inherit transition-[height_20ms_ease-in] inline-flex items-center h-full text-[14px] leading-[1.2] px-[8px]'
+                  'yoo-video-py-[6px] yoo-video-whitespace-nowrap yoo-video-min-w-0 yoo-video-flex-shrink-0 yoo-video-text-[rgb(55,53,47)] yoo-video-relative yoo-video-cursor-pointer yoo-video-user-select-none yoo-video-bg-inherit yoo-video-transition-[height_20ms_ease-in] yoo-video-inline-flex yoo-video-items-center yoo-video-h-full yoo-video-text-[14px] yoo-video-leading-[1.2] yoo-video-px-[8px]'
                 }
               >
                 Video link
               </button>
             </div>
-            <div className="pt-[6px] pb-[6px] mt-[4px] flex justify-center mr-[12px] ml-[12px]">
+            <div className="yoo-video-pt-[6px] yoo-video-pb-[6px] yoo-video-mt-[4px] yoo-video-flex yoo-video-justify-center yoo-video-mr-[12px] yoo-video-ml-[12px]">
               {isEmbed && <EmbedUploader onClose={onClose} blockId={blockId} />}
               {isUploader && <FileUploader onClose={onClose} blockId={blockId} onSetLoading={onSetLoading} />}
             </div>

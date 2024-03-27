@@ -19,7 +19,7 @@ const EmbedUploader = ({ blockId, onClose }) => {
 
     editor.blocks.Video.updateElement<VideoPluginElements, VideoElementProps>(blockId, 'video', {
       src: value,
-      provider: { type: providerType, id: videoId },
+      provider: { type: providerType, id: videoId, url: value },
     });
 
     onClose();
@@ -28,17 +28,17 @@ const EmbedUploader = ({ blockId, onClose }) => {
   const isEmpty = value.length === 0;
 
   return (
-    <div className="cursor-pointer user-select-none transition-bg duration-20 ease-in white-space-nowrap w-full">
+    <div className="yoo-video-cursor-pointer yoo-video-user-select-none yoo-video-transition-bg yoo-video-duration-20 yoo-video-ease-in yoo-video-white-space-nowrap yoo-video-w-full">
       <input
         type="text"
         placeholder="Paste video link"
         value={value}
-        className="items-center bg-[hsla(45,13%,94%,.6)] rounded-[4px] shadow-[inset_0_0_0_1px_hsla(0,0%,6%,.1)] cursor-text flex text-[14px] h-[32px] leading-[20px] px-[6px] relative w-full border-none"
+        className="yoo-video-items-center yoo-video-bg-[hsla(45,13%,94%,.6)] yoo-video-rounded-[4px] yoo-video-shadow-[inset_0_0_0_1px_hsla(0,0%,6%,.1)] yoo-video-cursor-text yoo-video-flex yoo-video-text-[14px] yoo-video-h-[32px] yoo-video-leading-[20px] yoo-video-px-[6px] yoo-video-relative yoo-video-w-full yoo-video-border-none"
         onChange={onChange}
       />
       <button
         type="button"
-        className="user-select-none transition-bg duration-20 ease-in cursor-pointer flex items-center justify-center flex-shrink-0 white-space-nowrap h-[28px] rounded-[4px] shadow-[rgba(15,15,15,0.1)_0px_0px_0px_1px_inset,_rgba(15,15,15,0.1)_0px_1px_2px] bg-[rgb(35,131,226)] text-white fill-white leading-[1.2] px-[12px] text-[14px] font-medium w-full max-w-[300px] mx-auto m-[12px_0_6px] disabled:bg-[rgba(35,131,226,0.5)] disabled:cursor-not-allowed"
+        className="yoo-video-user-select-none yoo-video-transition-bg yoo-video-duration-20 yoo-video-ease-in yoo-video-cursor-pointer yoo-video-flex yoo-video-items-center yoo-video-justify-center yoo-video-flex-shrink-0 yoo-video-white-space-nowrap yoo-video-h-[28px] yoo-video-rounded-[4px] yoo-video-shadow-[rgba(15,15,15,0.1)_0px_0px_0px_1px_inset,_rgba(15,15,15,0.1)_0px_1px_2px] yoo-video-bg-[rgb(35,131,226)] yoo-video-text-white yoo-video-fill-white yoo-video-leading-[1.2] yoo-video-px-[12px] yoo-video-text-[14px] yoo-video-font-medium yoo-video-w-full yoo-video-max-w-[300px] yoo-video-mx-auto yoo-video-m-[12px_0_6px] disabled:yoo-video-bg-[rgba(35,131,226,0.5)] disabled:yoo-video-cursor-not-allowed"
         disabled={isEmpty}
         onClick={embed}
       >

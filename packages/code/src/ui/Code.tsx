@@ -2,9 +2,9 @@ import { useBlockData, useYooptaEditor, PluginCustomEditorRenderProps, useYoopta
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 
 import { useState } from 'react';
-import { themes } from '../utils/themes';
+import { THEMES_MAP } from '../utils/themes';
 import { CodeBlockOptions } from './CodeBlockOptions';
-import { LANGUAGES } from '../utils/languages';
+import { LANGUAGES_MAP } from '../utils/languages';
 import { CodeElement } from '../types';
 import { getCodeElement, getCodeElementText } from '../utils/element';
 
@@ -25,7 +25,7 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
   const element = getCodeElement(block) as CodeElement;
 
   const theme = element.props?.theme || 'VSCode';
-  const language = element.props?.language || 'JavaScript';
+  const language = element.props?.language || 'javascript';
 
   const onChange = (value: string) => {
     setCode(value);
@@ -50,10 +50,10 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
         <CodeMirror
           value={code}
           height="auto"
-          extensions={[LANGUAGES[language]]}
+          extensions={[LANGUAGES_MAP[language]?.extension || LANGUAGES_MAP.javascript]}
           onChange={onChange}
           width="100%"
-          theme={themes[theme]}
+          theme={THEMES_MAP[theme] || THEMES_MAP.VSCode}
           className="yoopta-code-cm-editor"
           basicSetup={codeMirrorSetup}
           editable={!isReadOnly}

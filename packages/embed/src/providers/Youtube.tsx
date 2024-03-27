@@ -12,13 +12,13 @@ function YouTube({ provider, width, height, blockId }: ProviderRenderProps) {
   });
 
   return (
-    <div ref={youtubeRootRef} className="yoo-video-relative">
+    <div ref={youtubeRootRef} className="yoo-embed-relative">
       <img
         src={`https://i.ytimg.com/vi/${provider.id}/default.jpg`}
         alt="youtube_embed_preview"
         width="100%"
         height="100%"
-        className="yoo-video-absolute yoo-video-top-0 yoo-video-left-0 yoo-video-w-full yoo-video-h-full"
+        className="yoo-embed-absolute yoo-embed-top-0 yoo-embed-left-0 yoo-embed-w-full yoo-embed-h-full"
         style={{
           opacity: isInViewport && isFrameLoaded ? 0 : 1,
           zIndex: isInViewport && isFrameLoaded ? -1 : 0,
@@ -32,7 +32,7 @@ function YouTube({ provider, width, height, blockId }: ProviderRenderProps) {
           frameBorder={0}
           onLoad={() => setFrameLoaded(true)}
           allowFullScreen
-          className="yoo-video-absolute yoo-video-top-0 yoo-video-left-0"
+          className="yoo-embed-absolute yoo-embed-top-0 yoo-embed-left-0"
           width={width}
           height={height}
         />

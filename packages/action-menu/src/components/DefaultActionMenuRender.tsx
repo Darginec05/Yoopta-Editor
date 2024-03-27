@@ -62,7 +62,8 @@ const DefaultActionMenuRender = ({
               <button
                 key={action.type}
                 onMouseEnter={onMouseEnter}
-                aria-selected={action.type === selectedAction.type}
+                // [TODO] - here is bug
+                aria-selected={action.type === selectedAction?.type}
                 data-action-menu-item
                 data-action-menu-item-type={action.type}
                 onClick={() => {

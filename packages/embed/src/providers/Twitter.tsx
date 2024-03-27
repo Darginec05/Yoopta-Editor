@@ -43,7 +43,7 @@ function Twitter({ provider, blockId }: ProviderRenderProps) {
   }, [provider.id, isInViewport]);
 
   return (
-    <div className="w-full h-full" ref={twitterRootRef}>
+    <div className="yoo-embed-w-full yoo-embed-h-full" ref={twitterRootRef}>
       <div id={elementId} />
     </div>
   );
