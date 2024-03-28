@@ -77,7 +77,7 @@ const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles
   };
 
   return (
-    <FloatingPortal id="highlight-color-portal" root={document.getElementById('yoopta-editor')}>
+    <FloatingPortal id="yoo-highlight-color-portal" root={document.getElementById('yoopta-editor')}>
       <div style={floatingStyles} ref={refs.setFloating} onClick={(e: MouseEvent) => e.stopPropagation()}>
         <div className="yoo-toolbar-bg-white yoo-toolbar-p-[5px] yoo-toolbar-rounded-md yoo-toolbar-shadow-md yoo-toolbar-border yoo-toolbar-shadow-y-[4px]">
           <div className="yoo-toolbar-flex yoo-toolbar-items-center yoo-toolbar-justify-between">

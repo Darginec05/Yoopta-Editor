@@ -25,31 +25,33 @@ function getSelectionPath(slate: SlateEditor, focusAt?: FocusAt): FocusAt {
 
 // [TODO] - update editor.selection after focus
 export function focusBlock(editor: YooEditor, blockId: string, options: FocusBlockOptions = {}) {
-  const { focusAt, waitExecution = true, waitExecutionMs = 0, shouldUpdateBlockSelection = true } = options;
+  try {
+    const { focusAt, waitExecution = true, waitExecutionMs = 0, shouldUpdateBlockSelection = true } = options;
 
-  const focusBlockEditor = () => {
-    const slate = options.slate || editor.blockEditorsMap[blockId];
-    const block = editor.children[blockId];
+    const focusBlockEditor = () => {
+      const slate = options.slate || editor.blockEditorsMap[blockId];
+      const block = editor.children[blockId];
 
-    if (!slate || !block) return;
+      if (!slate || !block) return;
 
-    const currentBlock = editor.blocks[block.type];
-    if (!currentBlock.hasCustomEditor) {
-      const selectionPath = getSelectionPath(slate, focusAt);
-      Transforms.select(slate, selectionPath);
-      ReactEditor.focus(slate);
+      const currentBlock = editor.blocks[block.type];
+      if (!currentBlock.hasCustomEditor) {
+        const selectionPath = getSelectionPath(slate, focusAt);
+        Transforms.select(slate, selectionPath);
+        ReactEditor.focus(slate);
+      }
+
+      if (shouldUpdateBlockSelection) {
+        setTimeout(() => {
+          editor.setSelection([block.meta.order]);
+        }, 0);
+      }
+    };
+
+    if (waitExecution) {
+      setTimeout(() => focusBlockEditor(), waitExecutionMs);
+    } else {
+      focusBlockEditor();
     }
-
-    if (shouldUpdateBlockSelection) {
-      setTimeout(() => {
-        editor.setSelection([block.meta.order]);
-      }, 0);
-    }
-  };
-
-  if (waitExecution) {
-    setTimeout(() => focusBlockEditor(), waitExecutionMs);
-  } else {
-    focusBlockEditor();
-  }
+  } catch (error) {}
 }

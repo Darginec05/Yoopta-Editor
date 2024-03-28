@@ -37,10 +37,8 @@ export class YooptaPlugin<TKeys extends string = string, TProps = Descendant, TO
     }
 
     return new YooptaPlugin<TKeys, TProps, TOptions>({
-      type: this.plugin.type,
+      ...this.plugin,
       elements: elements,
-      events: this.plugin.events,
-      parsers: this.plugin.parsers,
       options: extendedOptions as PluginOptions<TOptions>,
     });
   }

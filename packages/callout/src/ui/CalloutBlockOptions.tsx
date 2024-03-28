@@ -31,61 +31,86 @@ const CalloutBlockOptions = ({ editor, block, props: calloutProps }: Props) => {
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+            className="yoo-callout-rounded-sm hover:yoo-callout-bg-[#37352f14] yoo-callout-leading-[120%] yoo-callout-px-2 yoo-callout-py-1.5 yoo-callout-mx-[4px] yoo-callout-cursor-pointer yoo-callout-w-full yoo-callout-flex yoo-callout-justify-start"
             onClick={() => onChangeTheme('default')}
             style={{
               backgroundColor: isActiveTheme('default') ? CALLOUT_THEME_STYLES.default.backgroundColor : undefined,
             }}
           >
-            <DefaultIcon width={16} height={16} color={CALLOUT_THEME_STYLES.default.color} className="w-4 h-4 mr-2" />
+            <DefaultIcon
+              width={16}
+              height={16}
+              color={CALLOUT_THEME_STYLES.default.color}
+              className="yoo-callout-w-4 yoo-callout-h-4 yoo-callout-mr-2"
+            />
             Default
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+            className="yoo-callout-rounded-sm hover:yoo-callout-bg-[#37352f14] yoo-callout-leading-[120%] yoo-callout-px-2 yoo-callout-py-1.5 yoo-callout-mx-[4px] yoo-callout-cursor-pointer yoo-callout-w-full yoo-callout-flex yoo-callout-justify-start"
             onClick={() => onChangeTheme('info')}
             style={{ backgroundColor: isActiveTheme('info') ? CALLOUT_THEME_STYLES.info.backgroundColor : undefined }}
           >
-            <InfoIcon width={16} height={16} color={CALLOUT_THEME_STYLES.info.color} className="w-4 h-4 mr-2" />
+            <InfoIcon
+              width={16}
+              height={16}
+              color={CALLOUT_THEME_STYLES.info.color}
+              className="yoo-callout-w-4 yoo-callout-h-4 yoo-callout-mr-2"
+            />
             Info
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+            className="yoo-callout-rounded-sm hover:yoo-callout-bg-[#37352f14] yoo-callout-leading-[120%] yoo-callout-px-2 yoo-callout-py-1.5 yoo-callout-mx-[4px] yoo-callout-cursor-pointer yoo-callout-w-full yoo-callout-flex yoo-callout-justify-start"
             onClick={() => onChangeTheme('success')}
             style={{
               backgroundColor: isActiveTheme('success') ? CALLOUT_THEME_STYLES.success.backgroundColor : undefined,
             }}
           >
-            <SuccessIcon width={16} height={16} color={CALLOUT_THEME_STYLES.success.color} className="w-4 h-4 mr-2" />
+            <SuccessIcon
+              width={16}
+              height={16}
+              color={CALLOUT_THEME_STYLES.success.color}
+              className="yoo-callout-w-4 yoo-callout-h-4 yoo-callout-mr-2"
+            />
             Success
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+            className="yoo-callout-rounded-sm hover:yoo-callout-bg-[#37352f14] yoo-callout-leading-[120%] yoo-callout-px-2 yoo-callout-py-1.5 yoo-callout-mx-[4px] yoo-callout-cursor-pointer yoo-callout-w-full yoo-callout-flex yoo-callout-justify-start"
             onClick={() => onChangeTheme('warning')}
             style={{
               backgroundColor: isActiveTheme('warning') ? CALLOUT_THEME_STYLES.warning.backgroundColor : undefined,
             }}
           >
-            <WarningIcon width={16} height={16} color={CALLOUT_THEME_STYLES.warning.color} className="w-4 h-4 mr-2" />
+            <WarningIcon
+              width={16}
+              height={16}
+              color={CALLOUT_THEME_STYLES.warning.color}
+              className="yoo-callout-w-4 yoo-callout-h-4 yoo-callout-mr-2"
+            />
             Warning
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="rounded-sm hover:bg-[#37352f14] leading-[120%] px-2 py-1.5 mx-[4px] cursor-pointer w-full flex justify-start"
+            className="yoo-callout-rounded-sm hover:yoo-callout-bg-[#37352f14] yoo-callout-leading-[120%] yoo-callout-px-2 yoo-callout-py-1.5 yoo-callout-mx-[4px] yoo-callout-cursor-pointer yoo-callout-w-full yoo-callout-flex yoo-callout-justify-start"
             onClick={() => onChangeTheme('error')}
             style={{ backgroundColor: isActiveTheme('error') ? CALLOUT_THEME_STYLES.error.backgroundColor : undefined }}
           >
-            <ErrorIcon width={16} height={16} color={CALLOUT_THEME_STYLES.error.color} className="w-4 h-4 mr-2" />
+            <ErrorIcon
+              width={16}
+              height={16}
+              color={CALLOUT_THEME_STYLES.error.color}
+              className="yoo-callout-w-4 yoo-callout-h-4 yoo-callout-mr-2"
+            />
             Error
           </button>
         </BlockOptionsMenuItem>

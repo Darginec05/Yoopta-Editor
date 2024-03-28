@@ -113,7 +113,7 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
 
   return (
     // [TODO] - take care about SSR
-    <FloatingPortal root={document.getElementById('yoopta-editor')}>
+    <FloatingPortal id="yoo-block-options-portal" root={document.getElementById('yoopta-editor')}>
       <FloatingOverlay lockScroll className="yoo-editor-z-[100]" onClick={onClose}>
         <div style={style} ref={refs.setFloating}>
           <BlockOptionsMenuContent>
@@ -141,7 +141,7 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
               {!isVoidElement && !editor.blocks[currentBlock?.type || '']?.hasCustomEditor && (
                 <BlockOptionsMenuItem>
                   {isMounted && !!ActionMenu && (
-                    <FloatingPortal root={document.getElementById('yoopta-editor')}>
+                    <FloatingPortal id="yoo-block-options-portal" root={document.getElementById('yoopta-editor')}>
                       <FloatingOverlay
                         lockScroll
                         className="yoo-editor-z-[100]"
