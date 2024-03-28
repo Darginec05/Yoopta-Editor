@@ -27,6 +27,7 @@ const SelectContent = ({ children }) => {
         align="center"
         alignOffset={5}
         sideOffset={5}
+        id="yoo-select-content"
       >
         <SelectPrimitive.Viewport className="yoo-code-p-1 yoo-code-h-[var(--radix-select-trigger-height)] yoo-code-w-full yoo-code-min-w-[var(--radix-select-trigger-width)]">
           {children}

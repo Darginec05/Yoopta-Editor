@@ -23,8 +23,8 @@ const Code = new YooptaPlugin<CodePluginElements, CodeElementProps, CodePluginBl
       description: 'Write bugs',
     },
     shortcuts: ['```'],
-    defaultLanguage: 'javascript',
-    defaultTheme: 'VSCode',
+    // defaultLanguage: 'javascript',
+    // defaultTheme: 'VSCode',
   },
   parsers: {
     html: {

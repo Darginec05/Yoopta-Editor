@@ -238,7 +238,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, onHoldToolbarChange }: Tool
         >
           <span className="yoo-toolbar-mr-0">{blockLabel}</span>
           {modals.actionMenu && !!ActionMenuList && (
-            <FloatingPortal id="action-menu-list-portal" root={document.getElementById('yoopta-editor')}>
+            <FloatingPortal id="yoo-toolbar-action-menu-list-portal" root={document.getElementById('yoopta-editor')}>
               <div style={actionMenuStyles} ref={actionMenuRefs.setFloating} onClick={(e) => e.stopPropagation()}>
                 <ActionMenuList
                   actions={Object.keys(editor.blocks)}
@@ -273,7 +273,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, onHoldToolbarChange }: Tool
         >
           <span className="yoo-toolbar-mr-0">Link</span>
           {modals.link && !!LinkTool && (
-            <FloatingPortal id="link-tool-portal" root={document.getElementById('yoopta-editor')}>
+            <FloatingPortal id="yoo-link-tool-portal" root={document.getElementById('yoopta-editor')}>
               <FloatingOverlay lockScroll className="z-[100]" onClick={onClickLinkOverlay}>
                 <div style={linkToolStyles} ref={linkToolRefs.setFloating}>
                   <LinkTool link={linkValues} onSave={onUpdateLink} onDelete={onDeleteLink} />

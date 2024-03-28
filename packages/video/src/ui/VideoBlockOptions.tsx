@@ -48,38 +48,40 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
   return (
     <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])} className="yoopta-video-options">
       <BlockOptionsSeparator />
-      <BlockOptionsMenuGroup>
-        <BlockOptionsMenuItem>
-          <button
-            type="button"
-            className="yoo-video-rounded-sm hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start"
-            onClick={onFit}
-          >
-            <RowSpacingIcon width={16} height={16} className="w-4 h-4 mr-2" />
-            Fit
-          </button>
-        </BlockOptionsMenuItem>
-        <BlockOptionsMenuItem>
-          <button
-            type="button"
-            className="yoo-video-rounded-sm hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start"
-            onClick={onFill}
-          >
-            <WidthIcon width={16} height={16} className="w-4 h-4 mr-2" />
-            Fill
-          </button>
-        </BlockOptionsMenuItem>
-        <BlockOptionsMenuItem>
-          <button
-            type="button"
-            className="yoo-video-rounded-sm hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start"
-            onClick={onCover}
-          >
-            <SizeIcon width={16} height={16} className="w-4 h-4 mr-2" />
-            Cover
-          </button>
-        </BlockOptionsMenuItem>
-      </BlockOptionsMenuGroup>
+      {!isExternalVideo && (
+        <BlockOptionsMenuGroup>
+          <BlockOptionsMenuItem>
+            <button
+              type="button"
+              className="yoo-video-rounded-sm hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start"
+              onClick={onFit}
+            >
+              <RowSpacingIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
+              Fit
+            </button>
+          </BlockOptionsMenuItem>
+          <BlockOptionsMenuItem>
+            <button
+              type="button"
+              className="yoo-video-rounded-sm hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start"
+              onClick={onFill}
+            >
+              <WidthIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
+              Fill
+            </button>
+          </BlockOptionsMenuItem>
+          <BlockOptionsMenuItem>
+            <button
+              type="button"
+              className="yoo-video-rounded-sm hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start"
+              onClick={onCover}
+            >
+              <SizeIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
+              Cover
+            </button>
+          </BlockOptionsMenuItem>
+        </BlockOptionsMenuGroup>
+      )}
       <BlockOptionsSeparator />
 
       <BlockOptionsMenuGroup>

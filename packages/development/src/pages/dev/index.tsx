@@ -17,7 +17,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { uploadToCloudinary } from '../../utils/cloudinary';
 
 import Code from '@yoopta/code';
-import { YooptaBlockData, YooptaChildrenValue } from '@yoopta/editor/dist/editor/types';
 // import Mention from '@yoopta/mention';
 
 const plugins = [

@@ -75,7 +75,7 @@ const Toolbar = () => {
 
   return (
     // [TODO] - take care about SSR
-    <FloatingPortal id="toolbar-portal" root={document.getElementById('yoopta-editor')}>
+    <FloatingPortal id="yoo-toolbar-portal" root={document.getElementById('yoopta-editor')}>
       <div style={style} ref={refs.setFloating} onClick={(e) => e.stopPropagation()}>
         <DefaultToolbarRender activeBlock={activeBlock} editor={editor} onHoldToolbarChange={onHoldToolbarChange} />
       </div>

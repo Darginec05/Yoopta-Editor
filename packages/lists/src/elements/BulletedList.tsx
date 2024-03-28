@@ -6,7 +6,7 @@ const BulletedListRender = ({ attributes, element, children, HTMLAttributes = {}
   return (
     <div
       data-element-type={element.type}
-      className={`yoo-lists-flex yoo-lists-items-center yoo-lists-pl-4 yoo-lists-space-x-2 yoo-lists-py-[1px] yoo-lists-text-[16px] yoo-lists-leading-7 yoo-lists-relative ${className}`}
+      className={`yoo-lists-flex yoo-lists-items-center yoo-lists-pl-4 yoo-lists-space-x-2 yoo-lists-py-[1px] yoo-lists-text-[16px] yoo-lists-leading-7 yoo-lists-relative yoopta-bulleted-list ${className}`}
       {...htmlAttrs}
       {...attributes}
     >

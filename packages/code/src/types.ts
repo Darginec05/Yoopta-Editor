@@ -9,8 +9,8 @@ export type CodeElementProps = {
 };
 
 export type CodePluginBlockOptions = {
-  defaultTheme: keyof typeof THEMES_MAP;
-  defaultLanguage: keyof typeof LANGUAGES_MAP;
+  // defaultTheme: keyof typeof THEMES_MAP;
+  // defaultLanguage: keyof typeof LANGUAGES_MAP;
 };
 
 export type CodeElement = SlateElement<'code', CodeElementProps>;
