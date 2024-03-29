@@ -4,6 +4,7 @@ import {
   PluginCustomEditorRenderProps,
   useYooptaReadOnly,
   useYooptaPluginOptions,
+  buildBlockData,
 } from '@yoopta/editor';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 
@@ -47,6 +48,17 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
     }
   };
 
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    const isShiftEnter = e.key === 'Enter' && e.shiftKey;
+    if (isShiftEnter) {
+      e.preventDefault();
+      const currentBlockPath = block.meta.order;
+      const defaultBlock = buildBlockData();
+      editor.insertBlock(defaultBlock, { at: [currentBlockPath + 1], focus: true });
+      return;
+    }
+  };
+
   return (
     <div
       data-element-type="Code"
@@ -66,6 +78,7 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
           editable={!isReadOnly}
           readOnly={isReadOnly}
           onClick={onClick}
+          onKeyDown={onKeyDown}
         />
       </div>
       {!isReadOnly && <CodeBlockOptions block={block} editor={editor} element={element} />}

@@ -2,7 +2,6 @@ import { useYooptaEditor } from '../../contexts/YooptaContext/YooptaContext';
 import { useSortable } from '@dnd-kit/sortable';
 import { useState } from 'react';
 import { BlockActions } from './BlockActions';
-import s from './Block.module.scss';
 
 const Block = ({ children, block, blockId }) => {
   const editor = useYooptaEditor();
@@ -43,6 +42,7 @@ const Block = ({ children, block, blockId }) => {
       data-yoopta-block-id={blockId}
       style={style}
       data-yoopta-block
+      data-hovered-block={isHovered}
       ref={setNodeRef}
     >
       {!editor.readOnly && (
@@ -55,7 +55,6 @@ const Block = ({ children, block, blockId }) => {
         />
       )}
       <div
-        className={s.content}
         // [TODO] - check in which direction is dragging
         style={contentStyles}
       >

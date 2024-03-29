@@ -27,6 +27,7 @@ const TodoListRender = ({ attributes, element, children, blockId, HTMLAttributes
           type="checkbox"
           className="yoo-lists-form-checkbox yoo-lists-min-w-[10px] yoo-lists-w-auto"
           checked={checked}
+          disabled={editor.readOnly}
         />
       </span>
       <div className="yoo-lists-flex-grow" style={style}>

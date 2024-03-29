@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useRef } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 import { DefaultElement, Editable, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useBlockData } from '../contexts/YooptaContext/YooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
@@ -108,122 +108,143 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     return eventHandlersMap;
   }, [events, editor, block]);
 
-  const onChange = (value) => editor.updateBlock(id, { value });
+  const onChange = useCallback((value) => editor.updateBlock(id, { value }), [id]);
 
-  const renderElement = (props: RenderElementProps) => {
-    const ElementComponent = ELEMENTS_MAP[props.element.type];
+  const renderElement = useCallback(
+    (props: RenderElementProps) => {
+      const ElementComponent = ELEMENTS_MAP[props.element.type];
 
-    if (!ElementComponent) return <DefaultElement {...props} />;
-    return <ElementComponent {...props} blockId={id} HTMLAttributes={options?.HTMLAttributes} />;
-  };
+      if (!ElementComponent) return <DefaultElement {...props} />;
+      return <ElementComponent {...props} blockId={id} HTMLAttributes={options?.HTMLAttributes} />;
+    },
+    [elements],
+  );
 
-  const renderLeaf = (props: ExtendedLeafProps<any, any>) => {
-    let { children, leaf, attributes } = props;
-    const { text, ...formats } = leaf;
+  const renderLeaf = useCallback(
+    (props: ExtendedLeafProps<any, any>) => {
+      let { children, leaf, attributes } = props;
+      const { text, ...formats } = leaf;
 
-    const isBlockSelected = editor.selection?.[0] === block.meta.order;
+      const isBlockSelected = editor.selection?.[0] === block.meta.order;
 
-    if (formats) {
-      Object.keys(formats).forEach((format) => {
-        const mark = MARKS_MAP[format];
-        if (mark) children = mark.render({ children, leaf });
-      });
-    }
-
-    const isParentElementVoid = props.children?.props?.parent?.props?.nodeType === 'void';
-    const showPlaceholder = !isParentElementVoid && isBlockSelected && leaf.withPlaceholder;
-
-    return (
-      <TextLeaf attributes={attributes} placeholder={showPlaceholder ? placeholder : undefined}>
-        {children}
-      </TextLeaf>
-    );
-  };
-
-  const onKeyDown = (event: React.KeyboardEvent) => {
-    if (editor.readOnly) return;
-
-    eventHandlers.onKeyDown?.(event);
-    EVENT_HANDLERS.onKeyDown(editor)(event);
-  };
-
-  const onKeyUp = (event: React.KeyboardEvent) => {
-    if (editor.readOnly) return;
-
-    eventHandlers?.onKeyUp?.(event);
-  };
-
-  const onClick = (event: React.MouseEvent) => {
-    if (editor.readOnly) return;
-
-    if (editor.selection?.[0] !== block.meta.order) {
-      editor.setSelection([block.meta.order]);
-    }
-    eventHandlers?.onClick?.(event);
-  };
-
-  const onBlur = (event: React.FocusEvent) => {
-    if (editor.readOnly) return;
-
-    event.preventDefault();
-    eventHandlers?.onBlur?.(event);
-  };
-
-  const onFocus = (event: React.FocusEvent) => {
-    if (editor.readOnly) return;
-
-    eventHandlers?.onFocus?.(event);
-  };
-
-  const onPaste = (event: React.ClipboardEvent) => {
-    if (editor.readOnly) return;
-
-    eventHandlers?.onPaste?.(event);
-
-    const data = event.clipboardData;
-
-    const html = data.getData('text/html');
-    const parsedHTML = new DOMParser().parseFromString(html, 'text/html');
-
-    if (parsedHTML.body.childNodes.length > 0) {
-      const blocks = parsers.html.deserialize(editor, parsedHTML.body);
-
-      if (blocks.length > 0) {
-        editor.insertBlocks(blocks, { at: editor.selection, focus: true });
-        return;
-      }
-    }
-  };
-
-  const onCopy = (event: React.ClipboardEvent) => {
-    if (editor.readOnly) return;
-
-    eventHandlers?.onCopy?.(event);
-  };
-
-  const decorate = (nodeEntry: NodeEntry) => {
-    const ranges = [] as NodeEntry[] & { withPlaceholder?: boolean }[];
-    if (editor.readOnly) return ranges;
-
-    const [node, path] = nodeEntry;
-    const isCurrent = editor.selection?.[0] === block.meta.order;
-
-    if (slate.selection && isCurrent) {
-      if (
-        !Editor.isEditor(node) &&
-        Editor.string(slate, [path[0]]) === '' &&
-        Range.includes(slate.selection, path) &&
-        Range.isCollapsed(slate.selection)
-      ) {
-        ranges.push({
-          ...slate.selection,
-          withPlaceholder: true,
+      if (formats) {
+        Object.keys(formats).forEach((format) => {
+          const mark = MARKS_MAP[format];
+          if (mark) children = mark.render({ children, leaf });
         });
       }
-    }
 
-    return ranges;
-  };
+      const isParentElementVoid = props.children?.props?.parent?.props?.nodeType === 'void';
+      const showPlaceholder = !isParentElementVoid && isBlockSelected && leaf.withPlaceholder;
+
+      return (
+        <TextLeaf attributes={attributes} placeholder={showPlaceholder ? placeholder : undefined}>
+          {children}
+        </TextLeaf>
+      );
+    },
+    [marks],
+  );
+
+  const onKeyDown = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (editor.readOnly) return;
+
+      eventHandlers.onKeyDown?.(event);
+      EVENT_HANDLERS.onKeyDown(editor)(event);
+    },
+    [eventHandlers.onKeyDown, editor.readOnly],
+  );
+
+  const onKeyUp = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (editor.readOnly) return;
+
+      eventHandlers?.onKeyUp?.(event);
+    },
+    [eventHandlers.onKeyUp, editor.readOnly],
+  );
+
+  const onClick = useCallback(
+    (event: React.MouseEvent) => {
+      if (editor.readOnly) return;
+
+      if (editor.selection?.[0] !== block.meta.order) {
+        editor.setSelection([block.meta.order]);
+      }
+      eventHandlers?.onClick?.(event);
+    },
+    [eventHandlers.onClick, editor.readOnly, editor.selection?.[0]],
+  );
+
+  const onBlur = useCallback(
+    (event: React.FocusEvent) => {
+      if (editor.readOnly) return;
+
+      event.preventDefault();
+      eventHandlers?.onBlur?.(event);
+    },
+    [eventHandlers.onBlur, editor.readOnly],
+  );
+
+  const onFocus = useCallback(
+    (event: React.FocusEvent) => {
+      if (editor.readOnly) return;
+
+      eventHandlers?.onFocus?.(event);
+    },
+    [eventHandlers.onFocus, editor.readOnly],
+  );
+
+  const onPaste = useCallback(
+    (event: React.ClipboardEvent) => {
+      if (editor.readOnly) return;
+
+      eventHandlers?.onPaste?.(event);
+
+      const data = event.clipboardData;
+
+      const html = data.getData('text/html');
+      const parsedHTML = new DOMParser().parseFromString(html, 'text/html');
+
+      if (parsedHTML.body.childNodes.length > 0) {
+        const blocks = parsers.html.deserialize(editor, parsedHTML.body);
+
+        if (blocks.length > 0) {
+          editor.insertBlocks(blocks, { at: editor.selection, focus: true });
+          return;
+        }
+      }
+    },
+    [eventHandlers.onPaste, editor.readOnly],
+  );
+
+  const decorate = useCallback(
+    (nodeEntry: NodeEntry) => {
+      const ranges = [] as NodeEntry[] & { withPlaceholder?: boolean }[];
+      if (editor.readOnly) return ranges;
+
+      const [node, path] = nodeEntry;
+      const isCurrent = editor.selection?.[0] === block.meta.order;
+
+      if (slate.selection && isCurrent) {
+        if (
+          !Editor.isEditor(node) &&
+          Editor.string(slate, [path[0]]) === '' &&
+          Range.includes(slate.selection, path) &&
+          Range.isCollapsed(slate.selection)
+        ) {
+          ranges.push({
+            ...slate.selection,
+            withPlaceholder: true,
+          });
+        }
+      }
+
+      return ranges;
+    },
+    [editor.readOnly],
+  );
 
   return (
     <div data-plugin-id={id} data-plugin-type={type}>
@@ -244,7 +265,6 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
         customEditor={customEditor}
         readOnly={editor.readOnly}
         onPaste={onPaste}
-        onCopy={onCopy}
       />
     </div>
   );
@@ -265,7 +285,6 @@ type SlateEditorInstanceProps = {
   onClick: (event: React.MouseEvent) => void;
   onBlur: (event: React.FocusEvent) => void;
   onPaste: (event: React.ClipboardEvent) => void;
-  onCopy: (event: React.ClipboardEvent) => void;
   customEditor?: (props: PluginCustomEditorRenderProps) => JSX.Element;
   decorate: (nodeEntry: NodeEntry) => any[];
 };
