@@ -195,6 +195,8 @@ export function onKeyDown(editor: YooEditor) {
     }
 
     if (HOTKEYS.isArrowDown(event)) {
+      if (event.isDefaultPrevented()) return;
+
       const parentPath = Path.parent(slate.selection.anchor.path);
       const isEnd = Editor.isEnd(slate, slate.selection.anchor, parentPath);
 

@@ -243,7 +243,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
 
       return ranges;
     },
-    [editor.readOnly],
+    [editor.readOnly, editor.selection?.[0]],
   );
 
   return (
@@ -317,6 +317,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
       <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onChange={onChange}>
         <Editable
           key={`editable-${id}`}
+          id={`yoopta-slate-editor-${id}`}
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           className="focus-visible:yoo-editor-outline-none focus:yoo-editor-outline-none"

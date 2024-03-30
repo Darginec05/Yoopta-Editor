@@ -20,7 +20,14 @@ import {
 } from '@floating-ui/react';
 import { CSSProperties, MouseEvent, useEffect, useRef, useState } from 'react';
 import { HighlightColor } from './HighlightColor';
-import { findSlateBySelectionPath, SlateElement, useYooptaTools, YooEditor, YooptaBlock } from '@yoopta/editor';
+import {
+  findSlateBySelectionPath,
+  HOTKEYS,
+  SlateElement,
+  useYooptaTools,
+  YooEditor,
+  YooptaBlock,
+} from '@yoopta/editor';
 import { Editor, Element, NodeEntry, Range, Transforms } from 'slate';
 
 type ToolbarComponentProps = {
@@ -104,6 +111,21 @@ const DefaultToolbarRender = ({ activeBlock, editor, onHoldToolbarChange }: Tool
   const LinkTool = tools.LinkTool;
 
   useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (HOTKEYS.isEscape(e)) {
+        setModals(DEFAULT_MODALS);
+        onHoldToolbarChange?.(false);
+        return;
+      }
+
+      // [TODO]: Implement this accessibility feature
+      // if (HOTKEYS.isEnter(e)) {
+      //   if (modals.link) {
+      //     onUpdateLink(linkValues);
+      //   }
+      // }
+    };
+
     if (modals.link) {
       const slate = findSlateBySelectionPath(editor);
       if (!slate || !slate.selection) return;
@@ -121,6 +143,10 @@ const DefaultToolbarRender = ({ activeBlock, editor, onHoldToolbarChange }: Tool
 
       setLinkValues(link);
     }
+
+    document.addEventListener('keydown', onKeyDown);
+
+    return () => document.removeEventListener('keydown', onKeyDown);
   }, [editor.selection, editor.children, modals.link]);
 
   const onUpdateLink = (link: LinkValues) => {
@@ -248,6 +274,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, onHoldToolbarChange }: Tool
                   empty={false}
                   onMouseEnter={() => undefined}
                   mode="toggle"
+                  view="small"
                 />
               </div>
             </FloatingPortal>
@@ -331,6 +358,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, onHoldToolbarChange }: Tool
             onClick={() => onToggleMark('strike')}
           >
             <StrikethroughIcon width={20} height={20} />
+            {/* <span className="yoo-toolbar-w-[20px] yoo-toolbar-h-[20px] yoo-toolbar-line-through">S</span> */}
           </Toolbar.ToggleItem>
         )}
         {editor.formats.code && (

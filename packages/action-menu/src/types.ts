@@ -9,6 +9,7 @@ export type ActionMenuRenderProps = {
   onClose: () => void;
   empty: boolean;
   mode?: 'toggle' | 'create';
+  view?: 'small' | 'default';
 };
 
 export type ActionMenuToolItem = {

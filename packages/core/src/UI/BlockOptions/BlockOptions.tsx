@@ -156,6 +156,7 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
                             empty={false}
                             onMouseEnter={() => undefined}
                             mode="toggle"
+                            view="small"
                           />
                         </div>
                       </FloatingOverlay>
