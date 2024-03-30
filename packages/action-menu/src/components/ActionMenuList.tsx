@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { DefaultActionMenuRender } from './DefaultActionMenuRender';
 import {
   useFloating,
@@ -11,7 +11,14 @@ import {
   useTransitionStyles,
 } from '@floating-ui/react';
 import { Editor, Path } from 'slate';
-import { YooptaBlockData, YooptaBlock, useYooptaEditor, findSlateBySelectionPath, HOTKEYS } from '@yoopta/editor';
+import {
+  YooptaBlockData,
+  YooptaBlock,
+  useYooptaEditor,
+  findSlateBySelectionPath,
+  HOTKEYS,
+  findPluginBlockBySelectionPath,
+} from '@yoopta/editor';
 import { ActionMenuToolItem, ActionMenuToolProps } from '../types';
 
 const filterBy = (item: YooptaBlockData | YooptaBlock['options'], text: string, field: string) => {
@@ -71,13 +78,16 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
     const string = text.trim().replace(trigger, '');
 
     if (string.length === 0 || string === trigger) return setActions(blockTypes);
-    setActions(actions.filter((action) => filterActionMenuItems(editor.blocks[action.type], string)));
+    const filteredActions = actions.filter((action) => filterActionMenuItems(editor.blocks[action.type], string));
+    const isSelectedItemInsideFilteredActions = filteredActions.some((item) => item.type === selectedAction.type);
+    if (filteredActions.length > 0 && !isSelectedItemInsideFilteredActions) setSelectedAction(filteredActions[0]);
+
+    setActions(filteredActions);
   };
 
   useEffect(() => {
-    updateActionMenuPosition();
-
     const yooptaEditorRef = document.getElementById('yoopta-editor');
+    updateActionMenuPosition();
 
     const handleActionMenuKeyUp = (event: KeyboardEvent) => {
       const slate = findSlateBySelectionPath(editor, { at: editor.selection });
@@ -94,7 +104,9 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
 
     const handleActionMenuKeyDown = (event: KeyboardEvent) => {
       const slate = findSlateBySelectionPath(editor, { at: editor.selection });
-      const isInsideEditor = yooptaEditorRef?.contains(event.target as Node);
+      const slateEditorRef = event.currentTarget as HTMLElement;
+
+      const isInsideEditor = slateEditorRef?.contains(event.target as Node);
       const pluginWithCustomEditor = document.querySelector('[data-custom-editor]');
       const isInsideCustomEditor = pluginWithCustomEditor?.contains(event.target as Node);
 
@@ -142,8 +154,15 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
         const prevSelected = actions[prevIndex];
 
         if (!prevSelected) {
-          return setSelectedAction(actions[actions.length - 1]);
+          const last = actions[actions.length - 1];
+          const lastEl = document.querySelector(`[data-action-menu-item-type="${last.type}"]`) as HTMLElement;
+          lastEl.scrollIntoView({ block: 'nearest' });
+
+          return setSelectedAction(last);
         }
+
+        const prevEl = document.querySelector(`[data-action-menu-item-type="${prevSelected.type}"]`) as HTMLElement;
+        prevEl.scrollIntoView({ block: 'nearest' });
 
         return setSelectedAction(prevSelected);
       }
@@ -160,8 +179,14 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
         const nextSelected = actions[nextIndex];
 
         if (!nextSelected) {
+          const firstEl = document.querySelector(`[data-action-menu-item-type="${actions[0].type}"]`) as HTMLElement;
+          firstEl.scrollIntoView({ block: 'nearest' });
+
           return setSelectedAction(actions[0]);
         }
+
+        const nextEl = document.querySelector(`[data-action-menu-item-type="${nextSelected.type}"]`) as HTMLElement;
+        nextEl.scrollIntoView({ block: 'nearest' });
 
         return setSelectedAction(nextSelected);
       }
@@ -204,14 +229,22 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
       document.addEventListener('click', onClose);
     }
 
-    yooptaEditorRef?.addEventListener('keydown', handleActionMenuKeyDown);
-    yooptaEditorRef?.addEventListener('keyup', handleActionMenuKeyUp);
-    return () => {
-      yooptaEditorRef?.removeEventListener('keydown', handleActionMenuKeyDown);
-      yooptaEditorRef?.removeEventListener('keyup', handleActionMenuKeyUp);
-      document.removeEventListener('click', onClose);
-    };
-  }, [actions, isMenuOpen, editor.selection, refs]);
+    if (editor.selection) {
+      const block = findPluginBlockBySelectionPath(editor, { at: editor.selection });
+      if (!block) return;
+
+      const slateEditorRef = yooptaEditorRef?.querySelector(`#yoopta-slate-editor-${block.id}`) as HTMLElement;
+      if (!slateEditorRef) return;
+
+      slateEditorRef.addEventListener('keydown', handleActionMenuKeyDown);
+      slateEditorRef.addEventListener('keyup', handleActionMenuKeyUp);
+      return () => {
+        slateEditorRef.removeEventListener('keydown', handleActionMenuKeyDown);
+        slateEditorRef.removeEventListener('keyup', handleActionMenuKeyUp);
+        document.removeEventListener('click', onClose);
+      };
+    }
+  }, [actions, isMenuOpen, editor.selection?.[0]]);
 
   const onMouseEnter = (e: React.MouseEvent) => {
     const type = e.currentTarget.getAttribute('data-action-menu-item-type')!;
@@ -227,7 +260,7 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
     }, 3000);
 
     return () => clearTimeout(timeout);
-  }, [actions.length, isMenuOpen, refs]);
+  }, [actions.length, isMenuOpen]);
 
   if (!isMounted) return null;
 

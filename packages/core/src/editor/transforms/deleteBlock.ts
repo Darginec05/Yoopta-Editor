@@ -5,7 +5,7 @@ import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySel
 import { generateId } from '../../utils/generateId';
 import { YooEditor, YooptaEditorTransformOptions } from '../types';
 
-export type DeleteBlockOptions = Omit<YooptaEditorTransformOptions, 'blockId'> & {
+export type DeleteBlockOptions = YooptaEditorTransformOptions & {
   deleteAll?: boolean;
   fromPaths?: number[];
 };

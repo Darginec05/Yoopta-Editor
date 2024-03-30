@@ -7,6 +7,6 @@ declare module 'slate' {
   interface CustomTypes {
     Editor: ReactEditor & BaseEditor;
     Element: SlateElement<string>;
-    Text: EmptyText;
+    Text: EmptyText & { bold?: boolean; italic?: boolean; underline?: boolean; code?: boolean };
   }
 }

@@ -4,7 +4,8 @@
   "license": "MIT",
   "private": false,
   "main": "dist/index.js",
-  "module": "dist/index.es.js",
+  "type": "module",
+  "module": "dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist/"

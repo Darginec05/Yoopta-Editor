@@ -113,6 +113,10 @@ const Editor = ({ placeholder, marks, className, selectionBoxRoot, width, autoFo
   const onClick = (event: React.MouseEvent) => {
     if (isReadOnly) return;
 
+    // [TODO] - handle shift+click
+    // if (event.shiftKey) {
+    // }
+
     resetSelectionState();
     handleEmptyZoneClick(event);
     resetSelectedBlocks();

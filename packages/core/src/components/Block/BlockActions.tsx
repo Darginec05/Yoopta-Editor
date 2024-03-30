@@ -9,6 +9,7 @@ import { Transforms } from 'slate';
 import { useState } from 'react';
 import { useFloating, offset, flip, inline, shift, useTransitionStyles } from '@floating-ui/react';
 import { BlockOptions } from '../../UI/BlockOptions/BlockOptions';
+import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 
 type ActionsProps = {
   block: YooptaBlockData;
@@ -87,13 +88,13 @@ const BlockActions = ({ block, editor, dragHandleProps, showActions, onChangeAct
       <button
         type="button"
         onClick={onPlusClick}
-        className="yoo-editor-cursor-pointer yoo-editor-rounded-[6px] yoo-editor-w-auto yoo-editor-h-[24px] yoo-editor-flex yoo-editor-items-center yoo-editor-justify-center yoo-editor-bg-inherit yoo-editor-bg-transparent yoo-editor-transition-colors yoo-editor-duration-[180ms] yoo-editor-ease-[cubic-bezier(0.4,0,0.2,1)] yoo-editor-relative yoo-editor-w-[18px] yoo-editor-p-0 yoo-editor-text-[rgba(55,53,47,0.35)] yoo-editor-m-[0_1px] hover:yoo-editor-bg-[rgba(55,54,47,0.08)] focus:yoo-editor-bg-[rgba(55,54,47,0.08)] active:yoo-editor-bg-[rgba(55,54,47,0.08)] yoo-editor-w-[24px] yoopta-element-actions-plus"
+        className="yoo-editor-cursor-pointer yoo-editor-rounded-[6px] yoo-editor-h-[24px] yoo-editor-flex yoo-editor-items-center yoo-editor-justify-center yoo-editor-bg-inherit yoo-editor-bg-transparent yoo-editor-transition-colors yoo-editor-duration-[180ms] yoo-editor-ease-[cubic-bezier(0.4,0,0.2,1)] yoo-editor-relative yoo-editor-w-[18px] yoo-editor-p-0 yoo-editor-text-[rgba(55,53,47,0.35)] yoo-editor-m-[0_1px] hover:yoo-editor-bg-[rgba(55,54,47,0.08)] focus:yoo-editor-bg-[rgba(55,54,47,0.08)] active:yoo-editor-bg-[rgba(55,54,47,0.08)] yoo-editor-w-[24px] yoopta-element-actions-plus"
       >
         <PlusIcon />
       </button>
       <button
         type="button"
-        className="yoo-editor-cursor-pointer yoo-editor-rounded-[6px] yoo-editor-w-auto yoo-editor-h-[24px] yoo-editor-flex yoo-editor-items-center yoo-editor-justify-center yoo-editor-bg-inherit yoo-editor-bg-transparent yoo-editor-transition-colors yoo-editor-duration-[180ms] yoo-editor-ease-[cubic-bezier(0.4,0,0.2,1)] yoo-editor-relative yoo-editor-w-[18px] yoo-editor-p-0 yoo-editor-text-[rgba(55,53,47,0.35)] yoo-editor-m-[0_1px] hover:yoo-editor-bg-[rgba(55,54,47,0.08)] focus:yoo-editor-bg-[rgba(55,54,47,0.08)] active:yoo-editor-bg-[rgba(55,54,47,0.08)] yoopta-element-actions-drag"
+        className="yoo-editor-cursor-pointer yoo-editor-rounded-[6px] yoo-editor-h-[24px] yoo-editor-flex yoo-editor-items-center yoo-editor-justify-center yoo-editor-bg-inherit yoo-editor-bg-transparent yoo-editor-transition-colors yoo-editor-duration-[180ms] yoo-editor-ease-[cubic-bezier(0.4,0,0.2,1)] yoo-editor-relative yoo-editor-w-[18px] yoo-editor-p-0 yoo-editor-text-[rgba(55,53,47,0.35)] yoo-editor-m-[0_1px] hover:yoo-editor-bg-[rgba(55,54,47,0.08)] focus:yoo-editor-bg-[rgba(55,54,47,0.08)] active:yoo-editor-bg-[rgba(55,54,47,0.08)] yoopta-element-actions-drag"
         ref={onDragButtonRef}
         {...attributes}
         {...listeners}
