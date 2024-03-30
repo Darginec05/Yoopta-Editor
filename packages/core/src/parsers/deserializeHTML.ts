@@ -147,11 +147,11 @@ function mapNodeChildren(child) {
   return { text: '' };
 }
 
-export function deserializeHTML(editor: YooEditor, el: HTMLElement) {
-  const PLUGINS_NODE_NAME_MATCHERS_MAP = getMappedPluginByNodeNames(editor);
-  const blocks = deserialize(editor, PLUGINS_NODE_NAME_MATCHERS_MAP, el).filter(isYooptaBlock) as YooptaBlockData[];
+export function deserializeHTML(editor: YooEditor, html: HTMLElement) {
+  console.log('pasted html', html);
 
-  console.log('blocks', blocks);
+  const PLUGINS_NODE_NAME_MATCHERS_MAP = getMappedPluginByNodeNames(editor);
+  const blocks = deserialize(editor, PLUGINS_NODE_NAME_MATCHERS_MAP, html).filter(isYooptaBlock) as YooptaBlockData[];
 
   return blocks;
 }

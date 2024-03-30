@@ -18,14 +18,14 @@ export type YooptaBlockData<T = Descendant | SlateElement> = {
   meta: YooptaBlockBaseMeta;
 };
 
-export type YooptaChildrenValue = Record<string, YooptaBlockData>;
-
-export type SlateEditor = Editor;
+export type YooptaContentValue = Record<string, YooptaBlockData>;
 
 export type YooptaBlockBaseMeta = {
   order: number;
   depth: number;
 };
+
+export type SlateEditor = Editor;
 
 export type FocusAt = Path | Point;
 

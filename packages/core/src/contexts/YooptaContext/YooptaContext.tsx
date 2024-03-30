@@ -71,8 +71,8 @@ const useBlockData = (blockId: string) => useYooptaEditor().children[blockId];
 const useYooptaBlock = (blockType: string) => useYooptaEditor().blocks[blockType];
 const useYooptaPlugin = (type: string) => useYooptaEditor().plugins[type];
 const useYooptaReadOnly = () => useYooptaEditor().readOnly;
-const useYooptaPluginOptions = <TOptions,>(blockId: string): PluginOptions<TOptions> =>
-  useYooptaPlugin(blockId)?.options as PluginOptions<TOptions>;
+const useYooptaPluginOptions = <TOptions,>(blockType: string): PluginOptions<TOptions> =>
+  useYooptaPlugin(blockType)?.options as PluginOptions<TOptions>;
 
 type UseBlockSelectedProps = { blockId: string; path?: YooptaBlockPath } | { path: YooptaBlockPath; blockId?: string };
 const useBlockSelected = ({ blockId, path }: UseBlockSelectedProps) => {

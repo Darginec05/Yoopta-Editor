@@ -3,7 +3,7 @@ import { YooptaContextProvider } from './contexts/YooptaContext/YooptaContext';
 import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { Editor } from './components/Editor/Editor';
 import { useMemo, useState } from 'react';
-import { YooEditor, YooptaBlockData, YooptaChildrenValue } from './editor/types';
+import { YooEditor, YooptaBlockData, YooptaContentValue } from './editor/types';
 import { Plugin } from './plugins/types';
 import NoSSR from './components/NoSsr/NoSsr';
 import { Tools, ToolsProvider } from './contexts/YooptaContext/ToolsContext';
@@ -22,7 +22,7 @@ type Props = {
   editor: YooEditor;
   plugins: YooptaPlugin[];
   marks?: YooptaMark<any>[];
-  value?: YooptaChildrenValue;
+  value?: YooptaContentValue;
   autoFocus?: boolean;
   className?: string;
   selectionBoxRoot?: HTMLElement | React.MutableRefObject<HTMLElement | null> | false;
@@ -84,7 +84,7 @@ const YooptaEditor = ({
     if (marks) editor.formats = buildMarks(editor, marks);
     editor.blocks = buildBlocks(editor, plugins);
 
-    editor.children = (isValidateInitialValue(value) ? value : DEFAULT_VALUE) as YooptaChildrenValue;
+    editor.children = (isValidateInitialValue(value) ? value : DEFAULT_VALUE) as YooptaContentValue;
     editor.blockEditorsMap = buildBlockSlateEditors(editor);
     editor.shortcuts = buildBlockShortcuts(editor);
     editor.plugins = buildPlugins(plugins);

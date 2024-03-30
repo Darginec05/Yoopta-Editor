@@ -10,7 +10,6 @@ const NumberedList = new YooptaPlugin<'numbered-list', ListElementProps>({
       render: NumberedListRender,
       props: {
         nodeType: 'block',
-        count: 0,
       },
     },
   },
@@ -50,7 +49,7 @@ const NumberedList = new YooptaPlugin<'numbered-list', ListElementProps>({
                       id: generateId(),
                       type: 'numbered-list',
                       children: [{ text: textContent }],
-                      props: { nodeType: 'block', count: i },
+                      props: { nodeType: 'block' },
                     },
                   ],
                   meta: { order: 0, depth: 0 },
