@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/editor",
-  "version": "4.0.0-rc.26",
+  "version": "4.0.0-rc.27",
   "license": "MIT",
   "private": false,
   "main": "dist/index.js",
