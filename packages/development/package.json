@@ -28,6 +28,7 @@
     "@yoopta/action-menu-list": "*",
     "@yoopta/toolbar": "*",
     "@yoopta/link-tool": "*",
+    "@yoopta/file": "*",
     "slate": "^0.102.0",
     "slate-react": "^0.102.0"
   },

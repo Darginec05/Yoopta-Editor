@@ -51,8 +51,6 @@ export function onKeyDown(editor: YooEditor, slate: Editor, { hotkeys, defaultBl
 
         const [listNode, listPath] = nodeEntry as [ListNode, Path];
 
-        const currentListCount = listNode.props?.count || 0;
-
         const isEndAtNode = Editor.isEnd(slate, anchor, listPath);
         const isStartAtNode = Editor.isStart(slate, anchor, listPath);
         const text = Editor.string(slate, listPath);
@@ -80,7 +78,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor, { hotkeys, defaultBl
             value: [
               buildBlockElement({
                 type: listNode.type,
-                props: { nodeType: 'block', count: currentListCount - 1 },
+                props: { nodeType: 'block' },
               }),
             ],
           });
@@ -100,7 +98,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor, { hotkeys, defaultBl
           value: [
             buildBlockElement({
               type: listNode.type,
-              props: { nodeType: 'block', count: currentListCount + 1 },
+              props: { nodeType: 'block' },
             }),
           ],
         });

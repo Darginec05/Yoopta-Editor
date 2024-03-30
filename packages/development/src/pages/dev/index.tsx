@@ -15,7 +15,7 @@ import Callout from '@yoopta/callout';
 import Lists from '@yoopta/lists';
 import Link from '@yoopta/link';
 import Video from '@yoopta/video';
-// import Table from '@yoopta/table';
+import File from '@yoopta/file';
 import Embed from '@yoopta/embed';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
@@ -28,8 +28,21 @@ import { BaseElement, Descendant, Text } from 'slate';
 // import Mention from '@yoopta/mention';
 
 const plugins = [
-  // Mention,
   Code,
+  File.extend({
+    options: {
+      onUpload: async (file: File) => {
+        const data = await uploadToCloudinary(file, 'auto');
+
+        return {
+          src: data.secure_url,
+          format: data.format,
+          name: data.name,
+          size: data.bytes,
+        };
+      },
+    },
+  }),
   Paragraph.extend({
     options: {
       HTMLAttributes: {
@@ -156,6 +169,57 @@ export type YooptaBaseElementV2 = {
 
 export type YooptaChildrenValue = Record<string, YooptaBlockData>;
 
+const value = {
+  'd09a9db9-3a1c-4249-a72c-fcf52b297196': {
+    id: 'd09a9db9-3a1c-4249-a72c-fcf52b297196',
+    value: [
+      {
+        id: '4de6acfd-6795-46ca-bcbb-a9ee5aebfb11',
+        type: 'file',
+        children: [
+          {
+            text: '',
+          },
+        ],
+        props: {
+          nodeType: 'void',
+          size: 11949,
+          name: 'page-v2',
+          src: 'https://res.cloudinary.com/ench-app/raw/upload/v1711831874/page-v2_qexcw3.json',
+          format: 'json',
+        },
+      },
+    ],
+    type: 'File',
+    meta: {
+      order: 0,
+      depth: 0,
+    },
+  },
+  'ddf5ba7f-984d-4605-b237-db387efc7129': {
+    id: 'ddf5ba7f-984d-4605-b237-db387efc7129',
+    value: [
+      {
+        id: '73c8c234-1ba5-4abd-b88b-6fd9b49aaac8',
+        type: 'paragraph',
+        children: [
+          {
+            text: '',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'Paragraph',
+    meta: {
+      order: 1,
+      depth: 0,
+    },
+  },
+};
+
 const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
   const rectangleSelectionRef = useRef<HTMLDivElement>(null);
@@ -206,6 +270,7 @@ const BasicExample = () => {
         tools={TOOLS}
         readOnly={readOnly}
         width={750}
+        value={value}
       />
     </div>
   );

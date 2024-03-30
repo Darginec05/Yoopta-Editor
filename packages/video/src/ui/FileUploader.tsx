@@ -13,8 +13,6 @@ const FileUploader = ({ accept = 'video/*', onClose, blockId, onSetLoading }: Pr
   const options = useYooptaPluginOptions<VideoPluginOptions>('Video');
   const editor = useYooptaEditor();
 
-  useEffect(() => {}, []);
-
   const upload = async (file: File) => {
     if (!options?.onUpload) {
       throw new Error('onUpload not provided in plugin options. Check Video.extend({}) method');

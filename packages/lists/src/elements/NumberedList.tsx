@@ -1,13 +1,24 @@
 import { PluginElementRenderProps, useBlockData, useYooptaEditor } from '@yoopta/editor';
 
-const NumberedListRender = ({ attributes, children, element, HTMLAttributes = {} }: PluginElementRenderProps) => {
+const NumberedListRender = ({
+  attributes,
+  children,
+  element,
+  blockId,
+  HTMLAttributes = {},
+}: PluginElementRenderProps) => {
   const { className, ...htmlAttrs } = HTMLAttributes;
+  const block = useBlockData(blockId);
+  const editor = useYooptaEditor();
 
-  const renderCount = () => {
-    const counter =
-      element.type === 'numbered-list' && typeof element.props?.count === 'number' ? element.props?.count : 1;
-    return counter + 1;
-  };
+  const index = Object.keys(editor.children)
+    .filter((key) => {
+      const childrenBlock = editor.children[key];
+      return childrenBlock.meta.depth === block.meta.depth && childrenBlock.type === 'NumberedList';
+    })
+    .findIndex((key) => key === blockId);
+
+  const count = index + 1;
 
   return (
     <div
@@ -20,7 +31,7 @@ const NumberedListRender = ({ attributes, children, element, HTMLAttributes = {}
         className="yoo-lists-min-w-[10px] yoo-lists-w-auto yoo-lists-select-none yoo-lists-absolute yoo-lists-left-0 yoo-lists-top-[0px]"
         contentEditable={false}
       >
-        {renderCount()}.
+        {count}.
       </span>
       <span className="yoo-lists-flex-grow">{children}</span>
     </div>

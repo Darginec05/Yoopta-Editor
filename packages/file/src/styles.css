@@ -1,0 +1,11 @@
+@tailwind utilities;
+
+
+.yoopta-file .yoopta-extended-block-actions {
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.yoopta-file:hover .yoopta-extended-block-actions {
+  opacity: 1;
+}

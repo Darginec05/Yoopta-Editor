@@ -12,6 +12,7 @@ import BulletedListIcon from './icons/bulleted-list.svg';
 import NumberedListIcon from './icons/numbered-list.svg';
 import TableIcon from './icons/table.svg';
 import CalloutIcon from './icons/callout.svg';
+import FileIcon from './icons/file.svg';
 
 // LUICIDE icons
 export const DEFAULT_ICONS_MAP: Record<string, any> = {
@@ -29,4 +30,5 @@ export const DEFAULT_ICONS_MAP: Record<string, any> = {
   NumberedList: NumberedListIcon,
   Table: TableIcon,
   Callout: CalloutIcon,
+  File: FileIcon,
 };

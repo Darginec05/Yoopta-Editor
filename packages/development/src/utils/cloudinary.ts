@@ -13,6 +13,8 @@ export type MediaObject = {
   format: string;
   public_id: string;
   version_id: string;
+  name: string;
+  bytes: number;
 };
 
 export type ImageObject = MediaObject;
@@ -36,6 +38,8 @@ export const uploadToCloudinary = async (file: File, type = 'image'): Promise<Me
       format: response.format,
       public_id: response.public_id,
       version_id: response.version_id,
+      name: response.original_filename,
+      bytes: response.bytes,
     };
   } catch (error) {
     return Promise.reject(error);

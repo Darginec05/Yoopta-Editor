@@ -3749,6 +3749,11 @@
   resolved "https://registry.yarnpkg.com/@yoopta/embed/-/embed-2.0.1.tgz#84b7f7edde846eaf1927ce61971147b5512c8692"
   integrity sha512-E79t1XCoLorMzH4sf3DhRezmkEeD05NHyWj1B6S+iXevz02DWQXlOLc+naTAzPimgxu/LuSEVIwnSU7P5cxWug==
 
+"@yoopta/file@*":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@yoopta/file/-/file-2.0.1.tgz#7f46a2224334c9e4128ebc57973f7261b118f82c"
+  integrity sha512-IX/SKJatn73VYPk6Vts1c00++Hgn75a3UUI9dHgszpVwASmDOLnziUrm9qkPxd2fidGe3Kt3GTmtqWNUJRjY0w==
+
 "@yoopta/headings@*":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@yoopta/headings/-/headings-2.0.1.tgz#853a0723b2cc98e3b7c0d8f220f82567a3b4f4d4"

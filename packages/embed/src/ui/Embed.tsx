@@ -14,7 +14,7 @@ import { EmbedPluginOptions } from '../types';
 import { EmbedBlockOptions } from './EmbedBlockOptions';
 import { Resizer } from './Resizer';
 
-const EmbedRender = ({ element, attributes, children, blockId }: PluginElementRenderProps<EmbedPluginOptions>) => {
+const EmbedRender = ({ element, attributes, children, blockId }: PluginElementRenderProps) => {
   const { sizes: propSizes, provider } = element.props || {};
   const block = useBlockData(blockId);
   const editor = useYooptaEditor();

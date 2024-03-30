@@ -41,11 +41,19 @@ const Toolbar = () => {
     const selectionRect = domRange.getBoundingClientRect();
     const text = domRange.toString().trim();
 
-    const pluginWithCustomEditor = document.querySelector('[data-custom-editor]');
+    const pluginWithCustomEditor = document.querySelectorAll('[data-custom-editor]');
     const yooptaEditorEl = document.getElementById('yoopta-editor');
     const ancestor = domRange?.commonAncestorContainer;
 
-    if (!yooptaEditorEl?.contains(ancestor) || pluginWithCustomEditor?.contains(ancestor)) {
+    let isInsideCustomEditor = false;
+    for (let i = 0; i < pluginWithCustomEditor.length; i++) {
+      if (pluginWithCustomEditor[i].contains(ancestor)) {
+        isInsideCustomEditor = true;
+        break;
+      }
+    }
+
+    if (!yooptaEditorEl?.contains(ancestor) || isInsideCustomEditor) {
       return setIsToolbarOpen(false);
     }
 
@@ -64,7 +72,7 @@ const Toolbar = () => {
   useEffect(() => {
     window.document.addEventListener('selectionchange', onSelectionChange);
     return () => window.document.removeEventListener('selectionchange', onSelectionChange);
-  }, [editor.selectedBlocks, hold]);
+  }, [editor.selectedBlocks, hold, editor.children]);
 
   if (!isMounted) return null;
 
