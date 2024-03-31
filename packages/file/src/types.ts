@@ -13,6 +13,6 @@ export type FileElement = SlateElement<'file', FileElementProps>;
 export type OnUploadResponse = Partial<FileElementProps> & { src: string };
 
 export type FilePluginOptions = {
-  onUpload: (file: File) => Promise<OnUploadResponse>;
+  onUpload?: (file: File) => Promise<OnUploadResponse>;
   accept?: string;
 };
