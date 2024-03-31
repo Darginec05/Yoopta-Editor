@@ -1,9 +1,0 @@
-{
-  "name": "Yoopta-Editor",
-  "short_name": "Yoopta",
-  "theme_color": "#2196f3",
-  "background_color": "#2196f3",
-  "display": "browser",
-  "scope": "/examples/withBasicExample",
-  "start_url": "/"
-}

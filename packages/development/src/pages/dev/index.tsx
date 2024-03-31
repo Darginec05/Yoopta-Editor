@@ -24,7 +24,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { uploadToCloudinary } from '../../utils/cloudinary';
 
 import Code from '@yoopta/code';
-import { BaseElement, Descendant, Text } from 'slate';
+import { BaseElement } from 'slate';
 // import Mention from '@yoopta/mention';
 
 const plugins = [
