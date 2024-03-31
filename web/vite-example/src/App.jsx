@@ -17,21 +17,35 @@ import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 // import { DividerPlugin } from './customPlugins/Divider';
 
-import { uploadToCloudinary } from '../utils/cloudinary';
+import { uploadToCloudinary } from './utils/cloudinary';
 import { useMemo, useRef } from 'react';
 
 const plugins = [
+  File.extend({
+    options: {
+      onUpload: async (file) => {
+        const data = await uploadToCloudinary(file, 'auto');
+
+        return {
+          src: data.secure_url,
+          format: data.format,
+          name: data.name,
+          size: data.bytes,
+        };
+      },
+    },
+  }),
+  Code,
   Paragraph,
   HeadingOne,
   HeadingTwo,
   HeadingThree,
   Blockquote,
   Callout,
+  Link,
   NumberedList,
   BulletedList,
   TodoList,
-  Code,
-  Link,
   Embed,
   Image.extend({
     options: {
@@ -64,14 +78,6 @@ const plugins = [
       },
     },
   }),
-  File.extend({
-    options: {
-      onUpload: async (file) => {
-        const response = await uploadToCloudinary(file, 'auto');
-        return { src: response.url };
-      },
-    },
-  }),
 ];
 
 const TOOLS = {
@@ -91,7 +97,7 @@ const TOOLS = {
 
 const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
-function Home() {
+function App() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
 
@@ -108,5 +114,4 @@ function Home() {
     </div>
   );
 }
-
-export default Home;
+export default App;
