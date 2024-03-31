@@ -5,7 +5,7 @@
   ],
   "private": true,
   "scripts": {
-    "start": "yarn lerna run start --scope @yoopta/editor --scope @yoopta/action-menu-list --scope @yoopta/file --scope @yoopta/lists --scope @yoopta/toolbar --scope @yoopta/image --scope @yoopta/video --parallel --ignore development",
+    "start": "yarn lerna run start --scope @yoopta/editor --scope @yoopta/action-menu-list --scope @yoopta/code --scope @yoopta/lists --scope @yoopta/toolbar --scope @yoopta/image --scope @yoopta/video --parallel --ignore development",
     "build": "yarn clean && yarn lerna run build --parallel --ignore development",
     "clean": "find ./packages -type d -name dist ! -path './packages/development/*' -exec rm -rf {} +",
     "serve": "cd ./packages/development && yarn dev",
@@ -58,6 +58,7 @@
     "postcss": "^8.4.35",
     "postcss-import": "^16.0.0",
     "postcss-nesting": "^12.0.2",
+    "postcss-scope": "^1.7.3",
     "prettier": "2.8.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

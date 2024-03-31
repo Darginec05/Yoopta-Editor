@@ -270,7 +270,7 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
     const getItemProps = () => ({ onMouseEnter, selectedAction });
 
     return (
-      <FloatingPortal id="yoo-action-menu-list-portal">
+      <FloatingPortal id="yoo-action-menu-list-portal" root={document.getElementById('yoopta-editor')}>
         <div
           className="yoo-action-menu-absolute yoo-action-menu-z-[9999] yoo-action-menu-m-0 yoo-action-menu-left-0 yoo-action-menu-top-0 yoo-action-menu-right-auto yoo-action-menu-bottom-auto"
           style={style}

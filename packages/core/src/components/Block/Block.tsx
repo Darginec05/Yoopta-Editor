@@ -36,14 +36,14 @@ const Block = ({ children, block, blockId }) => {
 
   return (
     <div
+      ref={setNodeRef}
       className="yoo-editor-relative yoo-editor-py-0 yoo-editor-px-[2px] yoo-editor-mt-[2px] yoo-editor-mb-[1px] yoo-editor-rounded yoopta-block-wrapper"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      data-yoopta-block-id={blockId}
       style={style}
-      data-yoopta-block
       data-hovered-block={isHovered}
-      ref={setNodeRef}
+      data-yoopta-block
+      data-yoopta-block-id={blockId}
     >
       {!editor.readOnly && (
         <BlockActions
