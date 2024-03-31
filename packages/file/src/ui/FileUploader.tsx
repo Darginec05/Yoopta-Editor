@@ -14,8 +14,6 @@ const FileUploader = ({ accept = '', onClose, blockId, onSetLoading }: Props) =>
   const editor = useYooptaEditor();
 
   const upload = async (file: File) => {
-    console.log('options?.onUpload', options?.onUpload);
-
     if (!options?.onUpload) {
       throw new Error('onUpload not provided in plugin options. Check File.extend({}) method');
     }

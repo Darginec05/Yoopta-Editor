@@ -1,6 +1,6 @@
-/* @tailwind base; */
-/* @tailwind components;
-@tailwind utilities; */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
   font-family: 'Montserrat', sans-serif;
@@ -13,5 +13,5 @@ body {
 }
 
 #yoopta-editor {
-  margin: 0 auto;
+  margin: 0 auto !important;
 }

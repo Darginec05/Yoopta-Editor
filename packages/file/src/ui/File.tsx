@@ -3,21 +3,16 @@ import {
   useBlockData,
   PluginElementRenderProps,
   useYooptaEditor,
-  useYooptaPluginOptions,
   useBlockSelected,
   useYooptaReadOnly,
 } from '@yoopta/editor';
-import { Resizable, ResizableProps } from 're-resizable';
-import { useEffect, useMemo, useState } from 'react';
 import { Placeholder } from './Placeholder';
-import { FilePluginOptions } from '../types';
 import { FileBlockOptions } from './FileBlockOptions';
 
 const FileRender = ({ element, attributes, children, blockId }: PluginElementRenderProps) => {
   const { name, src, format, size } = element.props || {};
   const block = useBlockData(blockId);
   const editor = useYooptaEditor();
-  const options = useYooptaPluginOptions<FilePluginOptions>('File');
   const isReadOnly = useYooptaReadOnly();
 
   const blockSelected = useBlockSelected({ blockId });
