@@ -1,6 +1,11 @@
 // import { Inter } from 'next/font/google';
-import { useState } from 'react';
-import YooptaEditor, { generateId } from '@yoopta/editor';
+import { CSSProperties, ReactNode, useState } from 'react';
+import YooptaEditor, {
+  createYooptaPlugin,
+  generateId,
+  YooptaBaseElement,
+  RenderYooptaElementProps,
+} from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
@@ -17,8 +22,78 @@ import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import ActionMenu from '@yoopta/action-menu-list';
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import Toolbar from '@yoopta/toolbar';
-import { yooptaInitData, YooptaValue } from '@/utils/initialData';
+import { YooptaValue } from '@/utils/initialData';
 import { AccordionPlugin } from '@/components/CustomAccordeonPlugin/CustomAccordeonPlugin';
+import { Transforms } from 'slate';
+
+/** Custom plugin */
+export type DividerElement = YooptaBaseElement<'divider'>;
+
+type DividerRenderProps = RenderYooptaElementProps<DividerElement>;
+
+const dividerRootStyles: CSSProperties = {
+  display: 'flex',
+  width: '100%',
+  alignItems: 'center',
+  position: 'relative',
+};
+
+const dividerStyles: CSSProperties = {
+  position: 'absolute',
+  width: '100%',
+};
+
+const DividerRender = ({ attributes, element, children, HTMLAttributes }: DividerRenderProps) => {
+  return (
+    <div {...attributes} contentEditable={false} style={dividerRootStyles}>
+      <hr style={dividerStyles} />
+      {children}
+    </div>
+  );
+};
+
+const Divider = createYooptaPlugin<any, DividerElement>({
+  type: 'divider',
+  shortcut: ['---', 'divider'],
+  renderer: () => DividerRender,
+  extendEditor(editor) {
+    const { isVoid } = editor;
+
+    editor.isVoid = (element) => {
+      return element.type === Divider.getPlugin.type ? true : isVoid(element);
+    };
+
+    return editor;
+  },
+  defineElement: (): DividerElement => ({
+    id: generateId(),
+    type: 'divider',
+    nodeType: 'void',
+    children: [{ text: '' }],
+  }),
+  createElement: (editor, elementData) => {
+    const node: DividerElement = { ...Divider.getPlugin.defineElement(), ...elementData };
+
+    Transforms.setNodes(editor, node, {
+      at: editor.selection?.anchor,
+    });
+  },
+  exports: {
+    html: {
+      serialize: (node, children) => {
+        return `<hr />`;
+      },
+      deserialize: {
+        nodeName: 'HR',
+      },
+    },
+  },
+  options: {
+    searchString: 'divider',
+    displayLabel: 'Divider',
+  },
+});
+/** */
 
 const plugins = [
   AccordionPlugin,
@@ -33,6 +108,7 @@ const plugins = [
   NumberedList,
   BulletedList,
   TodoList,
+  Divider,
   Embed.extend({
     options: {
       maxWidth: 650,
