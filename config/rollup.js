@@ -51,13 +51,12 @@ function getPlugins({ tailwindConfig }) {
           ...tailwindConfig,
         }),
         autoprefixer(),
-        postcssScope({ scope: '#yoopta-editor' }),
+        // postcssScope({ scope: '#yoopta-editor' }),
       ],
     }),
     typescript({
       clean: true,
       check: true,
-      // useTsconfigDeclarationDir: isProd,
       abortOnError: false,
       tsconfig: `./tsconfig.json`,
 
