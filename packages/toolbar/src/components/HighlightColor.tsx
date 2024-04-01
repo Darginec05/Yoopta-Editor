@@ -82,7 +82,6 @@ const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles
         <div className="yoo-toolbar-bg-[#FFFFFF] yoo-toolbar-p-[5px] yoo-toolbar-rounded-md yoo-toolbar-shadow-md yoo-toolbar-border-[1px] yoo-toolbar-border-solid yoo-toolbar-border-[#e5e7eb] yoo-toolbar-shadow-y-[4px]">
           <div className="yoo-toolbar-flex yoo-toolbar-items-center yoo-toolbar-justify-between">
             <span className="yoo-toolbar-text-xs">Text color</span>
-            {/* <ChevronUpIcon width={14} height={14} /> */}
           </div>
           <div className="yoo-toolbar-flex yoo-toolbar-items-center">
             {colors.map(([label, color]) => (
@@ -98,7 +97,6 @@ const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles
           </div>
           <div className="yoo-toolbar-flex yoo-toolbar-items-center yoo-toolbar-justify-between yoo-toolbar-mt-1">
             <span className="yoo-toolbar-text-xs">Background color</span>
-            {/* <ChevronUpIcon width={14} height={14} /> */}
           </div>
           <div className="yoo-toolbar-flex yoo-toolbar-items-center">
             {backgroundColors.map(([label, backgroundColor]) => (

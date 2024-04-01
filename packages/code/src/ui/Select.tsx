@@ -42,9 +42,11 @@ const SelectItem = ({ value, children }) => {
   return (
     <SelectPrimitive.Item
       value={value}
-      className="yoo-code-relative yoo-code-flex yoo-code-w-full yoo-code-cursor-pointer yoo-code-select-none yoo-code-items-center yoo-code-rounded-sm yoo-code-py-1.5 yoo-code-pl-2 yoo-code-pr-8 yoo-code-text-sm yoo-code-outline-none focus:yoo-code-bg-[#eeeeee] focus:yoo-code-text-accent-foreground data-[disabled]:yoo-code-pointer-events-none data-[disabled]:yoo-code-opacity-50"
+      className="yoo-code-relative yoo-code-flex yoo-code-w-full yoo-code-cursor-pointer yoo-code-select-none yoo-code-items-center yoo-code-rounded-sm yoo-code-py-1.5 yoo-code-pl-2 yoo-code-pr-2 yoo-code-text-sm yoo-code-outline-none focus:yoo-code-bg-[#eeeeee] focus:yoo-code-text-accent-foreground data-[disabled]:yoo-code-pointer-events-none data-[disabled]:yoo-code-opacity-50"
     >
-      <SelectPrimitive.ItemText className="yoo-code-capitalize yoo-code-flex">{children}</SelectPrimitive.ItemText>
+      <span className="yoo-code-capitalize yoo-code-flex yoo-code-justify-between yoo-code-items-center yoo-code-w-full">
+        {children}
+      </span>
     </SelectPrimitive.Item>
   );
 };
