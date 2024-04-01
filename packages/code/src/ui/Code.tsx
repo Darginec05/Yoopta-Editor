@@ -7,7 +7,7 @@ import {
 } from '@yoopta/editor';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { THEMES_MAP } from '../utils/themes';
 import { CodeBlockOptions } from './CodeBlockOptions';
 import { LANGUAGES_MAP } from '../utils/languages';

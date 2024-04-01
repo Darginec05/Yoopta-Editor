@@ -43,13 +43,25 @@ const Events = {
   emit: (event, payload) => eventEmitter.emit(event, payload),
 };
 
-function isValidateInitialValue(value: any): boolean {
+function validateInitialValue(value: any): boolean {
   if (!value) return false;
   if (typeof value !== 'object') return false;
   if (Object.keys(value).length === 0) return false;
 
   return true;
 }
+
+const isLegacyVersionInUse = (value: any): boolean => {
+  if (Array.isArray(value) && value.length > 0) {
+    return value.some((node) => {
+      if (node.id || node.nodeType || node.type || node.children) {
+        return true;
+      }
+    });
+  }
+
+  return false;
+};
 
 const YooptaEditor = ({
   editor,
@@ -84,7 +96,14 @@ const YooptaEditor = ({
     if (marks) editor.formats = buildMarks(editor, marks);
     editor.blocks = buildBlocks(editor, plugins);
 
-    editor.children = (isValidateInitialValue(value) ? value : DEFAULT_VALUE) as YooptaContentValue;
+    const isValueValid = validateInitialValue(value);
+    if (!isValueValid) {
+      console.error(
+        `Initial value is not valid. Should be an object with blocks. You passed: ${JSON.stringify(value)}`,
+      );
+    }
+
+    editor.children = (isValueValid ? value : DEFAULT_VALUE) as YooptaContentValue;
     editor.blockEditorsMap = buildBlockSlateEditors(editor);
     editor.shortcuts = buildBlockShortcuts(editor);
     editor.plugins = buildPlugins(plugins);
@@ -96,6 +115,32 @@ const YooptaEditor = ({
 
     return { editor, version: 0 };
   });
+
+  if (isLegacyVersionInUse(value)) {
+    console.error('Legacy version of Yoopta-Editor in use');
+
+    return (
+      <div>
+        <h1>Legacy version of the Yoopta-Editor is used</h1>
+        <p>It looks like you are using a legacy version of the editor.</p>
+        <p>
+          The structure of value has changed in new <b>@v4</b> version
+        </p>
+        <p>
+          {/* [TODO] - add link to migration guide */}
+          Please, check the migration guide to update your editor to the new <b>@v4</b> version.
+          <a href="" />
+        </p>
+        <p>
+          If you have specific case please{' '}
+          <a href="https://github.com/Darginec05/Yoopta-Editor/issues" target="_blank" rel="noopener noreferrer">
+            open the issue
+          </a>{' '}
+          and we will solve your problem with migration
+        </p>
+      </div>
+    );
+  }
 
   return (
     <NoSSR>

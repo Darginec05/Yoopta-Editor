@@ -55,7 +55,9 @@ export const CodeBlockOptions = ({ block, editor, element }: Props) => {
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <Select
-            options={Object.keys(THEMES_MAP).map((theme) => ({ value: theme, label: theme }))}
+            options={Object.keys(THEMES_MAP)
+              .map((theme) => ({ value: theme, label: theme }))
+              .sort((a, b) => a.label.localeCompare(b.label))}
             onChange={onChangeTheme}
             value={element.props?.theme || 'VSCode'}
           >
@@ -67,10 +69,12 @@ export const CodeBlockOptions = ({ block, editor, element }: Props) => {
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <Select
-            options={Object.keys(LANGUAGES_MAP).map((key) => ({
-              value: LANGUAGES_MAP[key].type,
-              label: LANGUAGES_MAP[key].name,
-            }))}
+            options={Object.keys(LANGUAGES_MAP)
+              .map((key) => ({
+                value: LANGUAGES_MAP[key].type,
+                label: LANGUAGES_MAP[key].name,
+              }))
+              .sort((a, b) => a.label.localeCompare(b.label))}
             onChange={onChangeLanguage}
             value={element.props?.language || 'JavaScript'}
           >
