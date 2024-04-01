@@ -242,7 +242,99 @@ const value = {
       depth: 0,
     },
   },
+  '9bff29a6-63d3-4b4e-8815-2389a53e7c3f': {
+    id: '9bff29a6-63d3-4b4e-8815-2389a53e7c3f',
+    value: [
+      {
+        id: '83dde100-984f-4823-a82e-287e304002f2',
+        type: 'callout',
+        children: [
+          {
+            text: 'dia queries like responsive breakpoints, dark mode, prefers-reduced-motion, and more. For example, use md:border-dotted to apply the border-dotted utility at only medium screen sizes and above.',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+          theme: 'default',
+        },
+      },
+    ],
+    type: 'Callout',
+    meta: {
+      order: 3,
+      depth: 0,
+    },
+  },
+  '914071bc-f201-4258-a25a-02c89aa630bf': {
+    id: '914071bc-f201-4258-a25a-02c89aa630bf',
+    value: [
+      {
+        id: '545b4939-4a35-49ae-b95f-4850d0d36aa8',
+        type: 'image',
+        children: [
+          {
+            text: '',
+          },
+        ],
+        props: {
+          nodeType: 'void',
+          src: 'https://res.cloudinary.com/ench-app/image/upload/v1712003876/dacia-duster_mnitvf.jpg',
+          alt: 'cloudinary',
+          srcSet: null,
+          fit: 'contain',
+          sizes: {
+            width: 1200,
+            height: 675,
+          },
+        },
+      },
+    ],
+    type: 'Image',
+    meta: {
+      order: 4,
+      depth: 0,
+    },
+  },
+  'c7aa76ab-15f7-4fd2-95b8-74b719e97b86': {
+    id: 'c7aa76ab-15f7-4fd2-95b8-74b719e97b86',
+    value: [
+      {
+        id: 'a2059a29-7680-447b-9740-e4ebd90f302d',
+        type: 'video',
+        children: [
+          {
+            text: '',
+          },
+        ],
+        props: {
+          nodeType: 'void',
+          src: 'https://res.cloudinary.com/ench-app/video/upload/v1712003894/Sequence_01_2_qc8rvj.mp4',
+          srcSet: null,
+          sizes: {
+            width: 720,
+            height: 1280,
+          },
+          provider: {
+            type: null,
+            id: '',
+          },
+          settings: {
+            controls: false,
+            loop: true,
+            muted: true,
+            autoPlay: true,
+          },
+        },
+      },
+    ],
+    type: 'Video',
+    meta: {
+      order: 5,
+      depth: 0,
+    },
+  },
 };
+
 const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
   const rectangleSelectionRef = useRef<HTMLDivElement>(null);

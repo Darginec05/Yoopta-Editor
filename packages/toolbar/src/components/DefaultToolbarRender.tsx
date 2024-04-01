@@ -248,14 +248,14 @@ const DefaultToolbarRender = ({ activeBlock, editor, onHoldToolbarChange }: Tool
   };
 
   return (
-    <Toolbar.Root className="yoo-toolbar-bg-white yoo-toolbar-flex yoo-toolbar-z-50 yoo-toolbar-p-[5px] yoo-toolbar-rounded-md yoo-toolbar-shadow-md yoo-toolbar-border yoo-toolbar-shadow-y-[4px]">
+    <Toolbar.Root className="yoo-toolbar-bg-[#FFFFFF] yoo-toolbar-flex yoo-toolbar-z-50 yoo-toolbar-p-[5px] yoo-toolbar-rounded-md yoo-toolbar-shadow-md yoo-toolbar-border-[1px] yoo-toolbar-border-solid yoo-toolbar-border-[#e3e3e3] yoo-toolbar-shadow-y-[4px]">
       <Toolbar.ToggleGroup
         className="yoo-toolbar-flex yoo-toolbar-items-center"
         type="single"
         aria-label="Block formatting"
       >
         <Toolbar.ToggleItem
-          className="yoo-toolbar-h-full yoo-toolbar-px-[10px] yoo-toolbar-py-0 hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md"
+          className="yoo-toolbar-h-full yoo-toolbar-text-[16px] yoo-toolbar-px-[10px] yoo-toolbar-py-0 hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md"
           value={blockLabel}
           aria-label={blockLabel}
           ref={actionMenuRefs.setReference}
@@ -288,7 +288,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, onHoldToolbarChange }: Tool
         aria-label="Block formatting"
       >
         <Toolbar.ToggleItem
-          className="yoo-toolbar-h-full yoo-toolbar-px-[10px] yoo-toolbar-py-0 hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md"
+          className="yoo-toolbar-h-full yoo-toolbar-text-[16px] yoo-toolbar-px-[10px] yoo-toolbar-py-0 hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md"
           value="LinkTool"
           aria-label="LinkTool"
           ref={linkToolRefs.setReference}

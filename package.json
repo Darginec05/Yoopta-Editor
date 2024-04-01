@@ -5,7 +5,7 @@
   ],
   "private": true,
   "scripts": {
-    "start": "yarn lerna run start --scope @yoopta/editor --scope @yoopta/file --scope @yoopta/code --scope @yoopta/embed --scope @yoopta/image --scope @yoopta/video --parallel --ignore development",
+    "start": "yarn lerna run start --scope @yoopta/editor --scope @yoopta/image --scope @yoopta/video --scope @yoopta/callout --scope @yoopta/code --parallel --ignore development",
     "build": "yarn clean && yarn lerna run build --parallel --ignore development",
     "clean": "find ./packages -type d -name dist ! -path './packages/development/*' -exec rm -rf {} +",
     "serve": "cd ./packages/development && yarn dev",

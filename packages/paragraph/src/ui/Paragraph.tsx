@@ -1,7 +1,7 @@
 import { PluginElementRenderProps } from '@yoopta/editor';
 
 const ParagraphRender = (props: PluginElementRenderProps) => {
-  const { className, ...htmlAttrs } = props.HTMLAttributes || {};
+  const { className = '', ...htmlAttrs } = props.HTMLAttributes || {};
 
   return (
     <p

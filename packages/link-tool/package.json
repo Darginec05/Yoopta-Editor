@@ -1,7 +1,7 @@
 {
   "name": "@yoopta/link-tool",
   "version": "4.0.0-rc.6",
-  "description": "> TODO: description",
+  "description": "Link tool for Yoopta Editor",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
   "license": "MIT",

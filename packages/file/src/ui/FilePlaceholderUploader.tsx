@@ -19,7 +19,7 @@ const FilePlaceholderUploader = ({ floatingStyles, refs, onClose, blockId, onSet
     <FloatingPortal id="yoo-file-uploader-portal" root={document.getElementById('yoopta-editor')}>
       <FloatingOverlay lockScroll className="yoo-file-z-[100]" onClick={onClose}>
         <div ref={refs.setFloating} style={floatingStyles} onClick={(e) => e.stopPropagation()}>
-          <div className="yoo-file-flex yoo-file-flex-col yoo-file-min-w-[540px] yoo-file-max-w-[calc(100vw-24px)] yoo-file-h-full yoo-file-max-h-[420px] yoo-file-bg-white yoo-file-shadow-[rgb(15_15_15_/5%)_0px_0px_0px_1px,_rgb(15_15_15_/10%)_0px_3px_6px,_rgb(15_15_15_/20%)_0px_9px_24px]">
+          <div className="yoo-file-flex yoo-file-flex-col yoo-file-min-w-[540px] yoo-file-max-w-[calc(100vw-24px)] yoo-file-h-full yoo-file-max-h-[420px] yoo-file-bg-[#FFFFFF] yoo-file-shadow-[rgb(15_15_15_/5%)_0px_0px_0px_1px,_rgb(15_15_15_/10%)_0px_3px_6px,_rgb(15_15_15_/20%)_0px_9px_24px]">
             <div className="yoo-file-w-full yoo-file-flex yoo-file-text-[14px] yoo-file-p-[0_8px] yoo-file-shadow-[rgb(55_53_47_/9%)_0px_-1px_0px_inset] yoo-file-relative yoo-file-z-10 yoo-file-h-[40px]">
               <button
                 type="button"
