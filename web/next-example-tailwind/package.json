@@ -1,0 +1,45 @@
+{
+  "name": "next-example-tailwind",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@yoopta/action-menu-list": "^4.0.0-rc.14",
+    "@yoopta/blockquote": "^4.0.0-rc.10",
+    "@yoopta/callout": "^4.0.0-rc.13",
+    "@yoopta/code": "^4.0.0-rc.26",
+    "@yoopta/editor": "^4.0.0-rc.30",
+    "@yoopta/embed": "^4.0.0-rc.14",
+    "@yoopta/file": "^4.0.0-rc.3",
+    "@yoopta/headings": "^4.0.0-rc.11",
+    "@yoopta/image": "^4.0.0-rc.14",
+    "@yoopta/link": "^4.0.0-rc.11",
+    "@yoopta/link-tool": "^4.0.0-rc.6",
+    "@yoopta/lists": "^4.0.0-rc.13",
+    "@yoopta/marks": "^4.0.0-rc.10",
+    "@yoopta/paragraph": "^4.0.0-rc.9",
+    "@yoopta/toolbar": "^4.0.0-rc.12",
+    "@yoopta/video": "^4.0.0-rc.13",
+    "next": "14.1.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "slate": "^0.102.0",
+    "slate-react": "^0.102.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.4",
+    "postcss": "^8",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
+  }
+}
