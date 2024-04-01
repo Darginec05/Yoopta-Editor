@@ -1,5 +1,33 @@
-@tailwind base;
+/* @tailwind base; */
 @tailwind utilities;
+
+*,
+:after,
+:before {
+  box-sizing: border-box;
+}
+
+button {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
+
+blockquote,
+dd,
+dl,
+figure,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+p,
+pre {
+  margin: 0;
+}
 
 ::-moz-selection {
   background: #c6ddf8;

@@ -37,7 +37,7 @@ const DefaultLinkToolRender = (props: LinkToolRenderProps) => {
   };
 
   return (
-    <div className="yoo-link-tool-min-w-[340px] yoo-link-tool-bg-white yoo-link-tool-flex yoo-link-tool-flex-col yoo-link-tool-z-50 yoo-link-tool-p-[10px] yoo-link-tool-rounded-md yoo-link-tool-shadow-md yoo-link-tool-border yoo-link-tool-shadow-y-[4px]">
+    <div className="yoo-link-tool-min-w-[340px] yoo-link-tool-bg-[#FFFFFF] yoo-link-tool-flex yoo-link-tool-flex-col yoo-link-tool-z-50 yoo-link-tool-p-[10px] yoo-link-tool-rounded-md yoo-link-tool-shadow-md yoo-link-tool-border-solid yoo-link-tool-border-[1px] yoo-link-tool-border-[#e5e7eb] yoo-link-tool-shadow-y-[4px]">
       <div className="">
         <label
           htmlFor="title"
@@ -48,7 +48,7 @@ const DefaultLinkToolRender = (props: LinkToolRenderProps) => {
         <input
           id="title"
           type="text"
-          className="yoo-link-tool-text-sm yoo-link-tool-font-medium yoo-link-tool-text-gray-700 yoo-link-tool-border yoo-link-tool-rounded-md yoo-link-tool-py-[5px] yoo-link-tool-px-[10px] yoo-link-tool-w-full yoo-link-tool-shadow-sm"
+          className="yoo-link-tool-text-sm yoo-link-tool-font-medium yoo-link-tool-text-gray-700 yoo-link-tool-border-solid yoo-link-tool-border-[1px] yoo-link-tool-border-[#e5e7eb] yoo-link-tool-rounded-md yoo-link-tool-py-[5px] yoo-link-tool-px-[10px] yoo-link-tool-w-full yoo-link-tool-shadow-sm"
           name="title"
           value={link.title}
           onChange={onChange}
@@ -66,7 +66,7 @@ const DefaultLinkToolRender = (props: LinkToolRenderProps) => {
         <input
           id="url"
           type="text"
-          className="yoo-link-tool-text-sm yoo-link-tool-font-medium yoo-link-tool-text-gray-700 yoo-link-tool-border yoo-link-tool-rounded-md yoo-link-tool-py-[5px] yoo-link-tool-px-[10px] yoo-link-tool-w-full yoo-link-tool-shadow-sm"
+          className="yoo-link-tool-text-sm yoo-link-tool-font-medium yoo-link-tool-text-gray-700 yoo-link-tool-border-solid yoo-link-tool-border-[1px] yoo-link-tool-border-[#e5e7eb] yoo-link-tool-rounded-md yoo-link-tool-py-[5px] yoo-link-tool-px-[10px] yoo-link-tool-w-full yoo-link-tool-shadow-sm"
           name="url"
           value={link.url}
           onChange={onChange}

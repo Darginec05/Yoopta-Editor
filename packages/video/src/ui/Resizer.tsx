@@ -5,7 +5,7 @@ const Resizer = ({ position }) => (
       position === 'left' ? 'yoo-video-left-0 yoo-video-top-0' : 'yoo-video-right-0 yoo-video-top-0'
     }`}
   >
-    <div className="yoo-video-opacity-100 yoo-video-transition-opacity yoo-video-duration-300 yoo-video-ease-in yoo-video-rounded-[20px] yoo-video-bg-[rgba(15,15,15,0.6)] yoo-video-border yoo-video-border-[rgba(255,255,255,0.9)] yoo-video-w-[6px] yoo-video-h-[48px] yoo-video-max-h-[50%] yoo-video-shadow-[0_0_0_.5px_#FFF]" />
+    <div className="yoo-video-opacity-100 yoo-video-transition-opacity yoo-video-duration-300 yoo-video-ease-in yoo-video-rounded-[20px] yoo-video-bg-[rgba(15,15,15,0.6)] yoo-video-border yoo-video-border-solid yoo-video-border-[rgba(255,255,255,0.9)] yoo-video-w-[6px] yoo-video-h-[48px] yoo-video-max-h-[50%] yoo-video-shadow-[0_0_0_.5px_#FFF]" />
   </div>
 );
 

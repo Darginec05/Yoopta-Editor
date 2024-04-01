@@ -1,7 +1,7 @@
 {
   "name": "@yoopta/paragraph",
   "version": "4.0.0-rc.9",
-  "description": "> TODO: description",
+  "description": "Paragraph plugin for Yoopta Editor",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
   "license": "MIT",

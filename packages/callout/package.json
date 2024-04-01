@@ -1,7 +1,7 @@
 {
   "name": "@yoopta/callout",
   "version": "4.0.0-rc.13",
-  "description": "> TODO: description",
+  "description": "Callout plugin for Yoopta Editor",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
   "license": "MIT",

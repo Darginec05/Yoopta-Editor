@@ -3,12 +3,11 @@ import {
   useYooptaEditor,
   PluginCustomEditorRenderProps,
   useYooptaReadOnly,
-  useYooptaPluginOptions,
   buildBlockData,
 } from '@yoopta/editor';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { THEMES_MAP } from '../utils/themes';
 import { CodeBlockOptions } from './CodeBlockOptions';
 import { LANGUAGES_MAP } from '../utils/languages';
@@ -27,6 +26,7 @@ const codeMirrorSetup: BasicSetupOptions = {
 const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
+  const cmEditorRef = useRef(null);
   const block = useBlockData(blockId);
   const [code, setCode] = useState(() => getCodeElementText(block) || '');
 
@@ -79,6 +79,8 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
           readOnly={isReadOnly}
           onClick={onClick}
           onKeyDown={onKeyDown}
+          ref={cmEditorRef}
+          style={{ caretColor: 'red', tabSize: 2 }}
         />
       </div>
       {!isReadOnly && <CodeBlockOptions block={block} editor={editor} element={element} />}

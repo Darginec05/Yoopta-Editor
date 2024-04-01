@@ -1,6 +1,8 @@
 import { UI, YooEditor, YooptaBlockData } from '@yoopta/editor';
-import { RowSpacingIcon, SizeIcon, WidthIcon, DownloadIcon, ExternalLinkIcon } from '@radix-ui/react-icons';
+import { RowSpacingIcon, SizeIcon, WidthIcon, ExternalLinkIcon } from '@radix-ui/react-icons';
 import { VideoElementProps, VideoPluginElements } from '../types';
+import CheckmarkIcon from '../icons/checkmark.svg';
+import DownloadIcon from '../icons/download.svg';
 
 const { ExtendedBlockActions, BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptionsSeparator } = UI;
 
@@ -53,31 +55,46 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
           <BlockOptionsMenuItem>
             <button
               type="button"
-              className="yoo-video-rounded-sm hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start"
+              className="yoo-video-rounded-sm yoo-video-justify-between hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start"
               onClick={onFit}
             >
-              <RowSpacingIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
-              Fit
+              <span className="yoo-video-flex">
+                <RowSpacingIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
+                Fit
+              </span>
+              {videoProps?.fit === 'contain' && (
+                <CheckmarkIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4" />
+              )}
             </button>
           </BlockOptionsMenuItem>
           <BlockOptionsMenuItem>
             <button
               type="button"
-              className="yoo-video-rounded-sm hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start"
+              className="yoo-video-rounded-sm yoo-video-justify-between hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start"
               onClick={onFill}
             >
-              <WidthIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
-              Fill
+              <span className="yoo-video-flex">
+                <WidthIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
+                Fill
+              </span>
+              {videoProps?.fit === 'fill' && (
+                <CheckmarkIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4" />
+              )}
             </button>
           </BlockOptionsMenuItem>
           <BlockOptionsMenuItem>
             <button
               type="button"
-              className="yoo-video-rounded-sm hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start"
+              className="yoo-video-rounded-sm yoo-video-justify-between hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start"
               onClick={onCover}
             >
-              <SizeIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
-              Cover
+              <span className="yoo-video-flex">
+                <SizeIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
+                Cover
+              </span>
+              {videoProps?.fit === 'cover' && (
+                <CheckmarkIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4" />
+              )}
             </button>
           </BlockOptionsMenuItem>
         </BlockOptionsMenuGroup>

@@ -23,7 +23,7 @@ const BlockOptionsMenuGroup = ({ children }) => <div className="yoo-editor-flex 
 const BlockOptionsMenuContent = ({ children }) => (
   <div
     onClick={(e) => e.stopPropagation()}
-    className="yoo-editor-bg-[#FFF] yoo-editor-relative yoo-editor-min-w-[200px] yoo-editor-w-auto yoo-editor-overflow-hidden yoo-editor-rounded-md yoo-editor-border yoo-editor-bg-popover yoo-editor-py-[6px] yoo-editor-px-0 yoo-editor-text-popover-foreground yoo-editor-shadow-md data-[state=open]:yoo-editor-animate-in data-[state=closed]:yoo-editor-animate-out data-[state=closed]:yoo-editor-fade-out-0 data-[state=open]:yoo-editor-fade-in-0 data-[state=closed]:yoo-editor-zoom-out-95 data-[state=open]:yoo-editor-zoom-in-95 data-[side=bottom]:yoo-editor-slide-in-from-top-2 data-[side=left]:yoo-editor-slide-in-from-right-2 data-[side=right]:yoo-editor-slide-in-from-left-2 data-[side=top]:yoo-editor-slide-in-from-bottom-2"
+    className="yoo-editor-bg-[#FFF] yoo-editor-relative yoo-editor-min-w-[200px] yoo-editor-w-auto yoo-editor-overflow-hidden yoo-editor-rounded-md yoo-editor-border yoo-editor-border-solid yoo-editor-border-[#e5e7eb] yoo-editor-bg-popover yoo-editor-py-[6px] yoo-editor-px-0 yoo-editor-text-popover-foreground yoo-editor-shadow-md data-[state=open]:yoo-editor-animate-in data-[state=closed]:yoo-editor-animate-out data-[state=closed]:yoo-editor-fade-out-0 data-[state=open]:yoo-editor-fade-in-0 data-[state=closed]:yoo-editor-zoom-out-95 data-[state=open]:yoo-editor-zoom-in-95 data-[side=bottom]:yoo-editor-slide-in-from-top-2 data-[side=left]:yoo-editor-slide-in-from-right-2 data-[side=right]:yoo-editor-slide-in-from-left-2 data-[side=top]:yoo-editor-slide-in-from-bottom-2"
   >
     {children}
   </div>

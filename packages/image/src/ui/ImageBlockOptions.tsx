@@ -1,6 +1,8 @@
 import { UI, YooEditor, YooptaBlockData } from '@yoopta/editor';
-import { RowSpacingIcon, SizeIcon, WidthIcon, DownloadIcon } from '@radix-ui/react-icons';
+import { RowSpacingIcon, SizeIcon, WidthIcon } from '@radix-ui/react-icons';
 import { ImageElementProps, ImagePluginElements } from '../types';
+import CheckmarkIcon from '../icons/checkmark.svg';
+import DownloadIcon from '../icons/download.svg';
 
 const { ExtendedBlockActions, BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptionsSeparator } = UI;
 
@@ -45,31 +47,46 @@ const ImageBlockOptions = ({ editor, block, props: imageProps }: Props) => {
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="yoo-image-rounded-sm hover:yoo-image-bg-[#37352f14] yoo-image-leading-[120%] yoo-image-px-2 yoo-image-py-1.5 yoo-image-mx-[4px] yoo-image-cursor-pointer yoo-image-w-full yoo-image-flex yoo-image-justify-start"
+            className="yoo-image-rounded-sm yoo-image-justify-between hover:yoo-image-bg-[#37352f14] yoo-image-leading-[120%] yoo-image-px-2 yoo-image-py-1.5 yoo-image-mx-[4px] yoo-image-cursor-pointer yoo-image-w-full yoo-image-flex yoo-image-justify-start"
             onClick={onFit}
           >
-            <RowSpacingIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
-            Fit
+            <span className="yoo-image-flex">
+              <RowSpacingIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
+              Fit
+            </span>
+            {imageProps?.fit === 'contain' && (
+              <CheckmarkIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4" />
+            )}
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="yoo-image-rounded-sm hover:yoo-image-bg-[#37352f14] yoo-image-leading-[120%] yoo-image-px-2 yoo-image-py-1.5 yoo-image-mx-[4px] yoo-image-cursor-pointer yoo-image-w-full yoo-image-flex yoo-image-justify-start"
+            className="yoo-image-rounded-sm yoo-image-justify-between hover:yoo-image-bg-[#37352f14] yoo-image-leading-[120%] yoo-image-px-2 yoo-image-py-1.5 yoo-image-mx-[4px] yoo-image-cursor-pointer yoo-image-w-full yoo-image-flex yoo-image-justify-start"
             onClick={onFill}
           >
-            <WidthIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
-            Fill
+            <span className="yoo-image-flex">
+              <WidthIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
+              Fill
+            </span>
+            {imageProps?.fit === 'fill' && (
+              <CheckmarkIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4" />
+            )}
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="yoo-image-rounded-sm hover:yoo-image-bg-[#37352f14] yoo-image-leading-[120%] yoo-image-px-2 yoo-image-py-1.5 yoo-image-mx-[4px] yoo-image-cursor-pointer yoo-image-w-full yoo-image-flex yoo-image-justify-start"
+            className="yoo-image-rounded-sm yoo-image-justify-between hover:yoo-image-bg-[#37352f14] yoo-image-leading-[120%] yoo-image-px-2 yoo-image-py-1.5 yoo-image-mx-[4px] yoo-image-cursor-pointer yoo-image-w-full yoo-image-flex yoo-image-justify-start"
             onClick={onCover}
           >
-            <SizeIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
-            Cover
+            <span className="yoo-image-flex">
+              <SizeIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
+              Cover
+            </span>
+            {imageProps?.fit === 'cover' && (
+              <CheckmarkIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4" />
+            )}
           </button>
         </BlockOptionsMenuItem>
       </BlockOptionsMenuGroup>
