@@ -204,7 +204,7 @@ const value = {
         type: 'paragraph',
         children: [
           {
-            text: '',
+            text: '.cm-cursor { border-left-color: orange }',
           },
         ],
         props: {
@@ -218,8 +218,31 @@ const value = {
       depth: 0,
     },
   },
+  '823bfa3e-82c1-4e33-98b3-e1c20b85b4be': {
+    id: '823bfa3e-82c1-4e33-98b3-e1c20b85b4be',
+    value: [
+      {
+        id: '7bab8e93-0444-4d6d-9607-055d9f79b1f1',
+        type: 'code',
+        children: [
+          {
+            text: 'asdasdsadsada',
+          },
+        ],
+        props: {
+          nodeType: 'void',
+          language: 'javascript',
+          theme: 'VSCode',
+        },
+      },
+    ],
+    type: 'Code',
+    meta: {
+      order: 2,
+      depth: 0,
+    },
+  },
 };
-
 const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
   const rectangleSelectionRef = useRef<HTMLDivElement>(null);
