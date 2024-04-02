@@ -97,7 +97,8 @@ const YooptaEditor = ({
     editor.blocks = buildBlocks(editor, plugins);
 
     const isValueValid = validateInitialValue(value);
-    if (!isValueValid) {
+    if (!isValueValid && typeof value !== 'undefined') {
+      // [TODO] - add link to documentation
       console.error(
         `Initial value is not valid. Should be an object with blocks. You passed: ${JSON.stringify(value)}`,
       );
