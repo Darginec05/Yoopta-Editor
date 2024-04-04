@@ -13,7 +13,7 @@
     "@yoopta/blockquote": "^4.0.0-rc.11",
     "@yoopta/callout": "^4.0.0-rc.14",
     "@yoopta/code": "^4.0.0-rc.28",
-    "@yoopta/editor": "^4.0.0-rc.32",
+    "@yoopta/editor": "4.0.0-rc.33",
     "@yoopta/embed": "^4.0.0-rc.15",
     "@yoopta/file": "^4.0.0-rc.4",
     "@yoopta/headings": "^4.0.0-rc.12",
