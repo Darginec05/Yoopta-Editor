@@ -3,6 +3,10 @@ description: Have a new idea/feature? Let us know...
 title: "[FEATURE] <description>"
 labels: ["⭐ goal: addition", "🚦 status: awaiting triage"]
 body:
+- type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature report!
   - type: checkboxes
     id: duplicates
     attributes:
