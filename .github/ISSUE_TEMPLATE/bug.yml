@@ -11,12 +11,6 @@ body:
       options:
         - label: I have checked "open" AND "closed" issues and this is not a duplicate
           required: true
-  - type: input
-    attributes:
-      label: Where did you find this bug?
-      description: Local dev environment or production
-    validations:
-      required: true
   - type: textarea
     id: description
     attributes:
@@ -50,17 +44,7 @@ body:
     id: environment
     attributes:
       label: Environment
-      description: Describe the environment were the application is executed.
-      value:  | 
-        - OS:
-        - Browser:
-    validations:
-      required: true
-  - type: textarea
-    id: environment
-    attributes:
-      label: Environment
-      description: Describe the environment were the application is executed.
+      description: Describe the environment where the application is executed.
       value:  | 
         - OS:
         - Browser:
