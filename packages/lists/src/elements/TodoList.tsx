@@ -3,7 +3,7 @@ import { TodoListElementProps } from '../types';
 
 const TodoListRender = ({ attributes, element, children, blockId, HTMLAttributes = {} }: PluginElementRenderProps) => {
   const editor = useYooptaEditor();
-  const { className, ...htmlAttrs } = HTMLAttributes;
+  const { className = '', ...htmlAttrs } = HTMLAttributes;
   const { checked = false } = (element.props || {}) as TodoListElementProps;
 
   const style = {

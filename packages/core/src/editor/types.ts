@@ -100,8 +100,8 @@ export type YooEditor<TNodes = any, TKey extends string = any> = {
   plugins: Record<string, Plugin<string, unknown>>;
   on: (event: YooEditorEvents, fn: (payload: any) => void) => void;
   once: (event: YooEditorEvents, fn: (payload: any) => void) => void;
-  off: (event: string, fn: (payload: any) => void) => void;
-  emit: (event: string, payload: any) => void;
+  off: (event: YooEditorEvents, fn: (payload: any) => void) => void;
+  emit: (event: YooEditorEvents, payload: any) => void;
   readOnly: boolean;
 };
 

@@ -1,4 +1,4 @@
-import { CSSProperties, HTMLAttributes, VideoHTMLAttributes } from 'react';
+import { CSSProperties } from 'react';
 import { VideoElementProps } from '../types';
 import DailyMotion from './DailyMotionPlayer';
 import VimeoPlayer from './VimeoPlayer';
@@ -15,7 +15,7 @@ const PROVIDERS = {
   dailymotion: DailyMotion,
 };
 
-const VideoComponent = ({ width, height, src, settings, bgColor, poster, provider, fit }: VideoComponentProps) => {
+const VideoComponent = ({ width, height, src, bgColor, poster, provider, fit }: VideoComponentProps) => {
   const style: CSSProperties = {
     backgroundColor: bgColor || 'transparent',
     objectFit: fit || 'contain',

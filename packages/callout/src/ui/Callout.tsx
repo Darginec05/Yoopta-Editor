@@ -3,7 +3,7 @@ import { CALLOUT_THEME_STYLES } from '../utils';
 import { CalloutBlockOptions } from './CalloutBlockOptions';
 
 const CalloutRender = ({ element, attributes, children, blockId, HTMLAttributes = {} }: PluginElementRenderProps) => {
-  const { className, ...htmlAttrs } = HTMLAttributes;
+  const { className = '', ...htmlAttrs } = HTMLAttributes;
 
   const block = useBlockData(blockId);
   const editor = useYooptaEditor();
