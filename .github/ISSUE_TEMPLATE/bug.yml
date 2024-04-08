@@ -3,6 +3,10 @@ description: Report an issue to help improve the project.
 title: "[BUG] <description>"
 labels: ["🛠 goal: fix", "🚦 status: awaiting triage"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to fill out this bug report! You can also join our Telegram community [here](https://t.me/yoopto) 🦄
   - type: checkboxes
     id: duplicates
     attributes:
@@ -75,7 +79,3 @@ body:
       description: For example reference any existing code
     validations:
       required: false
-  - type: markdown
-    attributes:
-      value: |
-        You can also join our Telegram community [here](https://t.me/yoopto)
