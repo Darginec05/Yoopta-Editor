@@ -1,7 +1,7 @@
 import { PluginElementRenderProps, useYooptaReadOnly } from '@yoopta/editor';
 
 const LinkRender = (props: PluginElementRenderProps) => {
-  const { className, ...htmlAttrs } = props.HTMLAttributes || {};
+  const { className = '', ...htmlAttrs } = props.HTMLAttributes || {};
 
   const { url, target, rel } = props.element.props || {};
   const isReadOnly = useYooptaReadOnly();

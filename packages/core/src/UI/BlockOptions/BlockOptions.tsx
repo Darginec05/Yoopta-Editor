@@ -17,6 +17,7 @@ import copy from 'copy-to-clipboard';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { getRootBlockElement } from '../../utils/blockElements';
 import { useYooptaTools } from '../../contexts/YooptaContext/ToolsContext';
+import { YooEditor } from '../../editor/types';
 
 const BlockOptionsMenuGroup = ({ children }) => <div className="yoo-editor-flex yoo-editor-flex-col">{children}</div>;
 
@@ -50,6 +51,15 @@ type BlockOptionsProps = {
   style: CSSProperties;
   children?: React.ReactNode;
 };
+
+function filterToggleActions(editor: YooEditor, type: string) {
+  const block = editor.blocks[type];
+  if (!block) return false;
+
+  const rootBlock = getRootBlockElement(block.elements);
+  if (rootBlock?.props?.nodeType === 'void') return false;
+  return true;
+}
 
 const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsProps) => {
   const editor = useYooptaEditor();
@@ -111,6 +121,45 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
     onClose();
   };
 
+  const getRootProps = () => ({
+    'data-action-menu-list': true,
+  });
+
+  const getItemProps = (type) => ({
+    onMouseEnter: () => undefined,
+    'data-action-menu-item': true,
+    'data-action-menu-item-type': type,
+    'aria-selected': false,
+    onClick: () => {
+      console.log({ type });
+
+      editor.blocks[type].toggle(type, { focus: true });
+      onCloseActionMenu();
+    },
+  });
+
+  const getActions = () => {
+    const items = Object.keys(editor.blocks)
+      .filter((type) => filterToggleActions(editor, type))
+      .map((action) => {
+        const title = editor.blocks[action].options?.display?.title || action;
+        const description = editor.blocks[action].options?.display?.description;
+        return { type: action, title, description };
+      });
+
+    return items;
+  };
+
+  const actionMenuRenderProps = {
+    actions: getActions(),
+    onClose: onCloseActionMenu,
+    empty: false,
+    getItemProps,
+    getRootProps,
+    editor,
+    view: 'small',
+  };
+
   return (
     // [TODO] - take care about SSR
     <FloatingPortal id="yoo-block-options-portal" root={document.getElementById('yoopta-editor')}>
@@ -148,16 +197,7 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
                         onClick={() => setIsActionMenuOpen(false)}
                       >
                         <div style={actionMenuStyles} ref={actionMenuRefs.setFloating}>
-                          <ActionMenu
-                            actions={Object.keys(editor.blocks)}
-                            editor={editor}
-                            selectedAction={''}
-                            onClose={onCloseActionMenu}
-                            empty={false}
-                            onMouseEnter={() => undefined}
-                            mode="toggle"
-                            view="small"
-                          />
+                          <ActionMenu {...actionMenuRenderProps} />
                         </div>
                       </FloatingOverlay>
                     </FloatingPortal>

@@ -20,7 +20,7 @@ const Code = new YooptaPlugin<CodePluginElements, CodeElementProps, CodePluginBl
   options: {
     display: {
       title: 'Code',
-      description: 'Write bugs',
+      description: 'Write the best code ever!',
     },
     shortcuts: ['```'],
     // defaultLanguage: 'javascript',

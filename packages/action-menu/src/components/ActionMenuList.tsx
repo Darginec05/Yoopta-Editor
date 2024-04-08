@@ -18,21 +18,40 @@ import {
   findSlateBySelectionPath,
   HOTKEYS,
   findPluginBlockBySelectionPath,
+  YooEditor,
 } from '@yoopta/editor';
-import { ActionMenuToolItem, ActionMenuToolProps } from '../types';
+import { ActionMenuRenderProps, ActionMenuToolItem, ActionMenuToolProps } from '../types';
 
 const filterBy = (item: YooptaBlockData | YooptaBlock['options'], text: string, field: string) => {
   if (!item || !item?.[field]) return false;
-  return (item[field] as string).toLowerCase().indexOf(text.toLowerCase()) > -1;
+  const itemField = Array.isArray(item[field]) ? item[field].join(' ') : item[field];
+  return itemField.toLowerCase().indexOf(text.toLowerCase()) > -1;
 };
 
 const filterActionMenuItems = (block: YooptaBlock, text: string) => {
   if (!text) return true;
-  return filterBy(block, text, 'type') || filterBy(block.options?.display, text, 'title');
+  return (
+    filterBy(block, text, 'type') ||
+    filterBy(block.options?.display, text, 'title') ||
+    filterBy(block.options, text, 'shortcuts')
+  );
 };
 
-// [TODO] - should have default render for prop items
-const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) => {
+const mapActionMenuItems = (editor: YooEditor, items: ActionMenuToolItem[] | string[]): ActionMenuToolItem[] => {
+  return items.map((item: string | ActionMenuToolItem) => {
+    if (typeof item === 'string') {
+      const title = editor.blocks[item].options?.display?.title || item;
+      const description = editor.blocks[item].options?.display?.description;
+      return { type: item, title, description };
+    }
+    return item;
+  });
+};
+
+// [TODO] - add to props
+const trigger = '/';
+
+const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
   const editor = useYooptaEditor();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
@@ -53,20 +72,7 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
     duration: 100,
   });
 
-  // .sort((a: string, b: string) => {
-  //   const aOrder = editor.blocks[a]
-  //   const bOrder = editor.blocks[b]
-  //   return aOrder - bOrder;
-  // })
-  // [TODO] - add ordering and render specific actions
-  const blockTypes: ActionMenuToolItem[] =
-    items ||
-    Object.keys(editor.blocks).map((type) => ({
-      type,
-      title: editor.blocks[type].options?.display?.title || type,
-      description: editor.blocks[type].options?.display?.description || '',
-      icon: editor.blocks[type].options?.display?.icon || '',
-    }));
+  const blockTypes: ActionMenuToolItem[] = mapActionMenuItems(editor, items || Object.keys(editor.blocks));
 
   const [selectedAction, setSelectedAction] = useState<ActionMenuToolItem>(blockTypes[0]);
   const [actions, setActions] = useState<ActionMenuToolItem[]>(blockTypes);
@@ -147,24 +153,30 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
         const currentSelected = selectedAction || actions[0];
         if (!currentSelected) return;
 
-        const actionKeys = actions.map((item) => item.type);
-        const currentIndex = actionKeys.indexOf(currentSelected.type);
+        const menuList = document.querySelector('[data-action-menu-list]');
+        const menuListItems = menuList?.querySelectorAll('[data-action-menu-item]');
+        if (!menuListItems) return;
+
+        const currentListItem = menuList?.querySelector(`[aria-selected="true"]`) as HTMLElement;
+        const currentIndex = Array.from(menuListItems || []).indexOf(currentListItem);
 
         const prevIndex = currentIndex - 1;
-        const prevSelected = actions[prevIndex];
+        const prevEl = menuListItems[prevIndex];
 
-        if (!prevSelected) {
-          const last = actions[actions.length - 1];
-          const lastEl = document.querySelector(`[data-action-menu-item-type="${last.type}"]`) as HTMLElement;
+        if (!prevEl) {
+          const lastEl = menuListItems[menuListItems.length - 1];
+          const lastActionType = lastEl.getAttribute('data-action-menu-item-type');
           lastEl.scrollIntoView({ block: 'nearest' });
 
-          return setSelectedAction(last);
+          const lastAction = actions.find((item) => item.type === lastActionType)!;
+          return setSelectedAction(lastAction);
         }
 
-        const prevEl = document.querySelector(`[data-action-menu-item-type="${prevSelected.type}"]`) as HTMLElement;
         prevEl.scrollIntoView({ block: 'nearest' });
+        const prevActionType = prevEl.getAttribute('data-action-menu-item-type');
 
-        return setSelectedAction(prevSelected);
+        const lastAction = actions.find((item) => item.type === prevActionType)!;
+        return setSelectedAction(lastAction);
       }
 
       if (HOTKEYS.isArrowDown(event)) {
@@ -172,23 +184,30 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
         const currentSelected = selectedAction || actions[0];
         if (!currentSelected) return;
 
-        const actionKeys = actions.map((item) => item.type);
-        const currentIndex = actionKeys.indexOf(currentSelected.type);
+        const menuList = document.querySelector('[data-action-menu-list]');
+        const menuListItems = menuList?.querySelectorAll('[data-action-menu-item]');
+        if (!menuListItems) return;
+
+        const currentListItem = menuList?.querySelector(`[aria-selected="true"]`) as HTMLElement;
+        const currentIndex = Array.from(menuListItems || []).indexOf(currentListItem);
 
         const nextIndex = currentIndex + 1;
-        const nextSelected = actions[nextIndex];
+        const nextEl = menuListItems[nextIndex];
 
-        if (!nextSelected) {
-          const firstEl = document.querySelector(`[data-action-menu-item-type="${actions[0].type}"]`) as HTMLElement;
+        if (!nextEl) {
+          const firstEl = menuListItems[0];
+          const firstActionType = firstEl.getAttribute('data-action-menu-item-type');
           firstEl.scrollIntoView({ block: 'nearest' });
+          const firstAction = actions.find((item) => item.type === firstActionType)!;
 
-          return setSelectedAction(actions[0]);
+          return setSelectedAction(firstAction);
         }
 
-        const nextEl = document.querySelector(`[data-action-menu-item-type="${nextSelected.type}"]`) as HTMLElement;
         nextEl.scrollIntoView({ block: 'nearest' });
+        const nextActionType = nextEl.getAttribute('data-action-menu-item-type');
 
-        return setSelectedAction(nextSelected);
+        const nextAction = actions.find((item) => item.type === nextActionType)!;
+        return setSelectedAction(nextAction);
       }
 
       if (HOTKEYS.isArrowLeft(event)) {
@@ -266,10 +285,35 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
 
   const style = { ...floatingStyles, ...transitionStyles };
 
-  if (render) {
-    const getItemProps = () => ({ onMouseEnter, selectedAction });
+  const getItemProps = (type: string) => ({
+    onMouseEnter,
+    'data-action-menu-item': true,
+    'data-action-menu-item-type': type,
+    'aria-selected': selectedAction.type === type,
+    onClick: () => {
+      editor.blocks[type].create({ deleteText: true, focus: true });
 
+      onClose();
+    },
+  });
+
+  const getRootProps = () => ({
+    'data-action-menu-list': true,
+  });
+
+  const renderProps: ActionMenuRenderProps = {
+    actions,
+    onClose,
+    empty,
+    getItemProps,
+    getRootProps,
+    editor,
+    selectedAction,
+  };
+
+  if (render) {
     return (
+      // [TODO] - take care about SSR
       <FloatingPortal id="yoo-action-menu-list-portal" root={document.getElementById('yoopta-editor')}>
         <div
           className="yoo-action-menu-absolute yoo-action-menu-z-[9999] yoo-action-menu-m-0 yoo-action-menu-left-0 yoo-action-menu-top-0 yoo-action-menu-right-auto yoo-action-menu-bottom-auto"
@@ -277,7 +321,7 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
           ref={refs.setFloating}
         >
           {/* [TODO] - pass key down handler */}
-          {render({ getItemProps, actions, editor, onMouseEnter, selectedAction, onClose, empty })}
+          {render(renderProps)}
         </div>
       </FloatingPortal>
     );
@@ -291,14 +335,7 @@ const ActionMenuList = ({ trigger = '/', items, render }: ActionMenuToolProps) =
         style={style}
         ref={refs.setFloating}
       >
-        <DefaultActionMenuRender
-          actions={actions}
-          editor={editor}
-          onMouseEnter={onMouseEnter}
-          selectedAction={selectedAction}
-          onClose={onClose}
-          empty={empty}
-        />
+        <DefaultActionMenuRender {...renderProps} />
       </div>
     </FloatingPortal>
   );

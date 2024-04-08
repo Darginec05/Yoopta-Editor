@@ -1,43 +1,15 @@
-import { getRootBlockElement, YooptaBlock } from '@yoopta/editor';
 import { ActionMenuRenderProps, ActionMenuToolItem } from '../types';
 import { DEFAULT_ICONS_MAP } from './icons';
 
-function filterToggleActions(block: YooptaBlock) {
-  if (!block) return false;
-
-  const rootBlock = getRootBlockElement(block.elements);
-  if (rootBlock?.props?.nodeType === 'void') return false;
-  return true;
-}
-
 const DefaultActionMenuRender = ({
-  actions: actionsProps,
+  actions,
   editor,
-  onMouseEnter,
-  selectedAction,
-  onClose,
   empty,
-  mode = 'create',
+  getItemProps,
+  getRootProps,
   view = 'default',
 }: ActionMenuRenderProps) => {
-  const isModeToggle = mode === 'toggle';
   const isViewSmall = view === 'small';
-
-  const getActions = (): ActionMenuToolItem[] => {
-    const items = actionsProps.map((action) => {
-      if (typeof action === 'string') {
-        const title = editor.blocks[action].options?.display?.title || action;
-        const description = editor.blocks[action].options?.display?.description;
-        return { type: action, title, description };
-      }
-      return action;
-    });
-
-    if (isModeToggle) return items.filter((action) => filterToggleActions(editor.blocks[action?.type]));
-    return items;
-  };
-
-  const actions = getActions();
 
   const wrapStyles = {
     maxWidth: isViewSmall ? '200px' : '270px',
@@ -60,7 +32,7 @@ const DefaultActionMenuRender = ({
     >
       <div className="yoo-action-menu-max-h-[300px] yoo-action-menu-overflow-y-auto yoo-action-menu-overflow-x-hidden">
         <div
-          data-action-menu-list
+          {...getRootProps()}
           className="yoo-action-menu-overflow-hidden yoo-action-menu-p-0 yoo-action-menu-text-foreground"
         >
           {empty && (
@@ -80,27 +52,14 @@ const DefaultActionMenuRender = ({
             return (
               <button
                 key={action.type}
-                onMouseEnter={onMouseEnter}
-                // [TODO] - here is bug
-                aria-selected={action.type === selectedAction?.type}
-                data-action-menu-item
-                data-action-menu-item-type={action.type}
-                onClick={() => {
-                  if (isModeToggle) {
-                    editor.blocks[action.type].toggle(action.type, { focus: true });
-                  } else {
-                    editor.blocks[action.type].create({ deleteText: true, focus: true });
-                  }
-
-                  onClose();
-                }}
+                {...getItemProps(action.type)}
                 className="yoo-action-menu-flex yoo-action-menu-w-full yoo-action-menu-cursor-pointer yoo-action-menu-items-center yoo-action-menu-space-x-2 yoo-action-menu-rounded-md yoo-action-menu-px-1 yoo-action-menu-py-1 yoo-action-menu-mb-0.5 last:yoo-action-menu-mb-0 yoo-action-menu-text-left yoo-action-menu-text-sm hover:yoo-action-menu-bg-[#f4f4f5] aria-selected:yoo-action-menu-bg-[#f0f0f0]"
               >
                 <div
                   style={iconWrapStyles}
                   className="yoo-action-menu-flex yoo-action-menu-h-[40px] yoo-action-menu-w-[40px] yoo-action-menu-items-center yoo-action-menu-justify-center yoo-action-menu-rounded-md yoo-action-menu-border yoo-action-menu-border-solid yoo-action-menu-border-[#e5e7eb] yoo-action-menu-bg-[#FFFFFF]"
                 >
-                  {Icon && <Icon style={iconStyles} />}
+                  {Icon && typeof Icon !== 'string' && <Icon style={iconStyles} />}
                 </div>
                 <div>
                   <div className="yoo-action-menu-font-medium">{title}</div>

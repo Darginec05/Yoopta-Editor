@@ -1,7 +1,7 @@
 import { PluginElementRenderProps } from '@yoopta/editor';
 
 const BulletedListRender = ({ attributes, element, children, HTMLAttributes = {} }: PluginElementRenderProps) => {
-  const { className, ...htmlAttrs } = HTMLAttributes;
+  const { className = '', ...htmlAttrs } = HTMLAttributes;
 
   return (
     <div

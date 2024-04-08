@@ -7,7 +7,7 @@ const NumberedListRender = ({
   blockId,
   HTMLAttributes = {},
 }: PluginElementRenderProps) => {
-  const { className, ...htmlAttrs } = HTMLAttributes;
+  const { className = '', ...htmlAttrs } = HTMLAttributes;
   const block = useBlockData(blockId);
   const editor = useYooptaEditor();
 

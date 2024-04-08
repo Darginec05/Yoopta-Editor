@@ -22,6 +22,7 @@ import { CSSProperties, MouseEvent, useEffect, useRef, useState } from 'react';
 import { HighlightColor } from './HighlightColor';
 import {
   findSlateBySelectionPath,
+  getRootBlockElement,
   HOTKEYS,
   SlateElement,
   useYooptaTools,
@@ -40,6 +41,15 @@ type LinkValues = {
   title?: string;
   url: string;
 };
+
+function filterToggleActions(editor: YooEditor, type: string) {
+  const block = editor.blocks[type];
+  if (!block) return false;
+
+  const rootBlock = getRootBlockElement(block.elements);
+  if (rootBlock?.props?.nodeType === 'void') return false;
+  return true;
+}
 
 const getLinkEntry = (slate) => {
   const [link] = Editor.nodes(slate, {
@@ -107,7 +117,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, onHoldToolbarChange }: Tool
 
   const blockLabel = activeBlock?.options?.display?.title || activeBlock?.type || '';
 
-  const ActionMenuList = tools.ActionMenu;
+  const ActionMenu = tools.ActionMenu;
   const LinkTool = tools.LinkTool;
 
   useEffect(() => {
@@ -247,6 +257,47 @@ const DefaultToolbarRender = ({ activeBlock, editor, onHoldToolbarChange }: Tool
     editor.formats[format].toggle();
   };
 
+  const onCloseActionMenu = () => onChangeModal('actionMenu', false);
+
+  const getRootProps = () => ({
+    'data-action-menu-list': true,
+  });
+
+  const getItemProps = (type) => ({
+    onMouseEnter: () => undefined,
+    'data-action-menu-item': true,
+    'data-action-menu-item-type': type,
+    'aria-selected': blockLabel?.type === type,
+    onClick: () => {
+      editor.blocks[type].toggle(type, { focus: true });
+
+      onCloseActionMenu();
+    },
+  });
+
+  const getActions = () => {
+    const items = Object.keys(editor.blocks)
+      .filter((type) => filterToggleActions(editor, type))
+      .map((action) => {
+        const title = editor.blocks[action].options?.display?.title || action;
+        const description = editor.blocks[action].options?.display?.description;
+        return { type: action, title, description };
+      });
+
+    return items;
+  };
+
+  const actionMenuRenderProps = {
+    actions: getActions(),
+    onClose: onCloseActionMenu,
+    empty: false,
+    getItemProps,
+    getRootProps,
+    editor,
+    blockLabel,
+    view: 'small',
+  };
+
   return (
     <Toolbar.Root className="yoo-toolbar-bg-[#FFFFFF] yoo-toolbar-flex yoo-toolbar-z-50 yoo-toolbar-p-[5px] yoo-toolbar-rounded-md yoo-toolbar-shadow-md yoo-toolbar-border-[1px] yoo-toolbar-border-solid yoo-toolbar-border-[#e3e3e3] yoo-toolbar-shadow-y-[4px]">
       <Toolbar.ToggleGroup
@@ -263,19 +314,10 @@ const DefaultToolbarRender = ({ activeBlock, editor, onHoldToolbarChange }: Tool
           style={getModalTriggerStyle('actionMenu')}
         >
           <span className="yoo-toolbar-mr-0">{blockLabel}</span>
-          {modals.actionMenu && !!ActionMenuList && (
+          {modals.actionMenu && !!ActionMenu && (
             <FloatingPortal id="yoo-toolbar-action-menu-list-portal" root={document.getElementById('yoopta-editor')}>
               <div style={actionMenuStyles} ref={actionMenuRefs.setFloating} onClick={(e) => e.stopPropagation()}>
-                <ActionMenuList
-                  actions={Object.keys(editor.blocks)}
-                  editor={editor}
-                  selectedAction={blockLabel}
-                  onClose={() => onChangeModal('actionMenu', false)}
-                  empty={false}
-                  onMouseEnter={() => undefined}
-                  mode="toggle"
-                  view="small"
-                />
+                <ActionMenu {...actionMenuRenderProps} />
               </div>
             </FloatingPortal>
           )}

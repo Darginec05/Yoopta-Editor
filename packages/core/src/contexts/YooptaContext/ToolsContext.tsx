@@ -28,7 +28,7 @@ type Props = {
 export const ToolsProvider = ({ children, tools }: Props) => {
   const isReadOnly = useYooptaReadOnly();
 
-  const contextValues = useMemo(() => {
+  const contextValue = useMemo(() => {
     if (!tools) return {};
 
     return Object.keys(tools).reduce((acc, toolname) => {
@@ -49,10 +49,10 @@ export const ToolsProvider = ({ children, tools }: Props) => {
       if (!Tool) return null;
       return <Tool key={toolname} render={render} {...props} />;
     });
-  }, [useMemo]);
+  }, [tools]);
 
   return (
-    <ToolsContext.Provider value={contextValues}>
+    <ToolsContext.Provider value={contextValue}>
       <>
         {toolsRender}
         {children}

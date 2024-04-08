@@ -1,11 +1,4 @@
-import YooptaEditor, {
-  buildBlockData,
-  createYooptaEditor,
-  generateId,
-  Tools,
-  YooEditor,
-  YooptaBlockData,
-} from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor, Tools, YooEditor, YooptaBlockData } from '@yoopta/editor';
 import Blockquote from '@yoopta/blockquote';
 import Paragraph from '@yoopta/paragraph';
 import Headings from '@yoopta/headings';
@@ -25,6 +18,7 @@ import { uploadToCloudinary } from '../../utils/cloudinary';
 
 import Code from '@yoopta/code';
 import { BaseElement } from 'slate';
+import { ActionNotionMenuExample } from '../../components/ActionMenuExamples/NotionExample/NotionExample';
 // import Mention from '@yoopta/mention';
 
 const plugins = [
@@ -97,7 +91,7 @@ const plugins = [
   Headings.HeadingTwo.extend({
     options: {
       HTMLAttributes: {
-        className: 'heading-two-element',
+        className: 'heading-two-element-extended',
       },
     },
   }),
@@ -113,7 +107,6 @@ const plugins = [
   }),
   Lists.NumberedList,
   Lists.TodoList,
-  // Table,
   Embed,
   Video.extend({
     options: {
@@ -146,8 +139,12 @@ const MARKS = [Bold, Italic, Highlight, CodeMark, Strike, Underline];
 
 const TOOLS: Tools = {
   ActionMenu: {
-    render: DefaultActionMenuRender,
+    render: ActionNotionMenuExample,
+    // render: DefaultActionMenuRender,
     tool: ActionMenuList,
+    props: {
+      // items: ['Callout', 'Blockquote', 'HeadingOne', 'HeadingTwo', 'HeadingThree', 'Image', 'File'],
+    },
   },
   Toolbar: {
     render: DefaultToolbarRender,
@@ -168,172 +165,6 @@ export type YooptaBaseElementV2 = {
 };
 
 export type YooptaChildrenValue = Record<string, YooptaBlockData>;
-
-const value = {
-  'd09a9db9-3a1c-4249-a72c-fcf52b297196': {
-    id: 'd09a9db9-3a1c-4249-a72c-fcf52b297196',
-    value: [
-      {
-        id: '4de6acfd-6795-46ca-bcbb-a9ee5aebfb11',
-        type: 'file',
-        children: [
-          {
-            text: '',
-          },
-        ],
-        props: {
-          nodeType: 'void',
-          size: 11949,
-          name: 'page-v2',
-          src: 'https://res.cloudinary.com/ench-app/raw/upload/v1711831874/page-v2_qexcw3.json',
-          format: 'json',
-        },
-      },
-    ],
-    type: 'File',
-    meta: {
-      order: 0,
-      depth: 0,
-    },
-  },
-  'ddf5ba7f-984d-4605-b237-db387efc7129': {
-    id: 'ddf5ba7f-984d-4605-b237-db387efc7129',
-    value: [
-      {
-        id: '73c8c234-1ba5-4abd-b88b-6fd9b49aaac8',
-        type: 'paragraph',
-        children: [
-          {
-            text: '.cm-cursor { border-left-color: orange }',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'Paragraph',
-    meta: {
-      order: 1,
-      depth: 0,
-    },
-  },
-  '823bfa3e-82c1-4e33-98b3-e1c20b85b4be': {
-    id: '823bfa3e-82c1-4e33-98b3-e1c20b85b4be',
-    value: [
-      {
-        id: '7bab8e93-0444-4d6d-9607-055d9f79b1f1',
-        type: 'code',
-        children: [
-          {
-            text: 'asdasdsadsada',
-          },
-        ],
-        props: {
-          nodeType: 'void',
-          language: 'javascript',
-          theme: 'VSCode',
-        },
-      },
-    ],
-    type: 'Code',
-    meta: {
-      order: 2,
-      depth: 0,
-    },
-  },
-  '9bff29a6-63d3-4b4e-8815-2389a53e7c3f': {
-    id: '9bff29a6-63d3-4b4e-8815-2389a53e7c3f',
-    value: [
-      {
-        id: '83dde100-984f-4823-a82e-287e304002f2',
-        type: 'callout',
-        children: [
-          {
-            text: 'dia queries like responsive breakpoints, dark mode, prefers-reduced-motion, and more. For example, use md:border-dotted to apply the border-dotted utility at only medium screen sizes and above.',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-          theme: 'default',
-        },
-      },
-    ],
-    type: 'Callout',
-    meta: {
-      order: 3,
-      depth: 0,
-    },
-  },
-  '914071bc-f201-4258-a25a-02c89aa630bf': {
-    id: '914071bc-f201-4258-a25a-02c89aa630bf',
-    value: [
-      {
-        id: '545b4939-4a35-49ae-b95f-4850d0d36aa8',
-        type: 'image',
-        children: [
-          {
-            text: '',
-          },
-        ],
-        props: {
-          nodeType: 'void',
-          src: 'https://res.cloudinary.com/ench-app/image/upload/v1712003876/dacia-duster_mnitvf.jpg',
-          alt: 'cloudinary',
-          srcSet: null,
-          fit: 'contain',
-          sizes: {
-            width: 1200,
-            height: 675,
-          },
-        },
-      },
-    ],
-    type: 'Image',
-    meta: {
-      order: 4,
-      depth: 0,
-    },
-  },
-  'c7aa76ab-15f7-4fd2-95b8-74b719e97b86': {
-    id: 'c7aa76ab-15f7-4fd2-95b8-74b719e97b86',
-    value: [
-      {
-        id: 'a2059a29-7680-447b-9740-e4ebd90f302d',
-        type: 'video',
-        children: [
-          {
-            text: '',
-          },
-        ],
-        props: {
-          nodeType: 'void',
-          src: 'https://res.cloudinary.com/ench-app/video/upload/v1712003894/Sequence_01_2_qc8rvj.mp4',
-          srcSet: null,
-          sizes: {
-            width: 720,
-            height: 1280,
-          },
-          provider: {
-            type: null,
-            id: '',
-          },
-          settings: {
-            controls: false,
-            loop: true,
-            muted: true,
-            autoPlay: true,
-          },
-        },
-      },
-    ],
-    type: 'Video',
-    meta: {
-      order: 5,
-      depth: 0,
-    },
-  },
-};
 
 const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
@@ -385,7 +216,7 @@ const BasicExample = () => {
         tools={TOOLS}
         readOnly={readOnly}
         width={750}
-        value={value}
+        // value={value}
       />
     </div>
   );

@@ -1,7 +1,7 @@
 import { PluginElementRenderProps, YooptaPlugin } from '@yoopta/editor';
 
 const HeadingTwoRender = ({ attributes, children, element, HTMLAttributes = {} }: PluginElementRenderProps) => {
-  const { className, ...htmlAttrs } = HTMLAttributes;
+  const { className = '', ...htmlAttrs } = HTMLAttributes;
 
   return (
     <h2

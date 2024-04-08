@@ -2,13 +2,13 @@ import { YooEditor, YooptaBlock } from '@yoopta/editor';
 import { ReactElement, ReactNode } from 'react';
 
 export type ActionMenuRenderProps = {
-  actions: ActionMenuToolItem[] | string[];
+  actions: ActionMenuToolItem[];
   editor: YooEditor;
-  onMouseEnter?: (e: React.MouseEvent) => void;
   selectedAction: ActionMenuToolItem;
   onClose: () => void;
+  getItemProps: (type: string) => any;
+  getRootProps: () => any;
   empty: boolean;
-  mode?: 'toggle' | 'create';
   view?: 'small' | 'default';
 };
 
@@ -20,8 +20,8 @@ export type ActionMenuToolItem = {
 };
 
 export type ActionMenuToolProps = {
-  trigger?: string;
+  // trigger?: string;
   actions?: YooptaBlock[];
   render?: (props: any) => JSX.Element;
-  items?: ActionMenuToolItem[];
+  items?: ActionMenuToolItem[] | string[];
 };
