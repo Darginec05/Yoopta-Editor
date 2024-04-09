@@ -131,8 +131,6 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
     'data-action-menu-item-type': type,
     'aria-selected': false,
     onClick: () => {
-      console.log({ type });
-
       editor.blocks[type].toggle(type, { focus: true });
       onCloseActionMenu();
     },

@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { memo, useCallback, useMemo, useRef } from 'react';
 import { DefaultElement, Editable, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useBlockData } from '../contexts/YooptaContext/YooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
@@ -153,7 +153,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       eventHandlers.onKeyDown?.(event);
       EVENT_HANDLERS.onKeyDown(editor)(event);
     },
-    [eventHandlers.onKeyDown, editor.readOnly],
+    [eventHandlers.onKeyDown, editor.readOnly, editor.selection?.[0], block.meta.order],
   );
 
   const onKeyUp = useCallback(
@@ -174,7 +174,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       }
       eventHandlers?.onClick?.(event);
     },
-    [eventHandlers.onClick, editor.readOnly, editor.selection?.[0]],
+    [eventHandlers.onClick, editor.readOnly, editor.selection?.[0], block.meta.order],
   );
 
   const onBlur = useCallback(
@@ -243,7 +243,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
 
       return ranges;
     },
-    [editor.readOnly, editor.selection?.[0]],
+    [editor.readOnly, editor.selection?.[0], block.meta.order],
   );
 
   return (

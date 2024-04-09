@@ -4,9 +4,9 @@ import { YooEditor, YooptaBlockPath } from '../types';
 export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: YooptaBlockPath) {
   editor.children = createDraft(editor.children);
 
-  const [newPosition] = newPath;
+  const [updatedPosition] = newPath;
   const draggedBlock = editor.children[draggedBlockId!];
-  const blockInNewPosition = Object.values(editor.children).find((item) => item.meta.order === newPosition)!;
+  const blockInNewPosition = Object.values(editor.children).find((item) => item.meta.order === updatedPosition)!;
 
   const dragFromTopToBottom = draggedBlock.meta.order < blockInNewPosition.meta.order;
   const dragFromBottomToTop = draggedBlock.meta.order > blockInNewPosition.meta.order;
@@ -23,9 +23,10 @@ export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: Yo
     }
   });
 
-  draggedBlock.meta.order = newPosition;
+  draggedBlock.meta.order = updatedPosition;
   draggedBlock.meta.depth = blockInNewPosition.meta.depth;
 
+  editor.setSelection([updatedPosition]);
   editor.children = finishDraft(editor.children);
   editor.applyChanges();
   editor.emit('change', editor.children);

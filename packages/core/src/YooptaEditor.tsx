@@ -2,7 +2,7 @@ import EventEmitter from 'eventemitter3';
 import { YooptaContextProvider } from './contexts/YooptaContext/YooptaContext';
 import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { Editor } from './components/Editor/Editor';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { YooEditor, YooptaBlockData, YooptaContentValue } from './editor/types';
 import { Plugin } from './plugins/types';
 import NoSSR from './components/NoSsr/NoSsr';
@@ -90,7 +90,7 @@ const YooptaEditor = ({
     return pluginsProps.map((plugin) => plugin.getPlugin as Plugin<string, any, any>);
   }, [pluginsProps]);
 
-  const [editorState, setEditorState] = useState<{ editor: YooEditor<any, 'hightlight'>; version: number }>(() => {
+  const [editorState, setEditorState] = useState<{ editor: YooEditor<any>; version: number }>(() => {
     editor.applyChanges = applyChanges;
     editor.readOnly = readOnly || false;
     if (marks) editor.formats = buildMarks(editor, marks);
