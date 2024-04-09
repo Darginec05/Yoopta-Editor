@@ -72,7 +72,7 @@ export type YooptaFormats = Record<string, TextFormat>;
 export type YooEditorEvents = 'change' | 'block:copy';
 
 // [TODO] - Fix generic and default types
-export type YooEditor<TNodes = any, TKey extends string = any> = {
+export type YooEditor<TNodes = any> = {
   insertBlock: (data: YooptaBlockData, options?: YooptaEditorTransformOptions) => void;
   insertBlocks: (blocks: YooptaBlockData[], options?: YooptaEditorTransformOptions) => void;
   splitBlock: (options?: YooptaEditorTransformOptions) => void;

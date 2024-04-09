@@ -30,12 +30,7 @@ import {
   YooptaBlock,
 } from '@yoopta/editor';
 import { Editor, Element, NodeEntry, Range, Transforms } from 'slate';
-
-type ToolbarComponentProps = {
-  activeBlock?: YooptaBlock;
-  editor: YooEditor;
-  onHoldToolbarChange?: (hold: boolean) => void;
-};
+import { ToolbarRenderProps } from '../types';
 
 type LinkValues = {
   title?: string;
@@ -62,7 +57,7 @@ const getLinkEntry = (slate) => {
 const DEFAULT_MODALS = { link: false, highlight: false, actionMenu: false };
 type ModalsState = typeof DEFAULT_MODALS;
 
-const DefaultToolbarRender = ({ activeBlock, editor, onHoldToolbarChange }: ToolbarComponentProps) => {
+const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: ToolbarRenderProps) => {
   const [modals, setModals] = useState<ModalsState>({ link: false, highlight: false, actionMenu: false });
   const [linkValues, setLinkValues] = useState<LinkValues>({ title: '', url: '' });
   const lastSelection = useRef<Range | null>(null);
@@ -124,7 +119,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, onHoldToolbarChange }: Tool
     const onKeyDown = (e: KeyboardEvent) => {
       if (HOTKEYS.isEscape(e)) {
         setModals(DEFAULT_MODALS);
-        onHoldToolbarChange?.(false);
+        toggleHoldToolbar?.(false);
         return;
       }
 
@@ -211,7 +206,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, onHoldToolbarChange }: Tool
 
       onChangeModal('link', false);
       setLinkValues({ title: '', url: '' });
-      onHoldToolbarChange?.(false);
+      toggleHoldToolbar?.(false);
 
       // if (lastSelection.current) {
       //   try {
@@ -234,7 +229,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, onHoldToolbarChange }: Tool
     }
     onChangeModal('link', false);
     setLinkValues({ title: '', url: '' });
-    onHoldToolbarChange?.(false);
+    toggleHoldToolbar?.(false);
   };
 
   const onClickLinkOverlay = (e: MouseEvent) => {
@@ -243,7 +238,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, onHoldToolbarChange }: Tool
 
     if (linkToolRefs.floating.current?.contains(e.target as Node)) return;
 
-    onHoldToolbarChange?.(false);
+    toggleHoldToolbar?.(false);
     setModals(DEFAULT_MODALS);
   };
 
@@ -336,7 +331,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, onHoldToolbarChange }: Tool
           ref={linkToolRefs.setReference}
           onClick={() => {
             onChangeModal('link', !modals.link);
-            onHoldToolbarChange?.(true);
+            toggleHoldToolbar?.(true);
           }}
           style={getModalTriggerStyle('link')}
         >

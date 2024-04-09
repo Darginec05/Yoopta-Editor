@@ -19,6 +19,8 @@ import { uploadToCloudinary } from '../../utils/cloudinary';
 import Code from '@yoopta/code';
 import { BaseElement } from 'slate';
 import { ActionNotionMenuExample } from '../../components/ActionMenuExamples/NotionExample/NotionExample';
+import { SlackChat } from '../../components/Chats/SlackChat/SlackChat';
+import { NotionToolbar } from '../../components/Toolbars/NotionToolbar/NotionToolbar';
 // import Mention from '@yoopta/mention';
 
 const plugins = [
@@ -147,7 +149,7 @@ const TOOLS: Tools = {
     },
   },
   Toolbar: {
-    render: DefaultToolbarRender,
+    render: NotionToolbar,
     tool: Toolbar,
   },
   LinkTool: {

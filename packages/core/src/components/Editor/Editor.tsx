@@ -22,7 +22,7 @@ type Props = {
   width?: number;
 };
 
-const getEditorStyles = (styles) => ({
+const getEditorStyles = (styles: CSSProperties) => ({
   paddingBottom: 150,
   ...styles,
 });

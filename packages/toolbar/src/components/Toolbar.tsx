@@ -12,8 +12,9 @@ import {
 } from '@floating-ui/react';
 import throttle from 'lodash.throttle';
 import { useYooptaEditor } from '@yoopta/editor';
+import { ToolbarToolProps } from '../types';
 
-const Toolbar = () => {
+const Toolbar = ({ render }: ToolbarToolProps) => {
   const editor = useYooptaEditor();
   const [isToolbarOpen, setIsToolbarOpen] = useState(false);
   const [hold, setHold] = useState(false);
@@ -79,13 +80,25 @@ const Toolbar = () => {
   const activeBlock = Object.values(editor.blocks).find((block) => block.isActive());
   const style = { ...floatingStyles, ...transitionStyles };
 
-  const onHoldToolbarChange = (hold: boolean) => setHold(hold);
+  const toggleHoldToolbar = (hold: boolean) => setHold(hold);
+
+  if (render) {
+    const RenderComponent = render;
+
+    return (
+      <FloatingPortal id="yoo-toolbar-portal" root={document.getElementById('yoopta-editor')}>
+        <div style={style} ref={refs.setFloating} onClick={(e) => e.stopPropagation()}>
+          <RenderComponent activeBlock={activeBlock} editor={editor} toggleHoldToolbar={toggleHoldToolbar} />
+        </div>
+      </FloatingPortal>
+    );
+  }
 
   return (
     // [TODO] - take care about SSR
     <FloatingPortal id="yoo-toolbar-portal" root={document.getElementById('yoopta-editor')}>
       <div style={style} ref={refs.setFloating} onClick={(e) => e.stopPropagation()}>
-        <DefaultToolbarRender activeBlock={activeBlock} editor={editor} onHoldToolbarChange={onHoldToolbarChange} />
+        <DefaultToolbarRender activeBlock={activeBlock} editor={editor} toggleHoldToolbar={toggleHoldToolbar} />
       </div>
     </FloatingPortal>
   );
