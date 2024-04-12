@@ -28,6 +28,7 @@
     "@yoopta/toolbar": "*",
     "@yoopta/video": "*",
     "classnames": "^2.5.1",
+    "katex": "^0.16.10",
     "lucide-react": "^0.365.0",
     "next": "14.1.0",
     "react": "^18",
@@ -36,6 +37,7 @@
     "slate-react": "^0.102.0"
   },
   "devDependencies": {
+    "@types/katex": "^0.16.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

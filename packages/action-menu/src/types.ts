@@ -4,12 +4,13 @@ import { ReactElement, ReactNode } from 'react';
 export type ActionMenuRenderProps = {
   actions: ActionMenuToolItem[];
   editor: YooEditor;
-  selectedAction: ActionMenuToolItem;
+  selectedAction?: ActionMenuToolItem;
   onClose: () => void;
   getItemProps: (type: string) => any;
   getRootProps: () => any;
   empty: boolean;
   view?: 'small' | 'default';
+  mode?: 'create' | 'toggle';
 };
 
 export type ActionMenuToolItem = {

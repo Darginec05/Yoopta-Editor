@@ -1,4 +1,4 @@
-import { ActionMenuRenderProps, ActionMenuToolItem } from '../types';
+import { ActionMenuRenderProps } from '../types';
 import { DEFAULT_ICONS_MAP } from './icons';
 
 const DefaultActionMenuRender = ({

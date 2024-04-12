@@ -1,12 +1,9 @@
 import { ActionMenuRenderProps } from '@yoopta/action-menu-list';
 import { ICONS_SRC } from './utils/iconsMap';
 import s from './NotionExample.module.scss';
+import cx from 'classnames';
 
 const VOID_PLUGINS = ['Video', 'Image', 'File', 'Embed'];
-
-function cx(...classNames: (string | undefined)[]) {
-  return classNames.filter(Boolean).join(' ');
-}
 
 const ActionNotionMenuExample = (props: ActionMenuRenderProps) => {
   const { empty, getItemProps, actions, getRootProps, view } = props;

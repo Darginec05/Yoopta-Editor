@@ -21,6 +21,7 @@ import {
   YooEditor,
 } from '@yoopta/editor';
 import { ActionMenuRenderProps, ActionMenuToolItem, ActionMenuToolProps } from '../types';
+import { buildActionMenuRenderProps, mapActionMenuItems } from './utils';
 
 const filterBy = (item: YooptaBlockData | YooptaBlock['options'], text: string, field: string) => {
   if (!item || !item?.[field]) return false;
@@ -35,17 +36,6 @@ const filterActionMenuItems = (block: YooptaBlock, text: string) => {
     filterBy(block.options?.display, text, 'title') ||
     filterBy(block.options, text, 'shortcuts')
   );
-};
-
-const mapActionMenuItems = (editor: YooEditor, items: ActionMenuToolItem[] | string[]): ActionMenuToolItem[] => {
-  return items.map((item: string | ActionMenuToolItem) => {
-    if (typeof item === 'string') {
-      const title = editor.blocks[item].options?.display?.title || item;
-      const description = editor.blocks[item].options?.display?.description;
-      return { type: item, title, description };
-    }
-    return item;
-  });
 };
 
 // [TODO] - add to props
@@ -265,13 +255,23 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
     }
   }, [actions, isMenuOpen, editor.selection?.[0]]);
 
+  const empty = actions.length === 0;
+
   const onMouseEnter = (e: React.MouseEvent) => {
     const type = e.currentTarget.getAttribute('data-action-menu-item-type')!;
     const action = blockTypes.find((item) => item.type === type)!;
     setSelectedAction(action);
   };
 
-  const empty = actions.length === 0;
+  const renderProps: ActionMenuRenderProps = buildActionMenuRenderProps({
+    empty,
+    editor,
+    onClose,
+    onMouseEnter,
+    selectedAction,
+    view: 'default',
+    mode: 'create',
+  });
 
   useEffect(() => {
     let timeout = setTimeout(() => {
@@ -285,32 +285,6 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
 
   const style = { ...floatingStyles, ...transitionStyles };
 
-  const getItemProps = (type: string) => ({
-    onMouseEnter,
-    'data-action-menu-item': true,
-    'data-action-menu-item-type': type,
-    'aria-selected': selectedAction.type === type,
-    onClick: () => {
-      editor.blocks[type].create({ deleteText: true, focus: true });
-
-      onClose();
-    },
-  });
-
-  const getRootProps = () => ({
-    'data-action-menu-list': true,
-  });
-
-  const renderProps: ActionMenuRenderProps = {
-    actions,
-    onClose,
-    empty,
-    getItemProps,
-    getRootProps,
-    editor,
-    selectedAction,
-  };
-
   if (render) {
     return (
       // [TODO] - take care about SSR
@@ -321,7 +295,7 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
           ref={refs.setFloating}
         >
           {/* [TODO] - pass key down handler */}
-          {render(renderProps)}
+          {render({ ...renderProps, actions })}
         </div>
       </FloatingPortal>
     );
@@ -335,7 +309,7 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
         style={style}
         ref={refs.setFloating}
       >
-        <DefaultActionMenuRender {...renderProps} />
+        <DefaultActionMenuRender {...renderProps} actions={actions} />
       </div>
     </FloatingPortal>
   );

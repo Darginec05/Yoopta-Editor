@@ -21,6 +21,7 @@ import { Sheet } from '@/components/ui/sheet';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import { useMemo, useRef } from 'react';
+import { LARGE_DOCUMENT_VALUE } from './initValue';
 
 const plugins = [
   Paragraph,
@@ -106,6 +107,7 @@ function withBasicUsageExample() {
         marks={MARKS}
         selectionBoxRoot={selectionRef}
         autoFocus
+        value={LARGE_DOCUMENT_VALUE}
       />
     </div>
   );
