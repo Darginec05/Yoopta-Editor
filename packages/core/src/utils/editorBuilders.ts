@@ -1,4 +1,5 @@
 import { withReact } from 'slate-react';
+import { withHistory } from 'slate-history';
 import { createEditor, Editor } from 'slate';
 import { YooEditor, YooptaBlockData } from '../editor/types';
 import { Plugin, PluginElement, PluginElementsMap } from '../plugins/types';
@@ -100,8 +101,7 @@ export function buildBlockSlateEditors(editor: YooEditor) {
 }
 
 export function buildSlateEditor(editor: YooEditor): Editor {
-  // [TODO] - TEST BUILD ERRORS
-  const slate = withShortcuts(editor, withReact(createEditor()));
+  const slate = withShortcuts(editor, withHistory(withReact(createEditor())));
   return slate;
 }
 
