@@ -15,7 +15,7 @@ const CalloutRender = ({ element, attributes, children, blockId, HTMLAttributes 
     <div
       data-element-type={element.type}
       style={styles}
-      className={`yoo-callout-rounded-md yoo-callout-mt-2 yoo-callout-p-2 yoo-callout-pl-4 yoo-callout-leading-7 yoo-callout-bg-info yoo-callout-text-info-foreground yoo-callout-text-[16px] yoopta-callout yoopta-callout-theme-${theme} ${className}`}
+      className={`yoo-callout-rounded-md yoo-callout-mt-2 yoo-callout-p-2 yoo-callout-pl-4 yoo-callout-leading-7 yoo-callout-bg-info yoo-callout-text-info-foreground yoo-callout-text-[16px] yoopta-callout-theme-${theme} ${className}`}
       {...htmlAttrs}
       {...attributes}
     >

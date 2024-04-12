@@ -31,6 +31,7 @@ import {
 } from '@yoopta/editor';
 import { Editor, Element, NodeEntry, Range, Transforms } from 'slate';
 import { ToolbarRenderProps } from '../types';
+import { buildActionMenuRenderProps } from './utils';
 
 type LinkValues = {
   title?: string;
@@ -254,44 +255,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
 
   const onCloseActionMenu = () => onChangeModal('actionMenu', false);
 
-  const getRootProps = () => ({
-    'data-action-menu-list': true,
-  });
-
-  const getItemProps = (type) => ({
-    onMouseEnter: () => undefined,
-    'data-action-menu-item': true,
-    'data-action-menu-item-type': type,
-    'aria-selected': blockLabel?.type === type,
-    onClick: () => {
-      editor.blocks[type].toggle(type, { focus: true });
-
-      onCloseActionMenu();
-    },
-  });
-
-  const getActions = () => {
-    const items = Object.keys(editor.blocks)
-      .filter((type) => filterToggleActions(editor, type))
-      .map((action) => {
-        const title = editor.blocks[action].options?.display?.title || action;
-        const description = editor.blocks[action].options?.display?.description;
-        return { type: action, title, description };
-      });
-
-    return items;
-  };
-
-  const actionMenuRenderProps = {
-    actions: getActions(),
-    onClose: onCloseActionMenu,
-    empty: false,
-    getItemProps,
-    getRootProps,
-    editor,
-    blockLabel,
-    view: 'small',
-  };
+  const actionMenuRenderProps = buildActionMenuRenderProps({ editor, onClose: onCloseActionMenu, view: 'small' });
 
   return (
     <Toolbar.Root className="yoo-toolbar-bg-[#FFFFFF] yoo-toolbar-flex yoo-toolbar-z-50 yoo-toolbar-p-[5px] yoo-toolbar-rounded-md yoo-toolbar-shadow-md yoo-toolbar-border-[1px] yoo-toolbar-border-solid yoo-toolbar-border-[#e3e3e3] yoo-toolbar-shadow-y-[4px]">

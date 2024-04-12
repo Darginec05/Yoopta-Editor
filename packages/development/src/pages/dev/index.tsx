@@ -18,7 +18,7 @@ import { uploadToCloudinary } from '../../utils/cloudinary';
 
 import Code from '@yoopta/code';
 import { BaseElement } from 'slate';
-import { ActionNotionMenuExample } from '../../components/ActionMenuExamples/NotionExample/NotionExample';
+import { ActionNotionMenuExample } from '../../components/ActionMenuExamples/NotionExample/ActionNotionMenuExample';
 import { SlackChat } from '../../components/Chats/SlackChat/SlackChat';
 import { NotionToolbar } from '../../components/Toolbars/NotionToolbar/NotionToolbar';
 // import Mention from '@yoopta/mention';
@@ -149,6 +149,7 @@ const TOOLS: Tools = {
     },
   },
   Toolbar: {
+    // render: DefaultToolbarRender,
     render: NotionToolbar,
     tool: Toolbar,
   },
@@ -156,14 +157,6 @@ const TOOLS: Tools = {
     render: DefaultLinkToolRender,
     tool: LinkTool,
   },
-};
-
-export type YooptaBaseElementV2 = {
-  id: string;
-  type: string;
-  children: BaseElement['children'] | YooptaBaseElementV2[];
-  data?: any;
-  nodeType: 'block' | 'inline' | 'void';
 };
 
 export type YooptaChildrenValue = Record<string, YooptaBlockData>;

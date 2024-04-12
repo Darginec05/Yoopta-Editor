@@ -18,6 +18,7 @@ import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySel
 import { getRootBlockElement } from '../../utils/blockElements';
 import { useYooptaTools } from '../../contexts/YooptaContext/ToolsContext';
 import { YooEditor } from '../../editor/types';
+import { buildActionMenuRenderProps } from './utils';
 
 const BlockOptionsMenuGroup = ({ children }) => <div className="yoo-editor-flex yoo-editor-flex-col">{children}</div>;
 
@@ -51,15 +52,6 @@ type BlockOptionsProps = {
   style: CSSProperties;
   children?: React.ReactNode;
 };
-
-function filterToggleActions(editor: YooEditor, type: string) {
-  const block = editor.blocks[type];
-  if (!block) return false;
-
-  const rootBlock = getRootBlockElement(block.elements);
-  if (rootBlock?.props?.nodeType === 'void') return false;
-  return true;
-}
 
 const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsProps) => {
   const editor = useYooptaEditor();
@@ -121,42 +113,7 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
     onClose();
   };
 
-  const getRootProps = () => ({
-    'data-action-menu-list': true,
-  });
-
-  const getItemProps = (type) => ({
-    onMouseEnter: () => undefined,
-    'data-action-menu-item': true,
-    'data-action-menu-item-type': type,
-    'aria-selected': false,
-    onClick: () => {
-      editor.blocks[type].toggle(type, { focus: true });
-      onCloseActionMenu();
-    },
-  });
-
-  const getActions = () => {
-    const items = Object.keys(editor.blocks)
-      .filter((type) => filterToggleActions(editor, type))
-      .map((action) => {
-        const title = editor.blocks[action].options?.display?.title || action;
-        const description = editor.blocks[action].options?.display?.description;
-        return { type: action, title, description };
-      });
-
-    return items;
-  };
-
-  const actionMenuRenderProps = {
-    actions: getActions(),
-    onClose: onCloseActionMenu,
-    empty: false,
-    getItemProps,
-    getRootProps,
-    editor,
-    view: 'small',
-  };
+  const actionMenuRenderProps = buildActionMenuRenderProps({ editor, view: 'small', onClose: onCloseActionMenu });
 
   return (
     // [TODO] - take care about SSR

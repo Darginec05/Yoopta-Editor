@@ -21,6 +21,8 @@ import { Sheet } from '@/components/ui/sheet';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import { useMemo, useRef } from 'react';
+import { ActionNotionMenuExample } from '../ActionMenuExamples/NotionExample/NotionExample';
+import { NotionToolbar } from '../Toolbars/NotionToolbar/NotionToolbar';
 
 const plugins = [
   Paragraph,
@@ -78,11 +80,11 @@ const plugins = [
 
 const TOOLS = {
   ActionMenu: {
-    render: DefaultActionMenuRender,
+    render: ActionNotionMenuExample,
     tool: ActionMenuList,
   },
   Toolbar: {
-    render: DefaultToolbarRender,
+    render: NotionToolbar,
     tool: Toolbar,
   },
   LinkTool: {
