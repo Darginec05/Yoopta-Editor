@@ -1,4 +1,4 @@
-import YooptaEditor, { createYooptaEditor } from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor, createYooptaMark, YooptaMarkProps } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
@@ -15,12 +15,12 @@ import Code from '@yoopta/code';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
+import s from './withCustomMark.module.scss';
 // import { DividerPlugin } from './customPlugins/Divider';
 
-import { Sheet } from '@/components/ui/sheet';
-
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import { WITH_CUSTOM_MARK_INIT_VALUE } from './initValue';
 
 const plugins = [
   Paragraph,
@@ -91,11 +91,27 @@ const TOOLS = {
   },
 };
 
-const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
+type SuperscriptMarkProps = YooptaMarkProps<'superscript', boolean>;
 
-function withBasicUsageExample() {
+const CUSTOM_SUPERSCRIPT_MARK = createYooptaMark<SuperscriptMarkProps>({
+  type: 'superscript',
+  render: (props) => {
+    return <sup className={s.superscript}>{props.children}</sup>;
+  },
+  hotkey: 'mod+p',
+});
+
+const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight, CUSTOM_SUPERSCRIPT_MARK];
+
+function WithCustomMark() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
+
+  useEffect(() => {
+    editor.on('change', (value) => {
+      console.log(value);
+    });
+  }, []);
 
   return (
     <div className="md:p-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center" ref={selectionRef}>
@@ -105,10 +121,11 @@ function withBasicUsageExample() {
         tools={TOOLS}
         marks={MARKS}
         selectionBoxRoot={selectionRef}
+        value={WITH_CUSTOM_MARK_INIT_VALUE}
         autoFocus
       />
     </div>
   );
 }
 
-export default withBasicUsageExample;
+export default WithCustomMark;

@@ -16,7 +16,7 @@
     "@yoopta/blockquote": "^4.0.0-rc.12",
     "@yoopta/callout": "^4.0.0-rc.16",
     "@yoopta/code": "^4.0.0-rc.29",
-    "@yoopta/editor": "^4.0.0-rc.35",
+    "@yoopta/editor": "^4.0.0-rc.36",
     "@yoopta/embed": "^4.0.0-rc.15",
     "@yoopta/file": "^4.0.0-rc.4",
     "@yoopta/headings": "^4.0.0-rc.13",
@@ -43,6 +43,7 @@
     "use-debounce": "^10.0.0"
   },
   "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

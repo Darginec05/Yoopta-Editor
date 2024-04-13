@@ -1,0 +1,1 @@
+export const WITH_EDITOR_CONTROL_INIT_VALUE = {};

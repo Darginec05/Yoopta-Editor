@@ -1,22 +1,14 @@
 import { ToolbarRenderProps } from '@yoopta/toolbar';
-import { getRootBlockElement, useYooptaEditor, useYooptaTools, YooEditor } from '@yoopta/editor';
+import { useYooptaEditor, useYooptaTools } from '@yoopta/editor';
 import cx from 'classnames';
-import s from './NotionToolbar.module.scss';
 import { CodeIcon, ChevronDownIcon, RadicalIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useFloating, offset, flip, shift, inline, autoUpdate, FloatingPortal } from '@floating-ui/react';
+import s from './NotionToolbar.module.scss';
+import { buildActionMenuRenderProps } from '@yoopta/action-menu-list';
 
 const DEFAULT_MODALS = { link: false, highlight: false, actionMenu: false };
 type ModalsState = typeof DEFAULT_MODALS;
-
-function filterToggleActions(editor: YooEditor, type: string) {
-  const block = editor.blocks[type];
-  if (!block) return false;
-
-  const rootBlock = getRootBlockElement(block.elements);
-  if (rootBlock?.props?.nodeType === 'void') return false;
-  return true;
-}
 
 const NotionToolbar = (props: ToolbarRenderProps) => {
   const [modals, setModals] = useState<ModalsState>({ link: false, highlight: false, actionMenu: false });
@@ -42,43 +34,7 @@ const NotionToolbar = (props: ToolbarRenderProps) => {
 
   const onCloseActionMenu = () => onChangeModal('actionMenu', false);
 
-  const getRootProps = () => ({
-    'data-action-menu-list': true,
-  });
-
-  const getItemProps = (type: string) => ({
-    onMouseEnter: () => undefined,
-    'data-action-menu-item': true,
-    'data-action-menu-item-type': type,
-    'aria-selected': blockLabel?.type === type,
-    onClick: () => {
-      editor.blocks[type].toggle(type, { focus: true });
-      onCloseActionMenu();
-    },
-  });
-
-  const getActions = () => {
-    const items = Object.keys(editor.blocks)
-      .filter((type) => filterToggleActions(editor, type))
-      .map((action) => {
-        const title = editor.blocks[action].options?.display?.title || action;
-        const description = editor.blocks[action].options?.display?.description;
-        return { type: action, title, description };
-      });
-
-    return items;
-  };
-
-  const actionMenuRenderProps = {
-    actions: getActions(),
-    onClose: onCloseActionMenu,
-    empty: false,
-    getItemProps,
-    getRootProps,
-    editor,
-    blockLabel,
-    view: 'small',
-  };
+  const actionMenuRenderProps = buildActionMenuRenderProps({ editor, onClose: onCloseActionMenu, view: 'small' });
 
   return (
     <div>
@@ -89,7 +45,12 @@ const NotionToolbar = (props: ToolbarRenderProps) => {
           </button>
         </div>
         <div className={s.group}>
-          <button type="button" className={s.item} onClick={() => onChangeModal('actionMenu', !modals.actionMenu)}>
+          <button
+            type="button"
+            className={s.item}
+            ref={actionMenuRefs.setReference}
+            onClick={() => onChangeModal('actionMenu', !modals.actionMenu)}
+          >
             <span className={s.block}>
               {blockLabel} <ChevronDownIcon size={12} strokeWidth={2} color="rgba(55, 53, 47, 0.35)" />
             </span>
@@ -143,15 +104,16 @@ const NotionToolbar = (props: ToolbarRenderProps) => {
               <CodeIcon size={15} strokeWidth={1.5} />
             </span>
           </button>
-          <button
+          {/* <button
             type="button"
-            // onClick={() => editor.formats.code.toggle()}
-            className={cx(s.item, { [s.active]: editor.formats.code.isActive() })}
+            // onClick={() => alert('See example with custom text format')}
+            onClick={() => editor.formats.katex.toggle()}
+            className={cx(s.item, { [s.active]: editor.formats.katex.isActive() })}
           >
             <span className={s.code}>
               <RadicalIcon size={15} strokeWidth={1.5} />
             </span>
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

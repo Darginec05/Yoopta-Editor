@@ -1,14 +1,16 @@
 import withBasicExample from '@/components/examples/withBasicExample';
 // import withCustomComponent from '@/components/examples';
-
+// import withOffline from '@/components/examples/withOffline';
+// import withExports from '@/components/examples/withExports';
+// import { CheckSourceCode } from '@/components/CheckSourceCode/CheckSourceCode';
 import withCustomHTMLAttributes from '@/components/examples/withCustomHTMLAttributes';
 import withCustomMark from '@/components/examples/withCustomMark';
 import withCustomPlugin from '@/components/examples/withCustomPlugin';
-import withCustomToolbar from '@/components/examples/withCustomToolbar';
+import withCustomToolbar from '@/components/examples/withCustomToolbar.';
 import withDarkTheme from '@/components/examples/withDarkTheme';
 import withExtendedPlugin from '@/components/examples/withExtendedPlugin';
 import withMedia from '@/components/examples/withMedia';
-import withNotionExample from '@/components/examples/withNotion';
+import withNotionActionMenu from '@/components/examples/withNotionActionMenu';
 import withReadOnly from '@/components/examples/withReadOnly/index';
 import withSavingToDatabase from '@/components/examples/withSavingToDatabase';
 import withEditorControl from '@/components/examples/withEditorControl';
@@ -17,17 +19,15 @@ import withChatSlack from '@/components/examples/withChatSlack';
 import withCraftExample from '@/components/examples/withCraftExample';
 import withCustomStyles from '@/components/examples/withCustomStyles';
 import withMigrationGuide from '@/components/examples/withMigrationGuide';
-// import withOffline from '@/components/examples/withOffline';
-// import withExports from '@/components/examples/withExports';
-// import { CheckSourceCode } from '@/components/CheckSourceCode/CheckSourceCode';
+
 import { Head } from '@/components/Head/Head';
 import { Sheet } from '@/components/ui/sheet';
 import { useRouter } from 'next/router';
 
 const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withBasicExample,
-  withNotionExample,
   withCustomToolbar,
+  withNotionActionMenu,
   withDarkTheme,
   withMedia,
   withExtendedPlugin,
@@ -52,12 +52,12 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
     title: 'Basic Example',
     description: '',
   },
-  withNotionExample: {
-    title: 'Notion Example',
-    description: '',
-  },
   withCustomToolbar: {
     title: 'Custom Toolbar',
+    description: '',
+  },
+  withNotionActionMenu: {
+    title: 'Notion Action Menu',
     description: '',
   },
   withDarkTheme: {
@@ -134,7 +134,7 @@ const ExampleComponent = () => {
       <Head />
       {/* <CheckSourceCode example={example} /> */}
       <ExampleComponent />
-      <Sheet items={exampleList} />
+      <Sheet items={exampleList} path={router.asPath} />
     </div>
   );
 };

@@ -12,15 +12,14 @@ import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import Code from '@yoopta/code';
-import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
+import ActionMenuList from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
-// import { DividerPlugin } from './customPlugins/Divider';
-
-import { Sheet } from '@/components/ui/sheet';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import { useMemo, useRef } from 'react';
+import { ActionNotionMenuExample } from '../../ActionMenuExamples/NotionExample/ActionNotionMenuExample';
+import { WITH_NOTION_ACTION_MENU_INIT_VALUE } from './initValue';
 
 const plugins = [
   Paragraph,
@@ -78,7 +77,7 @@ const plugins = [
 
 const TOOLS = {
   ActionMenu: {
-    render: DefaultActionMenuRender,
+    render: ActionNotionMenuExample,
     tool: ActionMenuList,
   },
   Toolbar: {
@@ -93,7 +92,7 @@ const TOOLS = {
 
 const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
-function withBasicUsageExample() {
+function WithNotionActionMenu() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
 
@@ -105,10 +104,10 @@ function withBasicUsageExample() {
         tools={TOOLS}
         marks={MARKS}
         selectionBoxRoot={selectionRef}
-        autoFocus
+        value={WITH_NOTION_ACTION_MENU_INIT_VALUE}
       />
     </div>
   );
 }
 
-export default withBasicUsageExample;
+export default WithNotionActionMenu;

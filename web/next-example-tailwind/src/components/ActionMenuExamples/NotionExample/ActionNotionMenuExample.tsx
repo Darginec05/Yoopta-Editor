@@ -1,7 +1,7 @@
-import { ActionMenuRenderProps } from '@yoopta/action-menu-list';
-import { ICONS_SRC } from './utils/iconsMap';
-import s from './NotionExample.module.scss';
+import type { ActionMenuRenderProps } from '@yoopta/action-menu-list';
 import cx from 'classnames';
+import { ICONS_SRC } from './utils/iconsMap';
+import s from './ActionNotionMenuExample.module.scss';
 
 const VOID_PLUGINS = ['Video', 'Image', 'File', 'Embed'];
 
@@ -16,7 +16,7 @@ const ActionNotionMenuExample = (props: ActionMenuRenderProps) => {
   const isViewSmall = view === 'small';
 
   return (
-    <div {...getRootProps()} className={cx(s.dropdown, isViewSmall && s.dropdownSmall)}>
+    <div {...getRootProps()} className={cx(s.dropdown, { [s.dropdownSmall]: isViewSmall })}>
       <div className={s.elementList}>
         {groups.texts.length > 0 && (
           <div className={s.group}>
