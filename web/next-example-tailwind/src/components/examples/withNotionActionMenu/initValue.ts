@@ -39,7 +39,7 @@ export const WITH_NOTION_ACTION_MENU_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 2,
+      order: 1,
       depth: 0,
     },
   },
@@ -61,16 +61,21 @@ export const WITH_NOTION_ACTION_MENU_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 5,
+      order: 6,
       depth: 0,
     },
   },
   'bd758378-1c0b-48f5-b259-2434597b173a': {
     id: 'bd758378-1c0b-48f5-b259-2434597b173a',
+    type: 'Callout',
+    meta: {
+      order: 3,
+      depth: 0,
+    },
     value: [
       {
         id: '847130f3-9e4c-4e2b-b645-54d8194a4237',
-        type: 'paragraph',
+        type: 'callout',
         children: [
           {
             text: 'Action menu is coming from package ',
@@ -83,14 +88,10 @@ export const WITH_NOTION_ACTION_MENU_INIT_VALUE = {
         ],
         props: {
           nodeType: 'block',
+          theme: 'info',
         },
       },
     ],
-    type: 'Paragraph',
-    meta: {
-      order: 3,
-      depth: 0,
-    },
   },
   'f9de6dc9-d141-449b-9bcb-34eba18bbbb0': {
     id: 'f9de6dc9-d141-449b-9bcb-34eba18bbbb0',
@@ -112,7 +113,7 @@ export const WITH_NOTION_ACTION_MENU_INIT_VALUE = {
     ],
     type: 'Code',
     meta: {
-      order: 4,
+      order: 5,
       depth: 0,
     },
   },
@@ -124,7 +125,7 @@ export const WITH_NOTION_ACTION_MENU_INIT_VALUE = {
         type: 'heading-three',
         children: [
           {
-            text: 'How to render custom ActionMenu',
+            text: 'How to render custom ActionMenu. Main rules',
           },
         ],
         props: {
@@ -134,47 +135,7 @@ export const WITH_NOTION_ACTION_MENU_INIT_VALUE = {
     ],
     type: 'HeadingThree',
     meta: {
-      order: 6,
-      depth: 0,
-    },
-  },
-  'e59a7009-306b-4bc7-ab3f-30f200596704': {
-    id: 'e59a7009-306b-4bc7-ab3f-30f200596704',
-    value: [
-      {
-        id: '7fba69c1-9fec-40f9-be6c-e3e5f1f61509',
-        type: 'callout',
-        children: [
-          {
-            text: 'Link to source code - ',
-          },
-          {
-            type: 'link',
-            children: [
-              {
-                text: 'with notion example ',
-              },
-            ],
-            props: {
-              url: 'http://localhost:3000/examples/withNotionActionMenu',
-              target: '_blank',
-              rel: 'noreferrer',
-              title: 'with notion example ',
-            },
-          },
-          {
-            text: '',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-          theme: 'info',
-        },
-      },
-    ],
-    type: 'Callout',
-    meta: {
-      order: 1,
+      order: 7,
       depth: 0,
     },
   },
@@ -186,7 +147,7 @@ export const WITH_NOTION_ACTION_MENU_INIT_VALUE = {
         type: 'code',
         children: [
           {
-            text: "// components/NotionActionMenuRender\n\n// import types for custom render props. It helps you\nimport { ActionMenuRenderProps } from '@yoopta/action-menu-list';\n\nconst ActionNotionMenuExample = (props: ActionMenuRenderProps) => {\n  const {\n    empty,\n    // required attributes for \n    getItemProps,\n    actions,\n    getRootProps,\n    view\n  } = props;\n  \n  /** return (\n    //...SOME UI\n  ) */\n}\nexport { ActionNotionMenuExample };\n",
+            text: "// components/NotionActionMenuRender\n\n// import types for custom render props. It helps you\nimport { ActionMenuRenderProps } from '@yoopta/action-menu-list';\n\nconst ActionNotionMenuExample = (props: ActionMenuRenderProps) => {\n  /** \n    empty: boolean when any action nof founded.\n    TS: boolean\n    \n    getRootProps: required attrs list of actions element. \n    TS: () => void\n    \n    getItemProps: required attrs for every action item element.\n    TS: (type: string) => void\n    \n    actions: your actions to render.\n    TS: {\n      type: string;\n      title: string;\n      description?: string;\n      icon?: string | ReactNode | ReactElement;\n    }[]\n\n    view: useful prop for choosing how to render your UI in different cases.\n    When user open action menu from  \n    TS: 'small' | 'default'\n  */\n  const {\n    empty,\n    getItemProps,\n    actions,\n    getRootProps,\n    view\n  } = props;\n\n  // THIS IS PSEUDOCODE\n  return (\n    <ul {...getRootProps()}> \n      {empty && <li>List is empty!</li>}\n      {actions.map(action => {\n        <li key={action.type}>\n          <button {...getItemProps}>{action.title}</button>\n        </li>\n      })}\n    </ul>\n  )\n}\nexport { ActionNotionMenuExample };\n",
           },
         ],
         props: {
@@ -198,7 +159,7 @@ export const WITH_NOTION_ACTION_MENU_INIT_VALUE = {
     ],
     type: 'Code',
     meta: {
-      order: 7,
+      order: 8,
       depth: 0,
     },
   },
@@ -220,7 +181,95 @@ export const WITH_NOTION_ACTION_MENU_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 8,
+      order: 11,
+      depth: 0,
+    },
+  },
+  '660f6869-bc31-4d43-a97c-5c4e9d33fbf3': {
+    id: '660f6869-bc31-4d43-a97c-5c4e9d33fbf3',
+    value: [
+      {
+        id: '0d58b444-6129-4ce3-9b1e-42ad8192cc54',
+        type: 'paragraph',
+        children: [
+          {
+            text: '\n',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'Paragraph',
+    meta: {
+      order: 10,
+      depth: 0,
+    },
+  },
+  'a1d778fa-42c1-430a-b46a-16ea55a0e18c': {
+    id: 'a1d778fa-42c1-430a-b46a-16ea55a0e18c',
+    value: [
+      {
+        id: 'a884725a-5591-404b-8b86-feeb618c7ec2',
+        type: 'paragraph',
+        children: [
+          {
+            text: '',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'Paragraph',
+    meta: {
+      order: 9,
+      depth: 0,
+    },
+  },
+  '3a46f48d-f80f-422a-a822-501114831d24': {
+    id: '3a46f48d-f80f-422a-a822-501114831d24',
+    value: [
+      {
+        id: 'ec616b5b-2b38-4e94-ba0e-7d104de4d20d',
+        type: 'paragraph',
+        children: [
+          {
+            text: "Try to open action menu list by typing slash command '/' on empty block",
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'Paragraph',
+    meta: {
+      order: 2,
+      depth: 0,
+    },
+  },
+  'c1d5aa22-a410-4240-b5ac-9d85b8937016': {
+    id: 'c1d5aa22-a410-4240-b5ac-9d85b8937016',
+    value: [
+      {
+        id: '1a4d2adc-0dfa-4344-b8dc-728aa826196c',
+        type: 'paragraph',
+        children: [
+          {
+            text: '',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'Paragraph',
+    meta: {
+      order: 4,
       depth: 0,
     },
   },

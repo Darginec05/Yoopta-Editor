@@ -45,10 +45,15 @@ export const WITH_CUSTOM_MARK_INIT_VALUE = {
   },
   '2029f1ee-c0c8-400c-8f33-3da4c73c126b': {
     id: '2029f1ee-c0c8-400c-8f33-3da4c73c126b',
+    type: 'Callout',
+    meta: {
+      order: 2,
+      depth: 0,
+    },
     value: [
       {
         id: 'd962fc28-d28d-4869-bb94-988eaafc4e10',
-        type: 'paragraph',
+        type: 'callout',
         children: [
           {
             text: 'By default Yoopta-Editor supports default marks from ',
@@ -64,14 +69,10 @@ export const WITH_CUSTOM_MARK_INIT_VALUE = {
         ],
         props: {
           nodeType: 'block',
+          theme: 'info',
         },
       },
     ],
-    type: 'Paragraph',
-    meta: {
-      order: 2,
-      depth: 0,
-    },
   },
   'c138aaf6-b3f5-4ba9-84cc-d012aaf36bf8': {
     id: 'c138aaf6-b3f5-4ba9-84cc-d012aaf36bf8',
@@ -98,7 +99,7 @@ export const WITH_CUSTOM_MARK_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 3,
+      order: 16,
       depth: 0,
     },
   },
@@ -122,7 +123,7 @@ export const WITH_CUSTOM_MARK_INIT_VALUE = {
     ],
     type: 'Code',
     meta: {
-      order: 4,
+      order: 17,
       depth: 0,
     },
   },
@@ -144,7 +145,7 @@ export const WITH_CUSTOM_MARK_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 11,
+      order: 24,
       depth: 0,
     },
   },
@@ -166,7 +167,7 @@ export const WITH_CUSTOM_MARK_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 10,
+      order: 23,
       depth: 0,
     },
   },
@@ -188,7 +189,7 @@ export const WITH_CUSTOM_MARK_INIT_VALUE = {
     ],
     type: 'HeadingThree',
     meta: {
-      order: 5,
+      order: 18,
       depth: 0,
     },
   },
@@ -210,7 +211,7 @@ export const WITH_CUSTOM_MARK_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 12,
+      order: 25,
       depth: 0,
     },
   },
@@ -232,7 +233,7 @@ export const WITH_CUSTOM_MARK_INIT_VALUE = {
     ],
     type: 'HeadingThree',
     meta: {
-      order: 6,
+      order: 19,
       depth: 0,
     },
   },
@@ -261,7 +262,7 @@ export const WITH_CUSTOM_MARK_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 7,
+      order: 20,
       depth: 0,
     },
   },
@@ -287,7 +288,7 @@ export const WITH_CUSTOM_MARK_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 8,
+      order: 21,
       depth: 0,
     },
   },
@@ -309,8 +310,346 @@ export const WITH_CUSTOM_MARK_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 9,
+      order: 22,
       depth: 0,
+    },
+  },
+  '3b997ed6-8458-4354-955d-fe703813506f': {
+    id: '3b997ed6-8458-4354-955d-fe703813506f',
+    value: [
+      {
+        id: 'ad2befba-fab3-4105-b2d2-6e4f1196e5d0',
+        type: 'paragraph',
+        children: [
+          {
+            text: 'Available default list of marks: ',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'Paragraph',
+    meta: {
+      order: 3,
+      depth: 0,
+    },
+  },
+  'ec7eb429-4629-40c6-af24-4f6c9dfe3f25': {
+    id: 'ec7eb429-4629-40c6-af24-4f6c9dfe3f25',
+    value: [
+      {
+        id: '6d45777e-5a33-498e-ba20-d6978d39827d',
+        type: 'numbered-list',
+        children: [
+          {
+            text: 'Bold',
+            bold: true,
+          },
+          {
+            text: ' for bold',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'NumberedList',
+    meta: {
+      order: 4,
+      depth: 0,
+    },
+  },
+  '09984c61-bb48-4813-8ebb-cd34cdc32d63': {
+    id: '09984c61-bb48-4813-8ebb-cd34cdc32d63',
+    value: [
+      {
+        id: 'ed6aa5d3-fef3-4948-ab64-a5c52f1a16d9',
+        type: 'numbered-list',
+        children: [
+          {
+            text: 'Italic',
+            italic: true,
+          },
+          {
+            text: ' for italian',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'NumberedList',
+    meta: {
+      order: 6,
+      depth: 0,
+    },
+  },
+  'db133908-fd39-4626-8bde-4538d7c76028': {
+    id: 'db133908-fd39-4626-8bde-4538d7c76028',
+    value: [
+      {
+        id: '4b82a801-e749-4363-bedc-3f1761b9f10d',
+        type: 'numbered-list',
+        children: [
+          {
+            text: 'Underline',
+            underline: true,
+          },
+          {
+            text: ' for red flags',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'NumberedList',
+    meta: {
+      order: 8,
+      depth: 0,
+    },
+  },
+  'cde4b500-0fe9-41d2-9a6f-a812276c8c6d': {
+    id: 'cde4b500-0fe9-41d2-9a6f-a812276c8c6d',
+    type: 'NumberedList',
+    meta: {
+      order: 10,
+      depth: 0,
+    },
+    value: [
+      {
+        id: '4b82a801-e749-4363-bedc-3f1761b9f10d',
+        type: 'numbered-list',
+        props: {
+          nodeType: 'block',
+        },
+        children: [
+          {
+            text: 'Strike',
+            strike: true,
+          },
+          {
+            text: ' for bowling ',
+          },
+        ],
+      },
+    ],
+  },
+  '566302f6-896a-4aff-a088-91a9b51f7bc6': {
+    id: '566302f6-896a-4aff-a088-91a9b51f7bc6',
+    value: [
+      {
+        id: '59e51d09-3e4b-4a45-864b-f9e016054e46',
+        type: 'numbered-list',
+        children: [
+          {
+            text: 'Code',
+            code: true,
+          },
+          {
+            text: ' for bugs writing',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'NumberedList',
+    meta: {
+      order: 12,
+      depth: 0,
+    },
+  },
+  'f2ec4b3a-7b04-4764-8d3d-94ccb3463609': {
+    id: 'f2ec4b3a-7b04-4764-8d3d-94ccb3463609',
+    value: [
+      {
+        id: '3f67a487-97f5-4f1b-9dec-feb4a25a9ea5',
+        type: 'numbered-list',
+        children: [
+          {
+            text: 'Highlight',
+            highlight: {
+              color: '#B35588',
+              backgroundColor: '#FAF3DD',
+            },
+          },
+          {
+            text: ' ',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'NumberedList',
+    meta: {
+      order: 14,
+      depth: 0,
+    },
+  },
+  'e4ffcfcf-9276-4d57-9073-3769aa868a5b': {
+    id: 'e4ffcfcf-9276-4d57-9073-3769aa868a5b',
+    type: 'BulletedList',
+    meta: {
+      order: 5,
+      depth: 1,
+    },
+    value: [
+      {
+        id: '8a91dff1-840e-441b-b901-8c01f3266ee9',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'hotkey - ',
+          },
+          {
+            text: 'cmd+b',
+            bold: true,
+            code: true,
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+  },
+  '2432f33e-ac1e-4429-9278-c4a6205a4a3b': {
+    id: '2432f33e-ac1e-4429-9278-c4a6205a4a3b',
+    type: 'BulletedList',
+    meta: {
+      order: 7,
+      depth: 1,
+    },
+    value: [
+      {
+        id: '8a91dff1-840e-441b-b901-8c01f3266ee9',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'hotkey - ',
+          },
+          {
+            text: 'cmd+i',
+            bold: true,
+            code: true,
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+  },
+  '3b152d2b-e1f6-47fb-854d-05fe0a0bf4f2': {
+    id: '3b152d2b-e1f6-47fb-854d-05fe0a0bf4f2',
+    value: [
+      {
+        id: '48ebba41-3197-4e0c-8d28-d215eb798c7e',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'hotkey - ',
+          },
+          {
+            text: 'cmd+u',
+            bold: true,
+            code: true,
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'BulletedList',
+    meta: {
+      order: 9,
+      depth: 1,
+    },
+  },
+  '1faed0f7-bba6-441c-9260-59aa28f912f0': {
+    id: '1faed0f7-bba6-441c-9260-59aa28f912f0',
+    value: [
+      {
+        id: '6d7bacaa-2e83-4663-9a36-1be258610597',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'hotkey - ',
+          },
+          {
+            text: 'cmd+shift+s',
+            code: true,
+            bold: true,
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'BulletedList',
+    meta: {
+      order: 11,
+      depth: 1,
+    },
+  },
+  'c1ba1824-d250-4c05-bdd7-2e0791b61be7': {
+    id: 'c1ba1824-d250-4c05-bdd7-2e0791b61be7',
+    value: [
+      {
+        id: 'e0b033ac-a06c-4023-889f-c8c1bea4b32e',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'hotkey - ',
+          },
+          {
+            text: 'cmd+e',
+            code: true,
+            bold: true,
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'BulletedList',
+    meta: {
+      order: 13,
+      depth: 1,
+    },
+  },
+  'a3a205c9-e006-4b3e-a3c2-08a7bde8dfce': {
+    id: 'a3a205c9-e006-4b3e-a3c2-08a7bde8dfce',
+    value: [
+      {
+        id: '5d85d063-ba22-40a6-a72a-4aae8a95aa52',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'hotkey - none',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'BulletedList',
+    meta: {
+      order: 15,
+      depth: 1,
     },
   },
 };

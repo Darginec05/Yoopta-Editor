@@ -13,6 +13,7 @@ type ModalsState = typeof DEFAULT_MODALS;
 const NotionToolbar = (props: ToolbarRenderProps) => {
   const [modals, setModals] = useState<ModalsState>({ link: false, highlight: false, actionMenu: false });
 
+  // positioning for action menu tool
   const { refs: actionMenuRefs, floatingStyles: actionMenuStyles } = useFloating({
     placement: 'bottom-start',
     open: modals.actionMenu,

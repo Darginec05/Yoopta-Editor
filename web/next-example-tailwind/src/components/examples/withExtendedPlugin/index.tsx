@@ -15,19 +15,32 @@ import Code from '@yoopta/code';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
+import { BlocksIcon } from 'lucide-react';
 // import { DividerPlugin } from './customPlugins/Divider';
-
-import { Sheet } from '@/components/ui/sheet';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import { useMemo, useRef } from 'react';
+import { WITH_EXTENDED_PLUGIN_INIT_VALUE } from './initValue';
 
 const plugins = [
   Paragraph,
   HeadingOne,
   HeadingTwo,
   HeadingThree,
-  Blockquote,
+  Blockquote.extend({
+    options: {
+      shortcuts: ['>', 'quote'],
+      display: {
+        title: 'THIS IS CHANGED TITLE',
+        description: 'Ooh.. It seems extending plugin is works!',
+        icon: <BlocksIcon />,
+      },
+      HTMLAttributes: {
+        spellCheck: true,
+        className: 'my-custom-blockquote',
+      },
+    },
+  }),
   Callout,
   NumberedList,
   BulletedList,
@@ -105,7 +118,7 @@ function withBasicUsageExample() {
         tools={TOOLS}
         marks={MARKS}
         selectionBoxRoot={selectionRef}
-        autoFocus
+        value={WITH_EXTENDED_PLUGIN_INIT_VALUE}
       />
     </div>
   );

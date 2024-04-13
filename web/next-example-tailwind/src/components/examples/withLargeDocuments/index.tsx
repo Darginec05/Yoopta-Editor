@@ -17,8 +17,6 @@ import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 // import { DividerPlugin } from './customPlugins/Divider';
 
-import { Sheet } from '@/components/ui/sheet';
-
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import { useMemo, useRef } from 'react';
 import { LARGE_DOCUMENT_VALUE } from './initValue';
@@ -106,7 +104,7 @@ function withBasicUsageExample() {
         tools={TOOLS}
         marks={MARKS}
         selectionBoxRoot={selectionRef}
-        autoFocus
+        // readOnly
         value={LARGE_DOCUMENT_VALUE}
       />
     </div>
