@@ -1,4 +1,4 @@
-import withBasicExample from '@/components/examples/withBasicExample';
+import withBaseFullSetup from '@/components/examples/withBaseFullSetup';
 // import withCustomComponent from '@/components/examples';
 // import withOffline from '@/components/examples/withOffline';
 // import withExports from '@/components/examples/withExports';
@@ -6,7 +6,7 @@ import withBasicExample from '@/components/examples/withBasicExample';
 import withCustomHTMLAttributes from '@/components/examples/withCustomHTMLAttributes';
 import withCustomMark from '@/components/examples/withCustomMark';
 import withCustomPlugin from '@/components/examples/withCustomPlugin';
-import withCustomToolbar from '@/components/examples/withCustomToolbar.';
+import withCustomToolbar from '@/components/examples/withCustomToolbar';
 import withDarkTheme from '@/components/examples/withDarkTheme';
 import withExtendedPlugin from '@/components/examples/withExtendedPlugin';
 import withMedia from '@/components/examples/withMedia';
@@ -25,7 +25,7 @@ import { Sheet } from '@/components/ui/sheet';
 import { useRouter } from 'next/router';
 
 const EXAMPLES: Record<string, () => React.JSX.Element> = {
-  withBasicExample,
+  withBaseFullSetup,
   withCustomToolbar,
   withNotionActionMenu,
   withDarkTheme,
@@ -48,8 +48,8 @@ const EXAMPLES: Record<string, () => React.JSX.Element> = {
 };
 
 const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
-  withBasicExample: {
-    title: 'Basic Example',
+  withBaseFullSetup: {
+    title: 'All-in example',
     description: '',
   },
   withCustomToolbar: {
@@ -120,7 +120,7 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
 
 const ExampleComponent = () => {
   const router = useRouter();
-  const ExampleComponent = EXAMPLES[(router.query.example as string) || 'withBasicExample'];
+  const ExampleComponent = EXAMPLES[(router.query.example as string) || 'withBaseFullSetup'];
 
   const exampleList = Object.keys(EXAMPLES).map((key) => ({
     id: key,

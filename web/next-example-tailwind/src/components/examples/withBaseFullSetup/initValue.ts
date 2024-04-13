@@ -96,7 +96,7 @@ export const WITH_BASIC_INIT_VALUE = {
         type: 'bulleted-list',
         children: [
           {
-            text: 'Each plugin can be easily customize and extensible',
+            text: 'Each plugin can be easily customized and extensible',
           },
         ],
         props: {
@@ -272,32 +272,6 @@ export const WITH_BASIC_INIT_VALUE = {
       depth: 0,
     },
   },
-  '49de9638-6429-444b-a6da-8d6810a6a800': {
-    id: '49de9638-6429-444b-a6da-8d6810a6a800',
-    value: [
-      {
-        id: 'c3c32b64-0694-4289-82b5-c98c96693588',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Not hyped AI tools for really helping you with editors  - ',
-          },
-          {
-            text: '[in progress] 😍',
-            italic: true,
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 31,
-      depth: 0,
-    },
-  },
   '7baf535b-9fab-4d0a-af79-f692ff232a72': {
     id: '7baf535b-9fab-4d0a-af79-f692ff232a72',
     value: [
@@ -341,7 +315,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 33,
+      order: 32,
       depth: 0,
     },
   },
@@ -363,7 +337,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 34,
+      order: 33,
       depth: 0,
     },
   },
@@ -503,7 +477,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 35,
+      order: 34,
       depth: 0,
     },
   },
@@ -591,7 +565,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 32,
+      order: 31,
       depth: 0,
     },
   },
@@ -634,7 +608,11 @@ export const WITH_BASIC_INIT_VALUE = {
         type: 'blockquote',
         children: [
           {
-            text: '- Check Yoopta features below and just try it!\n(c) Marcus Aurelius',
+            text: '- Check Yoopta features below and just try it!',
+            bold: true,
+          },
+          {
+            text: '\n(c) Marcus Aurelius',
           },
         ],
         props: {
@@ -691,7 +669,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Image',
     meta: {
-      order: 37,
+      order: 36,
       depth: 0,
     },
   },
@@ -729,7 +707,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'HeadingThree',
     meta: {
-      order: 36,
+      order: 35,
       depth: 0,
     },
   },
@@ -825,7 +803,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Image',
     meta: {
-      order: 39,
+      order: 38,
       depth: 0,
     },
   },
@@ -833,7 +811,7 @@ export const WITH_BASIC_INIT_VALUE = {
     id: '7d3f395b-656d-46af-924c-b88b9974f631',
     type: 'HeadingThree',
     meta: {
-      order: 38,
+      order: 37,
       depth: 0,
     },
     value: [
@@ -886,7 +864,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 40,
+      order: 39,
       depth: 0,
     },
   },
@@ -977,6 +955,28 @@ export const WITH_BASIC_INIT_VALUE = {
     type: 'BulletedList',
     meta: {
       order: 11,
+      depth: 0,
+    },
+  },
+  '95e9b5ab-2158-48da-9196-6079a33508f2': {
+    id: '95e9b5ab-2158-48da-9196-6079a33508f2',
+    value: [
+      {
+        id: 'dac238c2-0db7-4a0d-9b4b-543e340f935b',
+        type: 'paragraph',
+        children: [
+          {
+            text: '',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'Paragraph',
+    meta: {
+      order: 40,
       depth: 0,
     },
   },

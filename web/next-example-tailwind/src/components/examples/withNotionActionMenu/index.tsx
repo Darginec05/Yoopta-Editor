@@ -20,6 +20,7 @@ import { uploadToCloudinary } from '@/utils/cloudinary';
 import { useMemo, useRef } from 'react';
 import { ActionNotionMenuExample } from '../../ActionMenuExamples/NotionExample/ActionNotionMenuExample';
 import { WITH_NOTION_ACTION_MENU_INIT_VALUE } from './initValue';
+import { NotionToolbar } from '@/components/Toolbars/NotionToolbar/NotionToolbar';
 
 const plugins = [
   Paragraph,
@@ -81,7 +82,7 @@ const TOOLS = {
     tool: ActionMenuList,
   },
   Toolbar: {
-    render: DefaultToolbarRender,
+    render: NotionToolbar,
     tool: Toolbar,
   },
   LinkTool: {

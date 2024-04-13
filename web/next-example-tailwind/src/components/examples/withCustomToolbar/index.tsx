@@ -13,14 +13,15 @@ import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/ma
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import Code from '@yoopta/code';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
-import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
+import Toolbar from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
-// import { DividerPlugin } from './customPlugins/Divider';
-
-import { Sheet } from '@/components/ui/sheet';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
+import { MediumToolbar } from '../../Toolbars/MediumToolbar/MediumToolbar';
+import { WITH_CUSTOM_TOOLBAR_INIT_VALUE } from './initValue';
+import { NotionToolbar } from '@/components/Toolbars/NotionToolbar/NotionToolbar';
+import { CheckIcon } from 'lucide-react';
 
 const plugins = [
   Paragraph,
@@ -76,39 +77,69 @@ const plugins = [
   }),
 ];
 
-const TOOLS = {
-  ActionMenu: {
-    render: DefaultActionMenuRender,
-    tool: ActionMenuList,
-  },
-  Toolbar: {
-    render: DefaultToolbarRender,
-    tool: Toolbar,
-  },
-  LinkTool: {
-    render: DefaultLinkToolRender,
-    tool: LinkTool,
-  },
-};
-
 const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
-function withBasicUsageExample() {
+const DEFAULT_STATE = {
+  notion: true,
+  medium: false,
+};
+
+type State = typeof DEFAULT_STATE;
+
+function WithCustomToolbar() {
+  const [toolbars, setToolbars] = useState<State>(DEFAULT_STATE);
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
 
+  const tools = useMemo(() => {
+    return {
+      ActionMenu: {
+        render: DefaultActionMenuRender,
+        tool: ActionMenuList,
+      },
+      Toolbar: {
+        render: toolbars.medium ? MediumToolbar : NotionToolbar,
+        tool: Toolbar,
+      },
+      LinkTool: {
+        render: DefaultLinkToolRender,
+        tool: LinkTool,
+      },
+    };
+  }, [toolbars]);
+
   return (
-    <div className="md:p-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center" ref={selectionRef}>
+    <div
+      className="md:p-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center flex-col items-center"
+      ref={selectionRef}
+    >
+      <div className="flex w-auto mb-4">
+        <button
+          className="relative mx-2 px-6 py-2 rounded text-white flex items-center"
+          style={toolbars.notion ? { backgroundColor: '#007aff' } : { backgroundColor: '#64748b' }}
+          onClick={() => setToolbars({ medium: false, notion: true })}
+        >
+          Notion toolbar
+        </button>
+        <button
+          className="relative mx-2 px-6 py-2 rounded text-white flex items-center"
+          style={toolbars.medium ? { backgroundColor: '#007aff' } : { backgroundColor: '#64748b' }}
+          onClick={() => setToolbars({ medium: true, notion: false })}
+        >
+          Medium toolbar
+          {/* {toolbars.medium && <CheckIcon size={15} className="absolute right-2 top-1/2 -translate-y-1/2" />} */}
+        </button>
+      </div>
       <YooptaEditor
         editor={editor}
         plugins={plugins}
-        tools={TOOLS}
+        tools={tools}
         marks={MARKS}
         selectionBoxRoot={selectionRef}
-        autoFocus
+        value={WITH_CUSTOM_TOOLBAR_INIT_VALUE}
       />
     </div>
   );
 }
 
-export default withBasicUsageExample;
+export default WithCustomToolbar;

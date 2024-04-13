@@ -1,0 +1,1 @@
+export const WITH_CUSTOM_HTML_ATTRS_INIT_VALUE = {};
