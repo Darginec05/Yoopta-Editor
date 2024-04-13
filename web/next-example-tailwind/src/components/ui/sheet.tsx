@@ -6,6 +6,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { Sidebar } from 'lucide-react';
 import { cn } from '@/utils/cn';
 import Link from 'next/link';
+import { useTheme } from 'next-themes';
 
 const SheetRoot = SheetPrimitive.Root;
 
@@ -97,10 +98,12 @@ SheetDescription.displayName = SheetPrimitive.Description.displayName;
 
 type SheetProps = {
   items: { id: string; title: string; href: string }[];
+  path: string;
 };
 
-const Sheet = ({ items }: SheetProps) => {
+const Sheet = ({ items, path }: SheetProps) => {
   const [isOpen, onOpenChange] = React.useState(false);
+  const { setTheme } = useTheme();
 
   // React.useEffect(() => {
   //   // https://github.com/radix-ui/primitives/issues/1386
@@ -130,16 +133,22 @@ const Sheet = ({ items }: SheetProps) => {
             </SheetDescription>
             <div className="py-2">
               {items &&
-                items.map((item) => (
-                  <div key={item.id}>
-                    <Link
-                      href={item.href}
-                      className="group flex w-full items-center rounded-md border border-transparent px-2 py-1 hover:underline text-muted-foreground"
-                    >
-                      {item.title}
-                    </Link>
-                  </div>
-                ))}
+                items.map((item) => {
+                  const isCurrent = item.href === path;
+
+                  return (
+                    <div key={item.id}>
+                      <Link
+                        href={item.href}
+                        className="group flex w-full items-center rounded-md border border-transparent px-2 py-1 hover:underline text-muted-foreground transition-all"
+                        onClick={() => setTheme('light')}
+                        style={isCurrent ? { color: '#007aff', textDecoration: 'underline' } : undefined}
+                      >
+                        {item.title}
+                      </Link>
+                    </div>
+                  );
+                })}
             </div>
           </SheetHeader>
         </SheetContent>

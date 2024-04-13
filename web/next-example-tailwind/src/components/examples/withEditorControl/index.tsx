@@ -20,7 +20,8 @@ import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 import { Sheet } from '@/components/ui/sheet';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
+import { WITH_EDITOR_CONTROL_INIT_VALUE } from './initValue';
 
 const plugins = [
   Paragraph,
@@ -93,13 +94,9 @@ const TOOLS = {
 
 const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
-function withBasicUsageExample() {
+function WithBasicUsageExample() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
-
-  useEffect(() => {
-    editor.on('change', console.log);
-  }, []);
 
   return (
     <div className="md:p-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center" ref={selectionRef}>
@@ -109,10 +106,10 @@ function withBasicUsageExample() {
         tools={TOOLS}
         marks={MARKS}
         selectionBoxRoot={selectionRef}
-        autoFocus
+        value={WITH_EDITOR_CONTROL_INIT_VALUE}
       />
     </div>
   );
 }
 
-export default withBasicUsageExample;
+export default WithBasicUsageExample;

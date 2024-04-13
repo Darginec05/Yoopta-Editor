@@ -15,12 +15,10 @@ import Code from '@yoopta/code';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
-// import { DividerPlugin } from './customPlugins/Divider';
-
-import { Sheet } from '@/components/ui/sheet';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import { useMemo, useRef } from 'react';
+import { MediumToolbar } from '../../Toolbars/MediumToolbar/MediumToolbar';
 
 const plugins = [
   Paragraph,
@@ -82,7 +80,7 @@ const TOOLS = {
     tool: ActionMenuList,
   },
   Toolbar: {
-    render: DefaultToolbarRender,
+    render: MediumToolbar,
     tool: Toolbar,
   },
   LinkTool: {

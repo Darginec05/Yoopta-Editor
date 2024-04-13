@@ -15,14 +15,10 @@ import Code from '@yoopta/code';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
-// import { DividerPlugin } from './customPlugins/Divider';
-
-import { Sheet } from '@/components/ui/sheet';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { useMemo, useRef } from 'react';
-import { ActionNotionMenuExample } from '../ActionMenuExamples/NotionExample/NotionExample';
-import { NotionToolbar } from '../Toolbars/NotionToolbar/NotionToolbar';
+import { useEffect, useMemo, useRef } from 'react';
+import { WITH_BASIC_INIT_VALUE } from './initValue';
 
 const plugins = [
   Paragraph,
@@ -80,11 +76,11 @@ const plugins = [
 
 const TOOLS = {
   ActionMenu: {
-    render: ActionNotionMenuExample,
+    render: DefaultActionMenuRender,
     tool: ActionMenuList,
   },
   Toolbar: {
-    render: NotionToolbar,
+    render: DefaultToolbarRender,
     tool: Toolbar,
   },
   LinkTool: {
@@ -99,6 +95,10 @@ function withBasicUsageExample() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
 
+  useEffect(() => {
+    editor.on('change', console.log);
+  }, []);
+
   return (
     <div className="md:p-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center" ref={selectionRef}>
       <YooptaEditor
@@ -107,6 +107,7 @@ function withBasicUsageExample() {
         tools={TOOLS}
         marks={MARKS}
         selectionBoxRoot={selectionRef}
+        value={WITH_BASIC_INIT_VALUE}
         autoFocus
       />
     </div>
