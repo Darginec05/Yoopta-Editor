@@ -27,6 +27,7 @@ export type YooptaBlockBaseMeta = {
 
 export type SlateEditor = Editor;
 
+// add 'end' | 'start'
 export type FocusAt = Path | Point;
 
 export type YooptaEditorTransformOptions = {
@@ -56,7 +57,7 @@ export type YooptaBlock = {
   hasCustomEditor?: boolean;
   isActive: () => boolean;
   create: (options?: CreateBlockOptions) => void;
-  toggle: (to: string, options?: ToggleBlockOptions) => void;
+  toggle: (options?: ToggleBlockOptions) => void;
   update: (id: string, data: Partial<YooptaBlockData>) => void;
   updateElement: <TElementKeys extends string, TElementProps>(
     blockId: string,
@@ -80,7 +81,7 @@ export type YooEditor<TNodes = any> = {
   deleteBlock: (options?: DeleteBlockOptions) => void;
   duplicateBlock: (options?: DuplicateBlockOptions) => void;
   getBlock: (options?: YooptaEditorTransformOptions) => void;
-  toggleBlock: (toBlockType: string, options?: ToggleBlockOptions) => void;
+  toggleBlock: (toBlockType?: string, options?: ToggleBlockOptions) => void;
   increaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
   decreaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
   applyChanges: () => void;

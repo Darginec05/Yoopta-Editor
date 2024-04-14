@@ -14,7 +14,7 @@ import { withShortcuts } from '../extensions/shortcuts';
 import { getRootBlockElement } from './blockElements';
 import { updateBlock } from '../editor/transforms/updateBlock';
 import { updateBlockElement } from '../editor/transforms/updateBlockElement';
-import { toggleBlock } from '../editor/transforms/toggleBlock';
+import { toggleBlock, ToggleBlockOptions } from '../editor/transforms/toggleBlock';
 import { deleteBlock, DeleteBlockOptions } from '../editor/transforms/deleteBlock';
 
 export function buildMarks(editor, marks: YooptaMark<any>[]) {
@@ -67,8 +67,8 @@ export function buildBlocks(editor, plugins: Plugin<string, PluginElement<unknow
           const block = findPluginBlockBySelectionPath(editor, { at: editor.selection });
           return block?.type === plugin.type;
         },
-        toggle: (toBlockType: string, options) => {
-          toggleBlock(editor, toBlockType, options);
+        toggle: (options?: ToggleBlockOptions) => {
+          toggleBlock(editor, plugin.type, options);
         },
         create: (options) => {
           createBlock(editor, plugin.type, options);
