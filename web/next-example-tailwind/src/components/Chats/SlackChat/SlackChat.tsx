@@ -64,6 +64,7 @@ const SlackChat = () => {
             className={s.editor}
             placeholder="Job something done"
             selectionBoxRoot={false}
+            width="100%"
           >
             <SlackTopToolbar />
           </YooptaEditor>

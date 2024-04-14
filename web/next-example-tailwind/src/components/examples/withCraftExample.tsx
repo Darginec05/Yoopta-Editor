@@ -15,12 +15,9 @@ import Code from '@yoopta/code';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
-// import { DividerPlugin } from './customPlugins/Divider';
-
-import { Sheet } from '@/components/ui/sheet';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 const plugins = [
   Paragraph,
@@ -97,6 +94,16 @@ function withCraftExample() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
 
+  useEffect(() => {
+    function handleChange(value) {
+      console.log('value', value);
+    }
+    editor.on('change', handleChange);
+    return () => {
+      editor.off('change', handleChange);
+    };
+  }, [editor]);
+
   return (
     <div className="md:p-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center" ref={selectionRef}>
       <YooptaEditor
@@ -105,7 +112,31 @@ function withCraftExample() {
         tools={TOOLS}
         marks={MARKS}
         selectionBoxRoot={selectionRef}
-        autoFocus
+        readOnly
+        value={{
+          '7e11916a-b983-48ca-aeff-bf6b04f5ee2b': {
+            id: '7e11916a-b983-48ca-aeff-bf6b04f5ee2b',
+            type: 'HeadingTwo',
+            meta: {
+              order: 0,
+              depth: 0,
+            },
+            value: [
+              {
+                id: '4325c741-1445-450f-be2d-f51368b1a3ff',
+                type: 'heading-two',
+                children: [
+                  {
+                    text: 'In progress..',
+                  },
+                ],
+                props: {
+                  nodeType: 'block',
+                },
+              },
+            ],
+          },
+        }}
       />
     </div>
   );

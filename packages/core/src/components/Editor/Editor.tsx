@@ -19,7 +19,7 @@ type Props = {
   autoFocus?: boolean;
   className?: string;
   placeholder?: string;
-  width?: number;
+  width?: number | string;
 };
 
 const getEditorStyles = (styles: CSSProperties) => ({

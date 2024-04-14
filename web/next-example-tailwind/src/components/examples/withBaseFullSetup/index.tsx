@@ -96,8 +96,14 @@ function WithBaseFullSetup() {
   const selectionRef = useRef(null);
 
   useEffect(() => {
-    editor.on('change', console.log);
-  }, []);
+    function handleChange(value) {
+      console.log('value', value);
+    }
+    editor.on('change', handleChange);
+    return () => {
+      editor.off('change', handleChange);
+    };
+  }, [editor]);
 
   return (
     <div className="md:p-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center" ref={selectionRef}>

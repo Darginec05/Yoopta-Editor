@@ -108,10 +108,14 @@ function WithCustomMark() {
   const selectionRef = useRef(null);
 
   useEffect(() => {
-    editor.on('change', (value) => {
-      console.log(value);
-    });
-  }, []);
+    function handleChange(value) {
+      console.log('value', value);
+    }
+    editor.on('change', handleChange);
+    return () => {
+      editor.off('change', handleChange);
+    };
+  }, [editor]);
 
   return (
     <div className="md:p-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center" ref={selectionRef}>

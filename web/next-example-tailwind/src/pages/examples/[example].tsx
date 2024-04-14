@@ -24,7 +24,7 @@ import { Head } from '@/components/Head/Head';
 import { Sheet } from '@/components/ui/sheet';
 import { useRouter } from 'next/router';
 
-const EXAMPLES: Record<string, () => React.JSX.Element> = {
+export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withBaseFullSetup,
   withCustomToolbar,
   withNotionActionMenu,

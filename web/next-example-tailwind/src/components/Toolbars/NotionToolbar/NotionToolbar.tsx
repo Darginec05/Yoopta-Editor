@@ -35,7 +35,12 @@ const NotionToolbar = (props: ToolbarRenderProps) => {
 
   const onCloseActionMenu = () => onChangeModal('actionMenu', false);
 
-  const actionMenuRenderProps = buildActionMenuRenderProps({ editor, onClose: onCloseActionMenu, view: 'small' });
+  const actionMenuRenderProps = buildActionMenuRenderProps({
+    editor,
+    onClose: onCloseActionMenu,
+    view: 'small',
+    mode: 'toggle',
+  });
 
   return (
     <div>

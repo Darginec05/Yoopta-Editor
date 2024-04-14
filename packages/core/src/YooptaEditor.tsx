@@ -30,7 +30,7 @@ type Props = {
   tools?: Partial<Tools>;
   placeholder?: string;
   readOnly?: boolean;
-  width?: number;
+  width?: number | string;
 };
 
 const DEFAULT_VALUE: Record<string, YooptaBlockData> = getDefaultYooptaChildren();

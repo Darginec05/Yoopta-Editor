@@ -17,7 +17,7 @@ import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 // import { DividerPlugin } from './customPlugins/Divider';
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { INITIAL_VALUE } from './initValue';
 
 const plugins = [
@@ -94,6 +94,16 @@ const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 function withReadOnly() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
+
+  useEffect(() => {
+    function handleChange(value) {
+      console.log('value', value);
+    }
+    editor.on('change', handleChange);
+    return () => {
+      editor.off('change', handleChange);
+    };
+  }, [editor]);
 
   return (
     <div className="md:p-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center" ref={selectionRef}>

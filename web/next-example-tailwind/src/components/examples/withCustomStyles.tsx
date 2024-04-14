@@ -21,7 +21,6 @@ import { Sheet } from '@/components/ui/sheet';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import { useEffect, useMemo, useRef } from 'react';
-import { YooptaContentValue } from '@yoopta/editor/dist/editor/types';
 
 const plugins = [
   Paragraph,
@@ -98,11 +97,10 @@ function withCustomStylesExample() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
 
-  function handleChange(value: YooptaContentValue) {
-    console.log('value', value);
-  }
-
   useEffect(() => {
+    function handleChange(value) {
+      console.log('value', value);
+    }
     editor.on('change', handleChange);
     return () => {
       editor.off('change', handleChange);

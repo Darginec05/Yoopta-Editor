@@ -16,8 +16,6 @@ import s from './SlackChat.module.scss';
 const SlackTopToolbar = () => {
   const editor = useYooptaEditor();
 
-  console.log('editor children', editor.children);
-
   return (
     <div className={s.toolbar}>
       <button
@@ -42,25 +40,21 @@ const SlackTopToolbar = () => {
         <StrikethroughIcon size={15} strokeWidth={1.5} />
       </button>
       <span className={s.separator} />
-      <button className={s.toolbarItem}>
+      <button className={s.toolbarItem} onClick={() => alert('in progress')}>
         <LinkIcon size={15} strokeWidth={1.5} />
       </button>
       <span className={s.separator} />
       <button
         className={s.toolbarItem}
         data-state-active={editor.blocks.NumberedList?.isActive()}
-        onClick={() =>
-          editor.blocks.NumberedList.isActive() ? editor.blocks.Paragraph.create() : editor.blocks.NumberedList.create()
-        }
+        onClick={() => editor.blocks.NumberedList.toggle({ focus: true })}
       >
         <ListOrdered size={15} strokeWidth={1.5} />
       </button>
       <button
         className={s.toolbarItem}
         data-state-active={editor.blocks.BulletedList?.isActive()}
-        onClick={() =>
-          editor.blocks.BulletedList.isActive() ? editor.blocks.Paragraph.create() : editor.blocks.BulletedList.create()
-        }
+        onClick={() => editor.blocks.BulletedList.toggle({ focus: true })}
       >
         <List size={15} strokeWidth={1.5} />
       </button>
@@ -69,7 +63,7 @@ const SlackTopToolbar = () => {
         className={s.toolbarItem}
         data-state-active={editor.blocks.Blockquote?.isActive()}
         onClick={() => {
-          editor.blocks.Blockquote.isActive() ? editor.blocks.Paragraph.create() : editor.blocks.Blockquote.create();
+          editor.blocks.Blockquote.toggle({ focus: true });
         }}
       >
         <TextQuoteIcon size={15} strokeWidth={1.5} />
@@ -81,7 +75,7 @@ const SlackTopToolbar = () => {
       <button
         className={s.toolbarItem}
         onClick={() => {
-          editor.blocks.Code.isActive() ? editor.blocks.Paragraph.create() : editor.blocks.Code.create();
+          editor.blocks.Code.toggle({ focus: true });
         }}
       >
         <FileCodeIcon size={15} strokeWidth={1.5} />
