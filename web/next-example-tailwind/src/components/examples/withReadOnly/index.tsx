@@ -91,7 +91,7 @@ const TOOLS = {
 
 const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
-function withReadOnly() {
+function WithReadOnly() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
 
@@ -121,4 +121,4 @@ function withReadOnly() {
   );
 }
 
-export default withReadOnly;
+export default WithReadOnly;

@@ -94,7 +94,7 @@ const TOOLS = {
 
 const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
-function withBasicUsageExample() {
+function WithSavingToDatabase() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
 
@@ -117,10 +117,34 @@ function withBasicUsageExample() {
         tools={TOOLS}
         marks={MARKS}
         selectionBoxRoot={selectionRef}
-        autoFocus
+        readOnly
+        value={{
+          '7e11916a-b983-48ca-aeff-bf6b04f5ee2b': {
+            id: '7e11916a-b983-48ca-aeff-bf6b04f5ee2b',
+            type: 'HeadingTwo',
+            meta: {
+              order: 0,
+              depth: 0,
+            },
+            value: [
+              {
+                id: '4325c741-1445-450f-be2d-f51368b1a3ff',
+                type: 'heading-two',
+                children: [
+                  {
+                    text: 'In progress..',
+                  },
+                ],
+                props: {
+                  nodeType: 'block',
+                },
+              },
+            ],
+          },
+        }}
       />
     </div>
   );
 }
 
-export default withBasicUsageExample;
+export default WithSavingToDatabase;

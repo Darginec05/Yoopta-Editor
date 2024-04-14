@@ -1,6 +1,6 @@
 import { SlackChat } from '../Chats/SlackChat/SlackChat';
 
-function withBasicUsageExample() {
+function WithSlackChatExample() {
   return (
     <div className="md:p-[80px] px-[20px] pt-[80px] pb-[40px] flex flex-col items-center justify-center">
       <div className="mb-8">
@@ -14,4 +14,4 @@ function withBasicUsageExample() {
   );
 }
 
-export default withBasicUsageExample;
+export default WithSlackChatExample;

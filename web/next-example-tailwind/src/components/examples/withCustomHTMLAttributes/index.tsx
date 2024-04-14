@@ -94,7 +94,7 @@ const TOOLS = {
 
 const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
-function withCustomHTMLAttributes() {
+function WithCustomHTMLAttributes() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
 
@@ -112,4 +112,4 @@ function withCustomHTMLAttributes() {
   );
 }
 
-export default withCustomHTMLAttributes;
+export default WithCustomHTMLAttributes;

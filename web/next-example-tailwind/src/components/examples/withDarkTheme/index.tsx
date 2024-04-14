@@ -95,7 +95,7 @@ const TOOLS = {
 
 const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
-function withBasicUsageExample() {
+function WithBasicUsageExample() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const { setTheme } = useTheme();
   const selectionRef = useRef(null);
@@ -120,4 +120,4 @@ function withBasicUsageExample() {
   );
 }
 
-export default withBasicUsageExample;
+export default WithBasicUsageExample;
