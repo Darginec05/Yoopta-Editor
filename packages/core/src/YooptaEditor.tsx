@@ -2,7 +2,7 @@ import EventEmitter from 'eventemitter3';
 import { YooptaContextProvider } from './contexts/YooptaContext/YooptaContext';
 import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { Editor } from './components/Editor/Editor';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { YooEditor, YooptaBlockData, YooptaContentValue } from './editor/types';
 import { Plugin } from './plugins/types';
 import NoSSR from './components/NoSsr/NoSsr';

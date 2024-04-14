@@ -87,12 +87,16 @@
 @media (max-width: 768px) {
   #yoopta-editor {
     width: 100%;
+
+    & .yoopta-element-actions {
+      display: none;
+    }
   }
 }
 
 @media (max-width: 992px) {
   .yoopta-element-actions button {
-    display: none;
+    display: none !important;
   }
 }
 

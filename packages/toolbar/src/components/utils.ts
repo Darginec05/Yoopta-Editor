@@ -1,6 +1,13 @@
 import { getRootBlockElement, YooEditor } from '@yoopta/editor';
 
-export function buildActionMenuRenderProps({ editor, view, onClose }) {
+type Params = {
+  editor: YooEditor;
+  onClose: () => void;
+  empty?: boolean;
+  view?: 'small' | 'default';
+};
+
+export function buildActionMenuRenderProps({ editor, view, onClose }: Params) {
   function filterToggleActions(editor: YooEditor, type: string) {
     const block = editor.blocks[type];
     if (!block) return false;
@@ -32,7 +39,7 @@ export function buildActionMenuRenderProps({ editor, view, onClose }) {
     'data-action-menu-item-type': type,
     'aria-selected': false,
     onClick: () => {
-      editor.blocks[type].toggle(type, { focus: true });
+      editor.blocks[type].toggle({ focus: true });
       onClose();
     },
   });

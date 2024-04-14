@@ -16,7 +16,8 @@ export function mapActionMenuItems(editor: YooEditor, items: ActionMenuToolItem[
     if (typeof item === 'string') {
       const title = editor.blocks[item].options?.display?.title || item;
       const description = editor.blocks[item].options?.display?.description;
-      return { type: item, title, description };
+      const icon = editor.blocks[item].options?.display?.icon;
+      return { type: item, title, description, icon };
     }
     return item;
   });
@@ -59,7 +60,7 @@ export function buildActionMenuRenderProps({
     'data-action-menu-item-type': type,
     'aria-selected': type === selectedAction?.type,
     onClick: () => {
-      if (mode === 'toggle') editor.blocks[type].toggle(type, { focus: true });
+      if (mode === 'toggle') editor.blocks[type].toggle({ focus: true });
       if (mode === 'create') editor.blocks[type].create({ deleteText: true, focus: true });
 
       onClose();

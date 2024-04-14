@@ -44,6 +44,10 @@ const plugins = [
       HTMLAttributes: {
         className: 'paragraph-element',
       },
+      display: {
+        title: 'THIS IS CHANGED TITLE',
+        description: 'Ooh.. It seems extending plugin is works!',
+      },
     },
   }),
   Image.extend({
@@ -141,8 +145,8 @@ const MARKS = [Bold, Italic, Highlight, CodeMark, Strike, Underline];
 
 const TOOLS: Tools = {
   ActionMenu: {
-    render: ActionNotionMenuExample,
-    // render: DefaultActionMenuRender,
+    // render: ActionNotionMenuExample,
+    render: DefaultActionMenuRender,
     tool: ActionMenuList,
     props: {
       // items: ['Callout', 'Blockquote', 'HeadingOne', 'HeadingTwo', 'HeadingThree', 'Image', 'File'],
@@ -177,30 +181,6 @@ const BasicExample = () => {
 
   return (
     <div className="px-[100px]  max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={rectangleSelectionRef}>
-      <div className="flex mb-8">
-        <button
-          className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
-          onClick={() => {
-            editor.formats.highlight?.update({ color: 'rgb(176, 171, 250)' });
-          }}
-        >
-          Highlight text
-        </button>
-        <button
-          className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
-          onClick={() => {
-            editor.blocks.Image.create();
-          }}
-        >
-          Add Image
-        </button>
-        <button className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md" onClick={onSubmit}>
-          Get editor data
-        </button>
-        <button className="bg-[#007aff] text-[#fff] px-4 py-2 rounded-md" onClick={() => setReadOnly((p) => !p)}>
-          Switch readOnly mode
-        </button>
-      </div>
       <YooptaEditor
         editor={editor}
         plugins={plugins}
@@ -212,7 +192,42 @@ const BasicExample = () => {
         readOnly={readOnly}
         width={750}
         // value={value}
-      />
+      >
+        <div className="flex mb-8">
+          <button
+            className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
+            onClick={() => {
+              editor.formats.highlight?.update({ color: 'rgb(176, 171, 250)' });
+            }}
+          >
+            Highlight text
+          </button>
+          <button
+            className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
+            onClick={() => {
+              editor.blocks.Image.create();
+            }}
+          >
+            Add Image
+          </button>
+          <button
+            className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
+            onClick={() => {
+              editor.blocks.Blockquote.toggle({
+                focus: true,
+              });
+            }}
+          >
+            Toggle block
+          </button>
+          <button className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md" onClick={onSubmit}>
+            Get editor data
+          </button>
+          <button className="bg-[#007aff] text-[#fff] px-4 py-2 rounded-md" onClick={() => setReadOnly((p) => !p)}>
+            Switch readOnly mode
+          </button>
+        </div>
+      </YooptaEditor>
     </div>
   );
 };

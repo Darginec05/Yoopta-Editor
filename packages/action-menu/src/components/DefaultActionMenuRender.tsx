@@ -1,3 +1,4 @@
+import { isValidElement } from 'react';
 import { ActionMenuRenderProps } from '../types';
 import { DEFAULT_ICONS_MAP } from './icons';
 
@@ -25,6 +26,13 @@ const DefaultActionMenuRender = ({
     transform: isViewSmall ? 'scale(0.75)' : 'scale(1)',
   };
 
+  const renderIcon = (Icon: any) => {
+    if (!Icon) return null;
+    if (typeof Icon === 'string') return <img src={Icon} alt="icon" style={iconStyles} />;
+    if (isValidElement(Icon)) return Icon;
+    return <Icon style={iconStyles} />;
+  };
+
   return (
     <div
       style={wrapStyles}
@@ -42,12 +50,12 @@ const DefaultActionMenuRender = ({
           )}
           {actions.map((action, i) => {
             const block = editor.blocks[action.type];
-            const Icon = action.icon || DEFAULT_ICONS_MAP[action.type];
 
             if (!block) return null;
 
             const title = block.options?.display?.title || block.type;
             const description = block.options?.display?.description || '';
+            const Icon = action.icon || DEFAULT_ICONS_MAP[action.type];
 
             return (
               <button
@@ -59,7 +67,7 @@ const DefaultActionMenuRender = ({
                   style={iconWrapStyles}
                   className="yoo-action-menu-flex yoo-action-menu-h-[40px] yoo-action-menu-w-[40px] yoo-action-menu-items-center yoo-action-menu-justify-center yoo-action-menu-rounded-md yoo-action-menu-border yoo-action-menu-border-solid yoo-action-menu-border-[#e5e7eb] yoo-action-menu-bg-[#FFFFFF]"
                 >
-                  {Icon && typeof Icon !== 'string' && <Icon style={iconStyles} />}
+                  {renderIcon(Icon)}
                 </div>
                 <div>
                   <div className="yoo-action-menu-font-medium">{title}</div>
