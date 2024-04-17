@@ -6,9 +6,10 @@
 
 ## Introduction
 
-Yoopta-Editor is an open-source rich-text editor designed for React applications. Using Yoopta-Editor you can effortlessly create a robust and versatile editor that rivals the likes of Notion and Medium.
+Yoopta-Editor is a free, open-source rich-text editor built for React apps. It’s packed with features that let you build an editor as powerful and user-friendly as Notion, Craft, Code Medium from scratch.
 
-This editor empowers you to seamlessly customize, extend, and tailor its behavior and user interface to your specific needs. Whether you want to add unique features, style elements, or create a tailored UI, Yoopta-Editor provides you with the tools to make it your own.
+With Yoopta-Editor, you can customize everything to fit exactly what you need. Want to tweak the look, add cool features, or craft a completely custom user interface? No problem. Yoopta-Editor gives you the flexibility to do it all, making it easy to create the perfect tool for your project.
+All of this is customizable, extensible, and easy to set up!
 
 ## Features
 
