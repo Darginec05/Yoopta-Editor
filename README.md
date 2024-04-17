@@ -2,11 +2,11 @@
 
 # Welcome to Yoopta-Editor@v4🎉
 
-<video src="https://res.cloudinary.com/ench-app/video/upload/v1713367872/Yoopta_Intro_ndwglr.mp4" autoplay muted controls></video>
+![](/docs/public/yoopta_intro.gif)
 
 ## Introduction
 
-Yoopta-Editor is a free, open-source rich-text editor built for React apps. It’s packed with features that let you build an editor as powerful and user-friendly as Notion, Craft, Code Medium from scratch.
+Yoopta-Editor is a free, open-source rich-text editor built for React apps. It’s packed with features that let you build an editor as powerful and user-friendly as Notion, Craft, Coda, Medium etc.
 
 With Yoopta-Editor, you can customize everything to fit exactly what you need. Want to tweak the look, add cool features, or craft a completely custom user interface? No problem. Yoopta-Editor gives you the flexibility to do it all, making it easy to create the perfect tool for your project.
 All of this is customizable, extensible, and easy to set up!
@@ -63,7 +63,7 @@ Here is list of available plugins
 - @yoopta/lists
 - @yoopta/headings
 
-## How to use
+### How to use
 
 ```jsx
 import YooptaEditor, { createYooptaEditor } from '@yoopta/editor';
@@ -87,7 +87,7 @@ export default function Editor() {
 }
 ```
 
-**_[Check code with plugins](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L27)_**
+**_[Check code with plugins](https://github.com/Darginec05/Yoopta-Editor/tree/master/web/next-example/src/components/examples/withBaseFullSetup/index.tsx#L27)_**
 
 ### Tools
 
@@ -95,12 +95,12 @@ Yoopta-Editor provides useful tools that can help you when working with the edit
 
 Here is list of available tools
 
-- @yoopta/link-tool
 - @yoopta/action-menu-list
 - @yoopta/toolbar
+- @yoopta/link-tool
 - _@yoopta/chat-gpt-assistant_ - **soon**
 
-**_[Check code with tools](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L76)_**
+**_[Check code with tools](https://github.com/Darginec05/Yoopta-Editor/tree/master/web/next-example/src/components/examples/withBaseFullSetup/index.tsx#L76)_**
 
 ### How to use
 
@@ -154,7 +154,7 @@ Here is list of available marks from **@yoopta/marks** package
 - Underline
 - Strike
 
-## How to use
+### How to use
 
 ```jsx
 // IMPORT MARKS
@@ -179,7 +179,7 @@ export default function Editor() {
 }
 ```
 
-**_[Check code with marks](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L85)_**
+**_[Check code with marks](https://github.com/Darginec05/Yoopta-Editor/tree/master/web/next-example/src/components/examples/withBaseFullSetup/index.tsx#L85)_**
 
 ## Examples - DEMO's
 
@@ -187,15 +187,16 @@ In this section, we provide you with some examples of using the Yoopta-Editor in
 
 Okay, let's go!
 
-- [With basic example](https://yopta-editor.vercel.app/examples/withBasicExample)
-- [With Notion example](https://yopta-editor.vercel.app/examples/withNotionExample)
-- [With custom toolbar (Medium example)](https://yopta-editor.vercel.app/examples/withCustomToolbar)
-- [With media plugins](https://yopta-editor.vercel.app/examples/withMedia)
-- [With custom component](https://yopta-editor.vercel.app/examples/withCustomComponent)
-- [With extended plugin](https://yopta-editor.vercel.app/examples/withExtendedPlugin)
-- [With offline mode](https://yopta-editor.vercel.app/examples/withOffline)
-- [With HTML and Markdown exports](https://yopta-editor.vercel.app/examples/withExports)
-- [With custom mark](https://yopta-editor.vercel.app/examples/withCustomMark)
+- [With basic example](https://yoopta-editor.vercel.app/examples/withBaseFullSetup)
+- [With custom toolbar (Notion and Medium example)](https://yoopta-editor.vercel.app/examples/withCustomToolbar)
+- [With Notion Action Menu](https://yoopta-editor.vercel.app/examples/withNotionActionMenu)
+- [With dark theme](https://yoopta-editor.vercel.app/examples/withDarkTheme)
+- [With media plugins](https://yoopta-editor.vercel.app/examples/withMedia)
+- [With extended plugins](https://yoopta-editor.vercel.app/examples/withExtendedPlugin)
+- [With readonly](https://yoopta-editor.vercel.app/examples/withReadOnly)
+- [With custom HTML attributes](https://yoopta-editor.vercel.app/examples/withCustomHTMLAttributes)
+- [With custom mark](https://yoopta-editor.vercel.app/examples/withCustomMark)
+- [With chat slack](https://yoopta-editor.vercel.app/examples/withChatSlack)
 - ...and check other examples in the sidebar list
 
 ## Give us ⭐️ star
