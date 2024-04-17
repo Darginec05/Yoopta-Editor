@@ -5,6 +5,7 @@ import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySel
 import { generateId } from '../../utils/generateId';
 import { YooEditor, YooptaEditorTransformOptions, YooptaBlockData } from '../types';
 
+// make blockData optional
 export function insertBlock(editor: YooEditor, blockData: YooptaBlockData, options: YooptaEditorTransformOptions = {}) {
   editor.children = createDraft(editor.children);
   const { at = null, focus = false, slate = null } = options;

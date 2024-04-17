@@ -20,7 +20,7 @@ import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 import { Sheet } from '@/components/ui/sheet';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { WITH_EDITOR_CONTROL_INIT_VALUE } from './initValue';
 
 const plugins = [
@@ -98,8 +98,51 @@ function WithBasicUsageExample() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
 
+  useEffect(() => {
+    function handleChange(value) {
+      console.log('value', value);
+    }
+    editor.on('change', handleChange);
+    return () => {
+      editor.off('change', handleChange);
+    };
+  }, [editor]);
+
   return (
-    <div className="md:p-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center" ref={selectionRef}>
+    <div
+      className="md:p-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center flex-col items-center"
+      ref={selectionRef}
+    >
+      <div className="flex">
+        <button
+          type="button"
+          className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
+          onClick={() => editor.moveBlock('d72ebaae-50cc-4985-8915-a0af43877d71', [1])}
+        >
+          Move Block
+        </button>
+        <button
+          type="button"
+          className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
+          onClick={() => editor.duplicateBlock({ blockId: 'd72ebaae-50cc-4985-8915-a0af43877d71' })}
+        >
+          Duplicate block
+        </button>
+        <button
+          type="button"
+          className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
+          onClick={() => editor.blocks.Callout.create({ focus: true })}
+        >
+          Insert block Callout
+        </button>
+        <button
+          type="button"
+          className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
+          onClick={() => editor.setBlockSelected([0, 1])}
+        >
+          Select first three blocks
+        </button>
+      </div>
       <YooptaEditor
         editor={editor}
         plugins={plugins}

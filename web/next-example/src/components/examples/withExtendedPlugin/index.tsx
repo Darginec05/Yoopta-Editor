@@ -31,7 +31,7 @@ const plugins = [
     options: {
       shortcuts: ['>', 'quote'],
       display: {
-        title: 'THIS IS CHANGED TITLE',
+        title: 'Super Ultra Blockquote',
         description: 'Ooh.. It seems extending plugin is works!',
         icon: <BlocksIcon />,
       },

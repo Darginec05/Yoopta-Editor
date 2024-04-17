@@ -106,7 +106,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 9,
+      order: 11,
       depth: 0,
     },
   },
@@ -128,7 +128,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 13,
+      order: 14,
       depth: 0,
     },
   },
@@ -150,7 +150,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 6,
+      order: 8,
       depth: 0,
     },
   },
@@ -172,7 +172,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 16,
+      order: 15,
       depth: 0,
     },
   },
@@ -194,7 +194,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 17,
+      order: 16,
       depth: 0,
     },
   },
@@ -220,7 +220,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 24,
+      order: 23,
       depth: 0,
     },
   },
@@ -246,29 +246,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 26,
-      depth: 0,
-    },
-  },
-  'ec49ec3b-05c7-4610-9fb2-3bcbb21f1f53': {
-    id: 'ec49ec3b-05c7-4610-9fb2-3bcbb21f1f53',
-    value: [
-      {
-        id: '290b73b4-5f82-4313-bf02-f197c1b53615',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'A cool representation of the data in JSON format, so you can easily save the content data to the database and validate',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 27,
+      order: 25,
       depth: 0,
     },
   },
@@ -290,7 +268,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 10,
+      order: 12,
       depth: 0,
     },
   },
@@ -315,7 +293,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 32,
+      order: 30,
       depth: 0,
     },
   },
@@ -337,7 +315,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 33,
+      order: 31,
       depth: 0,
     },
   },
@@ -359,7 +337,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 7,
+      order: 9,
       depth: 0,
     },
   },
@@ -385,7 +363,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 25,
+      order: 24,
       depth: 0,
     },
   },
@@ -407,7 +385,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 23,
+      order: 22,
       depth: 0,
     },
   },
@@ -433,7 +411,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 30,
+      order: 28,
       depth: 0,
     },
   },
@@ -455,7 +433,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 28,
+      order: 26,
       depth: 0,
     },
   },
@@ -477,7 +455,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 34,
+      order: 32,
       depth: 0,
     },
   },
@@ -499,7 +477,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 8,
+      order: 10,
       depth: 0,
     },
   },
@@ -521,7 +499,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 18,
+      order: 17,
       depth: 0,
     },
   },
@@ -543,7 +521,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 22,
+      order: 21,
       depth: 0,
     },
   },
@@ -565,7 +543,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 31,
+      order: 29,
       depth: 0,
     },
   },
@@ -591,7 +569,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 29,
+      order: 27,
       depth: 0,
     },
   },
@@ -608,7 +586,7 @@ export const WITH_BASIC_INIT_VALUE = {
         type: 'blockquote',
         children: [
           {
-            text: '- Check Yoopta features below and just try it!',
+            text: '- Check Yoopta features below and just try it',
             bold: true,
           },
           {
@@ -669,7 +647,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Image',
     meta: {
-      order: 36,
+      order: 34,
       depth: 0,
     },
   },
@@ -707,7 +685,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'HeadingThree',
     meta: {
-      order: 35,
+      order: 33,
       depth: 0,
     },
   },
@@ -729,7 +707,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 21,
+      order: 20,
       depth: 0,
     },
   },
@@ -751,7 +729,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 19,
+      order: 18,
       depth: 0,
     },
   },
@@ -773,7 +751,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 14,
+      order: 6,
       depth: 0,
     },
   },
@@ -803,7 +781,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Image',
     meta: {
-      order: 38,
+      order: 36,
       depth: 0,
     },
   },
@@ -811,7 +789,7 @@ export const WITH_BASIC_INIT_VALUE = {
     id: '7d3f395b-656d-46af-924c-b88b9974f631',
     type: 'HeadingThree',
     meta: {
-      order: 37,
+      order: 35,
       depth: 0,
     },
     value: [
@@ -864,7 +842,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 39,
+      order: 37,
       depth: 0,
     },
   },
@@ -876,7 +854,7 @@ export const WITH_BASIC_INIT_VALUE = {
         type: 'code',
         children: [
           {
-            text: '// pass props to main component and that all. See source code for each example\nfunction YouThinkThisIsJoke() {\n  const editor = useMemo(() => createYooptaEditor(), []);\n\n  return (\n    <div>\n      <YooptaEditor\n        editor={editor}\n        plugins={plugins}\n        tools={TOOLS}\n        marks={MARKS}\n      />\n    </div>\n  );\n}',
+            text: '// pass props to main component and that all\nfunction YouThinkThisIsJoke() {\n  const editor = useMemo(() => createYooptaEditor(), []);\n\n  return (\n    <div>\n      <YooptaEditor\n        editor={editor}\n        plugins={plugins}\n        tools={TOOLS}\n        marks={MARKS}\n      />\n    </div>\n  );\n}',
           },
         ],
         props: {
@@ -888,8 +866,8 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Code',
     meta: {
-      order: 15,
-      depth: 2,
+      order: 7,
+      depth: 1,
     },
   },
   '17fc0ceb-6898-4684-9b9b-7612f4bf735f': {
@@ -910,7 +888,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 12,
+      order: 13,
       depth: 0,
     },
   },
@@ -932,29 +910,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 20,
-      depth: 0,
-    },
-  },
-  '6e6f76dd-b798-4530-8f61-1566e38fee4b': {
-    id: '6e6f76dd-b798-4530-8f61-1566e38fee4b',
-    value: [
-      {
-        id: '11e847d4-30b3-48c2-adb0-a83b1f0570be',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Using Yoopta-Editor you can easy create Notion-like, Medium-like, Coda-like etc. editors. \nJust open sidebar and check example ',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 11,
+      order: 19,
       depth: 0,
     },
   },
@@ -976,7 +932,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 40,
+      order: 38,
       depth: 0,
     },
   },

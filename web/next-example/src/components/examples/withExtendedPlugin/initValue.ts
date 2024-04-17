@@ -194,7 +194,7 @@ export const WITH_EXTENDED_PLUGIN_INIT_VALUE = {
         type: 'numbered-list',
         children: [
           {
-            text: 'Open action menu and check update ',
+            text: 'Open action menu and check updated ',
           },
           {
             text: 'title',
