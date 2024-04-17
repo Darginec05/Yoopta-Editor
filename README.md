@@ -2,7 +2,7 @@
 
 # Welcome to Yoopta-Editor@v4🎉
 
-![](https://res.cloudinary.com/ench-app/video/upload/v1713367872/Yoopta_Intro_ndwglr.gif)
+<video src="https://res.cloudinary.com/ench-app/video/upload/v1713367872/Yoopta_Intro_ndwglr.mp4" autoplay muted controls></video>
 
 ## Introduction
 
@@ -25,7 +25,6 @@ All of this is customizable, extensible, and easy to set up!
 - A list of useful tools (ActionMenu, Toolbar etc.) for the convenience of working with the editor
 - Automatic lazy loading for media components (eg. embeds)
 - Large documents
-<!-- - A completely rewritten architecture to increase perfomance -->
 - Mobile friendly
 - Indent and outdent for every plugin by tabs and shift+tabs
 - Editor instance to programmatically control your content
@@ -41,9 +40,8 @@ All of this is customizable, extensible, and easy to set up!
 First install the peer dependencies and the Yoopta core package with at least one plugin
 
 ```bash
-## slate and slate-react - peer dependecies
+## slate, slate-react, react, react-dom - peer dependecies
 ## @yoopta/editor - core package
-## @yoopta/paragraph - default plugin
 yarn add slate slate-react @yoopta/editor @yoopta/paragraph
 # or
 npm install slate slate-react @yoopta/editor @yoopta/paragraph
@@ -68,12 +66,11 @@ Here is list of available plugins
 ## How to use
 
 ```jsx
-import YooptaEditor from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor } from '@yoopta/editor';
 import Paragraph from '@yoopta/paragraph';
-import { useState } from 'react';
+import Blockquote from '@yoopta/blockquote';
 
-// List of plugins should be defined outside component
-const plugins = [Paragraph];
+const plugins = [Paragraph, Blockquote];
 
 export default function Editor() {
   const editor = useMemo(() => createYooptaEditor(), []);
@@ -82,10 +79,8 @@ export default function Editor() {
     <div>
       <YooptaEditor
         placeholder="Type text.."
-        plugins={plugins}
-        tools={TOOLS}
         // here we go
-        marks={MARKS}
+        plugins={plugins}
       />
     </div>
   );
@@ -207,6 +202,17 @@ Okay, let's go!
 
 If you find Yoopta-Editor useful and valuable for your projects, I kindly ask you to show your support by giving us a ⭐️ star on GitHub. Your appreciation means a lot to us and helps us grow and continue improving the editor for the community. 💙💙💙
 
+## Roadmap
+
+- Develop other powerful plugins
+- AI tools
+- Simplify API for creating plugins
+- Collabrative mode
+- Plugin system
+- Optimizations for media components
+- Rethink approach for just rendering to increase SEO perfomance
+- Continue improving the project. We are listening to you and your requests 💙
+
 ## License
 
 Yoopta-Editor is released under the [MIT License](https://github.com/Darginec05/Yopta-Editor/blob/master/LICENSE). Feel free to use and modify it for your projects.
@@ -219,6 +225,6 @@ Let's create powerful and engaging editing experiences together with Yoopta-Edit
 
 ## Contacts
 
+- [Telegram for community](https://t.ly/8u0T9)
 - [Twitter](https://twitter.com/LebovskiYoo)
-- [Telegram](https://tttttt.me/DevOpsBanda)
 - [Github](https://github.com/Darginec05)
