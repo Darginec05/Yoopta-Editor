@@ -1,0 +1,35 @@
+{
+  "name": "@yoopta/mention",
+  "version": "2.0.0",
+  "description": "Mention plugin for Yoopta Editor [IN PROGRESS]",
+  "author": "Darginec05 <devopsbanda@gmail.com>",
+  "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
+  "license": "MIT",
+  "private": true,
+  "main": "dist/index.js",
+  "type": "module",
+  "module": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "peerDependencies": {
+    "@yoopta/editor": ">=4.0.0-rc.0",
+    "react": ">=17.0.2",
+    "react-dom": ">=17.0.2"
+  },
+  "publishConfig": {
+    "registry": "https://registry.yarnpkg.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Darginec05/Editor-Yoopta.git"
+  },
+  "scripts": {
+    "test": "node ./__tests__/yoopta-mention.test.js",
+    "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development"
+  },
+  "bugs": {
+    "url": "https://github.com/Darginec05/Editor-Yoopta/issues"
+  }
+}

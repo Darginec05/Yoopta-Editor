@@ -5,20 +5,18 @@
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
   "license": "MIT",
-  "private": false,
-  "type": "module",
+  "private": true,
   "main": "dist/index.js",
+  "type": "module",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist/"
   ],
   "peerDependencies": {
-    "@yoopta/editor": ">=1.9.18-rc",
+    "@yoopta/editor": ">=4.0.0-rc.0",
     "react": ">=17.0.2",
-    "react-dom": ">=17.0.2",
-    "slate": ">=0.72.3",
-    "slate-react": ">=0.95.0"
+    "react-dom": ">=17.0.2"
   },
   "publishConfig": {
     "registry": "https://registry.yarnpkg.com"

@@ -1,33 +1,40 @@
 [![RepoRater](https://repo-rater.eddiehub.io/api/badge?owner=Darginec05&name=Yoopta-Editor)](https://repo-rater.eddiehub.io/rate?owner=Darginec05&name=Yoopta-Editor)
 
-# Welcome to Yoopta-Editor 🎉
+# Welcome to Yoopta-Editor@v4🎉
 
-![](https://res.cloudinary.com/ench-app/image/upload/v1691533442/9C3CB447-AB61-4644-BA3A-00F089BCD053_r2bhws.gif)
+![](https://res.cloudinary.com/ench-app/video/upload/v1713367872/Yoopta_Intro_ndwglr.gif)
 
 ## Introduction
 
-Yoopta-Editor is an open-source rich-text editor designed for React applications. Using Yoopta-Editor you can effortlessly create a robust and versatile editor that rivals the likes of Notion and Medium.
+Yoopta-Editor is a free, open-source rich-text editor built for React apps. It’s packed with features that let you build an editor as powerful and user-friendly as Notion, Craft, Code Medium from scratch.
 
-This editor empowers you to seamlessly customize, extend, and tailor its behavior and user interface to your specific needs. Whether you want to add unique features, style elements, or create a tailored UI, Yoopta-Editor provides you with the tools to make it your own.
+With Yoopta-Editor, you can customize everything to fit exactly what you need. Want to tweak the look, add cool features, or craft a completely custom user interface? No problem. Yoopta-Editor gives you the flexibility to do it all, making it easy to create the perfect tool for your project.
+All of this is customizable, extensible, and easy to set up!
 
 ## Features
 
-- Default list of plugins
-- Each plugin can be easily customize and extensible
-- You can create your own plugin
+- Easy setup
+- Default list of powerful plugins
 - Many typical solved problems in UX behavior.
-- A list of useful tools for the convenience of working with the editor
-- Automatic lazy loading for media components (eg. embeds)
-- Shortcuts and markdown style
-- Offline mode
-- Redo/undo changes
-- A cool representation of the data in JSON format, so you can easily save the content data to the database and validate
-- ChatGPT tool (soon) 😍
-- Component for just rendering your data without any editor tools for fast page loading
-  Useful for blog platforms!
+- Media plugins on steroids with optimization and lazy loadings
+- Code plugin on steroids with themes and languages
+- Each plugin can be easily customized and extensible
 - Drag and drop, nested dnd is supported also
+- Selection box for manipulating with multiple blocks at once
+- You can create your own plugin
+- A list of useful tools (ActionMenu, Toolbar etc.) for the convenience of working with the editor
+- Automatic lazy loading for media components (eg. embeds)
+- Large documents
+<!-- - A completely rewritten architecture to increase perfomance -->
+- Mobile friendly
+- Indent and outdent for every plugin by tabs and shift+tabs
+- Editor instance to programmatically control your content
+- Editor events for saving to DB in real-time
+- Exports in markdown, plain text, html - [in progress. Currently available only HTML exports]
+- Shortcuts, hotkeys. And customization for this!
+- Super AI tools not for HYPE, but for real useful work with editor content - [in progress]
 - The soul invested in the development of this editor 💙
-- ...and other features
+- ... and other features that I forgot to write about in this list 😅. Just check it in examples!
 
 ## Getting Started
 
@@ -44,33 +51,6 @@ npm install slate slate-react @yoopta/editor @yoopta/paragraph
 
 ### Plugins:
 
-```jsx
-import YooptaEditor from '@yoopta/editor';
-import Paragraph from '@yoopta/paragraph';
-import { useState } from 'react';
-
-// List of plugins should be defined outside component
-const plugins = [Paragraph];
-
-// Your custom styles
-const styles = { width: 640, margin: '0 auto', padding: '40px 10px' };
-
-export default function Editor() {
-  const [value, setValue] = useState([]);
-
-  return (
-    <div style={styles}>
-      <YooptaEditor
-        value={value}
-        onChange={(val) => setValue(val)}
-        plugins={plugins}
-        placeholder="Type text.."
-      />
-    </div>
-  );
-}
-```
-
 Here is list of available plugins
 
 - @yoopta/paragraph
@@ -85,68 +65,26 @@ Here is list of available plugins
 - @yoopta/lists
 - @yoopta/headings
 
-***[Check code with plugins](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L27)***
-
-### Tools
-Yoopta-Editor provides useful tools that can help you when working with the editor
+## How to use
 
 ```jsx
-// IMPORT TOOLS
-import LinkTool from '@yoopta/link-tool';
-import ActionMenu from '@yoopta/action-menu-list';
-import Toolbar from '@yoopta/toolbar';
+import YooptaEditor from '@yoopta/editor';
+import Paragraph from '@yoopta/paragraph';
+import { useState } from 'react';
 
-// Tools should be defined outside component
-const TOOLS = {
-  Toolbar: <Toolbar />,
-  ActionMenu: <ActionMenu />,
-  LinkTool: <LinkTool />,
-};
+// List of plugins should be defined outside component
+const plugins = [Paragraph];
 
 export default function Editor() {
-  const [value, setValue] = useState([]);
+  const editor = useMemo(() => createYooptaEditor(), []);
 
   return (
-    <div style={styles}>
+    <div>
       <YooptaEditor
-        value={value}
-        onChange={(val) => setValue(val)}
-        plugins={plugins}
-        placeholder="Type text.."
-        tools={TOOLS}
-      />
-    </div>
-  );
-}
-```
-
-Here is list of available tools
-
-- @yoopta/link-tool
-- @yoopta/action-menu-list
-- @yoopta/toolbar
-- *@yoopta/chat-gpt-assistant* - **soon**
-
-***[Check code with tools](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L76)***
-### Marks 
-Marks are simple text formatters
-
-```jsx
-// IMPORT MARKS
-import { Bold, Italic, CodeMark, Underline, Strike } from '@yoopta/marks';
-
-export default function Editor() {
-  const [value, setValue] = useState([]);
-  const MARKS = [Bold, Italic, CodeMark, Underline, Strike];
-
-  return (
-    <div style={styles}>
-      <YooptaEditor
-        value={value}
-        onChange={(val) => setValue(val)}
         placeholder="Type text.."
         plugins={plugins}
         tools={TOOLS}
+        // here we go
         marks={MARKS}
       />
     </div>
@@ -154,15 +92,99 @@ export default function Editor() {
 }
 ```
 
+**_[Check code with plugins](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L27)_**
+
+### Tools
+
+Yoopta-Editor provides useful tools that can help you when working with the editor
+
+Here is list of available tools
+
+- @yoopta/link-tool
+- @yoopta/action-menu-list
+- @yoopta/toolbar
+- _@yoopta/chat-gpt-assistant_ - **soon**
+
+**_[Check code with tools](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L76)_**
+
+### How to use
+
+```jsx
+// IMPORT TOOLS
+import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
+import ActionMenu, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
+import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
+
+// Tools should be defined outside component
+const TOOLS = {
+  Toolbar: {
+    tool: Toolbar,
+    render: DefaultToolbarRender,
+  },
+  ActionMenu: {
+    tool: Toolbar,
+    render: DefaultActionMenuRender,
+  },
+  LinkTool: {
+    tool: LinkTool,
+    render: DefaultLinkToolRender,
+  },
+};
+
+export default function Editor() {
+  const editor = useMemo(() => createYooptaEditor(), []);
+
+  return (
+    <div>
+      <YooptaEditor
+        plugins={plugins}
+        placeholder="Type text.."
+        // here we go
+        tools={TOOLS}
+      />
+    </div>
+  );
+}
+```
+
+### Marks
+
+Marks are simple text formats
+
 Here is list of available marks from **@yoopta/marks** package
 
 - Bold
 - Italic
 - CodeMark
-- Underline 
+- Underline
 - Strike
 
-***[Check code with marks](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L85)***
+## How to use
+
+```jsx
+// IMPORT MARKS
+import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
+
+const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
+
+export default function Editor() {
+  const editor = useMemo(() => createYooptaEditor(), []);
+
+  return (
+    <div>
+      <YooptaEditor
+        placeholder="Type text.."
+        plugins={plugins}
+        tools={TOOLS}
+        // here we go
+        marks={MARKS}
+      />
+    </div>
+  );
+}
+```
+
+**_[Check code with marks](https://github.com/Darginec05/Yopta-Editor/blob/master/web/src/examples/withBasicExample.tsx#L85)_**
 
 ## Examples - DEMO's
 

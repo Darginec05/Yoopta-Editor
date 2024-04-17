@@ -1,24 +1,22 @@
 {
   "name": "@yoopta/marks",
-  "version": "2.0.1",
-  "description": "> TODO: description",
+  "version": "4.0.0-rc.11",
+  "description": "Marks for Yoopta Editor",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
   "license": "MIT",
   "private": false,
-  "type": "module",
   "main": "dist/index.js",
+  "type": "module",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist/"
   ],
   "peerDependencies": {
-    "@yoopta/editor": ">=1.9.18-rc",
+    "@yoopta/editor": ">=4.0.0-rc.0",
     "react": ">=17.0.2",
-    "react-dom": ">=17.0.2",
-    "slate": ">=0.72.3",
-    "slate-react": ">=0.95.0"
+    "react-dom": ">=17.0.2"
   },
   "publishConfig": {
     "registry": "https://registry.yarnpkg.com"
@@ -28,12 +26,12 @@
     "url": "git+https://github.com/Darginec05/Editor-Yoopta.git"
   },
   "scripts": {
-    "test": "node ./__tests__/@yoopta/paragraph.test.js"
+    "test": "node ./__tests__/@yoopta/paragraph.test.js",
+    "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development",
+    "prepublishOnly": "yarn build",
+    "build": "rollup --config rollup.config.js --bundleConfigAsCjs --environment NODE_ENV:production"
   },
   "bugs": {
     "url": "https://github.com/Darginec05/Editor-Yoopta/issues"
-  },
-  "dependencies": {
-    "body-scroll-lock": "^4.0.0-beta.0"
   }
 }

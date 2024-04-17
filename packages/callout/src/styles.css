@@ -1,0 +1,10 @@
+@tailwind utilities;
+
+.yoopta-callout .yoopta-callout-options {
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.yoopta-callout:hover .yoopta-callout-options {
+  opacity: 1;
+}
