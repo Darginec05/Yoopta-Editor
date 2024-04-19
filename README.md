@@ -77,6 +77,56 @@ yarn add slate slate-react @yoopta/editor @yoopta/paragraph
 npm install slate slate-react @yoopta/editor @yoopta/paragraph
 ```
 
+### Start from core package
+
+Import from core package **@yoopta/editor** Editor Component and function to create editor instance
+
+```jsx
+import YooptaEditor, { createYooptaEditor } from '@yoopta/editor';
+
+const plugins = [...];
+
+export default function Editor() {
+  const editor = useMemo(() => createYooptaEditor(), []);
+
+  return (
+    <div>
+      <YooptaEditor plugins={plugins} />
+    </div>
+  );
+}
+```
+
+Available props for YooptaEditor components
+
+```typescript
+type YooptaEditor = {
+  /* editor instance */
+  editor: YooEditor;
+  /* list of plugins */
+  plugins: YooptaPlugin[];
+  /* list of marks */
+  marks?: YooptaMark<any>[];
+  /* Value. [Default] - undefined */
+  value?: YooptaContentValue;
+  /* autoFocus. [Default] - true */
+  autoFocus?: boolean;
+  /* className */
+  className?: string;
+  /* This props define area for selection box. 
+  Good practice - passing parent element.
+  [Default] - document */
+  selectionBoxRoot?: HTMLElement | React.MutableRefObject<HTMLElement | null> | false;
+  children?: React.ReactNode;
+  /* Props for tools. You can get access to any passed tools using `useTools` hook from @yoopta/editor  */
+  tools?: Partial<Tools>;
+  placeholder?: string;
+  readOnly?: boolean;
+  /* Width. [Default] - 450px  */
+  width?: number | string;
+};
+```
+
 ### Plugins:
 
 Here is list of available plugins
