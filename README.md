@@ -226,6 +226,6 @@ Let's create powerful and engaging editing experiences together with Yoopta-Edit
 
 ## Contacts
 
-- [Telegram for community](https://t.ly/8u0T9)
+- [Telegram Community](https://t.me/YooptaEditor)
 - [Twitter](https://twitter.com/LebovskiYoo)
 - [Github](https://github.com/Darginec05)
