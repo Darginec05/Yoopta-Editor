@@ -17,10 +17,9 @@ import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 // import { DividerPlugin } from './customPlugins/Divider';
 
-import { Sheet } from '@/components/ui/sheet';
-
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import { withMediaAndVoidsValue } from './initValue';
 
 const plugins = [
   Paragraph,
@@ -97,8 +96,20 @@ function WithMedia() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
 
+  useEffect(() => {
+    function handleChange(value) {
+      console.log('value', value);
+    }
+
+    editor.on('change', handleChange);
+    return () => editor.off('change', handleChange);
+  }, [editor]);
+
   return (
-    <div className="md:p-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center" ref={selectionRef}>
+    <div
+      className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center"
+      ref={selectionRef}
+    >
       <YooptaEditor
         editor={editor}
         plugins={plugins}
@@ -106,6 +117,7 @@ function WithMedia() {
         marks={MARKS}
         selectionBoxRoot={selectionRef}
         autoFocus
+        value={withMediaAndVoidsValue}
       />
     </div>
   );

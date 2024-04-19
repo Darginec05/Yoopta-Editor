@@ -110,7 +110,7 @@ function WithCustomToolbar() {
 
   return (
     <div
-      className="md:p-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center flex-col items-center"
+      className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center flex-col items-center"
       ref={selectionRef}
     >
       <div className="flex w-auto mb-4">

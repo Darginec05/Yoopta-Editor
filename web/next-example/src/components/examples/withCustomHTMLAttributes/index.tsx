@@ -99,7 +99,10 @@ function WithCustomHTMLAttributes() {
   const selectionRef = useRef(null);
 
   return (
-    <div className="md:p-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center" ref={selectionRef}>
+    <div
+      className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center"
+      ref={selectionRef}
+    >
       <YooptaEditor
         editor={editor}
         plugins={plugins}

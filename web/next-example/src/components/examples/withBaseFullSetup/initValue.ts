@@ -246,7 +246,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 25,
+      order: 24,
       depth: 0,
     },
   },
@@ -293,7 +293,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 30,
+      order: 27,
       depth: 0,
     },
   },
@@ -315,7 +315,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 31,
+      order: 28,
       depth: 0,
     },
   },
@@ -341,32 +341,6 @@ export const WITH_BASIC_INIT_VALUE = {
       depth: 0,
     },
   },
-  'a7ae8d17-2b4a-473b-b83b-e744dda8e3e4': {
-    id: 'a7ae8d17-2b4a-473b-b83b-e744dda8e3e4',
-    value: [
-      {
-        id: '1d232910-9f73-4c72-84b0-d8e041c87631',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Offline mode - ',
-          },
-          {
-            text: '[in progress]',
-            italic: true,
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 24,
-      depth: 0,
-    },
-  },
   '5d98062b-be38-4765-a157-c95432abf3d9': {
     id: '5d98062b-be38-4765-a157-c95432abf3d9',
     value: [
@@ -389,32 +363,6 @@ export const WITH_BASIC_INIT_VALUE = {
       depth: 0,
     },
   },
-  'df66bed2-ce91-4a94-921a-ff6b77c7a6ef': {
-    id: 'df66bed2-ce91-4a94-921a-ff6b77c7a6ef',
-    value: [
-      {
-        id: '8e90cb0c-418f-4610-8356-0cf48d4968d4',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Collabration mode - ',
-          },
-          {
-            text: '[in progress]',
-            italic: true,
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 28,
-      depth: 0,
-    },
-  },
   '719e2b92-709b-42ff-a3f9-ad4823ebee97': {
     id: '719e2b92-709b-42ff-a3f9-ad4823ebee97',
     value: [
@@ -433,7 +381,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 26,
+      order: 25,
       depth: 0,
     },
   },
@@ -455,7 +403,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 32,
+      order: 29,
       depth: 0,
     },
   },
@@ -543,33 +491,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 29,
-      depth: 0,
-    },
-  },
-  'f4886efc-d9a7-4626-8708-5f783aac78b2': {
-    id: 'f4886efc-d9a7-4626-8708-5f783aac78b2',
-    value: [
-      {
-        id: '6d37bea6-b21d-413a-b7ad-5994bb12b0ee',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Super AI tools not for HYPE, but for real useful work with editor content - ',
-          },
-          {
-            text: '[in progress]',
-            italic: true,
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 27,
+      order: 26,
       depth: 0,
     },
   },
@@ -586,7 +508,7 @@ export const WITH_BASIC_INIT_VALUE = {
         type: 'blockquote',
         children: [
           {
-            text: '- Check Yoopta features below and just try it',
+            text: '- Our life is what our thoughts make it',
             bold: true,
           },
           {
@@ -598,28 +520,6 @@ export const WITH_BASIC_INIT_VALUE = {
         },
       },
     ],
-  },
-  '1fe2cf0f-7095-4a96-96cd-c8e2e3c2b10a': {
-    id: '1fe2cf0f-7095-4a96-96cd-c8e2e3c2b10a',
-    value: [
-      {
-        id: '7bb6aca8-7487-4ee7-8b9b-23bfc5ff7737',
-        type: 'paragraph',
-        children: [
-          {
-            text: '',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'Paragraph',
-    meta: {
-      order: 2,
-      depth: 0,
-    },
   },
   '78c8e461-d7cd-474d-97c9-773550bd2ca9': {
     id: '78c8e461-d7cd-474d-97c9-773550bd2ca9',
@@ -647,7 +547,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Image',
     meta: {
-      order: 34,
+      order: 41,
       depth: 0,
     },
   },
@@ -685,7 +585,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'HeadingThree',
     meta: {
-      order: 33,
+      order: 40,
       depth: 0,
     },
   },
@@ -781,7 +681,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Image',
     meta: {
-      order: 36,
+      order: 43,
       depth: 0,
     },
   },
@@ -789,7 +689,7 @@ export const WITH_BASIC_INIT_VALUE = {
     id: '7d3f395b-656d-46af-924c-b88b9974f631',
     type: 'HeadingThree',
     meta: {
-      order: 35,
+      order: 42,
       depth: 0,
     },
     value: [
@@ -823,28 +723,6 @@ export const WITH_BASIC_INIT_VALUE = {
         },
       },
     ],
-  },
-  '686dffad-adb8-4ad9-8b25-0df4f15050ca': {
-    id: '686dffad-adb8-4ad9-8b25-0df4f15050ca',
-    value: [
-      {
-        id: '0ccb626c-3a50-4e23-b72c-898c3303cc09',
-        type: 'paragraph',
-        children: [
-          {
-            text: '',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'Paragraph',
-    meta: {
-      order: 37,
-      depth: 0,
-    },
   },
   '0f9a82ac-bfd0-494e-bbe1-056f9a8b923b': {
     id: '0f9a82ac-bfd0-494e-bbe1-056f9a8b923b',
@@ -932,7 +810,439 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
+      order: 44,
+      depth: 0,
+    },
+  },
+  '697aa54b-aea0-4a88-82e5-ec5a6f2c5791': {
+    id: '697aa54b-aea0-4a88-82e5-ec5a6f2c5791',
+    value: [
+      {
+        id: 'e7cfd6da-0ed1-4849-ae05-f52b9e65c87b',
+        type: 'paragraph',
+        children: [
+          {
+            text: '',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'Paragraph',
+    meta: {
+      order: 2,
+      depth: 0,
+    },
+  },
+  'd19fe347-ae2f-469d-85f4-a66d63a2fd40': {
+    id: 'd19fe347-ae2f-469d-85f4-a66d63a2fd40',
+    value: [
+      {
+        id: 'c2a68b34-3efa-4c1f-9616-3e4ceb727b94',
+        type: 'heading-two',
+        children: [
+          {
+            text: 'Roadmap',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'HeadingTwo',
+    meta: {
+      order: 30,
+      depth: 0,
+    },
+  },
+  'be5fad74-46ed-4a77-b121-953d2db30141': {
+    id: 'be5fad74-46ed-4a77-b121-953d2db30141',
+    value: [
+      {
+        id: '5ab4ef22-8b2e-4618-bbae-cd07d1a059d6',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'Develop other powerful plugins',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'BulletedList',
+    meta: {
+      order: 31,
+      depth: 0,
+    },
+  },
+  '6a432e66-8627-45ae-8e36-52fa7cab2cc5': {
+    id: '6a432e66-8627-45ae-8e36-52fa7cab2cc5',
+    value: [
+      {
+        id: '6d37bea6-b21d-413a-b7ad-5994bb12b0ee',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'Super AI tools not for HYPE, but for real useful work with editor content',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'BulletedList',
+    meta: {
+      order: 32,
+      depth: 0,
+    },
+  },
+  'a1ce732c-8b2c-447f-9938-af719becf846': {
+    id: 'a1ce732c-8b2c-447f-9938-af719becf846',
+    value: [
+      {
+        id: '96ddb3d0-808f-48e0-8994-f1b63af0d49a',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'Simplify API for creating plugins',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'BulletedList',
+    meta: {
+      order: 33,
+      depth: 0,
+    },
+  },
+  'eb883c05-9984-4972-864f-81ffdfc93bf4': {
+    id: 'eb883c05-9984-4972-864f-81ffdfc93bf4',
+    value: [
+      {
+        id: '751adb79-ee2b-4855-ab00-cdf8f2ec9354',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'Collabrative mode',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'BulletedList',
+    meta: {
+      order: 34,
+      depth: 0,
+    },
+  },
+  '8dc4f112-0210-41c0-a1e8-2e6da120ba41': {
+    id: '8dc4f112-0210-41c0-a1e8-2e6da120ba41',
+    value: [
+      {
+        id: '8de5305f-2b22-46c9-9941-bcca78992955',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'Plugin system',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'BulletedList',
+    meta: {
+      order: 35,
+      depth: 0,
+    },
+  },
+  '28dac558-f474-4198-b267-3b95bdd1016c': {
+    id: '28dac558-f474-4198-b267-3b95bdd1016c',
+    value: [
+      {
+        id: '3ea8b393-70dc-4c69-a370-17373cc4dab5',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'Optimizations for media components (',
+          },
+          {
+            text: 'srcSet ',
+            bold: true,
+          },
+          {
+            text: 'for image and ',
+          },
+          {
+            text: 'sources',
+            bold: true,
+          },
+          {
+            text: ' for video)',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'BulletedList',
+    meta: {
+      order: 36,
+      depth: 0,
+    },
+  },
+  'f33fc1b8-bf3b-4e63-b540-41f257410719': {
+    id: 'f33fc1b8-bf3b-4e63-b540-41f257410719',
+    value: [
+      {
+        id: '87c80c0b-1abf-4a86-bc77-9be9d7415199',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'Rethink approach for just rendering to increase SEO perfomance',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'BulletedList',
+    meta: {
+      order: 37,
+      depth: 0,
+    },
+  },
+  '653ec531-73c7-4d54-ba9c-0d7456cf7eaf': {
+    id: '653ec531-73c7-4d54-ba9c-0d7456cf7eaf',
+    value: [
+      {
+        id: '95428d0c-36be-4cb9-b0c3-8df15077a742',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'Continue improving the project. We are listening to you and your requests 💙',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'BulletedList',
+    meta: {
       order: 38,
+      depth: 0,
+    },
+  },
+  '7ac415e1-4788-4864-8f28-f82bfaa1a253': {
+    id: '7ac415e1-4788-4864-8f28-f82bfaa1a253',
+    value: [
+      {
+        id: '0feff7ea-24a3-436e-88e2-83346e9cb3c5',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'Redo/undo between blocks',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'BulletedList',
+    meta: {
+      order: 46,
+      depth: 0,
+    },
+  },
+  '3fd638ae-fb2f-433d-976a-f2d5f82f2822': {
+    id: '3fd638ae-fb2f-433d-976a-f2d5f82f2822',
+    value: [
+      {
+        id: 'c659d066-5f50-4583-afd8-3b09b2fcbd87',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'Selection between blocks',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'BulletedList',
+    meta: {
+      order: 47,
+      depth: 0,
+    },
+  },
+  'd62df7dd-8560-445b-8374-fcd5299029d3': {
+    id: 'd62df7dd-8560-445b-8374-fcd5299029d3',
+    value: [
+      {
+        id: 'e8510c43-606c-430d-ac81-87f29cacf65e',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'Copy/paste with selected blocks',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'BulletedList',
+    meta: {
+      order: 48,
+      depth: 0,
+    },
+  },
+  '9095bf5d-b6d6-4815-bd6a-bf06fe97affd': {
+    id: '9095bf5d-b6d6-4815-bd6a-bf06fe97affd',
+    value: [
+      {
+        id: 'cb362a05-a783-478f-bbad-78d08e263bee',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'Tests',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'BulletedList',
+    meta: {
+      order: 51,
+      depth: 0,
+    },
+  },
+  '8120e3f9-fef0-44bd-ad86-ee26f45cdad9': {
+    id: '8120e3f9-fef0-44bd-ad86-ee26f45cdad9',
+    value: [
+      {
+        id: '73a001b1-9620-4484-a128-c78076d27831',
+        type: 'heading-two',
+        children: [
+          {
+            text: 'Currently known issues',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'HeadingTwo',
+    meta: {
+      order: 45,
+      depth: 0,
+    },
+  },
+  '95f23367-0837-440a-b778-a95c09df2b09': {
+    id: '95f23367-0837-440a-b778-a95c09df2b09',
+    value: [
+      {
+        id: '7423d69d-bb48-4733-8f33-05d82e759d91',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'Dragndrop with selected blocks',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'BulletedList',
+    meta: {
+      order: 49,
+      depth: 0,
+    },
+  },
+  'c5fc9364-93ab-4e48-83bb-f5d5a8fb3c23': {
+    id: 'c5fc9364-93ab-4e48-83bb-f5d5a8fb3c23',
+    value: [
+      {
+        id: '18fc43c2-efb8-4b18-936a-a41e4acb304c',
+        type: 'paragraph',
+        children: [
+          {
+            text: '',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'Paragraph',
+    meta: {
+      order: 39,
+      depth: 0,
+    },
+  },
+  '784122f7-2b72-4b19-a1e7-c4a06c013662': {
+    id: '784122f7-2b72-4b19-a1e7-c4a06c013662',
+    value: [
+      {
+        id: 'c2b86108-7236-4a07-9440-f327ab3b16af',
+        type: 'paragraph',
+        children: [
+          {
+            text: '',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'Paragraph',
+    meta: {
+      order: 52,
+      depth: 0,
+    },
+  },
+  '8bf97157-698f-4365-882a-68e6eff020fb': {
+    id: '8bf97157-698f-4365-882a-68e6eff020fb',
+    value: [
+      {
+        id: '5fad6d4d-eee1-4998-9613-80bdc4134abb',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'Focusing blocks with custom editor',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'BulletedList',
+    meta: {
+      order: 50,
       depth: 0,
     },
   },

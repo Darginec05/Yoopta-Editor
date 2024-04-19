@@ -35,6 +35,36 @@ All of this is customizable, extensible, and easy to set up!
 - The soul invested in the development of this editor 💙
 - ... and other features that I forgot to write about in this list 😅. Just check it in examples!
 
+## Packages
+
+- Core
+
+  - **@yoopta/editor**
+
+- Plugins
+
+  - **@yoopta/paragraph**
+  - **@yoopta/blockquote**
+  - **@yoopta/code**
+  - **@yoopta/embed**
+  - **@yoopta/image**
+  - **@yoopta/link**
+  - **@yoopta/file**
+  - **@yoopta/callout**
+  - **@yoopta/video**
+  - **@yoopta/lists**
+  - **@yoopta/headings**
+
+- Tools
+
+  - **@yoopta/action-menu-list**
+  - **@yoopta/toolbar**
+  - **@yoopta/link-tool**
+  - _@yoopta/chat-gpt-assistant_ - **soon**
+
+- Marks
+  - **@yoopta/marks** - _[Bold, Italic, CodeMark, Underline, Strike, Highlight]_
+
 ## Getting Started
 
 First install the peer dependencies and the Yoopta core package with at least one plugin
@@ -153,6 +183,7 @@ Here is list of available marks from **@yoopta/marks** package
 - CodeMark
 - Underline
 - Strike
+- Highlight
 
 ### How to use
 

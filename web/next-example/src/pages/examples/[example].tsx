@@ -9,7 +9,7 @@ import withCustomPlugin from '@/components/examples/withCustomPlugin';
 import withCustomToolbar from '@/components/examples/withCustomToolbar';
 import withDarkTheme from '@/components/examples/withDarkTheme';
 import withExtendedPlugin from '@/components/examples/withExtendedPlugin';
-import withMedia from '@/components/examples/withMedia';
+import withMediaAndVoids from '@/components/examples/withMediaAndVoids';
 import withNotionActionMenu from '@/components/examples/withNotionActionMenu';
 import withReadOnly from '@/components/examples/withReadOnly/index';
 import withSavingToDatabase from '@/components/examples/withSavingToDatabase';
@@ -23,13 +23,15 @@ import withMigrationGuide from '@/components/examples/withMigrationGuide';
 import { Head } from '@/components/Head/Head';
 import { Sheet } from '@/components/ui/sheet';
 import { useRouter } from 'next/router';
+import { ClientOnly } from '@/components/ClientOnly/ClientOnly';
+import { CheckSourceCode } from '@/components/CheckSourceCode/CheckSourceCode';
 
 export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withBaseFullSetup,
   withCustomToolbar,
   withNotionActionMenu,
   withDarkTheme,
-  withMedia,
+  withMediaAndVoids,
   withExtendedPlugin,
   withReadOnly,
   withCustomHTMLAttributes,
@@ -64,8 +66,8 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
     title: 'Dark Theme',
     description: '',
   },
-  withMedia: {
-    title: 'Media',
+  withMediaAndVoids: {
+    title: 'Media and voids',
     description: '',
   },
   withExtendedPlugin: {
@@ -120,8 +122,8 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
 
 const ExampleComponent = () => {
   const router = useRouter();
-  const ExampleComponent = EXAMPLES[(router.query.example as string) || 'withBaseFullSetup'];
 
+  const ExampleComponent = EXAMPLES[(router.query.example as string) || 'withBaseFullSetup'];
   const exampleList = Object.keys(EXAMPLES).map((key) => ({
     id: key,
     title: EXAMPLE_MAP[key].title,
@@ -132,9 +134,11 @@ const ExampleComponent = () => {
   return (
     <div>
       <Head />
-      {/* <CheckSourceCode example={example} /> */}
+      <CheckSourceCode example={router.query.example as string} />
       <ExampleComponent />
-      <Sheet items={exampleList} path={router.asPath} />
+      <ClientOnly>
+        <Sheet items={exampleList} path={router.asPath} />
+      </ClientOnly>
     </div>
   );
 };
