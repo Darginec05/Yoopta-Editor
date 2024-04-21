@@ -113,34 +113,48 @@ function WithBasicUsageExample() {
       className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center flex-col items-center"
       ref={selectionRef}
     >
-      <div className="flex">
+      <div className="flex flex-col md:flex-row flex-wrap md:max-w-[850px]">
         <button
           type="button"
-          className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
-          onClick={() => editor.moveBlock('d72ebaae-50cc-4985-8915-a0af43877d71', [1])}
+          className="bg-[#007aff] text-[14px] text-nowrap my-2 mr-0 md:mr-4 text-[#fff] px-4 py-2 rounded-md"
+          onClick={() => editor.moveBlock('788364f8-a2f2-443d-897b-a38ec349bda8', [0])}
         >
-          Move Block
+          Move Code block to first position
         </button>
         <button
           type="button"
-          className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
-          onClick={() => editor.duplicateBlock({ blockId: 'd72ebaae-50cc-4985-8915-a0af43877d71' })}
+          className="bg-[#007aff] text-[14px] text-nowrap my-2 mr-0 md:mr-4 text-[#fff] px-4 py-2 rounded-md"
+          onClick={() => editor.duplicateBlock({ at: [0], focus: true })}
         >
-          Duplicate block
+          Duplicate first block
         </button>
         <button
           type="button"
-          className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
-          onClick={() => editor.blocks.Callout.create({ focus: true })}
+          className="bg-[#007aff] text-[14px] text-nowrap my-2 mr-0 md:mr-4 text-[#fff] px-4 py-2 rounded-md"
+          onClick={() => editor.blocks.Callout.toggle({ focus: true, at: [1] })}
         >
-          Insert block Callout
+          Toggle second block into Callout
         </button>
         <button
           type="button"
-          className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
-          onClick={() => editor.setBlockSelected([0, 1])}
+          className="bg-[#007aff] text-[14px] text-nowrap my-2 mr-0 md:mr-4 text-[#fff] px-4 py-2 rounded-md"
+          onClick={() => editor.setBlockSelected([0, 1, 2, 3])}
         >
-          Select first three blocks
+          Select first four blocks
+        </button>
+        <button
+          type="button"
+          className="bg-[#007aff] text-[14px] text-nowrap my-2 mr-0 md:mr-4 text-[#fff] px-4 py-2 rounded-md"
+          onClick={() => editor.formats.highlight.update({ color: 'blue' })}
+        >
+          Select text and highlight into blue color
+        </button>
+        <button
+          type="button"
+          className="bg-[#007aff] text-[14px] text-nowrap my-2 mr-0 md:mr-4 text-[#fff] px-4 py-2 rounded-md"
+          onClick={() => editor.increaseBlockDepth()}
+        >
+          Increase depth for active block
         </button>
       </div>
       <YooptaEditor

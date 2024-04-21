@@ -292,6 +292,7 @@ If you find Yoopta-Editor useful and valuable for your projects, I kindly ask yo
 - Collabrative mode
 - Plugin system
 - Optimizations for media components
+- Create package @yoopta/hotkeys to manage hotkeys
 - Rethink approach for just rendering to increase SEO perfomance
 - Continue improving the project. We are listening to you and your requests 💙
 

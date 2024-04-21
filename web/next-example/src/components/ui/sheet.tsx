@@ -60,7 +60,7 @@ const SheetContent = React.forwardRef<React.ElementRef<typeof SheetPrimitive.Con
       {/* <SheetOverlay /> */}
       <SheetPrimitive.Content ref={ref} className={cn(sheetVariants({ side }), className)} {...props}>
         {children}
-        <SheetPrimitive.Close className="opacity-70 absolute right-4 top-4 rounded-sm md:opacity-0 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+        <SheetPrimitive.Close className="opacity-70 absolute right-4 top-4 rounded-sm lg:hidden ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
           <Cross2Icon className="h-4 w-4" />
           <span className="sr-only">Close</span>
         </SheetPrimitive.Close>
@@ -102,7 +102,7 @@ type SheetProps = {
 };
 
 const Sheet = ({ items, path }: SheetProps) => {
-  const isMobile = window.innerWidth < 768;
+  const isMobile = window.innerWidth < 991;
   const [isOpen, onOpenChange] = React.useState(!isMobile);
   const { setTheme } = useTheme();
 

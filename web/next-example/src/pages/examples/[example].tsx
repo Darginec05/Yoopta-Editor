@@ -34,12 +34,12 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withMediaAndVoids,
   withExtendedPlugin,
   withReadOnly,
+  withEditorControl,
   withCustomHTMLAttributes,
   withCustomMark,
   withCustomPlugin,
   withSavingToDatabase,
   withCustomStyles,
-  withEditorControl,
   withLargeDocuments,
   withChatSlack,
   withCraftExample,
@@ -99,7 +99,7 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
     description: '',
   },
   withEditorControl: {
-    title: 'Editor Control',
+    title: 'Editor Instance',
     description: '',
   },
   withLargeDocuments: {

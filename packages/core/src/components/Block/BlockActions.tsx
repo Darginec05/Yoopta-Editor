@@ -9,7 +9,6 @@ import { Transforms } from 'slate';
 import { useState } from 'react';
 import { useFloating, offset, flip, inline, shift, useTransitionStyles } from '@floating-ui/react';
 import { BlockOptions } from '../../UI/BlockOptions/BlockOptions';
-import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 
 type ActionsProps = {
   block: YooptaBlockData;
@@ -18,10 +17,6 @@ type ActionsProps = {
   showActions: boolean;
   onChangeActiveBlock: (id: string) => void;
 };
-
-function cx(...classNames: (string | undefined)[]) {
-  return classNames.filter(Boolean).join(' ');
-}
 
 const BlockActions = ({ block, editor, dragHandleProps, showActions, onChangeActiveBlock }: ActionsProps) => {
   const [isBlockOptionsOpen, setIsBlockOptionsOpen] = useState<boolean>(false);
