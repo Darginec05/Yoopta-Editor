@@ -21,7 +21,7 @@ import { Sheet } from '@/components/ui/sheet';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import { useEffect, useMemo, useRef } from 'react';
-import { YooptaContentValue } from '@yoopta/editor/dist/editor/types';
+import { withSavingToDatabaseValue } from './initValue';
 
 const plugins = [
   Paragraph,
@@ -98,8 +98,19 @@ function WithSavingToDatabase() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
 
-  function handleChange(value: YooptaContentValue) {
-    console.log('value', value);
+  const fetchToServer = async (data) => {
+    //...your async call to server
+    console.log('SUBMITED DATA', data);
+    alert('check your content data in console');
+  };
+
+  const onSaveToServer = async () => {
+    const editorContent = editor.getEditorValue();
+    await fetchToServer(editorContent);
+  };
+
+  function handleChange(value) {
+    console.log('DATA ON CHANGE', value);
   }
 
   useEffect(() => {
@@ -111,40 +122,23 @@ function WithSavingToDatabase() {
 
   return (
     <div
-      className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center"
+      className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex flex-col justify-center items-center"
       ref={selectionRef}
     >
+      <button
+        type="button"
+        onClick={onSaveToServer}
+        className="bg-[#007aff] text-[14px] text-nowrap my-2 mr-0 md:mr-4 text-[#fff] max-w-[100px] px-4 py-2 rounded-md"
+      >
+        Save data
+      </button>
       <YooptaEditor
         editor={editor}
         plugins={plugins}
         tools={TOOLS}
         marks={MARKS}
         selectionBoxRoot={selectionRef}
-        readOnly
-        value={{
-          '7e11916a-b983-48ca-aeff-bf6b04f5ee2b': {
-            id: '7e11916a-b983-48ca-aeff-bf6b04f5ee2b',
-            type: 'HeadingTwo',
-            meta: {
-              order: 0,
-              depth: 0,
-            },
-            value: [
-              {
-                id: '4325c741-1445-450f-be2d-f51368b1a3ff',
-                type: 'heading-two',
-                children: [
-                  {
-                    text: 'Example in progress..',
-                  },
-                ],
-                props: {
-                  nodeType: 'block',
-                },
-              },
-            ],
-          },
-        }}
+        value={withSavingToDatabaseValue}
       />
     </div>
   );
