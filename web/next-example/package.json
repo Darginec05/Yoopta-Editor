@@ -17,7 +17,7 @@
     "@yoopta/callout": "^4.0.0",
     "@yoopta/code": "^4.0.0",
     "@yoopta/editor": "^4.0.0",
-    "@yoopta/embed": "^4.0.0-rc.15",
+    "@yoopta/embed": "4.0.0",
     "@yoopta/file": "^4.0.0",
     "@yoopta/headings": "^4.0.0",
     "@yoopta/image": "^4.0.0",

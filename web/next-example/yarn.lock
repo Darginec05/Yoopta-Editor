@@ -2388,10 +2388,10 @@
     lodash.clonedeep "^4.5.0"
     slate-history "^0.100.0"
 
-"@yoopta/embed@^4.0.0-rc.15":
-  version "4.0.0-rc.15"
-  resolved "https://registry.yarnpkg.com/@yoopta/embed/-/embed-4.0.0-rc.15.tgz#98c599de8afb6464c635b69e07f12f20e5054990"
-  integrity sha512-Fun2pOk24LYIwC9vi/CNwqIDpTEinDXtuNEjTqVppyXEDK1ZwJ2CWbm8ZHFrfFZn9OGOBX41RY6zUxYHcFjOXw==
+"@yoopta/embed@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@yoopta/embed/-/embed-4.0.0.tgz#29790ae879be2a598bd88220390eab9676a21d87"
+  integrity sha512-ooRv7VFBdDOTTx7l4nwjboE+g0HsuH27of1WGga2F65PRim+3Ac/M6y0mAv8e50uHQNB5dhXpYHjHMG0EA2SXw==
   dependencies:
     "@floating-ui/react" "^0.26.9"
     "@radix-ui/react-icons" "^1.3.0"
