@@ -256,7 +256,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   );
 
   return (
-    <div data-plugin-id={id} data-plugin-type={type}>
+    <div>
       <SlateEditorInstance
         id={id}
         slate={slate}

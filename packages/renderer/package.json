@@ -1,0 +1,54 @@
+{
+  "name": "@yoopta/renderer",
+  "version": "4.0.0",
+  "license": "MIT",
+  "private": false,
+  "main": "dist/index.js",
+  "type": "module",
+  "module": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "peerDependencies": {
+    "@yoopta/editor": ">=4.0.0",
+    "react": ">=17.0.2",
+    "react-dom": ">=17.0.2"
+  },
+  "scripts": {
+    "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development",
+    "prepublishOnly": "yarn build",
+    "build": "rollup --config rollup.config.js --bundleConfigAsCjs --environment NODE_ENV:production"
+  },
+  "keywords": [
+    "contenteditable",
+    "docs",
+    "document",
+    "edit",
+    "editor",
+    "editable",
+    "html",
+    "markdown",
+    "medium",
+    "paper",
+    "react",
+    "rich",
+    "richtext",
+    "richtext",
+    "slate",
+    "text",
+    "notion",
+    "wysiwyg",
+    "wysiwym"
+  ],
+  "description": "Package for just render @yoopta content",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Darginec05/Yoopta-Editor.git"
+  },
+  "author": "https://github.com/Darginec05",
+  "bugs": {
+    "url": "https://github.com/Darginec05/Yoopta-Editor/issues"
+  },
+  "homepage": "https://github.com/Darginec05/Yoopta-Editor#readme"
+}

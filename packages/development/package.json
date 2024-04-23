@@ -27,6 +27,7 @@
     "@yoopta/table": "*",
     "@yoopta/toolbar": "*",
     "@yoopta/video": "*",
+    "@yoopta/renderer": "*",
     "classnames": "^2.5.1",
     "katex": "^0.16.10",
     "lucide-react": "^0.365.0",
