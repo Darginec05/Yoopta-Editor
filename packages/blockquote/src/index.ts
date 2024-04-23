@@ -1,4 +1,5 @@
 import { Blockquote } from './plugin';
+import { BlockquoteRenderer } from './renders/BlockquoteRenderer';
 import { BlockquoteElement } from './types';
 import './styles.css';
 
@@ -9,4 +10,4 @@ declare module 'slate' {
 }
 
 export default Blockquote;
-export { BlockquoteElement };
+export { BlockquoteElement, Blockquote, BlockquoteRenderer };

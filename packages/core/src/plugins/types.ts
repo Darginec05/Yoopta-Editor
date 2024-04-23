@@ -1,4 +1,4 @@
-import { HTMLAttributes, ReactElement, ReactNode } from 'react';
+import { HTMLAttributes, HtmlHTMLAttributes, ReactElement, ReactNode } from 'react';
 import { Descendant, Editor } from 'slate';
 import { RenderElementProps as RenderSlateElementProps, RenderLeafProps } from 'slate-react';
 import { SlateElement, YooEditor, YooptaBlockData } from '../editor/types';
@@ -27,10 +27,13 @@ export type PluginElementOptions = {
   draggable?: boolean;
 };
 
-export type PluginElementRenderProps = RenderSlateElementProps & {
+export type PluginElementRenderProps = Omit<RenderSlateElementProps, 'attributes'> & {
   blockId: string;
-  HTMLAttributes?: HTMLAttributes<HTMLElement>;
+  block: YooptaBlockData;
+  attributes: RenderSlateElementProps['attributes'] & HTMLAttributes<HTMLElement>;
 };
+
+export type ElementRendererProps = Omit<PluginElementRenderProps, 'blockId'>;
 
 export type PluginCustomEditorRenderProps = {
   blockId: string;

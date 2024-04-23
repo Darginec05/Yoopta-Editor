@@ -1,5 +1,5 @@
 import { YooptaPlugin } from '@yoopta/editor';
-import { BlockquoteRender } from '../ui/Blockquote';
+import { BlockquoteRender } from '../renders/Blockquote';
 
 const Blockquote = new YooptaPlugin({
   type: 'Blockquote',

@@ -1,5 +1,6 @@
 import { ParagraphElement } from './types';
 import { Paragraph } from './plugin';
+import { ParagraphRenderer } from './renders/ParagraphRenderer';
 import './styles.css';
 
 declare module 'slate' {
@@ -10,4 +11,4 @@ declare module 'slate' {
 
 export default Paragraph;
 
-export { ParagraphElement };
+export { ParagraphElement, ParagraphRenderer };

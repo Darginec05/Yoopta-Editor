@@ -1,10 +1,16 @@
-import React, { memo, useCallback, useMemo, useRef } from 'react';
+import React, { memo, ReactComponentElement, ReactElement, ReactNode, useCallback, useMemo, useRef } from 'react';
 import { DefaultElement, Editable, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useBlockData } from '../contexts/YooptaContext/YooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../marks';
 
-import { ExtendedLeafProps, PluginCustomEditorRenderProps, PluginEventHandlerOptions, Plugin } from './types';
+import {
+  ExtendedLeafProps,
+  PluginCustomEditorRenderProps,
+  PluginEventHandlerOptions,
+  Plugin,
+  PluginElementRenderProps,
+} from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
 import { Editor, NodeEntry, Range } from 'slate';
@@ -113,9 +119,12 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   const renderElement = useCallback(
     (props: RenderElementProps) => {
       const ElementComponent = ELEMENTS_MAP[props.element.type];
+      const { attributes: slateElementAttributes, ...elementProps } = props;
+
+      const attributes = { ...options?.HTMLAttributes, ...slateElementAttributes };
 
       if (!ElementComponent) return <DefaultElement {...props} />;
-      return <ElementComponent {...props} blockId={id} HTMLAttributes={options?.HTMLAttributes} />;
+      return <ElementComponent {...elementProps} attributes={attributes} block={block} blockId={id} />;
     },
     [elements],
   );
