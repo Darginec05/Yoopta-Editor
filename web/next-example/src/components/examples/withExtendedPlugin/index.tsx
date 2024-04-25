@@ -32,7 +32,7 @@ const plugins = [
       shortcuts: ['>', 'quote'],
       display: {
         title: 'Super Ultra Blockquote',
-        description: 'Ooh.. It seems extending plugin is works!',
+        description: 'Yay 🎉 It seems, that extending the plugin works!',
         icon: <BlocksIcon />,
       },
       HTMLAttributes: {

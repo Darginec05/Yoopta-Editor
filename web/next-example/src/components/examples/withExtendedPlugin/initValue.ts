@@ -131,7 +131,7 @@ export const WITH_EXTENDED_PLUGIN_INIT_VALUE = {
         },
         children: [
           {
-            text: "const plugins = [\n  // ...other plugins\n  Blockquote.extend({\n    options: {\n      shortcuts: ['>', 'quote'],\n      display: {\n        // useful for action menu and toolbars \n        title: 'THIS IS CHANGED TITLE',\n        description: 'Ooh.. It seems extending plugin is works!',\n        icon: <BlocksIcon />,\n      },\n      HTMLAttributes: {\n        spellCheck: true,\n        className: 'my-custom-blockquote',\n      },\n    },\n  })\n]",
+            text: "const plugins = [\n  // ...other plugins\n  Blockquote.extend({\n    options: {\n      shortcuts: ['>', 'quote'],\n      display: {\n        // useful for action menu and toolbars \n        title: 'Super Ultra Blockquote',\n        description: 'Yay 🎉 It seems, that extending the plugin works!',\n        icon: <BlocksIcon />,\n      },\n      HTMLAttributes: {\n        spellCheck: true,\n        className: 'my-custom-blockquote',\n      },\n    },\n  })\n]",
           },
         ],
       },

@@ -45,8 +45,8 @@ const plugins = [
         className: 'paragraph-element',
       },
       display: {
-        title: 'THIS IS CHANGED TITLE',
-        description: 'Ooh.. It seems extending plugin is works!',
+        title: 'Super Ultra Blockquote',
+        description: 'Yay 🎉 It seems, that extending the plugin works!',
       },
     },
   }),
