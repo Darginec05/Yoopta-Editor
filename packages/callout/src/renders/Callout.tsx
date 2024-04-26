@@ -1,6 +1,6 @@
-import { ElementRendererProps, PluginElementRenderProps, useYooptaEditor, useYooptaReadOnly } from '@yoopta/editor';
+import { PluginElementRenderProps, useYooptaEditor, useYooptaReadOnly } from '@yoopta/editor';
 import { CALLOUT_THEME_STYLES } from '../utils';
-import { CalloutBlockOptions } from './CalloutBlockOptions';
+import { CalloutBlockOptions } from '../components/CalloutBlockOptions';
 import { CalloutDefaultRenderer } from './CalloutRenderer';
 
 const CalloutRender = ({ element, attributes, children, blockId, block }: PluginElementRenderProps) => {

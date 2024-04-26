@@ -56,7 +56,6 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   const editor = useYooptaEditor();
   const block = useBlockData(id);
   const initialValue = useRef(block.value).current;
-  const type = block.type;
 
   const ELEMENTS_MAP = useMemo(() => getMappedElements(elements), [elements]);
   const MARKS_MAP = useMemo(() => getMappedMarks(marks), [marks]);

@@ -1,6 +1,5 @@
-import { ImageComponent } from './ImageComponent';
+import { ImageRenderer } from './ImageRenderer';
 import {
-  useBlockData,
   PluginElementRenderProps,
   useYooptaEditor,
   useYooptaPluginOptions,
@@ -9,14 +8,13 @@ import {
 } from '@yoopta/editor';
 import { Resizable, ResizableProps } from 're-resizable';
 import { useEffect, useMemo, useState } from 'react';
-import { Placeholder } from './Placeholder';
+import { Placeholder } from '../components/Placeholder';
 import { ImagePluginOptions } from '../types';
-import { ImageBlockOptions } from './ImageBlockOptions';
-import { Resizer } from './Resizer';
+import { ImageBlockOptions } from '../components/ImageBlockOptions';
+import { Resizer } from '../components/Resizer';
 
-const ImageRender = ({ element, attributes, children, blockId }: PluginElementRenderProps) => {
-  const { src, alt, srcSet, bgColor, fit, sizes: propSizes } = element.props || {};
-  const block = useBlockData(blockId);
+const ImageRender = ({ element, attributes, children, blockId, block }: PluginElementRenderProps) => {
+  const { src, sizes: propSizes } = element.props || {};
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
 
@@ -73,7 +71,7 @@ const ImageRender = ({ element, attributes, children, blockId }: PluginElementRe
   );
 
   if (!src) {
-    if (isReadOnly) return null;
+    if (isReadOnly) return <></>;
 
     return (
       <Placeholder attributes={attributes} blockId={blockId}>
@@ -82,29 +80,29 @@ const ImageRender = ({ element, attributes, children, blockId }: PluginElementRe
     );
   }
 
+  const imageElement = {
+    ...element,
+    props: {
+      ...element.props,
+      sizes: sizes,
+    },
+  };
+
   return (
     <div
       data-element-type={element.type}
       contentEditable={false}
       draggable={false}
-      className="yoo-image-mt-4 yoo-image-relative yoopta-image"
-      {...attributes}
+      className="yoo-image-relative yoo-image-mt-4"
     >
       <Resizable {...resizeProps} className="yoo-image-mx-auto yoo-image-my-0 yoo-image-flex">
         {blockSelected && (
           <div className="yoo-image-absolute yoo-image-pointer-events-none yoo-image-inset-0 yoo-image-bg-[rgba(35,131,226,0.14)] yoo-image-z-[81] yoo-image-rounded-[3px] yoo-image-opacity-100 yoo-image-transition-opacity yoo-image-duration-150 yoo-image-ease-in" />
         )}
-        <ImageComponent
-          src={src}
-          alt={alt}
-          srcSet={srcSet}
-          fit={fit}
-          width={sizes?.width}
-          bgColor={bgColor}
-          height={sizes?.height}
-        />
+        <ImageRenderer attributes={attributes} element={imageElement} block={block}>
+          {children}
+        </ImageRenderer>
         {!isReadOnly && <ImageBlockOptions block={block} editor={editor} props={element.props} />}
-        {children}
       </Resizable>
     </div>
   );

@@ -5,6 +5,8 @@ export type ImageSizes = {
   height: number;
 };
 
+type Layout = 'fill' | 'responsive' | 'intrinsic' | 'fixed';
+
 export type ImageElementProps = {
   src?: string | null;
   alt?: string | null;
@@ -12,6 +14,7 @@ export type ImageElementProps = {
   bgColor?: string | null;
   fit?: 'contain' | 'cover' | 'fill' | null;
   sizes?: ImageSizes;
+  layout?: Layout;
 };
 
 export type ImagePluginElements = 'image';

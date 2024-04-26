@@ -1,6 +1,6 @@
-import { generateId, YooptaPlugin } from '@yoopta/editor';
+import { YooptaPlugin } from '@yoopta/editor';
 import { LinkElementProps, LinkPluginElementKeys } from '../types';
-import { LinkRender } from '../ui/LinkRender';
+import { Link as LinkRender } from '../renders/LinkRender';
 
 const Link = new YooptaPlugin<LinkPluginElementKeys, LinkElementProps>({
   type: 'LinkPlugin',

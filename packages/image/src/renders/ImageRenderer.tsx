@@ -1,15 +1,10 @@
+import { ElementRendererProps } from '@yoopta/editor';
 import { CSSProperties } from 'react';
-import { ImageElementProps } from '../types';
 
-type ImageComponentProps = Omit<ImageElementProps, 'sizes'> & {
-  width: number;
-  height: number;
-  layout?: Layout;
-};
+const ImageRenderer = ({ element, attributes, children }: ElementRendererProps) => {
+  const { src, alt, fit, bgColor, layout = 'intrinsic' } = element.props || {};
+  const { width, height } = element.props?.sizes || {};
 
-type Layout = 'fill' | 'responsive' | 'intrinsic' | 'fixed';
-
-const ImageComponent = ({ width, height, src, alt, fit, bgColor, layout = 'intrinsic' }: ImageComponentProps) => {
   const style: CSSProperties = {
     objectFit: fit || 'contain',
     backgroundColor: bgColor || 'transparent',
@@ -41,12 +36,13 @@ const ImageComponent = ({ width, height, src, alt, fit, bgColor, layout = 'intri
   }
 
   return (
-    <div className="yoo-image-w-full" data-layout={layout}>
+    <div {...attributes} className={`yoo-image-w-full yoopta-image ${attributes.className || ''}`} data-layout={layout}>
       {src && (
         <img src={src} width={width} height={height} alt={alt || ''} decoding="async" loading="lazy" style={style} />
       )}
+      {children}
     </div>
   );
 };
 
-export { ImageComponent, ImageComponentProps };
+export { ImageRenderer };

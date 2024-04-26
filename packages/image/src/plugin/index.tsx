@@ -1,6 +1,6 @@
-import { buildBlockData, generateId, YooptaPlugin } from '@yoopta/editor';
+import { generateId, YooptaPlugin } from '@yoopta/editor';
 import { ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';
-import { ImageRender } from '../ui/Image';
+import { ImageRender } from '../renders/Image';
 
 // [TODO] - caption element??,
 const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePluginOptions>({

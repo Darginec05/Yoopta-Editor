@@ -24,8 +24,8 @@ const Placeholder = ({ attributes, children, blockId }) => {
 
   return (
     <div
-      className="yoo-image-w-full yoo-image-user-select-none yoo-image-m-[20px_0_10px] yoo-image-relative yoo-image-flex"
       {...attributes}
+      className="yoo-image-w-full yoo-image-user-select-none yoo-image-m-[20px_0_10px] yoo-image-relative yoo-image-flex"
       contentEditable={false}
     >
       <button

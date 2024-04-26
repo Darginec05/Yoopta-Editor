@@ -20,27 +20,6 @@
     "prepublishOnly": "yarn build",
     "build": "rollup --config rollup.config.js --bundleConfigAsCjs --environment NODE_ENV:production"
   },
-  "keywords": [
-    "contenteditable",
-    "docs",
-    "document",
-    "edit",
-    "editor",
-    "editable",
-    "html",
-    "markdown",
-    "medium",
-    "paper",
-    "react",
-    "rich",
-    "richtext",
-    "richtext",
-    "slate",
-    "text",
-    "notion",
-    "wysiwyg",
-    "wysiwym"
-  ],
   "description": "Package for just render @yoopta content",
   "repository": {
     "type": "git",
