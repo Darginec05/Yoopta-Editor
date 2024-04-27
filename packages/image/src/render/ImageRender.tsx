@@ -36,7 +36,11 @@ const ImageRender = ({ element, attributes, children }: ElementRendererProps) =>
   }
 
   return (
-    <div {...attributes} className={`yoo-image-w-full yoopta-image ${attributes.className || ''}`} data-layout={layout}>
+    <div
+      {...attributes}
+      className={`yoo-image-w-full yoo-image-flex yoopta-image ${attributes.className || ''}`}
+      data-layout={layout}
+    >
       {src && (
         <img src={src} width={width} height={height} alt={alt || ''} decoding="async" loading="lazy" style={style} />
       )}

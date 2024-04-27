@@ -1,28 +1,20 @@
-import { PluginElementRenderProps, YooptaPlugin } from '@yoopta/editor';
-
-const HeadingTwoRender = ({ attributes, children, element }: PluginElementRenderProps) => {
-  const { className = '', ...attrs } = attributes;
-
-  return (
-    <h2
-      id={element.id}
-      draggable={false}
-      data-element-type={element.type}
-      className={`yoo-h-scroll-m-20 yoo-h-mt-4 yoo-h-text-3xl yoo-h-font-semibold yoo-h-tracking-tight ${className}`}
-      {...attrs}
-    >
-      {children}
-    </h2>
-  );
-};
-
-HeadingTwoRender.displayName = 'HeadingTwo';
+import { YooptaPlugin } from '@yoopta/editor';
+import { HeadingTwoRender } from '../render/HeadingTwoRender';
 
 const HeadingTwo = new YooptaPlugin({
   type: 'HeadingTwo',
   elements: {
     'heading-two': {
-      render: HeadingTwoRender,
+      render: (props) => (
+        <HeadingTwoRender
+          attributes={props.attributes}
+          element={props.element}
+          block={props.block}
+          blockId={props.blockId}
+        >
+          {props.children}
+        </HeadingTwoRender>
+      ),
       props: {
         nodeType: 'block',
       },

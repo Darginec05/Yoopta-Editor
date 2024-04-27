@@ -1,4 +1,4 @@
-import { FileComponent } from './FileComponent';
+import { FileRender } from '../render/FileRender';
 import {
   useBlockData,
   PluginElementRenderProps,
@@ -9,8 +9,8 @@ import {
 import { Placeholder } from './Placeholder';
 import { FileBlockOptions } from './FileBlockOptions';
 
-const FileRender = ({ element, attributes, children, blockId }: PluginElementRenderProps) => {
-  const { name, src, format, size } = element.props || {};
+const FileEditor = ({ element, attributes, children, blockId }: PluginElementRenderProps) => {
+  const { src } = element.props || {};
   const block = useBlockData(blockId);
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
@@ -30,17 +30,17 @@ const FileRender = ({ element, attributes, children, blockId }: PluginElementRen
       data-element-type={element.type}
       contentEditable={false}
       draggable={false}
-      className="yoo-file-mt-4 yoo-file-relative yoo-file-flex yoopta-file"
-      {...attributes}
+      className="yoo-file-mt-4 yoo-file-relative yoo-file-flex"
     >
       {blockSelected && (
         <div className="yoo-file-absolute yoo-file-pointer-events-none yoo-file-inset-0 yoo-file-bg-[rgba(35,131,226,0.14)] yoo-file-z-[81] yoo-file-rounded-[3px] yoo-file-opacity-100 yoo-file-transition-opacity yoo-file-duration-150 yoo-file-ease-in" />
       )}
-      <FileComponent name={name} format={format} src={src} size={size} blockId={blockId} />
+      <FileRender attributes={attributes} element={element} block={block}>
+        {children}
+      </FileRender>
       {!isReadOnly && <FileBlockOptions block={block} editor={editor} props={element.props} />}
-      {children}
     </div>
   );
 };
 
-export { FileRender };
+export { FileEditor };

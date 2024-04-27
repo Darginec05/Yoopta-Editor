@@ -1,12 +1,16 @@
 import { YooptaPlugin } from '@yoopta/editor';
 import { FileElementProps, FilePluginElements, FilePluginOptions } from '../types';
-import { FileRender } from '../ui/File';
+import { FileEditor } from '../editor/FileEditor';
+import { FileRender } from '../render/FileRender';
 
 const File = new YooptaPlugin<FilePluginElements, FileElementProps, FilePluginOptions>({
   type: 'File',
   elements: {
     file: {
-      render: FileRender,
+      render: {
+        editor: FileEditor,
+        renderer: FileRender,
+      },
       props: {
         size: 0,
         name: null,

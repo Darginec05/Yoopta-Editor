@@ -1,28 +1,20 @@
 import { YooptaPlugin, PluginElementRenderProps } from '@yoopta/editor';
-
-const HeadingOneRender = ({ attributes, children, element }: PluginElementRenderProps) => {
-  const { className = '', ...attrs } = attributes;
-
-  return (
-    <h1
-      id={element.id}
-      draggable={false}
-      data-element-type={element.type}
-      className={`yoo-h-mt-6 yoo-h-scroll-m-20 yoo-h-text-4xl yoo-h-font-bold yoo-h-tracking-tight yoo-h-lg:text-3x ${className}`}
-      {...attrs}
-    >
-      {children}
-    </h1>
-  );
-};
-
-HeadingOneRender.displayName = 'HeadingOne';
+import { HeadingOneRender } from '../render/HeadingOneRender';
 
 const HeadingOne = new YooptaPlugin({
   type: 'HeadingOne',
   elements: {
     'heading-one': {
-      render: HeadingOneRender,
+      render: (props) => (
+        <HeadingOneRender
+          attributes={props.attributes}
+          element={props.element}
+          block={props.block}
+          blockId={props.blockId}
+        >
+          {props.children}
+        </HeadingOneRender>
+      ),
       props: {
         nodeType: 'block',
       },

@@ -36,17 +36,28 @@ const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
   const rectangleSelectionRef = useRef<HTMLDivElement>(null);
   const [readOnly, setReadOnly] = useState(false);
+  const [content, setContent] = useState(null);
 
   useEffect(() => {
-    editor.on('block:copy', (value) => console.log('BLOCK COPY', value));
+    const onSaveToLocalStorage = (val: any) => {
+      localStorage.setItem('editorData', JSON.stringify(val));
+    };
+
+    editor.on('change', onSaveToLocalStorage);
+    return () => editor.off('change', onSaveToLocalStorage);
+  }, [content]);
+
+  useEffect(() => {
+    const editorData = localStorage.getItem('editorData') || '{}';
+    setContent(JSON.parse(editorData));
   }, []);
 
   const onSubmit = () => {
     const editorData = editor.getEditorValue();
     console.log('editorData', editorData);
-
-    localStorage.setItem('editorData', JSON.stringify(editorData));
   };
+
+  if (!content) return null;
 
   return (
     <div className="px-[100px]  max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={rectangleSelectionRef}>
@@ -60,7 +71,7 @@ const BasicExample = () => {
         tools={TOOLS}
         readOnly={readOnly}
         width={750}
-        value={value}
+        value={content}
       >
         <div className="flex mb-8">
           <button
@@ -74,10 +85,10 @@ const BasicExample = () => {
           <button
             className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
             onClick={() => {
-              editor.blocks.Image.create();
+              window.open(`${window.location.href}/render`, 'blank');
             }}
           >
-            Add Image
+            To render page
           </button>
           <button
             className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"

@@ -24,8 +24,8 @@ const Placeholder = ({ attributes, children, blockId }) => {
 
   return (
     <div
-      className="yoo-video-w-full yoo-video-user-select-none yoo-video-m-[20px_0_10px] yoo-video-relative yoo-video-flex"
       {...attributes}
+      className="yoo-video-w-full yoo-video-user-select-none yoo-video-m-[20px_0_10px] yoo-video-relative yoo-video-flex"
       contentEditable={false}
     >
       <button

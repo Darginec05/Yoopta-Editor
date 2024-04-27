@@ -90,7 +90,7 @@ const VideoEditor = ({ element, attributes, children, blockId }: PluginElementRe
       data-element-type={element.type}
       contentEditable={false}
       draggable={false}
-      className="yoo-video-mt-4 yoo-video-relative yoopta-video"
+      className="yoo-video-mt-4 yoo-video-relative"
     >
       <Resizable {...resizeProps} className="yoo-video-mx-auto yoo-video-my-0 yoo-video-flex">
         {blockSelected && (

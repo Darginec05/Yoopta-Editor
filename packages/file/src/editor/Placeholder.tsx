@@ -24,8 +24,8 @@ const Placeholder = ({ attributes, children, blockId }) => {
 
   return (
     <div
-      className="yoo-file-w-full yoo-file-user-select-none yoo-file-m-[20px_0_10px] yoo-file-relative yoo-file-flex"
       {...attributes}
+      className="yoo-file-w-full yoo-file-user-select-none yoo-file-m-[20px_0_10px] yoo-file-relative yoo-file-flex"
       contentEditable={false}
     >
       <button

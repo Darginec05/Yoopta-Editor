@@ -8,10 +8,10 @@ import {
 } from '@yoopta/editor';
 import { Resizable, ResizableProps } from 're-resizable';
 import { useEffect, useMemo, useState } from 'react';
-import { Placeholder } from '../components/Placeholder';
+import { Placeholder } from './Placeholder';
 import { ImagePluginOptions } from '../types';
-import { ImageBlockOptions } from '../components/ImageBlockOptions';
-import { Resizer } from '../components/Resizer';
+import { ImageBlockOptions } from './ImageBlockOptions';
+import { Resizer } from './Resizer';
 
 const ImageEditor = ({ element, attributes, children, blockId, block }: PluginElementRenderProps) => {
   const { src, sizes: propSizes } = element.props || {};
