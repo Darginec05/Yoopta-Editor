@@ -1,6 +1,5 @@
-import { VideoComponent } from './VideoComponent';
+import { ImageRender } from '../render/ImageRender';
 import {
-  useBlockData,
   PluginElementRenderProps,
   useYooptaEditor,
   useYooptaPluginOptions,
@@ -9,20 +8,20 @@ import {
 } from '@yoopta/editor';
 import { Resizable, ResizableProps } from 're-resizable';
 import { useEffect, useMemo, useState } from 'react';
-import { Placeholder } from './Placeholder';
-import { VideoPluginOptions } from '../types';
-import { VideoBlockOptions } from './VideoBlockOptions';
-import { Resizer } from './Resizer';
+import { Placeholder } from '../components/Placeholder';
+import { ImagePluginOptions } from '../types';
+import { ImageBlockOptions } from '../components/ImageBlockOptions';
+import { Resizer } from '../components/Resizer';
 
-const VideoRender = ({ element, attributes, children, blockId }: PluginElementRenderProps) => {
-  const { src, srcSet, bgColor, settings, sizes: propSizes, poster, provider, fit } = element.props || {};
-  const block = useBlockData(blockId);
+const ImageEditor = ({ element, attributes, children, blockId, block }: PluginElementRenderProps) => {
+  const { src, sizes: propSizes } = element.props || {};
   const editor = useYooptaEditor();
-  const pluginOptions = useYooptaPluginOptions<VideoPluginOptions>('Video');
   const isReadOnly = useYooptaReadOnly();
 
+  const pluginOptions = useYooptaPluginOptions<ImagePluginOptions>('Image');
+
   const [sizes, setSizes] = useState({
-    width: propSizes?.width || 750,
+    width: propSizes?.width || 650,
     height: propSizes?.height || 440,
   });
 
@@ -54,22 +53,26 @@ const VideoRender = ({ element, attributes, children, blockId }: PluginElementRe
         right: { right: 0 },
       },
       onResize: (e, direction, ref) => {
+        if (isReadOnly) return;
         setSizes({ width: ref.offsetWidth, height: ref.offsetHeight });
       },
       onResizeStop: (e, direction, ref) => {
-        editor.blocks.Video.updateElement(blockId, 'video', {
+        if (isReadOnly) return;
+        editor.blocks.Image.updateElement(blockId, 'image', {
           sizes: { width: ref.offsetWidth, height: ref.offsetHeight },
         });
       },
       handleComponent: {
-        left: <Resizer position="left" />,
-        right: <Resizer position="right" />,
+        left: isReadOnly ? <></> : <Resizer position="left" />,
+        right: isReadOnly ? <></> : <Resizer position="right" />,
       },
     }),
     [sizes.width, sizes.height],
   );
 
   if (!src) {
+    if (isReadOnly) return <></>;
+
     return (
       <Placeholder attributes={attributes} blockId={blockId}>
         {children}
@@ -77,34 +80,32 @@ const VideoRender = ({ element, attributes, children, blockId }: PluginElementRe
     );
   }
 
+  const imageElement = {
+    ...element,
+    props: {
+      ...element.props,
+      sizes: sizes,
+    },
+  };
+
   return (
     <div
       data-element-type={element.type}
       contentEditable={false}
       draggable={false}
-      className="yoo-video-mt-4 yoo-video-relative yoopta-video"
-      {...attributes}
+      className="yoo-image-relative yoo-image-mt-4"
     >
-      <Resizable {...resizeProps} className="yoo-video-mx-auto yoo-video-my-0 yoo-video-flex">
+      <Resizable {...resizeProps} className="yoo-image-mx-auto yoo-image-my-0 yoo-image-flex">
         {blockSelected && (
-          <div className="yoo-video-absolute yoo-video-pointer-events-none yoo-video-inset-0 yoo-video-bg-[rgba(35,131,226,0.14)] yoo-video-z-[81] yoo-video-rounded-[3px] yoo-video-opacity-100 yoo-video-transition-opacity yoo-video-duration-150 yoo-video-ease-in" />
+          <div className="yoo-image-absolute yoo-image-pointer-events-none yoo-image-inset-0 yoo-image-bg-[rgba(35,131,226,0.14)] yoo-image-z-[81] yoo-image-rounded-[3px] yoo-image-opacity-100 yoo-image-transition-opacity yoo-image-duration-150 yoo-image-ease-in" />
         )}
-        <VideoComponent
-          src={src}
-          srcSet={srcSet}
-          width={sizes?.width}
-          settings={settings}
-          bgColor={bgColor}
-          height={sizes?.height}
-          poster={poster}
-          provider={provider}
-          fit={fit}
-        />
-        {!isReadOnly && <VideoBlockOptions block={block} editor={editor} settings={settings} props={element.props} />}
-        {children}
+        <ImageRender attributes={attributes} element={imageElement} block={block}>
+          {children}
+        </ImageRender>
+        {!isReadOnly && <ImageBlockOptions block={block} editor={editor} props={element.props} />}
       </Resizable>
     </div>
   );
 };
 
-export { VideoRender };
+export { ImageEditor };

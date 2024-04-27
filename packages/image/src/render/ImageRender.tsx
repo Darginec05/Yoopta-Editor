@@ -1,7 +1,7 @@
 import { ElementRendererProps } from '@yoopta/editor';
 import { CSSProperties } from 'react';
 
-const ImageRenderer = ({ element, attributes, children }: ElementRendererProps) => {
+const ImageRender = ({ element, attributes, children }: ElementRendererProps) => {
   const { src, alt, fit, bgColor, layout = 'intrinsic' } = element.props || {};
   const { width, height } = element.props?.sizes || {};
 
@@ -45,4 +45,4 @@ const ImageRenderer = ({ element, attributes, children }: ElementRendererProps) 
   );
 };
 
-export { ImageRenderer };
+export { ImageRender };

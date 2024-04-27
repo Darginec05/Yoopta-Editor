@@ -1,12 +1,16 @@
 import { YooptaPlugin } from '@yoopta/editor';
+import { LinkEditor } from '../editor/LinkEditor';
+import { LinkRender } from '../render/LinkRender';
 import { LinkElementProps, LinkPluginElementKeys } from '../types';
-import { Link as LinkRender } from '../renders/LinkRender';
 
 const Link = new YooptaPlugin<LinkPluginElementKeys, LinkElementProps>({
   type: 'LinkPlugin',
   elements: {
     link: {
-      render: LinkRender,
+      render: {
+        editor: LinkEditor,
+        renderer: LinkRender,
+      },
       props: {
         url: null,
         target: '_blank',

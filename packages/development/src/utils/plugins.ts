@@ -35,7 +35,7 @@ export const plugins = [
         className: 'paragraph-element',
       },
       display: {
-        title: 'THIS IS CHANGED TITLE',
+        title: 'Text',
         description: 'Ooh.. It seems extending plugin is works!',
       },
     },

@@ -43,6 +43,7 @@ const BlocksRender = ({ value, plugins: pluginsProp, marks }) => {
           marks={marks}
           elements={plugin.elements}
           options={plugin.options}
+          customEditor={plugin.customEditor}
         />
       </BlockRender>,
     );

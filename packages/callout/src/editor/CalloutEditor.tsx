@@ -1,9 +1,9 @@
 import { PluginElementRenderProps, useYooptaEditor, useYooptaReadOnly } from '@yoopta/editor';
 import { CALLOUT_THEME_STYLES } from '../utils';
 import { CalloutBlockOptions } from '../components/CalloutBlockOptions';
-import { CalloutDefaultRenderer } from './CalloutRenderer';
+import { CalloutRenderer } from '../render/CalloutRenderer';
 
-const CalloutRender = ({ element, attributes, children, blockId, block }: PluginElementRenderProps) => {
+const CalloutEditor = ({ element, attributes, children, blockId, block }: PluginElementRenderProps) => {
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
   const { theme = 'default' } = element.props || {};
@@ -15,13 +15,13 @@ const CalloutRender = ({ element, attributes, children, blockId, block }: Plugin
   };
 
   return (
-    <CalloutDefaultRenderer element={element} attributes={attrs} block={block}>
+    <CalloutRenderer element={element} attributes={attrs} block={block}>
       {!isReadOnly && <CalloutBlockOptions block={block} editor={editor} props={element.props} />}
       {children}
-    </CalloutDefaultRenderer>
+    </CalloutRenderer>
   );
 };
 
-CalloutRender.displayName = 'Callout';
+CalloutEditor.displayName = 'Callout';
 
-export { CalloutRender };
+export { CalloutEditor };

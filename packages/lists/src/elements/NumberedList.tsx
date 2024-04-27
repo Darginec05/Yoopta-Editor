@@ -1,8 +1,7 @@
-import { PluginElementRenderProps, useBlockData, useYooptaEditor } from '@yoopta/editor';
+import { PluginElementRenderProps, useYooptaEditor } from '@yoopta/editor';
 
-const NumberedListRender = ({ attributes, children, element, blockId }: PluginElementRenderProps) => {
+const NumberedListRender = ({ attributes, children, element, blockId, block }: PluginElementRenderProps) => {
   const { className = '', ...attrs } = attributes;
-  const block = useBlockData(blockId);
   const editor = useYooptaEditor();
 
   const index = Object.keys(editor.children)

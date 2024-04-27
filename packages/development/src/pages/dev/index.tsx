@@ -2,7 +2,7 @@ import YooptaEditor, { createYooptaEditor, Tools, YooEditor, YooptaBlockData } f
 
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
-import Toolbar from '@yoopta/toolbar';
+import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { NotionToolbar } from '../../components/Toolbars/NotionToolbar/NotionToolbar';
@@ -20,7 +20,7 @@ const TOOLS: Tools = {
     },
   },
   Toolbar: {
-    // render: DefaultToolbarRender,
+    render: DefaultToolbarRender,
     // render: NotionToolbar,
     tool: Toolbar,
   },
@@ -43,7 +43,9 @@ const BasicExample = () => {
 
   const onSubmit = () => {
     const editorData = editor.getEditorValue();
-    console.log('EDITOR DATA', editorData);
+    console.log('editorData', editorData);
+
+    localStorage.setItem('editorData', JSON.stringify(editorData));
   };
 
   return (
@@ -88,7 +90,7 @@ const BasicExample = () => {
             Toggle block
           </button>
           <button className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md" onClick={onSubmit}>
-            Get editor data
+            Save editor data in LS
           </button>
           <button className="bg-[#007aff] text-[#fff] px-4 py-2 rounded-md" onClick={() => setReadOnly((p) => !p)}>
             Switch readOnly mode

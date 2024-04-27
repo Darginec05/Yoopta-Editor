@@ -5,7 +5,11 @@ import { TextLeaf } from './TextLeaf';
 
 const getMappedElements = (elements) => {
   const mappedElements = {};
-  Object.keys(elements).forEach((type) => (mappedElements[type] = elements[type].render));
+  Object.keys(elements).forEach((type) => {
+    const render = elements[type].render?.renderer ? elements[type].render?.renderer : elements[type].render;
+    mappedElements[type] = render;
+  });
+
   return mappedElements;
 };
 
@@ -27,7 +31,7 @@ export const DefaultElement = (props: any) => {
   );
 };
 
-const SlateRender = ({ value, options, marks, elements, block, id }) => {
+const SlateRender = ({ value, options, marks, elements, block, customEditor, id }) => {
   const ELEMENTS_MAP = useMemo(() => getMappedElements(elements), [elements]);
   const MARKS_MAP = useMemo(() => getMappedMarks(marks), [marks]);
 
@@ -61,6 +65,10 @@ const SlateRender = ({ value, options, marks, elements, block, id }) => {
     renderElement: renderElement,
     renderLeaf: renderLeaf,
   };
+
+  // if (typeof customEditor === 'function') {
+  //   return customEditor({ blockId: id });
+  // }
 
   return (
     <div

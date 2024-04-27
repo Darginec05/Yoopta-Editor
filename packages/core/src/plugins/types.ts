@@ -1,4 +1,4 @@
-import { HTMLAttributes, HtmlHTMLAttributes, ReactElement, ReactNode } from 'react';
+import { HTMLAttributes, ReactElement, ReactNode } from 'react';
 import { Descendant, Editor } from 'slate';
 import { RenderElementProps as RenderSlateElementProps, RenderLeafProps } from 'slate-react';
 import { SlateElement, YooEditor, YooptaBlockData } from '../editor/types';
@@ -42,8 +42,14 @@ export type PluginCustomEditorRenderProps = {
 export type PluginDefaultProps = { nodeType?: 'block' | 'inline' | 'void' | 'inlineVoid' };
 export type PluginElementProps<T> = PluginDefaultProps & T;
 
+type PluginElementRenderJustFn = (props: PluginElementRenderProps) => JSX.Element;
+type PluginElementRenderWithEditor = {
+  editor: (props: PluginElementRenderProps) => JSX.Element;
+  renderer: (props: ElementRendererProps) => JSX.Element;
+};
+
 export type PluginElement<T> = {
-  render: (props: PluginElementRenderProps) => JSX.Element;
+  render: PluginElementRenderWithEditor | PluginElementRenderJustFn;
   props?: PluginElementProps<T>;
   options?: PluginElementOptions;
   asRoot?: boolean;

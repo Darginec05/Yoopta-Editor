@@ -1,13 +1,17 @@
 import { generateId, YooptaPlugin } from '@yoopta/editor';
 import { ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';
-import { ImageRender } from '../renders/Image';
+import { ImageEditor } from '../editor/ImageEditor';
+import { ImageRender } from '../render/ImageRender';
 
 // [TODO] - caption element??,
 const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePluginOptions>({
   type: 'Image',
   elements: {
     image: {
-      render: ImageRender,
+      render: {
+        editor: ImageEditor,
+        renderer: ImageRender,
+      },
       props: {
         src: null,
         alt: null,

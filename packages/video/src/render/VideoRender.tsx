@@ -1,8 +1,9 @@
 import { CSSProperties } from 'react';
 import { VideoElementProps } from '../types';
-import DailyMotion from './DailyMotionPlayer';
-import VimeoPlayer from './VimeoPlayer';
-import YouTubePlayer from './YootubePlayer';
+import DailyMotion from '../editor/DailyMotionPlayer';
+import VimeoPlayer from '../editor/VimeoPlayer';
+import YouTubePlayer from '../editor/YootubePlayer';
+import { ElementRendererProps } from '@yoopta/editor';
 
 type VideoComponentProps = Omit<VideoElementProps, 'sizes'> & {
   width: number;
@@ -15,7 +16,10 @@ const PROVIDERS = {
   dailymotion: DailyMotion,
 };
 
-const VideoComponent = ({ width, height, src, bgColor, poster, provider, fit }: VideoComponentProps) => {
+const VideoRender = ({ attributes, children, element }: ElementRendererProps) => {
+  const { sizes, src, bgColor, poster, provider, fit } = element.props || {};
+  const { width, height } = sizes || {};
+
   const style: CSSProperties = {
     backgroundColor: bgColor || 'transparent',
     objectFit: fit || 'contain',
@@ -45,11 +49,21 @@ const VideoComponent = ({ width, height, src, bgColor, poster, provider, fit }: 
 
   if (provider && provider.id && provider.type && PROVIDERS[provider.type]) {
     const Provider = PROVIDERS[provider.type];
-    return <Provider videoId={provider.id} width={width} height={height} />;
+
+    return (
+      <div
+        {...attributes}
+        style={{ height, width }}
+        className={`yoo-video-relative yoo-video-mx-auto ${attributes.className || ''}`}
+      >
+        <Provider videoId={provider.id} width={width} height={height} />
+        {children}
+      </div>
+    );
   }
 
   return (
-    <div className="yoo-video-w-full">
+    <div {...attributes} className={`yoo-video-relative ${attributes.className || ''}`}>
       {src && (
         <video
           preload="metadata"
@@ -64,8 +78,9 @@ const VideoComponent = ({ width, height, src, bgColor, poster, provider, fit }: 
           controls
         />
       )}
+      {children}
     </div>
   );
 };
 
-export { VideoComponent, VideoComponentProps };
+export { VideoRender, VideoComponentProps };

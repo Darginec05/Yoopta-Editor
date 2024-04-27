@@ -1,4 +1,4 @@
-import { ElementRendererProps } from '@yoopta/editor';
+import type { ElementRendererProps } from '@yoopta/editor';
 
 const blockquoteStyles = {
   margin: '8px 0 0 0',

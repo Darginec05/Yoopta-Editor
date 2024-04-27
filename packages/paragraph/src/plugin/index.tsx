@@ -1,5 +1,5 @@
 import { YooptaPlugin } from '@yoopta/editor';
-import { ParagraphRender } from '../renders/Paragraph';
+import { ParagraphRender } from '../render/ParagraphRender';
 
 const Paragraph = new YooptaPlugin({
   type: 'Paragraph',

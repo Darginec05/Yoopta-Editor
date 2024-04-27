@@ -1,13 +1,17 @@
 import { generateId, YooptaPlugin } from '@yoopta/editor';
 import { VideoElementProps, VideoPluginElements, VideoPluginOptions } from '../types';
-import { VideoRender } from '../ui/Video';
+import { VideoEditor } from '../editor/VideoEditor';
+import { VideoRender } from '../render/VideoRender';
 
 const Video = new YooptaPlugin<VideoPluginElements, VideoElementProps, VideoPluginOptions>({
   type: 'Video',
   elements: {
     // [TODO] - caption element??,
     video: {
-      render: VideoRender,
+      render: {
+        editor: VideoEditor,
+        renderer: VideoRender,
+      },
       props: {
         src: null,
         srcSet: null,

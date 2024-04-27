@@ -1,6 +1,6 @@
 import { ElementRendererProps } from '@yoopta/editor';
 
-export const CalloutDefaultRenderer = ({ element, attributes, children }: ElementRendererProps) => {
+export const CalloutRenderer = ({ element, attributes, children }: ElementRendererProps) => {
   const { theme } = element.props || {};
   const { className, ...attrs } = attributes;
 

@@ -1,6 +1,6 @@
 import { ElementRendererProps } from '@yoopta/editor';
 
-const ParagraphRenderer = (props: ElementRendererProps) => {
+const ParagraphRender = (props: ElementRendererProps) => {
   const { className = '', ...attributes } = props.attributes || {};
 
   return (
@@ -14,4 +14,4 @@ const ParagraphRenderer = (props: ElementRendererProps) => {
   );
 };
 
-export { ParagraphRenderer };
+export { ParagraphRender };

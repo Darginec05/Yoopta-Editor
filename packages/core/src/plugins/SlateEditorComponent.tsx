@@ -9,7 +9,7 @@ import {
   PluginCustomEditorRenderProps,
   PluginEventHandlerOptions,
   Plugin,
-  PluginElementRenderProps,
+  PluginElementsMap,
 } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
@@ -30,9 +30,13 @@ type Props<TKeys extends string, TProps, TOptions> = Plugin<TKeys, TProps, TOpti
   placeholder?: string;
 };
 
-const getMappedElements = (elements) => {
+const getMappedElements = (elements: PluginElementsMap) => {
   const mappedElements = {};
-  Object.keys(elements).forEach((type) => (mappedElements[type] = elements[type].render));
+  Object.keys(elements).forEach((type) => {
+    const render = elements[type].render?.editor ? elements[type].render?.editor : elements[type].render;
+    mappedElements[type] = render;
+  });
+
   return mappedElements;
 };
 

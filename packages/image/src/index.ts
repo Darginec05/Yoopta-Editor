@@ -1,5 +1,5 @@
 import { Image } from './plugin';
-import { ImageRenderer } from './renders/ImageRenderer';
+import { ImageRender } from './render/ImageRender';
 import { ImageElement } from './types';
 import './styles.css';
 
@@ -10,4 +10,4 @@ declare module 'slate' {
 }
 
 export default Image;
-export { ImageElement, ImageRenderer };
+export { ImageElement, ImageRender };

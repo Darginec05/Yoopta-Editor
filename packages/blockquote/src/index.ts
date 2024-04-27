@@ -1,5 +1,5 @@
 import { Blockquote } from './plugin';
-import { BlockquoteRenderer } from './renders/BlockquoteRenderer';
+import { BlockquoteRenderer } from './render/BlockquoteRenderer';
 import { BlockquoteElement } from './types';
 import './styles.css';
 
