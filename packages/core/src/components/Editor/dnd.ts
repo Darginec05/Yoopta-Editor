@@ -7,7 +7,7 @@ export const useYooptaDragDrop = ({ editor }: { editor: YooEditor }) => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        delay: 100,
+        delay: 10,
         tolerance: 0,
       },
     }),

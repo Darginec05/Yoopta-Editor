@@ -5,6 +5,8 @@ const ImageRender = ({ element, attributes, children }: ElementRendererProps) =>
   const { src, alt, fit, bgColor, layout = 'intrinsic' } = element.props || {};
   const { width, height } = element.props?.sizes || {};
 
+  console.log('element.props', element.props);
+
   const style: CSSProperties = {
     objectFit: fit || 'contain',
     backgroundColor: bgColor || 'transparent',
@@ -38,8 +40,9 @@ const ImageRender = ({ element, attributes, children }: ElementRendererProps) =>
   return (
     <div
       {...attributes}
-      className={`yoo-image-w-full yoo-image-flex yoopta-image ${attributes.className || ''}`}
+      className={`yoo-image-w-full yoo-image-mx-auto yoo-image-flex yoopta-image ${attributes.className || ''}`}
       data-layout={layout}
+      style={{ height, width, ...attributes?.style }}
     >
       {src && (
         <img src={src} width={width} height={height} alt={alt || ''} decoding="async" loading="lazy" style={style} />

@@ -20,8 +20,6 @@ const VideoRender = ({ attributes, children, element }: ElementRendererProps) =>
   const { sizes, src, bgColor, poster, provider, fit } = element.props || {};
   const { width, height } = sizes || {};
 
-  console.log('videoElement', element);
-
   const style: CSSProperties = {
     backgroundColor: bgColor || 'transparent',
     objectFit: fit || 'contain',

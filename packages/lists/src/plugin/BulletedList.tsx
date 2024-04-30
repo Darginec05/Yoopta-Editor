@@ -1,5 +1,5 @@
 import { buildBlockData, generateId, YooptaBlockData, YooptaPlugin } from '@yoopta/editor';
-import { BulletedListRender } from '../elements/BulletedList';
+import { BulletedListRender } from '../editor/BulletedList';
 import { onKeyDown } from '../events/onKeyDown';
 import { BulletedListElement, BulletedListPluginKeys } from '../types';
 
