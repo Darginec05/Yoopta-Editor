@@ -308,7 +308,7 @@ Let's create powerful and engaging editing experiences together with Yoopta-Edit
 
 ## Contributing
 If you're ready to support Yoopta-Editor, here's how you can do it: 
-- If you've spotted a bug or thinking of a feature [raise an issue]()
+- If you've spotted a bug or thinking of a feature [raise an issue](https://github.com/Darginec05/Yoopta-Editor/issues/new/choose)
 - If you want to collaborate on the project, find an issue you like to work on and suggest your changes.
 - If you want to discuss your idea feel free to create a [discussion](https://github.com/Darginec05/Yoopta-Editor/discussions/new/choose)
 - Or join our [Telegram Community](https://t.me/YooptaEditor) and get in touch with us
