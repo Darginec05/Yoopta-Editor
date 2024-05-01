@@ -15,12 +15,12 @@ All of this is customizable, extensible, and easy to set up!
 
 - Easy setup
 - Default list of powerful plugins
-- Many typical solved problems in UX behavior.
+- Many typical solved problems in UX behaviour.
 - Media plugins on steroids with optimization and lazy loadings
 - Code plugin on steroids with themes and languages
 - Each plugin can be easily customized and extensible
 - Drag and drop, nested dnd is supported also
-- Selection box for manipulating with multiple blocks at once
+- Selection box for manipulating multiple blocks at once
 - You can create your own plugin
 - A list of useful tools (ActionMenu, Toolbar etc.) for the convenience of working with the editor
 - Automatic lazy loading for media components (eg. embeds)
@@ -67,10 +67,10 @@ All of this is customizable, extensible, and easy to set up!
 
 ## Getting Started
 
-First install the peer dependencies and the Yoopta core package with at least one plugin
+First, install the peer dependencies and the Yoopta core package with at least one plugin
 
 ```bash
-## slate, slate-react, react, react-dom - peer dependecies
+## slate, slate-react, react, react-dom - peer dependencies
 ## @yoopta/editor - core package
 yarn add slate slate-react @yoopta/editor @yoopta/paragraph
 # or
@@ -113,7 +113,7 @@ type YooptaEditor = {
   autoFocus?: boolean;
   /* className */
   className?: string;
-  /* This props define area for selection box. 
+  /* These props define the area for the selection box. 
   Good practice - passing parent element.
   [Default] - document */
   selectionBoxRoot?: HTMLElement | React.MutableRefObject<HTMLElement | null> | false;
@@ -173,7 +173,7 @@ export default function Editor() {
 
 Yoopta-Editor provides useful tools that can help you when working with the editor
 
-Here is list of available tools
+Here is a list of available tools
 
 - @yoopta/action-menu-list
 - @yoopta/toolbar
@@ -226,7 +226,7 @@ export default function Editor() {
 
 Marks are simple text formats
 
-Here is list of available marks from **@yoopta/marks** package
+Here is a list of available marks from **@yoopta/marks** package
 
 - Bold
 - Italic
@@ -264,7 +264,7 @@ export default function Editor() {
 
 ## Examples - DEMO's
 
-In this section, we provide you with some examples of using the Yoopta-Editor in your projects. These examples will help you get started quickly and show you how easy it is to integrate and customize the editor to your needs.
+Find below useful examples of utilising the Yoopta-Editor in your projects. These examples will help you get started quickly and show you how easy it is to integrate and customize the editor to your needs.
 
 Okay, let's go!
 
@@ -289,12 +289,12 @@ If you find Yoopta-Editor useful and valuable for your projects, I kindly ask yo
 - Develop other powerful plugins
 - AI tools
 - Simplify API for creating plugins
-- Collabrative mode
+- Collaborative mode
 - Plugin system
 - Optimizations for media components
 - Create package @yoopta/hotkeys to manage hotkeys
-- Rethink approach for just rendering to increase SEO perfomance
-- Continue improving the project. We are listening to you and your requests 💙
+- Rethink the approach for just rendering to increase SEO performance
+- Continue improving the project. [We are listening to you and your requests](https://github.com/Darginec05/Yoopta-Editor/discussions/new/choose) 💙
 
 ## License
 
@@ -305,6 +305,17 @@ Yoopta-Editor is released under the [MIT License](https://github.com/Darginec05/
 If you have any questions or need assistance raise an issue in the GitHub repository. I will be happy to help you.
 
 Let's create powerful and engaging editing experiences together with Yoopta-Editor!
+
+## Contributing
+If you're ready to support Yoopta-Editor, here's how you can do it: 
+- If you've spotted a bug or thinking of a feature [raise an issue]()
+- If you want to collaborate on the project, find an issue you like to work on and suggest your changes.
+- If you want to discuss your idea feel free to create a [discussion](https://github.com/Darginec05/Yoopta-Editor/discussions/new/choose)
+- Or join our [Telegram Community](https://t.me/YooptaEditor) and get in touch with us
+
+<a href="https://github.com/Darginec05/Yoopta-Editor/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Darginec05/Yoopta-Editor" />
+</a>
 
 ## Contacts
 
