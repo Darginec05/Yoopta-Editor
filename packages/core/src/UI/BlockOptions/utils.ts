@@ -5,10 +5,12 @@ type Params = {
   editor: YooEditor;
   onClose: () => void;
   empty?: boolean;
+  withVoids?: boolean;
   view?: 'small' | 'default';
+  mode?: 'toggle' | 'create';
 };
 
-export function buildActionMenuRenderProps({ editor, view, onClose }: Params) {
+export function buildActionMenuRenderProps({ editor, view, onClose, mode = 'toggle' }: Params) {
   function filterToggleActions(editor: YooEditor, type: string) {
     const block = editor.blocks[type];
     if (!block) return false;
@@ -19,15 +21,17 @@ export function buildActionMenuRenderProps({ editor, view, onClose }: Params) {
   }
 
   const getActions = () => {
-    const items = Object.keys(editor.blocks)
-      .filter((type) => filterToggleActions(editor, type))
-      .map((action) => {
-        const title = editor.blocks[action].options?.display?.title || action;
-        const description = editor.blocks[action].options?.display?.description;
-        return { type: action, title, description };
-      });
+    let items = Object.keys(editor.blocks);
 
-    return items;
+    if (mode === 'toggle') {
+      items = items.filter((type) => filterToggleActions(editor, type));
+    }
+
+    return items.map((action) => {
+      const title = editor.blocks[action].options?.display?.title || action;
+      const description = editor.blocks[action].options?.display?.description;
+      return { type: action, title, description };
+    });
   };
 
   const getRootProps = () => ({
@@ -40,7 +44,9 @@ export function buildActionMenuRenderProps({ editor, view, onClose }: Params) {
     'data-action-menu-item-type': type,
     'aria-selected': false,
     onClick: () => {
-      editor.blocks[type].toggle({ focus: true });
+      if (mode === 'toggle') editor.blocks[type].toggle({ focus: true });
+      if (mode === 'create') editor.blocks[type].create({ deleteText: true, focus: true });
+
       onClose();
     },
   });

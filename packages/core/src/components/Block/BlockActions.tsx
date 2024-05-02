@@ -5,10 +5,21 @@ import PlusIcon from './icons/plus.svg';
 import { buildBlockData } from '../Editor/utils';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { ReactEditor } from 'slate-react';
-import { Transforms } from 'slate';
+import { Editor, Transforms } from 'slate';
 import { useState } from 'react';
-import { useFloating, offset, flip, inline, shift, useTransitionStyles } from '@floating-ui/react';
+import {
+  useFloating,
+  offset,
+  flip,
+  inline,
+  shift,
+  useTransitionStyles,
+  FloatingPortal,
+  FloatingOverlay,
+} from '@floating-ui/react';
 import { BlockOptions } from '../../UI/BlockOptions/BlockOptions';
+import { getRootBlockElement } from '../../utils/blockElements';
+import { useActionMenuToolRefs } from './hooks';
 
 type ActionsProps = {
   block: YooptaBlockData;
@@ -18,8 +29,19 @@ type ActionsProps = {
   onChangeActiveBlock: (id: string) => void;
 };
 
-const BlockActions = ({ block, editor, dragHandleProps, showActions, onChangeActiveBlock }: ActionsProps) => {
+const BlockActions = ({ block, editor, dragHandleProps, onChangeActiveBlock, showActions }: ActionsProps) => {
   const [isBlockOptionsOpen, setIsBlockOptionsOpen] = useState<boolean>(false);
+
+  const {
+    isActionMenuOpen,
+    actionMenuRefs,
+    hasActionMenu,
+    actionMenuStyles,
+    onChangeActionMenuOpen,
+    onCloseActionMenu,
+    actionMenuRenderProps,
+    ActionMenu,
+  } = useActionMenuToolRefs({ editor });
 
   const { refs, floatingStyles, context } = useFloating({
     placement: 'right-start',
@@ -35,11 +57,36 @@ const BlockActions = ({ block, editor, dragHandleProps, showActions, onChangeAct
   const { setActivatorNodeRef, attributes, listeners } = dragHandleProps;
 
   const onPlusClick = () => {
-    const defaultBlock = buildBlockData({ id: generateId() });
-    const nextPath: YooptaBlockPath = [block.meta.order + 1];
+    const slate = findSlateBySelectionPath(editor, { at: [block.meta.order] });
 
-    editor.setSelection([block.meta.order]);
-    editor.insertBlock(defaultBlock, { at: nextPath, focus: true });
+    if (!slate) return;
+
+    const blockEl = document.querySelector(`[data-yoopta-block-id="${block.id}"]`);
+    const string = Editor.string(slate, [0]);
+
+    const rootElement = getRootBlockElement(editor.blocks[block.type].elements);
+    const isEmptyString = string.trim().length === 0;
+
+    if (hasActionMenu && isEmptyString && rootElement?.props?.nodeType !== 'void') {
+      editor.setSelection([block.meta.order]);
+      editor.focusBlock(block.id);
+
+      actionMenuRefs.setReference(blockEl);
+      onChangeActionMenuOpen(true);
+    } else {
+      const defaultBlock = buildBlockData({ id: generateId() });
+      const nextPath: YooptaBlockPath = [block.meta.order + 1];
+
+      editor.setSelection([block.meta.order]);
+      editor.insertBlock(defaultBlock, { at: nextPath, focus: true });
+
+      if (hasActionMenu) {
+        setTimeout(() => {
+          if (blockEl) actionMenuRefs.setReference(blockEl.nextSibling as HTMLElement);
+          onChangeActionMenuOpen(true);
+        }, 0);
+      }
+    }
   };
 
   const onSelectBlock = (event: React.MouseEvent) => {
@@ -77,9 +124,18 @@ const BlockActions = ({ block, editor, dragHandleProps, showActions, onChangeAct
   return (
     <div
       contentEditable={false}
-      data-hovered-state={showActions}
-      className={`yoo-editor-flex yoo-editor-absolute -yoo-editor-left-[50px] yoo-editor-top-[2px] yoo-editor-opacity-0 yoo-editor-transition-opacity yoopta-element-actions data-[hovered-state="true"]:yoo-editor-opacity-100`}
+      data-hovered-state-open={showActions}
+      className={`yoo-editor-flex yoo-editor-absolute -yoo-editor-left-[50px] yoo-editor-top-[2px] yoo-editor-opacity-0 yoo-editor-transition-opacity yoopta-element-actions data-[hovered-state-open="true"]:yoo-editor-opacity-100`}
     >
+      {isActionMenuOpen && hasActionMenu && (
+        <FloatingPortal id="yoo-block-options-portal" root={document.getElementById('yoopta-editor')}>
+          <FloatingOverlay lockScroll className="yoo-editor-z-[100]" onClick={onCloseActionMenu}>
+            <div style={actionMenuStyles} ref={actionMenuRefs.setFloating}>
+              <ActionMenu {...actionMenuRenderProps} />
+            </div>
+          </FloatingOverlay>
+        </FloatingPortal>
+      )}
       <button
         type="button"
         onClick={onPlusClick}
