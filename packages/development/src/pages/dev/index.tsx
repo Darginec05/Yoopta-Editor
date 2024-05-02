@@ -44,10 +44,6 @@ const plugins = [
       HTMLAttributes: {
         className: 'paragraph-element',
       },
-      display: {
-        title: 'Super Ultra Blockquote',
-        description: 'Yay 🎉 It seems, that extending the plugin works!',
-      },
     },
   }),
   Image.extend({
@@ -145,8 +141,8 @@ const MARKS = [Bold, Italic, Highlight, CodeMark, Strike, Underline];
 
 const TOOLS: Tools = {
   ActionMenu: {
-    // render: ActionNotionMenuExample,
-    render: DefaultActionMenuRender,
+    render: ActionNotionMenuExample,
+    // render: DefaultActionMenuRender,
     tool: ActionMenuList,
     props: {
       // items: ['Callout', 'Blockquote', 'HeadingOne', 'HeadingTwo', 'HeadingThree', 'Image', 'File'],

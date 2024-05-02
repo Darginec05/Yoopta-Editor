@@ -69,7 +69,7 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
     whileElementsMounted: autoUpdate,
   });
 
-  const { isMounted, styles: actionMenuTransitionStyles } = useTransitionStyles(context, {
+  const { isMounted: isActionMenuMounted, styles: actionMenuTransitionStyles } = useTransitionStyles(context, {
     duration: 100,
   });
 
@@ -142,9 +142,9 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
                   Duplicate
                 </button>
               </BlockOptionsMenuItem>
-              {!isVoidElement && !editor.blocks[currentBlock?.type || '']?.hasCustomEditor && (
+              {!!ActionMenu && !isVoidElement && !editor.blocks[currentBlock?.type || '']?.hasCustomEditor && (
                 <BlockOptionsMenuItem>
-                  {isMounted && !!ActionMenu && (
+                  {isActionMenuMounted && (
                     <FloatingPortal id="yoo-block-options-portal" root={document.getElementById('yoopta-editor')}>
                       <FloatingOverlay
                         lockScroll

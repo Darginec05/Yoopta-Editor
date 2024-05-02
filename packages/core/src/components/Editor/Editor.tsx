@@ -336,6 +336,14 @@ const Editor = ({ placeholder, marks, className, selectionBoxRoot, width, autoFo
       ref={yooptaEditorRef}
       onClick={onClick}
       onBlur={onBlur}
+      // onMouseMove={(e) => {
+      //   const block = (e.target.closest('[data-yoopta-block]') as HTMLElement)?.querySelector(
+      //     '[data-hovered-state-open]',
+      //   );
+
+      //   block?.setAttribute('data-hovered-state-open', true);
+      //   console.log('block', block);
+      // }}
     >
       <RenderBlocks editor={editor} marks={marks} placeholder={placeholder} />
       {selectionBoxRoot !== false && (
