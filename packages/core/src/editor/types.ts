@@ -1,5 +1,6 @@
-import { Descendant, Editor, Path, Point } from 'slate';
+import { Descendant, Editor, NodeEntry, Path, Point } from 'slate';
 import { Plugin, PluginElementsMap, PluginOptions, PluginElementProps } from '../plugins/types';
+import { CreateBlockElementOptions } from './elements/createElement';
 import { EditorBlurOptions } from './selection/blur';
 import { BlockSelectedOptions } from './selection/setBlockSelected';
 import { SetSelectionOptions } from './selection/setSelection';
@@ -59,12 +60,23 @@ export type YooptaBlock = {
   create: (options?: CreateBlockOptions) => void;
   toggle: (options?: ToggleBlockOptions) => void;
   update: (id: string, data: Partial<YooptaBlockData>) => void;
+  delete: (options: DeleteBlockOptions) => void;
   updateElement: <TElementKeys extends string, TElementProps>(
     blockId: string,
     elementType: TElementKeys,
-    elementProps: TElementProps,
+    elementProps?: TElementProps,
   ) => void;
-  delete: (options: DeleteBlockOptions) => void;
+  createElement: <TElementKeys extends string, TElementProps>(
+    blockId: string,
+    elementType: TElementKeys,
+    elementProps?: TElementProps,
+    options?: CreateBlockElementOptions,
+  ) => void;
+  getElement: <TElementKeys extends string>(
+    blockId: string,
+    elementType: TElementKeys,
+  ) => NodeEntry<SlateElement<TElementKeys>> | undefined;
+  deleteElement: <TElementKeys extends string>(blockId: string, elementType: TElementKeys) => void;
 };
 
 export type YooptaBlocks = Record<string, YooptaBlock>;

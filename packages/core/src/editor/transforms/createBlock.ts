@@ -27,6 +27,9 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
   if (!rootBlockElement) return;
 
   const nodeProps = { nodeType: rootBlockElement.props?.nodeType || 'block', ...rootBlockElement.props };
+
+  console.log('nodeProps', nodeProps);
+
   const elementNode = buildBlockElement({
     id: generateId(),
     type: rootBlockElementType,

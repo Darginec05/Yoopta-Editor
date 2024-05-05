@@ -13,9 +13,12 @@ import { update } from '../editor/textFormats/update';
 import { withShortcuts } from '../extensions/shortcuts';
 import { getRootBlockElement } from './blockElements';
 import { updateBlock } from '../editor/transforms/updateBlock';
-import { updateBlockElement } from '../editor/transforms/updateBlockElement';
 import { toggleBlock, ToggleBlockOptions } from '../editor/transforms/toggleBlock';
 import { deleteBlock, DeleteBlockOptions } from '../editor/transforms/deleteBlock';
+import { updateBlockElement } from '../editor/elements/updateElement';
+import { createBlockElement, CreateBlockElementOptions } from '../editor/elements/createElement';
+import { getBlockElement } from '../editor/elements/getElement';
+import { deleteBlockElement } from '../editor/elements/deleteElement';
 
 export function buildMarks(editor, marks: YooptaMark<any>[]) {
   const formats: YooEditor['formats'] = {};
@@ -78,6 +81,20 @@ export function buildBlocks(editor, plugins: Plugin<string, PluginElement<unknow
         },
         updateElement: <TKeys extends string, TProps>(blockId: string, elementType: TKeys, props: TProps) => {
           updateBlockElement(editor, blockId, elementType, props);
+        },
+        createElement: <TKeys extends string, TProps>(
+          blockId: string,
+          elementType: TKeys,
+          props: TProps,
+          options?: CreateBlockElementOptions,
+        ) => {
+          createBlockElement(editor, blockId, elementType, props, options);
+        },
+        getElement: <TKeys extends string>(blockId: string, elementType: TKeys) => {
+          return getBlockElement(editor, blockId, elementType);
+        },
+        deleteElement: <TKeys extends string>(blockId: string, elementType: TKeys) => {
+          deleteBlockElement(editor, blockId, elementType);
         },
         delete: (options: DeleteBlockOptions) => {
           deleteBlock(editor, options);

@@ -1,4 +1,4 @@
-import YooptaEditor, { createYooptaEditor, Tools, YooEditor, YooptaBlockData } from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor, Tools, YooEditor, YooptaBlockData, YooptaPlugin } from '@yoopta/editor';
 import Blockquote from '@yoopta/blockquote';
 import Paragraph from '@yoopta/paragraph';
 import Headings from '@yoopta/headings';
@@ -10,6 +10,7 @@ import Link from '@yoopta/link';
 import Video from '@yoopta/video';
 import File from '@yoopta/file';
 import Embed from '@yoopta/embed';
+import AccordionPlugin from '@yoopta/accordion';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
@@ -17,13 +18,13 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { uploadToCloudinary } from '../../utils/cloudinary';
 
 import Code from '@yoopta/code';
-import { BaseElement } from 'slate';
 import { ActionNotionMenuExample } from '../../components/ActionMenuExamples/NotionExample/ActionNotionMenuExample';
-import { SlackChat } from '../../components/Chats/SlackChat/SlackChat';
 import { NotionToolbar } from '../../components/Toolbars/NotionToolbar/NotionToolbar';
+import { ACCORDION_BLOCK } from '../../components/customPlugins/Accordion/Accordion';
 // import Mention from '@yoopta/mention';
 
 const plugins = [
+  AccordionPlugin,
   Code,
   File.extend({
     options: {
@@ -585,6 +586,7 @@ const value = {
     },
   },
 };
+
 const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
   const rectangleSelectionRef = useRef<HTMLDivElement>(null);
@@ -600,18 +602,18 @@ const BasicExample = () => {
   };
 
   return (
-    <div className="px-[100px]  max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={rectangleSelectionRef}>
+    <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={rectangleSelectionRef}>
       <YooptaEditor
         editor={editor}
         plugins={plugins}
         selectionBoxRoot={rectangleSelectionRef}
         marks={MARKS}
-        autoFocus
+        autoFocus={false}
         placeholder="Type / to open menu"
         tools={TOOLS}
         readOnly={readOnly}
         width={750}
-        value={value}
+        value={{ [ACCORDION_BLOCK.id]: ACCORDION_BLOCK }}
       >
         <div className="flex mb-8">
           <button
