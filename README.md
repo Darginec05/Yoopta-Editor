@@ -93,7 +93,10 @@ export default function Editor() {
 
   return (
     <div>
-      <YooptaEditor plugins={plugins} />
+      <YooptaEditor
+        editor={editor}
+        plugins={plugins}
+      />
     </div>
   );
 }
@@ -160,6 +163,7 @@ export default function Editor() {
   return (
     <div>
       <YooptaEditor
+        editor={editor}
         placeholder="Type text.."
         // here we go
         plugins={plugins}
@@ -214,6 +218,7 @@ export default function Editor() {
   return (
     <div>
       <YooptaEditor
+        editor={editor}
         plugins={plugins}
         placeholder="Type text.."
         // here we go
