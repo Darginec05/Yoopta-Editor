@@ -251,6 +251,7 @@ export default function Editor() {
   return (
     <div>
       <YooptaEditor
+        editor={editor}
         placeholder="Type text.."
         plugins={plugins}
         tools={TOOLS}
