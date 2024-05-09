@@ -72,6 +72,7 @@ const plugins = [
         return {
           src: data.secure_url,
           alt: 'cloudinary',
+          fit: 'fill',
           sizes: {
             width: data.width,
             height: data.height,
@@ -120,6 +121,7 @@ const plugins = [
         return {
           src: data.secure_url,
           alt: 'cloudinary',
+          fit: 'cover',
           sizes: {
             width: data.width,
             height: data.height,

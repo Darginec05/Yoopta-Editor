@@ -17,7 +17,7 @@ export type ImageElementProps = {
 export type ImagePluginElements = 'image';
 export type ImageElement = SlateElement<'image', ImageElementProps>;
 
-export type OnUploadResponse = Omit<ImageElementProps, 'fit' | 'srcSet'>;
+export type OnUploadResponse = Omit<ImageElementProps, 'srcSet'>;
 
 export type ImageOptimizationFields = {
   deviceSizes?: number[];

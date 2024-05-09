@@ -73,7 +73,7 @@ const ImageRender = ({ element, attributes, children, blockId }: PluginElementRe
   );
 
   if (!src) {
-    if (isReadOnly) return null;
+    if (isReadOnly) return <></>;
 
     return (
       <Placeholder attributes={attributes} blockId={blockId}>
