@@ -58,14 +58,19 @@ const BlockActions = ({ block, editor, dragHandleProps, onChangeActiveBlock, sho
 
   const onPlusClick = () => {
     const slate = findSlateBySelectionPath(editor, { at: [block.meta.order] });
+    const blockEntity = editor.blocks[block.type];
 
     if (!slate) return;
 
     const blockEl = document.querySelector(`[data-yoopta-block-id="${block.id}"]`);
-    const string = Editor.string(slate, [0]);
+    const rootElement = getRootBlockElement(blockEntity.elements);
 
-    const rootElement = getRootBlockElement(editor.blocks[block.type].elements);
-    const isEmptyString = string.trim().length === 0;
+    let string: undefined | string;
+    if (!blockEntity.hasCustomEditor) {
+      string = Editor.string(slate, [0]);
+    }
+
+    const isEmptyString = typeof string === 'string' && string.trim().length === 0;
 
     if (hasActionMenu && isEmptyString && rootElement?.props?.nodeType !== 'void') {
       editor.setSelection([block.meta.order]);
