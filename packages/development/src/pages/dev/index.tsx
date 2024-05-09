@@ -1437,7 +1437,6 @@ const BasicExample = () => {
         tools={TOOLS}
         readOnly={readOnly}
         width={750}
-        value={value}
       >
         <div className="flex mb-8">
           <button
@@ -1451,10 +1450,10 @@ const BasicExample = () => {
           <button
             className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
             onClick={() => {
-              editor.blocks.Image.create();
+              editor.setEditorValue(value);
             }}
           >
-            Add Image
+            Set value
           </button>
           <button
             className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
