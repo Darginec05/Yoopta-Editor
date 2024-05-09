@@ -28,6 +28,7 @@ const FileUploader = ({ accept = 'video/*', onClose, blockId, onSetLoading }: Pr
         src: data.src,
         sizes: data.sizes,
         bgColor: data.bgColor,
+        fit: data.fit || 'contain',
       });
     } catch (error) {
     } finally {

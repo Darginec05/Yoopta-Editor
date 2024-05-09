@@ -28,7 +28,7 @@ const FileUploader = ({ accept = 'image/*', onClose, blockId, onSetLoading }: Pr
         alt: data.alt,
         sizes: data.sizes,
         bgColor: data.bgColor,
-        fit: 'contain',
+        fit: data.fit || 'fill',
       });
     } catch (error) {
     } finally {
