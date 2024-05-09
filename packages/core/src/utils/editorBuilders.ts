@@ -19,6 +19,7 @@ import { updateBlockElement } from '../editor/elements/updateElement';
 import { createBlockElement, CreateBlockElementOptions } from '../editor/elements/createElement';
 import { getBlockElement } from '../editor/elements/getElement';
 import { deleteBlockElement } from '../editor/elements/deleteElement';
+import { getBlockElementEntry } from '../editor/elements/getElementEntry';
 
 export function buildMarks(editor, marks: YooptaMark<any>[]) {
   const formats: YooEditor['formats'] = {};
@@ -92,6 +93,9 @@ export function buildBlocks(editor, plugins: Plugin<string, PluginElement<unknow
         },
         getElement: <TKeys extends string>(blockId: string, elementType: TKeys) => {
           return getBlockElement(editor, blockId, elementType);
+        },
+        getElementEntry: <TKeys extends string>(blockId: string, elementType: TKeys) => {
+          return getBlockElementEntry(editor, blockId, elementType);
         },
         deleteElement: <TKeys extends string>(blockId: string, elementType: TKeys) => {
           deleteBlockElement(editor, blockId, elementType);

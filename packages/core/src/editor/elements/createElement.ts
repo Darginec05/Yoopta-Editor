@@ -4,7 +4,7 @@ import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { SlateElement, YooEditor } from '../types';
 
 export type CreateBlockElementOptions = {
-  at?: 'next' | 'last' | 'first' | Path | 'prev';
+  at?: 'next' | 'last' | 'first' | 'prev' | Path;
   focus?: boolean;
 };
 
@@ -59,10 +59,10 @@ export function createBlockElement<TElementKeys extends string, TElementProps>(
     const { at, focus = true } = options || {};
     let atPath;
 
-    const currentElementEntry = editor.blocks[block.type].getElement(blockId, elementType);
+    const elementEntry = editor.blocks[block.type].getElementEntry(blockId, elementType);
 
-    if (currentElementEntry) {
-      const [, elementPath] = currentElementEntry;
+    if (elementEntry) {
+      const [, elementPath] = elementEntry;
 
       if (Path.isPath(at)) {
         atPath = at;

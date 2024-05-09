@@ -64,9 +64,14 @@ const plugins = [
     //   },
     // },
     options: {
+      maxSizes: {
+        maxHeight: 800,
+        maxWidth: 'auto',
+      },
       HTMLAttributes: {
         className: 'image-element',
       },
+
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file);
 

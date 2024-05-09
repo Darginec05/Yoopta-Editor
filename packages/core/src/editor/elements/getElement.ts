@@ -1,29 +1,16 @@
-import { Editor, Element, NodeEntry, Transforms } from 'slate';
-import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { SlateElement, YooEditor } from '../types';
+import { getBlockElementEntry } from './getElementEntry';
 
 export function getBlockElement<TElementKeys extends string>(
   editor: YooEditor,
   blockId: string,
   elementType: TElementKeys,
-): NodeEntry<SlateElement<TElementKeys>> | undefined {
-  const block = editor.children[blockId];
+): SlateElement<TElementKeys> | undefined {
+  const elementEntry = getBlockElementEntry(editor, blockId, elementType);
 
-  if (!block) {
-    throw new Error(`Block with id ${blockId} not found`);
+  if (elementEntry) {
+    return elementEntry[0] as SlateElement<TElementKeys>;
   }
 
-  const slate = findSlateBySelectionPath(editor, { at: [block.meta.order] });
-
-  if (!slate) {
-    console.warn('No slate found');
-    return;
-  }
-
-  const [elementEntry] = Editor.nodes<SlateElement>(slate, {
-    at: slate.selection || [0],
-    match: (n) => Element.isElement(n) && n.type === elementType,
-  });
-
-  return elementEntry as NodeEntry<SlateElement<TElementKeys>>;
+  return undefined;
 }

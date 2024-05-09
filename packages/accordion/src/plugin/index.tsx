@@ -4,6 +4,7 @@ import { AccordionList } from '../renders/AccordionList';
 import { AccordionItem } from '../renders/AccordionItem';
 import { AccordionItemHeading } from '../renders/AccordionItemHeading';
 import { AccordionItemContent } from '../renders/AccordionItemContent';
+import { Editor } from 'slate';
 
 const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>({
   type: 'Accordion',
@@ -28,6 +29,20 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
   events: {
     onKeyDown(editor, slate, { hotkeys, currentBlock }) {
       return (event) => {
+        if (hotkeys.isBackspace(event)) {
+          event.preventDefault();
+
+          const element = editor.blocks.Accordion.getElement(currentBlock.id, 'accordion-list-item');
+          console.log('element', element);
+
+          const string = Editor.string(slate, slate.selection);
+          console.log('string', string);
+        }
+
+        if (hotkeys.isSelect(event)) {
+          event.preventDefault();
+        }
+
         if (hotkeys.isEnter(event)) {
           event.preventDefault();
 

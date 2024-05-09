@@ -72,11 +72,15 @@ export type YooptaBlock = {
     elementProps?: TElementProps,
     options?: CreateBlockElementOptions,
   ) => void;
+  deleteElement: <TElementKeys extends string>(blockId: string, elementType: TElementKeys) => void;
   getElement: <TElementKeys extends string>(
     blockId: string,
     elementType: TElementKeys,
+  ) => SlateElement<TElementKeys> | undefined;
+  getElementEntry: <TElementKeys extends string>(
+    blockId: string,
+    elementType: TElementKeys,
   ) => NodeEntry<SlateElement<TElementKeys>> | undefined;
-  deleteElement: <TElementKeys extends string>(blockId: string, elementType: TElementKeys) => void;
 };
 
 export type YooptaBlocks = Record<string, YooptaBlock>;
