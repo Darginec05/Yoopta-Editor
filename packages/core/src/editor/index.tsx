@@ -8,6 +8,7 @@ import { YooEditor } from './types';
 import { increaseBlockDepth } from './transforms/increaseBlockDepth';
 import { decreaseBlockDepth } from './transforms/decreaseBlockDepth';
 import { getEditorValue } from './core/getEditorValue';
+import { setEditorValue } from './core/setEditorValue';
 import { setBlockSelected } from './selection/setBlockSelected';
 import { duplicateBlock } from './transforms/duplicateBlock';
 import { blur } from './selection/blur';
@@ -38,6 +39,7 @@ export const createYooptaEditor = (): YooEditor => {
     selectedBlocks: null,
     readOnly: false,
     getEditorValue: () => getEditorValue(editor),
+    setEditorValue: (...args) => setEditorValue(editor, ...args),
     applyChanges: () => {},
     insertBlock: (...args) => insertBlock(editor, ...args),
     insertBlocks: (...args) => insertBlocks(editor, ...args),
