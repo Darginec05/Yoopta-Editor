@@ -724,30 +724,6 @@ export const WITH_BASIC_INIT_VALUE = {
       },
     ],
   },
-  '0f9a82ac-bfd0-494e-bbe1-056f9a8b923b': {
-    id: '0f9a82ac-bfd0-494e-bbe1-056f9a8b923b',
-    value: [
-      {
-        id: 'ba1a046c-ee8f-4198-bace-d1300724629e',
-        type: 'code',
-        children: [
-          {
-            text: '// pass props to main component and that all\nfunction YouThinkThisIsJoke() {\n  const editor = useMemo(() => createYooptaEditor(), []);\n\n  return (\n    <div>\n      <YooptaEditor\n        editor={editor}\n        plugins={plugins}\n        tools={TOOLS}\n        marks={MARKS}\n      />\n    </div>\n  );\n}',
-          },
-        ],
-        props: {
-          nodeType: 'void',
-          language: 'javascript',
-          theme: 'VSCode',
-        },
-      },
-    ],
-    type: 'Code',
-    meta: {
-      order: 7,
-      depth: 1,
-    },
-  },
   '17fc0ceb-6898-4684-9b9b-7612f4bf735f': {
     id: '17fc0ceb-6898-4684-9b9b-7612f4bf735f',
     value: [
@@ -1244,6 +1220,30 @@ export const WITH_BASIC_INIT_VALUE = {
     meta: {
       order: 50,
       depth: 0,
+    },
+  },
+  'ad15458a-10c9-41fa-8193-e86e393fc9d6': {
+    id: 'ad15458a-10c9-41fa-8193-e86e393fc9d6',
+    value: [
+      {
+        id: '3f9508b0-ac86-49e3-9ad3-5c22575d4b2a',
+        type: 'code',
+        children: [
+          {
+            text: '// pass props to main component and that all\nfunction YouThinkThisIsJoke() {\n  const editor = useMemo(() => createYooptaEditor(), []);\n\n  return (\n    <div>\n      <YooptaEditor\n        editor={editor}\n        plugins={plugins}\n        tools={TOOLS}\n        marks={MARKS}\n      />\n    </div>\n  );\n}',
+          },
+        ],
+        props: {
+          nodeType: 'void',
+          language: 'javascript',
+          theme: 'VSCode',
+        },
+      },
+    ],
+    type: 'Code',
+    meta: {
+      order: 7,
+      depth: 1,
     },
   },
 };
