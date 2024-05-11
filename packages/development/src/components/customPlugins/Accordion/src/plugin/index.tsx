@@ -40,7 +40,6 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
             console.log('headingElementEntry', headingElementEntry);
 
             const string = Editor.string(slate, slate.selection);
-            console.log('string', string);
             if (string.trim().length === 0) {
               event.preventDefault();
               console.log('slate.selection.anchor.path', slate.selection.anchor.path);
@@ -65,7 +64,7 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
             currentBlock.id,
             'accordion-list-item',
             { isExpanded: true },
-            { at: 'next', focus: true, split: true },
+            { at: 'next', focus: true, split: false },
           );
         }
       };

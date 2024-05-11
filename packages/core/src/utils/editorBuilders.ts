@@ -15,11 +15,12 @@ import { getRootBlockElement } from './blockElements';
 import { updateBlock } from '../editor/transforms/updateBlock';
 import { toggleBlock, ToggleBlockOptions } from '../editor/transforms/toggleBlock';
 import { deleteBlock, DeleteBlockOptions } from '../editor/transforms/deleteBlock';
-import { updateBlockElement } from '../editor/elements/updateElement';
+import { updateElement } from '../editor/elements/updateElement';
 import { createBlockElement, CreateBlockElementOptions } from '../editor/elements/createElement';
 import { getBlockElement } from '../editor/elements/getElement';
 import { deleteBlockElement } from '../editor/elements/deleteElement';
-import { getBlockElementEntry } from '../editor/elements/getElementEntry';
+import { getBlockElementEntry, GetBlockElementEntryOptions } from '../editor/elements/getElementEntry';
+import { isElementEmpty } from '../editor/elements/isElementEmpty';
 
 export function buildMarks(editor, marks: YooptaMark<any>[]) {
   const formats: YooEditor['formats'] = {};
@@ -81,7 +82,10 @@ export function buildBlocks(editor, plugins: Plugin<string, PluginElement<unknow
           updateBlock(editor, id, data);
         },
         updateElement: <TKeys extends string, TProps>(blockId: string, elementType: TKeys, props: TProps) => {
-          updateBlockElement(editor, blockId, elementType, props);
+          updateElement(editor, blockId, elementType, props);
+        },
+        isElementEmpty: <TKeys extends string>(blockId: string, elementType: TKeys) => {
+          return isElementEmpty(editor, blockId, elementType);
         },
         createElement: <TKeys extends string, TProps>(
           blockId: string,
@@ -94,8 +98,12 @@ export function buildBlocks(editor, plugins: Plugin<string, PluginElement<unknow
         getElement: <TKeys extends string>(blockId: string, elementType: TKeys) => {
           return getBlockElement(editor, blockId, elementType);
         },
-        getElementEntry: <TKeys extends string>(blockId: string, elementType: TKeys) => {
-          return getBlockElementEntry(editor, blockId, elementType);
+        getElementEntry: <TKeys extends string>(
+          blockId: string,
+          elementType: TKeys,
+          options: GetBlockElementEntryOptions,
+        ) => {
+          return getBlockElementEntry(editor, blockId, elementType, options);
         },
         deleteElement: <TKeys extends string>(blockId: string, elementType: TKeys) => {
           deleteBlockElement(editor, blockId, elementType);

@@ -6,6 +6,7 @@ import { SlateElement, YooEditor } from '../types';
 export type CreateBlockElementOptions = {
   at?: 'next' | 'last' | 'first' | 'prev' | Path;
   focus?: boolean;
+  split?: boolean;
 };
 
 export function createBlockElement<TElementKeys extends string, TElementProps>(
@@ -73,7 +74,25 @@ export function createBlockElement<TElementKeys extends string, TElementProps>(
       }
     }
 
-    Transforms.insertNodes(slate, nodeElement, { at: atPath, select: focus });
+    if (options?.split) {
+      Transforms.splitNodes(slate, { at: atPath, always: true });
+    } else {
+      Transforms.insertNodes(slate, nodeElement, { at: atPath, select: focus });
+    }
+
+    if (focus) {
+      if (childrenElements.length > 0) {
+        const firstChild = childrenElements[0];
+        const firstElementEntry = editor.blocks[block.type].getElementEntry(blockId, firstChild.type, {
+          atPath: atPath,
+        });
+
+        if (firstElementEntry) {
+          const [, firstElementPath] = firstElementEntry;
+          Transforms.select(slate, firstElementPath);
+        }
+      }
+    }
 
     editor.applyChanges();
     editor.emit('change', editor.children);

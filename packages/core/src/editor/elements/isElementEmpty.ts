@@ -1,17 +1,12 @@
-import { Editor, Element, Location, NodeEntry, Span } from 'slate';
+import { Editor, Element } from 'slate';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { SlateElement, YooEditor } from '../types';
 
-export type GetBlockElementEntryOptions = {
-  atPath?: Location | Span;
-};
-
-export function getBlockElementEntry<TElementKeys extends string>(
+export function isElementEmpty<TElementKeys extends string>(
   editor: YooEditor,
   blockId: string,
   elementType: TElementKeys,
-  options?: GetBlockElementEntryOptions,
-): NodeEntry<SlateElement<TElementKeys>> | undefined {
+): boolean | undefined {
   const block = editor.children[blockId];
 
   if (!block) {
@@ -26,10 +21,17 @@ export function getBlockElementEntry<TElementKeys extends string>(
   }
 
   const [elementEntry] = Editor.nodes<SlateElement>(slate, {
-    at: options?.atPath || slate.selection || [0],
+    at: slate.selection || [0],
     match: (n) => Element.isElement(n) && n.type === elementType,
-    mode: 'lowest',
   });
 
-  return elementEntry as NodeEntry<SlateElement<TElementKeys>>;
+  if (elementEntry) {
+    const [node, nodePath] = elementEntry;
+    const string = Editor.string(slate, nodePath);
+    console.log({ node, nodePath, string });
+
+    return string.trim().length === 0;
+  }
+
+  return false;
 }

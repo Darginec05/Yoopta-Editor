@@ -2,7 +2,7 @@ import { Editor, Element, Transforms } from 'slate';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { SlateElement, YooEditor } from '../types';
 
-export function updateBlockElement<TElementKeys extends string, TElementProps>(
+export function updateElement<TElementKeys extends string, TElementProps>(
   editor: YooEditor,
   blockId: string,
   elementType: TElementKeys,
