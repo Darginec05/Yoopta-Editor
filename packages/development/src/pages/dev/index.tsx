@@ -1439,6 +1439,7 @@ const BasicExample = () => {
         tools={TOOLS}
         readOnly={readOnly}
         width={750}
+        value={value}
       >
         <div className="flex mb-8">
           <button

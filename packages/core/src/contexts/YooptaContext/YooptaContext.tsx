@@ -9,6 +9,7 @@ export type YooptaEditorContext = {
 
 const DEFAULT_HANDLERS: YooptaEditorContext = {
   editor: {
+    id: '',
     getBlock: () => undefined,
     insertBlock: () => undefined,
     insertBlocks: () => undefined,

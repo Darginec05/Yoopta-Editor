@@ -8,7 +8,7 @@ const HeadingOneRender = ({ attributes, children, element, HTMLAttributes = {} }
       id={element.id}
       draggable={false}
       data-element-type={element.type}
-      className={`yoo-h-mt-6 yoo-h-scroll-m-20 yoo-h-text-4xl yoo-h-font-bold yoo-h-tracking-tight yoo-h-lg:text-3x ${className}`}
+      className={`yoopta-heading-one ${className}`}
       {...htmlAttrs}
       {...attributes}
     >
