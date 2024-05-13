@@ -1,5 +1,6 @@
 /* @tailwind base; */
 @tailwind utilities;
+@tailwind components;
 
 *,
 :after,
@@ -56,3 +57,46 @@ pre {
   font-weight: inherit;
   font-style: inherit;
 }
+
+/* Block styles  */
+.yoopta-block {
+  @apply yoo-editor-relative yoo-editor-py-0 yoo-editor-px-[2px] yoo-editor-mt-[2px] yoo-editor-mb-[1px] yoo-editor-rounded
+}
+
+.yoopta-selection-block {
+  @apply yoo-editor-absolute yoo-editor-left-0 yoo-editor-top-0 yoo-editor-bg-[#2383e224] yoo-editor-z-[90] yoo-editor-rounded yoo-editor-opacity-100 yoo-editor-h-full yoo-editor-w-full yoo-editor-pointer-events-none
+}
+
+.yoopta-block-actions {
+  @apply yoo-editor-flex yoo-editor-absolute -yoo-editor-left-[50px] yoo-editor-top-[2px] yoo-editor-opacity-0 yoo-editor-transition-opacity data-[hovered-state-open="true"]:yoo-editor-opacity-100
+}
+
+.yoopta-block-actions-plus {
+  @apply yoo-editor-cursor-pointer yoo-editor-rounded-[6px] yoo-editor-h-[24px] yoo-editor-flex yoo-editor-items-center yoo-editor-justify-center yoo-editor-bg-inherit yoo-editor-bg-transparent yoo-editor-transition-colors yoo-editor-duration-[180ms] yoo-editor-relative yoo-editor-w-[18px] yoo-editor-p-0 yoo-editor-text-[#37352f59] yoo-editor-m-[0_1px] hover:yoo-editor-bg-[#37362f14] focus:yoo-editor-bg-[#37362f14] active:yoo-editor-bg-[#37362f14] yoo-editor-w-[24px]
+}
+
+.yoopta-block-actions-drag {
+  @apply yoo-editor-cursor-pointer yoo-editor-rounded-[6px] yoo-editor-h-[24px] yoo-editor-flex yoo-editor-items-center yoo-editor-justify-center yoo-editor-bg-inherit yoo-editor-bg-transparent yoo-editor-transition-colors yoo-editor-duration-[180ms] yoo-editor-relative yoo-editor-w-[18px] yoo-editor-p-0 yoo-editor-text-[#37352f59] yoo-editor-m-[0_1px] hover:yoo-editor-bg-[#37362f14] focus:yoo-editor-bg-[#37362f14] active:yoo-editor-bg-[#37362f14]
+}
+
+/* Slate editor styles */
+.yoopta-slate {
+  @apply focus-visible:yoo-editor-outline-none focus:yoo-editor-outline-none
+}
+
+/* Block options styles */
+.yoopta-block-options-button {
+  @apply yoo-editor-rounded-sm hover:yoo-editor-bg-[#37352f14] yoo-editor-leading-[120%] yoo-editor-px-2 yoo-editor-py-1.5 yoo-editor-mx-[4px] yoo-editor-cursor-pointer yoo-editor-w-full yoo-editor-flex yoo-editor-justify-start
+}
+
+.yoopta-block-options-item {
+  @apply yoo-editor-relative yoo-editor-flex yoo-editor-cursor-default yoo-editor-select-none yoo-editor-items-center yoo-editor-text-sm yoo-editor-outline-none yoo-editor-transition-colors data-[disabled]:yoo-editor-pointer-events-none data-[disabled]:yoo-editor-opacity-50
+}
+
+.yoopta-extended-block-actions {
+  @apply yoo-editor-absolute yoo-editor-right-[8px] yoo-editor-top-[8px] yoo-editor-flex yoo-editor-items-center yoo-editor-justify-between yoo-editor-z-10 yoo-editor-opacity-100 yoo-editor-bg-[#eee] yoo-editor-w-[22px] yoo-editor-h-[22px] yoo-editor-transition-opacity yoo-editor-duration-150 yoo-editor-ease-in yoo-editor-border-none yoo-editor-cursor-pointer yoo-editor-rounded-[2px] yoo-editor-p-[0_4px]
+}
+
+/* .yoopta-block-options-menu-content {
+  @apply yoo-editor-bg-[#FFF] yoo-editor-relative yoo-editor-min-w-[200px] yoo-editor-w-auto yoo-editor-overflow-hidden yoo-editor-rounded-md yoo-editor-border yoo-editor-border-solid yoo-editor-border-[#e5e7eb] yoo-editor-py-[6px] yoo-editor-px-0 yoo-editor-shadow-md data-[state=open]:yoo-editor-animate-in data-[state=closed]:yoo-editor-animate-out data-[state=closed]:yoo-editor-fade-out-0 data-[state=open]:yoo-editor-fade-in-0 data-[state=closed]:yoo-editor-zoom-out-95 data-[state=open]:yoo-editor-zoom-in-95 data-[side=bottom]:yoo-editor-slide-in-from-top-2 data-[side=left]:yoo-editor-slide-in-from-right-2 data-[side=right]:yoo-editor-slide-in-from-left-2 data-[side=top]:yoo-editor-slide-in-from-bottom-2
+} */

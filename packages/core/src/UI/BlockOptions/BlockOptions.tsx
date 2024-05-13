@@ -17,7 +17,6 @@ import copy from 'copy-to-clipboard';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { getRootBlockElement } from '../../utils/blockElements';
 import { useYooptaTools } from '../../contexts/YooptaContext/ToolsContext';
-import { YooEditor } from '../../editor/types';
 import { buildActionMenuRenderProps } from './utils';
 
 const BlockOptionsMenuGroup = ({ children }) => <div className="yoo-editor-flex yoo-editor-flex-col">{children}</div>;
@@ -31,17 +30,13 @@ const BlockOptionsMenuContent = ({ children }) => (
   </div>
 );
 
-const BlockOptionsMenuItem = ({ children }) => (
-  <div className="yoo-editor-relative yoo-editor-flex yoo-editor-cursor-default yoo-editor-select-none yoo-editor-items-center yoo-editor-text-sm yoo-editor-outline-none yoo-editor-transition-colors focus:yoo-editor-bg-accent focus:yoo-editor-text-accent-foreground data-[disabled]:yoo-editor-pointer-events-none data-[disabled]:yoo-editor-opacity-50">
-    {children}
-  </div>
-);
+const BlockOptionsMenuItem = ({ children }) => <div className="yoopta-block-options-item">{children}</div>;
 
 type BlockOptionsSeparatorProps = {
   className?: string;
 };
 
-const BlockOptionsSeparator = ({ className }: BlockOptionsSeparatorProps) => (
+const BlockOptionsSeparator = ({ className = '' }: BlockOptionsSeparatorProps) => (
   <div className={`yoo-editor-h-[1px] yoo-editor-bg-[#37352f14] yoo-editor-my-[4px] yoo-editor-w-full ${className}`} />
 );
 
@@ -123,21 +118,13 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
           <BlockOptionsMenuContent>
             <BlockOptionsMenuGroup>
               <BlockOptionsMenuItem>
-                <button
-                  type="button"
-                  className="yoo-editor-rounded-sm hover:yoo-editor-bg-[#37352f14] yoo-editor-leading-[120%] yoo-editor-px-2 yoo-editor-py-1.5 yoo-editor-mx-[4px] yoo-editor-cursor-pointer yoo-editor-w-full yoo-editor-flex yoo-editor-justify-start"
-                  onClick={onDelete}
-                >
+                <button type="button" className="yoopta-block-options-button" onClick={onDelete}>
                   <TrashIcon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
                   Delete
                 </button>
               </BlockOptionsMenuItem>
               <BlockOptionsMenuItem>
-                <button
-                  type="button"
-                  className="yoo-editor-rounded-sm hover:yoo-editor-bg-[#37352f14] yoo-editor-leading-[120%] yoo-editor-px-2 yoo-editor-py-1.5 yoo-editor-mx-[4px] yoo-editor-cursor-pointer yoo-editor-w-full yoo-editor-flex yoo-editor-justify-start"
-                  onClick={onDuplicate}
-                >
+                <button type="button" className="yoopta-block-options-button" onClick={onDuplicate}>
                   <CopyIcon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
                   Duplicate
                 </button>
@@ -159,7 +146,7 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
                   )}
                   <button
                     type="button"
-                    className="yoo-editor-rounded-sm hover:yoo-editor-bg-[#37352f14] yoo-editor-leading-[120%] yoo-editor-px-2 yoo-editor-py-1.5 yoo-editor-mx-[4px] yoo-editor-cursor-pointer yoo-editor-w-full yoo-editor-flex yoo-editor-justify-start"
+                    className="yoopta-block-options-button"
                     ref={actionMenuRefs.setReference}
                     onClick={() => setIsActionMenuOpen((open) => !open)}
                   >
@@ -169,11 +156,7 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
                 </BlockOptionsMenuItem>
               )}
               <BlockOptionsMenuItem>
-                <button
-                  type="button"
-                  className="yoo-editor-rounded-sm hover:yoo-editor-bg-[#37352f14] yoo-editor-leading-[120%] yoo-editor-px-2 yoo-editor-py-1.5 yoo-editor-mx-[4px] yoo-editor-cursor-pointer yoo-editor-w-full yoo-editor-flex yoo-editor-justify-start"
-                  onClick={onCopy}
-                >
+                <button type="button" className="yoopta-block-options-button" onClick={onCopy}>
                   <Link2Icon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
                   Copy link to block
                 </button>

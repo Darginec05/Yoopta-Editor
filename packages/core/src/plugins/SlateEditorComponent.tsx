@@ -320,7 +320,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
           id={`yoopta-slate-editor-${id}`}
           renderElement={renderElement}
           renderLeaf={renderLeaf}
-          className="focus-visible:yoo-editor-outline-none focus:yoo-editor-outline-none"
+          className="yoopta-slate"
           spellCheck
           {...eventHandlers}
           onKeyDown={onKeyDown}
