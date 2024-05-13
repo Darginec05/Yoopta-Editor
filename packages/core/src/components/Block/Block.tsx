@@ -44,6 +44,7 @@ const Block = ({ children, block, blockId }) => {
       data-hovered-block={isHovered}
       data-yoopta-block
       data-yoopta-block-id={blockId}
+      data-yoopta-block-type={block.type}
     >
       {!editor.readOnly && (
         <BlockActions

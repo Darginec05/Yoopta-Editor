@@ -42,7 +42,7 @@ const plugins = [
   Paragraph.extend({
     options: {
       HTMLAttributes: {
-        className: 'paragraph-element',
+        className: 'paragraph-element-extended',
       },
     },
   }),
@@ -64,7 +64,7 @@ const plugins = [
     // },
     options: {
       HTMLAttributes: {
-        className: 'image-element',
+        className: 'image-element-extended',
       },
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file);
@@ -84,7 +84,7 @@ const plugins = [
   Headings.HeadingOne.extend({
     options: {
       HTMLAttributes: {
-        className: 'heading-one-element',
+        className: 'heading-one-element-extended',
         style: {
           color: 'red !important',
         },
@@ -99,12 +99,24 @@ const plugins = [
     },
   }),
   Headings.HeadingThree,
-  Blockquote,
-  Callout,
+  Blockquote.extend({
+    options: {
+      HTMLAttributes: {
+        className: 'blockquote-element-extended',
+      },
+    },
+  }),
+  Callout.extend({
+    options: {
+      HTMLAttributes: {
+        className: 'callout-element-extended',
+      },
+    },
+  }),
   Lists.BulletedList.extend({
     options: {
       HTMLAttributes: {
-        className: 'bulleted-list-element',
+        className: 'bulleted-list-element-extended',
       },
     },
   }),
@@ -114,7 +126,7 @@ const plugins = [
   Video.extend({
     options: {
       HTMLAttributes: {
-        className: 'video-element',
+        className: 'video-element-extended',
       },
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file, 'video');
