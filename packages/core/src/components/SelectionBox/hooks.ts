@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { RectangeSelectionProps, RectangeSelectionState } from './SelectionBox';
 
-const findBlocksUnderSelection = (origin, coords) => {
+const findBlocksUnderSelection = (editorId, origin, coords) => {
   const blocksUnderSelection: number[] = [];
 
-  const blocks = document.querySelectorAll('[data-yoopta-block]');
+  const blocks = document.querySelectorAll(`[data-yoopta-editor-id="${editorId}"] [data-yoopta-block]`);
 
   blocks.forEach((blockEl, i) => {
     if (!blockEl) return;
@@ -34,6 +34,7 @@ type RectangeSelectionReturn = RectangeSelectionState & {
   onClose: () => void;
 };
 
+// [TODO] - Fix selection when multiple editors
 // Maybe move to a separate npm package?
 export const useRectangeSelectionBox = ({
   editor,
@@ -85,7 +86,7 @@ export const useRectangeSelectionBox = ({
       coords: [event.pageX, event.pageY - window.pageYOffset],
     }));
 
-    const blocksUnderSelection = findBlocksUnderSelection(state.origin, [
+    const blocksUnderSelection = findBlocksUnderSelection(editor.id, state.origin, [
       event.pageX,
       event.pageY - window.pageYOffset,
     ]);

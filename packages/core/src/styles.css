@@ -55,11 +55,10 @@ pre {
   background: #c6ddf8;
 }
 
-/* 
-#yoopta-editor {
+.yoopta-editor {
   min-width: 400px;
   height: auto;
-} */
+}
 
 .yoopta-placeholder::after {
   content: attr(data-placeholder);
