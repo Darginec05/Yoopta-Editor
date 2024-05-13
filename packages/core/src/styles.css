@@ -1,17 +1,34 @@
 /* @tailwind base; */
 @tailwind utilities;
-@tailwind components;
 
 *,
 :after,
 :before {
   box-sizing: border-box;
+  border: 0 solid #e5e7eb;
 }
 
 button {
   cursor: pointer;
   background-color: transparent;
   border: none;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
+  font-size: 100%;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  margin: 0;
+  padding: 0;
 }
 
 blockquote,
@@ -38,10 +55,11 @@ pre {
   background: #c6ddf8;
 }
 
+/* 
 #yoopta-editor {
   min-width: 400px;
   height: auto;
-}
+} */
 
 .yoopta-placeholder::after {
   content: attr(data-placeholder);
@@ -58,6 +76,12 @@ pre {
   font-style: inherit;
 }
 
+
+/* common */
+.yoopta-button {
+  @apply yoo-editor-cursor-pointer yoo-editor-bg-transparent yoo-editor-border-none
+}
+
 /* Block styles  */
 .yoopta-block {
   @apply yoo-editor-relative yoo-editor-py-0 yoo-editor-px-[2px] yoo-editor-mt-[2px] yoo-editor-mb-[1px] yoo-editor-rounded
@@ -72,11 +96,11 @@ pre {
 }
 
 .yoopta-block-actions-plus {
-  @apply yoo-editor-cursor-pointer yoo-editor-rounded-[6px] yoo-editor-h-[24px] yoo-editor-flex yoo-editor-items-center yoo-editor-justify-center yoo-editor-bg-inherit yoo-editor-bg-transparent yoo-editor-transition-colors yoo-editor-duration-[180ms] yoo-editor-relative yoo-editor-w-[18px] yoo-editor-p-0 yoo-editor-text-[#37352f59] yoo-editor-m-[0_1px] hover:yoo-editor-bg-[#37362f14] focus:yoo-editor-bg-[#37362f14] active:yoo-editor-bg-[#37362f14] yoo-editor-w-[24px]
+  @apply yoopta-button yoo-editor-cursor-pointer yoo-editor-rounded-[6px] yoo-editor-h-[24px] yoo-editor-flex yoo-editor-items-center yoo-editor-justify-center yoo-editor-bg-inherit yoo-editor-bg-transparent yoo-editor-transition-colors yoo-editor-duration-[180ms] yoo-editor-relative yoo-editor-w-[18px] yoo-editor-p-0 yoo-editor-text-[#37352f59] yoo-editor-m-[0_1px] hover:yoo-editor-bg-[#37362f14] focus:yoo-editor-bg-[#37362f14] active:yoo-editor-bg-[#37362f14] yoo-editor-w-[24px]
 }
 
 .yoopta-block-actions-drag {
-  @apply yoo-editor-cursor-pointer yoo-editor-rounded-[6px] yoo-editor-h-[24px] yoo-editor-flex yoo-editor-items-center yoo-editor-justify-center yoo-editor-bg-inherit yoo-editor-bg-transparent yoo-editor-transition-colors yoo-editor-duration-[180ms] yoo-editor-relative yoo-editor-w-[18px] yoo-editor-p-0 yoo-editor-text-[#37352f59] yoo-editor-m-[0_1px] hover:yoo-editor-bg-[#37362f14] focus:yoo-editor-bg-[#37362f14] active:yoo-editor-bg-[#37362f14]
+  @apply yoopta-button yoo-editor-cursor-pointer yoo-editor-rounded-[6px] yoo-editor-h-[24px] yoo-editor-flex yoo-editor-items-center yoo-editor-justify-center yoo-editor-bg-inherit yoo-editor-bg-transparent yoo-editor-transition-colors yoo-editor-duration-[180ms] yoo-editor-relative yoo-editor-w-[18px] yoo-editor-p-0 yoo-editor-text-[#37352f59] yoo-editor-m-[0_1px] hover:yoo-editor-bg-[#37362f14] focus:yoo-editor-bg-[#37362f14] active:yoo-editor-bg-[#37362f14]
 }
 
 /* Slate editor styles */
@@ -86,7 +110,7 @@ pre {
 
 /* Block options styles */
 .yoopta-block-options-button {
-  @apply yoo-editor-rounded-sm hover:yoo-editor-bg-[#37352f14] yoo-editor-leading-[120%] yoo-editor-px-2 yoo-editor-py-1.5 yoo-editor-mx-[4px] yoo-editor-cursor-pointer yoo-editor-w-full yoo-editor-flex yoo-editor-justify-start
+  @apply yoopta-button yoo-editor-rounded-sm hover:yoo-editor-bg-[#37352f14] yoo-editor-leading-[120%] yoo-editor-px-2 yoo-editor-py-1.5 yoo-editor-mx-[4px] yoo-editor-cursor-pointer yoo-editor-w-full yoo-editor-flex yoo-editor-justify-start
 }
 
 .yoopta-block-options-item {

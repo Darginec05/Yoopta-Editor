@@ -56,7 +56,7 @@ const ExtendedBlockActions = ({ id, className, style, onClick, children }: Props
         type="button"
         ref={blockOptionRefs.setReference}
         id={id}
-        className={`yoopta-extended-block-actions ${className || ''}`}
+        className={`yoopta-button yoopta-extended-block-actions ${className || ''}`}
         onClick={onDotsClick}
         style={isBlockOptionsOpen ? { ...style, opacity: 1 } : style}
       >

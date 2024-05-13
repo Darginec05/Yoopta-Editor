@@ -24,7 +24,7 @@ const EmbedUploader = ({ floatingStyles, refs, onClose, blockId }: Props) => {
                 type="button"
                 style={getTabStyles()}
                 className={
-                  'yoo-embed-py-[6px] yoo-embed-whitespace-nowrap yoo-embed-min-w-0 yoo-embed-flex-shrink-0 yoo-embed-text-[rgb(55,53,47)] yoo-embed-relative yoo-embed-cursor-pointer yoo-embed-user-select-none yoo-embed-bg-inherit yoo-embed-transition-[height_20ms_ease-in] yoo-embed-inline-flex yoo-embed-items-center yoo-embed-h-full yoo-embed-text-[14px] yoo-embed-leading-[1.2] yoo-embed-px-[8px]'
+                  'yoopta-button yoo-embed-py-[6px] yoo-embed-whitespace-nowrap yoo-embed-min-w-0 yoo-embed-flex-shrink-0 yoo-embed-text-[rgb(55,53,47)] yoo-embed-relative yoo-embed-cursor-pointer yoo-embed-user-select-none yoo-embed-bg-inherit yoo-embed-transition-[height_20ms_ease-in] yoo-embed-inline-flex yoo-embed-items-center yoo-embed-h-full yoo-embed-text-[14px] yoo-embed-leading-[1.2] yoo-embed-px-[8px]'
                 }
               >
                 Embed link

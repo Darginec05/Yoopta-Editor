@@ -89,7 +89,7 @@ const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles
                 key={label}
                 title={label}
                 type="button"
-                className="yoo-toolbar-w-[25px] yoo-toolbar-h-[25px] yoo-toolbar-rounded-md yoo-toolbar-mx-[2px] yoo-toolbar-my-[5px] yoo-toolbar-border yoo-toolbar-border-solid-[#e3e3e3]"
+                className="yoopta-button yoo-toolbar-w-[25px] yoo-toolbar-h-[25px] yoo-toolbar-rounded-md yoo-toolbar-mx-[2px] yoo-toolbar-my-[5px] yoo-toolbar-border yoo-toolbar-border-solid-[#e3e3e3]"
                 style={getItemStyles('color', color)}
                 onClick={() => updateColor('color', color)}
               />
@@ -104,7 +104,7 @@ const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles
                 key={label}
                 title={label}
                 type="button"
-                className="yoo-toolbar-w-[25px] yoo-toolbar-h-[25px] yoo-toolbar-rounded-md yoo-toolbar-mx-[2px] yoo-toolbar-my-[5px] yoo-toolbar-border yoo-toolbar-border-[#e3e3e3]"
+                className="yoopta-button yoo-toolbar-w-[25px] yoo-toolbar-h-[25px] yoo-toolbar-rounded-md yoo-toolbar-mx-[2px] yoo-toolbar-my-[5px] yoo-toolbar-border yoo-toolbar-border-[#e3e3e3]"
                 style={getItemStyles('backgroundColor', backgroundColor)}
                 onClick={() => updateColor('backgroundColor', backgroundColor)}
               />

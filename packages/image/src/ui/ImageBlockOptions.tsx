@@ -82,11 +82,7 @@ const ImageBlockOptions = ({ editor, block, props: imageProps }: Props) => {
 
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>
-          <button
-            type="button"
-            className="yoo-image-rounded-sm hover:yoo-image-bg-[#37352f14] yoo-image-leading-[120%] yoo-image-px-2 yoo-image-py-1.5 yoo-image-mx-[4px] yoo-image-cursor-pointer yoo-image-w-full yoo-image-flex yoo-image-justify-start"
-            onClick={onDownload}
-          >
+          <button type="button" className="yoopta-block-options-button" onClick={onDownload}>
             <DownloadIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
             Download
           </button>

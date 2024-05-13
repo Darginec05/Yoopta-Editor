@@ -331,13 +331,12 @@ const Editor = ({ placeholder, marks, className, selectionBoxRoot, width, autoFo
   return (
     <div
       id="yoopta-editor"
+      data-yoopta-editor-id={editor.id}
       className={className}
       style={editorStyles}
       ref={yooptaEditorRef}
       onClick={onClick}
       onBlur={onBlur}
-      // onMouseDown={(e) => e.currentTarget.contentEditable = 'true'}
-      // onMouseUp={(e) => e.currentTarget.contentEditable = 'false'}
     >
       <RenderBlocks editor={editor} marks={marks} placeholder={placeholder} />
       {selectionBoxRoot !== false && (

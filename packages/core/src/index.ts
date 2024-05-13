@@ -9,6 +9,8 @@ export {
   useYooptaPluginOptions,
 } from './contexts/YooptaContext/YooptaContext';
 import { YooptaEditor } from './YooptaEditor';
+
+// [TODO] - should be in separated package @yoopta/common/ui or @yoopta/ui
 export { UI } from './UI';
 
 export { useYooptaTools, Tools } from './contexts/YooptaContext/ToolsContext';
