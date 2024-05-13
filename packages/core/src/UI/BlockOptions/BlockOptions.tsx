@@ -2,22 +2,14 @@ import TurnIcon from './icons/turn.svg';
 import { TrashIcon, CopyIcon, Link2Icon } from '@radix-ui/react-icons';
 import { useYooptaEditor } from '../../contexts/YooptaContext/YooptaContext';
 import { CSSProperties, useState } from 'react';
-import {
-  useFloating,
-  offset,
-  flip,
-  shift,
-  inline,
-  autoUpdate,
-  FloatingPortal,
-  FloatingOverlay,
-  useTransitionStyles,
-} from '@floating-ui/react';
+import { useFloating, offset, flip, shift, inline, autoUpdate, useTransitionStyles } from '@floating-ui/react';
 import copy from 'copy-to-clipboard';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { getRootBlockElement } from '../../utils/blockElements';
 import { useYooptaTools } from '../../contexts/YooptaContext/ToolsContext';
 import { buildActionMenuRenderProps } from './utils';
+import { Overlay } from '../Overlay/Overlay';
+import { Portal } from '../Portal/Portal';
 
 const BlockOptionsMenuGroup = ({ children }) => <div className="yoopta-block-options-group">{children}</div>;
 
@@ -112,8 +104,8 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
 
   return (
     // [TODO] - take care about SSR
-    <FloatingPortal id="yoo-block-options-portal" root={document.getElementById('yoopta-editor')}>
-      <FloatingOverlay lockScroll className="yoo-editor-z-[100]" onClick={onClose}>
+    <Portal id="yoo-block-options-portal">
+      <Overlay lockScroll className="yoo-editor-z-[100]" onClick={onClose}>
         <div style={style} ref={refs.setFloating}>
           <BlockOptionsMenuContent>
             <BlockOptionsMenuGroup>
@@ -132,17 +124,13 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
               {!!ActionMenu && !isVoidElement && !editor.blocks[currentBlock?.type || '']?.hasCustomEditor && (
                 <BlockOptionsMenuItem>
                   {isActionMenuMounted && (
-                    <FloatingPortal id="yoo-block-options-portal" root={document.getElementById('yoopta-editor')}>
-                      <FloatingOverlay
-                        lockScroll
-                        className="yoo-editor-z-[100]"
-                        onClick={() => setIsActionMenuOpen(false)}
-                      >
+                    <Portal id="yoo-block-options-portal">
+                      <Overlay lockScroll className="yoo-editor-z-[100]" onClick={() => setIsActionMenuOpen(false)}>
                         <div style={actionMenuStyles} ref={actionMenuRefs.setFloating}>
                           <ActionMenu {...actionMenuRenderProps} />
                         </div>
-                      </FloatingOverlay>
-                    </FloatingPortal>
+                      </Overlay>
+                    </Portal>
                   )}
                   <button
                     type="button"
@@ -165,8 +153,8 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
             {children}
           </BlockOptionsMenuContent>
         </div>
-      </FloatingOverlay>
-    </FloatingPortal>
+      </Overlay>
+    </Portal>
   );
 };
 

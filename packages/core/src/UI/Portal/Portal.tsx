@@ -5,7 +5,6 @@ import { useYooptaEditor } from '../../contexts/YooptaContext/YooptaContext';
 type Props = {
   children: ReactNode;
   id: string;
-  root?: HTMLElement | null | MutableRefObject<HTMLElement | null>;
 };
 
 const Portal = (props: Props) => {
@@ -20,10 +19,8 @@ const Portal = (props: Props) => {
 
   return (
     <FloatingPortal
-      // id="yoo-block-options-portal"
-      // root={document.getElementById('yoopta-editor')}
       id={`${props.id}-${editor.id}`}
-      root={props.root || (document.querySelector(editor.id) as HTMLElement)}
+      root={document.querySelector(`[data-yoopta-editor-id="${editor.id}"]`) as HTMLElement}
     >
       {props.children}
     </FloatingPortal>

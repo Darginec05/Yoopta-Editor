@@ -17,6 +17,7 @@ import {
 import { YooptaPlugin } from './plugins';
 import { YooptaMark } from './marks';
 import { FakeSelectionMark } from './marks/FakeSelectionMark';
+import { generateId } from './utils/generateId';
 
 type Props = {
   editor: YooEditor;
@@ -91,6 +92,7 @@ const YooptaEditor = ({
   }, [pluginsProps]);
 
   const [editorState, setEditorState] = useState<{ editor: YooEditor<any>; version: number }>(() => {
+    if (!editor.id) editor.id = generateId();
     editor.applyChanges = applyChanges;
     editor.readOnly = readOnly || false;
     if (marks) editor.formats = buildMarks(editor, marks);

@@ -330,9 +330,8 @@ const Editor = ({ placeholder, marks, className, selectionBoxRoot, width, autoFo
 
   return (
     <div
-      id="yoopta-editor"
       data-yoopta-editor-id={editor.id}
-      className={className}
+      className={className ? `yoopta-editor ${className}` : 'yoopta-editor'}
       style={editorStyles}
       ref={yooptaEditorRef}
       onClick={onClick}

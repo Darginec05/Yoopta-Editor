@@ -1,6 +1,7 @@
 import * as SelectPrimitive from '@radix-ui/react-select';
 import DownIcon from '../icons/down.svg';
 import CheckmarkIcon from '../icons/checkmark.svg';
+import { useYooptaEditor } from '@yoopta/editor';
 
 const SelectRoot = SelectPrimitive.Root;
 const SelectValue = SelectPrimitive.Value;
@@ -19,8 +20,10 @@ const SelectTrigger = ({ children, className }) => {
 };
 
 const SelectContent = ({ children }) => {
+  const editor = useYooptaEditor();
+
   return (
-    <SelectPrimitive.Portal container={document.getElementById('yoopta-editor')}>
+    <SelectPrimitive.Portal container={document.querySelector(`[data-yoopta-editor-id="${editor.id}"]`) as HTMLElement}>
       <SelectPrimitive.Content
         className="yoo-code-relative yoo-code-z-[120] yoo-code-max-h-96 yoo-code-min-w-[8rem] yoo-code-overflow-hidden yoo-code-rounded-md yoo-code-border-solid yoo-code-border-[#e3e3e3] yoo-code-bg-[#ffffff] yoo-code-text-popover-foreground yoo-code-shadow-md data-[state=open]:yoo-code-animate-in data-[state=closed]:yoo-code-animate-out data-[state=closed]:yoo-code-fade-out-0 data-[state=open]:yoo-code-fade-in-0 data-[state=closed]:yoo-code-zoom-out-95 data-[state=open]:yoo-code-zoom-in-95 data-[side=bottom]:yoo-code-slide-in-from-top-2 data-[side=left]:yoo-code-slide-in-from-right-2 data-[side=right]:yoo-code-slide-in-from-left-2 data-[side=top]:yoo-code-slide-in-from-bottom-2 data-[side=bottom]:yoo-code-translate-y-1 data-[side=left]:-yoo-code-translate-x-1 data-[side=right]:yoo-code-translate-x-1 data-[side=top]:-yoo-code-translate-y-1"
         position="popper"

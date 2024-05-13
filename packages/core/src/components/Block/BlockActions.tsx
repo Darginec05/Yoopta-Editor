@@ -7,19 +7,12 @@ import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { ReactEditor } from 'slate-react';
 import { Editor, Transforms } from 'slate';
 import { useState } from 'react';
-import {
-  useFloating,
-  offset,
-  flip,
-  inline,
-  shift,
-  useTransitionStyles,
-  FloatingPortal,
-  FloatingOverlay,
-} from '@floating-ui/react';
+import { useFloating, offset, flip, inline, shift, useTransitionStyles } from '@floating-ui/react';
 import { BlockOptions } from '../../UI/BlockOptions/BlockOptions';
 import { getRootBlockElement } from '../../utils/blockElements';
 import { useActionMenuToolRefs } from './hooks';
+import { Overlay } from '../../UI/Overlay/Overlay';
+import { Portal } from '../../UI/Portal/Portal';
 
 type ActionsProps = {
   block: YooptaBlockData;
@@ -129,13 +122,13 @@ const BlockActions = ({ block, editor, dragHandleProps, onChangeActiveBlock, sho
   return (
     <div contentEditable={false} data-hovered-state-open={showActions} className={`yoopta-block-actions`}>
       {isActionMenuOpen && hasActionMenu && (
-        <FloatingPortal id="yoo-block-options-portal" root={document.getElementById('yoopta-editor')}>
-          <FloatingOverlay lockScroll className="yoo-editor-z-[100]" onClick={onCloseActionMenu}>
+        <Portal id="yoo-block-options-portal">
+          <Overlay lockScroll className="yoo-editor-z-[100]" onClick={onCloseActionMenu}>
             <div style={actionMenuStyles} ref={actionMenuRefs.setFloating}>
               <ActionMenu {...actionMenuRenderProps} />
             </div>
-          </FloatingOverlay>
-        </FloatingPortal>
+          </Overlay>
+        </Portal>
       )}
       <button type="button" onClick={onPlusClick} className="yoopta-block-actions-plus">
         <PlusIcon />

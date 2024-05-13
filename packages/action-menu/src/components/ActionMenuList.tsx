@@ -1,15 +1,6 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DefaultActionMenuRender } from './DefaultActionMenuRender';
-import {
-  useFloating,
-  offset,
-  flip,
-  shift,
-  inline,
-  autoUpdate,
-  FloatingPortal,
-  useTransitionStyles,
-} from '@floating-ui/react';
+import { useFloating, offset, flip, shift, inline, autoUpdate, useTransitionStyles } from '@floating-ui/react';
 import { Editor, Path } from 'slate';
 import {
   YooptaBlockData,
@@ -18,10 +9,12 @@ import {
   findSlateBySelectionPath,
   HOTKEYS,
   findPluginBlockBySelectionPath,
-  YooEditor,
+  UI,
 } from '@yoopta/editor';
 import { ActionMenuRenderProps, ActionMenuToolItem, ActionMenuToolProps } from '../types';
 import { buildActionMenuRenderProps, mapActionMenuItems } from './utils';
+
+const { Portal } = UI;
 
 const filterBy = (item: YooptaBlockData | YooptaBlock['options'], text: string, field: string) => {
   if (!item || !item?.[field]) return false;
@@ -82,7 +75,7 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
   };
 
   useEffect(() => {
-    const yooptaEditorRef = document.getElementById('yoopta-editor');
+    const yooptaEditorRef = document.querySelector(`[data-yoopta-editor-id="${editor.id}"]`);
     updateActionMenuPosition();
 
     const handleActionMenuKeyUp = (event: KeyboardEvent) => {
@@ -103,6 +96,7 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
       const slateEditorRef = event.currentTarget as HTMLElement;
 
       const isInsideEditor = slateEditorRef?.contains(event.target as Node);
+
       const pluginWithCustomEditor = document.querySelector('[data-custom-editor]');
       const isInsideCustomEditor = pluginWithCustomEditor?.contains(event.target as Node);
 
@@ -281,37 +275,31 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
     return () => clearTimeout(timeout);
   }, [actions.length, isMenuOpen]);
 
-  if (!isMounted) return null;
-
   const style = { ...floatingStyles, ...transitionStyles };
 
   if (render) {
     return (
       // [TODO] - take care about SSR
-      <FloatingPortal id="yoo-action-menu-list-portal" root={document.getElementById('yoopta-editor')}>
-        <div
-          className="yoo-action-menu-absolute yoo-action-menu-z-[9999] yoo-action-menu-m-0 yoo-action-menu-left-0 yoo-action-menu-top-0 yoo-action-menu-right-auto yoo-action-menu-bottom-auto"
-          style={style}
-          ref={refs.setFloating}
-        >
-          {/* [TODO] - pass key down handler */}
-          {render({ ...renderProps, actions })}
-        </div>
-      </FloatingPortal>
+      <Portal id="yoo-action-menu-list-portal">
+        {isMounted && (
+          <div className="yoopta-action-menu-list" style={style} ref={refs.setFloating}>
+            {/* [TODO] - pass key down handler */}
+            {render({ ...renderProps, actions })}
+          </div>
+        )}
+      </Portal>
     );
   }
 
   return (
     // [TODO] - take care about SSR
-    <FloatingPortal id="yoo-action-menu-list-portal" root={document.getElementById('yoopta-editor')}>
-      <div
-        className="yoo-action-menu-absolute yoo-action-menu-z-[9999] yoo-action-menu-m-0 yoo-action-menu-left-0 yoo-action-menu-top-0 yoo-action-menu-right-auto yoo-action-menu-bottom-auto"
-        style={style}
-        ref={refs.setFloating}
-      >
-        <DefaultActionMenuRender {...renderProps} actions={actions} />
-      </div>
-    </FloatingPortal>
+    <Portal id="yoo-action-menu-list-portal">
+      {isMounted && (
+        <div className="yoopta-action-menu-list" style={style} ref={refs.setFloating}>
+          <DefaultActionMenuRender {...renderProps} actions={actions} />
+        </div>
+      )}
+    </Portal>
   );
 };
 

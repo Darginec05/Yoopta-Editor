@@ -1,7 +1,9 @@
-import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
+import { UI } from '@yoopta/editor';
 import { CSSProperties, useState } from 'react';
 import { EmbedUploader } from './EmbedUploader';
 import { FileUploader } from './FileUploader';
+
+const { Overlay, Portal } = UI;
 
 type Props = {
   floatingStyles: CSSProperties;
@@ -26,8 +28,8 @@ const VideoUploader = ({ floatingStyles, refs, onClose, blockId, onSetLoading }:
   });
 
   return (
-    <FloatingPortal id="yoo-video-uploader-portal" root={document.getElementById('yoopta-editor')}>
-      <FloatingOverlay lockScroll className="yoo-video-z-[100]" onClick={onClose}>
+    <Portal id="yoo-video-uploader-portal">
+      <Overlay lockScroll className="yoo-video-z-[100]" onClick={onClose}>
         <div ref={refs.setFloating} style={floatingStyles} onClick={(e) => e.stopPropagation()}>
           <div className="yoo-video-flex yoo-video-flex-col yoo-video-min-w-[540px] yoo-video-max-w-[calc(100vw-24px)] yoo-video-h-full yoo-video-max-h-[420px] yoo-video-bg-[#FFFFFF] yoo-video-shadow-[rgb(15_15_15_/5%)_0px_0px_0px_1px,_rgb(15_15_15_/10%)_0px_3px_6px,_rgb(15_15_15_/20%)_0px_9px_24px]">
             <div className="yoo-video-w-full yoo-video-flex yoo-video-text-[14px] yoo-video-p-[0_8px] yoo-video-shadow-[rgb(55_53_47_/9%)_0px_-1px_0px_inset] yoo-video-relative yoo-video-z-10 yoo-video-h-[40px]">
@@ -56,8 +58,8 @@ const VideoUploader = ({ floatingStyles, refs, onClose, blockId, onSetLoading }:
             </div>
           </div>
         </div>
-      </FloatingOverlay>
-    </FloatingPortal>
+      </Overlay>
+    </Portal>
   );
 };
 

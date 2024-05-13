@@ -34,10 +34,7 @@ const DefaultActionMenuRender = ({
   };
 
   return (
-    <div
-      style={wrapStyles}
-      className="yoo-action-menu-bg-[#FFFFFF] yoo-action-menu-z-50 yoo-action-menu-h-auto yoo-action-menu-max-h-[330px] yoo-action-menu-w-72 yoo-action-menu-overflow-y-auto yoo-action-menu-rounded-md yoo-action-menu-border yoo-action-menu-border-solid yoo-action-menu-border-[#e5e7eb] yoo-action-menu-border-muted yoo-action-menu-bg-background yoo-action-menu-px-1 yoo-action-menu-py-2 yoo-action-menu-transition-all yoo-action-menu-shadow-md"
-    >
+    <div style={wrapStyles} className="yoopta-action-menu-list-content">
       <div className="yoo-action-menu-max-h-[300px] yoo-action-menu-overflow-y-auto yoo-action-menu-overflow-x-hidden">
         <div
           {...getRootProps()}
