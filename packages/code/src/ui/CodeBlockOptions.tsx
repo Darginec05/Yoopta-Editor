@@ -44,11 +44,7 @@ export const CodeBlockOptions = ({ block, editor, element }: Props) => {
       <BlockOptionsSeparator />
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>
-          <button
-            type="button"
-            className="yoo-code-rounded-sm hover:yoo-code-bg-[#37352f14] yoo-code-leading-[120%] yoo-code-px-2 yoo-code-py-1.5 yoo-code-mx-[4px] yoo-code-cursor-pointer yoo-code-w-full yoo-code-flex yoo-code-justify-start"
-            onClick={onCopy}
-          >
+          <button type="button" className="yoopta-block-options-button" onClick={onCopy}>
             <CopyIcon className="yoo-code-w-4 yoo-code-h-4 yoo-code-mr-2" />
             {isCopied ? 'Copied' : 'Copy'}
           </button>
@@ -61,7 +57,7 @@ export const CodeBlockOptions = ({ block, editor, element }: Props) => {
             onChange={onChangeTheme}
             value={element.props?.theme || 'VSCode'}
           >
-            <Trigger className="yoo-code-rounded-sm hover:yoo-code-bg-[#37352f14] yoo-code-leading-[120%] yoo-code-px-2 yoo-code-py-1.5 yoo-code-mx-[4px] yoo-code-cursor-pointer yoo-code-w-full yoo-code-flex yoo-code-justify-start">
+            <Trigger className="yoopta-block-options-button">
               <ThemeIcon className="yoo-code-w-4 yoo-code-h-4 yoo-code-mr-2" />
               Theme
             </Trigger>
@@ -78,7 +74,7 @@ export const CodeBlockOptions = ({ block, editor, element }: Props) => {
             onChange={onChangeLanguage}
             value={element.props?.language || 'JavaScript'}
           >
-            <Trigger className="yoo-code-rounded-sm hover:yoo-code-bg-[#37352f14] yoo-code-leading-[120%] yoo-code-px-2 yoo-code-py-1.5 yoo-code-mx-[4px] yoo-code-cursor-pointer yoo-code-w-full yoo-code-flex yoo-code-justify-start">
+            <Trigger className="yoopta-block-options-button">
               <CodeIcon className="yoo-code-w-4 yoo-code-h-4 yoo-code-mr-2" />
               Language
             </Trigger>

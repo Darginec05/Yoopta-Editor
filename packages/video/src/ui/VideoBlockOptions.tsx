@@ -53,11 +53,7 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
       {!isExternalVideo && (
         <BlockOptionsMenuGroup>
           <BlockOptionsMenuItem>
-            <button
-              type="button"
-              className="yoo-video-rounded-sm yoo-video-justify-between hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start"
-              onClick={onFit}
-            >
+            <button type="button" className="yoopta-block-options-button yoo-video-justify-between" onClick={onFit}>
               <span className="yoo-video-flex">
                 <RowSpacingIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
                 Fit
@@ -68,11 +64,7 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
             </button>
           </BlockOptionsMenuItem>
           <BlockOptionsMenuItem>
-            <button
-              type="button"
-              className="yoo-video-rounded-sm yoo-video-justify-between hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start"
-              onClick={onFill}
-            >
+            <button type="button" className="yoopta-block-options-button yoo-video-justify-between" onClick={onFill}>
               <span className="yoo-video-flex">
                 <WidthIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
                 Fill
@@ -83,11 +75,7 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
             </button>
           </BlockOptionsMenuItem>
           <BlockOptionsMenuItem>
-            <button
-              type="button"
-              className="yoo-video-rounded-sm yoo-video-justify-between hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start"
-              onClick={onCover}
-            >
+            <button type="button" className="yoopta-block-options-button yoo-video-justify-between" onClick={onCover}>
               <span className="yoo-video-flex">
                 <SizeIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
                 Cover

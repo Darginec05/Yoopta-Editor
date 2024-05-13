@@ -247,26 +247,24 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   );
 
   return (
-    <div data-plugin-id={id} data-plugin-type={type}>
-      <SlateEditorInstance
-        id={id}
-        slate={slate}
-        initialValue={initialValue}
-        onChange={onChange}
-        decorate={decorate}
-        renderLeaf={renderLeaf}
-        renderElement={renderElement}
-        eventHandlers={eventHandlers}
-        onKeyDown={onKeyDown}
-        onKeyUp={onKeyUp}
-        onFocus={onFocus}
-        onClick={onClick}
-        onBlur={onBlur}
-        customEditor={customEditor}
-        readOnly={editor.readOnly}
-        onPaste={onPaste}
-      />
-    </div>
+    <SlateEditorInstance
+      id={id}
+      slate={slate}
+      initialValue={initialValue}
+      onChange={onChange}
+      decorate={decorate}
+      renderLeaf={renderLeaf}
+      renderElement={renderElement}
+      eventHandlers={eventHandlers}
+      onKeyDown={onKeyDown}
+      onKeyUp={onKeyUp}
+      onFocus={onFocus}
+      onClick={onClick}
+      onBlur={onBlur}
+      customEditor={customEditor}
+      readOnly={editor.readOnly}
+      onPaste={onPaste}
+    />
   );
 };
 

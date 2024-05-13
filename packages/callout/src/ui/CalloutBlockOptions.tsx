@@ -32,7 +32,7 @@ const CalloutBlockOptions = ({ editor, block, props: calloutProps }: Props) => {
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="yoopta-block-options-button"
+            className="yoopta-block-options-button yoo-callout-justify-between"
             onClick={() => onChangeTheme('default')}
             style={{
               backgroundColor: isActiveTheme('default') ? CALLOUT_THEME_STYLES.default.backgroundColor : undefined,
@@ -55,7 +55,7 @@ const CalloutBlockOptions = ({ editor, block, props: calloutProps }: Props) => {
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="yoopta-block-options-button"
+            className="yoopta-block-options-button yoo-callout-justify-between"
             onClick={() => onChangeTheme('info')}
             style={{ backgroundColor: isActiveTheme('info') ? CALLOUT_THEME_STYLES.info.backgroundColor : undefined }}
           >
@@ -76,7 +76,7 @@ const CalloutBlockOptions = ({ editor, block, props: calloutProps }: Props) => {
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="yoopta-block-options-button"
+            className="yoopta-block-options-button yoo-callout-justify-between"
             onClick={() => onChangeTheme('success')}
             style={{
               backgroundColor: isActiveTheme('success') ? CALLOUT_THEME_STYLES.success.backgroundColor : undefined,
@@ -99,7 +99,7 @@ const CalloutBlockOptions = ({ editor, block, props: calloutProps }: Props) => {
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="yoopta-block-options-button"
+            className="yoopta-block-options-button yoo-callout-justify-between"
             onClick={() => onChangeTheme('warning')}
             style={{
               backgroundColor: isActiveTheme('warning') ? CALLOUT_THEME_STYLES.warning.backgroundColor : undefined,
@@ -122,7 +122,7 @@ const CalloutBlockOptions = ({ editor, block, props: calloutProps }: Props) => {
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="yoopta-block-options-button"
+            className="yoopta-block-options-button yoo-callout-justify-between"
             onClick={() => onChangeTheme('error')}
             style={{ backgroundColor: isActiveTheme('error') ? CALLOUT_THEME_STYLES.error.backgroundColor : undefined }}
           >

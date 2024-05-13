@@ -19,12 +19,12 @@ import { getRootBlockElement } from '../../utils/blockElements';
 import { useYooptaTools } from '../../contexts/YooptaContext/ToolsContext';
 import { buildActionMenuRenderProps } from './utils';
 
-const BlockOptionsMenuGroup = ({ children }) => <div className="yoo-editor-flex yoo-editor-flex-col">{children}</div>;
+const BlockOptionsMenuGroup = ({ children }) => <div className="yoopta-block-options-group">{children}</div>;
 
 const BlockOptionsMenuContent = ({ children }) => (
   <div
     onClick={(e) => e.stopPropagation()}
-    className="yoo-editor-bg-[#FFF] yoo-editor-relative yoo-editor-min-w-[200px] yoo-editor-w-auto yoo-editor-overflow-hidden yoo-editor-rounded-md yoo-editor-border yoo-editor-border-solid yoo-editor-border-[#e5e7eb] yoo-editor-bg-popover yoo-editor-py-[6px] yoo-editor-px-0 yoo-editor-text-popover-foreground yoo-editor-shadow-md data-[state=open]:yoo-editor-animate-in data-[state=closed]:yoo-editor-animate-out data-[state=closed]:yoo-editor-fade-out-0 data-[state=open]:yoo-editor-fade-in-0 data-[state=closed]:yoo-editor-zoom-out-95 data-[state=open]:yoo-editor-zoom-in-95 data-[side=bottom]:yoo-editor-slide-in-from-top-2 data-[side=left]:yoo-editor-slide-in-from-right-2 data-[side=right]:yoo-editor-slide-in-from-left-2 data-[side=top]:yoo-editor-slide-in-from-bottom-2"
+    className="yoopta-block-options-menu-content data-[state=open]:yoo-editor-animate-in data-[state=closed]:yoo-editor-animate-out data-[state=closed]:yoo-editor-fade-out-0 data-[state=open]:yoo-editor-fade-in-0 data-[state=closed]:yoo-editor-zoom-out-95 data-[state=open]:yoo-editor-zoom-in-95 data-[side=bottom]:yoo-editor-slide-in-from-top-2 data-[side=left]:yoo-editor-slide-in-from-right-2 data-[side=right]:yoo-editor-slide-in-from-left-2 data-[side=top]:yoo-editor-slide-in-from-bottom-2"
   >
     {children}
   </div>
@@ -37,7 +37,7 @@ type BlockOptionsSeparatorProps = {
 };
 
 const BlockOptionsSeparator = ({ className = '' }: BlockOptionsSeparatorProps) => (
-  <div className={`yoo-editor-h-[1px] yoo-editor-bg-[#37352f14] yoo-editor-my-[4px] yoo-editor-w-full ${className}`} />
+  <div className={`yoopta-block-options-separator ${className}`} />
 );
 
 type BlockOptionsProps = {
