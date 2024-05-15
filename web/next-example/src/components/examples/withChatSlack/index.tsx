@@ -1,4 +1,4 @@
-import { SlackChat } from '../Chats/SlackChat/SlackChat';
+import { SlackChat } from '../../Chats/SlackChat/SlackChat';
 
 function WithSlackChatExample() {
   return (
