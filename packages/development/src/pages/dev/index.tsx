@@ -678,7 +678,11 @@ const BasicExample = () => {
           <button
             className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
             onClick={() => {
-              editor.setEditorValue(value);
+              editor.setEditorValue({});
+
+              setTimeout(() => {
+                console.log('editor', editor.blockEditorsMap);
+              }, 100);
             }}
           >
             Set value

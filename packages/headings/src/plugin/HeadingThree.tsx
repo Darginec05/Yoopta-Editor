@@ -1,7 +1,7 @@
 import { PluginElementRenderProps, YooptaPlugin } from '@yoopta/editor';
 
 const HeadingThreeRender = ({ attributes, children, element, HTMLAttributes = {} }: PluginElementRenderProps) => {
-  const { className, ...htmlAttrs } = HTMLAttributes;
+  const { className = '', ...htmlAttrs } = HTMLAttributes;
 
   return (
     <h3
