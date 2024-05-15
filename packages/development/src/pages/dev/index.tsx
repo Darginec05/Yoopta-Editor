@@ -441,36 +441,6 @@ const value = {
       depth: 0,
     },
   },
-  '5cd4e842-97c6-4858-aaac-1ee52a7166d7': {
-    id: '5cd4e842-97c6-4858-aaac-1ee52a7166d7',
-    value: [
-      {
-        id: 'c2a8422d-c472-4eb7-98bf-7779d30caf0e',
-        type: 'image',
-        children: [
-          {
-            text: '',
-          },
-        ],
-        props: {
-          nodeType: 'void',
-          src: 'https://res.cloudinary.com/ench-app/image/upload/v1715632817/GNYvP3UXUAAbPKZ_yd1yws.jpg',
-          alt: 'cloudinary',
-          srcSet: null,
-          fit: 'fill',
-          sizes: {
-            width: 1170,
-            height: 1162,
-          },
-        },
-      },
-    ],
-    type: 'Image',
-    meta: {
-      order: 14,
-      depth: 0,
-    },
-  },
   '19a53b1b-8bcc-48d0-b0b2-729f83efa669': {
     id: '19a53b1b-8bcc-48d0-b0b2-729f83efa669',
     type: 'Callout',
