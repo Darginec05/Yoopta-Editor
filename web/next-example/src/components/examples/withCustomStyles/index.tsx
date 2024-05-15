@@ -1,4 +1,6 @@
 import YooptaEditor, { createYooptaEditor } from '@yoopta/editor';
+import { useTheme } from 'next-themes';
+import { useEffect, useMemo, useRef } from 'react';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
@@ -15,25 +17,45 @@ import Code from '@yoopta/code';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
-// import { DividerPlugin } from './customPlugins/Divider';
+import s from './withCustomStyles.module.scss';
 
-import { Sheet } from '@/components/ui/sheet';
-
+import { WITH_CUSTOM_STYLES_VALUE } from './initValue';
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { useEffect, useMemo, useRef } from 'react';
 
 const plugins = [
   Paragraph,
   HeadingOne,
-  HeadingTwo,
+  HeadingTwo.extend({
+    options: {
+      HTMLAttributes: {
+        style: {
+          color: 'green',
+        },
+      },
+    },
+  }),
   HeadingThree,
-  Blockquote,
+  Blockquote.extend({
+    options: {
+      HTMLAttributes: {
+        className: s.blockquote,
+      },
+    },
+  }),
   Callout,
   NumberedList,
   BulletedList,
   TodoList,
   Code,
-  Link,
+  Link.extend({
+    options: {
+      HTMLAttributes: {
+        style: {
+          color: 'green',
+        },
+      },
+    },
+  }),
   Embed,
   Image.extend({
     options: {
@@ -96,6 +118,7 @@ const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 function WithCustomStylesExample() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
+  const { setTheme } = useTheme();
 
   useEffect(() => {
     function handleChange(value) {
@@ -118,31 +141,7 @@ function WithCustomStylesExample() {
         tools={TOOLS}
         marks={MARKS}
         selectionBoxRoot={selectionRef}
-        readOnly
-        value={{
-          '7e11916a-b983-48ca-aeff-bf6b04f5ee2b': {
-            id: '7e11916a-b983-48ca-aeff-bf6b04f5ee2b',
-            type: 'HeadingTwo',
-            meta: {
-              order: 0,
-              depth: 0,
-            },
-            value: [
-              {
-                id: '4325c741-1445-450f-be2d-f51368b1a3ff',
-                type: 'heading-two',
-                children: [
-                  {
-                    text: 'Example in progress..',
-                  },
-                ],
-                props: {
-                  nodeType: 'block',
-                },
-              },
-            ],
-          },
-        }}
+        value={WITH_CUSTOM_STYLES_VALUE}
       />
     </div>
   );

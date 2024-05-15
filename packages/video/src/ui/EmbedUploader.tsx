@@ -38,7 +38,7 @@ const EmbedUploader = ({ blockId, onClose }) => {
       />
       <button
         type="button"
-        className="yoo-video-user-select-none yoo-video-transition-bg yoo-video-duration-20 yoo-video-ease-in yoo-video-cursor-pointer yoo-video-flex yoo-video-items-center yoo-video-justify-center yoo-video-flex-shrink-0 yoo-video-white-space-nowrap yoo-video-h-[28px] yoo-video-rounded-[4px] yoo-video-shadow-[rgba(15,15,15,0.1)_0px_0px_0px_1px_inset,_rgba(15,15,15,0.1)_0px_1px_2px] yoo-video-bg-[rgb(35,131,226)] yoo-video-text-white yoo-video-fill-white yoo-video-leading-[1.2] yoo-video-px-[12px] yoo-video-text-[14px] yoo-video-font-medium yoo-video-w-full yoo-video-max-w-[300px] yoo-video-mx-auto yoo-video-m-[12px_0_6px] disabled:yoo-video-bg-[rgba(35,131,226,0.5)] disabled:yoo-video-cursor-not-allowed"
+        className="yoopta-button yoo-video-user-select-none yoo-video-transition-bg yoo-video-duration-20 yoo-video-ease-in yoo-video-cursor-pointer yoo-video-flex yoo-video-items-center yoo-video-justify-center yoo-video-flex-shrink-0 yoo-video-white-space-nowrap yoo-video-h-[28px] yoo-video-rounded-[4px] yoo-video-shadow-[rgba(15,15,15,0.1)_0px_0px_0px_1px_inset,_rgba(15,15,15,0.1)_0px_1px_2px] yoo-video-bg-[rgb(35,131,226)] yoo-video-text-white yoo-video-fill-white yoo-video-leading-[1.2] yoo-video-px-[12px] yoo-video-text-[14px] yoo-video-font-medium yoo-video-w-full yoo-video-max-w-[300px] yoo-video-mx-auto yoo-video-m-[12px_0_6px] disabled:yoo-video-bg-[rgba(35,131,226,0.5)] disabled:yoo-video-cursor-not-allowed"
         disabled={isEmpty}
         onClick={embed}
       >

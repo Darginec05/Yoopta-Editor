@@ -1,7 +1,7 @@
-import { FloatingPortal } from '@floating-ui/react';
 // import { ChevronUpIcon } from '@radix-ui/react-icons';
 import { CSSProperties, MouseEvent } from 'react';
-import { YooEditor } from '@yoopta/editor';
+import { YooEditor, UI } from '@yoopta/editor';
+const { Portal } = UI;
 
 const colors = [
   ['Default', 'black'],
@@ -77,7 +77,7 @@ const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles
   };
 
   return (
-    <FloatingPortal id="yoo-highlight-color-portal" root={document.getElementById('yoopta-editor')}>
+    <Portal id="yoo-highlight-color-portal">
       <div style={floatingStyles} ref={refs.setFloating} onClick={(e: MouseEvent) => e.stopPropagation()}>
         <div className="yoo-toolbar-bg-[#FFFFFF] yoo-toolbar-p-[5px] yoo-toolbar-rounded-md yoo-toolbar-shadow-md yoo-toolbar-border-[1px] yoo-toolbar-border-solid yoo-toolbar-border-[#e5e7eb] yoo-toolbar-shadow-y-[4px]">
           <div className="yoo-toolbar-flex yoo-toolbar-items-center yoo-toolbar-justify-between">
@@ -89,7 +89,7 @@ const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles
                 key={label}
                 title={label}
                 type="button"
-                className="yoo-toolbar-w-[25px] yoo-toolbar-h-[25px] yoo-toolbar-rounded-md yoo-toolbar-mx-[2px] yoo-toolbar-my-[5px] yoo-toolbar-border yoo-toolbar-border-solid-[#e3e3e3]"
+                className="yoopta-button yoo-toolbar-w-[25px] yoo-toolbar-h-[25px] yoo-toolbar-rounded-md yoo-toolbar-mx-[2px] yoo-toolbar-my-[5px] yoo-toolbar-border yoo-toolbar-border-solid-[#e3e3e3]"
                 style={getItemStyles('color', color)}
                 onClick={() => updateColor('color', color)}
               />
@@ -104,7 +104,7 @@ const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles
                 key={label}
                 title={label}
                 type="button"
-                className="yoo-toolbar-w-[25px] yoo-toolbar-h-[25px] yoo-toolbar-rounded-md yoo-toolbar-mx-[2px] yoo-toolbar-my-[5px] yoo-toolbar-border yoo-toolbar-border-[#e3e3e3]"
+                className="yoopta-button yoo-toolbar-w-[25px] yoo-toolbar-h-[25px] yoo-toolbar-rounded-md yoo-toolbar-mx-[2px] yoo-toolbar-my-[5px] yoo-toolbar-border yoo-toolbar-border-[#e3e3e3]"
                 style={getItemStyles('backgroundColor', backgroundColor)}
                 onClick={() => updateColor('backgroundColor', backgroundColor)}
               />
@@ -112,7 +112,7 @@ const HighlightColor = ({ editor, highlightColors, onClose, refs, floatingStyles
           </div>
         </div>
       </div>
-    </FloatingPortal>
+    </Portal>
   );
 };
 

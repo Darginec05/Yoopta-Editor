@@ -1,18 +1,11 @@
 import { useEffect, useState } from 'react';
 import { DefaultToolbarRender } from './DefaultToolbarRender';
-import {
-  useFloating,
-  offset,
-  flip,
-  shift,
-  inline,
-  autoUpdate,
-  FloatingPortal,
-  useTransitionStyles,
-} from '@floating-ui/react';
+import { useFloating, offset, flip, shift, inline, autoUpdate, useTransitionStyles } from '@floating-ui/react';
 import throttle from 'lodash.throttle';
-import { useYooptaEditor } from '@yoopta/editor';
+import { useYooptaEditor, UI } from '@yoopta/editor';
 import { ToolbarToolProps } from '../types';
+
+const { Portal } = UI;
 
 const Toolbar = ({ render }: ToolbarToolProps) => {
   const editor = useYooptaEditor();
@@ -43,7 +36,7 @@ const Toolbar = ({ render }: ToolbarToolProps) => {
     const text = domRange.toString().trim();
 
     const pluginWithCustomEditor = document.querySelectorAll('[data-custom-editor]');
-    const yooptaEditorEl = document.getElementById('yoopta-editor');
+    const yooptaEditorEl = document.querySelector(`[data-yoopta-editor-id="${editor.id}"]`);
     const ancestor = domRange?.commonAncestorContainer;
 
     let isInsideCustomEditor = false;
@@ -86,21 +79,21 @@ const Toolbar = ({ render }: ToolbarToolProps) => {
     const RenderComponent = render;
 
     return (
-      <FloatingPortal id="yoo-toolbar-portal" root={document.getElementById('yoopta-editor')}>
+      <Portal id="yoo-toolbar-portal">
         <div style={style} ref={refs.setFloating} onClick={(e) => e.stopPropagation()}>
           <RenderComponent activeBlock={activeBlock} editor={editor} toggleHoldToolbar={toggleHoldToolbar} />
         </div>
-      </FloatingPortal>
+      </Portal>
     );
   }
 
   return (
     // [TODO] - take care about SSR
-    <FloatingPortal id="yoo-toolbar-portal" root={document.getElementById('yoopta-editor')}>
+    <Portal id="yoo-toolbar-portal">
       <div style={style} ref={refs.setFloating} onClick={(e) => e.stopPropagation()}>
         <DefaultToolbarRender activeBlock={activeBlock} editor={editor} toggleHoldToolbar={toggleHoldToolbar} />
       </div>
-    </FloatingPortal>
+    </Portal>
   );
 };
 

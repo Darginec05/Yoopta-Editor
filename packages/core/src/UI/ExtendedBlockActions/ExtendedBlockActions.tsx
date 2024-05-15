@@ -56,9 +56,7 @@ const ExtendedBlockActions = ({ id, className, style, onClick, children }: Props
         type="button"
         ref={blockOptionRefs.setReference}
         id={id}
-        className={`yoo-editor-absolute yoo-editor-right-[8px] yoo-editor-top-[8px] yoo-editor-flex yoo-editor-items-center yoo-editor-justify-between yoo-editor-z-10 yoo-editor-opacity-1 yoo-editor-bg-[#eee] yoo-editor-w-[22px] yoo-editor-h-[22px] yoo-editor-transition-opacity yoo-editor-duration-150 yoo-editor-ease-in yoo-editor-border-none yoo-editor-cursor-pointer yoo-editor-rounded-[2px] yoo-editor-p-[0_4px] ${
-          className || ''
-        } yoopta-extended-block-actions`}
+        className={`yoopta-button yoopta-extended-block-actions ${className || ''}`}
         onClick={onDotsClick}
         style={isBlockOptionsOpen ? { ...style, opacity: 1 } : style}
       >

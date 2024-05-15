@@ -45,11 +45,7 @@ const ImageBlockOptions = ({ editor, block, props: imageProps }: Props) => {
       <BlockOptionsSeparator />
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>
-          <button
-            type="button"
-            className="yoo-image-rounded-sm yoo-image-justify-between hover:yoo-image-bg-[#37352f14] yoo-image-leading-[120%] yoo-image-px-2 yoo-image-py-1.5 yoo-image-mx-[4px] yoo-image-cursor-pointer yoo-image-w-full yoo-image-flex yoo-image-justify-start"
-            onClick={onFit}
-          >
+          <button type="button" className="yoopta-block-options-button yoo-image-justify-between" onClick={onFit}>
             <span className="yoo-image-flex">
               <RowSpacingIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
               Fit
@@ -60,11 +56,7 @@ const ImageBlockOptions = ({ editor, block, props: imageProps }: Props) => {
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
-          <button
-            type="button"
-            className="yoo-image-rounded-sm yoo-image-justify-between hover:yoo-image-bg-[#37352f14] yoo-image-leading-[120%] yoo-image-px-2 yoo-image-py-1.5 yoo-image-mx-[4px] yoo-image-cursor-pointer yoo-image-w-full yoo-image-flex yoo-image-justify-start"
-            onClick={onFill}
-          >
+          <button type="button" className="yoopta-block-options-button yoo-image-justify-between" onClick={onFill}>
             <span className="yoo-image-flex">
               <WidthIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
               Fill
@@ -75,11 +67,7 @@ const ImageBlockOptions = ({ editor, block, props: imageProps }: Props) => {
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
-          <button
-            type="button"
-            className="yoo-image-rounded-sm yoo-image-justify-between hover:yoo-image-bg-[#37352f14] yoo-image-leading-[120%] yoo-image-px-2 yoo-image-py-1.5 yoo-image-mx-[4px] yoo-image-cursor-pointer yoo-image-w-full yoo-image-flex yoo-image-justify-start"
-            onClick={onCover}
-          >
+          <button type="button" className="yoopta-block-options-button yoo-image-justify-between" onClick={onCover}>
             <span className="yoo-image-flex">
               <SizeIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
               Cover
@@ -94,11 +82,7 @@ const ImageBlockOptions = ({ editor, block, props: imageProps }: Props) => {
 
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>
-          <button
-            type="button"
-            className="yoo-image-rounded-sm hover:yoo-image-bg-[#37352f14] yoo-image-leading-[120%] yoo-image-px-2 yoo-image-py-1.5 yoo-image-mx-[4px] yoo-image-cursor-pointer yoo-image-w-full yoo-image-flex yoo-image-justify-start"
-            onClick={onDownload}
-          >
+          <button type="button" className="yoopta-block-options-button" onClick={onDownload}>
             <DownloadIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
             Download
           </button>

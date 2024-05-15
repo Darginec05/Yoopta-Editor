@@ -74,6 +74,7 @@ export type YooEditorEvents = 'change' | 'block:copy';
 
 // [TODO] - Fix generic and default types
 export type YooEditor<TNodes = any> = {
+  id: string;
   insertBlock: (data: YooptaBlockData, options?: YooptaEditorTransformOptions) => void;
   insertBlocks: (blocks: YooptaBlockData[], options?: YooptaEditorTransformOptions) => void;
   splitBlock: (options?: YooptaEditorTransformOptions) => void;

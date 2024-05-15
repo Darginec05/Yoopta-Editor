@@ -1,4 +1,4 @@
-import { FloatingOverlay, FloatingPortal } from '@floating-ui/react';
+import { UI } from '@yoopta/editor';
 import { CSSProperties, useState } from 'react';
 import { EmbedUploader } from './EmbedUploader';
 import { FileUploader } from './FileUploader';
@@ -10,6 +10,7 @@ type Props = {
   onClose: () => void;
   onSetLoading: (_s: boolean) => void;
 };
+const { Overlay, Portal } = UI;
 
 type Tab = 'upload' | 'embed';
 
@@ -26,8 +27,8 @@ const ImageUploader = ({ floatingStyles, refs, onClose, blockId, onSetLoading }:
   });
 
   return (
-    <FloatingPortal id="yoo-image-uploader-portal" root={document.getElementById('yoopta-editor')}>
-      <FloatingOverlay lockScroll className="yoo-image-z-[100]" onClick={onClose}>
+    <Portal id="yoo-image-uploader-portal">
+      <Overlay lockScroll className="yoo-image-z-[100]" onClick={onClose}>
         <div ref={refs.setFloating} style={floatingStyles} onClick={(e) => e.stopPropagation()}>
           <div className="yoo-image-flex yoo-image-flex-col yoo-image-min-w-[540px] yoo-image-max-w-[calc(100vw-24px)] yoo-image-h-full yoo-image-max-h-[420px] yoo-image-bg-[#FFFFFF] yoo-image-shadow-[rgb(15_15_15_/5%)_0px_0px_0px_1px,_rgb(15_15_15_/10%)_0px_3px_6px,_rgb(15_15_15_/20%)_0px_9px_24px]">
             <div className="yoo-image-w-full yoo-image-flex yoo-image-text-[14px] yoo-image-p-[0_8px] yoo-image-shadow-[rgb(55_53_47_/9%)_0px_-1px_0px_inset] yoo-image-relative yoo-image-z-10 yoo-image-h-[40px]">
@@ -35,7 +36,7 @@ const ImageUploader = ({ floatingStyles, refs, onClose, blockId, onSetLoading }:
                 type="button"
                 onClick={() => switchTab('upload')}
                 style={getTabStyles(isUploader)}
-                className={`yoo-image-py-[6px] yoo-image-whitespace-nowrap yoo-image-min-w-0 yoo-image-flex-shrink-0 yoo-image-text-[rgb(55,53,47)] yoo-image-relative yoo-image-cursor-pointer yoo-image-user-select-none yoo-image-bg-inherit yoo-image-transition-[height_20ms_ease-in] yoo-image-inline-flex yoo-image-items-center yoo-image-h-full yoo-image-text-[14px] yoo-image-leading-[1.2] yoo-image-px-[8px]`}
+                className={`yoopta-button yoo-image-py-[6px] yoo-image-whitespace-nowrap yoo-image-min-w-0 yoo-image-flex-shrink-0 yoo-image-text-[rgb(55,53,47)] yoo-image-relative yoo-image-cursor-pointer yoo-image-user-select-none yoo-image-bg-inherit yoo-image-transition-[height_20ms_ease-in] yoo-image-inline-flex yoo-image-items-center yoo-image-h-full yoo-image-text-[14px] yoo-image-leading-[1.2] yoo-image-px-[8px]`}
               >
                 Upload
               </button>
@@ -44,7 +45,7 @@ const ImageUploader = ({ floatingStyles, refs, onClose, blockId, onSetLoading }:
                 onClick={() => switchTab('embed')}
                 style={getTabStyles(isEmbed)}
                 className={
-                  'yoo-image-py-[6px] yoo-image-whitespace-nowrap yoo-image-min-w-0 yoo-image-flex-shrink-0 yoo-image-text-[rgb(55,53,47)] yoo-image-relative yoo-image-cursor-pointer yoo-image-user-select-none yoo-image-bg-inherit yoo-image-transition-[height_20ms_ease-in] yoo-image-inline-flex yoo-image-items-center yoo-image-h-full yoo-image-text-[14px] yoo-image-leading-[1.2] yoo-image-px-[8px]'
+                  'yoopta-button yoo-image-py-[6px] yoo-image-whitespace-nowrap yoo-image-min-w-0 yoo-image-flex-shrink-0 yoo-image-text-[rgb(55,53,47)] yoo-image-relative yoo-image-cursor-pointer yoo-image-user-select-none yoo-image-bg-inherit yoo-image-transition-[height_20ms_ease-in] yoo-image-inline-flex yoo-image-items-center yoo-image-h-full yoo-image-text-[14px] yoo-image-leading-[1.2] yoo-image-px-[8px]'
                 }
               >
                 Image link
@@ -56,8 +57,8 @@ const ImageUploader = ({ floatingStyles, refs, onClose, blockId, onSetLoading }:
             </div>
           </div>
         </div>
-      </FloatingOverlay>
-    </FloatingPortal>
+      </Overlay>
+    </Portal>
   );
 };
 

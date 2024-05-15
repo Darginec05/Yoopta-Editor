@@ -8,27 +8,10 @@ import {
   ChevronUpIcon,
 } from '@radix-ui/react-icons';
 import * as Toolbar from '@radix-ui/react-toolbar';
-import {
-  useFloating,
-  offset,
-  flip,
-  shift,
-  inline,
-  autoUpdate,
-  FloatingPortal,
-  FloatingOverlay,
-} from '@floating-ui/react';
+import { useFloating, offset, flip, shift, inline, autoUpdate } from '@floating-ui/react';
 import { CSSProperties, MouseEvent, useEffect, useRef, useState } from 'react';
 import { HighlightColor } from './HighlightColor';
-import {
-  findSlateBySelectionPath,
-  getRootBlockElement,
-  HOTKEYS,
-  SlateElement,
-  useYooptaTools,
-  YooEditor,
-  YooptaBlock,
-} from '@yoopta/editor';
+import { findSlateBySelectionPath, HOTKEYS, SlateElement, useYooptaTools, UI } from '@yoopta/editor';
 import { Editor, Element, NodeEntry, Range, Transforms } from 'slate';
 import { ToolbarRenderProps } from '../types';
 import { buildActionMenuRenderProps } from './utils';
@@ -38,14 +21,7 @@ type LinkValues = {
   url: string;
 };
 
-function filterToggleActions(editor: YooEditor, type: string) {
-  const block = editor.blocks[type];
-  if (!block) return false;
-
-  const rootBlock = getRootBlockElement(block.elements);
-  if (rootBlock?.props?.nodeType === 'void') return false;
-  return true;
-}
+const { Overlay, Portal } = UI;
 
 const getLinkEntry = (slate) => {
   const [link] = Editor.nodes(slate, {
@@ -265,7 +241,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
         aria-label="Block formatting"
       >
         <Toolbar.ToggleItem
-          className="yoo-toolbar-h-full yoo-toolbar-text-[16px] yoo-toolbar-px-[10px] yoo-toolbar-py-0 hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md"
+          className="yoopta-button yoo-toolbar-h-full yoo-toolbar-text-[16px] yoo-toolbar-px-[10px] yoo-toolbar-py-0 hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md"
           value={blockLabel}
           aria-label={blockLabel}
           ref={actionMenuRefs.setReference}
@@ -274,11 +250,11 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
         >
           <span className="yoo-toolbar-mr-0">{blockLabel}</span>
           {modals.actionMenu && !!ActionMenu && (
-            <FloatingPortal id="yoo-toolbar-action-menu-list-portal" root={document.getElementById('yoopta-editor')}>
+            <Portal id="yoo-toolbar-action-menu-list-portal">
               <div style={actionMenuStyles} ref={actionMenuRefs.setFloating} onClick={(e) => e.stopPropagation()}>
                 <ActionMenu {...actionMenuRenderProps} />
               </div>
-            </FloatingPortal>
+            </Portal>
           )}
         </Toolbar.ToggleItem>
       </Toolbar.ToggleGroup>
@@ -289,7 +265,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
         aria-label="Block formatting"
       >
         <Toolbar.ToggleItem
-          className="yoo-toolbar-h-full yoo-toolbar-text-[16px] yoo-toolbar-px-[10px] yoo-toolbar-py-0 hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md"
+          className="yoopta-button yoo-toolbar-h-full yoo-toolbar-text-[16px] yoo-toolbar-px-[10px] yoo-toolbar-py-0 hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md"
           value="LinkTool"
           aria-label="LinkTool"
           ref={linkToolRefs.setReference}
@@ -301,13 +277,13 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
         >
           <span className="yoo-toolbar-mr-0">Link</span>
           {modals.link && !!LinkTool && (
-            <FloatingPortal id="yoo-link-tool-portal" root={document.getElementById('yoopta-editor')}>
-              <FloatingOverlay lockScroll className="z-[100]" onClick={onClickLinkOverlay}>
+            <Portal id="yoo-link-tool-portal">
+              <Overlay lockScroll className="z-[100]" onClick={onClickLinkOverlay}>
                 <div style={linkToolStyles} ref={linkToolRefs.setFloating}>
                   <LinkTool link={linkValues} onSave={onUpdateLink} onDelete={onDeleteLink} />
                 </div>
-              </FloatingOverlay>
-            </FloatingPortal>
+              </Overlay>
+            </Portal>
           )}
         </Toolbar.ToggleItem>
       </Toolbar.ToggleGroup>
@@ -319,7 +295,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
       >
         {editor.formats.bold && (
           <Toolbar.ToggleItem
-            className="yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
+            className="yoopta-button yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
             value="bold"
             aria-label="Bold"
             style={getItemStyle('bold')}
@@ -330,7 +306,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
         )}
         {editor.formats.italic && (
           <Toolbar.ToggleItem
-            className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
+            className="yoopta-button yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
             value="italic"
             aria-label="Italic"
             style={getItemStyle('italic')}
@@ -341,7 +317,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
         )}
         {editor.formats.underline && (
           <Toolbar.ToggleItem
-            className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
+            className="yoopta-button yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
             value="underline"
             aria-label="Underline"
             style={getItemStyle('underline')}
@@ -352,7 +328,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
         )}
         {editor.formats.strike && (
           <Toolbar.ToggleItem
-            className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
+            className="yoopta-button yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
             value="strike"
             aria-label="Strike"
             style={getItemStyle('strike')}
@@ -364,7 +340,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
         )}
         {editor.formats.code && (
           <Toolbar.ToggleItem
-            className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
+            className="yoopta-button yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
             value="code"
             aria-label="Code"
             style={getItemStyle('code')}
@@ -386,7 +362,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
             )}
 
             <Toolbar.ToggleItem
-              className="yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
+              className="yoopta-button yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
               value="highlight"
               aria-label="Highlight"
               style={getHighlightTriggerStyle()}

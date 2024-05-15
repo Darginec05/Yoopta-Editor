@@ -29,7 +29,7 @@ const Placeholder = ({ attributes, children, blockId }) => {
       contentEditable={false}
     >
       <button
-        className={`yoo-file-p-[12px_36px_12px_12px] yoo-file-flex yoo-file-items-center yoo-file-text-left yoo-file-w-full yoo-file-overflow-hidden yoo-file-rounded-[3px] yoo-file-text-[14px] yoo-file-text-[rgba(55,53,47,0.65)] yoo-file-relative yoo-file-cursor-pointer yoo-file-border-none yoo-file-bg-[#efefef] yoo-file-transition-[background-color_100ms_ease-in] hover:yoo-file-bg-[#e3e3e3]`}
+        className={`yoopta-button yoo-file-p-[12px_36px_12px_12px] yoo-file-flex yoo-file-items-center yoo-file-text-left yoo-file-w-full yoo-file-overflow-hidden yoo-file-rounded-[3px] yoo-file-text-[14px] yoo-file-text-[rgba(55,53,47,0.65)] yoo-file-relative yoo-file-cursor-pointer yoo-file-border-none yoo-file-bg-[#efefef] yoo-file-transition-[background-color_100ms_ease-in] hover:yoo-file-bg-[#e3e3e3]`}
         onClick={() => setIsUploaderOpen(true)}
         ref={refs.setReference}
       >
@@ -41,7 +41,7 @@ const Placeholder = ({ attributes, children, blockId }) => {
         <span className="yoo-file-font-medium">{loading ? 'Loading...' : 'Click to add file'}</span>
         {loading && (
           <div
-            className="yoo-file-absolute yoo-file-top-0 yoo-file-left-0 yoo-file-h-full yoo-file-bg-[rgba(55,53,47,0.16)]"
+            className="yoopta-button yoo-file-absolute yoo-file-top-0 yoo-file-left-0 yoo-file-h-full yoo-file-bg-[rgba(55,53,47,0.16)]"
             style={loadingStyles}
           />
         )}

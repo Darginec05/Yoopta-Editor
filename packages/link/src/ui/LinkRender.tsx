@@ -19,7 +19,7 @@ const LinkRender = (props: PluginElementRenderProps) => {
       rel={rel}
       target={target}
       onClick={onClick}
-      className={`yoo-link-underline yoo-link-underline-offset-4 yoo-link-text-[#007AFF] hover:yoo-link-text-[#3b82f6] ${className}`}
+      className={`yoopta-link ${className}`}
       {...htmlAttrs}
       {...props.attributes}
     >

@@ -6,7 +6,7 @@ const ParagraphRender = (props: PluginElementRenderProps) => {
   return (
     <p
       data-element-type={props.element.type}
-      className={`yoo-p-leading-7 yoo-p-mt-2 yoo-text-[16px] ${className}`}
+      className={`yoopta-paragraph ${className}`}
       {...htmlAttrs}
       {...props.attributes}
     >

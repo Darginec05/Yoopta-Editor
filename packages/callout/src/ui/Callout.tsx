@@ -1,5 +1,4 @@
 import { PluginElementRenderProps, useBlockData, useYooptaEditor, useYooptaReadOnly } from '@yoopta/editor';
-import { CALLOUT_THEME_STYLES } from '../utils';
 import { CalloutBlockOptions } from './CalloutBlockOptions';
 
 const CalloutRender = ({ element, attributes, children, blockId, HTMLAttributes = {} }: PluginElementRenderProps) => {
@@ -9,13 +8,11 @@ const CalloutRender = ({ element, attributes, children, blockId, HTMLAttributes 
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
   const { theme = 'default' } = element.props || {};
-  const styles = CALLOUT_THEME_STYLES[theme];
 
   return (
     <div
       data-element-type={element.type}
-      style={styles}
-      className={`yoo-callout-rounded-md yoo-callout-mt-2 yoo-callout-p-2 yoo-callout-pl-4 yoo-callout-leading-7 yoo-callout-bg-info yoo-callout-text-info-foreground yoo-callout-text-[16px] yoopta-callout-theme-${theme} ${className}`}
+      className={`yoopta-callout yoopta-callout-theme-${theme} ${className}`}
       {...htmlAttrs}
       {...attributes}
     >

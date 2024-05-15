@@ -42,7 +42,7 @@ const plugins = [
   Paragraph.extend({
     options: {
       HTMLAttributes: {
-        className: 'paragraph-element',
+        className: 'paragraph-element-extended',
       },
     },
   }),
@@ -64,7 +64,7 @@ const plugins = [
     // },
     options: {
       HTMLAttributes: {
-        className: 'image-element',
+        className: 'image-element-extended',
       },
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file);
@@ -84,7 +84,7 @@ const plugins = [
   Headings.HeadingOne.extend({
     options: {
       HTMLAttributes: {
-        className: 'heading-one-element',
+        className: 'heading-one-element-extended',
         style: {
           color: 'red !important',
         },
@@ -99,12 +99,24 @@ const plugins = [
     },
   }),
   Headings.HeadingThree,
-  Blockquote,
-  Callout,
+  Blockquote.extend({
+    options: {
+      HTMLAttributes: {
+        className: 'blockquote-element-extended',
+      },
+    },
+  }),
+  Callout.extend({
+    options: {
+      HTMLAttributes: {
+        className: 'callout-element-extended',
+      },
+    },
+  }),
   Lists.BulletedList.extend({
     options: {
       HTMLAttributes: {
-        className: 'bulleted-list-element',
+        className: 'bulleted-list-element-extended',
       },
     },
   }),
@@ -114,7 +126,7 @@ const plugins = [
   Video.extend({
     options: {
       HTMLAttributes: {
-        className: 'video-element',
+        className: 'video-element-extended',
       },
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file, 'video');
@@ -143,16 +155,16 @@ const MARKS = [Bold, Italic, Highlight, CodeMark, Strike, Underline];
 
 const TOOLS: Tools = {
   ActionMenu: {
-    render: ActionNotionMenuExample,
-    // render: DefaultActionMenuRender,
+    // render: ActionNotionMenuExample,
+    render: DefaultActionMenuRender,
     tool: ActionMenuList,
     props: {
       // items: ['Callout', 'Blockquote', 'HeadingOne', 'HeadingTwo', 'HeadingThree', 'Image', 'File'],
     },
   },
   Toolbar: {
-    // render: DefaultToolbarRender,
-    render: NotionToolbar,
+    render: DefaultToolbarRender,
+    // render: NotionToolbar,
     tool: Toolbar,
   },
   LinkTool: {
@@ -164,8 +176,13 @@ const TOOLS: Tools = {
 export type YooptaChildrenValue = Record<string, YooptaBlockData>;
 
 const value = {
-  '9d98408d-b990-4ffc-a1d7-387084291b00': {
-    id: '9d98408d-b990-4ffc-a1d7-387084291b00',
+  '2af886bf-6e25-45d5-a82c-292546f6515c': {
+    id: '2af886bf-6e25-45d5-a82c-292546f6515c',
+    type: 'HeadingOne',
+    meta: {
+      order: 1,
+      depth: 0,
+    },
     value: [
       {
         id: '0508777e-52a4-4168-87a0-bc7661e57aab',
@@ -180,49 +197,87 @@ const value = {
         },
       },
     ],
-    type: 'HeadingOne',
+  },
+  '7b6fbbfe-1270-4f08-ace0-f78d0423cf4d': {
+    id: '7b6fbbfe-1270-4f08-ace0-f78d0423cf4d',
+    type: 'HeadingTwo',
+    meta: {
+      order: 2,
+      depth: 0,
+    },
+    value: [
+      {
+        id: '284667f9-8b8f-4839-839d-73b5f1966752',
+        type: 'heading-two',
+        children: [
+          {
+            text: 'Example with full setup of Yoopta-Editor',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+  },
+  '90c7ffee-8ce0-418f-8e10-10da8dd7b428': {
+    id: '90c7ffee-8ce0-418f-8e10-10da8dd7b428',
+    value: [
+      {
+        id: 'd2107094-8385-48bd-8222-23b0b55d9151',
+        type: 'paragraph',
+        children: [
+          {
+            text: 'Example with full setup of Yoopta-Editor',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'Paragraph',
     meta: {
       order: 0,
       depth: 0,
     },
   },
-  'f99045cc-2391-4917-949d-ee3d2f6754b4': {
-    id: 'f99045cc-2391-4917-949d-ee3d2f6754b4',
+  '987305a2-b7af-4b00-8c99-8db1662d1261': {
+    id: '987305a2-b7af-4b00-8c99-8db1662d1261',
+    type: 'HeadingThree',
+    meta: {
+      order: 3,
+      depth: 0,
+    },
     value: [
       {
-        id: '82587f96-506e-4e89-b958-61acd3ce881a',
-        type: 'callout',
+        id: '86597d6b-8f40-45f2-b380-a3413434e1c5',
+        type: 'heading-three',
         children: [
           {
-            text: 'This example shows you full setup with all features of Yoopta-Editor',
+            text: 'Example with full setup of Yoopta-Editor',
           },
         ],
         props: {
           nodeType: 'block',
-          theme: 'info',
         },
       },
     ],
-    type: 'Callout',
-    meta: {
-      order: 1,
-      depth: 0,
-    },
   },
-  '7e3ef31f-a72d-467d-b17e-e09d2b0f9475': {
-    id: '7e3ef31f-a72d-467d-b17e-e09d2b0f9475',
-    type: 'HeadingTwo',
+  '37245c24-62f4-4315-ba22-9f02d7fb61df': {
+    id: '37245c24-62f4-4315-ba22-9f02d7fb61df',
+    type: 'Blockquote',
     meta: {
       order: 4,
       depth: 0,
     },
     value: [
       {
-        id: '147cd6ed-9e12-4664-bebf-0a97808bca56',
-        type: 'heading-two',
+        id: 'f4d3a978-eea3-48d4-ad3c-b350fa3783a4',
+        type: 'blockquote',
         children: [
           {
-            text: 'Features',
+            text: 'Example with full setup of Yoopta-Editor',
           },
         ],
         props: {
@@ -231,37 +286,20 @@ const value = {
       },
     ],
   },
-  '128d0660-6cc8-4f6a-be2a-ecb48cc7e9ce': {
-    id: '128d0660-6cc8-4f6a-be2a-ecb48cc7e9ce',
-    value: [
-      {
-        id: '3a629393-8cd5-4223-995e-28cc0515affc',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Default list of powerful plugins',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
+  '1ab297a4-b746-4825-842c-c1fbfab1d93a': {
+    id: '1ab297a4-b746-4825-842c-c1fbfab1d93a',
+    type: 'Callout',
     meta: {
       order: 5,
       depth: 0,
     },
-  },
-  '5b09de9d-5b43-4bbc-bc62-6aaec15cf0e7': {
-    id: '5b09de9d-5b43-4bbc-bc62-6aaec15cf0e7',
     value: [
       {
-        id: '9acd0f10-fee2-49ed-8deb-8501f7e92847',
-        type: 'bulleted-list',
+        id: '4f038362-109e-44ac-aae5-4ee3b9e6a12a',
+        type: 'callout',
         children: [
           {
-            text: 'Each plugin can be easily customized and extensible',
+            text: 'Example with full setup of Yoopta-Editor',
           },
         ],
         props: {
@@ -269,21 +307,21 @@ const value = {
         },
       },
     ],
+  },
+  '8c18747e-039a-4a5d-ac78-b923c2d9f567': {
+    id: '8c18747e-039a-4a5d-ac78-b923c2d9f567',
     type: 'BulletedList',
     meta: {
-      order: 11,
+      order: 7,
       depth: 0,
     },
-  },
-  'ea5096c5-15cf-4fe6-81b7-0bc71abd3ced': {
-    id: 'ea5096c5-15cf-4fe6-81b7-0bc71abd3ced',
     value: [
       {
-        id: 'f735b8ee-6c3d-436f-896e-43b8a4a7ed67',
+        id: '89a52422-41fd-4bcf-b896-40dd1c5a4427',
         type: 'bulleted-list',
         children: [
           {
-            text: 'You can create your own plugin',
+            text: 'Example with full setup of Yoopta-Editor',
           },
         ],
         props: {
@@ -291,21 +329,16 @@ const value = {
         },
       },
     ],
-    type: 'BulletedList',
-    meta: {
-      order: 14,
-      depth: 0,
-    },
   },
-  'b43cc723-a915-464f-af77-b0f83650da14': {
-    id: 'b43cc723-a915-464f-af77-b0f83650da14',
+  'ab2738ae-283e-4892-8572-f7dcc72096e5': {
+    id: 'ab2738ae-283e-4892-8572-f7dcc72096e5',
     value: [
       {
-        id: '8ff8b383-13c9-404b-a8ab-0565808ac301',
+        id: '807c7625-5cdf-42ea-bcb6-94837e34662a',
         type: 'bulleted-list',
         children: [
           {
-            text: 'Many typical solved problems in UX behavior.',
+            text: 'Example with full setup of Yoopta-Editor',
           },
         ],
         props: {
@@ -319,15 +352,15 @@ const value = {
       depth: 0,
     },
   },
-  '09ed1fc5-2fd8-45b0-aad9-7bfe7e3689be': {
-    id: '09ed1fc5-2fd8-45b0-aad9-7bfe7e3689be',
+  '15c1bccf-2559-43fa-8708-bc92704acfc0': {
+    id: '15c1bccf-2559-43fa-8708-bc92704acfc0',
     value: [
       {
-        id: '63b50284-400e-4016-81f0-6c31637632f9',
-        type: 'bulleted-list',
+        id: '9a82c42d-3d82-46c0-a288-18ceb737d6dd',
+        type: 'numbered-list',
         children: [
           {
-            text: 'A list of useful tools (ActionMenu, Toolbar etc.) for the convenience of working with the editor',
+            text: 'Example with full setup of Yoopta-Editor',
           },
         ],
         props: {
@@ -335,186 +368,21 @@ const value = {
         },
       },
     ],
-    type: 'BulletedList',
-    meta: {
-      order: 15,
-      depth: 0,
-    },
-  },
-  '2efdb828-68e1-4363-be9a-6b7953193c74': {
-    id: '2efdb828-68e1-4363-be9a-6b7953193c74',
-    value: [
-      {
-        id: 'e72663a8-2f06-4236-aa57-e4a591af8337',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Automatic lazy loading for media components (eg. embeds)',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 16,
-      depth: 0,
-    },
-  },
-  '9f9e2589-73aa-439f-a085-a2865310c2fd': {
-    id: '9f9e2589-73aa-439f-a085-a2865310c2fd',
-    value: [
-      {
-        id: '784d2f79-5351-4b36-8b19-24b9b8292061',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Exports in markdown, plain text, html - ',
-          },
-          {
-            text: '[in progress. Currently available only HTML exports]',
-            italic: true,
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 23,
-      depth: 0,
-    },
-  },
-  'a08e859a-a507-463f-97d0-0d6635f2f81d': {
-    id: 'a08e859a-a507-463f-97d0-0d6635f2f81d',
-    value: [
-      {
-        id: '12a07f75-c2c3-4365-9896-8f1e77ab3302',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Redo/undo changes - ',
-          },
-          {
-            text: '[not stable, in progress]',
-            italic: true,
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 24,
-      depth: 0,
-    },
-  },
-  '7baf535b-9fab-4d0a-af79-f692ff232a72': {
-    id: '7baf535b-9fab-4d0a-af79-f692ff232a72',
-    value: [
-      {
-        id: 'b463bcce-73e2-4165-bd72-4c29c726d3d0',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Drag and drop, nested dnd is supported also',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 12,
-      depth: 0,
-    },
-  },
-  'c1a91408-a4db-40ff-aaef-2c6b12fdbb3b': {
-    id: 'c1a91408-a4db-40ff-aaef-2c6b12fdbb3b',
-    value: [
-      {
-        id: '3a3abc76-fc49-4237-9c50-12cab84203ab',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'The soul invested in the development of this editor 💙',
-            highlight: {
-              color: '#B35588',
-            },
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 27,
-      depth: 0,
-    },
-  },
-  '8c86afe7-cbda-444c-8a45-2c79d23566ee': {
-    id: '8c86afe7-cbda-444c-8a45-2c79d23566ee',
-    value: [
-      {
-        id: '9c1b5074-2103-485d-a7b6-5271d88ee5db',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: '... and other features that I forgot to write about in this list 😅. Just check it!',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 28,
-      depth: 0,
-    },
-  },
-  '6c33ed40-9ccf-469f-bad3-b62dac06ef3a': {
-    id: '6c33ed40-9ccf-469f-bad3-b62dac06ef3a',
-    value: [
-      {
-        id: 'fd7fb13a-3fb4-4b1a-b3a4-4f084de90e2c',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Media plugins on steroids with optimization and lazy loadings',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
+    type: 'NumberedList',
     meta: {
       order: 9,
       depth: 0,
     },
   },
-  '5d98062b-be38-4765-a157-c95432abf3d9': {
-    id: '5d98062b-be38-4765-a157-c95432abf3d9',
+  'd44659d4-1ec0-4785-b606-99f260ede883': {
+    id: 'd44659d4-1ec0-4785-b606-99f260ede883',
     value: [
       {
-        id: '38dd2ace-842d-4bce-aeb4-f2c077087681',
-        type: 'bulleted-list',
+        id: 'dd6e4ae1-ce5f-4549-81dd-7f95cf227e93',
+        type: 'numbered-list',
         children: [
           {
-            text: 'Editor events for saving to DB in real-time',
+            text: 'Example with full setup of Yoopta-Editor',
           },
         ],
         props: {
@@ -522,87 +390,44 @@ const value = {
         },
       },
     ],
-    type: 'BulletedList',
-    meta: {
-      order: 22,
-      depth: 0,
-    },
-  },
-  '719e2b92-709b-42ff-a3f9-ad4823ebee97': {
-    id: '719e2b92-709b-42ff-a3f9-ad4823ebee97',
-    value: [
-      {
-        id: 'efe50756-27ae-4392-a08d-1360c7f2e111',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Shortcuts, hotkeys. And customization for this!',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 25,
-      depth: 0,
-    },
-  },
-  'aa9b295f-492f-4e54-9b98-7ec51887c752': {
-    id: 'aa9b295f-492f-4e54-9b98-7ec51887c752',
-    value: [
-      {
-        id: '1f5093d5-b20b-44bf-af2c-5c63d293758e',
-        type: 'paragraph',
-        children: [
-          {
-            text: '',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'Paragraph',
-    meta: {
-      order: 29,
-      depth: 0,
-    },
-  },
-  '6a505208-bb4d-4177-9d22-15b65b04f98d': {
-    id: '6a505208-bb4d-4177-9d22-15b65b04f98d',
-    value: [
-      {
-        id: '57fbf30d-100b-4636-9ea9-02b1f1b753c0',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Code plugin on steroids with themes and languages',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
+    type: 'NumberedList',
     meta: {
       order: 10,
       depth: 0,
     },
   },
-  '477b0734-a7ed-44e2-a009-15a078e994b4': {
-    id: '477b0734-a7ed-44e2-a009-15a078e994b4',
+  'dc0fed6b-3a39-4aef-800c-2e69926f22f5': {
+    id: 'dc0fed6b-3a39-4aef-800c-2e69926f22f5',
     value: [
       {
-        id: '2d9babc8-e4ca-475b-b1ca-6d92236e87d8',
-        type: 'bulleted-list',
+        id: '6b1d5736-97c0-4fa8-84d5-ba9ab39423d6',
+        type: 'todo-list',
         children: [
           {
-            text: 'Large documents ',
+            text: 'Example with full setup of Yoopta-Editor',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+          checked: false,
+        },
+      },
+    ],
+    type: 'TodoList',
+    meta: {
+      order: 11,
+      depth: 0,
+    },
+  },
+  'b4566f8b-6796-4d34-87d3-dc3e0183b20b': {
+    id: 'b4566f8b-6796-4d34-87d3-dc3e0183b20b',
+    value: [
+      {
+        id: '67825b50-bdd9-472c-8e90-c5d9bb3b59c9',
+        type: 'todo-list',
+        children: [
+          {
+            text: 'Example with full setup of Yoopta-Editor',
           },
         ],
         props: {
@@ -610,87 +435,17 @@ const value = {
         },
       },
     ],
-    type: 'BulletedList',
+    type: 'TodoList',
     meta: {
-      order: 17,
+      order: 12,
       depth: 0,
     },
   },
-  'e4c5f3b8-d712-483d-9c22-97a61d039779': {
-    id: 'e4c5f3b8-d712-483d-9c22-97a61d039779',
+  '5cd4e842-97c6-4858-aaac-1ee52a7166d7': {
+    id: '5cd4e842-97c6-4858-aaac-1ee52a7166d7',
     value: [
       {
-        id: '7aec7681-3d85-464c-b257-a6487702ae28',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Get editor instance to programmatically control your content',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 21,
-      depth: 0,
-    },
-  },
-  'ae33b042-9c0e-4276-94ed-197ff778cc72': {
-    id: 'ae33b042-9c0e-4276-94ed-197ff778cc72',
-    value: [
-      {
-        id: 'b2e371f7-0c01-4722-9d37-413757e7a608',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Everything is customizable for custom renders ',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 26,
-      depth: 0,
-    },
-  },
-  '6184a767-f56e-4856-bed4-82f970b5fce8': {
-    id: '6184a767-f56e-4856-bed4-82f970b5fce8',
-    type: 'Blockquote',
-    meta: {
-      order: 3,
-      depth: 0,
-    },
-    value: [
-      {
-        id: '0163554a-74a3-4eaa-a4f2-0ec3ad9e7ab9',
-        type: 'blockquote',
-        children: [
-          {
-            text: '- Our life is what our thoughts make it',
-            bold: true,
-          },
-          {
-            text: '\n(c) Marcus Aurelius',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-  },
-  '78c8e461-d7cd-474d-97c9-773550bd2ca9': {
-    id: '78c8e461-d7cd-474d-97c9-773550bd2ca9',
-    value: [
-      {
-        id: 'c734ccd2-38f1-4f7b-9c84-45098100f901',
+        id: 'c2a8422d-c472-4eb7-98bf-7779d30caf0e',
         type: 'image',
         children: [
           {
@@ -699,205 +454,55 @@ const value = {
         ],
         props: {
           nodeType: 'void',
-          src: 'https://res.cloudinary.com/ench-app/image/upload/v1713028758/Cheems_doge_fx8yvq.jpg',
+          src: 'https://res.cloudinary.com/ench-app/image/upload/v1715632817/GNYvP3UXUAAbPKZ_yd1yws.jpg',
           alt: 'cloudinary',
           srcSet: null,
-          fit: 'contain',
+          fit: 'fill',
           sizes: {
-            width: 334,
-            height: 368,
+            width: 1170,
+            height: 1162,
           },
         },
       },
     ],
     type: 'Image',
     meta: {
-      order: 41,
+      order: 14,
       depth: 0,
     },
   },
-  'cec531df-cb6a-473e-807b-26be460cb391': {
-    id: 'cec531df-cb6a-473e-807b-26be460cb391',
-    value: [
-      {
-        id: 'cd8eb268-836f-4148-a965-49f2f12b065e',
-        type: 'heading-three',
-        children: [
-          {
-            text: 'Do you like it? Please star ',
-          },
-          {
-            type: 'link',
-            children: [
-              {
-                text: 'our repo in Github',
-              },
-            ],
-            props: {
-              url: 'https://github.com/Darginec05/Yoopta-Editor',
-              target: '_blank',
-              rel: 'noreferrer',
-            },
-          },
-          {
-            text: ' ',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'HeadingThree',
-    meta: {
-      order: 40,
-      depth: 0,
-    },
-  },
-  '8ec75789-e8b1-4bb4-8561-e30f0ee0cddb': {
-    id: '8ec75789-e8b1-4bb4-8561-e30f0ee0cddb',
-    value: [
-      {
-        id: 'd7a45452-6488-45fc-b220-7adb93901f2e',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Indent and outdent for every plugin by tabs and shift+tabs',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 20,
-      depth: 0,
-    },
-  },
-  '3d61674a-8d55-4b6f-9ff3-eb1518ec22b0': {
-    id: '3d61674a-8d55-4b6f-9ff3-eb1518ec22b0',
-    value: [
-      {
-        id: '6060760c-8dfb-4c75-9b70-2a6bc04c16b6',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'A completely rewritten architecture to increase perfomance',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 18,
-      depth: 0,
-    },
-  },
-  'ad9febba-dc2d-49fc-9a08-0728c9d498d3': {
-    id: 'ad9febba-dc2d-49fc-9a08-0728c9d498d3',
-    value: [
-      {
-        id: '13086615-fc12-49b6-a9fe-c6871b3bba3c',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Easy setup!',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
+  '19a53b1b-8bcc-48d0-b0b2-729f83efa669': {
+    id: '19a53b1b-8bcc-48d0-b0b2-729f83efa669',
+    type: 'Callout',
     meta: {
       order: 6,
       depth: 0,
     },
-  },
-  'ea205e9e-2a9e-4a99-ab52-6d713d423860': {
-    id: 'ea205e9e-2a9e-4a99-ab52-6d713d423860',
     value: [
       {
-        id: '269a9bf3-34e9-4def-98e7-5ecd94110cd4',
-        type: 'image',
+        id: '8893ddab-211a-4c7c-ae5f-86fc42bd66f0',
+        type: 'callout',
         children: [
           {
-            text: '',
-          },
-        ],
-        props: {
-          nodeType: 'void',
-          src: 'https://res.cloudinary.com/ench-app/image/upload/v1713029072/ImageTransformer_hlr9eo.jpg',
-          alt: 'cloudinary',
-          srcSet: null,
-          fit: 'contain',
-          sizes: {
-            width: 448,
-            height: 379,
-          },
-        },
-      },
-    ],
-    type: 'Image',
-    meta: {
-      order: 43,
-      depth: 0,
-    },
-  },
-  '7d3f395b-656d-46af-924c-b88b9974f631': {
-    id: '7d3f395b-656d-46af-924c-b88b9974f631',
-    type: 'HeadingThree',
-    meta: {
-      order: 42,
-      depth: 0,
-    },
-    value: [
-      {
-        id: 'f5e0eaae-c64f-495c-99d4-ab4a780889eb',
-        type: 'heading-three',
-        children: [
-          {
-            text: 'Any bugs or did we miss something? Just ',
-          },
-          {
-            type: 'link',
-            children: [
-              {
-                text: 'create issue in repo!',
-              },
-            ],
-            props: {
-              url: 'https://github.com/Darginec05/Yoopta-Editor/issues',
-              target: '_blank',
-              rel: 'noreferrer',
-              title: 'issue in repo!',
-            },
-          },
-          {
-            text: '',
+            text: 'Example with full setup of Yoopta-Editor',
           },
         ],
         props: {
           nodeType: 'block',
+          theme: 'info',
         },
       },
     ],
   },
-  '0f9a82ac-bfd0-494e-bbe1-056f9a8b923b': {
-    id: '0f9a82ac-bfd0-494e-bbe1-056f9a8b923b',
+  '1c645fd1-05fd-46f3-9207-05e2f0ccded5': {
+    id: '1c645fd1-05fd-46f3-9207-05e2f0ccded5',
     value: [
       {
-        id: 'ba1a046c-ee8f-4198-bace-d1300724629e',
+        id: '7df52958-629a-4299-a0eb-5d061a9fa737',
         type: 'code',
         children: [
           {
-            text: '// pass props to main component and that all\nfunction YouThinkThisIsJoke() {\n  const editor = useMemo(() => createYooptaEditor(), []);\n\n  return (\n    <div>\n      <YooptaEditor\n        editor={editor}\n        plugins={plugins}\n        tools={TOOLS}\n        marks={MARKS}\n      />\n    </div>\n  );\n}',
+            text: "const TOOLS: Tools = {\n  ActionMenu: {\n    // render: ActionNotionMenuExample,\n    render: DefaultActionMenuRender,\n    tool: ActionMenuList,\n    props: {\n      // items: ['Callout', 'Blockquote', 'HeadingOne', 'HeadingTwo', 'HeadingThree', 'Image', 'File'],\n    },\n  },\n  Toolbar: {\n    render: DefaultToolbarRender,\n    // render: NotionToolbar,\n    tool: Toolbar,\n  },\n  LinkTool: {\n    render: DefaultLinkToolRender,\n    tool: LinkTool,\n  },\n};",
           },
         ],
         props: {
@@ -909,59 +514,111 @@ const value = {
     ],
     type: 'Code',
     meta: {
-      order: 7,
-      depth: 1,
-    },
-  },
-  '17fc0ceb-6898-4684-9b9b-7612f4bf735f': {
-    id: '17fc0ceb-6898-4684-9b9b-7612f4bf735f',
-    value: [
-      {
-        id: 'a6e1e9b4-6fe1-4cb7-afad-632d4e1b26c1',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Selection box for manipulating with multiple blocks at once',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
       order: 13,
       depth: 0,
     },
   },
-  '73ef95c8-6971-4481-846c-5b5f34d1cd13': {
-    id: '73ef95c8-6971-4481-846c-5b5f34d1cd13',
+  '5ddf9adf-e2c1-4adf-a6f6-7ca32420c4a6': {
+    id: '5ddf9adf-e2c1-4adf-a6f6-7ca32420c4a6',
     value: [
       {
-        id: '20fb9c63-6a18-45fd-97ac-9880cd47161c',
-        type: 'bulleted-list',
+        id: 'ffb4741c-5322-4423-9026-80d8c4902611',
+        type: 'video',
         children: [
           {
-            text: 'Mobile friendly',
+            text: '',
           },
         ],
         props: {
-          nodeType: 'block',
+          nodeType: 'void',
+          src: 'https://res.cloudinary.com/ench-app/video/upload/v1715632823/Yoopta_Intro_ndwglr_mtptgj.mp4',
+          srcSet: null,
+          sizes: {
+            width: 2252,
+            height: 1624,
+          },
+          provider: {
+            type: null,
+            id: '',
+          },
+          settings: {
+            controls: false,
+            loop: true,
+            muted: true,
+            autoPlay: true,
+          },
+          fit: 'cover',
         },
       },
     ],
-    type: 'BulletedList',
+    type: 'Video',
     meta: {
-      order: 19,
+      order: 15,
       depth: 0,
     },
   },
-  '95e9b5ab-2158-48da-9196-6079a33508f2': {
-    id: '95e9b5ab-2158-48da-9196-6079a33508f2',
+  '71bec89c-0a58-47aa-a895-15253ce72831': {
+    id: '71bec89c-0a58-47aa-a895-15253ce72831',
     value: [
       {
-        id: 'dac238c2-0db7-4a0d-9b4b-543e340f935b',
+        id: 'f1128e50-6302-4fe9-bc5d-0a673c45afe1',
+        type: 'file',
+        children: [
+          {
+            text: '',
+          },
+        ],
+        props: {
+          nodeType: 'void',
+          size: 96443,
+          name: 'GNYvP3UXUAAbPKZ',
+          src: 'https://res.cloudinary.com/ench-app/image/upload/v1715632830/GNYvP3UXUAAbPKZ_cgvvwb.jpg',
+          format: 'jpg',
+        },
+      },
+    ],
+    type: 'File',
+    meta: {
+      order: 16,
+      depth: 0,
+    },
+  },
+  '499480f6-b8f9-4495-afdf-d860a23bb37e': {
+    id: '499480f6-b8f9-4495-afdf-d860a23bb37e',
+    value: [
+      {
+        id: '8f80f994-b665-4566-96de-8eca9e8c77f8',
+        type: 'embed',
+        children: [
+          {
+            text: '',
+          },
+        ],
+        props: {
+          nodeType: 'void',
+          sizes: {
+            width: 532,
+            height: 327,
+          },
+          provider: {
+            type: 'youtube',
+            id: 'O8ErPJqW67A',
+            url: 'https://www.youtube.com/watch?v=O8ErPJqW67A&list=RDCkx0ZdKzkbc&index=3&ab_channel=Hajime',
+          },
+        },
+      },
+    ],
+    type: 'Embed',
+    meta: {
+      order: 17,
+      depth: 0,
+    },
+  },
+  '5c97c726-fe7e-4cb3-8486-52b1060757c0': {
+    id: '5c97c726-fe7e-4cb3-8486-52b1060757c0',
+    value: [
+      {
+        id: '1a8648f1-400a-4928-a604-730cf343c7c9',
         type: 'paragraph',
         children: [
           {
@@ -975,439 +632,7 @@ const value = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 44,
-      depth: 0,
-    },
-  },
-  '697aa54b-aea0-4a88-82e5-ec5a6f2c5791': {
-    id: '697aa54b-aea0-4a88-82e5-ec5a6f2c5791',
-    value: [
-      {
-        id: 'e7cfd6da-0ed1-4849-ae05-f52b9e65c87b',
-        type: 'paragraph',
-        children: [
-          {
-            text: '',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'Paragraph',
-    meta: {
-      order: 2,
-      depth: 0,
-    },
-  },
-  'd19fe347-ae2f-469d-85f4-a66d63a2fd40': {
-    id: 'd19fe347-ae2f-469d-85f4-a66d63a2fd40',
-    value: [
-      {
-        id: 'c2a68b34-3efa-4c1f-9616-3e4ceb727b94',
-        type: 'heading-two',
-        children: [
-          {
-            text: 'Roadmap',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'HeadingTwo',
-    meta: {
-      order: 30,
-      depth: 0,
-    },
-  },
-  'be5fad74-46ed-4a77-b121-953d2db30141': {
-    id: 'be5fad74-46ed-4a77-b121-953d2db30141',
-    value: [
-      {
-        id: '5ab4ef22-8b2e-4618-bbae-cd07d1a059d6',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Develop other powerful plugins',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 31,
-      depth: 0,
-    },
-  },
-  '6a432e66-8627-45ae-8e36-52fa7cab2cc5': {
-    id: '6a432e66-8627-45ae-8e36-52fa7cab2cc5',
-    value: [
-      {
-        id: '6d37bea6-b21d-413a-b7ad-5994bb12b0ee',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Super AI tools not for HYPE, but for real useful work with editor content',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 32,
-      depth: 0,
-    },
-  },
-  'a1ce732c-8b2c-447f-9938-af719becf846': {
-    id: 'a1ce732c-8b2c-447f-9938-af719becf846',
-    value: [
-      {
-        id: '96ddb3d0-808f-48e0-8994-f1b63af0d49a',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Simplify API for creating plugins',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 33,
-      depth: 0,
-    },
-  },
-  'eb883c05-9984-4972-864f-81ffdfc93bf4': {
-    id: 'eb883c05-9984-4972-864f-81ffdfc93bf4',
-    value: [
-      {
-        id: '751adb79-ee2b-4855-ab00-cdf8f2ec9354',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Collabrative mode',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 34,
-      depth: 0,
-    },
-  },
-  '8dc4f112-0210-41c0-a1e8-2e6da120ba41': {
-    id: '8dc4f112-0210-41c0-a1e8-2e6da120ba41',
-    value: [
-      {
-        id: '8de5305f-2b22-46c9-9941-bcca78992955',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Plugin system',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 35,
-      depth: 0,
-    },
-  },
-  '28dac558-f474-4198-b267-3b95bdd1016c': {
-    id: '28dac558-f474-4198-b267-3b95bdd1016c',
-    value: [
-      {
-        id: '3ea8b393-70dc-4c69-a370-17373cc4dab5',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Optimizations for media components (',
-          },
-          {
-            text: 'srcSet ',
-            bold: true,
-          },
-          {
-            text: 'for image and ',
-          },
-          {
-            text: 'sources',
-            bold: true,
-          },
-          {
-            text: ' for video)',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 36,
-      depth: 0,
-    },
-  },
-  'f33fc1b8-bf3b-4e63-b540-41f257410719': {
-    id: 'f33fc1b8-bf3b-4e63-b540-41f257410719',
-    value: [
-      {
-        id: '87c80c0b-1abf-4a86-bc77-9be9d7415199',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Rethink approach for just rendering to increase SEO perfomance',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 37,
-      depth: 0,
-    },
-  },
-  '653ec531-73c7-4d54-ba9c-0d7456cf7eaf': {
-    id: '653ec531-73c7-4d54-ba9c-0d7456cf7eaf',
-    value: [
-      {
-        id: '95428d0c-36be-4cb9-b0c3-8df15077a742',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Continue improving the project. We are listening to you and your requests 💙',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 38,
-      depth: 0,
-    },
-  },
-  '7ac415e1-4788-4864-8f28-f82bfaa1a253': {
-    id: '7ac415e1-4788-4864-8f28-f82bfaa1a253',
-    value: [
-      {
-        id: '0feff7ea-24a3-436e-88e2-83346e9cb3c5',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Redo/undo between blocks',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 46,
-      depth: 0,
-    },
-  },
-  '3fd638ae-fb2f-433d-976a-f2d5f82f2822': {
-    id: '3fd638ae-fb2f-433d-976a-f2d5f82f2822',
-    value: [
-      {
-        id: 'c659d066-5f50-4583-afd8-3b09b2fcbd87',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Selection between blocks',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 47,
-      depth: 0,
-    },
-  },
-  'd62df7dd-8560-445b-8374-fcd5299029d3': {
-    id: 'd62df7dd-8560-445b-8374-fcd5299029d3',
-    value: [
-      {
-        id: 'e8510c43-606c-430d-ac81-87f29cacf65e',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Copy/paste with selected blocks',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 48,
-      depth: 0,
-    },
-  },
-  '9095bf5d-b6d6-4815-bd6a-bf06fe97affd': {
-    id: '9095bf5d-b6d6-4815-bd6a-bf06fe97affd',
-    value: [
-      {
-        id: 'cb362a05-a783-478f-bbad-78d08e263bee',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Tests',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 51,
-      depth: 0,
-    },
-  },
-  '8120e3f9-fef0-44bd-ad86-ee26f45cdad9': {
-    id: '8120e3f9-fef0-44bd-ad86-ee26f45cdad9',
-    value: [
-      {
-        id: '73a001b1-9620-4484-a128-c78076d27831',
-        type: 'heading-two',
-        children: [
-          {
-            text: 'Currently known issues',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'HeadingTwo',
-    meta: {
-      order: 45,
-      depth: 0,
-    },
-  },
-  '95f23367-0837-440a-b778-a95c09df2b09': {
-    id: '95f23367-0837-440a-b778-a95c09df2b09',
-    value: [
-      {
-        id: '7423d69d-bb48-4733-8f33-05d82e759d91',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Dragndrop with selected blocks',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 49,
-      depth: 0,
-    },
-  },
-  'c5fc9364-93ab-4e48-83bb-f5d5a8fb3c23': {
-    id: 'c5fc9364-93ab-4e48-83bb-f5d5a8fb3c23',
-    value: [
-      {
-        id: '18fc43c2-efb8-4b18-936a-a41e4acb304c',
-        type: 'paragraph',
-        children: [
-          {
-            text: '',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'Paragraph',
-    meta: {
-      order: 39,
-      depth: 0,
-    },
-  },
-  '784122f7-2b72-4b19-a1e7-c4a06c013662': {
-    id: '784122f7-2b72-4b19-a1e7-c4a06c013662',
-    value: [
-      {
-        id: 'c2b86108-7236-4a07-9440-f327ab3b16af',
-        type: 'paragraph',
-        children: [
-          {
-            text: '',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'Paragraph',
-    meta: {
-      order: 52,
-      depth: 0,
-    },
-  },
-  '8bf97157-698f-4365-882a-68e6eff020fb': {
-    id: '8bf97157-698f-4365-882a-68e6eff020fb',
-    value: [
-      {
-        id: '5fad6d4d-eee1-4998-9613-80bdc4134abb',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Focusing blocks with custom editor',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 50,
+      order: 18,
       depth: 0,
     },
   },
@@ -1439,6 +664,7 @@ const BasicExample = () => {
         tools={TOOLS}
         readOnly={readOnly}
         width={750}
+        value={value}
       >
         <div className="flex mb-8">
           <button
@@ -1452,7 +678,11 @@ const BasicExample = () => {
           <button
             className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
             onClick={() => {
-              editor.setEditorValue(value);
+              editor.setEditorValue({});
+
+              setTimeout(() => {
+                console.log('editor', editor.blockEditorsMap);
+              }, 100);
             }}
           >
             Set value

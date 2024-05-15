@@ -7,19 +7,12 @@ import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { ReactEditor } from 'slate-react';
 import { Editor, Transforms } from 'slate';
 import { useState } from 'react';
-import {
-  useFloating,
-  offset,
-  flip,
-  inline,
-  shift,
-  useTransitionStyles,
-  FloatingPortal,
-  FloatingOverlay,
-} from '@floating-ui/react';
+import { useFloating, offset, flip, inline, shift, useTransitionStyles } from '@floating-ui/react';
 import { BlockOptions } from '../../UI/BlockOptions/BlockOptions';
 import { getRootBlockElement } from '../../utils/blockElements';
 import { useActionMenuToolRefs } from './hooks';
+import { Overlay } from '../../UI/Overlay/Overlay';
+import { Portal } from '../../UI/Portal/Portal';
 
 type ActionsProps = {
   block: YooptaBlockData;
@@ -127,30 +120,22 @@ const BlockActions = ({ block, editor, dragHandleProps, onChangeActiveBlock, sho
   const blockOptionsFloatingStyle = { ...floatingStyles, ...blockOptionsTransitionStyles };
 
   return (
-    <div
-      contentEditable={false}
-      data-hovered-state-open={showActions}
-      className={`yoo-editor-flex yoo-editor-absolute -yoo-editor-left-[50px] yoo-editor-top-[2px] yoo-editor-opacity-0 yoo-editor-transition-opacity yoopta-element-actions data-[hovered-state-open="true"]:yoo-editor-opacity-100`}
-    >
+    <div contentEditable={false} data-hovered-state-open={showActions} className={`yoopta-block-actions`}>
       {isActionMenuOpen && hasActionMenu && (
-        <FloatingPortal id="yoo-block-options-portal" root={document.getElementById('yoopta-editor')}>
-          <FloatingOverlay lockScroll className="yoo-editor-z-[100]" onClick={onCloseActionMenu}>
+        <Portal id="yoo-block-options-portal">
+          <Overlay lockScroll className="yoo-editor-z-[100]" onClick={onCloseActionMenu}>
             <div style={actionMenuStyles} ref={actionMenuRefs.setFloating}>
               <ActionMenu {...actionMenuRenderProps} />
             </div>
-          </FloatingOverlay>
-        </FloatingPortal>
+          </Overlay>
+        </Portal>
       )}
-      <button
-        type="button"
-        onClick={onPlusClick}
-        className="yoo-editor-cursor-pointer yoo-editor-rounded-[6px] yoo-editor-h-[24px] yoo-editor-flex yoo-editor-items-center yoo-editor-justify-center yoo-editor-bg-inherit yoo-editor-bg-transparent yoo-editor-transition-colors yoo-editor-duration-[180ms] yoo-editor-ease-[cubic-bezier(0.4,0,0.2,1)] yoo-editor-relative yoo-editor-w-[18px] yoo-editor-p-0 yoo-editor-text-[rgba(55,53,47,0.35)] yoo-editor-m-[0_1px] hover:yoo-editor-bg-[rgba(55,54,47,0.08)] focus:yoo-editor-bg-[rgba(55,54,47,0.08)] active:yoo-editor-bg-[rgba(55,54,47,0.08)] yoo-editor-w-[24px] yoopta-element-actions-plus"
-      >
+      <button type="button" onClick={onPlusClick} className="yoopta-block-actions-plus">
         <PlusIcon />
       </button>
       <button
         type="button"
-        className="yoo-editor-cursor-pointer yoo-editor-rounded-[6px] yoo-editor-h-[24px] yoo-editor-flex yoo-editor-items-center yoo-editor-justify-center yoo-editor-bg-inherit yoo-editor-bg-transparent yoo-editor-transition-colors yoo-editor-duration-[180ms] yoo-editor-ease-[cubic-bezier(0.4,0,0.2,1)] yoo-editor-relative yoo-editor-w-[18px] yoo-editor-p-0 yoo-editor-text-[rgba(55,53,47,0.35)] yoo-editor-m-[0_1px] hover:yoo-editor-bg-[rgba(55,54,47,0.08)] focus:yoo-editor-bg-[rgba(55,54,47,0.08)] active:yoo-editor-bg-[rgba(55,54,47,0.08)] yoopta-element-actions-drag"
+        className="yoopta-block-actions-drag"
         ref={onDragButtonRef}
         {...attributes}
         {...listeners}

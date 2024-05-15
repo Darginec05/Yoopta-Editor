@@ -12,15 +12,15 @@ body {
   position: relative;
 }
 
-#yoopta-editor {
+.yoopta-editor {
   margin: 0 auto;
 }
 
-#slack #yoopta-editor .yoopta-element-actions {
+#slack .yoopta-editor .yoopta-block-actions-plus {
   display: none;
 }
 
-#slack #yoopta-editor .yoopta-mark-code {
+#slack .yoopta-editor .yoopta-mark-code {
   color: #e8912d;
   background-color: #2b2d30;
   font-variant-ligatures: none;
@@ -38,11 +38,11 @@ body {
 }
 
 
-#slack #yoopta-editor .yoopta-code .yoopta-code-cm-editor .cm-editor {
+#slack .yoopta-editor .yoopta-code .yoopta-code-cm-editor .cm-editor {
   border: 1px solid rgb(53, 55, 59);
 }
 
-#slack #yoopta-editor .yoopta-code .cm-content {
+#slack .yoopta-editor .yoopta-code .cm-content {
   padding: 8px;
   line-height: 1.46668;
 }
