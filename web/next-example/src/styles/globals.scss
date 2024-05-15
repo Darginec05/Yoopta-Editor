@@ -64,7 +64,7 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
 
-    & .yoopta-element-actions button {
+    & .yoopta-block-actions button {
       color: #fff !important;
     }
   }
@@ -80,22 +80,22 @@
   }
 }
 
-#yoopta-editor {
+.yoopta-editor {
   width: 750px;
 }
 
 @media (max-width: 768px) {
-  #yoopta-editor {
+  .yoopta-editor {
     width: 100%;
 
-    & .yoopta-element-actions {
+    & .yoopta-block-actions-plus {
       display: none;
     }
   }
 }
 
 @media (max-width: 992px) {
-  .yoopta-element-actions button {
+  .yoopta-block-actions-plus button {
     display: none !important;
   }
 }
@@ -117,11 +117,11 @@
 }
 
 
-#slack #yoopta-editor .yoopta-element-actions {
+#slack .yoopta-editor .yoopta-block-actions-plus {
   display: none;
 }
 
-#slack #yoopta-editor .yoopta-mark-code {
+#slack .yoopta-editor .yoopta-mark-code {
   color: #e8912d;
   background-color: #2b2d30;
   font-variant-ligatures: none;
@@ -139,11 +139,11 @@
 }
 
 
-#slack #yoopta-editor .yoopta-code .yoopta-code-cm-editor .cm-editor {
+#slack .yoopta-editor .yoopta-code .yoopta-code-cm-editor .cm-editor {
   border: 1px solid rgb(53, 55, 59);
 }
 
-#slack #yoopta-editor .yoopta-code .cm-content {
+#slack .yoopta-editor .yoopta-code .cm-content {
   padding: 8px;
   line-height: 1.46668;
 }
