@@ -18,12 +18,16 @@ We'd also love PRs. If you're thinking of a large PR, we advise opening up an is
 ## Submitting a pull request
 
 1. [Fork][fork] and clone the repository.
-1. Configure and install the dependencies: `npm install`.
-1. Make sure the tests pass on your machine: `npm test`, note: these tests also apply the linter, so there's no need to lint separately.
+1. Configure and install the dependencies: `npx lerna bootstrap`.
 1. Create a new branch: `git checkout -b feat-branch-name`.
-1. Make your change, add tests, and make sure the tests still pass.
+1. Start developer playground with editor and watcher with the command `yarn dev`.
+1. Find editor initializer code in the `./packages/development/src/pages/dev/index.tsx`
+1. Make your changes in the plugins, marks, tools, editor, or add and start using your own plugin.
 1. Push to your fork and [submit a pull request][pr].
-1. Pat your self on the back and wait for your pull request to be reviewed and merged.
+1. Pat yourself on the back and wait for your pull request to be reviewed and merged.
+
+[//]: # (1. Make sure the tests pass on your machine: `npm test`, note: these tests also apply the linter, so there's no need to lint separately.)
+[//]: # (1. Make your change, add tests, and make sure the tests still pass.)
 
 Here are a few things you can do that will increase the likelihood of your pull request being accepted:
 
@@ -40,7 +44,7 @@ We welcome everyone to review Pull Requests, it is a great way to learn, network
 
 ### DOs
 
-- be kind and respectful, we use inclusive, gender neutral language (for example `they/them` instead of `guy/man`)
+- be kind and respectful to others
 - use inline comments to explain your suggestions
 - use inline suggestions to propose changes
 
