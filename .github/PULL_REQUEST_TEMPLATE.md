@@ -6,7 +6,7 @@ Fixes # (issue)
 
 ## Type of change
 
-Please delete options that are not relevant.
+Please tick the relevant option.
 
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
