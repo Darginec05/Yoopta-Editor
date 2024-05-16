@@ -27,6 +27,7 @@ const DEFAULT_HANDLERS: YooptaEditorContext = {
     selectedBlocks: [],
     duplicateBlock: () => undefined,
     getEditorValue: () => undefined,
+    setEditorValue: () => undefined,
     blur: () => undefined,
     blocks: {},
     shortcuts: {},

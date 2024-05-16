@@ -34,6 +34,7 @@ import { insertBlocks } from './transforms/insertBlocks';
 
 export const createYooptaEditor = (): YooEditor => {
   const editor: YooEditor = {
+    id: '',
     children: {},
     selection: null,
     selectedBlocks: null,
