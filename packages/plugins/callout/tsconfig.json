@@ -8,7 +8,7 @@
   },
   "references": [
     {
-      "path": "../core"
+      "path": "../../core/core"
     }
   ]
 }
