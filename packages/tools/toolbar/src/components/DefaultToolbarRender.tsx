@@ -16,12 +16,21 @@ import { Editor, Element, NodeEntry, Range, Transforms } from 'slate';
 import { ToolbarRenderProps } from '../types';
 import { buildActionMenuRenderProps } from './utils';
 
+const { Overlay, Portal } = UI;
+
 type LinkValues = {
   title?: string;
   url: string;
+  target?: string;
+  rel?: string;
 };
 
-const { Overlay, Portal } = UI;
+const DEFAULT_LINK_VALUE: LinkValues = {
+  title: '',
+  url: '',
+  target: '_blank',
+  rel: 'noreferrer',
+};
 
 const getLinkEntry = (slate) => {
   const [link] = Editor.nodes(slate, {
@@ -36,7 +45,7 @@ type ModalsState = typeof DEFAULT_MODALS;
 
 const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: ToolbarRenderProps) => {
   const [modals, setModals] = useState<ModalsState>({ link: false, highlight: false, actionMenu: false });
-  const [linkValues, setLinkValues] = useState<LinkValues>({ title: '', url: '' });
+  const [linkValues, setLinkValues] = useState<LinkValues>(DEFAULT_LINK_VALUE);
   const lastSelection = useRef<Range | null>(null);
 
   const tools = useYooptaTools();
@@ -116,14 +125,13 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
 
       const title = Editor.string(slate, slate?.selection);
       const linkNodeEntry = getLinkEntry(slate);
-      const link: LinkValues = { title, url: '' };
 
       if (linkNodeEntry) {
         const [linkNode] = linkNodeEntry as NodeEntry<SlateElement>;
-        link.url = linkNode.props.url;
+        setLinkValues({ ...linkNode.props, title });
+      } else {
+        setLinkValues({ ...linkValues, title });
       }
-
-      setLinkValues(link);
     }
 
     document.addEventListener('keydown', onKeyDown);
@@ -142,7 +150,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
 
       if (linkNodeEntry) {
         const [linkNode] = linkNodeEntry as NodeEntry<SlateElement>;
-        const updatedNode = { props: { ...linkNode?.props, url: link.url, title: link.title } };
+        const updatedNode = { props: { ...linkNode?.props, ...link } };
 
         Transforms.setNodes<SlateElement>(slate, updatedNode, {
           match: (n) => Element.isElement(n) && (n as SlateElement).type === 'link',
@@ -154,13 +162,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
         const linkNode = {
           type: 'link',
           children: [{ text: link.title }],
-          props: {
-            target: '_blank',
-            rel: 'noreferrer',
-            nodeType: 'inline',
-            url: link.url,
-            title: link.title,
-          },
+          props: { ...link, nodeType: 'inline' },
         } as SlateElement;
 
         Transforms.wrapNodes(slate, linkNode, { split: true, at: slate.selection });
@@ -182,7 +184,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
       editor.emit('change', editor.children);
 
       onChangeModal('link', false);
-      setLinkValues({ title: '', url: '' });
+      setLinkValues(DEFAULT_LINK_VALUE);
       toggleHoldToolbar?.(false);
 
       // if (lastSelection.current) {
@@ -205,7 +207,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
       });
     }
     onChangeModal('link', false);
-    setLinkValues({ title: '', url: '' });
+    setLinkValues(DEFAULT_LINK_VALUE);
     toggleHoldToolbar?.(false);
   };
 
