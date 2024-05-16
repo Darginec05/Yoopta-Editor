@@ -1,5 +1,5 @@
 {
-  "extends": "../../../config/tsconfig.base.json",
+  "extends": "../../config/tsconfig.base.json",
   "include": ["react-svg.d.ts", "css-modules.d.ts", "src"],
   "exclude": ["dist", "src/**/*.test.tsx", "src/**/*.stories.tsx"],
   "compilerOptions": {
@@ -8,7 +8,7 @@
   },
   "references": [
     {
-      "path": "../../core/core"
+      "path": "../core/core"
     }
   ]
 }
