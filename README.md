@@ -54,7 +54,7 @@ All of this is customizable, extensible, and easy to set up!
   - **@yoopta/file**
   - **@yoopta/callout**
   - **@yoopta/video**
-  - **@yoopta/lists**
+  - [**@yoopta/lists**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/lists/README.md)
   - **@yoopta/headings**
 
 - Tools
