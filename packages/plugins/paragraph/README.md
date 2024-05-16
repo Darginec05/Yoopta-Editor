@@ -1,11 +1,76 @@
-# `yoopta-paragraph`
+# Paragraph plugin
 
-> TODO: description
+Paragraph is default plugin for Yoopta-Editor
 
-## Usage
+### Installation
 
+```bash
+yarn add @yoopta/paragraph
 ```
-const paragraph = require('yoopta-paragraph');
 
-// TODO: DEMONSTRATE API
+### Usage
+
+```jsx
+import Paragraph from '@yoopta/paragraph';
+
+const plugins = [Paragraph];
+
+const Editor = () => {
+  return <YooptaEditor plugins={plugins} />;
+};
+```
+
+### Default classnames
+
+- .yoopta-paragraph
+
+### Default options
+
+```js
+const Paragraph = new YooptaPlugin({
+  type: 'Paragraph',
+  elements: {
+    paragraph: {
+      render: ParagraphRender,
+    },
+  },
+  options: {
+    display: {
+      title: 'Text',
+      description: 'Start writing plain text.',
+    },
+    shortcuts: ['p', 'text'],
+  },
+  parsers: {
+    html: {
+      deserialize: {
+        nodeNames: ['P'],
+      },
+    },
+  },
+});
+```
+
+### Options to extend
+
+```tsx
+const plugins = [
+  Paragraph.extend({
+    renders: {
+      paragraph: (props) => <YourCustomComponent {...props} />
+    },
+    options: {
+      shortcuts: [`<your custom shortcuts>`],
+      align: 'left' | 'center' | 'right',
+      display: {
+        title: `<your custom title>`,
+        description: `<your custom description>`,
+      },
+      HTMLAttributes: {
+        className: '<your classname>',
+        // ...other HTML attributes
+      },
+    },
+  });
+];
 ```

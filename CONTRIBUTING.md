@@ -26,12 +26,12 @@ We'd also love PRs. If you're thinking of a large PR, we advise opening up an is
 1. Push to your fork and [submit a pull request][pr].
 1. Pat yourself on the back and wait for your pull request to be reviewed and merged.
 
-[//]: # (1. Make sure the tests pass on your machine: `npm test`, note: these tests also apply the linter, so there's no need to lint separately.)
-[//]: # (1. Make your change, add tests, and make sure the tests still pass.)
+[//]: # "1. Make sure the tests pass on your machine: `yarn test`, note: these tests also apply the linter, so there's no need to lint separately."
+[//]: # '1. Make your change, add tests, and make sure the tests still pass.'
 
 Here are a few things you can do that will increase the likelihood of your pull request being accepted:
 
-- Follow the [style guide][style] which is using standard. Any linting errors should be shown when running `npm test`.
+- Follow the [style guide][style] which is using standard. Any linting errors should be shown when running `yarn test`.
 - Write and update tests.
 - Keep your changes as focused as possible. If there are multiple changes you would like to make that are not dependent upon each other, consider submitting them as separate pull requests.
 - Write a [good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
@@ -53,4 +53,3 @@ We welcome everyone to review Pull Requests, it is a great way to learn, network
 - do not be rude, disrespectful or aggressive
 - do not repeat feedback, this creates more noise than value (check the existing conversation), use GitHub reactions if you agree/disagree with a comment
 - do not blindly approve pull requests to improve your GitHub contributors graph
-

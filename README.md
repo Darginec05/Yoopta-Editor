@@ -45,7 +45,7 @@ All of this is customizable, extensible, and easy to set up!
 
 - Plugins
 
-  - **@yoopta/paragraph**
+  - [**@yoopta/paragraph**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/paragraph/README.md)
   - **@yoopta/blockquote**
   - **@yoopta/code**
   - **@yoopta/embed**
@@ -317,6 +317,7 @@ If you have any questions or need assistance raise an issue in the GitHub reposi
 Let's create powerful and engaging editing experiences together with Yoopta-Editor!
 
 ## Project structure
+
 ```text
 packages/
 ├── core - core components of the editor
