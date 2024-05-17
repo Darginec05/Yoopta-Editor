@@ -39,7 +39,6 @@ function getPlugins({ tailwindConfig }) {
       use: ['sass'],
       plugins: [
         postcssNesting(),
-        postcssScope({ scope: '#yoopta-editor' }),
         tailwindcss({
           theme: {
             extend: {},

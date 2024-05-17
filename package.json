@@ -1,14 +1,18 @@
 {
   "name": "yoopta",
   "workspaces": [
-    "packages/*"
+    "packages/plugins/*",
+    "packages/tools/*",
+    "packages/marks/*",
+    "packages/core/*",
+    "packages/development"
   ],
   "private": true,
   "scripts": {
-    "start": "yarn lerna run start --scope @yoopta/editor --scope @yoopta/accordion --scope @yoopta/paragraph --scope @yoopta/image --parallel --ignore development",
+    "start": "yarn lerna run start --parallel --ignore development",
     "build": "yarn clean && yarn lerna run build --parallel --ignore development",
     "clean": "find ./packages -type d -name dist ! -path './packages/development/*' -exec rm -rf {} +",
-    "serve": "cd ./packages/development && yarn dev",
+    "serve": "yarn lerna run dev --scope=development",
     "coverage": "vitest run --coverage",
     "test": "vitest",
     "dev": "npm-run-all --parallel start serve",

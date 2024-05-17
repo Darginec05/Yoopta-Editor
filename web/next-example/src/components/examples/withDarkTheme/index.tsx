@@ -23,6 +23,7 @@ import { uploadToCloudinary } from '@/utils/cloudinary';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTheme } from 'next-themes';
 import { INITIAL_VALUE } from './initValue';
+import { SunMoon } from 'lucide-react';
 
 const plugins = [
   Paragraph,
@@ -97,7 +98,7 @@ const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
 function WithBasicUsageExample() {
   const editor = useMemo(() => createYooptaEditor(), []);
-  const { setTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
   const selectionRef = useRef(null);
 
   useEffect(() => {
@@ -105,11 +106,20 @@ function WithBasicUsageExample() {
     return () => setTheme('light');
   }, []);
 
+  const isLightTheme = theme === 'light';
+  const onSwitchTheme = () => {
+    setTheme(isLightTheme ? 'dark' : 'light');
+  };
+
   return (
     <div
-      className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center"
+      className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center flex-col items-center"
       ref={selectionRef}
     >
+      <button type="button" onClick={onSwitchTheme} className="flex">
+        <span className="mr-2">Toggle theme</span>
+        <SunMoon />
+      </button>
       <YooptaEditor
         editor={editor}
         plugins={plugins}

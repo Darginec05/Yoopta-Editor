@@ -1,0 +1,5 @@
+@tailwind utilities;
+
+.yoopta-link {
+  @apply yoo-link-underline yoo-link-underline-offset-4 yoo-link-text-[#007AFF] hover:yoo-link-text-[#3b82f6]
+}

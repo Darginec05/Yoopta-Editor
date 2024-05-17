@@ -44,7 +44,7 @@ const plugins = [
   Paragraph.extend({
     options: {
       HTMLAttributes: {
-        className: 'paragraph-element',
+        className: 'paragraph-element-extended',
       },
     },
   }),
@@ -70,7 +70,7 @@ const plugins = [
         maxWidth: 'auto',
       },
       HTMLAttributes: {
-        className: 'image-element',
+        className: 'image-element-extended',
       },
 
       onUpload: async (file: File) => {
@@ -79,6 +79,7 @@ const plugins = [
         return {
           src: data.secure_url,
           alt: 'cloudinary',
+          fit: 'fill',
           sizes: {
             width: data.width,
             height: data.height,
@@ -90,7 +91,7 @@ const plugins = [
   Headings.HeadingOne.extend({
     options: {
       HTMLAttributes: {
-        className: 'heading-one-element',
+        className: 'heading-one-element-extended',
         style: {
           color: 'red !important',
         },
@@ -105,12 +106,24 @@ const plugins = [
     },
   }),
   Headings.HeadingThree,
-  Blockquote,
-  Callout,
+  Blockquote.extend({
+    options: {
+      HTMLAttributes: {
+        className: 'blockquote-element-extended',
+      },
+    },
+  }),
+  Callout.extend({
+    options: {
+      HTMLAttributes: {
+        className: 'callout-element-extended',
+      },
+    },
+  }),
   Lists.BulletedList.extend({
     options: {
       HTMLAttributes: {
-        className: 'bulleted-list-element',
+        className: 'bulleted-list-element-extended',
       },
     },
   }),
@@ -120,13 +133,14 @@ const plugins = [
   Video.extend({
     options: {
       HTMLAttributes: {
-        className: 'video-element',
+        className: 'video-element-extended',
       },
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file, 'video');
         return {
           src: data.secure_url,
           alt: 'cloudinary',
+          fit: 'cover',
           sizes: {
             width: data.width,
             height: data.height,
@@ -148,16 +162,16 @@ const MARKS = [Bold, Italic, Highlight, CodeMark, Strike, Underline];
 
 const TOOLS: Tools = {
   ActionMenu: {
-    render: ActionNotionMenuExample,
-    // render: DefaultActionMenuRender,
+    // render: ActionNotionMenuExample,
+    render: DefaultActionMenuRender,
     tool: ActionMenuList,
     props: {
       // items: ['Callout', 'Blockquote', 'HeadingOne', 'HeadingTwo', 'HeadingThree', 'Image', 'File'],
     },
   },
   Toolbar: {
-    // render: DefaultToolbarRender,
-    render: NotionToolbar,
+    render: DefaultToolbarRender,
+    // render: NotionToolbar,
     tool: Toolbar,
   },
   LinkTool: {
@@ -169,15 +183,20 @@ const TOOLS: Tools = {
 export type YooptaChildrenValue = Record<string, YooptaBlockData>;
 
 const value = {
-  'f2cc1b99-1c77-49d4-90b9-f76cf7f28757': {
-    id: 'f2cc1b99-1c77-49d4-90b9-f76cf7f28757',
+  '2af886bf-6e25-45d5-a82c-292546f6515c': {
+    id: '2af886bf-6e25-45d5-a82c-292546f6515c',
+    type: 'HeadingOne',
+    meta: {
+      order: 1,
+      depth: 0,
+    },
     value: [
       {
-        id: '9183fd7d-1c8b-4653-b0d5-01bc27f07d95',
-        type: 'heading-two',
+        id: '0508777e-52a4-4168-87a0-bc7661e57aab',
+        type: 'heading-one',
         children: [
           {
-            text: 'Description',
+            text: 'Example with full setup of Yoopta-Editor',
           },
         ],
         props: {
@@ -185,144 +204,65 @@ const value = {
         },
       },
     ],
+  },
+  '7b6fbbfe-1270-4f08-ace0-f78d0423cf4d': {
+    id: '7b6fbbfe-1270-4f08-ace0-f78d0423cf4d',
     type: 'HeadingTwo',
+    meta: {
+      order: 2,
+      depth: 0,
+    },
+    value: [
+      {
+        id: '284667f9-8b8f-4839-839d-73b5f1966752',
+        type: 'heading-two',
+        children: [
+          {
+            text: 'Example with full setup of Yoopta-Editor',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+  },
+  '90c7ffee-8ce0-418f-8e10-10da8dd7b428': {
+    id: '90c7ffee-8ce0-418f-8e10-10da8dd7b428',
+    value: [
+      {
+        id: 'd2107094-8385-48bd-8222-23b0b55d9151',
+        type: 'paragraph',
+        children: [
+          {
+            text: 'Example with full setup of Yoopta-Editor',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'Paragraph',
     meta: {
       order: 0,
       depth: 0,
     },
   },
-  'cec7abb6-bff8-4911-bfda-a6c05227621f': {
-    id: 'cec7abb6-bff8-4911-bfda-a6c05227621f',
-    value: [
-      {
-        id: '0ce2e21f-15a6-4102-916a-4ed74cee3669',
-        type: 'paragraph',
-        children: [
-          {
-            text: 'Fixes',
-          },
-          {
-            text: ' ',
-          },
-          {
-            text: '#27481',
-          },
-          {
-            text: '.',
-          },
-          {
-            text: '\n',
-          },
-          {
-            text: 'See also',
-          },
-          {
-            text: ' ',
-          },
-          {
-            text: '#3629',
-          },
-          {
-            text: '.',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'Paragraph',
-    meta: {
-      order: 1,
-      depth: 0,
-    },
-  },
-  '53b44347-9c9a-408e-834d-269d0fa17a48': {
-    id: '53b44347-9c9a-408e-834d-269d0fa17a48',
-    value: [
-      {
-        id: '6c53740d-3688-44d2-b6db-e0f182224e9d',
-        type: 'paragraph',
-        children: [
-          {
-            text: 'These changes allow the user to select multiple blocks without selecting the blocks as a whole. This is done by allowing native selection across block boundaries, detecting the selection start and end in the appropriate rich text instances, and handling actions for this selection.',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'Paragraph',
-    meta: {
-      order: 2,
-      depth: 0,
-    },
-  },
-  '5c5e2bf6-50d1-4f72-bb33-7cfb38be480f': {
-    id: '5c5e2bf6-50d1-4f72-bb33-7cfb38be480f',
-    value: [
-      {
-        id: 'f70411a6-661b-4c87-9bc2-90b9c474b670',
-        type: 'paragraph',
-        children: [
-          {
-            text: 'This PR implements',
-          },
-          {
-            text: ' ',
-          },
-          {
-            code: true,
-            text: 'Enter',
-          },
-          {
-            text: ',',
-          },
-          {
-            text: ' ',
-          },
-          {
-            code: true,
-            text: 'Backspace',
-          },
-          {
-            text: ',',
-          },
-          {
-            text: ' ',
-          },
-          {
-            code: true,
-            text: 'Delete',
-          },
-          {
-            text: ' ',
-          },
-          {
-            text: '(forward merge) and any input (typing) over the selection.',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'Paragraph',
+  '987305a2-b7af-4b00-8c99-8db1662d1261': {
+    id: '987305a2-b7af-4b00-8c99-8db1662d1261',
+    type: 'HeadingThree',
     meta: {
       order: 3,
       depth: 0,
     },
-  },
-  '1908fd68-e42f-485b-b4ca-7cbbc2626eae': {
-    id: '1908fd68-e42f-485b-b4ca-7cbbc2626eae',
     value: [
       {
-        id: '13172da8-afef-42fa-a5d1-0b138260195f',
-        type: 'paragraph',
+        id: '86597d6b-8f40-45f2-b380-a3413434e1c5',
+        type: 'heading-three',
         children: [
           {
-            text: 'You can select partially by mouse (drag), shift + click, and also the keyboard (shift + arrow).',
+            text: 'Example with full setup of Yoopta-Editor',
           },
         ],
         props: {
@@ -330,21 +270,21 @@ const value = {
         },
       },
     ],
-    type: 'Paragraph',
+  },
+  '37245c24-62f4-4315-ba22-9f02d7fb61df': {
+    id: '37245c24-62f4-4315-ba22-9f02d7fb61df',
+    type: 'Blockquote',
     meta: {
       order: 4,
       depth: 0,
     },
-  },
-  'be87a81a-0e17-4efe-bebd-17d56f122df3': {
-    id: 'be87a81a-0e17-4efe-bebd-17d56f122df3',
     value: [
       {
-        id: '41b3e0d9-0d81-4ceb-b85c-79ea1212a1d9',
-        type: 'paragraph',
+        id: 'f4d3a978-eea3-48d4-ad3c-b350fa3783a4',
+        type: 'blockquote',
         children: [
           {
-            text: 'It works in all browsers including Firefox.',
+            text: 'Example with full setup of Yoopta-Editor',
           },
         ],
         props: {
@@ -352,34 +292,21 @@ const value = {
         },
       },
     ],
-    type: 'Paragraph',
+  },
+  '1ab297a4-b746-4825-842c-c1fbfab1d93a': {
+    id: '1ab297a4-b746-4825-842c-c1fbfab1d93a',
+    type: 'Callout',
     meta: {
       order: 5,
       depth: 0,
     },
-  },
-  'b2572c5f-8258-466f-af7e-631ce00f9e10': {
-    id: 'b2572c5f-8258-466f-af7e-631ce00f9e10',
     value: [
       {
-        id: 'c223492e-1abe-41df-a305-9a6a04d9025a',
-        type: 'paragraph',
+        id: '4f038362-109e-44ac-aae5-4ee3b9e6a12a',
+        type: 'callout',
         children: [
           {
-            text: 'We use the',
-          },
-          {
-            text: ' ',
-          },
-          {
-            code: true,
-            text: 'merge',
-          },
-          {
-            text: ' ',
-          },
-          {
-            text: 'function on the block type to handle merges and detect if two blocks are mergeable. If two blocks are not mergeable, we fall back to the current behaviour, which is to select the blocks entirely.',
+            text: 'Example with full setup of Yoopta-Editor',
           },
         ],
         props: {
@@ -387,43 +314,38 @@ const value = {
         },
       },
     ],
-    type: 'Paragraph',
-    meta: {
-      order: 6,
-      depth: 0,
-    },
   },
-  '391fd7a6-efc1-4c6e-b5ad-06449d447296': {
-    id: '391fd7a6-efc1-4c6e-b5ad-06449d447296',
-    value: [
-      {
-        id: '6a7c25ba-253b-4e07-844c-c161c41fdaf5',
-        type: 'heading-two',
-        children: [
-          {
-            text: 'Checklist:',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'HeadingTwo',
+  '8c18747e-039a-4a5d-ac78-b923c2d9f567': {
+    id: '8c18747e-039a-4a5d-ac78-b923c2d9f567',
+    type: 'BulletedList',
     meta: {
       order: 7,
       depth: 0,
     },
-  },
-  '223c0a79-e9f6-4892-b314-46abae2b3f10': {
-    id: '223c0a79-e9f6-4892-b314-46abae2b3f10',
     value: [
       {
-        id: 'a010ac22-228f-48a1-83b9-85c50916208e',
+        id: '89a52422-41fd-4bcf-b896-40dd1c5a4427',
         type: 'bulleted-list',
         children: [
           {
-            text: ' My code is tested.',
+            text: 'Example with full setup of Yoopta-Editor',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+  },
+  'ab2738ae-283e-4892-8572-f7dcc72096e5': {
+    id: 'ab2738ae-283e-4892-8572-f7dcc72096e5',
+    value: [
+      {
+        id: '807c7625-5cdf-42ea-bcb6-94837e34662a',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'Example with full setup of Yoopta-Editor',
           },
         ],
         props: {
@@ -437,15 +359,15 @@ const value = {
       depth: 0,
     },
   },
-  '7ea2f516-59d3-4cda-aa03-86b77ddf9f82': {
-    id: '7ea2f516-59d3-4cda-aa03-86b77ddf9f82',
+  '15c1bccf-2559-43fa-8708-bc92704acfc0': {
+    id: '15c1bccf-2559-43fa-8708-bc92704acfc0',
     value: [
       {
-        id: 'e230a425-7cac-4bcf-bd21-bd565f5e03de',
-        type: 'bulleted-list',
+        id: '9a82c42d-3d82-46c0-a288-18ceb737d6dd',
+        type: 'numbered-list',
         children: [
           {
-            text: ' My code follows the WordPress code style.',
+            text: 'Example with full setup of Yoopta-Editor',
           },
         ],
         props: {
@@ -453,21 +375,21 @@ const value = {
         },
       },
     ],
-    type: 'BulletedList',
+    type: 'NumberedList',
     meta: {
       order: 9,
       depth: 0,
     },
   },
-  '1a199ea1-7120-4c10-9b41-c2c0fffcdecc': {
-    id: '1a199ea1-7120-4c10-9b41-c2c0fffcdecc',
+  'd44659d4-1ec0-4785-b606-99f260ede883': {
+    id: 'd44659d4-1ec0-4785-b606-99f260ede883',
     value: [
       {
-        id: '5bffabf2-d08c-4cef-acff-c6a799ac1fe4',
-        type: 'bulleted-list',
+        id: 'dd6e4ae1-ce5f-4549-81dd-7f95cf227e93',
+        type: 'numbered-list',
         children: [
           {
-            text: ' My code follows the accessibility standards.',
+            text: 'Example with full setup of Yoopta-Editor',
           },
         ],
         props: {
@@ -475,43 +397,44 @@ const value = {
         },
       },
     ],
-    type: 'BulletedList',
+    type: 'NumberedList',
     meta: {
       order: 10,
       depth: 0,
     },
   },
-  '65263b95-2037-4eec-a079-0a8896bf558f': {
-    id: '65263b95-2037-4eec-a079-0a8896bf558f',
+  'dc0fed6b-3a39-4aef-800c-2e69926f22f5': {
+    id: 'dc0fed6b-3a39-4aef-800c-2e69926f22f5',
     value: [
       {
-        id: '28098640-a649-4f04-b5ee-5a45bccfe904',
-        type: 'bulleted-list',
+        id: '6b1d5736-97c0-4fa8-84d5-ba9ab39423d6',
+        type: 'todo-list',
         children: [
           {
-            text: " I've tested my changes with keyboard and screen readers.",
+            text: 'Example with full setup of Yoopta-Editor',
           },
         ],
         props: {
           nodeType: 'block',
+          checked: false,
         },
       },
     ],
-    type: 'BulletedList',
+    type: 'TodoList',
     meta: {
       order: 11,
       depth: 0,
     },
   },
-  '9a469643-c29c-457d-92ad-b03a6f9adeec': {
-    id: '9a469643-c29c-457d-92ad-b03a6f9adeec',
+  'b4566f8b-6796-4d34-87d3-dc3e0183b20b': {
+    id: 'b4566f8b-6796-4d34-87d3-dc3e0183b20b',
     value: [
       {
-        id: '5b82ca2f-87d1-40fc-98ea-23b6826174c6',
-        type: 'bulleted-list',
+        id: '67825b50-bdd9-472c-8e90-c5d9bb3b59c9',
+        type: 'todo-list',
         children: [
           {
-            text: ' My code has proper inline documentation.',
+            text: 'Example with full setup of Yoopta-Editor',
           },
         ],
         props: {
@@ -519,65 +442,164 @@ const value = {
         },
       },
     ],
-    type: 'BulletedList',
+    type: 'TodoList',
     meta: {
       order: 12,
       depth: 0,
     },
   },
-  'b89f8ac1-6760-4294-b1a3-c77b8cc01a10': {
-    id: 'b89f8ac1-6760-4294-b1a3-c77b8cc01a10',
+  '19a53b1b-8bcc-48d0-b0b2-729f83efa669': {
+    id: '19a53b1b-8bcc-48d0-b0b2-729f83efa669',
+    type: 'Callout',
+    meta: {
+      order: 6,
+      depth: 0,
+    },
     value: [
       {
-        id: '27148ba4-41cf-4203-924f-6a03108dc1ca',
-        type: 'bulleted-list',
+        id: '8893ddab-211a-4c7c-ae5f-86fc42bd66f0',
+        type: 'callout',
         children: [
           {
-            text: " I've included developer documentation if appropriate.",
+            text: 'Example with full setup of Yoopta-Editor',
           },
         ],
         props: {
           nodeType: 'block',
+          theme: 'info',
         },
       },
     ],
-    type: 'BulletedList',
+  },
+  '1c645fd1-05fd-46f3-9207-05e2f0ccded5': {
+    id: '1c645fd1-05fd-46f3-9207-05e2f0ccded5',
+    value: [
+      {
+        id: '7df52958-629a-4299-a0eb-5d061a9fa737',
+        type: 'code',
+        children: [
+          {
+            text: "const TOOLS: Tools = {\n  ActionMenu: {\n    // render: ActionNotionMenuExample,\n    render: DefaultActionMenuRender,\n    tool: ActionMenuList,\n    props: {\n      // items: ['Callout', 'Blockquote', 'HeadingOne', 'HeadingTwo', 'HeadingThree', 'Image', 'File'],\n    },\n  },\n  Toolbar: {\n    render: DefaultToolbarRender,\n    // render: NotionToolbar,\n    tool: Toolbar,\n  },\n  LinkTool: {\n    render: DefaultLinkToolRender,\n    tool: LinkTool,\n  },\n};",
+          },
+        ],
+        props: {
+          nodeType: 'void',
+          language: 'javascript',
+          theme: 'VSCode',
+        },
+      },
+    ],
+    type: 'Code',
     meta: {
       order: 13,
       depth: 0,
     },
   },
-  'f907d9d2-1026-4266-a7ba-d9be081ffb1d': {
-    id: 'f907d9d2-1026-4266-a7ba-d9be081ffb1d',
+  '5ddf9adf-e2c1-4adf-a6f6-7ca32420c4a6': {
+    id: '5ddf9adf-e2c1-4adf-a6f6-7ca32420c4a6',
     value: [
       {
-        id: 'fc0ee172-9a9c-4304-877d-7dffec711a51',
-        type: 'bulleted-list',
+        id: 'ffb4741c-5322-4423-9026-80d8c4902611',
+        type: 'video',
         children: [
           {
-            text: " I've updated all React Native files affected by any refactorings/renamings in this PR (please manually search all *.native.js files for terms that need renaming or removal).",
+            text: '',
           },
         ],
         props: {
-          nodeType: 'block',
+          nodeType: 'void',
+          src: 'https://res.cloudinary.com/ench-app/video/upload/v1715632823/Yoopta_Intro_ndwglr_mtptgj.mp4',
+          srcSet: null,
+          sizes: {
+            width: 2252,
+            height: 1624,
+          },
+          provider: {
+            type: null,
+            id: '',
+          },
+          settings: {
+            controls: false,
+            loop: true,
+            muted: true,
+            autoPlay: true,
+          },
+          fit: 'cover',
         },
       },
     ],
-    type: 'BulletedList',
+    type: 'Video',
     meta: {
-      order: 14,
+      order: 15,
       depth: 0,
     },
   },
-  'f96f1b75-282f-405d-a5ae-69d0aafde8d1': {
-    id: 'f96f1b75-282f-405d-a5ae-69d0aafde8d1',
+  '71bec89c-0a58-47aa-a895-15253ce72831': {
+    id: '71bec89c-0a58-47aa-a895-15253ce72831',
     value: [
       {
-        id: 'ab2c7a10-33b1-4283-a33c-4b77c4634cd0',
-        type: 'bulleted-list',
+        id: 'f1128e50-6302-4fe9-bc5d-0a673c45afe1',
+        type: 'file',
         children: [
           {
-            text: " I've updated related schemas if appropriate.",
+            text: '',
+          },
+        ],
+        props: {
+          nodeType: 'void',
+          size: 96443,
+          name: 'GNYvP3UXUAAbPKZ',
+          src: 'https://res.cloudinary.com/ench-app/image/upload/v1715632830/GNYvP3UXUAAbPKZ_cgvvwb.jpg',
+          format: 'jpg',
+        },
+      },
+    ],
+    type: 'File',
+    meta: {
+      order: 16,
+      depth: 0,
+    },
+  },
+  '499480f6-b8f9-4495-afdf-d860a23bb37e': {
+    id: '499480f6-b8f9-4495-afdf-d860a23bb37e',
+    value: [
+      {
+        id: '8f80f994-b665-4566-96de-8eca9e8c77f8',
+        type: 'embed',
+        children: [
+          {
+            text: '',
+          },
+        ],
+        props: {
+          nodeType: 'void',
+          sizes: {
+            width: 532,
+            height: 327,
+          },
+          provider: {
+            type: 'youtube',
+            id: 'O8ErPJqW67A',
+            url: 'https://www.youtube.com/watch?v=O8ErPJqW67A&list=RDCkx0ZdKzkbc&index=3&ab_channel=Hajime',
+          },
+        },
+      },
+    ],
+    type: 'Embed',
+    meta: {
+      order: 17,
+      depth: 0,
+    },
+  },
+  '5c97c726-fe7e-4cb3-8486-52b1060757c0': {
+    id: '5c97c726-fe7e-4cb3-8486-52b1060757c0',
+    value: [
+      {
+        id: '1a8648f1-400a-4928-a604-730cf343c7c9',
+        type: 'paragraph',
+        children: [
+          {
+            text: '',
           },
         ],
         props: {
@@ -585,9 +607,9 @@ const value = {
         },
       },
     ],
-    type: 'BulletedList',
+    type: 'Paragraph',
     meta: {
-      order: 15,
+      order: 18,
       depth: 0,
     },
   },
@@ -633,10 +655,14 @@ const BasicExample = () => {
           <button
             className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
             onClick={() => {
-              editor.blocks.Image.create();
+              editor.setEditorValue({});
+
+              setTimeout(() => {
+                console.log('editor', editor.blockEditorsMap);
+              }, 100);
             }}
           >
-            Add Image
+            Set value
           </button>
           <button
             className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"

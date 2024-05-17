@@ -1,3 +1,5 @@
+<a href="https://www.producthunt.com/products/yoopta-edtior?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-yoopta&#0045;edtior" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=453627&theme=light" alt="Yoopta&#0032;Edtior - Open&#0045;source&#0032;WYSIWYG&#0032;editor&#0032;setting&#0032;a&#0032;new&#0032;standard | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+
 [![RepoRater](https://repo-rater.eddiehub.io/api/badge?owner=Darginec05&name=Yoopta-Editor)](https://repo-rater.eddiehub.io/rate?owner=Darginec05&name=Yoopta-Editor)
 
 # Welcome to Yoopta-Editor@v4🎉
@@ -43,7 +45,7 @@ All of this is customizable, extensible, and easy to set up!
 
 - Plugins
 
-  - **@yoopta/paragraph**
+  - [**@yoopta/paragraph**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/paragraph/README.md)
   - **@yoopta/blockquote**
   - **@yoopta/code**
   - **@yoopta/embed**
@@ -52,7 +54,7 @@ All of this is customizable, extensible, and easy to set up!
   - **@yoopta/file**
   - **@yoopta/callout**
   - **@yoopta/video**
-  - **@yoopta/lists**
+  - [**@yoopta/lists**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/lists/README.md)
   - **@yoopta/headings**
 
 - Tools
@@ -91,7 +93,10 @@ export default function Editor() {
 
   return (
     <div>
-      <YooptaEditor plugins={plugins} />
+      <YooptaEditor
+        editor={editor}
+        plugins={plugins}
+      />
     </div>
   );
 }
@@ -124,6 +129,8 @@ type YooptaEditor = {
   readOnly?: boolean;
   /* Width. [Default] - 450px  */
   width?: number | string;
+  /* Id for your editor instance. Can be useful for multiple editors */
+  id?: number | string;
 };
 ```
 
@@ -158,6 +165,7 @@ export default function Editor() {
   return (
     <div>
       <YooptaEditor
+        editor={editor}
         placeholder="Type text.."
         // here we go
         plugins={plugins}
@@ -212,6 +220,7 @@ export default function Editor() {
   return (
     <div>
       <YooptaEditor
+        editor={editor}
         plugins={plugins}
         placeholder="Type text.."
         // here we go
@@ -249,6 +258,7 @@ export default function Editor() {
   return (
     <div>
       <YooptaEditor
+        editor={editor}
         placeholder="Type text.."
         plugins={plugins}
         tools={TOOLS}
@@ -306,10 +316,23 @@ If you have any questions or need assistance raise an issue in the GitHub reposi
 
 Let's create powerful and engaging editing experiences together with Yoopta-Editor!
 
+## Project structure
+
+```text
+packages/
+├── core - core components of the editor
+├── marks - text marks
+├── plugins - editor plugin extensions
+├── tools - tools packages
+└── development - developer playground
+```
+
 ## Contributing
-If you're ready to support Yoopta-Editor, here's how you can do it: 
+
+If you're ready to support Yoopta-Editor, here's how you can do it:
+
 - If you've spotted a bug or thinking of a feature [raise an issue](https://github.com/Darginec05/Yoopta-Editor/issues/new/choose)
-- If you want to collaborate on the project, find an issue you like to work on and suggest your changes.
+- If you want to collaborate on the project, find an issue you like to work on and suggest your changes. Checkout [contributing guidelines](./CONTRIBUTING.md).
 - If you want to discuss your idea feel free to create a [discussion](https://github.com/Darginec05/Yoopta-Editor/discussions/new/choose)
 - Or join our [Telegram Community](https://t.me/YooptaEditor) and get in touch with us
 
