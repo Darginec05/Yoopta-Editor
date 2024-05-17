@@ -32,6 +32,7 @@ const Placeholder = ({ attributes, children, blockId }) => {
         className={`yoopta-button yoo-image-p-[12px_36px_12px_12px] yoo-image-flex yoo-image-items-center yoo-image-text-left yoo-image-w-full yoo-image-overflow-hidden yoo-image-rounded-[3px] yoo-image-text-[14px] yoo-image-text-[rgba(55,53,47,0.65)] yoo-image-relative yoo-image-cursor-pointer yoo-image-border-none yoo-image-bg-[#efefef] yoo-image-transition-[background-color_100ms_ease-in] hover:yoo-image-bg-[#e3e3e3]`}
         onClick={() => setIsUploaderOpen(true)}
         disabled={loading}
+        type="button"
         ref={refs.setReference}
       >
         {loading ? (
