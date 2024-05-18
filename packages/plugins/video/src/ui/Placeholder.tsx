@@ -29,6 +29,7 @@ const Placeholder = ({ attributes, children, blockId }) => {
       contentEditable={false}
     >
       <button
+        type="button"
         className={`yoopta-button yoo-video-p-[12px_36px_12px_12px] yoo-video-flex yoo-video-items-center yoo-video-text-left yoo-video-w-full yoo-video-overflow-hidden yoo-video-rounded-[3px] yoo-video-text-[14px] yoo-video-text-[rgba(55,53,47,0.65)] yoo-video-relative yoo-video-cursor-pointer yoo-video-border-none yoo-video-bg-[#efefef] yoo-video-transition-[background-color_100ms_ease-in] hover:yoo-video-bg-[#e3e3e3]`}
         onClick={() => setIsUploaderOpen(true)}
         disabled={loading}
