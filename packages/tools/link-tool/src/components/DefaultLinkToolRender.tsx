@@ -4,6 +4,8 @@ import { LinkToolRenderProps, Link } from '../types';
 const DEFAULT_LINK_VALUE: Link = {
   url: '',
   title: '',
+  target: '_blank',
+  rel: 'noreferrer',
 };
 
 function isUrl(string: any): boolean {
