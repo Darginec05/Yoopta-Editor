@@ -37,7 +37,7 @@ const addLink = (editor, url: string) => {
     props: {
       url,
       target: '_blank',
-      rel: 'noreferrer',
+      rel: 'noopener noreferrer',
     },
   };
 

@@ -3,6 +3,8 @@ import { YooEditor } from '@yoopta/editor';
 export type Link = {
   url: string;
   title: string;
+  rel?: string;
+  target?: string;
 };
 
 export type LinkToolRenderProps = {

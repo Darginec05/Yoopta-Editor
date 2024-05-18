@@ -10,7 +10,7 @@ const Link = new YooptaPlugin<LinkPluginElementKeys, LinkElementProps>({
       props: {
         url: null,
         target: '_blank',
-        rel: 'noreferrer',
+        rel: 'noopener noreferrer',
         nodeType: 'inline',
         title: null,
       },
