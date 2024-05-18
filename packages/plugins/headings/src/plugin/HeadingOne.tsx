@@ -4,14 +4,7 @@ const HeadingOneRender = ({ attributes, children, element, HTMLAttributes = {} }
   const { className = '', ...htmlAttrs } = HTMLAttributes;
 
   return (
-    <h1
-      id={element.id}
-      draggable={false}
-      data-element-type={element.type}
-      className={`yoopta-heading-one ${className}`}
-      {...htmlAttrs}
-      {...attributes}
-    >
+    <h1 id={element.id} draggable={false} className={`yoopta-heading-one ${className}`} {...htmlAttrs} {...attributes}>
       {children}
     </h1>
   );

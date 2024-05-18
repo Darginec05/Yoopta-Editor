@@ -10,7 +10,7 @@ import Link from '@yoopta/link';
 import Video from '@yoopta/video';
 import File from '@yoopta/file';
 import Embed from '@yoopta/embed';
-// import AccordionPlugin from '@yoopta/accordion';
+import AccordionPlugin from '@yoopta/accordion';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
@@ -21,11 +21,11 @@ import Code from '@yoopta/code';
 import { ActionNotionMenuExample } from '../../components/ActionMenuExamples/NotionExample/ActionNotionMenuExample';
 import { NotionToolbar } from '../../components/Toolbars/NotionToolbar/NotionToolbar';
 import { ACCORDION_BLOCK } from '../../components/customPlugins/Accordion/Accordion';
-import Accordion from '../../components/customPlugins/Accordion/src';
+// import Accordion from '../../components/customPlugins/Accordion/src';
 // import Mention from '@yoopta/mention';
 
 const plugins = [
-  Accordion,
+  AccordionPlugin,
   Code,
   File.extend({
     options: {
@@ -55,7 +55,6 @@ const plugins = [
     //       <div>
     //         <img
     //           draggable={false}
-    //           data-element-type={element.type}
     //           className="yoo-h-mt-6 yoo-h-scroll-m-20"
     //           {...attributes}
     //         />

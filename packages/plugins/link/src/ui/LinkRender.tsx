@@ -13,7 +13,6 @@ const LinkRender = (props: PluginElementRenderProps) => {
 
   return (
     <a
-      data-element-type={props.element.type}
       draggable={false}
       href={url || ''}
       rel={rel}

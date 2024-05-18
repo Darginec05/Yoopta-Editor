@@ -1,39 +1,49 @@
 import { PluginElementRenderProps, useYooptaEditor, useYooptaReadOnly } from '@yoopta/editor';
 import { ChevronUp, Plus } from 'lucide-react';
+import { Path } from 'slate';
+import { createBlockElement } from '../elements/createElement';
+import { updateElement } from '../elements/updateElement';
+import { getBlockElement } from '../elements/getElement';
 
 export const AccordionItemHeading = (props: PluginElementRenderProps) => {
-  const { attributes, children, blockId } = props;
+  const { attributes, children, blockId, path } = props;
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
 
   const onToggleExpand = () => {
-    const listItemElement = editor.blocks.Accordion.getElement(blockId, 'accordion-list-item');
+    const listItemElement = getBlockElement(editor, blockId, 'accordion-list-item', { atPath: path.slice(0, 2) });
 
     if (listItemElement) {
-      editor.blocks.Accordion.updateElement(blockId, 'accordion-list-item', {
-        isExpanded: !listItemElement.props?.isExpanded,
-      });
+      updateElement(
+        editor,
+        blockId,
+        'accordion-list-item',
+        {
+          isExpanded: !listItemElement.props?.isExpanded,
+        },
+        { path: path.slice(0, 2) },
+      );
     }
   };
 
   const onAddAccordionItem = () => {
-    editor.blocks.Accordion.createElement(
+    createBlockElement(
+      editor,
       blockId,
       'accordion-list-item',
       { isExpanded: true },
-      { at: 'next', focus: true },
+      { at: Path.next(path.slice(0, 2)), focus: true },
     );
   };
 
+  const nodeEl = getBlockElement(editor, blockId, 'accordion-list-item', { atPath: path.slice(0, 2) });
+  const isExpanded = nodeEl?.props?.isExpanded;
+
   return (
-    <h2
-      {...attributes}
-      aria-expanded="false"
-      className="yoo-accordion-group yoo-accordion-mb-0 yoo-accordion-relative yoo-accordion-flex yoo-accordion-w-full yoo-accordion-items-center yoo-accordion-border-0 yoo-accordion-rounded-none yoo-accordion-text-[#3b71ca] !yoo-accordion-bg-[#424242] yoo-accordion-px-5 yoo-accordion-py-4 yoo-accordion-text-left"
-    >
+    <h2 {...attributes} aria-expanded="false" className="yoopta-accordion-list-item-heading yoo-accordion-group">
       {children}
       {!isReadOnly && (
-        <div className="yoo-accordion-absolute yoo-accordion-right-[14px] yoo-accordion-z-10 yoo-accordion-top-1/2 -yoo-accordion-translate-y-1/2 yoo-accordion-flex yoo-accordion-gap-1">
+        <div className="yoo-accordion-absolute yoo-accordion-right-[14px] yoo-accordion-z-10 yoo-accordion-top-1/2 -yoo-accordion-translate-y-1/2 yoo-accordion-flex yoo-accordion-gap-1 yoo-accordion-select-none">
           <button
             contentEditable={false}
             onClick={onAddAccordionItem}
@@ -42,7 +52,13 @@ export const AccordionItemHeading = (props: PluginElementRenderProps) => {
             <Plus strokeWidth={1} size={24} color="#fff" />
           </button>
           <button contentEditable={false} onClick={onToggleExpand}>
-            <ChevronUp strokeWidth={1} size={24} color="#fff" />
+            <ChevronUp
+              strokeWidth={1}
+              size={24}
+              color="#fff"
+              style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
+              className={isExpanded ? 'rotate-180' : 'rotate-0'}
+            />
           </button>
         </div>
       )}

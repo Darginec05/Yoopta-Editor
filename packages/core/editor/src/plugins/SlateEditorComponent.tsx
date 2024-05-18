@@ -1,5 +1,5 @@
-import React, { memo, useCallback, useMemo, useRef } from 'react';
-import { DefaultElement, Editable, RenderElementProps, Slate } from 'slate-react';
+import React, { memo, useCallback, useEffect, useMemo, useRef } from 'react';
+import { DefaultElement, Editable, ReactEditor, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useBlockData } from '../contexts/YooptaContext/YooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../marks';
@@ -50,7 +50,6 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   const editor = useYooptaEditor();
   const block = useBlockData(id);
   const initialValue = useRef(block.value).current;
-  const type = block.type;
 
   const ELEMENTS_MAP = useMemo(() => getMappedElements(elements), [elements]);
   const MARKS_MAP = useMemo(() => getMappedMarks(marks), [marks]);
@@ -84,7 +83,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     });
 
     return slateEditor;
-  }, []);
+  }, [elements]);
 
   const eventHandlers = useMemo<EditorEventHandlers>(() => {
     if (!events || editor.readOnly) return {};
@@ -111,11 +110,30 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   const onChange = useCallback((value) => editor.updateBlock(id, { value }), [id]);
 
   const renderElement = useCallback(
-    (props: RenderElementProps) => {
-      const ElementComponent = ELEMENTS_MAP[props.element.type];
+    (elementProps: RenderElementProps) => {
+      const ElementComponent = ELEMENTS_MAP[elementProps.element.type];
+      const { attributes, ...props } = elementProps;
+      attributes['data-element-type'] = props.element.type;
+      attributes['data-element-id'] = props.element.id;
 
-      if (!ElementComponent) return <DefaultElement {...props} />;
-      return <ElementComponent {...props} blockId={id} HTMLAttributes={options?.HTMLAttributes} />;
+      let path;
+
+      try {
+        path = ReactEditor.findPath(slate, elementProps.element);
+      } catch (error) {
+        path = [];
+      }
+
+      if (!ElementComponent) return <DefaultElement {...props} attributes={attributes} path={path} />;
+      return (
+        <ElementComponent
+          {...props}
+          path={path}
+          attributes={attributes}
+          blockId={id}
+          HTMLAttributes={options?.HTMLAttributes}
+        />
+      );
     },
     [elements],
   );

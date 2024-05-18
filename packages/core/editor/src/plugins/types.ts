@@ -1,5 +1,5 @@
 import { HTMLAttributes, ReactElement, ReactNode } from 'react';
-import { Descendant, Editor } from 'slate';
+import { Descendant, Editor, Path } from 'slate';
 import { RenderElementProps as RenderSlateElementProps, RenderLeafProps } from 'slate-react';
 import { SlateElement, YooEditor, YooptaBlockData } from '../editor/types';
 import { YooptaMark } from '../marks';
@@ -29,6 +29,7 @@ export type PluginElementOptions = {
 
 export type PluginElementRenderProps = RenderSlateElementProps & {
   blockId: string;
+  path: Path;
   HTMLAttributes?: HTMLAttributes<HTMLElement>;
 };
 

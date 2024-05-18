@@ -84,7 +84,6 @@ const ImageRender = ({ element, attributes, children, blockId }: PluginElementRe
 
   return (
     <div
-      data-element-type={element.type}
       contentEditable={false}
       draggable={false}
       className="yoo-image-mt-4 yoo-image-relative yoopta-image"

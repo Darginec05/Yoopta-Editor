@@ -4,12 +4,7 @@ const BulletedListRender = ({ attributes, element, children, HTMLAttributes = {}
   const { className = '', ...htmlAttrs } = HTMLAttributes;
 
   return (
-    <div
-      data-element-type={element.type}
-      className={`yoopta-bulleted-list ${className}`}
-      {...htmlAttrs}
-      {...attributes}
-    >
+    <div className={`yoopta-bulleted-list ${className}`} {...htmlAttrs} {...attributes}>
       <span className="yoopta-bulleted-list-bullet" contentEditable={false}>
         •
       </span>

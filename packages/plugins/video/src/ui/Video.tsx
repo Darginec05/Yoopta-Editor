@@ -79,7 +79,6 @@ const VideoRender = ({ element, attributes, children, blockId }: PluginElementRe
 
   return (
     <div
-      data-element-type={element.type}
       contentEditable={false}
       draggable={false}
       className="yoo-video-mt-4 yoo-video-relative yoopta-video"

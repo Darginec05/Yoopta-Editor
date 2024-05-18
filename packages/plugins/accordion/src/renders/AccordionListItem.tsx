@@ -4,10 +4,7 @@ export const AccordionListItem = (props: PluginElementRenderProps) => {
   const { element, attributes, children } = props;
 
   return (
-    <li
-      {...attributes}
-      className="yoo-accordion-border yoo-accordion-border-[#525252] yoo-accordion-bg-[#303030] yoo-accordion-rounded-none yoo-accordion-relative yoo-accordion-w-full"
-    >
+    <li {...attributes} className="yoopta-accordion-list-item">
       {children}
     </li>
   );

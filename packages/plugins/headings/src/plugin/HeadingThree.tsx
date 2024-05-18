@@ -7,7 +7,6 @@ const HeadingThreeRender = ({ attributes, children, element, HTMLAttributes = {}
     <h3
       id={element.id}
       draggable={false}
-      data-element-type={element.type}
       className={`yoopta-heading-three ${className}`}
       {...htmlAttrs}
       {...attributes}

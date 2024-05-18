@@ -5,6 +5,9 @@ import { AccordionListItem } from '../renders/AccordionListItem';
 import { AccordionItemHeading } from '../renders/AccordionItemHeading';
 import { AccordionItemContent } from '../renders/AccordionItemContent';
 import { Editor, Transforms } from 'slate';
+import { getBlockElementEntry } from '../elements/getElementEntry';
+import { createBlockElement } from '../elements/createElement';
+import { isElementEmpty } from '../elements/isElementEmpty';
 
 const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>({
   type: 'Accordion',
@@ -31,19 +34,11 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
       return (event) => {
         if (hotkeys.isBackspace(event)) {
           if (slate.selection) {
-            const headingElementEntry = editor.blocks.Accordion.getElementEntry(
-              currentBlock.id,
-              'accordion-list-item-heading',
-              { atPath: slate.selection },
-            );
+            const headingElementEntry = getBlockElementEntry(editor, currentBlock.id, 'accordion-list-item-heading', {
+              atPath: slate.selection,
+            });
 
-            console.log('headingElementEntry', headingElementEntry);
-
-            const string = Editor.string(slate, slate.selection);
-            console.log('string', string);
-            if (string.trim().length === 0) {
-              event.preventDefault();
-              console.log('slate.selection.anchor.path', slate.selection.anchor.path);
+            if (isElementEmpty(editor, currentBlock.id, 'accordion-list-item-heading')) {
             }
           }
         }
@@ -61,11 +56,12 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
         if (hotkeys.isEnter(event)) {
           event.preventDefault();
 
-          editor.blocks.Accordion.createElement(
+          createBlockElement(
+            editor,
             currentBlock.id,
             'accordion-list-item',
             { isExpanded: true },
-            { at: 'next', focus: true, split: true },
+            { at: 'next', focus: true, split: false },
           );
         }
       };
