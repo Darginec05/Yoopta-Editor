@@ -236,14 +236,10 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
   const actionMenuRenderProps = buildActionMenuRenderProps({ editor, onClose: onCloseActionMenu, view: 'small' });
 
   return (
-    <Toolbar.Root className="yoo-toolbar-bg-[#FFFFFF] yoo-toolbar-flex yoo-toolbar-z-50 yoo-toolbar-p-[5px] yoo-toolbar-rounded-md yoo-toolbar-shadow-md yoo-toolbar-border-[1px] yoo-toolbar-border-solid yoo-toolbar-border-[#e3e3e3] yoo-toolbar-shadow-y-[4px]">
-      <Toolbar.ToggleGroup
-        className="yoo-toolbar-flex yoo-toolbar-items-center"
-        type="single"
-        aria-label="Block formatting"
-      >
+    <Toolbar.Root className="yoopta-toolbar-root">
+      <Toolbar.ToggleGroup className="yoopta-toolbar-group" type="single" aria-label="Block formatting">
         <Toolbar.ToggleItem
-          className="yoopta-button yoo-toolbar-h-full yoo-toolbar-text-[16px] yoo-toolbar-px-[10px] yoo-toolbar-py-0 hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md"
+          className="yoopta-button yoopta-toolbar-item"
           value={blockLabel}
           aria-label={blockLabel}
           ref={actionMenuRefs.setReference}
@@ -260,14 +256,10 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
           )}
         </Toolbar.ToggleItem>
       </Toolbar.ToggleGroup>
-      <Toolbar.Separator className="yoo-toolbar-bg-[#dbd8e0] yoo-toolbar-mx-[6px] yoo-toolbar-my-0 yoo-toolbar-w-[1px]" />
-      <Toolbar.ToggleGroup
-        className="yoo-toolbar-flex yoo-toolbar-items-center"
-        type="single"
-        aria-label="Block formatting"
-      >
+      <Toolbar.Separator className="yoopta-toolbar-separator" />
+      <Toolbar.ToggleGroup className="yoopta-toolbar-group" type="single" aria-label="Block formatting">
         <Toolbar.ToggleItem
-          className="yoopta-button yoo-toolbar-h-full yoo-toolbar-text-[16px] yoo-toolbar-px-[10px] yoo-toolbar-py-0 hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md"
+          className="yoopta-button yoopta-toolbar-item"
           value="LinkTool"
           aria-label="LinkTool"
           ref={linkToolRefs.setReference}
@@ -289,15 +281,11 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
           )}
         </Toolbar.ToggleItem>
       </Toolbar.ToggleGroup>
-      <Toolbar.Separator className="yoo-toolbar-bg-[#dbd8e0] yoo-toolbar-mx-[6px] yoo-toolbar-my-0 yoo-toolbar-w-[1px]" />
-      <Toolbar.ToggleGroup
-        className="yoo-toolbar-flex yoo-toolbar-items-center"
-        type="multiple"
-        aria-label="Text formatting"
-      >
+      <Toolbar.Separator className="yoopta-toolbar-separator" />
+      <Toolbar.ToggleGroup className="yoopta-toolbar-group" type="multiple" aria-label="Text formatting">
         {editor.formats.bold && (
           <Toolbar.ToggleItem
-            className="yoopta-button yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
+            className="yoopta-button yoopta-toolbar-item-mark"
             value="bold"
             aria-label="Bold"
             style={getItemStyle('bold')}
@@ -308,7 +296,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
         )}
         {editor.formats.italic && (
           <Toolbar.ToggleItem
-            className="yoopta-button yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
+            className="yoopta-button yoopta-toolbar-item-mark"
             value="italic"
             aria-label="Italic"
             style={getItemStyle('italic')}
@@ -319,7 +307,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
         )}
         {editor.formats.underline && (
           <Toolbar.ToggleItem
-            className="yoopta-button yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
+            className="yoopta-button yoopta-toolbar-item-mark"
             value="underline"
             aria-label="Underline"
             style={getItemStyle('underline')}
@@ -330,7 +318,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
         )}
         {editor.formats.strike && (
           <Toolbar.ToggleItem
-            className="yoopta-button yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
+            className="yoopta-button yoopta-toolbar-item-mark"
             value="strike"
             aria-label="Strike"
             style={getItemStyle('strike')}
@@ -342,7 +330,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
         )}
         {editor.formats.code && (
           <Toolbar.ToggleItem
-            className="yoopta-button yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
+            className="yoopta-button yoopta-toolbar-item-mark"
             value="code"
             aria-label="Code"
             style={getItemStyle('code')}
@@ -364,7 +352,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
             )}
 
             <Toolbar.ToggleItem
-              className="yoopta-button yoo-toolbar-ml-[2px] yoo-toolbar-h-[32px] hover:yoo-toolbar-bg-[#f4f4f5] yoo-toolbar-rounded-md yoo-toolbar-cursor-pointer yoo-toolbar-inline-flex yoo-toolbar-px-[5px] yoo-toolbar-py-0 yoo-toolbar-items-center yoo-toolbar-justify-center"
+              className="yoopta-button yoopta-toolbar-item-mark"
               value="highlight"
               aria-label="Highlight"
               style={getHighlightTriggerStyle()}
