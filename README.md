@@ -1,6 +1,10 @@
 <a href="https://www.producthunt.com/products/yoopta-edtior?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-yoopta&#0045;edtior" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=453627&theme=light" alt="Yoopta&#0032;Edtior - Open&#0045;source&#0032;WYSIWYG&#0032;editor&#0032;setting&#0032;a&#0032;new&#0032;standard | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 
 [![RepoRater](https://repo-rater.eddiehub.io/api/badge?owner=Darginec05&name=Yoopta-Editor)](https://repo-rater.eddiehub.io/rate?owner=Darginec05&name=Yoopta-Editor)
+![npm](https://img.shields.io/npm/v/@yoopta/editor)
+![license](https://img.shields.io/npm/l/@yoopta/editor)
+![downloads](https://img.shields.io/npm/dm/@yoopta/editor)
+[![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/Darginec05)
 
 # Welcome to Yoopta-Editor@v4🎉
 
