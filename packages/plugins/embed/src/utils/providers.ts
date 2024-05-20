@@ -31,7 +31,7 @@ export function getProvider(url: string): EmbedProviderTypes | null {
     return 'vimeo';
   } else if (url.includes('dailymotion.com') || url.includes('dai.ly')) {
     return 'dailymotion';
-  } else if (url.includes('twitter') || url.includes('x.com')) {
+  } else if (url.includes('twitter') || url.includes('https://x.com')) {
     return 'twitter';
   } else if (url.includes('figma')) {
     return 'figma';
