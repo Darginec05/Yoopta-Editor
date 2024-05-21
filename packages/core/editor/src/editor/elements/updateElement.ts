@@ -1,12 +1,16 @@
-import { Editor, Element, Transforms } from 'slate';
-import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
-import { SlateElement, YooEditor } from '../types';
+import { Editor, Element, Path, Transforms } from 'slate';
+import { findSlateBySelectionPath, SlateElement, YooEditor } from '@yoopta/editor';
+
+export type UpdateElementOptions = {
+  path?: Path;
+};
 
 export function updateElement<TElementKeys extends string, TElementProps>(
   editor: YooEditor,
   blockId: string,
   elementType: TElementKeys,
   elementProps: TElementProps,
+  options?: UpdateElementOptions,
 ) {
   const block = editor.children[blockId];
 
@@ -20,9 +24,10 @@ export function updateElement<TElementKeys extends string, TElementProps>(
     console.warn('No slate found');
     return;
   }
+
   Editor.withoutNormalizing(slate, () => {
     const [elementEntry] = Editor.nodes<SlateElement>(slate, {
-      at: [0],
+      at: options?.path || [0],
       match: (n) => Element.isElement(n) && n.type === elementType,
     });
 
@@ -32,7 +37,7 @@ export function updateElement<TElementKeys extends string, TElementProps>(
     const updatedNode = { props: { ...props, ...elementProps } };
 
     Transforms.setNodes<SlateElement>(slate, updatedNode, {
-      at: [0],
+      at: options?.path || [0],
       match: (n) => Element.isElement(n) && n.type === elementType,
       mode: 'lowest',
     });

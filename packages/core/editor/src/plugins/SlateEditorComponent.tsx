@@ -114,7 +114,6 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       const ElementComponent = ELEMENTS_MAP[elementProps.element.type];
       const { attributes, ...props } = elementProps;
       attributes['data-element-type'] = props.element.type;
-      attributes['data-element-id'] = props.element.id;
 
       let path;
 

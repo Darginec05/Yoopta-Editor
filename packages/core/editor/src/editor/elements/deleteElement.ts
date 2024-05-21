@@ -1,12 +1,12 @@
-import { Editor, Element, Transforms } from 'slate';
-import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
-import { SlateElement, YooEditor } from '../types';
+import { Editor, Element, Path, Transforms } from 'slate';
+import { findSlateBySelectionPath, YooEditor } from '@yoopta/editor';
 
-export function deleteBlockElement<TElementKeys extends string>(
-  editor: YooEditor,
-  blockId: string,
-  elementType: TElementKeys,
-) {
+export type DeleteBlockElement = {
+  type: string;
+  path: Path;
+};
+
+export function deleteBlockElement(editor: YooEditor, blockId: string, element: DeleteBlockElement) {
   const block = editor.children[blockId];
 
   if (!block) {
@@ -21,9 +21,9 @@ export function deleteBlockElement<TElementKeys extends string>(
   }
 
   Editor.withoutNormalizing(slate, () => {
-    const [elementEntry] = Editor.nodes<SlateElement>(slate, {
-      at: [0],
-      match: (n) => Element.isElement(n) && n.type === elementType,
+    Transforms.removeNodes(slate, {
+      at: element.path,
+      match: (n) => Element.isElement(n) && n.type === element.type,
     });
 
     editor.applyChanges();

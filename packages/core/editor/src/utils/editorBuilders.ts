@@ -15,12 +15,13 @@ import { getRootBlockElement } from './blockElements';
 import { updateBlock } from '../editor/transforms/updateBlock';
 import { toggleBlock, ToggleBlockOptions } from '../editor/transforms/toggleBlock';
 import { deleteBlock, DeleteBlockOptions } from '../editor/transforms/deleteBlock';
-import { updateElement } from '../editor/elements/updateElement';
+import { updateElement, UpdateElementOptions } from '../editor/elements/updateElement';
 import { createBlockElement, CreateBlockElementOptions } from '../editor/elements/createElement';
 import { getBlockElement } from '../editor/elements/getElement';
-import { deleteBlockElement } from '../editor/elements/deleteElement';
+import { DeleteBlockElement, deleteBlockElement } from '../editor/elements/deleteElement';
 import { getBlockElementEntry, GetBlockElementEntryOptions } from '../editor/elements/getElementEntry';
-import { isElementEmpty } from '../editor/elements/isElementEmpty';
+import { EmptyBlockElement, isElementEmpty } from '../editor/elements/isElementEmpty';
+import { getElementChildren, GetElementChildrenOptions } from '../editor/elements/getElementChildren';
 
 export function buildMarks(editor, marks: YooptaMark<any>[]) {
   const formats: YooEditor['formats'] = {};
@@ -72,20 +73,28 @@ export function buildBlocks(editor, plugins: Plugin<string, PluginElement<unknow
           const block = findPluginBlockBySelectionPath(editor, { at: editor.selection });
           return block?.type === plugin.type;
         },
-        toggle: (options?: ToggleBlockOptions) => {
-          toggleBlock(editor, plugin.type, options);
-        },
-        create: (options) => {
-          createBlock(editor, plugin.type, options);
-        },
+
+        // block actions
+        toggle: (options?: ToggleBlockOptions) => toggleBlock(editor, plugin.type, options),
+        create: (options) => createBlock(editor, plugin.type, options),
         update: <TKeys extends string, TProps>(id: string, data: Partial<Pick<YooptaBlockData, 'meta' | 'value'>>) => {
           updateBlock(editor, id, data);
         },
-        updateElement: <TKeys extends string, TProps>(blockId: string, elementType: TKeys, props: TProps) => {
-          updateElement(editor, blockId, elementType, props);
+        delete: (options: DeleteBlockOptions) => {
+          deleteBlock(editor, options);
         },
-        isElementEmpty: <TKeys extends string>(blockId: string, elementType: TKeys) => {
-          return isElementEmpty(editor, blockId, elementType);
+
+        // block element actions
+        updateElement: <TKeys extends string, TProps>(
+          blockId: string,
+          elementType: TKeys,
+          props: TProps,
+          options?: UpdateElementOptions,
+        ) => {
+          updateElement(editor, blockId, elementType, props, options);
+        },
+        isElementEmpty: (blockId: string, element: EmptyBlockElement) => {
+          return isElementEmpty(editor, blockId, element);
         },
         createElement: <TKeys extends string, TProps>(
           blockId: string,
@@ -101,15 +110,15 @@ export function buildBlocks(editor, plugins: Plugin<string, PluginElement<unknow
         getElementEntry: <TKeys extends string>(
           blockId: string,
           elementType: TKeys,
-          options: GetBlockElementEntryOptions,
+          options?: GetBlockElementEntryOptions,
         ) => {
           return getBlockElementEntry(editor, blockId, elementType, options);
         },
-        deleteElement: <TKeys extends string>(blockId: string, elementType: TKeys) => {
-          deleteBlockElement(editor, blockId, elementType);
+        getElementChildren: (blockId: string, elementType: string, options?: GetElementChildrenOptions) => {
+          return getElementChildren(editor, blockId, elementType, options);
         },
-        delete: (options: DeleteBlockOptions) => {
-          deleteBlock(editor, options);
+        deleteElement: (blockId: string, element: DeleteBlockElement) => {
+          deleteBlockElement(editor, blockId, element);
         },
       };
     }

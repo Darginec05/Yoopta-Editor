@@ -1,24 +1,23 @@
-import { findSlateBySelectionPath, PluginElementRenderProps, useBlockData, useYooptaEditor } from '@yoopta/editor';
-import { useEffect, useState } from 'react';
-import { Editor } from 'slate';
-import { ReactEditor, useSlate } from 'slate-react';
-import { getBlockElement } from '../elements/getElement';
-import { getBlockElementEntry } from '../elements/getElementEntry';
+import { PluginElementRenderProps, useYooptaEditor } from '@yoopta/editor';
+import { Path } from 'slate';
 
 export const AccordionItemContent = (props: PluginElementRenderProps) => {
-  const { element, attributes, children, blockId, path } = props;
+  const { attributes, children, blockId, path } = props;
   const editor = useYooptaEditor();
 
-  const nodeEl = getBlockElement(editor, blockId, 'accordion-list-item', { atPath: path.slice(0, 2) });
+  const nodeEl = editor.blocks.Accordion.getElement(blockId, 'accordion-list-item', {
+    atPath: Path.parent(path),
+  });
+
   const isExpanded = nodeEl?.props?.isExpanded;
 
   return (
-    <p
+    <div
+      data-state={isExpanded ? 'open' : 'closed'}
+      className="yoopta-accordion-list-item-content data-[state=closed]:yoo-accordion-hidden data-[state=closed]:yoo-accordion-animate-accordion-up data-[state=open]:yoo-accordion-animate-accordion-down"
       {...attributes}
-      className="yoopta-accordion-list-item-content"
-      style={{ display: isExpanded ? 'block' : 'none' }}
     >
-      {children}
-    </p>
+      <div className="yoo-accordion-pb-4 yoo-accordion-pt-0">{children}</div>
+    </div>
   );
 };

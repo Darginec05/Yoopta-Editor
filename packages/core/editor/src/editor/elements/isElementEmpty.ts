@@ -1,12 +1,12 @@
-import { Editor, Element } from 'slate';
-import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
-import { SlateElement, YooEditor } from '../types';
+import { Editor, Element, Path } from 'slate';
+import { findSlateBySelectionPath, SlateElement, YooEditor } from '@yoopta/editor';
 
-export function isElementEmpty<TElementKeys extends string>(
-  editor: YooEditor,
-  blockId: string,
-  elementType: TElementKeys,
-): boolean | undefined {
+export type EmptyBlockElement = {
+  type: string;
+  path: Path;
+};
+
+export function isElementEmpty(editor: YooEditor, blockId: string, element: EmptyBlockElement): boolean | undefined {
   const block = editor.children[blockId];
 
   if (!block) {
@@ -21,14 +21,13 @@ export function isElementEmpty<TElementKeys extends string>(
   }
 
   const [elementEntry] = Editor.nodes<SlateElement>(slate, {
-    at: slate.selection || [0],
-    match: (n) => Element.isElement(n) && n.type === elementType,
+    at: element.path || slate.selection,
+    match: (n) => Element.isElement(n) && n.type === element.type,
   });
 
   if (elementEntry) {
     const [node, nodePath] = elementEntry;
     const string = Editor.string(slate, nodePath);
-    console.log({ node, nodePath, string });
 
     return string.trim().length === 0;
   }

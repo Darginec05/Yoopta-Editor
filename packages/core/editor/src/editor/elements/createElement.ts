@@ -1,10 +1,8 @@
+import { buildBlockElement, findSlateBySelectionPath, SlateElement, YooEditor } from '@yoopta/editor';
 import { Editor, Path, Transforms } from 'slate';
-import { buildBlockElement } from '../../components/Editor/utils';
-import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
-import { SlateElement, YooEditor } from '../types';
 
 export type CreateBlockElementOptions = {
-  at?: 'next' | 'last' | 'first' | 'prev' | Path;
+  at?: 'next' | 'prev' | Path;
   focus?: boolean;
   split?: boolean;
 };
@@ -34,12 +32,10 @@ export function createBlockElement<TElementKeys extends string, TElementProps>(
 
     const elementTypes = Object.keys(block.elements);
 
-    let parentElement;
     let childrenElements: SlateElement[] = [];
 
     elementTypes.forEach((blockElementType) => {
       const blockElement = block.elements[blockElementType];
-      const hasParentBlockElement = blockElement.children?.includes(elementType);
 
       if (blockElementType === elementType) {
         if (Array.isArray(blockElement.children) && blockElement.children.length > 0) {
@@ -48,10 +44,6 @@ export function createBlockElement<TElementKeys extends string, TElementProps>(
             childrenElements.push(buildBlockElement({ type: childElementType, props: childElement.props }));
           });
         }
-      }
-
-      if (hasParentBlockElement) {
-        parentElement = buildBlockElement({ type: blockElementType, props: blockElement.props });
       }
     });
 
@@ -74,14 +66,7 @@ export function createBlockElement<TElementKeys extends string, TElementProps>(
       }
     }
 
-    if (options?.split) {
-      Transforms.splitNodes(slate, { at: atPath, always: true });
-    } else {
-      console.log('nodeElement', nodeElement);
-      console.log('atPath', atPath);
-
-      Transforms.insertNodes(slate, nodeElement, { at: atPath, select: focus });
-    }
+    Transforms.insertNodes(slate, nodeElement, { at: atPath, select: focus });
 
     if (focus) {
       if (childrenElements.length > 0) {

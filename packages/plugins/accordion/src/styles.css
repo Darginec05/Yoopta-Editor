@@ -9,9 +9,9 @@
 }
 
 .yoopta-accordion-list-item-heading {
-  @apply yoo-accordion-mb-0 yoo-accordion-relative yoo-accordion-flex yoo-accordion-w-full yoo-accordion-items-center yoo-accordion-border-0 yoo-accordion-rounded-none yoo-accordion-text-[#3b71ca] !yoo-accordion-bg-[#424242] yoo-accordion-px-5 yoo-accordion-py-4 yoo-accordion-text-left
+  @apply yoo-accordion-mb-0 yoo-accordion-relative yoo-accordion-w-full yoo-accordion-items-center yoo-accordion-border-0 yoo-accordion-rounded-none yoo-accordion-py-4 yoo-accordion-pr-8 yoo-accordion-text-left yoo-accordion-cursor-pointer yoo-accordion-relative yoo-accordion-text-base yoo-accordion-font-medium
 }
 
 .yoopta-accordion-list-item-content {
-  @apply yoo-accordion-text-white yoo-accordion-px-5 yoo-accordion-py-4
+  @apply yoo-accordion-overflow-hidden yoo-accordion-text-sm
 }

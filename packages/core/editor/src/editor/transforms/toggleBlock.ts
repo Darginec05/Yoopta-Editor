@@ -4,7 +4,7 @@ import { getRootBlockElementType } from '../../utils/blockElements';
 
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
-import { YooEditor, YooptaBlockPath, YooptaEditorTransformOptions, YooptaBlockData } from '../types';
+import { YooEditor, YooptaEditorTransformOptions, YooptaBlockData } from '../types';
 
 export type ToggleBlockOptions = YooptaEditorTransformOptions & {
   deleteText?: boolean;

@@ -1,6 +1,5 @@
+import { findSlateBySelectionPath, SlateElement, YooEditor } from '@yoopta/editor';
 import { Editor, Element, Location, NodeEntry, Span } from 'slate';
-import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
-import { SlateElement, YooEditor } from '../types';
 
 export type GetBlockElementEntryOptions = {
   atPath?: Location | Span;
@@ -25,11 +24,13 @@ export function getBlockElementEntry<TElementKeys extends string>(
     return;
   }
 
-  const [elementEntry] = Editor.nodes<SlateElement>(slate, {
-    at: options?.atPath || slate.selection || [0],
-    match: (n) => Element.isElement(n) && n.type === elementType,
-    mode: 'lowest',
-  });
+  try {
+    const [elementEntry] = Editor.nodes<SlateElement>(slate, {
+      at: options?.atPath || slate.selection || [0],
+      match: (n) => Element.isElement(n) && n.type === elementType,
+      mode: 'lowest',
+    });
 
-  return elementEntry as NodeEntry<SlateElement<TElementKeys>>;
+    return elementEntry as NodeEntry<SlateElement<TElementKeys>>;
+  } catch (error) {}
 }

@@ -4,10 +4,7 @@ import { AccordionList } from '../renders/AccordionList';
 import { AccordionListItem } from '../renders/AccordionListItem';
 import { AccordionItemHeading } from '../renders/AccordionItemHeading';
 import { AccordionItemContent } from '../renders/AccordionItemContent';
-import { Editor, Transforms } from 'slate';
-import { getBlockElementEntry } from '../elements/getElementEntry';
-import { createBlockElement } from '../elements/createElement';
-import { isElementEmpty } from '../elements/isElementEmpty';
+import { Path, Transforms } from 'slate';
 
 const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>({
   type: 'Accordion',
@@ -34,11 +31,36 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
       return (event) => {
         if (hotkeys.isBackspace(event)) {
           if (slate.selection) {
-            const headingElementEntry = getBlockElementEntry(editor, currentBlock.id, 'accordion-list-item-heading', {
-              atPath: slate.selection,
+            const accordionListItemEntry = editor.blocks.Accordion.getElementEntry(
+              currentBlock.id,
+              'accordion-list-item',
+              {
+                atPath: slate.selection,
+              },
+            );
+
+            const childPath = accordionListItemEntry?.[1] || slate.selection.anchor.path;
+
+            const isHeadingEmpty = editor.blocks.Accordion.isElementEmpty(currentBlock.id, {
+              type: 'accordion-list-item-heading',
+              path: childPath,
             });
 
-            if (isElementEmpty(editor, currentBlock.id, 'accordion-list-item-heading')) {
+            const isContentEmpty = editor.blocks.Accordion.isElementEmpty(currentBlock.id, {
+              type: 'accordion-list-item-content',
+              path: childPath,
+            });
+
+            if (isHeadingEmpty && isContentEmpty) {
+              event.preventDefault();
+              if (accordionListItemEntry) {
+                const [, listItemPath] = accordionListItemEntry;
+
+                editor.blocks.Accordion.deleteElement(currentBlock.id, {
+                  type: 'accordion-list-item',
+                  path: listItemPath,
+                });
+              }
             }
           }
         }
@@ -56,8 +78,7 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
         if (hotkeys.isEnter(event)) {
           event.preventDefault();
 
-          createBlockElement(
-            editor,
+          editor.blocks.Accordion.createElement(
             currentBlock.id,
             'accordion-list-item',
             { isExpanded: true },

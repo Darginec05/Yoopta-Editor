@@ -1,13 +1,7 @@
-import { PluginElementRenderProps, useYooptaEditor } from '@yoopta/editor';
-import { useEffect } from 'react';
-import { ReactEditor } from 'slate-react';
+import { PluginElementRenderProps } from '@yoopta/editor';
 
 export const AccordionList = (props: PluginElementRenderProps) => {
-  const { element, attributes, children, blockId } = props;
+  const { attributes, children } = props;
 
-  return (
-    <ul {...attributes} className="yoopta-accordion-list">
-      {children}
-    </ul>
-  );
+  return <div {...attributes}>{children}</div>;
 };
