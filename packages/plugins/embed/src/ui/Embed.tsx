@@ -6,6 +6,7 @@ import {
   useYooptaPluginOptions,
   useBlockSelected,
   useYooptaReadOnly,
+  Elements,
 } from '@yoopta/editor';
 import { Resizable, ResizableProps } from 're-resizable';
 import { useEffect, useMemo, useState } from 'react';
@@ -57,7 +58,7 @@ const EmbedRender = ({ element, attributes, children, blockId }: PluginElementRe
         setSizes({ width: ref.offsetWidth, height: ref.offsetHeight });
       },
       onResizeStop: (e, direction, ref) => {
-        editor.blocks.Embed.updateElement(blockId, 'embed', {
+        Elements.updateElement(editor, blockId, 'embed', {
           sizes: { width: ref.offsetWidth, height: ref.offsetHeight },
         });
       },

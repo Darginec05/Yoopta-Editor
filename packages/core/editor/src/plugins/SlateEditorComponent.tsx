@@ -123,7 +123,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
         path = [];
       }
 
-      if (!ElementComponent) return <DefaultElement {...props} attributes={attributes} path={path} />;
+      if (!ElementComponent) return <DefaultElement {...props} attributes={attributes} />;
       return (
         <ElementComponent
           {...props}
@@ -134,7 +134,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
         />
       );
     },
-    [elements],
+    [elements, slate.children],
   );
 
   const renderLeaf = useCallback(

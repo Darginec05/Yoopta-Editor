@@ -29,7 +29,6 @@ export type PluginElementOptions = {
 
 export type PluginElementRenderProps = RenderSlateElementProps & {
   blockId: string;
-  path: Path;
   HTMLAttributes?: HTMLAttributes<HTMLElement>;
 };
 

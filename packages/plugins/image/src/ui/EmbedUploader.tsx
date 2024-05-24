@@ -1,4 +1,4 @@
-import { useYooptaEditor } from '@yoopta/editor';
+import { Elements, useYooptaEditor } from '@yoopta/editor';
 import { ChangeEvent, useState } from 'react';
 
 const EmbedUploader = ({ blockId, onClose }) => {
@@ -10,7 +10,7 @@ const EmbedUploader = ({ blockId, onClose }) => {
   const embed = () => {
     if (value.length === 0) return;
 
-    editor.blocks.Image.updateElement(blockId, 'image', {
+    Elements.updateElement(editor, blockId, 'image', {
       src: value,
     });
 

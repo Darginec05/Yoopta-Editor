@@ -1,11 +1,12 @@
-import { findSlateBySelectionPath, SlateElement, YooEditor } from '@yoopta/editor';
 import { Editor, Element, Location, NodeEntry, Span } from 'slate';
+import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
+import { SlateElement, YooEditor } from '../types';
 
 export type GetBlockElementEntryOptions = {
   atPath?: Location | Span;
 };
 
-export function getBlockElementEntry<TElementKeys extends string>(
+export function getElementEntry<TElementKeys extends string>(
   editor: YooEditor,
   blockId: string,
   elementType: TElementKeys,

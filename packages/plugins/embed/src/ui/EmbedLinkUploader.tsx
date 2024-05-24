@@ -1,4 +1,4 @@
-import { useYooptaEditor } from '@yoopta/editor';
+import { Elements, useYooptaEditor } from '@yoopta/editor';
 import { ChangeEvent, useState } from 'react';
 import { EmbedElementProps, EmbedPluginElements, EmbedProvider } from '../types';
 import { getProvider, ProviderGetters } from '../utils/providers';
@@ -20,7 +20,7 @@ const EmbedLinkUploader = ({ blockId, onClose }) => {
       provider.id = value;
     }
 
-    editor.blocks.Embed.updateElement<EmbedPluginElements, EmbedElementProps>(blockId, 'embed', {
+    Elements.updateElement<EmbedPluginElements, EmbedElementProps>(editor, blockId, 'embed', {
       provider,
     });
 

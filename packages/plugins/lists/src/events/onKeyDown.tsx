@@ -5,6 +5,7 @@ import {
   YooptaBlockData,
   buildBlockData,
   buildBlockElement,
+  Elements,
 } from '@yoopta/editor';
 import { Editor, Element, Path } from 'slate';
 import { BulletedListElement, NumberedListElement, TodoListElement } from '../types';
@@ -31,7 +32,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor, { hotkeys, defaultBl
 
         const [todoListNode] = nodeEntry as [TodoListElement, Path];
         const checked = todoListNode.props?.checked || false;
-        editor.blocks.TodoList.updateElement(block.id, 'todo-list', { checked: !checked });
+        Elements.updateElement(editor, block.id, 'todo-list', { checked: !checked });
         return;
       }
 

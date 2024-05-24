@@ -1,29 +1,28 @@
-import { PluginElementRenderProps, useYooptaEditor, useYooptaReadOnly } from '@yoopta/editor';
+import { PluginElementRenderProps, useYooptaEditor, useYooptaReadOnly, Elements, Blocks } from '@yoopta/editor';
 import { ChevronUp, Plus, TrashIcon } from 'lucide-react';
 import { Path } from 'slate';
 import { MouseEvent } from 'react';
 
 export const AccordionItemHeading = (props: PluginElementRenderProps) => {
-  const { attributes, children, blockId, path } = props;
+  const { attributes, children, blockId, element } = props;
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
 
   const onToggleExpand = (event: MouseEvent) => {
     event.stopPropagation();
 
-    const listItemElement = editor.blocks.Accordion.getElement(blockId, 'accordion-list-item', {
-      atPath: Path.parent(path),
+    const parentPath = Elements.getParentElementPath(editor, blockId, element)!;
+    const listItemElement = Elements.getElement(editor, blockId, 'accordion-list-item', {
+      atPath: parentPath,
     });
 
-    console.log('listItemElement', listItemElement);
-    console.log('Path.parent(path)', Path.parent(path));
-
     if (listItemElement) {
-      editor.blocks.Accordion.updateElement(
+      Elements.updateElement(
+        editor,
         blockId,
         'accordion-list-item',
         { isExpanded: !listItemElement.props?.isExpanded },
-        { path: Path.parent(path) },
+        { path: parentPath },
       );
     }
   };
@@ -32,10 +31,12 @@ export const AccordionItemHeading = (props: PluginElementRenderProps) => {
     e.preventDefault();
     e.stopPropagation();
 
-    const listItemPath = Path.parent(path);
+    const parentPath = Elements.getParentElementPath(editor, blockId, element)!;
+    const listItemPath = parentPath;
     const nextListItemPath = Path.next(listItemPath);
 
-    editor.blocks.Accordion.createElement(
+    Elements.createElement(
+      editor,
       blockId,
       'accordion-list-item',
       { isExpanded: true },
@@ -47,19 +48,22 @@ export const AccordionItemHeading = (props: PluginElementRenderProps) => {
     e.preventDefault();
     e.stopPropagation();
 
-    const accordionListItems = editor.blocks.Accordion.getElementChildren(blockId, 'accordion-list', {
-      atPath: Path.parent(path),
+    const parentPath = Elements.getParentElementPath(editor, blockId, element)!;
+
+    const accordionListItems = Elements.getElementChildren(editor, blockId, 'accordion-list', {
+      atPath: parentPath,
     });
 
     if (accordionListItems?.length === 1) {
-      editor.deleteBlock({ blockId });
+      Blocks.deleteBlock(editor, { blockId });
       return;
     }
 
-    editor.blocks.Accordion.deleteElement(blockId, { type: 'accordion-list-item', path: Path.parent(path) });
+    Elements.deleteElement(editor, blockId, { type: 'accordion-list-item', path: parentPath });
   };
 
-  const nodeEl = editor.blocks.Accordion.getElement(blockId, 'accordion-list-item', { atPath: Path.parent(path) });
+  const parentPath = Elements.getParentElementPath(editor, blockId, element)!;
+  const nodeEl = Elements.getElement(editor, blockId, 'accordion-list-item', { atPath: parentPath });
   const isExpanded = nodeEl?.props?.isExpanded;
 
   return (

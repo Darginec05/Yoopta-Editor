@@ -1,4 +1,4 @@
-import { YooptaPlugin } from '@yoopta/editor';
+import { Elements, YooptaPlugin } from '@yoopta/editor';
 import { AccordionElementKeys, AccordionListItemProps } from '../types';
 import { AccordionList } from '../renders/AccordionList';
 import { AccordionListItem } from '../renders/AccordionListItem';
@@ -31,22 +31,18 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
       return (event) => {
         if (hotkeys.isBackspace(event)) {
           if (slate.selection) {
-            const accordionListItemEntry = editor.blocks.Accordion.getElementEntry(
-              currentBlock.id,
-              'accordion-list-item',
-              {
-                atPath: slate.selection,
-              },
-            );
+            const accordionListItemEntry = Elements.getElementEntry(editor, currentBlock.id, 'accordion-list-item', {
+              atPath: slate.selection,
+            });
 
             const childPath = accordionListItemEntry?.[1] || slate.selection.anchor.path;
 
-            const isHeadingEmpty = editor.blocks.Accordion.isElementEmpty(currentBlock.id, {
+            const isHeadingEmpty = Elements.isElementEmpty(editor, currentBlock.id, {
               type: 'accordion-list-item-heading',
               path: childPath,
             });
 
-            const isContentEmpty = editor.blocks.Accordion.isElementEmpty(currentBlock.id, {
+            const isContentEmpty = Elements.isElementEmpty(editor, currentBlock.id, {
               type: 'accordion-list-item-content',
               path: childPath,
             });
@@ -56,7 +52,7 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
               if (accordionListItemEntry) {
                 const [, listItemPath] = accordionListItemEntry;
 
-                editor.blocks.Accordion.deleteElement(currentBlock.id, {
+                Elements.deleteElement(editor, currentBlock.id, {
                   type: 'accordion-list-item',
                   path: listItemPath,
                 });
@@ -78,7 +74,8 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
         if (hotkeys.isEnter(event)) {
           event.preventDefault();
 
-          editor.blocks.Accordion.createElement(
+          Elements.createElement(
+            editor,
             currentBlock.id,
             'accordion-list-item',
             { isExpanded: true },

@@ -10,11 +10,11 @@ import { UpdateElementOptions } from './elements/updateElement';
 import { EditorBlurOptions } from './selection/blur';
 import { BlockSelectedOptions } from './selection/setBlockSelected';
 import { SetSelectionOptions } from './selection/setSelection';
-import { CreateBlockOptions } from './transforms/createBlock';
-import { DeleteBlockOptions } from './transforms/deleteBlock';
-import { DuplicateBlockOptions } from './transforms/duplicateBlock';
-import { FocusBlockOptions } from './transforms/focusBlock';
-import { ToggleBlockOptions } from './transforms/toggleBlock';
+import { CreateBlockOptions } from './blocks/createBlock';
+import { DeleteBlockOptions } from './blocks/deleteBlock';
+import { DuplicateBlockOptions } from './blocks/duplicateBlock';
+import { FocusBlockOptions } from './blocks/focusBlock';
+import { ToggleBlockOptions } from './blocks/toggleBlock';
 
 export type YooptaBlockPath = [number];
 
@@ -115,7 +115,7 @@ export type YooEditor<TNodes = any> = {
   deleteBlock: (options?: DeleteBlockOptions) => void;
   duplicateBlock: (options?: DuplicateBlockOptions) => void;
   getBlock: (options?: YooptaEditorTransformOptions) => void;
-  toggleBlock: (toBlockType?: string, options?: ToggleBlockOptions) => void;
+  toggleBlock: (toBlockType: string, options?: ToggleBlockOptions) => void;
   increaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
   decreaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
   applyChanges: () => void;

@@ -1,4 +1,4 @@
-import { UI, YooEditor, YooptaBlockData } from '@yoopta/editor';
+import { Elements, UI, YooEditor, YooptaBlockData } from '@yoopta/editor';
 import { RowSpacingIcon, SizeIcon, WidthIcon } from '@radix-ui/react-icons';
 import { ImageElementProps, ImagePluginElements } from '../types';
 import CheckmarkIcon from '../icons/checkmark.svg';
@@ -14,15 +14,15 @@ type Props = {
 
 const ImageBlockOptions = ({ editor, block, props: imageProps }: Props) => {
   const onCover = () => {
-    editor.blocks.Image.updateElement<ImagePluginElements, ImageElementProps>(block.id, 'image', { fit: 'cover' });
+    Elements.updateElement<ImagePluginElements, ImageElementProps>(editor, block.id, 'image', { fit: 'cover' });
   };
 
   const onFit = () => {
-    editor.blocks.Image.updateElement<ImagePluginElements, ImageElementProps>(block.id, 'image', { fit: 'contain' });
+    Elements.updateElement<ImagePluginElements, ImageElementProps>(editor, block.id, 'image', { fit: 'contain' });
   };
 
   const onFill = () => {
-    editor.blocks.Image.updateElement<ImagePluginElements, ImageElementProps>(block.id, 'image', { fit: 'fill' });
+    Elements.updateElement<ImagePluginElements, ImageElementProps>(editor, block.id, 'image', { fit: 'fill' });
   };
 
   const onDownload = () => {

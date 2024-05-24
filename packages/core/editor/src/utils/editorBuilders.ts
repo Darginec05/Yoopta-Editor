@@ -5,21 +5,21 @@ import { YooEditor, YooptaBlockData } from '../editor/types';
 import { Plugin, PluginElement, PluginElementsMap } from '../plugins/types';
 import { YooptaMark } from '../marks';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
-import { createBlock } from '../editor/transforms/createBlock';
+import { createBlock } from '../editor/blocks/createBlock';
 import { getValue } from '../editor/textFormats/getValue';
 import { isActive } from '../editor/textFormats/isActive';
 import { toggle } from '../editor/textFormats/toggle';
 import { update } from '../editor/textFormats/update';
 import { withShortcuts } from '../extensions/shortcuts';
 import { getRootBlockElement } from './blockElements';
-import { updateBlock } from '../editor/transforms/updateBlock';
-import { toggleBlock, ToggleBlockOptions } from '../editor/transforms/toggleBlock';
-import { deleteBlock, DeleteBlockOptions } from '../editor/transforms/deleteBlock';
+import { updateBlock } from '../editor/blocks/updateBlock';
+import { toggleBlock, ToggleBlockOptions } from '../editor/blocks/toggleBlock';
+import { deleteBlock, DeleteBlockOptions } from '../editor/blocks/deleteBlock';
 import { updateElement, UpdateElementOptions } from '../editor/elements/updateElement';
-import { createBlockElement, CreateBlockElementOptions } from '../editor/elements/createElement';
-import { getBlockElement } from '../editor/elements/getElement';
-import { DeleteBlockElement, deleteBlockElement } from '../editor/elements/deleteElement';
-import { getBlockElementEntry, GetBlockElementEntryOptions } from '../editor/elements/getElementEntry';
+import { createElement, CreateBlockElementOptions } from '../editor/elements/createElement';
+import { getElement } from '../editor/elements/getElement';
+import { DeleteBlockElement, deleteElement } from '../editor/elements/deleteElement';
+import { getElementEntry, GetBlockElementEntryOptions } from '../editor/elements/getElementEntry';
 import { EmptyBlockElement, isElementEmpty } from '../editor/elements/isElementEmpty';
 import { getElementChildren, GetElementChildrenOptions } from '../editor/elements/getElementChildren';
 
@@ -102,23 +102,23 @@ export function buildBlocks(editor, plugins: Plugin<string, PluginElement<unknow
           props: TProps,
           options?: CreateBlockElementOptions,
         ) => {
-          createBlockElement(editor, blockId, elementType, props, options);
+          createElement(editor, blockId, elementType, props, options);
         },
         getElement: <TKeys extends string>(blockId: string, elementType: TKeys) => {
-          return getBlockElement(editor, blockId, elementType);
+          return getElement(editor, blockId, elementType);
         },
         getElementEntry: <TKeys extends string>(
           blockId: string,
           elementType: TKeys,
           options?: GetBlockElementEntryOptions,
         ) => {
-          return getBlockElementEntry(editor, blockId, elementType, options);
+          return getElementEntry(editor, blockId, elementType, options);
         },
         getElementChildren: (blockId: string, elementType: string, options?: GetElementChildrenOptions) => {
           return getElementChildren(editor, blockId, elementType, options);
         },
         deleteElement: (blockId: string, element: DeleteBlockElement) => {
-          deleteBlockElement(editor, blockId, element);
+          deleteElement(editor, blockId, element);
         },
       };
     }

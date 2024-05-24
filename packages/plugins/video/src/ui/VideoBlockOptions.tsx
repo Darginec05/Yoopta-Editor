@@ -1,4 +1,4 @@
-import { UI, YooEditor, YooptaBlockData } from '@yoopta/editor';
+import { Elements, UI, YooEditor, YooptaBlockData } from '@yoopta/editor';
 import { RowSpacingIcon, SizeIcon, WidthIcon, ExternalLinkIcon } from '@radix-ui/react-icons';
 import { VideoElementProps, VideoPluginElements } from '../types';
 import CheckmarkIcon from '../icons/checkmark.svg';
@@ -15,15 +15,15 @@ type Props = {
 
 const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
   const onCover = () => {
-    editor.blocks.Image.updateElement<VideoPluginElements, VideoElementProps>(block.id, 'video', { fit: 'cover' });
+    Elements.updateElement<VideoPluginElements, VideoElementProps>(editor, block.id, 'video', { fit: 'cover' });
   };
 
   const onFit = () => {
-    editor.blocks.Image.updateElement<VideoPluginElements, VideoElementProps>(block.id, 'video', { fit: 'contain' });
+    Elements.updateElement<VideoPluginElements, VideoElementProps>(editor, block.id, 'video', { fit: 'contain' });
   };
 
   const onFill = () => {
-    editor.blocks.Image.updateElement<VideoPluginElements, VideoElementProps>(block.id, 'video', { fit: 'fill' });
+    Elements.updateElement<VideoPluginElements, VideoElementProps>(editor, block.id, 'video', { fit: 'fill' });
   };
 
   const isExternalVideo = !!videoProps?.provider?.id;

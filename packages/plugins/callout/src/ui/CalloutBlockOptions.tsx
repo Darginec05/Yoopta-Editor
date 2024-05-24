@@ -1,4 +1,4 @@
-import { UI, YooEditor, YooptaBlockData } from '@yoopta/editor';
+import { Elements, UI, YooEditor, YooptaBlockData } from '@yoopta/editor';
 import SuccessIcon from '../icons/success.svg';
 import WarningIcon from '../icons/warning.svg';
 import ErrorIcon from '../icons/error.svg';
@@ -18,7 +18,7 @@ type Props = {
 
 const CalloutBlockOptions = ({ editor, block, props: calloutProps }: Props) => {
   const onChangeTheme = (theme: CalloutTheme) => {
-    editor.blocks.Callout.updateElement<CalloutPluginElementKeys, CalloutElementProps>(block.id, 'callout', {
+    Elements.updateElement<CalloutPluginElementKeys, CalloutElementProps>(editor, block.id, 'callout', {
       theme,
     });
   };

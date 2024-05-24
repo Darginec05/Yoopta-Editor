@@ -1,4 +1,4 @@
-import { PluginElementRenderProps, useYooptaEditor, useYooptaReadOnly } from '@yoopta/editor';
+import { Elements, PluginElementRenderProps, useYooptaEditor, useYooptaReadOnly } from '@yoopta/editor';
 import { ChevronUp, Plus } from 'lucide-react';
 
 export const AccordionItemHeading = (props: PluginElementRenderProps) => {
@@ -10,7 +10,7 @@ export const AccordionItemHeading = (props: PluginElementRenderProps) => {
     const listItemElement = editor.blocks.Accordion.getElement(blockId, 'accordion-list-item');
 
     if (listItemElement) {
-      editor.blocks.Accordion.updateElement(blockId, 'accordion-list-item', {
+      Elements.updateElement(editor, blockId, 'accordion-list-item', {
         isExpanded: !listItemElement.props?.isExpanded,
       });
     }

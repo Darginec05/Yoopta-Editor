@@ -1,15 +1,16 @@
-import { PluginElementRenderProps, useYooptaEditor } from '@yoopta/editor';
+import { Elements, PluginElementRenderProps, useYooptaEditor } from '@yoopta/editor';
 import { Path } from 'slate';
 
 export const AccordionItemContent = (props: PluginElementRenderProps) => {
-  const { attributes, children, blockId, path } = props;
+  const { attributes, children, blockId, element } = props;
   const editor = useYooptaEditor();
 
-  const nodeEl = editor.blocks.Accordion.getElement(blockId, 'accordion-list-item', {
-    atPath: Path.parent(path),
+  const parentPath = Elements.getParentElementPath(editor, blockId, element)!;
+  const parentListItem = Elements.getElement(editor, blockId, 'accordion-list-item', {
+    atPath: parentPath,
   });
 
-  const isExpanded = nodeEl?.props?.isExpanded;
+  const isExpanded = parentListItem?.props?.isExpanded;
 
   return (
     <div

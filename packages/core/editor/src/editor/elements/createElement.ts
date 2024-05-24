@@ -1,5 +1,7 @@
-import { buildBlockElement, findSlateBySelectionPath, SlateElement, YooEditor } from '@yoopta/editor';
 import { Editor, Path, Transforms } from 'slate';
+import { buildBlockElement } from '../../components/Editor/utils';
+import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
+import { SlateElement, YooEditor } from '../types';
 
 export type CreateBlockElementOptions = {
   at?: 'next' | 'prev' | Path;
@@ -7,7 +9,7 @@ export type CreateBlockElementOptions = {
   split?: boolean;
 };
 
-export function createBlockElement<TElementKeys extends string, TElementProps>(
+export function createElement<TElementKeys extends string, TElementProps>(
   editor: YooEditor,
   blockId: string,
   elementType: TElementKeys,

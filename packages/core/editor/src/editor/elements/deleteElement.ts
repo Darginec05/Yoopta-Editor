@@ -1,12 +1,13 @@
 import { Editor, Element, Path, Transforms } from 'slate';
-import { findSlateBySelectionPath, YooEditor } from '@yoopta/editor';
+import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
+import { YooEditor } from '../types';
 
 export type DeleteBlockElement = {
   type: string;
   path: Path;
 };
 
-export function deleteBlockElement(editor: YooEditor, blockId: string, element: DeleteBlockElement) {
+export function deleteElement(editor: YooEditor, blockId: string, element: DeleteBlockElement) {
   const block = editor.children[blockId];
 
   if (!block) {

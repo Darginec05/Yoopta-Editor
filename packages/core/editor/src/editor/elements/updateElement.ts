@@ -1,5 +1,6 @@
 import { Editor, Element, Path, Transforms } from 'slate';
-import { findSlateBySelectionPath, SlateElement, YooEditor } from '@yoopta/editor';
+import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
+import { SlateElement, YooEditor } from '../types';
 
 export type UpdateElementOptions = {
   path?: Path;
