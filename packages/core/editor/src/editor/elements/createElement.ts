@@ -1,4 +1,5 @@
 import { Editor, Path, Transforms } from 'slate';
+import { Elements } from '.';
 import { buildBlockElement } from '../../components/Editor/utils';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { SlateElement, YooEditor } from '../types';
@@ -54,7 +55,7 @@ export function createElement<TElementKeys extends string, TElementProps>(
     const { at, focus = true } = options || {};
     let atPath;
 
-    const elementEntry = editor.blocks[block.type].getElementEntry(blockId, elementType);
+    const elementEntry = Elements.getElementEntry(editor, blockId, elementType);
 
     if (elementEntry) {
       const [, elementPath] = elementEntry;
@@ -73,7 +74,7 @@ export function createElement<TElementKeys extends string, TElementProps>(
     if (focus) {
       if (childrenElements.length > 0) {
         const firstChild = childrenElements[0];
-        const firstElementEntry = editor.blocks[block.type].getElementEntry(blockId, firstChild.type, {
+        const firstElementEntry = Elements.getElementEntry(editor, blockId, firstChild.type, {
           atPath: atPath,
         });
 

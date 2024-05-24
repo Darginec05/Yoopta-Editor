@@ -44,7 +44,7 @@ export function buildMarks(editor, marks: YooptaMark<any>[]) {
 export function buildBlocks(editor, plugins: Plugin<string, PluginElement<unknown>>[]) {
   const blocks: YooEditor['blocks'] = {};
 
-  plugins.forEach((plugin, index) => {
+  plugins.forEach((plugin) => {
     const rootBlockElement = getRootBlockElement(plugin.elements);
     const nodeType = rootBlockElement?.props?.nodeType;
     const isInline = nodeType === 'inline' || nodeType === 'inlineVoid';
@@ -82,43 +82,6 @@ export function buildBlocks(editor, plugins: Plugin<string, PluginElement<unknow
         },
         delete: (options: DeleteBlockOptions) => {
           deleteBlock(editor, options);
-        },
-
-        // block element actions
-        updateElement: <TKeys extends string, TProps>(
-          blockId: string,
-          elementType: TKeys,
-          props: TProps,
-          options?: UpdateElementOptions,
-        ) => {
-          updateElement(editor, blockId, elementType, props, options);
-        },
-        isElementEmpty: (blockId: string, element: EmptyBlockElement) => {
-          return isElementEmpty(editor, blockId, element);
-        },
-        createElement: <TKeys extends string, TProps>(
-          blockId: string,
-          elementType: TKeys,
-          props: TProps,
-          options?: CreateBlockElementOptions,
-        ) => {
-          createElement(editor, blockId, elementType, props, options);
-        },
-        getElement: <TKeys extends string>(blockId: string, elementType: TKeys) => {
-          return getElement(editor, blockId, elementType);
-        },
-        getElementEntry: <TKeys extends string>(
-          blockId: string,
-          elementType: TKeys,
-          options?: GetBlockElementEntryOptions,
-        ) => {
-          return getElementEntry(editor, blockId, elementType, options);
-        },
-        getElementChildren: (blockId: string, elementType: string, options?: GetElementChildrenOptions) => {
-          return getElementChildren(editor, blockId, elementType, options);
-        },
-        deleteElement: (blockId: string, element: DeleteBlockElement) => {
-          deleteElement(editor, blockId, element);
         },
       };
     }

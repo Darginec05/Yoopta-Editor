@@ -1,12 +1,5 @@
-import { Descendant, Editor, NodeEntry, Path, Point } from 'slate';
+import { Descendant, Editor, Path, Point } from 'slate';
 import { Plugin, PluginElementsMap, PluginOptions, PluginElementProps } from '../plugins/types';
-import { CreateBlockElementOptions } from './elements/createElement';
-import { DeleteBlockElement } from './elements/deleteElement';
-import { GetBlockElementOptions } from './elements/getElement';
-import { GetElementChildrenOptions } from './elements/getElementChildren';
-import { GetBlockElementEntryOptions } from './elements/getElementEntry';
-import { EmptyBlockElement } from './elements/isElementEmpty';
-import { UpdateElementOptions } from './elements/updateElement';
 import { EditorBlurOptions } from './selection/blur';
 import { BlockSelectedOptions } from './selection/setBlockSelected';
 import { SetSelectionOptions } from './selection/setSelection';
@@ -63,41 +56,10 @@ export type YooptaBlock = {
   elements: PluginElementsMap<string>;
   hasCustomEditor?: boolean;
   isActive: () => boolean;
-
   create: (options?: CreateBlockOptions) => void;
   toggle: (options?: ToggleBlockOptions) => void;
   update: (id: string, data: Partial<YooptaBlockData>) => void;
   delete: (options: DeleteBlockOptions) => void;
-
-  updateElement: <TElementKeys extends string, TElementProps>(
-    blockId: string,
-    elementType: TElementKeys,
-    elementProps?: TElementProps,
-    options?: UpdateElementOptions,
-  ) => void;
-  createElement: <TElementKeys extends string, TElementProps>(
-    blockId: string,
-    elementType: TElementKeys,
-    elementProps?: TElementProps,
-    options?: CreateBlockElementOptions,
-  ) => void;
-  deleteElement: (blockId: string, element: DeleteBlockElement) => void;
-  getElement: <TElementKeys extends string>(
-    blockId: string,
-    elementType: TElementKeys,
-    options?: GetBlockElementOptions,
-  ) => SlateElement<TElementKeys> | undefined;
-  getElementChildren: <TElementKeys extends string>(
-    blockId: string,
-    elementType: TElementKeys,
-    options?: GetElementChildrenOptions,
-  ) => SlateElement<TElementKeys>['children'] | undefined;
-  getElementEntry: <TElementKeys extends string>(
-    blockId: string,
-    elementType: TElementKeys,
-    options?: GetBlockElementEntryOptions,
-  ) => NodeEntry<SlateElement<TElementKeys>> | undefined;
-  isElementEmpty: (blockId: string, element: EmptyBlockElement) => boolean | undefined;
 };
 
 export type YooptaBlocks = Record<string, YooptaBlock>;
