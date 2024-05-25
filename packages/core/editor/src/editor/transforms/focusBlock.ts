@@ -1,5 +1,6 @@
 import { Editor, Path, Point, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
+import { IS_FOCUSED_EDITOR } from '../../utils/weakMaps';
 import { FocusAt, SlateEditor, YooEditor, YooptaEditorTransformOptions } from '../types';
 
 export type FocusBlockOptions = Pick<YooptaEditorTransformOptions, 'focusAt' | 'slate'> & {
@@ -53,5 +54,7 @@ export function focusBlock(editor: YooEditor, blockId: string, options: FocusBlo
     } else {
       focusBlockEditor();
     }
+
+    IS_FOCUSED_EDITOR.set(editor, true);
   } catch (error) {}
 }
