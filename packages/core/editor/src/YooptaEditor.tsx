@@ -158,8 +158,9 @@ const YooptaEditor = ({
             className={className}
             selectionBoxRoot={selectionBoxRoot}
             width={width}
-          />
-          {children}
+          >
+            {children}
+          </Editor>
         </ToolsProvider>
       </YooptaContextProvider>
     </NoSSR>

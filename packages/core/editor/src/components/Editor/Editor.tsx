@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useRef } from 'react';
+import { CSSProperties, ReactNode, useEffect, useRef } from 'react';
 import { useYooptaEditor, useYooptaReadOnly } from '../../contexts/YooptaContext/YooptaContext';
 import { RenderBlocks } from './RenderBlocks';
 import { YooptaMark } from '../../marks';
@@ -21,6 +21,7 @@ type Props = {
   className?: string;
   placeholder?: string;
   width?: number | string;
+  children: ReactNode;
 };
 
 const getEditorStyles = (styles: CSSProperties) => ({
@@ -40,7 +41,7 @@ const DEFAULT_STATE: State = {
   startedIndexToSelect: null,
 };
 
-const Editor = ({ placeholder, marks, className, selectionBoxRoot, width, autoFocus = true }: Props) => {
+const Editor = ({ placeholder, marks, className, selectionBoxRoot, width, children, autoFocus = true }: Props) => {
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
   const yooptaEditorRef = useRef<HTMLDivElement>(null);
@@ -346,6 +347,7 @@ const Editor = ({ placeholder, marks, className, selectionBoxRoot, width, autoFo
           isOpen={selectionBox.selection && !isReadOnly}
         />
       )}
+      {children}
     </div>
   );
 };
