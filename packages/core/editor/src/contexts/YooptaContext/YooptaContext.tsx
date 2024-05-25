@@ -10,6 +10,7 @@ export type YooptaEditorContext = {
 const DEFAULT_HANDLERS: YooptaEditorContext = {
   editor: {
     id: '',
+
     getBlock: () => undefined,
     insertBlock: () => undefined,
     insertBlocks: () => undefined,
@@ -19,16 +20,18 @@ const DEFAULT_HANDLERS: YooptaEditorContext = {
     deleteBlock: () => undefined,
     toggleBlock: () => undefined,
     focusBlock: () => undefined,
-    setSelection: () => undefined,
-    applyChanges: () => undefined,
     decreaseBlockDepth: () => undefined,
     increaseBlockDepth: () => undefined,
+    duplicateBlock: () => undefined,
+
     setBlockSelected: () => undefined,
     selectedBlocks: [],
-    duplicateBlock: () => undefined,
+    setSelection: () => undefined,
+    applyChanges: () => undefined,
+
     getEditorValue: () => undefined,
     setEditorValue: () => undefined,
-    blur: () => undefined,
+
     blocks: {},
     shortcuts: {},
     plugins: {},
@@ -37,10 +40,15 @@ const DEFAULT_HANDLERS: YooptaEditorContext = {
     readOnly: false,
     blockEditorsMap: {},
     children: {},
+
     emit: () => undefined,
     on: () => undefined,
     off: () => undefined,
     once: () => undefined,
+
+    blur: () => undefined,
+    isFocused: () => false,
+    focus: () => undefined,
   },
 };
 
@@ -70,11 +78,10 @@ const useYooptaEditor = (): YooEditor => {
 };
 
 const useBlockData = (blockId: string) => useYooptaEditor().children[blockId];
-const useYooptaBlock = (blockType: string) => useYooptaEditor().blocks[blockType];
-const useYooptaPlugin = (type: string) => useYooptaEditor().plugins[type];
+const useYooptaFocused = () => useYooptaEditor().isFocused();
 const useYooptaReadOnly = () => useYooptaEditor().readOnly;
 const useYooptaPluginOptions = <TOptions,>(blockType: string): PluginOptions<TOptions> =>
-  useYooptaPlugin(blockType)?.options as PluginOptions<TOptions>;
+  useYooptaEditor().plugins[blockType]?.options as PluginOptions<TOptions>;
 
 type UseBlockSelectedProps = { blockId: string; path?: YooptaBlockPath } | { path: YooptaBlockPath; blockId?: string };
 const useBlockSelected = ({ blockId, path }: UseBlockSelectedProps) => {
@@ -100,10 +107,9 @@ const useBlockSelected = ({ blockId, path }: UseBlockSelectedProps) => {
 export {
   useYooptaEditor,
   useBlockData,
-  useYooptaPlugin,
   useYooptaPluginOptions,
-  useYooptaBlock,
   useBlockSelected,
   useYooptaReadOnly,
+  useYooptaFocused,
   YooptaContextProvider,
 };

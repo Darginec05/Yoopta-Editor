@@ -16,6 +16,7 @@ import { buildBlockData } from '../components/Editor/utils';
 // [TODO] - test
 import { withInlines } from './extenstions/withInlines';
 import { parsers } from '../parsers';
+import { IS_FOCUSED_EDITOR } from '../utils/weakMaps';
 
 type Props<TKeys extends string, TProps, TOptions> = Plugin<TKeys, TProps, TOptions> & {
   id: string;
@@ -191,6 +192,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     (event: React.FocusEvent) => {
       if (editor.readOnly) return;
 
+      IS_FOCUSED_EDITOR.set(editor, true);
       eventHandlers?.onFocus?.(event);
     },
     [eventHandlers.onFocus, editor.readOnly],

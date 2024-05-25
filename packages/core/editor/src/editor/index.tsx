@@ -11,10 +11,12 @@ import { getEditorValue } from './core/getEditorValue';
 import { setEditorValue } from './core/setEditorValue';
 import { setBlockSelected } from './selection/setBlockSelected';
 import { duplicateBlock } from './transforms/duplicateBlock';
-import { blur } from './selection/blur';
+import { blur } from './core/blur';
 import { updateBlock } from './transforms/updateBlock';
 import { toggleBlock } from './transforms/toggleBlock';
 import { insertBlocks } from './transforms/insertBlocks';
+import { focus } from './core/focus';
+import { isFocused } from './core/isFocused';
 
 // export const YooEditor = {}
 // export const BlockTransforms = {}
@@ -51,22 +53,25 @@ export const createYooptaEditor = (): YooEditor => {
     decreaseBlockDepth: (...args) => decreaseBlockDepth(editor, ...args),
     moveBlock: (...args) => moveBlock(editor, ...args),
     focusBlock: (...args) => focusBlock(editor, ...args),
-    // getBlock: (...args) => getBlock(editor, ...args),
     getBlock: (...args) => undefined,
     updateBlock: (...args) => updateBlock(editor, ...args),
     splitBlock: (...args) => splitBlock(editor, ...args),
     setSelection: (...args) => setSelection(editor, ...args),
     setBlockSelected: (...args) => setBlockSelected(editor, ...args),
-    blur: (...args) => blur(editor, ...args),
     blockEditorsMap: {},
     blocks: {},
     formats: {},
     shortcuts: {},
     plugins: {},
+
     on: (event, callback) => {},
     off: (event, callback) => {},
     emit: (event, ...args) => {},
     once: (event, callback) => {},
+
+    isFocused: () => isFocused(editor),
+    focus: () => focus(editor),
+    blur: (...args) => blur(editor, ...args),
   };
 
   return editor;

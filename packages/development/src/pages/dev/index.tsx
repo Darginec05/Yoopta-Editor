@@ -1,4 +1,11 @@
-import YooptaEditor, { createYooptaEditor, Tools, YooEditor, YooptaBlockData } from '@yoopta/editor';
+import YooptaEditor, {
+  createYooptaEditor,
+  Tools,
+  useYooptaEditor,
+  useYooptaFocused,
+  YooEditor,
+  YooptaBlockData,
+} from '@yoopta/editor';
 import Blockquote from '@yoopta/blockquote';
 import Paragraph from '@yoopta/paragraph';
 import Headings from '@yoopta/headings';
@@ -636,45 +643,43 @@ const BasicExample = () => {
         width={750}
         value={value}
       >
-        <div className="flex mb-8">
-          <button
-            className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
-            onClick={() => {
-              editor.formats.highlight?.update({ color: 'rgb(176, 171, 250)' });
-            }}
-          >
-            Highlight text
-          </button>
-          <button
-            className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
-            onClick={() => {
-              editor.setEditorValue({});
-
-              setTimeout(() => {
-                console.log('editor', editor.blockEditorsMap);
-              }, 100);
-            }}
-          >
-            Set value
-          </button>
-          <button
-            className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
-            onClick={() => {
-              editor.blocks.Blockquote.toggle({
-                focus: true,
-              });
-            }}
-          >
-            Toggle block
-          </button>
-          <button className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md" onClick={onSubmit}>
-            Get editor data
-          </button>
-          <button className="bg-[#007aff] text-[#fff] px-4 py-2 rounded-md" onClick={() => setReadOnly((p) => !p)}>
-            Switch readOnly mode
-          </button>
-        </div>
+        <Buttons onSubmit={onSubmit} />
       </YooptaEditor>
+    </div>
+  );
+};
+
+const Buttons = ({ onSubmit }: any) => {
+  const editor = useYooptaEditor();
+  const isFocused = useYooptaFocused();
+
+  return (
+    <div className="flex mb-8">
+      <button className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md" onClick={editor.focus}>
+        Focus
+      </button>
+      <button className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md" onClick={() => editor.blur()}>
+        Blur
+      </button>
+      <button
+        className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
+        onClick={() => console.log('editor.isFocused', isFocused)}
+      >
+        {isFocused ? 'editor is focused' : 'editor is blurred'}
+      </button>
+      <button
+        className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
+        onClick={() => {
+          editor.blocks.Blockquote.toggle({
+            focus: true,
+          });
+        }}
+      >
+        Toggle block
+      </button>
+      <button className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md" onClick={onSubmit}>
+        Get editor data
+      </button>
     </div>
   );
 };

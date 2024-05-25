@@ -1,6 +1,6 @@
 import { Descendant, Editor, Path, Point } from 'slate';
 import { Plugin, PluginElementsMap, PluginOptions, PluginElementProps } from '../plugins/types';
-import { EditorBlurOptions } from './selection/blur';
+import { EditorBlurOptions } from './core/blur';
 import { BlockSelectedOptions } from './selection/setBlockSelected';
 import { SetSelectionOptions } from './selection/setSelection';
 import { CreateBlockOptions } from './transforms/createBlock';
@@ -70,7 +70,7 @@ export type YooptaBlock = {
 export type YooptaBlocks = Record<string, YooptaBlock>;
 export type YooptaFormats = Record<string, TextFormat>;
 
-export type YooEditorEvents = 'change' | 'block:copy';
+export type YooEditorEvents = 'change' | 'focus' | 'blur' | 'block:copy';
 
 // [TODO] - Fix generic and default types
 export type YooEditor<TNodes = any> = {
@@ -82,7 +82,7 @@ export type YooEditor<TNodes = any> = {
   deleteBlock: (options?: DeleteBlockOptions) => void;
   duplicateBlock: (options?: DuplicateBlockOptions) => void;
   getBlock: (options?: YooptaEditorTransformOptions) => void;
-  toggleBlock: (toBlockType?: string, options?: ToggleBlockOptions) => void;
+  toggleBlock: (toBlockType: string, options?: ToggleBlockOptions) => void;
   increaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
   decreaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
   applyChanges: () => void;
@@ -95,7 +95,6 @@ export type YooEditor<TNodes = any> = {
   setEditorValue: (value: YooptaContentValue) => void;
   setSelection: (path: YooptaBlockPath | null, options?: SetSelectionOptions) => void;
   setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
-  blur: (options?: EditorBlurOptions) => void;
   blockEditorsMap: YooptaPluginsEditorMap;
   blocks: YooptaBlocks;
   formats: YooptaFormats;
@@ -106,6 +105,10 @@ export type YooEditor<TNodes = any> = {
   off: (event: YooEditorEvents, fn: (payload: any) => void) => void;
   emit: (event: YooEditorEvents, payload: any) => void;
   readOnly: boolean;
+
+  isFocused: () => boolean;
+  blur: (options?: EditorBlurOptions) => void;
+  focus: () => void;
 };
 
 // types for slate values
