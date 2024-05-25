@@ -39,7 +39,7 @@ const addLink = (editor, url: string) => {
       target: '_blank',
       rel: 'noopener noreferrer',
     },
-  };
+  } as SlateElement;
 
   if (isCollapsed) {
     Transforms.insertNodes(editor, link);

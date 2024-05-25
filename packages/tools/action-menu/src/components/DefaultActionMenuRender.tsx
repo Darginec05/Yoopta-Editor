@@ -1,4 +1,4 @@
-import { isValidElement } from 'react';
+import { cloneElement, isValidElement } from 'react';
 import { ActionMenuRenderProps } from '../types';
 import { DEFAULT_ICONS_MAP } from './icons';
 
@@ -29,7 +29,7 @@ const DefaultActionMenuRender = ({
   const renderIcon = (Icon: any) => {
     if (!Icon) return null;
     if (typeof Icon === 'string') return <img src={Icon} alt="icon" style={iconStyles} />;
-    if (isValidElement(Icon)) return Icon;
+    if (isValidElement(Icon)) return cloneElement<any>(Icon, { style: iconStyles });
     return <Icon style={iconStyles} />;
   };
 

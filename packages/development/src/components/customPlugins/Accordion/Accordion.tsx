@@ -9,7 +9,7 @@ const ACCORDION_VALUE: SlateElement[] = [
         id: generateId(),
         type: 'accordion-list-item',
         props: {
-          isExpanded: false,
+          isExpanded: true,
         },
         children: [
           { id: generateId(), type: 'accordion-list-item-heading', children: [{ text: 'Title 1' }] },

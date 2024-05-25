@@ -1,11 +1,10 @@
 import { createDraft, finishDraft } from 'immer';
-import { Element, Transforms } from 'slate';
-import { buildBlockData, buildBlockElement } from '../../components/Editor/utils';
-import { getRootBlockElementType } from '../../utils/blockElements';
+import { Transforms } from 'slate';
+import { buildBlockData } from '../../components/Editor/utils';
+import { buildBlockElementsStructure } from '../../utils/blockElements';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
-import { generateId } from '../../utils/generateId';
-import { YooEditor, YooptaEditorTransformOptions } from '../types';
+import { YooEditor, YooptaEditorTransformOptions, SlateElement, YooptaBlock } from '../types';
 
 export type CreateBlockOptions = YooptaEditorTransformOptions & {
   deleteText?: boolean;
@@ -21,24 +20,17 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
   if (!slate || !slate.selection) return;
 
   const selectedBlock = editor.blocks[type];
-  const rootBlockElementType = getRootBlockElementType(selectedBlock.elements);
-  const rootBlockElement = selectedBlock.elements[rootBlockElementType!];
+  const elements = buildBlockElementsStructure(editor, type);
 
-  if (!rootBlockElement) return;
+  console.log('elements', elements);
 
-  const nodeProps = { nodeType: rootBlockElement.props?.nodeType || 'block', ...rootBlockElement.props };
+  // Transforms.setNodes(slate, elements, {
+  //   at: [0],
+  //   match: (n) => Element.isElement(n),
+  //   mode: 'highest',
+  // });
 
-  const elementNode = buildBlockElement({
-    id: generateId(),
-    type: rootBlockElementType,
-    props: nodeProps,
-  });
-
-  Transforms.setNodes(slate, elementNode, {
-    at: [0, 0],
-    match: (n) => Element.isElement(n),
-    mode: 'highest',
-  });
+  // Transforms.insertNodes(slate, elements, { at: slate.selection.anchor.path.slice(0, 1) });
 
   if (options?.deleteText) Transforms.delete(slate, { at: [0, 0] });
 
@@ -49,8 +41,14 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
       order: block.meta.order,
       depth: block.meta.depth,
     },
-    value: [elementNode],
+    value: [elements],
   });
+  console.log('before slate children', slate.children);
+
+  slate.children = blockData.value;
+
+  console.log('blockData value', blockData.value);
+  console.log('after slate children', slate.children);
 
   const blockId = blockData.id;
 

@@ -9,7 +9,7 @@ export type GetBlockElementEntryOptions = {
 export function getElementEntry<TElementKeys extends string>(
   editor: YooEditor,
   blockId: string,
-  elementType: TElementKeys,
+  elementType?: TElementKeys,
   options?: GetBlockElementEntryOptions,
 ): NodeEntry<SlateElement<TElementKeys>> | undefined {
   const block = editor.children[blockId];
@@ -25,10 +25,16 @@ export function getElementEntry<TElementKeys extends string>(
     return;
   }
 
+  let match = (n) => Element.isElement(n);
+
+  if (elementType) {
+    match = (n) => Element.isElement(n) && n.type === elementType;
+  }
+
   try {
     const [elementEntry] = Editor.nodes<SlateElement>(slate, {
       at: options?.atPath || slate.selection || [0],
-      match: (n) => Element.isElement(n) && n.type === elementType,
+      match,
       mode: 'lowest',
     });
 
