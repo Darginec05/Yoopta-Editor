@@ -1,9 +1,7 @@
 export { YooptaPlugin } from './plugins';
 export {
   useBlockData,
-  useYooptaBlock,
   useYooptaEditor,
-  useYooptaPlugin,
   useYooptaFocused,
   useBlockSelected,
   useYooptaReadOnly,
