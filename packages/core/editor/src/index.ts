@@ -1,9 +1,8 @@
 export { YooptaPlugin } from './plugins';
 export {
   useBlockData,
-  useYooptaBlock,
   useYooptaEditor,
-  useYooptaPlugin,
+  useYooptaFocused,
   useBlockSelected,
   useYooptaReadOnly,
   useYooptaPluginOptions,
@@ -27,7 +26,6 @@ export { createYooptaMark, YooptaMarkParams, YooptaMark } from './marks';
 export { YooEditor, SlateElement, YooptaBlockData, YooptaBlock, YooptaContentValue } from './editor/types';
 export { buildBlockData, buildBlockElement } from './components/Editor/utils';
 
-export default YooptaEditor;
 export {
   PluginElementRenderProps,
   PluginEventHandlerOptions,
@@ -39,3 +37,4 @@ export { Elements } from './editor/elements';
 export { Blocks } from './editor/blocks';
 
 import './styles.css';
+export default YooptaEditor;

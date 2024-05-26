@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useRef } from 'react';
+import { CSSProperties, ReactNode, useEffect, useRef } from 'react';
 import { useYooptaEditor, useYooptaReadOnly } from '../../contexts/YooptaContext/YooptaContext';
 import { RenderBlocks } from './RenderBlocks';
 import { YooptaMark } from '../../marks';
@@ -12,6 +12,7 @@ import { ReactEditor } from 'slate-react';
 import { YooptaBlockPath } from '../../editor/types';
 import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
+import { IS_FOCUSED_EDITOR } from '../../utils/weakMaps';
 
 type Props = {
   marks?: YooptaMark<any>[];
@@ -20,6 +21,7 @@ type Props = {
   className?: string;
   placeholder?: string;
   width?: number | string;
+  children: ReactNode;
 };
 
 const getEditorStyles = (styles: CSSProperties) => ({
@@ -39,7 +41,7 @@ const DEFAULT_STATE: State = {
   startedIndexToSelect: null,
 };
 
-const Editor = ({ placeholder, marks, className, selectionBoxRoot, width, autoFocus = true }: Props) => {
+const Editor = ({ placeholder, marks, className, selectionBoxRoot, width, children, autoFocus = true }: Props) => {
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
   const yooptaEditorRef = useRef<HTMLDivElement>(null);
@@ -49,9 +51,7 @@ const Editor = ({ placeholder, marks, className, selectionBoxRoot, width, autoFo
 
   useEffect(() => {
     if (!autoFocus || isReadOnly) return;
-    const firstBlock = findPluginBlockBySelectionPath(editor, { at: [0] });
-
-    if (firstBlock) editor.focusBlock(firstBlock.id, { waitExecution: true });
+    editor.focus();
   }, [autoFocus, isReadOnly]);
 
   useEffect(() => {
@@ -125,6 +125,8 @@ const Editor = ({ placeholder, marks, className, selectionBoxRoot, width, autoFo
   const onBlur = (event: React.FocusEvent) => {
     const isInsideEditor = yooptaEditorRef.current?.contains(event.relatedTarget as Node);
     if (isInsideEditor || isReadOnly) return;
+
+    editor.blur();
 
     resetSelectionState();
     resetSelectedBlocks();
@@ -345,6 +347,7 @@ const Editor = ({ placeholder, marks, className, selectionBoxRoot, width, autoFo
           isOpen={selectionBox.selection && !isReadOnly}
         />
       )}
+      {children}
     </div>
   );
 };

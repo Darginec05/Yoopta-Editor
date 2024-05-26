@@ -18,6 +18,7 @@ import withLargeDocuments from '@/components/examples/withLargeDocuments';
 import withChatSlack from '@/components/examples/withChatSlack';
 import withCraftExample from '@/components/examples/withCraftExample';
 import withCustomStyles from '@/components/examples/withCustomStyles';
+import withEditorFocusBlur from '@/components/examples/withEditorFocusBlur';
 import withMigrationGuide from '@/components/examples/withMigrationGuide';
 
 import { Head } from '@/components/Head/Head';
@@ -42,6 +43,7 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withCustomStyles,
   withLargeDocuments,
   withChatSlack,
+  withEditorFocusBlur,
   withCraftExample,
   withMigrationGuide,
   // withExports,
@@ -116,6 +118,10 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
   },
   withMigrationGuide: {
     title: 'Migration Guide from v2 to v4',
+    description: '',
+  },
+  withEditorFocusBlur: {
+    title: 'Example with focus/blur',
     description: '',
   },
 };

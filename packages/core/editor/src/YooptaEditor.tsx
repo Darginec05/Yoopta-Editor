@@ -20,6 +20,7 @@ import { FakeSelectionMark } from './marks/FakeSelectionMark';
 import { generateId } from './utils/generateId';
 
 type Props = {
+  id?: string;
   editor: YooEditor;
   plugins: YooptaPlugin[];
   marks?: YooptaMark<any>[];
@@ -65,6 +66,7 @@ const isLegacyVersionInUse = (value: any): boolean => {
 };
 
 const YooptaEditor = ({
+  id,
   editor,
   value,
   marks: marksProps,
@@ -92,7 +94,7 @@ const YooptaEditor = ({
   }, [pluginsProps]);
 
   const [editorState, setEditorState] = useState<{ editor: YooEditor<any>; version: number }>(() => {
-    if (!editor.id) editor.id = generateId();
+    if (!editor.id) editor.id = id || generateId();
     editor.applyChanges = applyChanges;
     editor.readOnly = readOnly || false;
     if (marks) editor.formats = buildMarks(editor, marks);
@@ -156,8 +158,9 @@ const YooptaEditor = ({
             className={className}
             selectionBoxRoot={selectionBoxRoot}
             width={width}
-          />
-          {children}
+          >
+            {children}
+          </Editor>
         </ToolsProvider>
       </YooptaContextProvider>
     </NoSSR>

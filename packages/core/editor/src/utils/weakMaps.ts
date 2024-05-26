@@ -1,3 +1,3 @@
-import { SlateElement } from '../editor/types';
+import { YooEditor } from '../editor/types';
 
-export const ELEMENT_INDEX: WeakMap<SlateElement, number> = new WeakMap();
+export const IS_FOCUSED_EDITOR = new WeakMap<YooEditor, boolean>();
