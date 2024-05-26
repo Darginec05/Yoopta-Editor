@@ -63,7 +63,7 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
   if (!isOpen) return null;
 
   const currentBlock = findPluginBlockBySelectionPath(editor, { at: editor.selection });
-  const rootElement = getRootBlockElement(editor.blocks[currentBlock?.type || ''].elements);
+  const rootElement = getRootBlockElement(editor.blocks[currentBlock?.type || '']?.elements);
   const isVoidElement = rootElement?.props?.nodeType === 'void';
 
   const onDelete = () => {
