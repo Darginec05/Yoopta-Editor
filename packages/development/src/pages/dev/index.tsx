@@ -660,7 +660,7 @@ const Buttons = ({ onSubmit }: any) => {
   const isFocused = useYooptaFocused();
 
   return (
-    <div className="flex mb-8">
+    <div className="flex mt-4 mb-8">
       <button className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md" onClick={editor.focus}>
         Focus
       </button>
