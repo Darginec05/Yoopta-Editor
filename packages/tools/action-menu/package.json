@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/action-menu-list",
-  "version": "4.5.0-alpha.0",
+  "version": "4.5.0-alpha.1",
   "description": "ActionMenuList tool for Yoopta Editor",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
@@ -37,5 +37,6 @@
   "dependencies": {
     "@floating-ui/react": "^0.26.9",
     "@radix-ui/react-icons": "^1.3.0"
-  }
+  },
+  "gitHead": "abd26705536b5f825a82fc884ea3984497226e53"
 }
