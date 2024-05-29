@@ -100,7 +100,7 @@ export function onKeyDown(editor: YooEditor) {
           const prevBlockEntity = editor.blocks[prevBlock?.type || ''];
 
           // [TODO] - if prev block has custom editor (not slate) we need jump to prevprev block
-          if (prevBlockEntity.hasCustomEditor) return;
+          if (prevBlockEntity && prevBlockEntity.hasCustomEditor) return;
 
           // If we try to delete first block do nothing
           if (!prevSlate) return;
