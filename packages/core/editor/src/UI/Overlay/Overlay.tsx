@@ -8,10 +8,10 @@ type Props = {
   onClick?: (e: MouseEvent) => void;
 };
 
-const Overlay = (props: Props) => {
+const Overlay = ({ className, onClick, children, lockScroll = true }: Props) => {
   return (
-    <FloatingOverlay lockScroll className={props.className} onClick={props.onClick}>
-      {props.children}
+    <FloatingOverlay lockScroll={lockScroll} className={className} onClick={onClick}>
+      {children}
     </FloatingOverlay>
   );
 };
