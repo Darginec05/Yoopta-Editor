@@ -218,7 +218,25 @@ const value = {
         type: 'heading-two',
         children: [
           {
-            text: 'Example with full setup of Yoopta-Editor',
+            text: 'Example with ',
+          },
+          {
+            type: 'link',
+            children: [
+              {
+                text: 'full setup',
+              },
+            ],
+            props: {
+              title: 'full setup',
+              url: 'https://prokatavto05.ru/',
+              target: '_blank',
+              rel: 'noreferrer',
+              nodeType: 'inline',
+            },
+          },
+          {
+            text: ' of Yoopta-Editor',
           },
         ],
         props: {
@@ -403,51 +421,6 @@ const value = {
       depth: 0,
     },
   },
-  'dc0fed6b-3a39-4aef-800c-2e69926f22f5': {
-    id: 'dc0fed6b-3a39-4aef-800c-2e69926f22f5',
-    value: [
-      {
-        id: '6b1d5736-97c0-4fa8-84d5-ba9ab39423d6',
-        type: 'todo-list',
-        children: [
-          {
-            text: 'Example with full setup of Yoopta-Editor',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-          checked: false,
-        },
-      },
-    ],
-    type: 'TodoList',
-    meta: {
-      order: 11,
-      depth: 0,
-    },
-  },
-  'b4566f8b-6796-4d34-87d3-dc3e0183b20b': {
-    id: 'b4566f8b-6796-4d34-87d3-dc3e0183b20b',
-    value: [
-      {
-        id: '67825b50-bdd9-472c-8e90-c5d9bb3b59c9',
-        type: 'todo-list',
-        children: [
-          {
-            text: 'Example with full setup of Yoopta-Editor',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'TodoList',
-    meta: {
-      order: 12,
-      depth: 0,
-    },
-  },
   '19a53b1b-8bcc-48d0-b0b2-729f83efa669': {
     id: '19a53b1b-8bcc-48d0-b0b2-729f83efa669',
     type: 'Callout',
@@ -491,7 +464,7 @@ const value = {
     ],
     type: 'Code',
     meta: {
-      order: 13,
+      order: 11,
       depth: 0,
     },
   },
@@ -530,7 +503,7 @@ const value = {
     ],
     type: 'Video',
     meta: {
-      order: 15,
+      order: 13,
       depth: 0,
     },
   },
@@ -556,7 +529,7 @@ const value = {
     ],
     type: 'File',
     meta: {
-      order: 16,
+      order: 14,
       depth: 0,
     },
   },
@@ -587,7 +560,7 @@ const value = {
     ],
     type: 'Embed',
     meta: {
-      order: 17,
+      order: 15,
       depth: 0,
     },
   },
@@ -609,7 +582,7 @@ const value = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 18,
+      order: 16,
       depth: 0,
     },
   },
