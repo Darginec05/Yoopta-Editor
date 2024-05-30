@@ -23,10 +23,10 @@ import { WITH_BASIC_INIT_VALUE } from './initValue';
 
 const plugins = [
   Paragraph,
+  Accordion,
   HeadingOne,
   HeadingTwo,
   HeadingThree,
-  Accordion,
   Blockquote,
   Callout,
   NumberedList,
