@@ -8,6 +8,7 @@ import Link from '@yoopta/link';
 import Callout from '@yoopta/callout';
 import Video from '@yoopta/video';
 import File from '@yoopta/file';
+import Accordion from '@yoopta/accordion';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
@@ -24,6 +25,7 @@ import { useMemo, useRef } from 'react';
 
 const plugins = [
   Paragraph,
+  Accordion,
   HeadingOne,
   HeadingTwo,
   HeadingThree,
@@ -102,38 +104,7 @@ function WithCustomPluginExample() {
       className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center"
       ref={selectionRef}
     >
-      <YooptaEditor
-        editor={editor}
-        plugins={plugins}
-        tools={TOOLS}
-        marks={MARKS}
-        selectionBoxRoot={selectionRef}
-        readOnly
-        value={{
-          '7e11916a-b983-48ca-aeff-bf6b04f5ee2b': {
-            id: '7e11916a-b983-48ca-aeff-bf6b04f5ee2b',
-            type: 'HeadingTwo',
-            meta: {
-              order: 0,
-              depth: 0,
-            },
-            value: [
-              {
-                id: '4325c741-1445-450f-be2d-f51368b1a3ff',
-                type: 'heading-two',
-                children: [
-                  {
-                    text: 'Example in progress..',
-                  },
-                ],
-                props: {
-                  nodeType: 'block',
-                },
-              },
-            ],
-          },
-        }}
-      />
+      <YooptaEditor editor={editor} plugins={plugins} tools={TOOLS} marks={MARKS} selectionBoxRoot={selectionRef} />
     </div>
   );
 }

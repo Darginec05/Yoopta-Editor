@@ -115,6 +115,7 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
       description: 'Create collapses',
       icon: <ListCollapse size={24} />,
     },
+    shortcuts: ['-|'],
   },
 });
 

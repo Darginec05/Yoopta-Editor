@@ -73,7 +73,6 @@ const plugins = [
     options: {
       maxSizes: {
         maxHeight: 800,
-        maxWidth: 'auto',
       },
       HTMLAttributes: {
         className: 'image-element-extended',
@@ -642,12 +641,12 @@ const BasicExample = () => {
         plugins={plugins}
         selectionBoxRoot={rectangleSelectionRef}
         marks={MARKS}
-        autoFocus={false}
+        autoFocus={true}
         placeholder="Type / to open menu"
         tools={TOOLS}
         readOnly={readOnly}
         width={750}
-        value={{ [ACCORDION_BLOCK.id]: ACCORDION_BLOCK }}
+        // value={{ [ACCORDION_BLOCK.id]: ACCORDION_BLOCK }}
       >
         <Buttons onSubmit={onSubmit} />
       </YooptaEditor>

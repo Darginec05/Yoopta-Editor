@@ -40,5 +40,5 @@
     "@radix-ui/react-toolbar": "^1.0.4",
     "lodash.throttle": "^4.1.1"
   },
-  "gitHead": "abd26705536b5f825a82fc884ea3984497226e53"
+  "gitHead": "29e4ae316ec75bb43d3822d028abcb0c34256ec5"
 }

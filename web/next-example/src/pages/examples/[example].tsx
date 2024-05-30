@@ -11,7 +11,7 @@ import withDarkTheme from '@/components/examples/withDarkTheme';
 import withExtendedPlugin from '@/components/examples/withExtendedPlugin';
 import withMediaAndVoids from '@/components/examples/withMediaAndVoids';
 import withNotionActionMenu from '@/components/examples/withNotionActionMenu';
-import withReadOnly from '@/components/examples/withReadOnly/index';
+import withReadOnly from '@/components/examples/withReadOnly';
 import withSavingToDatabase from '@/components/examples/withSavingToDatabase';
 import withEditorControl from '@/components/examples/withEditorControl';
 import withLargeDocuments from '@/components/examples/withLargeDocuments';

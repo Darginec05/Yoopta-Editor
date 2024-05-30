@@ -113,8 +113,5 @@ export function buildBlockElementsStructure(editor: YooEditor, blockType: string
         : [{ text: '' }],
   };
 
-  console.log('rootElementNode', rootElementNode);
-  console.log('rootBlockElement', rootBlockElement);
-
   return rootElementNode;
 }

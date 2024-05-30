@@ -10,22 +10,36 @@ import { HOTKEYS } from '../utils/hotkeys';
 
 /** */
 function getLastNodePoint(slate: SlateEditor, path: Path): Point {
-  const [, lastNodePath] = Editor.last(slate, path);
-  const lastNodeTextLength = Editor.string(slate, lastNodePath).length;
+  try {
+    const [, lastNodePath] = Editor.last(slate, path);
+    const lastNodeTextLength = Editor.string(slate, lastNodePath).length;
 
-  return {
-    path: lastNodePath,
-    offset: lastNodeTextLength,
-  };
+    return {
+      path: lastNodePath,
+      offset: lastNodeTextLength,
+    };
+  } catch (error) {
+    return {
+      path: [0, 0],
+      offset: 0,
+    };
+  }
 }
 
 function getNextNodePoint(slate: SlateEditor, path: Path): Point {
-  const [, firstNodePath] = Editor.first(slate, path);
+  try {
+    const [, firstNodePath] = Editor.first(slate, path);
 
-  return {
-    path: firstNodePath,
-    offset: 0,
-  };
+    return {
+      path: firstNodePath,
+      offset: 0,
+    };
+  } catch (error) {
+    return {
+      path: [0, 0],
+      offset: 0,
+    };
+  }
 }
 /** */
 
@@ -82,6 +96,7 @@ export function onKeyDown(editor: YooEditor) {
         let focusAt;
 
         if (prevSlate && !prevBlockEntity.hasCustomEditor) {
+          // [TODO] - should be parent path, but for prev slate
           focusAt = getLastNodePoint(prevSlate, parentPath);
         }
 
@@ -215,6 +230,7 @@ export function onKeyDown(editor: YooEditor) {
         const nextBlock = findPluginBlockBySelectionPath(editor, { at: nextPath });
 
         if (nextSlate && nextBlock) {
+          // [TODO] - should parent path, but for next slate
           const selection: Point = getNextNodePoint(nextSlate, parentPath);
 
           event.preventDefault();

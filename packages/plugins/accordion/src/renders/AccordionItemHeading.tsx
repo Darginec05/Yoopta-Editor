@@ -48,7 +48,7 @@ export const AccordionItemHeading = (props: PluginElementRenderProps) => {
     e.preventDefault();
     e.stopPropagation();
 
-    const parentPath = Elements.getParentElementPath(editor, blockId, element)!;
+    const parentPath = Elements.getParentElementPath(editor, blockId, element);
 
     const accordionListItems = Elements.getElementChildren(editor, blockId, 'accordion-list', {
       atPath: parentPath,
@@ -59,10 +59,12 @@ export const AccordionItemHeading = (props: PluginElementRenderProps) => {
       return;
     }
 
-    Elements.deleteElement(editor, blockId, { type: 'accordion-list-item', path: parentPath });
+    if (parentPath) {
+      Elements.deleteElement(editor, blockId, { type: 'accordion-list-item', path: parentPath });
+    }
   };
 
-  const parentPath = Elements.getParentElementPath(editor, blockId, element)!;
+  const parentPath = Elements.getParentElementPath(editor, blockId, element);
   const nodeEl = Elements.getElement(editor, blockId, 'accordion-list-item', { atPath: parentPath });
   const isExpanded = nodeEl?.props?.isExpanded;
 
@@ -72,7 +74,7 @@ export const AccordionItemHeading = (props: PluginElementRenderProps) => {
       onClick={isReadOnly ? onToggleExpand : undefined}
       className="yoopta-accordion-list-item-heading yoo-accordion-group"
     >
-      <span className="yoo-accordion-break-words">{children}</span>
+      <span className="yoo-accordion-break-words hover:yoo-accordion-underline">{children}</span>
       <div className="yoo-accordion-absolute yoo-accordion-right-[14px] yoo-accordion-z-10 yoo-accordion-top-1/2 -yoo-accordion-translate-y-1/2 yoo-accordion-flex yoo-accordion-gap-1 yoo-accordion-select-none">
         {!isReadOnly && (
           <>
@@ -98,7 +100,7 @@ export const AccordionItemHeading = (props: PluginElementRenderProps) => {
             size={20}
             color="#000"
             style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}
-            className={isExpanded ? 'rotate-180' : 'rotate-0'}
+            className="yoo-accordion-transition-transform yoo-accordion-duration-200"
           />
         </button>
       </div>

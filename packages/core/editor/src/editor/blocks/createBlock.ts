@@ -22,8 +22,6 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
   const selectedBlock = editor.blocks[type];
   const elements = buildBlockElementsStructure(editor, type);
 
-  console.log('elements', elements);
-
   // Transforms.setNodes(slate, elements, {
   //   at: [0],
   //   match: (n) => Element.isElement(n),
@@ -43,13 +41,8 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
     },
     value: [elements],
   });
-  console.log('before slate children', slate.children);
 
   slate.children = blockData.value;
-
-  console.log('blockData value', blockData.value);
-  console.log('after slate children', slate.children);
-
   const blockId = blockData.id;
 
   editor.children[blockId] = blockData;
