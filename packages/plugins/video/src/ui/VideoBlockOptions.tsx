@@ -15,15 +15,24 @@ type Props = {
 
 const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
   const onCover = () => {
-    Elements.updateElement<VideoPluginElements, VideoElementProps>(editor, block.id, 'video', { fit: 'cover' });
+    Elements.updateElement<VideoPluginElements, VideoElementProps>(editor, block.id, {
+      type: 'video',
+      props: { fit: 'cover' },
+    });
   };
 
   const onFit = () => {
-    Elements.updateElement<VideoPluginElements, VideoElementProps>(editor, block.id, 'video', { fit: 'contain' });
+    Elements.updateElement<VideoPluginElements, VideoElementProps>(editor, block.id, {
+      type: 'video',
+      props: { fit: 'contain' },
+    });
   };
 
   const onFill = () => {
-    Elements.updateElement<VideoPluginElements, VideoElementProps>(editor, block.id, 'video', { fit: 'fill' });
+    Elements.updateElement<VideoPluginElements, VideoElementProps>(editor, block.id, {
+      type: 'video',
+      props: { fit: 'fill' },
+    });
   };
 
   const isExternalVideo = !!videoProps?.provider?.id;

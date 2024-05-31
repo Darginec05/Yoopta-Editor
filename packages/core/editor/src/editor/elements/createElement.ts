@@ -1,20 +1,24 @@
-import { Editor, Path, Transforms } from 'slate';
+import { Editor, Path, Span, Transforms } from 'slate';
 import { buildBlockElement } from '../../components/Editor/utils';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { SlateElement, YooEditor } from '../types';
 import { getElementEntry } from './getElementEntry';
 
 export type CreateBlockElementOptions = {
-  at?: 'next' | 'prev' | Path;
+  path?: 'next' | 'prev' | Path | Span;
   focus?: boolean;
   split?: boolean;
+};
+
+export type CreateElement<TElementKeys, TElementProps> = {
+  type: TElementKeys;
+  props?: TElementProps;
 };
 
 export function createElement<TElementKeys extends string, TElementProps>(
   editor: YooEditor,
   blockId: string,
-  elementType: TElementKeys,
-  elementProps?: TElementProps,
+  element: CreateElement<TElementKeys, TElementProps>,
   options?: CreateBlockElementOptions,
 ) {
   const blockData = editor.children[blockId];
@@ -30,8 +34,8 @@ export function createElement<TElementKeys extends string, TElementProps>(
 
   Editor.withoutNormalizing(slate, () => {
     const block = editor.blocks[blockData.type];
-    const blockElement = block.elements[elementType];
-    const nodeElement = buildBlockElement({ type: elementType, props: { ...blockElement.props, ...elementProps } });
+    const blockElement = block.elements[element.type];
+    const nodeElement = buildBlockElement({ type: element.type, props: { ...blockElement.props, ...element.props } });
 
     const elementTypes = Object.keys(block.elements);
 
@@ -40,7 +44,7 @@ export function createElement<TElementKeys extends string, TElementProps>(
     elementTypes.forEach((blockElementType) => {
       const blockElement = block.elements[blockElementType];
 
-      if (blockElementType === elementType) {
+      if (blockElementType === element.type) {
         if (Array.isArray(blockElement.children) && blockElement.children.length > 0) {
           blockElement.children.forEach((childElementType) => {
             const childElement = block.elements[childElementType];
@@ -52,19 +56,19 @@ export function createElement<TElementKeys extends string, TElementProps>(
 
     if (childrenElements.length > 0) nodeElement.children = childrenElements;
 
-    const { at, focus = true } = options || {};
+    const { path, focus = true } = options || {};
     let atPath;
 
-    const elementEntry = getElementEntry(editor, blockId, elementType);
+    const elementEntry = getElementEntry(editor, blockId, { type: element.type });
 
     if (elementEntry) {
       const [, elementPath] = elementEntry;
 
-      if (Path.isPath(at)) {
-        atPath = at;
-      } else if (at === 'prev') {
+      if (Path.isPath(path)) {
+        atPath = path;
+      } else if (path === 'prev') {
         atPath = Path.previous(elementPath);
-      } else if (at === 'next') {
+      } else if (path === 'next') {
         atPath = Path.next(elementPath);
       }
     }
@@ -74,8 +78,9 @@ export function createElement<TElementKeys extends string, TElementProps>(
     if (focus) {
       if (childrenElements.length > 0) {
         const firstChild = childrenElements[0];
-        const firstElementEntry = getElementEntry(editor, blockId, firstChild.type, {
-          atPath: atPath,
+        const firstElementEntry = getElementEntry(editor, blockId, {
+          path: atPath,
+          type: firstChild.type,
         });
 
         if (firstElementEntry) {

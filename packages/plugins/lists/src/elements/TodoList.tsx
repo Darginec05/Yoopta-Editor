@@ -13,7 +13,7 @@ const TodoListRender = ({ attributes, element, children, blockId, HTMLAttributes
   return (
     <div className={`yoopta-todo-list ${className}`} data-checked={checked} {...htmlAttrs} {...attributes}>
       <span
-        onClick={() => Elements.updateElement(editor, blockId, 'todo-list', { checked: !checked })}
+        onClick={() => Elements.updateElement(editor, blockId, { type: 'todo-list', props: { checked: !checked } })}
         contentEditable={false}
         className="yoopta-todo-list-checkbox"
       >

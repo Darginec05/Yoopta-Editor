@@ -15,13 +15,6 @@ import { getRootBlockElement } from './blockElements';
 import { updateBlock } from '../editor/blocks/updateBlock';
 import { toggleBlock, ToggleBlockOptions } from '../editor/blocks/toggleBlock';
 import { deleteBlock, DeleteBlockOptions } from '../editor/blocks/deleteBlock';
-import { updateElement, UpdateElementOptions } from '../editor/elements/updateElement';
-import { createElement, CreateBlockElementOptions } from '../editor/elements/createElement';
-import { getElement } from '../editor/elements/getElement';
-import { DeleteBlockElement, deleteElement } from '../editor/elements/deleteElement';
-import { getElementEntry, GetBlockElementEntryOptions } from '../editor/elements/getElementEntry';
-import { EmptyBlockElement, isElementEmpty } from '../editor/elements/isElementEmpty';
-import { getElementChildren, GetElementChildrenOptions } from '../editor/elements/getElementChildren';
 
 export function buildMarks(editor, marks: YooptaMark<any>[]) {
   const formats: YooEditor['formats'] = {};

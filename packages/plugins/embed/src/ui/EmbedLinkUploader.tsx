@@ -20,8 +20,11 @@ const EmbedLinkUploader = ({ blockId, onClose }) => {
       provider.id = value;
     }
 
-    Elements.updateElement<EmbedPluginElements, EmbedElementProps>(editor, blockId, 'embed', {
-      provider,
+    Elements.updateElement<EmbedPluginElements, EmbedElementProps>(editor, blockId, {
+      type: 'embed',
+      props: {
+        provider,
+      },
     });
 
     onClose();

@@ -10,8 +10,11 @@ const EmbedUploader = ({ blockId, onClose }) => {
   const embed = () => {
     if (value.length === 0) return;
 
-    Elements.updateElement(editor, blockId, 'image', {
-      src: value,
+    Elements.updateElement(editor, blockId, {
+      type: 'image',
+      props: {
+        src: value,
+      },
     });
 
     onClose();

@@ -6,11 +6,15 @@ export type UpdateElementOptions = {
   path?: Path;
 };
 
+export type UpdateElement<TElementKeys, TElementProps> = {
+  type: TElementKeys;
+  props: TElementProps;
+};
+
 export function updateElement<TElementKeys extends string, TElementProps>(
   editor: YooEditor,
   blockId: string,
-  elementType: TElementKeys,
-  elementProps: TElementProps,
+  element: UpdateElement<TElementKeys, TElementProps>,
   options?: UpdateElementOptions,
 ) {
   const block = editor.children[blockId];
@@ -29,17 +33,17 @@ export function updateElement<TElementKeys extends string, TElementProps>(
   Editor.withoutNormalizing(slate, () => {
     const [elementEntry] = Editor.nodes<SlateElement>(slate, {
       at: options?.path || [0],
-      match: (n) => Element.isElement(n) && n.type === elementType,
+      match: (n) => Element.isElement(n) && n.type === element.type,
     });
 
-    const element = elementEntry?.[0];
+    const elementToUpdate = elementEntry?.[0];
 
-    const props = element?.props || {};
-    const updatedNode = { props: { ...props, ...elementProps } };
+    const props = elementToUpdate?.props || {};
+    const updatedNode = { props: { ...props, ...element.props } };
 
     Transforms.setNodes<SlateElement>(slate, updatedNode, {
       at: options?.path || [0],
-      match: (n) => Element.isElement(n) && n.type === elementType,
+      match: (n) => Element.isElement(n) && n.type === element.type,
       mode: 'lowest',
     });
 

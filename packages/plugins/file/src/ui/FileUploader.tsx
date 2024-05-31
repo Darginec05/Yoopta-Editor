@@ -25,11 +25,14 @@ const FileUploader = ({ accept = '', onClose, blockId, onSetLoading }: Props) =>
       const response = await options?.onUpload(file);
       const format = response.format || file.name.split('.').pop() || null;
 
-      Elements.updateElement<FilePluginElements, FileElementProps>(editor, blockId, 'file', {
-        src: response.src,
-        name: response.name || file.name,
-        size: response.size || file.size,
-        format: format,
+      Elements.updateElement<FilePluginElements, FileElementProps>(editor, blockId, {
+        type: 'file',
+        props: {
+          src: response.src,
+          name: response.name || file.name,
+          size: response.size || file.size,
+          format: format,
+        },
       });
     } catch (error) {
     } finally {

@@ -32,7 +32,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor, { hotkeys, defaultBl
 
         const [todoListNode] = nodeEntry as [TodoListElement, Path];
         const checked = todoListNode.props?.checked || false;
-        Elements.updateElement(editor, block.id, 'todo-list', { checked: !checked });
+        Elements.updateElement(editor, block.id, { type: 'todo-list', props: { checked: !checked } });
         return;
       }
 

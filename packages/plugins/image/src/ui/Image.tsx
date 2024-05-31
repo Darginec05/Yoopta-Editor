@@ -61,8 +61,11 @@ const ImageRender = ({ element, attributes, children, blockId }: PluginElementRe
       },
       onResizeStop: (e, direction, ref) => {
         if (isReadOnly) return;
-        Elements.updateElement(editor, blockId, 'image', {
-          sizes: { width: ref.offsetWidth, height: ref.offsetHeight },
+        Elements.updateElement(editor, blockId, {
+          type: 'image',
+          props: {
+            sizes: { width: ref.offsetWidth, height: ref.offsetHeight },
+          },
         });
       },
       handleComponent: {

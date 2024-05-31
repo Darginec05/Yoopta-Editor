@@ -2,6 +2,7 @@ import { isKeyHotkey } from 'is-hotkey';
 import { Editor, Path, Point, Range, Text, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { buildBlockData } from '../components/Editor/utils';
+import { Elements } from '../editor/elements';
 import { SlateEditor, YooEditor, YooptaBlockPath } from '../editor/types';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../utils/findSlateBySelectionPath';
@@ -192,6 +193,18 @@ export function onKeyDown(editor: YooEditor) {
       if (event.isDefaultPrevented()) return;
       const parentPath = Path.parent(slate.selection.anchor.path);
       const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
+
+      console.log('isStart', isStart);
+      console.log('slate.selection.anchor.path', slate.selection.anchor.path);
+      const block = findPluginBlockBySelectionPath(editor, { at: editor.selection });
+      const element = Elements.getElement(editor, block?.id || '');
+      const blockElement = editor.blocks[block?.type || '']?.elements[element?.type || ''];
+      const hasElementChildren = Array.isArray(blockElement?.children) && blockElement?.children.length > 0;
+
+      console.log('block', block);
+      console.log('Elements.getElement', Elements.getElement(editor, block?.id || ''));
+      console.log('editor.blocks', editor.blocks[block?.type || '']?.elements);
+      console.log('hasElementChildren', hasElementChildren);
 
       if (isStart) {
         const prevPath: YooptaBlockPath | null = editor.selection ? [editor.selection[0] - 1] : null;

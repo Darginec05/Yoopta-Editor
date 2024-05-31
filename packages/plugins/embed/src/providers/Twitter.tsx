@@ -32,10 +32,13 @@ function Twitter({ provider, blockId }: ProviderRenderProps) {
           width: 550,
         });
 
-        Elements.updateElement<EmbedPluginElements, EmbedElementProps>(editor, blockId, 'embed', {
-          sizes: {
-            width: 'auto',
-            height: 'auto',
+        Elements.updateElement<EmbedPluginElements, EmbedElementProps>(editor, blockId, {
+          type: 'embed',
+          props: {
+            sizes: {
+              width: 'auto',
+              height: 'auto',
+            },
           },
         });
       }

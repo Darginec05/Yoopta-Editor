@@ -58,8 +58,11 @@ const VideoRender = ({ element, attributes, children, blockId }: PluginElementRe
         setSizes({ width: ref.offsetWidth, height: ref.offsetHeight });
       },
       onResizeStop: (e, direction, ref) => {
-        Elements.updateElement(editor, blockId, 'video', {
-          sizes: { width: ref.offsetWidth, height: ref.offsetHeight },
+        Elements.updateElement(editor, blockId, {
+          type: 'video',
+          props: {
+            sizes: { width: ref.offsetWidth, height: ref.offsetHeight },
+          },
         });
       },
       handleComponent: {

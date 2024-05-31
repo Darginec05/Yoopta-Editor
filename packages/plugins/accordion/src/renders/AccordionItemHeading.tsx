@@ -12,16 +12,16 @@ export const AccordionItemHeading = (props: PluginElementRenderProps) => {
     event.stopPropagation();
 
     const parentPath = Elements.getParentElementPath(editor, blockId, element)!;
-    const listItemElement = Elements.getElement(editor, blockId, 'accordion-list-item', {
-      atPath: parentPath,
+    const listItemElement = Elements.getElement(editor, blockId, {
+      path: parentPath,
+      type: 'accordion-list-item',
     });
 
     if (listItemElement) {
       Elements.updateElement(
         editor,
         blockId,
-        'accordion-list-item',
-        { isExpanded: !listItemElement.props?.isExpanded },
+        { type: 'accordion-list-item', props: { isExpanded: !listItemElement.props?.isExpanded } },
         { path: parentPath },
       );
     }
@@ -38,9 +38,8 @@ export const AccordionItemHeading = (props: PluginElementRenderProps) => {
     Elements.createElement(
       editor,
       blockId,
-      'accordion-list-item',
-      { isExpanded: true },
-      { at: nextListItemPath, focus: true },
+      { type: 'accordion-list-item', props: { isExpanded: true } },
+      { path: nextListItemPath, focus: true },
     );
   };
 
@@ -50,8 +49,9 @@ export const AccordionItemHeading = (props: PluginElementRenderProps) => {
 
     const parentPath = Elements.getParentElementPath(editor, blockId, element);
 
-    const accordionListItems = Elements.getElementChildren(editor, blockId, 'accordion-list', {
-      atPath: parentPath,
+    const accordionListItems = Elements.getElementChildren(editor, blockId, {
+      path: parentPath,
+      type: 'accordion-list',
     });
 
     if (accordionListItems?.length === 1) {
@@ -65,7 +65,7 @@ export const AccordionItemHeading = (props: PluginElementRenderProps) => {
   };
 
   const parentPath = Elements.getParentElementPath(editor, blockId, element);
-  const nodeEl = Elements.getElement(editor, blockId, 'accordion-list-item', { atPath: parentPath });
+  const nodeEl = Elements.getElement(editor, blockId, { path: parentPath, type: 'accordion-list-item' });
   const isExpanded = nodeEl?.props?.isExpanded;
 
   return (

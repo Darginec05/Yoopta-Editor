@@ -18,8 +18,11 @@ type Props = {
 
 const CalloutBlockOptions = ({ editor, block, props: calloutProps }: Props) => {
   const onChangeTheme = (theme: CalloutTheme) => {
-    Elements.updateElement<CalloutPluginElementKeys, CalloutElementProps>(editor, block.id, 'callout', {
-      theme,
+    Elements.updateElement<CalloutPluginElementKeys, CalloutElementProps>(editor, block.id, {
+      type: 'callout',
+      props: {
+        theme,
+      },
     });
   };
 

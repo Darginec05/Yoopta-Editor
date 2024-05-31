@@ -5,9 +5,10 @@ export const AccordionItemContent = (props: PluginElementRenderProps) => {
   const { attributes, children, blockId, element } = props;
   const editor = useYooptaEditor();
 
-  const parentPath = Elements.getParentElementPath(editor, blockId, element)!;
-  const parentListItem = Elements.getElement(editor, blockId, 'accordion-list-item', {
-    atPath: parentPath,
+  const parentPath = Elements.getParentElementPath(editor, blockId, element);
+  const parentListItem = Elements.getElement(editor, blockId, {
+    path: parentPath,
+    type: 'accordion-list-item',
   });
 
   const isExpanded = parentListItem?.props?.isExpanded;

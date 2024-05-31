@@ -24,11 +24,14 @@ const FileUploader = ({ accept = 'video/*', onClose, blockId, onSetLoading }: Pr
       // [TODO] - abort controller?
       const data = await options?.onUpload(file);
 
-      Elements.updateElement<VideoPluginElements, VideoElementProps>(editor, blockId, 'video', {
-        src: data.src,
-        sizes: data.sizes,
-        bgColor: data.bgColor,
-        fit: data.fit || 'contain',
+      Elements.updateElement<VideoPluginElements, VideoElementProps>(editor, blockId, {
+        type: 'video',
+        props: {
+          src: data.src,
+          sizes: data.sizes,
+          bgColor: data.bgColor,
+          fit: data.fit || 'contain',
+        },
       });
     } catch (error) {
     } finally {

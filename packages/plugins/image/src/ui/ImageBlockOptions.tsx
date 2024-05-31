@@ -14,15 +14,24 @@ type Props = {
 
 const ImageBlockOptions = ({ editor, block, props: imageProps }: Props) => {
   const onCover = () => {
-    Elements.updateElement<ImagePluginElements, ImageElementProps>(editor, block.id, 'image', { fit: 'cover' });
+    Elements.updateElement<ImagePluginElements, ImageElementProps>(editor, block.id, {
+      type: 'image',
+      props: { fit: 'cover' },
+    });
   };
 
   const onFit = () => {
-    Elements.updateElement<ImagePluginElements, ImageElementProps>(editor, block.id, 'image', { fit: 'contain' });
+    Elements.updateElement<ImagePluginElements, ImageElementProps>(editor, block.id, {
+      type: 'image',
+      props: { fit: 'contain' },
+    });
   };
 
   const onFill = () => {
-    Elements.updateElement<ImagePluginElements, ImageElementProps>(editor, block.id, 'image', { fit: 'fill' });
+    Elements.updateElement<ImagePluginElements, ImageElementProps>(editor, block.id, {
+      type: 'image',
+      props: { fit: 'fill' },
+    });
   };
 
   const onDownload = () => {

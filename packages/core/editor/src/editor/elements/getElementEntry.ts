@@ -3,13 +3,13 @@ import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { SlateElement, YooEditor } from '../types';
 
 export type GetBlockElementEntryOptions = {
-  atPath?: Location | Span;
+  path?: Location | Span;
+  type?: string;
 };
 
 export function getElementEntry<TElementKeys extends string>(
   editor: YooEditor,
   blockId: string,
-  elementType?: TElementKeys,
   options?: GetBlockElementEntryOptions,
 ): NodeEntry<SlateElement<TElementKeys>> | undefined {
   const block = editor.children[blockId];
@@ -27,13 +27,13 @@ export function getElementEntry<TElementKeys extends string>(
 
   let match = (n) => Element.isElement(n);
 
-  if (elementType) {
-    match = (n) => Element.isElement(n) && n.type === elementType;
+  if (options?.type) {
+    match = (n) => Element.isElement(n) && n.type === options?.type;
   }
 
   try {
     const [elementEntry] = Editor.nodes<SlateElement>(slate, {
-      at: options?.atPath || slate.selection || [0],
+      at: options?.path || slate.selection || [0],
       match,
       mode: 'lowest',
     });

@@ -188,59 +188,221 @@ const TOOLS: Tools = {
 export type YooptaChildrenValue = Record<string, YooptaBlockData>;
 
 const value = {
-  '2af886bf-6e25-45d5-a82c-292546f6515c': {
-    id: '2af886bf-6e25-45d5-a82c-292546f6515c',
-    type: 'HeadingOne',
-    meta: {
-      order: 1,
-      depth: 0,
-    },
+  '9b291f39-d5d0-4927-9ae3-cca900937955': {
+    id: '9b291f39-d5d0-4927-9ae3-cca900937955',
     value: [
       {
-        id: '0508777e-52a4-4168-87a0-bc7661e57aab',
-        type: 'heading-one',
+        id: '1f973a32-90f6-45f6-9310-2de1da4f10a3',
+        type: 'accordion-list',
         children: [
           {
-            text: 'Example with full setup of Yoopta-Editor',
+            id: 'd8e917e8-fe31-46bd-8076-226d2d76237d',
+            type: 'accordion-list-item',
+            children: [
+              {
+                id: '76d6ba08-40b2-45da-80f9-17a954e3e82c',
+                type: 'accordion-list-item-heading',
+                children: [
+                  {
+                    text: 'asdsad',
+                  },
+                ],
+                props: {
+                  nodeType: 'block',
+                },
+              },
+              {
+                id: '6599fa62-0da4-4ca0-9279-551828ec9255',
+                type: 'accordion-list-item-content',
+                children: [
+                  {
+                    text: '',
+                  },
+                ],
+                props: {
+                  nodeType: 'block',
+                },
+              },
+            ],
+            props: {
+              nodeType: 'block',
+              isExpanded: true,
+            },
+          },
+          {
+            id: '705baea1-b0a0-4562-87d7-a0a61e38aa9b',
+            type: 'accordion-list-item',
+            children: [
+              {
+                id: '18e8dba7-bb35-4914-968f-357c50a5a897',
+                type: 'accordion-list-item-heading',
+                children: [
+                  {
+                    text: 'asdsadasadasds',
+                  },
+                ],
+                props: {
+                  nodeType: 'block',
+                },
+              },
+              {
+                id: '951a8842-ae7a-495e-b574-9f9f0a497842',
+                type: 'accordion-list-item-content',
+                children: [
+                  {
+                    text: '',
+                  },
+                ],
+                props: {
+                  nodeType: 'block',
+                },
+              },
+            ],
+            props: {
+              nodeType: 'block',
+              isExpanded: true,
+            },
+          },
+          {
+            id: '80cee518-63e5-47ec-8455-49a5acfe27b3',
+            type: 'accordion-list-item',
+            children: [
+              {
+                id: 'b9f6beed-968f-4636-a439-9575084fcd76',
+                type: 'accordion-list-item-heading',
+                children: [
+                  {
+                    text: '',
+                  },
+                ],
+                props: {
+                  nodeType: 'block',
+                },
+              },
+              {
+                id: '16ae9f42-459a-4eb9-a937-a8d44da19f00',
+                type: 'accordion-list-item-content',
+                children: [
+                  {
+                    text: '',
+                  },
+                ],
+                props: {
+                  nodeType: 'block',
+                },
+              },
+            ],
+            props: {
+              nodeType: 'block',
+              isExpanded: true,
+            },
           },
         ],
-        props: {
-          nodeType: 'block',
-        },
       },
     ],
-  },
-  '7b6fbbfe-1270-4f08-ace0-f78d0423cf4d': {
-    id: '7b6fbbfe-1270-4f08-ace0-f78d0423cf4d',
-    type: 'HeadingTwo',
+    type: 'Accordion',
     meta: {
-      order: 2,
+      order: 4,
       depth: 0,
     },
-    value: [
-      {
-        id: '284667f9-8b8f-4839-839d-73b5f1966752',
-        type: 'heading-two',
-        children: [
-          {
-            text: 'Example with full setup of Yoopta-Editor',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
   },
-  '90c7ffee-8ce0-418f-8e10-10da8dd7b428': {
-    id: '90c7ffee-8ce0-418f-8e10-10da8dd7b428',
+  'd670dc65-0dea-4c95-a806-46b912ca58eb': {
+    id: 'd670dc65-0dea-4c95-a806-46b912ca58eb',
     value: [
       {
-        id: 'd2107094-8385-48bd-8222-23b0b55d9151',
+        id: '48f7e7af-c173-4381-a28c-88ff538262ae',
         type: 'paragraph',
         children: [
           {
-            text: 'Example with full setup of Yoopta-Editor',
+            text: 'asdsad',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'Paragraph',
+    meta: {
+      order: 6,
+      depth: 0,
+    },
+  },
+  'c83f5cb4-2672-402e-960f-775ae57ef1a0': {
+    id: 'c83f5cb4-2672-402e-960f-775ae57ef1a0',
+    value: [
+      {
+        id: 'e8fbbc87-31d6-4c0d-8292-5b170913274e',
+        type: 'paragraph',
+        children: [
+          {
+            text: 'asdaasdsad',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'Paragraph',
+    meta: {
+      order: 7,
+      depth: 0,
+    },
+  },
+  '2efa2d2e-1fdd-4c52-b4a6-4f49eb14b623': {
+    id: '2efa2d2e-1fdd-4c52-b4a6-4f49eb14b623',
+    value: [
+      {
+        id: '3f8207f1-8a5f-4fa5-ba89-cec6b378d27f',
+        type: 'paragraph',
+        children: [
+          {
+            text: 'sdasdsad',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'Paragraph',
+    meta: {
+      order: 8,
+      depth: 0,
+    },
+  },
+  '55daff58-28e5-4b5e-be4e-3188c6873195': {
+    id: '55daff58-28e5-4b5e-be4e-3188c6873195',
+    value: [
+      {
+        id: '64354934-4895-4bba-8432-d9fed11f7d90',
+        type: 'heading-one',
+        props: {
+          nodeType: 'block',
+        },
+        children: [
+          {
+            text: '',
+          },
+        ],
+      },
+    ],
+    type: 'HeadingOne',
+    meta: {
+      order: 5,
+      depth: 0,
+    },
+  },
+  'd57ca7fd-2197-4296-86a4-3570e0dad3d3': {
+    id: 'd57ca7fd-2197-4296-86a4-3570e0dad3d3',
+    value: [
+      {
+        id: '49d09142-5ed9-4780-8d20-1707ab7fb3bb',
+        type: 'paragraph',
+        children: [
+          {
+            text: 'lk',
           },
         ],
         props: {
@@ -254,369 +416,71 @@ const value = {
       depth: 0,
     },
   },
-  '987305a2-b7af-4b00-8c99-8db1662d1261': {
-    id: '987305a2-b7af-4b00-8c99-8db1662d1261',
-    type: 'HeadingThree',
+  '3fd0ea93-13a4-4b83-8b00-72cac06c6ae6': {
+    id: '3fd0ea93-13a4-4b83-8b00-72cac06c6ae6',
+    type: 'Paragraph',
+    meta: {
+      order: 1,
+      depth: 0,
+    },
+    value: [
+      {
+        id: '49d09142-5ed9-4780-8d20-1707ab7fb3bb',
+        type: 'paragraph',
+        props: {
+          nodeType: 'block',
+        },
+        children: [
+          {
+            text: 'lj',
+          },
+        ],
+      },
+    ],
+  },
+  'a28fdfde-3504-4d7a-84d2-2da951a9e757': {
+    id: 'a28fdfde-3504-4d7a-84d2-2da951a9e757',
+    type: 'Paragraph',
+    meta: {
+      order: 2,
+      depth: 0,
+    },
+    value: [
+      {
+        id: '49d09142-5ed9-4780-8d20-1707ab7fb3bb',
+        type: 'paragraph',
+        props: {
+          nodeType: 'block',
+        },
+        children: [
+          {
+            text: 'lk',
+          },
+        ],
+      },
+    ],
+  },
+  'c5269d3b-3e7a-4fec-825b-74fb50ec5174': {
+    id: 'c5269d3b-3e7a-4fec-825b-74fb50ec5174',
+    type: 'Paragraph',
     meta: {
       order: 3,
       depth: 0,
     },
     value: [
       {
-        id: '86597d6b-8f40-45f2-b380-a3413434e1c5',
-        type: 'heading-three',
-        children: [
-          {
-            text: 'Example with full setup of Yoopta-Editor',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-  },
-  '37245c24-62f4-4315-ba22-9f02d7fb61df': {
-    id: '37245c24-62f4-4315-ba22-9f02d7fb61df',
-    type: 'Blockquote',
-    meta: {
-      order: 4,
-      depth: 0,
-    },
-    value: [
-      {
-        id: 'f4d3a978-eea3-48d4-ad3c-b350fa3783a4',
-        type: 'blockquote',
-        children: [
-          {
-            text: 'Example with full setup of Yoopta-Editor',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-  },
-  '1ab297a4-b746-4825-842c-c1fbfab1d93a': {
-    id: '1ab297a4-b746-4825-842c-c1fbfab1d93a',
-    type: 'Callout',
-    meta: {
-      order: 5,
-      depth: 0,
-    },
-    value: [
-      {
-        id: '4f038362-109e-44ac-aae5-4ee3b9e6a12a',
-        type: 'callout',
-        children: [
-          {
-            text: 'Example with full setup of Yoopta-Editor',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-  },
-  '8c18747e-039a-4a5d-ac78-b923c2d9f567': {
-    id: '8c18747e-039a-4a5d-ac78-b923c2d9f567',
-    type: 'BulletedList',
-    meta: {
-      order: 7,
-      depth: 0,
-    },
-    value: [
-      {
-        id: '89a52422-41fd-4bcf-b896-40dd1c5a4427',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Example with full setup of Yoopta-Editor',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-  },
-  'ab2738ae-283e-4892-8572-f7dcc72096e5': {
-    id: 'ab2738ae-283e-4892-8572-f7dcc72096e5',
-    value: [
-      {
-        id: '807c7625-5cdf-42ea-bcb6-94837e34662a',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Example with full setup of Yoopta-Editor',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 8,
-      depth: 0,
-    },
-  },
-  '15c1bccf-2559-43fa-8708-bc92704acfc0': {
-    id: '15c1bccf-2559-43fa-8708-bc92704acfc0',
-    value: [
-      {
-        id: '9a82c42d-3d82-46c0-a288-18ceb737d6dd',
-        type: 'numbered-list',
-        children: [
-          {
-            text: 'Example with full setup of Yoopta-Editor',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'NumberedList',
-    meta: {
-      order: 9,
-      depth: 0,
-    },
-  },
-  'd44659d4-1ec0-4785-b606-99f260ede883': {
-    id: 'd44659d4-1ec0-4785-b606-99f260ede883',
-    value: [
-      {
-        id: 'dd6e4ae1-ce5f-4549-81dd-7f95cf227e93',
-        type: 'numbered-list',
-        children: [
-          {
-            text: 'Example with full setup of Yoopta-Editor',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'NumberedList',
-    meta: {
-      order: 10,
-      depth: 0,
-    },
-  },
-  'dc0fed6b-3a39-4aef-800c-2e69926f22f5': {
-    id: 'dc0fed6b-3a39-4aef-800c-2e69926f22f5',
-    value: [
-      {
-        id: '6b1d5736-97c0-4fa8-84d5-ba9ab39423d6',
-        type: 'todo-list',
-        children: [
-          {
-            text: 'Example with full setup of Yoopta-Editor',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-          checked: false,
-        },
-      },
-    ],
-    type: 'TodoList',
-    meta: {
-      order: 11,
-      depth: 0,
-    },
-  },
-  'b4566f8b-6796-4d34-87d3-dc3e0183b20b': {
-    id: 'b4566f8b-6796-4d34-87d3-dc3e0183b20b',
-    value: [
-      {
-        id: '67825b50-bdd9-472c-8e90-c5d9bb3b59c9',
-        type: 'todo-list',
-        children: [
-          {
-            text: 'Example with full setup of Yoopta-Editor',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'TodoList',
-    meta: {
-      order: 12,
-      depth: 0,
-    },
-  },
-  '19a53b1b-8bcc-48d0-b0b2-729f83efa669': {
-    id: '19a53b1b-8bcc-48d0-b0b2-729f83efa669',
-    type: 'Callout',
-    meta: {
-      order: 6,
-      depth: 0,
-    },
-    value: [
-      {
-        id: '8893ddab-211a-4c7c-ae5f-86fc42bd66f0',
-        type: 'callout',
-        children: [
-          {
-            text: 'Example with full setup of Yoopta-Editor',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-          theme: 'info',
-        },
-      },
-    ],
-  },
-  '1c645fd1-05fd-46f3-9207-05e2f0ccded5': {
-    id: '1c645fd1-05fd-46f3-9207-05e2f0ccded5',
-    value: [
-      {
-        id: '7df52958-629a-4299-a0eb-5d061a9fa737',
-        type: 'code',
-        children: [
-          {
-            text: "const TOOLS: Tools = {\n  ActionMenu: {\n    // render: ActionNotionMenuExample,\n    render: DefaultActionMenuRender,\n    tool: ActionMenuList,\n    props: {\n      // items: ['Callout', 'Blockquote', 'HeadingOne', 'HeadingTwo', 'HeadingThree', 'Image', 'File'],\n    },\n  },\n  Toolbar: {\n    render: DefaultToolbarRender,\n    // render: NotionToolbar,\n    tool: Toolbar,\n  },\n  LinkTool: {\n    render: DefaultLinkToolRender,\n    tool: LinkTool,\n  },\n};",
-          },
-        ],
-        props: {
-          nodeType: 'void',
-          language: 'javascript',
-          theme: 'VSCode',
-        },
-      },
-    ],
-    type: 'Code',
-    meta: {
-      order: 13,
-      depth: 0,
-    },
-  },
-  '5ddf9adf-e2c1-4adf-a6f6-7ca32420c4a6': {
-    id: '5ddf9adf-e2c1-4adf-a6f6-7ca32420c4a6',
-    value: [
-      {
-        id: 'ffb4741c-5322-4423-9026-80d8c4902611',
-        type: 'video',
-        children: [
-          {
-            text: '',
-          },
-        ],
-        props: {
-          nodeType: 'void',
-          src: 'https://res.cloudinary.com/ench-app/video/upload/v1715632823/Yoopta_Intro_ndwglr_mtptgj.mp4',
-          srcSet: null,
-          sizes: {
-            width: 2252,
-            height: 1624,
-          },
-          provider: {
-            type: null,
-            id: '',
-          },
-          settings: {
-            controls: false,
-            loop: true,
-            muted: true,
-            autoPlay: true,
-          },
-          fit: 'cover',
-        },
-      },
-    ],
-    type: 'Video',
-    meta: {
-      order: 15,
-      depth: 0,
-    },
-  },
-  '71bec89c-0a58-47aa-a895-15253ce72831': {
-    id: '71bec89c-0a58-47aa-a895-15253ce72831',
-    value: [
-      {
-        id: 'f1128e50-6302-4fe9-bc5d-0a673c45afe1',
-        type: 'file',
-        children: [
-          {
-            text: '',
-          },
-        ],
-        props: {
-          nodeType: 'void',
-          size: 96443,
-          name: 'GNYvP3UXUAAbPKZ',
-          src: 'https://res.cloudinary.com/ench-app/image/upload/v1715632830/GNYvP3UXUAAbPKZ_cgvvwb.jpg',
-          format: 'jpg',
-        },
-      },
-    ],
-    type: 'File',
-    meta: {
-      order: 16,
-      depth: 0,
-    },
-  },
-  '499480f6-b8f9-4495-afdf-d860a23bb37e': {
-    id: '499480f6-b8f9-4495-afdf-d860a23bb37e',
-    value: [
-      {
-        id: '8f80f994-b665-4566-96de-8eca9e8c77f8',
-        type: 'embed',
-        children: [
-          {
-            text: '',
-          },
-        ],
-        props: {
-          nodeType: 'void',
-          sizes: {
-            width: 532,
-            height: 327,
-          },
-          provider: {
-            type: 'youtube',
-            id: 'O8ErPJqW67A',
-            url: 'https://www.youtube.com/watch?v=O8ErPJqW67A&list=RDCkx0ZdKzkbc&index=3&ab_channel=Hajime',
-          },
-        },
-      },
-    ],
-    type: 'Embed',
-    meta: {
-      order: 17,
-      depth: 0,
-    },
-  },
-  '5c97c726-fe7e-4cb3-8486-52b1060757c0': {
-    id: '5c97c726-fe7e-4cb3-8486-52b1060757c0',
-    value: [
-      {
-        id: '1a8648f1-400a-4928-a604-730cf343c7c9',
+        id: '49d09142-5ed9-4780-8d20-1707ab7fb3bb',
         type: 'paragraph',
-        children: [
-          {
-            text: '',
-          },
-        ],
         props: {
           nodeType: 'block',
         },
+        children: [
+          {
+            text: 'jk;',
+          },
+        ],
       },
     ],
-    type: 'Paragraph',
-    meta: {
-      order: 18,
-      depth: 0,
-    },
   },
 };
 
@@ -646,7 +510,7 @@ const BasicExample = () => {
         tools={TOOLS}
         readOnly={readOnly}
         width={750}
-        // value={{ [ACCORDION_BLOCK.id]: ACCORDION_BLOCK }}
+        value={value}
       >
         <Buttons onSubmit={onSubmit} />
       </YooptaEditor>

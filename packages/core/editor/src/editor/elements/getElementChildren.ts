@@ -7,10 +7,9 @@ export type GetElementChildrenOptions = GetBlockElementEntryOptions;
 export function getElementChildren<TElementKeys extends string>(
   editor: YooEditor,
   blockId: string,
-  elementType: TElementKeys,
   options?: GetElementChildrenOptions,
 ): SlateElement<TElementKeys>['children'] | undefined {
-  const element = getElement(editor, blockId, elementType, options);
+  const element = getElement(editor, blockId, options);
   if (element) return element.children;
 
   return undefined;
