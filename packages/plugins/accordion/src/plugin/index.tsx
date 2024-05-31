@@ -4,7 +4,7 @@ import { AccordionList } from '../renders/AccordionList';
 import { AccordionListItem } from '../renders/AccordionListItem';
 import { AccordionItemHeading } from '../renders/AccordionItemHeading';
 import { AccordionItemContent } from '../renders/AccordionItemContent';
-import { Path, Transforms } from 'slate';
+import { Transforms } from 'slate';
 import { ListCollapse } from 'lucide-react';
 
 const ACCORDION_ELEMENTS = {
@@ -46,17 +46,17 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
             type: 'accordion-list-item',
           });
 
-          const childPath = accordionListItemEntry?.[1] || slate.selection.anchor.path;
+          const listItemChildPath = accordionListItemEntry?.[1] || slate.selection.anchor.path;
           const currentElement = Elements.getElement(editor, currentBlock.id);
 
           const isHeadingEmpty = Elements.isElementEmpty(editor, currentBlock.id, {
             type: 'accordion-list-item-heading',
-            path: childPath,
+            path: listItemChildPath,
           });
 
           const isContentEmpty = Elements.isElementEmpty(editor, currentBlock.id, {
             type: 'accordion-list-item-content',
-            path: childPath,
+            path: listItemChildPath,
           });
 
           if (isContentEmpty && currentElement?.type === ACCORDION_ELEMENTS.AccordionListItemContent) {
@@ -124,52 +124,6 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
             { path: 'next', focus: true, split: false },
           );
         }
-
-        // if (hotkeys.isArrowDown(event)) {
-        //   const listItemEntry = Elements.getElementEntry(editor, currentBlock.id, 'accordion-list-item');
-
-        //   if (listItemEntry) {
-        //     const [, listItemPath] = listItemEntry;
-        //     const nextListItemEntry = Elements.getElementEntry(editor, currentBlock.id, 'accordion-list-item', {
-        //       atPath: Path.next(listItemPath),
-        //     });
-
-        //     if (nextListItemEntry) {
-        //       event.preventDefault();
-        //       const [, nextListItemPath] = nextListItemEntry;
-        //       // [0, 1, 0, 0] - path to next heading leaf
-        //       const headingPath = nextListItemPath.concat(0).concat(0);
-        //       console.log('headingPath', headingPath);
-        //       console.log('nextListItemPath', nextListItemPath);
-
-        //       Transforms.select(slate, { path: headingPath, offset: 0 });
-        //       return;
-        //     }
-        //   }
-        // }
-
-        // if (hotkeys.isArrowUp(event)) {
-        //   const listItemEntry = Elements.getElementEntry(editor, currentBlock.id, 'accordion-list-item');
-
-        //   if (listItemEntry) {
-        //     const [, listItemPath] = listItemEntry;
-
-        //     if (!Path.hasPrevious(listItemPath)) return;
-        //     const prevListItemEntry = Elements.getElementEntry(editor, currentBlock.id, 'accordion-list-item', {
-        //       atPath: Path.previous(listItemPath),
-        //     });
-
-        //     if (prevListItemEntry) {
-        //       event.preventDefault();
-        //       const [, prevListItemPath] = prevListItemEntry;
-        //       // [0, current - 1, 0, 0] - path to prev heading leaf
-        //       const headingPath = prevListItemPath.concat(0).concat(0);
-
-        //       Transforms.select(slate, { path: headingPath, offset: 0 });
-        //       return;
-        //     }
-        //   }
-        // }
       };
     },
   },

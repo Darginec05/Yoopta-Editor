@@ -191,22 +191,11 @@ export function onKeyDown(editor: YooEditor) {
 
     if (HOTKEYS.isArrowUp(event)) {
       if (event.isDefaultPrevented()) return;
-      const parentPath = Path.parent(slate.selection.anchor.path);
-      const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
 
-      console.log('isStart', isStart);
-      console.log('slate.selection.anchor.path', slate.selection.anchor.path);
-      const block = findPluginBlockBySelectionPath(editor, { at: editor.selection });
-      const element = Elements.getElement(editor, block?.id || '');
-      const blockElement = editor.blocks[block?.type || '']?.elements[element?.type || ''];
-      const hasElementChildren = Array.isArray(blockElement?.children) && blockElement?.children.length > 0;
+      // If element with any paths has all paths at 0
+      const isAllPathsInStart = new Set(slate.selection.anchor.path).size === 1;
 
-      console.log('block', block);
-      console.log('Elements.getElement', Elements.getElement(editor, block?.id || ''));
-      console.log('editor.blocks', editor.blocks[block?.type || '']?.elements);
-      console.log('hasElementChildren', hasElementChildren);
-
-      if (isStart) {
+      if (isAllPathsInStart) {
         const prevPath: YooptaBlockPath | null = editor.selection ? [editor.selection[0] - 1] : null;
         const prevSlate = findSlateBySelectionPath(editor, { at: prevPath });
         const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevPath });
