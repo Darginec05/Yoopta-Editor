@@ -25,7 +25,6 @@ type Props = {
 };
 
 const getEditorStyles = (styles: CSSProperties) => ({
-  paddingBottom: 150,
   ...styles,
 });
 
