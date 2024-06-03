@@ -21,10 +21,13 @@ type Props = {
   className?: string;
   placeholder?: string;
   width?: number | string;
+  paddingBottom?: number | string;
   children: ReactNode;
 };
 
 const getEditorStyles = (styles: CSSProperties) => ({
+  width: styles.width || 400,
+  paddingBottom: styles.paddingBottom || 100,
   ...styles,
 });
 
@@ -40,7 +43,16 @@ const DEFAULT_STATE: State = {
   startedIndexToSelect: null,
 };
 
-const Editor = ({ placeholder, marks, className, selectionBoxRoot, width, children, autoFocus = true }: Props) => {
+const Editor = ({
+  placeholder,
+  marks,
+  className,
+  selectionBoxRoot,
+  width,
+  paddingBottom,
+  children,
+  autoFocus = true,
+}: Props) => {
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
   const yooptaEditorRef = useRef<HTMLDivElement>(null);
@@ -327,6 +339,7 @@ const Editor = ({ placeholder, marks, className, selectionBoxRoot, width, childr
     userSelect: selectionBox.selection ? 'none' : 'auto',
     pointerEvents: selectionBox.selection ? 'none' : 'auto',
     width,
+    paddingBottom,
   });
 
   return (
