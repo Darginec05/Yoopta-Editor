@@ -22,4 +22,6 @@ export const Blocks = {
   updateBlock,
   toggleBlock,
   insertBlocks,
+  // [TODO]
+  // updateBlocks
 };
