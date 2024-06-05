@@ -5,6 +5,13 @@ import { CarouselItem } from './renders/CarouselItem';
 import { CarouselItemDescription } from './renders/CarouselItemDescription';
 import { CarouselItemImage } from './renders/CarouselItemImage';
 import { CarouselItemTitle } from './renders/CarouselItemTitle';
+import {
+  CarouselElement,
+  CarouselItemDescriptionElement,
+  CarouselItemElement,
+  CarouselItemImageElement,
+  CarouselItemTitleElement,
+} from './types';
 
 const CarouselPlugin = new YooptaPlugin({
   type: 'Carousel',
@@ -13,6 +20,10 @@ const CarouselPlugin = new YooptaPlugin({
       render: Carousel,
       children: ['carousel-item'],
       asRoot: true,
+      props: {
+        loop: false,
+        orientation: 'horizontal',
+      },
     },
     'carousel-item': {
       render: CarouselItem,
@@ -48,5 +59,16 @@ const CarouselPlugin = new YooptaPlugin({
     },
   },
 });
+
+declare module 'slate' {
+  interface CustomTypes {
+    Element:
+      | CarouselElement
+      | CarouselItemElement
+      | CarouselItemImageElement
+      | CarouselItemTitleElement
+      | CarouselItemDescriptionElement;
+  }
+}
 
 export { CarouselPlugin };
