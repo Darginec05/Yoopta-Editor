@@ -100,15 +100,10 @@ const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 function WithCustomPluginExample() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
-  const [value] = useState(() => {
-    const localData = localStorage.getItem('WithCustomPluginExample');
-    if (localData) return JSON.parse(localData);
-    return WITH_CUSTOM_PLUGIN_VALUE;
-  });
 
   useEffect(() => {
     function handleChange(data: any) {
-      localStorage.setItem('WithCustomPluginExample', JSON.stringify(data));
+      console.log('WithCustomPluginExample value', data);
     }
     editor.on('change', handleChange);
     return () => {
@@ -121,16 +116,14 @@ function WithCustomPluginExample() {
       className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center"
       ref={selectionRef}
     >
-      {value && (
-        <YooptaEditor
-          editor={editor}
-          plugins={plugins}
-          tools={TOOLS}
-          marks={MARKS}
-          value={value}
-          selectionBoxRoot={selectionRef}
-        />
-      )}
+      <YooptaEditor
+        editor={editor}
+        plugins={plugins}
+        tools={TOOLS}
+        marks={MARKS}
+        value={WITH_CUSTOM_PLUGIN_VALUE}
+        selectionBoxRoot={selectionRef}
+      />
     </div>
   );
 }
