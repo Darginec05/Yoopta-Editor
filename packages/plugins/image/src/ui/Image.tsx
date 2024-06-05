@@ -6,6 +6,7 @@ import {
   useYooptaPluginOptions,
   useBlockSelected,
   useYooptaReadOnly,
+  Elements,
 } from '@yoopta/editor';
 import { Resizable, ResizableProps } from 're-resizable';
 import { useEffect, useMemo, useState } from 'react';
@@ -60,8 +61,11 @@ const ImageRender = ({ element, attributes, children, blockId }: PluginElementRe
       },
       onResizeStop: (e, direction, ref) => {
         if (isReadOnly) return;
-        editor.blocks.Image.updateElement(blockId, 'image', {
-          sizes: { width: ref.offsetWidth, height: ref.offsetHeight },
+        Elements.updateElement(editor, blockId, {
+          type: 'image',
+          props: {
+            sizes: { width: ref.offsetWidth, height: ref.offsetHeight },
+          },
         });
       },
       handleComponent: {
@@ -84,7 +88,6 @@ const ImageRender = ({ element, attributes, children, blockId }: PluginElementRe
 
   return (
     <div
-      data-element-type={element.type}
       contentEditable={false}
       draggable={false}
       className="yoo-image-mt-4 yoo-image-relative yoopta-image"

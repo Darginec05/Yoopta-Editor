@@ -1,4 +1,4 @@
-import { useYooptaEditor } from '@yoopta/editor';
+import { Elements, useYooptaEditor } from '@yoopta/editor';
 import { useEffect, useRef } from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 import { EmbedElementProps, EmbedPluginElements, ProviderRenderProps } from '../types';
@@ -32,10 +32,13 @@ function Twitter({ provider, blockId }: ProviderRenderProps) {
           width: 550,
         });
 
-        editor.blocks.Embed.updateElement<EmbedPluginElements, EmbedElementProps>(blockId, 'embed', {
-          sizes: {
-            width: 'auto',
-            height: 'auto',
+        Elements.updateElement<EmbedPluginElements, EmbedElementProps>(editor, blockId, {
+          type: 'embed',
+          props: {
+            sizes: {
+              width: 'auto',
+              height: 'auto',
+            },
           },
         });
       }

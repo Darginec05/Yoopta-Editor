@@ -21,12 +21,7 @@ const NumberedListRender = ({
   const count = index + 1;
 
   return (
-    <div
-      data-element-type={element.type}
-      className={`yoopta-numbered-list ${className}`}
-      {...htmlAttrs}
-      {...attributes}
-    >
+    <div className={`yoopta-numbered-list ${className}`} {...htmlAttrs} {...attributes}>
       <span className="yoopta-numbered-list-count" contentEditable={false}>
         {count}.
       </span>

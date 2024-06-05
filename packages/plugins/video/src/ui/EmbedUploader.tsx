@@ -1,4 +1,4 @@
-import { useYooptaEditor } from '@yoopta/editor';
+import { Elements, useYooptaEditor } from '@yoopta/editor';
 import { ChangeEvent, useState } from 'react';
 import { VideoElementProps, VideoPluginElements } from '../types';
 import { getProvider, ProviderGetters } from '../utils/providers';
@@ -17,9 +17,12 @@ const EmbedUploader = ({ blockId, onClose }) => {
 
     if (!providerType || !videoId) return console.warn('Unsopperted video provider or video id is not found.');
 
-    editor.blocks.Video.updateElement<VideoPluginElements, VideoElementProps>(blockId, 'video', {
-      src: value,
-      provider: { type: providerType, id: videoId, url: value },
+    Elements.updateElement<VideoPluginElements, VideoElementProps>(editor, blockId, {
+      type: 'video',
+      props: {
+        src: value,
+        provider: { type: providerType, id: videoId, url: value },
+      },
     });
 
     onClose();

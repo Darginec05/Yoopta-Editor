@@ -1,4 +1,4 @@
-import { useYooptaEditor, useYooptaPluginOptions } from '@yoopta/editor';
+import { Elements, useYooptaEditor, useYooptaPluginOptions } from '@yoopta/editor';
 import { useEffect } from 'react';
 import { FileElementProps, FilePluginElements, FilePluginOptions } from '../types';
 
@@ -25,11 +25,14 @@ const FileUploader = ({ accept = '', onClose, blockId, onSetLoading }: Props) =>
       const response = await options?.onUpload(file);
       const format = response.format || file.name.split('.').pop() || null;
 
-      editor.blocks.File.updateElement<FilePluginElements, FileElementProps>(blockId, 'file', {
-        src: response.src,
-        name: response.name || file.name,
-        size: response.size || file.size,
-        format: format,
+      Elements.updateElement<FilePluginElements, FileElementProps>(editor, blockId, {
+        type: 'file',
+        props: {
+          src: response.src,
+          name: response.name || file.name,
+          size: response.size || file.size,
+          format: format,
+        },
       });
     } catch (error) {
     } finally {

@@ -2,6 +2,7 @@ import { isKeyHotkey } from 'is-hotkey';
 import { Editor, Path, Point, Range, Text, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { buildBlockData } from '../components/Editor/utils';
+import { Elements } from '../editor/elements';
 import { SlateEditor, YooEditor, YooptaBlockPath } from '../editor/types';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../utils/findSlateBySelectionPath';
@@ -10,22 +11,36 @@ import { HOTKEYS } from '../utils/hotkeys';
 
 /** */
 function getLastNodePoint(slate: SlateEditor, path: Path): Point {
-  const [, lastNodePath] = Editor.last(slate, path);
-  const lastNodeTextLength = Editor.string(slate, lastNodePath).length;
+  try {
+    const [, lastNodePath] = Editor.last(slate, path);
+    const lastNodeTextLength = Editor.string(slate, lastNodePath).length;
 
-  return {
-    path: lastNodePath,
-    offset: lastNodeTextLength,
-  };
+    return {
+      path: lastNodePath,
+      offset: lastNodeTextLength,
+    };
+  } catch (error) {
+    return {
+      path: [0, 0],
+      offset: 0,
+    };
+  }
 }
 
 function getNextNodePoint(slate: SlateEditor, path: Path): Point {
-  const [, firstNodePath] = Editor.first(slate, path);
+  try {
+    const [, firstNodePath] = Editor.first(slate, path);
 
-  return {
-    path: firstNodePath,
-    offset: 0,
-  };
+    return {
+      path: firstNodePath,
+      offset: 0,
+    };
+  } catch (error) {
+    return {
+      path: [0, 0],
+      offset: 0,
+    };
+  }
 }
 /** */
 
@@ -82,6 +97,7 @@ export function onKeyDown(editor: YooEditor) {
         let focusAt;
 
         if (prevSlate && !prevBlockEntity.hasCustomEditor) {
+          // [TODO] - should be parent path, but for prev slate
           focusAt = getLastNodePoint(prevSlate, parentPath);
         }
 
@@ -100,7 +116,7 @@ export function onKeyDown(editor: YooEditor) {
           const prevBlockEntity = editor.blocks[prevBlock?.type || ''];
 
           // [TODO] - if prev block has custom editor (not slate) we need jump to prevprev block
-          if (prevBlockEntity.hasCustomEditor) return;
+          if (prevBlockEntity && prevBlockEntity.hasCustomEditor) return;
 
           // If we try to delete first block do nothing
           if (!prevSlate) return;
@@ -175,10 +191,11 @@ export function onKeyDown(editor: YooEditor) {
 
     if (HOTKEYS.isArrowUp(event)) {
       if (event.isDefaultPrevented()) return;
-      const parentPath = Path.parent(slate.selection.anchor.path);
-      const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
 
-      if (isStart) {
+      // If element with any paths has all paths at 0
+      const isAllPathsInStart = new Set(slate.selection.anchor.path).size === 1;
+
+      if (isAllPathsInStart) {
         const prevPath: YooptaBlockPath | null = editor.selection ? [editor.selection[0] - 1] : null;
         const prevSlate = findSlateBySelectionPath(editor, { at: prevPath });
         const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevPath });
@@ -215,6 +232,7 @@ export function onKeyDown(editor: YooEditor) {
         const nextBlock = findPluginBlockBySelectionPath(editor, { at: nextPath });
 
         if (nextSlate && nextBlock) {
+          // [TODO] - should parent path, but for next slate
           const selection: Point = getNextNodePoint(nextSlate, parentPath);
 
           event.preventDefault();

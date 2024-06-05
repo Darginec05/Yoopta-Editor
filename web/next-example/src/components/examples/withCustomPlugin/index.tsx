@@ -1,4 +1,4 @@
-import YooptaEditor, { createYooptaEditor } from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor, YooptaPlugin } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
@@ -8,6 +8,7 @@ import Link from '@yoopta/link';
 import Callout from '@yoopta/callout';
 import Video from '@yoopta/video';
 import File from '@yoopta/file';
+import Accordion from '@yoopta/accordion';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
@@ -15,15 +16,18 @@ import Code from '@yoopta/code';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
-// import { DividerPlugin } from './customPlugins/Divider';
-
-import { Sheet } from '@/components/ui/sheet';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { DividerPlugin } from './customPlugins/Divider';
+import { WITH_CUSTOM_PLUGIN_VALUE } from './initValue';
+import { CarouselPlugin } from './customPlugins/Carousel';
 
 const plugins = [
+  DividerPlugin,
+  CarouselPlugin,
   Paragraph,
+  Accordion,
   HeadingOne,
   HeadingTwo,
   HeadingThree,
@@ -96,44 +100,37 @@ const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 function WithCustomPluginExample() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
+  const [value] = useState(() => {
+    const localData = localStorage.getItem('WithCustomPluginExample');
+    if (localData) return JSON.parse(localData);
+    return WITH_CUSTOM_PLUGIN_VALUE;
+  });
+
+  useEffect(() => {
+    function handleChange(data: any) {
+      localStorage.setItem('WithCustomPluginExample', JSON.stringify(data));
+    }
+    editor.on('change', handleChange);
+    return () => {
+      editor.off('change', handleChange);
+    };
+  }, [editor]);
 
   return (
     <div
       className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center"
       ref={selectionRef}
     >
-      <YooptaEditor
-        editor={editor}
-        plugins={plugins}
-        tools={TOOLS}
-        marks={MARKS}
-        selectionBoxRoot={selectionRef}
-        readOnly
-        value={{
-          '7e11916a-b983-48ca-aeff-bf6b04f5ee2b': {
-            id: '7e11916a-b983-48ca-aeff-bf6b04f5ee2b',
-            type: 'HeadingTwo',
-            meta: {
-              order: 0,
-              depth: 0,
-            },
-            value: [
-              {
-                id: '4325c741-1445-450f-be2d-f51368b1a3ff',
-                type: 'heading-two',
-                children: [
-                  {
-                    text: 'Example in progress..',
-                  },
-                ],
-                props: {
-                  nodeType: 'block',
-                },
-              },
-            ],
-          },
-        }}
-      />
+      {value && (
+        <YooptaEditor
+          editor={editor}
+          plugins={plugins}
+          tools={TOOLS}
+          marks={MARKS}
+          value={value}
+          selectionBoxRoot={selectionRef}
+        />
+      )}
     </div>
   );
 }

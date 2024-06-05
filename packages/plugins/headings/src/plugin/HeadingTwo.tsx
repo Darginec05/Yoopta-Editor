@@ -4,14 +4,7 @@ const HeadingTwoRender = ({ attributes, children, element, HTMLAttributes = {} }
   const { className = '', ...htmlAttrs } = HTMLAttributes;
 
   return (
-    <h2
-      id={element.id}
-      draggable={false}
-      data-element-type={element.type}
-      className={`yoopta-heading-two ${className}`}
-      {...htmlAttrs}
-      {...attributes}
-    >
+    <h2 id={element.id} draggable={false} className={`yoopta-heading-two ${className}`} {...htmlAttrs} {...attributes}>
       {children}
     </h2>
   );

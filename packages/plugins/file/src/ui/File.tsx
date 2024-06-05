@@ -27,7 +27,6 @@ const FileRender = ({ element, attributes, children, blockId }: PluginElementRen
 
   return (
     <div
-      data-element-type={element.type}
       contentEditable={false}
       draggable={false}
       className="yoo-file-mt-4 yoo-file-relative yoo-file-flex yoopta-file"

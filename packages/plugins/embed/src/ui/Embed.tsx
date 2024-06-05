@@ -6,6 +6,7 @@ import {
   useYooptaPluginOptions,
   useBlockSelected,
   useYooptaReadOnly,
+  Elements,
 } from '@yoopta/editor';
 import { Resizable, ResizableProps } from 're-resizable';
 import { useEffect, useMemo, useState } from 'react';
@@ -57,8 +58,11 @@ const EmbedRender = ({ element, attributes, children, blockId }: PluginElementRe
         setSizes({ width: ref.offsetWidth, height: ref.offsetHeight });
       },
       onResizeStop: (e, direction, ref) => {
-        editor.blocks.Embed.updateElement(blockId, 'embed', {
-          sizes: { width: ref.offsetWidth, height: ref.offsetHeight },
+        Elements.updateElement(editor, blockId, {
+          type: 'embed',
+          props: {
+            sizes: { width: ref.offsetWidth, height: ref.offsetHeight },
+          },
         });
       },
       handleComponent: {
@@ -79,7 +83,6 @@ const EmbedRender = ({ element, attributes, children, blockId }: PluginElementRe
 
   return (
     <div
-      data-element-type={element.type}
       contentEditable={false}
       draggable={false}
       className="yoo-embed-mt-4 yoo-embed-relative yoopta-embed"
@@ -89,7 +92,12 @@ const EmbedRender = ({ element, attributes, children, blockId }: PluginElementRe
         {blockSelected && (
           <div className="yoo-embed-absolute yoo-embed-pointer-events-none yoo-embed-inset-0 yoo-embed-bg-[rgba(35,131,226,0.14)] yoo-embed-z-[81] yoo-embed-rounded-[3px] yoo-embed-opacity-100 yoo-embed-transition-opacity yoo-embed-duration-150 yoo-embed-ease-in" />
         )}
-        <EmbedComponent width={sizes?.width} height={sizes?.height} provider={provider} blockId={blockId} />
+        <EmbedComponent
+          width={sizes?.width || 650}
+          height={sizes?.height || 550}
+          provider={provider}
+          blockId={blockId}
+        />
         {!isReadOnly && <EmbedBlockOptions block={block} editor={editor} props={element.props} />}
         {children}
       </Resizable>

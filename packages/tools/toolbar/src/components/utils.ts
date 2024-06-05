@@ -23,7 +23,8 @@ export function buildActionMenuRenderProps({ editor, view, onClose }: Params) {
       .map((action) => {
         const title = editor.blocks[action].options?.display?.title || action;
         const description = editor.blocks[action].options?.display?.description;
-        return { type: action, title, description };
+        const icon = editor.blocks[action].options?.display?.icon;
+        return { type: action, title, description, icon };
       });
 
     return items;

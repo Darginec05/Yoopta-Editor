@@ -6,6 +6,7 @@ import {
   useYooptaPluginOptions,
   useBlockSelected,
   useYooptaReadOnly,
+  Elements,
 } from '@yoopta/editor';
 import { Resizable, ResizableProps } from 're-resizable';
 import { useEffect, useMemo, useState } from 'react';
@@ -57,8 +58,11 @@ const VideoRender = ({ element, attributes, children, blockId }: PluginElementRe
         setSizes({ width: ref.offsetWidth, height: ref.offsetHeight });
       },
       onResizeStop: (e, direction, ref) => {
-        editor.blocks.Video.updateElement(blockId, 'video', {
-          sizes: { width: ref.offsetWidth, height: ref.offsetHeight },
+        Elements.updateElement(editor, blockId, {
+          type: 'video',
+          props: {
+            sizes: { width: ref.offsetWidth, height: ref.offsetHeight },
+          },
         });
       },
       handleComponent: {
@@ -79,7 +83,6 @@ const VideoRender = ({ element, attributes, children, blockId }: PluginElementRe
 
   return (
     <div
-      data-element-type={element.type}
       contentEditable={false}
       draggable={false}
       className="yoo-video-mt-4 yoo-video-relative yoopta-video"

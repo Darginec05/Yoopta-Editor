@@ -132,6 +132,7 @@ const Editor = ({ placeholder, marks, className, selectionBoxRoot, width, childr
     resetSelectedBlocks();
   };
 
+  // [TODO] - implement with @yoopta/exports
   const onCopy = (event: React.ClipboardEvent) => {
     // function escapeHtml(text) {
     //   const map = {

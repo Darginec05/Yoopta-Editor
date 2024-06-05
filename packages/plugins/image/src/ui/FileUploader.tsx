@@ -1,4 +1,4 @@
-import { useYooptaEditor, useYooptaPluginOptions } from '@yoopta/editor';
+import { Elements, useYooptaEditor, useYooptaPluginOptions } from '@yoopta/editor';
 import { ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';
 
 type Props = {
@@ -23,12 +23,15 @@ const FileUploader = ({ accept = 'image/*', onClose, blockId, onSetLoading }: Pr
     try {
       const data = await options?.onUpload(file);
 
-      editor.blocks.Image.updateElement<ImagePluginElements, ImageElementProps>(blockId, 'image', {
-        src: data.src,
-        alt: data.alt,
-        sizes: data.sizes,
-        bgColor: data.bgColor,
-        fit: data.fit || 'fill',
+      Elements.updateElement<ImagePluginElements, ImageElementProps>(editor, blockId, {
+        type: 'image',
+        props: {
+          src: data.src,
+          alt: data.alt,
+          sizes: data.sizes,
+          bgColor: data.bgColor,
+          fit: data.fit || 'fill',
+        },
       });
     } catch (error) {
     } finally {

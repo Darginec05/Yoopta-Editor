@@ -6,8 +6,8 @@ import { YouTube } from '../providers/Youtube';
 import { EmbedElementProps } from '../types';
 
 type EmbedComponentProps = Omit<EmbedElementProps, 'sizes'> & {
-  width: number;
-  height: number;
+  width: number | 'auto';
+  height: number | 'auto';
   blockId: string;
 };
 

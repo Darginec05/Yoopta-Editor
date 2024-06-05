@@ -32,7 +32,7 @@ const filterActionMenuItems = (block: YooptaBlock, text: string) => {
 };
 
 // [TODO] - add to props
-const trigger = '/';
+const TRIGGER = '/';
 
 const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
   const editor = useYooptaEditor();
@@ -64,9 +64,9 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
   const onClose = () => setIsMenuOpen(false);
 
   const onFilter = ({ text }) => {
-    const string = text.trim().replace(trigger, '');
+    const string = text.trim().replace(TRIGGER, '');
 
-    if (string.length === 0 || string === trigger) return setActions(blockTypes);
+    if (string.length === 0 || string === TRIGGER) return setActions(blockTypes);
     const filteredActions = actions.filter((action) => filterActionMenuItems(editor.blocks[action.type], string));
     const isSelectedItemInsideFilteredActions = filteredActions.some((item) => item.type === selectedAction.type);
     if (filteredActions.length > 0 && !isSelectedItemInsideFilteredActions) setSelectedAction(filteredActions[0]);

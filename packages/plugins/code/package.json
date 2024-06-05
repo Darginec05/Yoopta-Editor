@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/code",
-  "version": "4.4.1",
+  "version": "4.5.0",
   "description": "Code plugin with syntax highlighting for Yoopta Editor",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
@@ -14,7 +14,7 @@
     "dist/"
   ],
   "peerDependencies": {
-    "@yoopta/editor": ">=4.0.0-rc.0",
+    "@yoopta/editor": ">=4.0.0",
     "react": ">=17.0.2",
     "react-dom": ">=17.0.2"
   },
@@ -68,5 +68,6 @@
   },
   "devDependencies": {
     "check-peer-dependencies": "^4.3.0"
-  }
+  },
+  "gitHead": "29e4ae316ec75bb43d3822d028abcb0c34256ec5"
 }

@@ -1,4 +1,4 @@
-import { useYooptaEditor, useYooptaPluginOptions } from '@yoopta/editor';
+import { Elements, useYooptaEditor, useYooptaPluginOptions } from '@yoopta/editor';
 import { useEffect } from 'react';
 import { VideoElementProps, VideoPluginElements, VideoPluginOptions } from '../types';
 
@@ -24,11 +24,14 @@ const FileUploader = ({ accept = 'video/*', onClose, blockId, onSetLoading }: Pr
       // [TODO] - abort controller?
       const data = await options?.onUpload(file);
 
-      editor.blocks.Video.updateElement<VideoPluginElements, VideoElementProps>(blockId, 'video', {
-        src: data.src,
-        sizes: data.sizes,
-        bgColor: data.bgColor,
-        fit: data.fit || 'contain',
+      Elements.updateElement<VideoPluginElements, VideoElementProps>(editor, blockId, {
+        type: 'video',
+        props: {
+          src: data.src,
+          sizes: data.sizes,
+          bgColor: data.bgColor,
+          fit: data.fit || 'contain',
+        },
       });
     } catch (error) {
     } finally {

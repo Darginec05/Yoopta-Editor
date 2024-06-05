@@ -1,4 +1,4 @@
-import { PluginElementRenderProps, useYooptaEditor } from '@yoopta/editor';
+import { Elements, PluginElementRenderProps, useYooptaEditor } from '@yoopta/editor';
 import { TodoListElementProps } from '../types';
 
 const TodoListRender = ({ attributes, element, children, blockId, HTMLAttributes = {} }: PluginElementRenderProps) => {
@@ -11,15 +11,9 @@ const TodoListRender = ({ attributes, element, children, blockId, HTMLAttributes
   };
 
   return (
-    <div
-      data-element-type={element.type}
-      className={`yoopta-todo-list ${className}`}
-      data-checked={checked}
-      {...htmlAttrs}
-      {...attributes}
-    >
+    <div className={`yoopta-todo-list ${className}`} data-checked={checked} {...htmlAttrs} {...attributes}>
       <span
-        onClick={() => editor.blocks.TodoList.updateElement(blockId, 'todo-list', { checked: !checked })}
+        onClick={() => Elements.updateElement(editor, blockId, { type: 'todo-list', props: { checked: !checked } })}
         contentEditable={false}
         className="yoopta-todo-list-checkbox"
       >

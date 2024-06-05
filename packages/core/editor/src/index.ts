@@ -33,5 +33,8 @@ export {
   YooptaMarkProps,
 } from './plugins/types';
 
+export { Elements } from './editor/elements';
+export { Blocks } from './editor/blocks';
+
 import './styles.css';
 export default YooptaEditor;

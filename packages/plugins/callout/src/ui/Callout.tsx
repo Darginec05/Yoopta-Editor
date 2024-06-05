@@ -10,12 +10,7 @@ const CalloutRender = ({ element, attributes, children, blockId, HTMLAttributes 
   const { theme = 'default' } = element.props || {};
 
   return (
-    <div
-      data-element-type={element.type}
-      className={`yoopta-callout yoopta-callout-theme-${theme} ${className}`}
-      {...htmlAttrs}
-      {...attributes}
-    >
+    <div className={`yoopta-callout yoopta-callout-theme-${theme} ${className}`} {...htmlAttrs} {...attributes}>
       {!isReadOnly && <CalloutBlockOptions block={block} editor={editor} props={element.props} />}
       {children}
     </div>

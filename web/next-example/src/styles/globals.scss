@@ -147,3 +147,20 @@
   padding: 8px;
   line-height: 1.46668;
 }
+
+table,
+th,
+td {
+  border: 1px solid black;
+}
+
+.yoopta-carousel .yoopta-carousel-options {
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+  top: 0px;
+  right: 0px;
+}
+
+.yoopta-carousel:hover .yoopta-carousel-options {
+  opacity: 1;
+}

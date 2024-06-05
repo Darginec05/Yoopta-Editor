@@ -1,7 +1,7 @@
 import { PluginElementRenderProps } from '@yoopta/editor';
 import { useSelected } from 'slate-react';
 
-const MentionRender = (props: PluginElementRenderProps<unknown>) => {
+const MentionRender = (props: PluginElementRenderProps) => {
   const { url, target, rel, character } = props.element.props || {};
   const selected = useSelected();
 
@@ -13,7 +13,6 @@ const MentionRender = (props: PluginElementRenderProps<unknown>) => {
 
   return (
     <a
-      data-element-type={props.element.type}
       draggable={false}
       href={url || ''}
       rel={rel}

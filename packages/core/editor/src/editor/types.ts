@@ -3,11 +3,11 @@ import { Plugin, PluginElementsMap, PluginOptions, PluginElementProps } from '..
 import { EditorBlurOptions } from './core/blur';
 import { BlockSelectedOptions } from './selection/setBlockSelected';
 import { SetSelectionOptions } from './selection/setSelection';
-import { CreateBlockOptions } from './transforms/createBlock';
-import { DeleteBlockOptions } from './transforms/deleteBlock';
-import { DuplicateBlockOptions } from './transforms/duplicateBlock';
-import { FocusBlockOptions } from './transforms/focusBlock';
-import { ToggleBlockOptions } from './transforms/toggleBlock';
+import { CreateBlockOptions } from './blocks/createBlock';
+import { DeleteBlockOptions } from './blocks/deleteBlock';
+import { DuplicateBlockOptions } from './blocks/duplicateBlock';
+import { FocusBlockOptions } from './blocks/focusBlock';
+import { ToggleBlockOptions } from './blocks/toggleBlock';
 
 export type YooptaBlockPath = [number];
 
@@ -59,11 +59,6 @@ export type YooptaBlock = {
   create: (options?: CreateBlockOptions) => void;
   toggle: (options?: ToggleBlockOptions) => void;
   update: (id: string, data: Partial<YooptaBlockData>) => void;
-  updateElement: <TElementKeys extends string, TElementProps>(
-    blockId: string,
-    elementType: TElementKeys,
-    elementProps: TElementProps,
-  ) => void;
   delete: (options: DeleteBlockOptions) => void;
 };
 

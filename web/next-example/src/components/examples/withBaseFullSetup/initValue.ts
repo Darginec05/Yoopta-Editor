@@ -48,7 +48,7 @@ export const WITH_BASIC_INIT_VALUE = {
     id: '7e3ef31f-a72d-467d-b17e-e09d2b0f9475',
     type: 'HeadingTwo',
     meta: {
-      order: 4,
+      order: 7,
       depth: 0,
     },
     value: [
@@ -84,7 +84,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 5,
+      order: 8,
       depth: 0,
     },
   },
@@ -106,7 +106,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 11,
+      order: 14,
       depth: 0,
     },
   },
@@ -128,7 +128,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 14,
+      order: 17,
       depth: 0,
     },
   },
@@ -150,7 +150,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 8,
+      order: 11,
       depth: 0,
     },
   },
@@ -172,7 +172,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 15,
+      order: 18,
       depth: 0,
     },
   },
@@ -194,7 +194,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 16,
+      order: 19,
       depth: 0,
     },
   },
@@ -220,7 +220,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 23,
+      order: 26,
       depth: 0,
     },
   },
@@ -246,7 +246,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 24,
+      order: 27,
       depth: 0,
     },
   },
@@ -268,7 +268,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 12,
+      order: 15,
       depth: 0,
     },
   },
@@ -293,7 +293,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 27,
+      order: 30,
       depth: 0,
     },
   },
@@ -315,7 +315,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 28,
+      order: 31,
       depth: 0,
     },
   },
@@ -337,7 +337,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 9,
+      order: 12,
       depth: 0,
     },
   },
@@ -359,7 +359,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 22,
+      order: 25,
       depth: 0,
     },
   },
@@ -381,7 +381,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 25,
+      order: 28,
       depth: 0,
     },
   },
@@ -403,7 +403,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 29,
+      order: 32,
       depth: 0,
     },
   },
@@ -425,7 +425,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 10,
+      order: 13,
       depth: 0,
     },
   },
@@ -447,7 +447,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 17,
+      order: 20,
       depth: 0,
     },
   },
@@ -469,7 +469,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 21,
+      order: 24,
       depth: 0,
     },
   },
@@ -491,7 +491,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 26,
+      order: 29,
       depth: 0,
     },
   },
@@ -499,7 +499,7 @@ export const WITH_BASIC_INIT_VALUE = {
     id: '6184a767-f56e-4856-bed4-82f970b5fce8',
     type: 'Blockquote',
     meta: {
-      order: 3,
+      order: 6,
       depth: 0,
     },
     value: [
@@ -547,7 +547,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Image',
     meta: {
-      order: 41,
+      order: 44,
       depth: 0,
     },
   },
@@ -585,7 +585,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'HeadingThree',
     meta: {
-      order: 40,
+      order: 43,
       depth: 0,
     },
   },
@@ -607,7 +607,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 20,
+      order: 23,
       depth: 0,
     },
   },
@@ -629,7 +629,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 18,
+      order: 21,
       depth: 0,
     },
   },
@@ -651,7 +651,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 6,
+      order: 9,
       depth: 0,
     },
   },
@@ -681,7 +681,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Image',
     meta: {
-      order: 43,
+      order: 46,
       depth: 0,
     },
   },
@@ -689,7 +689,7 @@ export const WITH_BASIC_INIT_VALUE = {
     id: '7d3f395b-656d-46af-924c-b88b9974f631',
     type: 'HeadingThree',
     meta: {
-      order: 42,
+      order: 45,
       depth: 0,
     },
     value: [
@@ -742,7 +742,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 13,
+      order: 16,
       depth: 0,
     },
   },
@@ -764,7 +764,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 19,
+      order: 22,
       depth: 0,
     },
   },
@@ -786,19 +786,24 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 44,
+      order: 47,
       depth: 0,
     },
   },
   '697aa54b-aea0-4a88-82e5-ec5a6f2c5791': {
     id: '697aa54b-aea0-4a88-82e5-ec5a6f2c5791',
+    type: 'HeadingThree',
+    meta: {
+      order: 3,
+      depth: 0,
+    },
     value: [
       {
         id: 'e7cfd6da-0ed1-4849-ae05-f52b9e65c87b',
-        type: 'paragraph',
+        type: 'heading-three',
         children: [
           {
-            text: '',
+            text: 'FAQs',
           },
         ],
         props: {
@@ -806,11 +811,6 @@ export const WITH_BASIC_INIT_VALUE = {
         },
       },
     ],
-    type: 'Paragraph',
-    meta: {
-      order: 2,
-      depth: 0,
-    },
   },
   'd19fe347-ae2f-469d-85f4-a66d63a2fd40': {
     id: 'd19fe347-ae2f-469d-85f4-a66d63a2fd40',
@@ -830,7 +830,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'HeadingTwo',
     meta: {
-      order: 30,
+      order: 33,
       depth: 0,
     },
   },
@@ -852,7 +852,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 31,
+      order: 34,
       depth: 0,
     },
   },
@@ -874,7 +874,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 32,
+      order: 35,
       depth: 0,
     },
   },
@@ -896,7 +896,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 33,
+      order: 36,
       depth: 0,
     },
   },
@@ -918,7 +918,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 34,
+      order: 37,
       depth: 0,
     },
   },
@@ -940,7 +940,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 35,
+      order: 38,
       depth: 0,
     },
   },
@@ -976,7 +976,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 36,
+      order: 39,
       depth: 0,
     },
   },
@@ -998,7 +998,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 37,
+      order: 40,
       depth: 0,
     },
   },
@@ -1020,7 +1020,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 38,
+      order: 41,
       depth: 0,
     },
   },
@@ -1042,7 +1042,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 46,
+      order: 49,
       depth: 0,
     },
   },
@@ -1064,7 +1064,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 47,
+      order: 50,
       depth: 0,
     },
   },
@@ -1086,7 +1086,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 48,
+      order: 51,
       depth: 0,
     },
   },
@@ -1108,7 +1108,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 51,
+      order: 54,
       depth: 0,
     },
   },
@@ -1130,7 +1130,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'HeadingTwo',
     meta: {
-      order: 45,
+      order: 48,
       depth: 0,
     },
   },
@@ -1152,7 +1152,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 49,
+      order: 52,
       depth: 0,
     },
   },
@@ -1174,7 +1174,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 39,
+      order: 42,
       depth: 0,
     },
   },
@@ -1196,7 +1196,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 52,
+      order: 55,
       depth: 0,
     },
   },
@@ -1218,7 +1218,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 50,
+      order: 53,
       depth: 0,
     },
   },
@@ -1242,8 +1242,227 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Code',
     meta: {
-      order: 7,
+      order: 10,
       depth: 1,
+    },
+  },
+  'ffb4470c-d951-4ed2-b446-c1a07650c550': {
+    id: 'ffb4470c-d951-4ed2-b446-c1a07650c550',
+    value: [
+      {
+        id: '7dee490c-3f3a-419b-b5d4-7915650cdb3c',
+        type: 'paragraph',
+        children: [
+          {
+            text: '---',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'Paragraph',
+    meta: {
+      order: 5,
+      depth: 0,
+    },
+  },
+  '62bcd227-f42c-426d-8b3a-9bff70b5308d': {
+    id: '62bcd227-f42c-426d-8b3a-9bff70b5308d',
+    value: [
+      {
+        id: '557497a0-0bc7-493b-920b-23a0698479d2',
+        type: 'accordion-list',
+        children: [
+          {
+            id: '0b8e4c12-198a-4883-b578-6aae9a141121',
+            type: 'accordion-list-item',
+            children: [
+              {
+                id: '4bbe8fbd-8180-47bd-a65c-b3480cf7f4f4',
+                type: 'accordion-list-item-heading',
+                children: [
+                  {
+                    text: 'Can I relax with Yoopta-Editor?',
+                  },
+                ],
+                props: {
+                  nodeType: 'block',
+                },
+              },
+              {
+                id: 'a203259d-f075-44a3-a557-7d89f15a3501',
+                type: 'accordion-list-item-content',
+                children: [
+                  {
+                    text: 'Definitely, yes. We are aiming to ensure that you never worry about developing rich-text editors, but just focus on business logic when writing your super applications.',
+                  },
+                ],
+                props: {
+                  nodeType: 'block',
+                },
+              },
+              {
+                id: 'a203259d-f075-44a3-a557-7d89f15a3501',
+                type: 'accordion-list-item-content',
+                props: {
+                  nodeType: 'block',
+                },
+                children: [
+                  {
+                    text: 'Just install the needed packages, make the necessary configuration and relax',
+                    underline: true,
+                  },
+                ],
+              },
+            ],
+            props: {
+              nodeType: 'block',
+              isExpanded: true,
+            },
+          },
+          {
+            id: '7580532b-fe45-41fd-a394-9775526ee8e2',
+            type: 'accordion-list-item',
+            children: [
+              {
+                id: 'ac050b26-5502-43e6-9244-9749c5f0a5cc',
+                type: 'accordion-list-item-heading',
+                children: [
+                  {
+                    text: 'Can I create custom plugins?',
+                  },
+                ],
+                props: {
+                  nodeType: 'block',
+                },
+              },
+              {
+                id: '623e5ce5-22a6-493c-8263-24ed356078f6',
+                type: 'accordion-list-item-content',
+                children: [
+                  {
+                    text: 'Yes, yes, and yes again. You will be able to create a custom plugin of any complexity',
+                  },
+                ],
+                props: {
+                  nodeType: 'block',
+                },
+              },
+            ],
+            props: {
+              nodeType: 'block',
+              isExpanded: true,
+            },
+          },
+          {
+            id: '2ee0104f-1946-49a5-8fdd-bfd2d32e3d50',
+            type: 'accordion-list-item',
+            children: [
+              {
+                id: '1a9e575f-2c19-442c-9a72-84cabe2619c3',
+                type: 'accordion-list-item-heading',
+                children: [
+                  {
+                    text: 'What about AI?',
+                  },
+                ],
+                props: {
+                  nodeType: 'block',
+                },
+              },
+              {
+                id: 'd50c8d92-b5cd-4f0c-8d60-00e5b5cba844',
+                type: 'accordion-list-item-content',
+                children: [
+                  {
+                    text: '1. We have plans to create AI text input for creating your custom plugins\n2. AI tools for helping you with your content\n3. AI tool which can help translate content\n4. ...and other super useful tools 😉',
+                  },
+                ],
+                props: {
+                  nodeType: 'block',
+                },
+              },
+            ],
+            props: {
+              nodeType: 'block',
+              isExpanded: true,
+            },
+          },
+          {
+            id: 'ec4816dd-c646-43c8-90cf-30fe02b2a93f',
+            type: 'accordion-list-item',
+            children: [
+              {
+                id: '53a34ea7-773c-4ea0-ac46-93d3bb26d4ac',
+                type: 'accordion-list-item-heading',
+                props: {
+                  nodeType: 'block',
+                },
+                children: [
+                  {
+                    text: 'What is best football club?',
+                  },
+                ],
+              },
+              {
+                id: 'e0eff75b-4239-499b-81d9-d13a77070ff1',
+                type: 'accordion-list-item-content',
+                children: [
+                  {
+                    text: 'Chelsea FC',
+                    underline: true,
+                    highlight: {
+                      color: '#477DA5',
+                    },
+                  },
+                  {
+                    highlight: {
+                      color: '#477DA5',
+                    },
+                    text: ' 💙',
+                  },
+                ],
+                props: {
+                  nodeType: 'block',
+                },
+              },
+            ],
+            props: {
+              nodeType: 'block',
+              isExpanded: false,
+            },
+          },
+        ],
+      },
+    ],
+    type: 'Accordion',
+    meta: {
+      order: 4,
+      depth: 0,
+    },
+  },
+  '39f639c6-219f-4cb7-a817-cb9f4d6ea07c': {
+    id: '39f639c6-219f-4cb7-a817-cb9f4d6ea07c',
+    value: [
+      {
+        id: '022419d3-449c-4bfd-b4fb-e87060083aea',
+        type: 'paragraph',
+        children: [
+          {
+            text: '---',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'Paragraph',
+    meta: {
+      order: 2,
+      depth: 0,
     },
   },
 };
