@@ -65,7 +65,11 @@ type Props = {
   tools?: Partial<Tools>;
   placeholder?: string;
   readOnly?: boolean;
+  /* Width. [Default] - 400px. Will be DEPRECATED, use style object  */
   width?: number | string;
+  /* Style CSS Object. [Default] - { width: 400, paddingBottom: 100 }
+   */
+  style?: number | string;
 };
 ```
 

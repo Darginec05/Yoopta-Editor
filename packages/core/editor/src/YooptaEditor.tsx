@@ -2,7 +2,7 @@ import EventEmitter from 'eventemitter3';
 import { YooptaContextProvider } from './contexts/YooptaContext/YooptaContext';
 import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { Editor } from './components/Editor/Editor';
-import { useMemo, useState } from 'react';
+import { CSSProperties, useMemo, useState } from 'react';
 import { YooEditor, YooptaBlockData, YooptaContentValue } from './editor/types';
 import { Plugin } from './plugins/types';
 import NoSSR from './components/NoSsr/NoSsr';
@@ -33,6 +33,7 @@ type Props = {
   placeholder?: string;
   readOnly?: boolean;
   width?: number | string;
+  style?: CSSProperties;
 };
 
 const DEFAULT_VALUE: Record<string, YooptaBlockData> = getDefaultYooptaChildren();
@@ -79,6 +80,7 @@ const YooptaEditor = ({
   placeholder,
   readOnly,
   width,
+  style,
 }: Props) => {
   const applyChanges = () => {
     setEditorState((prev) => ({ ...prev, version: prev.version + 1 }));
@@ -158,6 +160,7 @@ const YooptaEditor = ({
             className={className}
             selectionBoxRoot={selectionBoxRoot}
             width={width}
+            style={style}
           >
             {children}
           </Editor>

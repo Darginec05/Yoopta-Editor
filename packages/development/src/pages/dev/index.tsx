@@ -509,8 +509,10 @@ const BasicExample = () => {
         placeholder="Type / to open menu"
         tools={TOOLS}
         readOnly={readOnly}
-        width={750}
         value={value}
+        style={{
+          width: 750,
+        }}
       >
         <Buttons onSubmit={onSubmit} />
       </YooptaEditor>

@@ -132,8 +132,10 @@ type YooptaEditor = {
   tools?: Partial<Tools>;
   placeholder?: string;
   readOnly?: boolean;
-  /* Width. [Default] - 450px  */
+  /* Width. [Default] - 400px. Will be DEPRECATED, use style object  */
   width?: number | string;
+  /* Style CSS Object. [Default] - { width: '400px', paddingBottom: '100px' } */
+  style?: number | string;
   /* Id for your editor instance. Can be useful for multiple editors */
   id?: number | string;
 };

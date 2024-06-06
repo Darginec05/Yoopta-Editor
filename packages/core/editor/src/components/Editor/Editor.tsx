@@ -12,7 +12,6 @@ import { ReactEditor } from 'slate-react';
 import { YooptaBlockPath } from '../../editor/types';
 import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
-import { IS_FOCUSED_EDITOR } from '../../utils/weakMaps';
 
 type Props = {
   marks?: YooptaMark<any>[];
@@ -21,14 +20,14 @@ type Props = {
   className?: string;
   placeholder?: string;
   width?: number | string;
-  paddingBottom?: number | string;
   children: ReactNode;
+  style?: CSSProperties;
 };
 
 const getEditorStyles = (styles: CSSProperties) => ({
+  ...styles,
   width: styles.width || 400,
   paddingBottom: styles.paddingBottom || 100,
-  ...styles,
 });
 
 type State = {
@@ -49,7 +48,7 @@ const Editor = ({
   className,
   selectionBoxRoot,
   width,
-  paddingBottom,
+  style,
   children,
   autoFocus = true,
 }: Props) => {
@@ -339,8 +338,8 @@ const Editor = ({
   const editorStyles: CSSProperties = getEditorStyles({
     userSelect: selectionBox.selection ? 'none' : 'auto',
     pointerEvents: selectionBox.selection ? 'none' : 'auto',
-    width,
-    paddingBottom,
+    width: width || style?.width,
+    paddingBottom: style?.paddingBottom,
   });
 
   return (
