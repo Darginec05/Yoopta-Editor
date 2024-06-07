@@ -18,6 +18,7 @@ const DEFAULT_HANDLERS: YooptaEditorContext = {
     moveBlock: () => undefined,
     splitBlock: () => undefined,
     deleteBlock: () => undefined,
+    deleteBlocks: () => undefined,
     toggleBlock: () => undefined,
     focusBlock: () => undefined,
     decreaseBlockDepth: () => undefined,

@@ -8,6 +8,7 @@ import { DeleteBlockOptions } from './blocks/deleteBlock';
 import { DuplicateBlockOptions } from './blocks/duplicateBlock';
 import { FocusBlockOptions } from './blocks/focusBlock';
 import { ToggleBlockOptions } from './blocks/toggleBlock';
+import { DeleteBlocksOptions } from './blocks/deleteBlocks';
 
 export type YooptaBlockPath = [number];
 
@@ -75,6 +76,7 @@ export type YooEditor<TNodes = any> = {
   splitBlock: (options?: YooptaEditorTransformOptions) => void;
   updateBlock: (id: string, data: Partial<YooptaBlockData>) => void;
   deleteBlock: (options?: DeleteBlockOptions) => void;
+  deleteBlocks: (options?: DeleteBlocksOptions) => void;
   duplicateBlock: (options?: DuplicateBlockOptions) => void;
   getBlock: (options?: YooptaEditorTransformOptions) => void;
   toggleBlock: (toBlockType: string, options?: ToggleBlockOptions) => void;

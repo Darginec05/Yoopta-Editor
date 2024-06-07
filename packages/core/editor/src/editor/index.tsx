@@ -17,6 +17,7 @@ import { toggleBlock } from './blocks/toggleBlock';
 import { blur } from './core/blur';
 import { focus } from './core/focus';
 import { isFocused } from './core/isFocused';
+import { deleteBlocks } from './blocks/deleteBlocks';
 
 // export const YooEditor = {}
 // export const BlockTransforms = {}
@@ -46,6 +47,7 @@ export const createYooptaEditor = (): YooEditor => {
     applyChanges: () => {},
     insertBlock: (...args) => insertBlock(editor, ...args),
     insertBlocks: (...args) => insertBlocks(editor, ...args),
+    deleteBlocks: (...args) => deleteBlocks(editor, ...args),
     deleteBlock: (...args) => deleteBlock(editor, ...args),
     duplicateBlock: (...args) => duplicateBlock(editor, ...args),
     toggleBlock: (...args) => toggleBlock(editor, ...args),
