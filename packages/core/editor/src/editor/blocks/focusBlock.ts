@@ -29,6 +29,8 @@ export function focusBlock(editor: YooEditor, blockId: string, options: FocusBlo
   try {
     const { focusAt, waitExecution = true, waitExecutionMs = 0, shouldUpdateBlockSelection = true } = options;
 
+    console.log('blockId', blockId);
+
     const focusBlockEditor = () => {
       const slate = options.slate || editor.blockEditorsMap[blockId];
       const block = editor.children[blockId];

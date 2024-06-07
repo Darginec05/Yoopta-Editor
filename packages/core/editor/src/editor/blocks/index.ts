@@ -1,5 +1,6 @@
 import { insertBlock } from './insertBlock';
 import { deleteBlock } from './deleteBlock';
+import { deleteBlocks } from './deleteBlocks';
 import { moveBlock } from './moveBlock';
 import { focusBlock } from './focusBlock';
 import { splitBlock } from './splitBlock';
@@ -22,6 +23,7 @@ export const Blocks = {
   updateBlock,
   toggleBlock,
   insertBlocks,
+  deleteBlocks,
   // [TODO]
   // updateBlocks
 };

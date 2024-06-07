@@ -198,7 +198,7 @@ const Editor = ({
 
       if (isAllBlocksSelected) {
         event.preventDefault();
-        editor.deleteBlock({ deleteAll: true });
+        editor.deleteBlocks({ deleteAll: true });
         editor.setBlockSelected(null);
         resetSelectionState();
         return;
@@ -206,7 +206,7 @@ const Editor = ({
 
       if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks?.length > 0) {
         event.preventDefault();
-        editor.deleteBlock({ fromPaths: editor.selectedBlocks });
+        editor.deleteBlocks({ paths: editor.selectedBlocks, focus: false });
         editor.setBlockSelected(null);
         resetSelectionState();
         return;

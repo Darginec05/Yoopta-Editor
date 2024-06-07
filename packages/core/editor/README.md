@@ -103,9 +103,15 @@ type YooEditor<TNodes> = {
   updateBlock: (id: string, data: Partial<YooptaBlockData>) => void;
 
   /**
-   * Deletes a block from the editor.
+   * Deletes block from the editor children.
    */
   deleteBlock: (options?: DeleteBlockOptions) => void;
+
+  /**
+   * Deletes blocks from paths or blockIds
+   *
+   */
+  deleteBlocks: (options?: DeleteBlocksOptions) => void;
 
   /**
    * Duplicates a block within the editor.
