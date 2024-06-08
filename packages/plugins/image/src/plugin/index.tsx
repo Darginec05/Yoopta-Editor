@@ -55,6 +55,11 @@ const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePlug
           }
         },
       },
+      serialize: (element, text) => {
+        return `<div style="display: flex; width: 100%; justify-content: center">
+        <img src="${element.props.src}" alt="${element.props.alt}" width="${element.props.sizes.width}" height="${element.props.sizes.height}"  />
+        </div>`;
+      },
     },
   },
 });

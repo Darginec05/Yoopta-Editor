@@ -22,9 +22,7 @@ const Code = new YooptaPlugin<CodePluginElements, CodeElementProps, CodePluginBl
       title: 'Code',
       description: 'Write the best code ever!',
     },
-    shortcuts: ['```'],
-    // defaultLanguage: 'javascript',
-    // defaultTheme: 'VSCode',
+    shortcuts: ['```', 'code', 'js'],
   },
   parsers: {
     html: {
@@ -47,6 +45,9 @@ const Code = new YooptaPlugin<CodePluginElements, CodeElementProps, CodePluginBl
             };
           }
         },
+      },
+      serialize: (element, text) => {
+        return `<pre style="background-color: #263238; color: #fff; padding: 20px 24px; white-space: pre-line;"><code>${`${text}`}</code></pre>`;
       },
     },
   },

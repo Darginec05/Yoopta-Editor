@@ -20,6 +20,9 @@ const Blockquote = new YooptaPlugin({
       deserialize: {
         nodeNames: ['BLOCKQUOTE'],
       },
+      serialize: (element, text) => {
+        return `<blockquote style="border-left: 3px solid; color: #292929; padding: 2px 14px; margin-top: 8px;">${text}</blockquote>`;
+      },
     },
   },
 });

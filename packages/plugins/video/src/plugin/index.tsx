@@ -97,6 +97,12 @@ const Video = new YooptaPlugin<VideoPluginElements, VideoElementProps, VideoPlug
           // }
         },
       },
+      serialize: (element, text) => {
+        return `
+        <div style="display: flex; width: 100%; justify-content: center">
+        <video src="${element.props.src}" width="${element.props.sizes.width}" height="${element.props.sizes.height}" controls="${element.props.settings.controls}" loop="${element.props.settings.loop}" muted="${element.props.settings.muted}" autoplay="${element.props.settings.autoPlay}" style="margin: 0 auto;" />
+        </div>`;
+      },
     },
   },
 });

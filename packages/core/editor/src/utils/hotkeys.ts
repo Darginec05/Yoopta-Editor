@@ -28,7 +28,8 @@ const HOTKEYS_MAP = {
   cmd: 'mod',
   cmdEnter: 'mod+enter',
   slashCommand: '/',
-  kekCeburek: 'mod+enter',
+  copy: 'mod+c',
+  cut: 'mod+x',
 };
 
 const APPLE_HOTKEYS = {
@@ -108,7 +109,8 @@ export const HOTKEYS = {
   isSlashCommand: create('slashCommand'),
   isShiftArrowUp: create('shiftArrowUp'),
   isShiftArrowDown: create('shiftArrowDown'),
-  isKekceburek: create('kekCeburek'),
+  isCopy: create('copy'),
+  isCut: create('cut'),
 };
 
 export type HOTKEYS_TYPE = {

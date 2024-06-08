@@ -34,7 +34,9 @@ const HeadingOne = new YooptaPlugin({
       deserialize: {
         nodeNames: ['H1'],
       },
-      serialize: (block) => '',
+      serialize: (element, text) => {
+        return `<h1>${text}</h1>`;
+      },
     },
   },
 });

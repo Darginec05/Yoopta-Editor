@@ -12,6 +12,7 @@ import { ReactEditor } from 'slate-react';
 import { YooptaBlockPath } from '../../editor/types';
 import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
+import { serializeHTML } from '../../parsers/serializeHTML';
 
 type Props = {
   marks?: YooptaMark<any>[];
@@ -120,7 +121,7 @@ const Editor = ({
     state.selectionStarted = false;
   };
 
-  const onClick = (event: React.MouseEvent) => {
+  const onMouseDown = (event: React.MouseEvent) => {
     if (isReadOnly) return;
 
     // [TODO] - handle shift+click
@@ -186,6 +187,19 @@ const Editor = ({
       if (state.selectionStarted) {
         event.preventDefault();
         editor.setBlockSelected([], { allSelected: true });
+        return;
+      }
+    }
+
+    console.log('HOTKEYS.isCopy(event)', HOTKEYS.isCopy(event));
+
+    if (HOTKEYS.isCopy(event)) {
+      if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
+        const selectedBlocks = Object.values(editor.children).filter((item) =>
+          editor.selectedBlocks?.includes(item.meta.order),
+        );
+        const html = serializeHTML(editor, selectedBlocks);
+        window.navigator.clipboard.writeText(html);
         return;
       }
     }
@@ -348,8 +362,11 @@ const Editor = ({
       className={className ? `yoopta-editor ${className}` : 'yoopta-editor'}
       style={editorStyles}
       ref={yooptaEditorRef}
-      onClick={onClick}
+      onMouseDown={onMouseDown}
       onBlur={onBlur}
+      // onCopy={(event: React.ClipboardEvent) => {
+      //   // serializeHTML(editor, editor.children);
+      // }}
     >
       <RenderBlocks editor={editor} marks={marks} placeholder={placeholder} />
       {selectionBoxRoot !== false && (
