@@ -78,6 +78,7 @@ export function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames
     const mark = MARKS_NODE_NAME_MATCHERS_MAP[el.nodeName];
     const markType = mark.type;
     const text = el.textContent?.replace(/[\t\n\r\f\v]+/g, ' ');
+
     return { [markType]: true, text };
   }
 

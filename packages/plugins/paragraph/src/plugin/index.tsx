@@ -26,7 +26,7 @@ const Paragraph = new YooptaPlugin({
     },
     markdown: {
       serialize: (element, text) => {
-        return text;
+        return `${text}\n`;
       },
     },
   },

@@ -32,5 +32,8 @@
   },
   "bugs": {
     "url": "https://github.com/Darginec05/Editor-Yoopta/issues"
+  },
+  "dependencies": {
+    "marked": "^13.0.0"
   }
 }

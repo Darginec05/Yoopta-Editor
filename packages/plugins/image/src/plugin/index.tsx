@@ -63,7 +63,7 @@ const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePlug
     },
     markdown: {
       serialize: (element, text) => {
-        return `![${element.props.alt}](${element.props.src})`;
+        return `![${element.props.alt}](${element.props.src})\n`;
       },
     },
   },

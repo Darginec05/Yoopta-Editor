@@ -50,6 +50,11 @@ const Code = new YooptaPlugin<CodePluginElements, CodeElementProps, CodePluginBl
         return `<pre style="background-color: #263238; color: #fff; padding: 20px 24px; white-space: pre-line;"><code>${`${text}`}</code></pre>`;
       },
     },
+    markdown: {
+      serialize: (element, text) => {
+        return `\`\`\`${element.props.language || 'javascript'}\n${text}\n\`\`\``;
+      },
+    },
   },
 });
 

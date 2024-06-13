@@ -106,7 +106,7 @@ const Video = new YooptaPlugin<VideoPluginElements, VideoElementProps, VideoPlug
     },
     markdown: {
       serialize: (element, text) => {
-        return `![${element.props.src}](${element.props.src})`;
+        return `![${element.props.src}](${element.props.src})\n`;
       },
     },
   },

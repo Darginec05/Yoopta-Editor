@@ -65,6 +65,11 @@ const Embed = new YooptaPlugin<EmbedPluginElements, EmbedElementProps, EmbedPlug
         <iframe src="${url}" width="${element.props.sizes.width}" height="${element.props.sizes.height}"  /> </div>`;
       },
     },
+    markdown: {
+      serialize: (element, text) => {
+        return `![${element.props.provider.type}](${element.props.provider.url})\n`;
+      },
+    },
   },
 });
 

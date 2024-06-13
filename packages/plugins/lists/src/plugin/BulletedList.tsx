@@ -58,6 +58,11 @@ const BulletedList = new YooptaPlugin<BulletedListPluginKeys, BulletedListElemen
         },
       },
     },
+    markdown: {
+      serialize: (element, text) => {
+        return `- ${text}`;
+      },
+    },
   },
 });
 

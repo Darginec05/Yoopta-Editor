@@ -65,6 +65,11 @@ const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
         },
       },
     },
+    markdown: {
+      serialize: (element, text) => {
+        return `- ${element.props.checked ? '[x]' : '[ ]'} ${text}`;
+      },
+    },
   },
 });
 
