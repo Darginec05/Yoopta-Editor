@@ -24,6 +24,11 @@ const Paragraph = new YooptaPlugin({
         return `<p style="color: #292929; padding: 0; margin: 0">${text}</p>`;
       },
     },
+    markdown: {
+      serialize: (element, text) => {
+        return text;
+      },
+    },
   },
 });
 

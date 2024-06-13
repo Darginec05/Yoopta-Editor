@@ -172,10 +172,13 @@ const Editor = ({
     // }
   };
 
+  console.log('editor.children', editor.children);
+
   const onKeyDown = (event) => {
     if (isReadOnly) return;
 
     // [TODO] - handle shift+click?
+
     if (HOTKEYS.isSelect(event)) {
       const isAllBlocksSelected = editor.selectedBlocks?.length === Object.keys(editor.children).length;
 
@@ -190,8 +193,6 @@ const Editor = ({
         return;
       }
     }
-
-    console.log('HOTKEYS.isCopy(event)', HOTKEYS.isCopy(event));
 
     if (HOTKEYS.isCopy(event)) {
       if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {

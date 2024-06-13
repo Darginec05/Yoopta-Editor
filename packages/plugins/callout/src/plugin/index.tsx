@@ -32,6 +32,11 @@ const Callout = new YooptaPlugin<CalloutPluginElementKeys, CalloutElementProps>(
         return `<div style="padding: .5rem .5rem .5rem 1rem; margin-top: .5rem; border-radius: .375rem; color: ${theme.color}; border-left: ${theme.borderLeft}; background-color: ${theme.backgroundColor}">${text}</div>`;
       },
     },
+    markdown: {
+      serialize: (element, text) => {
+        return `> ${text}`;
+      },
+    },
   },
 });
 

@@ -61,6 +61,11 @@ const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePlug
         </div>`;
       },
     },
+    markdown: {
+      serialize: (element, text) => {
+        return `![${element.props.alt}](${element.props.src})`;
+      },
+    },
   },
 });
 

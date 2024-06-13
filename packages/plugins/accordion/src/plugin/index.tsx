@@ -135,6 +135,14 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
     },
     shortcuts: ['accordion'],
   },
+  parsers: {
+    html: {
+      serialize: (element) => {
+        console.log('accordion element', element);
+        return '';
+      },
+    },
+  },
 });
 
 export { Accordion };

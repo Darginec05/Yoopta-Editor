@@ -1,78 +1,175 @@
-import { YooptaBaseElement, YooptaPluginType } from '@yoopta/editor';
-import { Text } from 'slate';
-import { jsx } from 'slate-hyperscript';
-import { mergePluginTypesToMapHMTLNodeName } from '../utils/mergePlugins';
+import { Element } from 'slate';
+import {
+  buildBlockData,
+  SlateElement,
+  YooEditor,
+  YooptaBlockData,
+  getRootBlockElementType,
+  generateId,
+  YooptaContentValue,
+} from '@yoopta/editor';
 
-const TEXT_TAGS = {
-  DEL: () => ({ strikethrough: true }),
-  EM: () => ({ italic: true }),
-  I: () => ({ italic: true }),
-  S: () => ({ strikethrough: true }),
-  STRONG: () => ({ bold: true }),
-  U: () => ({ underline: true }),
+type PluginDeserializeParser = any;
+
+export function isYooptaBlock(block: any): boolean {
+  return !!block && !!block.id && !!block.type && !!block.value && !!block.meta;
+}
+
+const MARKS_NODE_NAME_MATCHERS_MAP = {
+  B: { type: 'bold' },
+  STRONG: { type: 'bold' },
+  I: { type: 'italic' },
+  U: { type: 'underline' },
+  S: { type: 'strike' },
+  CODE: { type: 'code' },
+  EM: { type: 'code' },
 };
 
-const deserialize = (
-  el: HTMLElement | ChildNode,
-  pluginsMap: Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>>,
-) => {
+type PluginsMapByNodeNames = Record<string, { type: string; parse: PluginDeserializeParser['parse'] }>;
+
+function getMappedPluginByNodeNames(editor: YooEditor): PluginsMapByNodeNames {
+  const PLUGINS_NODE_NAME_MATCHERS_MAP: PluginsMapByNodeNames = {};
+
+  Object.keys(editor.plugins).forEach((pluginType) => {
+    const plugin = editor.plugins[pluginType];
+    const { parsers } = plugin;
+
+    if (parsers) {
+      const { html } = parsers;
+
+      if (html) {
+        const { deserialize } = html;
+
+        if (deserialize) {
+          const { nodeNames } = deserialize;
+          if (nodeNames) {
+            nodeNames.forEach((nodeName) => {
+              PLUGINS_NODE_NAME_MATCHERS_MAP[nodeName] = {
+                type: pluginType,
+                parse: deserialize.parse,
+              };
+            });
+          }
+        }
+      }
+    }
+  });
+
+  return PLUGINS_NODE_NAME_MATCHERS_MAP;
+}
+
+export function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames, el: HTMLElement | ChildNode) {
   if (el.nodeType === 3) {
-    return el.textContent;
+    const text = el.textContent?.replace(/[\t\n\r\f\v]+/g, ' ');
+    return text;
   } else if (el.nodeType !== 1) {
     return null;
   } else if (el.nodeName === 'BR') {
     return '\n';
   }
 
-  const { nodeName } = el;
-  let parent = el;
+  const parent = el;
 
   let children = Array.from(parent.childNodes)
-    .map((node) => deserialize(node, pluginsMap))
+    .map((node) => deserialize(editor, pluginsMap, node))
     .flat();
 
-  if (children.length === 0) {
-    children = [{ text: '' }];
+  if (MARKS_NODE_NAME_MATCHERS_MAP[el.nodeName]) {
+    const mark = MARKS_NODE_NAME_MATCHERS_MAP[el.nodeName];
+    const markType = mark.type;
+    const text = el.textContent?.replace(/[\t\n\r\f\v]+/g, ' ');
+    return { [markType]: true, text };
   }
 
-  if (el.nodeName === 'BODY') {
-    return jsx('fragment', {}, children);
-  }
+  if (pluginsMap[el.nodeName]) {
+    const plugin = pluginsMap[el.nodeName];
+    const block = editor.blocks[plugin.type];
+    const rootElementType = getRootBlockElementType(block.elements) || '';
+    const rootElement = block.elements[rootElementType];
 
-  if (pluginsMap[nodeName]) {
-    const plugin = pluginsMap[nodeName];
+    const isVoid = rootElement.props?.nodeType === 'void';
 
-    if (plugin) {
-      let node = plugin.defineElement();
+    let rootNode: SlateElement<string, any> | YooptaBlockData[] = {
+      id: generateId(),
+      type: rootElementType,
+      children: isVoid && !block.hasCustomEditor ? [{ text: '' }] : children.map(mapNodeChildren),
+      props: { nodeType: 'block', ...rootElement.props },
+    };
 
-      if (typeof plugin.exports?.html.deserialize?.parse === 'function') {
-        const data = plugin.exports?.html.deserialize?.parse(el as HTMLElement);
-        node = { ...node, data };
+    if (plugin.parse) {
+      const nodeElementOrBlocks = plugin.parse(el as HTMLElement);
+
+      if (nodeElementOrBlocks) {
+        if (Element.isElement(nodeElementOrBlocks)) {
+          rootNode = nodeElementOrBlocks;
+        } else if (Array.isArray(nodeElementOrBlocks)) {
+          const blocks = nodeElementOrBlocks;
+          return blocks;
+        }
       }
-
-      return jsx('element', node, children);
     }
-  }
 
-  if (Text.isTextList(children)) {
-    return jsx('element', pluginsMap.P.defineElement(), children);
-  }
+    if (rootNode.children.length === 0) {
+      rootNode.children = [{ text: '' }];
+    }
 
-  if (TEXT_TAGS[nodeName]) {
-    const attrs = TEXT_TAGS[nodeName](el);
-    const textNodes = children.map((child) => {
-      return Text.isText(child) ? jsx('text', attrs, child) : child;
+    const blockData = buildBlockData({
+      id: generateId(),
+      type: plugin.type,
+      value: [rootNode],
+      meta: {
+        order: 0,
+        depth: 0,
+      },
     });
 
-    return textNodes;
+    return blockData;
   }
 
   return children;
-};
+}
 
-export function deserializeHtml(htmlString: string, plugins: YooptaPluginType<unknown, YooptaBaseElement<string>>[]) {
-  const pluginsMap = mergePluginTypesToMapHMTLNodeName(plugins);
+function mapNodeChildren(child) {
+  if (typeof child === 'string') {
+    return { text: child };
+  }
 
+  if (Array.isArray(child)) {
+    return { text: child[0] };
+  }
+
+  if (child.text) {
+    return child;
+  }
+
+  if (isYooptaBlock(child)) {
+    const block = child as YooptaBlockData;
+    let text = '';
+
+    block.value[0].children.forEach((child) => {
+      text += `${child.text}`;
+    });
+
+    return { text };
+  }
+
+  return { text: '' };
+}
+
+export function deserializeHTML(editor: YooEditor, htmlString: string): YooptaContentValue {
   const parsedHtml = new DOMParser().parseFromString(htmlString, 'text/html');
-  return deserialize(parsedHtml.body, pluginsMap);
+  const value: YooptaContentValue = {};
+
+  const PLUGINS_NODE_NAME_MATCHERS_MAP = getMappedPluginByNodeNames(editor);
+  const blocks = deserialize(editor, PLUGINS_NODE_NAME_MATCHERS_MAP, parsedHtml.body).filter(
+    isYooptaBlock,
+  ) as YooptaBlockData[];
+
+  blocks.forEach((block, i) => {
+    const blockData = block;
+    blockData.meta.order = i;
+    value[block.id] = blockData;
+  });
+
+  return value;
 }

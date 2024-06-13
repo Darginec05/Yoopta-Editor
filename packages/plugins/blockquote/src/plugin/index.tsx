@@ -24,6 +24,11 @@ const Blockquote = new YooptaPlugin({
         return `<blockquote style="border-left: 3px solid; color: #292929; padding: 2px 14px; margin-top: 8px;">${text}</blockquote>`;
       },
     },
+    markdown: {
+      serialize: (element, text) => {
+        return `> ${text}`;
+      },
+    },
   },
 });
 

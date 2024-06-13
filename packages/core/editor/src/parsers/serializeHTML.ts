@@ -8,16 +8,15 @@ export function serializeHTML(editor: YooEditor, blocksData: YooptaBlockData[]) 
 
     if (plugin) {
       const element = blockData.value[0] as SlateElement;
-      console.log('blockData.value', blockData.value);
-      console.log('element', element);
 
       if (plugin.parsers?.html?.serialize) {
-        return plugin.parsers.html.serialize(element, element.children.map((child) => child.text).join(''));
+        const serialized = plugin.parsers.html.serialize(element, element.children.map((child) => child.text).join(''));
+        if (serialized) return serialized;
       }
     }
 
     return '';
   });
 
-  return `<body>${html.join('')}</body>`;
+  return `<body id="yoopta-clipboard">${html.join('')}</body>`;
 }

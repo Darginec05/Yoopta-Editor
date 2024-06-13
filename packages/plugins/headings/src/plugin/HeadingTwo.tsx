@@ -38,6 +38,11 @@ const HeadingTwo = new YooptaPlugin({
         return `<h2>${text}</h2>`;
       },
     },
+    markdown: {
+      serialize: (element, text) => {
+        return `## ${text}`;
+      },
+    },
   },
 });
 

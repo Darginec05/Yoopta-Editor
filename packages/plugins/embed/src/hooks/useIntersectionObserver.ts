@@ -10,7 +10,7 @@ export function useIntersectionObserver(
   elementRef,
   { threshold = 0, root = null, rootMargin = '0%', freezeOnceVisible = false } = {},
 ): IntersectionObserverEntry {
-  const [entry, setEntry] = useState<IntersectionObserverEntry>({});
+  const [entry, setEntry] = useState<IntersectionObserverEntry>({} as IntersectionObserverEntry);
 
   const frozen = entry.isIntersecting && freezeOnceVisible;
 
@@ -23,7 +23,7 @@ export function useIntersectionObserver(
     if (hasNotIOSupport || frozen || !node) return;
 
     const observerParams = { threshold, root, rootMargin };
-    const observer = new IntersectionObserver(updateEntry, observerParams);
+    const observer = new IntersectionObserver(updateEntry as unknown as IntersectionObserverCallback, observerParams);
 
     observer.observe(node);
 

@@ -104,6 +104,11 @@ const Video = new YooptaPlugin<VideoPluginElements, VideoElementProps, VideoPlug
         </div>`;
       },
     },
+    markdown: {
+      serialize: (element, text) => {
+        return `![${element.props.src}](${element.props.src})`;
+      },
+    },
   },
 });
 

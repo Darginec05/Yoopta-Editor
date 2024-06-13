@@ -44,6 +44,11 @@ const HeadingThree = new YooptaPlugin({
         return `<h3>${text}</h3>`;
       },
     },
+    markdown: {
+      serialize: (element, text) => {
+        return `### ${text}`;
+      },
+    },
   },
 });
 

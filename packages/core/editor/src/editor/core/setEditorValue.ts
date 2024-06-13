@@ -6,4 +6,5 @@ export function setEditorValue(editor: YooEditor, value: YooptaContentValue) {
   editor.blockEditorsMap = buildBlockSlateEditors(editor);
 
   editor.applyChanges();
+  editor.emit('change', editor.children);
 }

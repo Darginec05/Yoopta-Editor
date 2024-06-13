@@ -1,5 +1,5 @@
 import { generateId, YooptaPlugin } from '@yoopta/editor';
-import { EmbedElementProps, EmbedPluginElements, EmbedPluginOptions } from '../types';
+import { EmbedElementProps, EmbedPluginElements, EmbedPluginOptions, EmbedProviderTypes } from '../types';
 import { EmbedRender } from '../ui/Embed';
 
 const Embed = new YooptaPlugin<EmbedPluginElements, EmbedElementProps, EmbedPluginOptions>({
@@ -46,6 +46,23 @@ const Embed = new YooptaPlugin<EmbedPluginElements, EmbedElementProps, EmbedPlug
             };
           }
         },
+      },
+      serialize: (element, text) => {
+        const URL_BUILDERS = {
+          youtube: (id: string) => `https://www.youtube.com/embed/${id}`,
+          vimeo: (id: string) => `https://player.vimeo.com/embed/${id}`,
+          dailymotion: (id: string) => `https://www.dailymotion.com/embed/embed/${id}`,
+          figma: (id: string) => `https://www.figma.com/embed?embed_host=share&url=${id}`,
+        };
+
+        let url = element.props.provider.url;
+
+        if (URL_BUILDERS[element.props.provider.type]) {
+          url = URL_BUILDERS[element.props.provider.type](element.props.provider.id);
+        }
+
+        return `<div style="display: flex; width: 100%; justify-content: center">
+        <iframe src="${url}" width="${element.props.sizes.width}" height="${element.props.sizes.height}"  /> </div>`;
       },
     },
   },
