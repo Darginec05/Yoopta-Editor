@@ -27,8 +27,8 @@ const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
     html: {
       deserialize: {
         // add ignore or continue statement
-        nodeNames: [],
         // nodeNames: ['OL', 'UL'],
+        nodeNames: [],
         parse(el) {
           if (el.nodeName === 'OL' || el.nodeName === 'UL') {
             const listItems = el.querySelectorAll('li');
@@ -63,6 +63,9 @@ const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
             if (todoListBlocks.length > 1) return todoListBlocks;
           }
         },
+      },
+      serialize: (element, text) => {
+        return `<ul><li>[${element.props.checked ? 'x' : ' '}] ${text}</li></ul>`;
       },
     },
     markdown: {

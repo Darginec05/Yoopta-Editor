@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode, useEffect, useRef } from 'react';
+import { ClipboardEvent, CSSProperties, ReactNode, useEffect, useRef } from 'react';
 import { useYooptaEditor, useYooptaReadOnly } from '../../contexts/YooptaContext/YooptaContext';
 import { RenderBlocks } from './RenderBlocks';
 import { YooptaMark } from '../../marks';
@@ -143,42 +143,10 @@ const Editor = ({
     resetSelectedBlocks();
   };
 
-  // [TODO] - implement with @yoopta/exports
-  const onCopy = (event: React.ClipboardEvent) => {
-    // function escapeHtml(text) {
-    //   const map = {
-    //     '&': '&amp;',
-    //     '<': '&lt;',
-    //     '>': '&gt;',
-    //     '"': '&quot;',
-    //     "'": '&#039;',
-    //   };
-    //   return text.replace(/[&<>"']/g, (m) => map[m]);
-    // }
-    // function serializeNode(node, plugins) {
-    //   if (Text.isText(node)) {
-    //     return escapeHtml(node.text);
-    //   }
-    //   const children = node.children.map((node) => serializeNode(node, plugins)).join('');
-    //   const plugin = plugins[node.type];
-    //   if (typeof plugin.exports?.html?.serialize === 'function') {
-    //     return plugin.exports.html.serialize(node, children);
-    //   }
-    //   return children;
-    // }
-    // export function serializeHtml(data: Descendant[], pluginsMap) {
-    //   const html = data.map((node) => serializeNode(node, pluginsMap)).join('');
-    //   return html;
-    // }
-  };
-
-  console.log('editor.children', editor.children);
-
   const onKeyDown = (event) => {
     if (isReadOnly) return;
 
     // [TODO] - handle shift+click?
-
     if (HOTKEYS.isSelect(event)) {
       const isAllBlocksSelected = editor.selectedBlocks?.length === Object.keys(editor.children).length;
 
@@ -196,11 +164,14 @@ const Editor = ({
 
     if (HOTKEYS.isCopy(event)) {
       if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
-        const selectedBlocks = Object.values(editor.children).filter((item) =>
-          editor.selectedBlocks?.includes(item.meta.order),
-        );
-        const html = serializeHTML(editor, selectedBlocks);
-        window.navigator.clipboard.writeText(html);
+        const htmlString = serializeHTML(editor, editor.getEditorValue());
+        const blob = new Blob([htmlString], { type: 'text/html' });
+        const item = new ClipboardItem({ 'text/html': blob });
+
+        navigator.clipboard.write([item]).then(() => {
+          const html = new DOMParser().parseFromString(htmlString, 'text/html');
+          console.log('HTML copied\n', html.body);
+        });
         return;
       }
     }
@@ -365,8 +336,8 @@ const Editor = ({
       ref={yooptaEditorRef}
       onMouseDown={onMouseDown}
       onBlur={onBlur}
+      /** This will not work */
       // onCopy={(event: React.ClipboardEvent) => {
-      //   // serializeHTML(editor, editor.children);
       // }}
     >
       <RenderBlocks editor={editor} marks={marks} placeholder={placeholder} />

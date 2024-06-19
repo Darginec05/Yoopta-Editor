@@ -1,4 +1,4 @@
-import { YooptaPlugin } from '@yoopta/editor';
+import { generateId, YooptaPlugin } from '@yoopta/editor';
 import { CSSProperties } from 'react';
 import { CalloutElementProps, CalloutPluginElementKeys, CalloutTheme } from '../types';
 import { CalloutRender } from '../ui/Callout';
@@ -25,11 +25,29 @@ const Callout = new YooptaPlugin<CalloutPluginElementKeys, CalloutElementProps>(
     html: {
       deserialize: {
         nodeNames: ['DL'],
+        parse(el) {
+          if (el.nodeName === 'DL' || el.nodeName === 'DIV') {
+            const theme = el.getAttribute('data-theme') as CalloutTheme;
+
+            return {
+              id: generateId(),
+              type: 'callout',
+              children: [{ text: el.textContent || '' }],
+              props: {
+                theme,
+              },
+            };
+          }
+        },
       },
       serialize: (element, text) => {
         const theme: CSSProperties = CALLOUT_THEME_STYLES[element.props?.theme || 'default'];
 
-        return `<div style="padding: .5rem .5rem .5rem 1rem; margin-top: .5rem; border-radius: .375rem; color: ${theme.color}; border-left: ${theme.borderLeft}; background-color: ${theme.backgroundColor}">${text}</div>`;
+        return `<dl data-theme="${
+          element.props?.theme || 'default'
+        }" style="padding: .5rem .5rem .5rem 1rem; margin-top: .5rem; border-radius: .375rem; color: ${
+          theme.color
+        }; border-left: ${theme.borderLeft || 0}; background-color: ${theme.backgroundColor}">${text}</dl>`;
       },
     },
     markdown: {

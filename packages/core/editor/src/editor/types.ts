@@ -12,6 +12,11 @@ import { DeleteBlocksOptions } from './blocks/deleteBlocks';
 
 export type YooptaBlockPath = [number];
 
+export type YooptaBlockBaseMeta = {
+  order: number;
+  depth: number;
+};
+
 export type YooptaBlockData<T = Descendant | SlateElement> = {
   id: string;
   value: T[];
@@ -20,11 +25,6 @@ export type YooptaBlockData<T = Descendant | SlateElement> = {
 };
 
 export type YooptaContentValue = Record<string, YooptaBlockData>;
-
-export type YooptaBlockBaseMeta = {
-  order: number;
-  depth: number;
-};
 
 export type SlateEditor = Editor;
 

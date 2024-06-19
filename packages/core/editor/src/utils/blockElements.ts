@@ -1,7 +1,7 @@
 import { Editor, Element, NodeEntry, Path } from 'slate';
 import { buildBlockElement } from '../components/Editor/utils';
 import { SlateElement, YooEditor, YooptaBlock } from '../editor/types';
-import { PluginElement, PluginElementProps, PluginElementsMap } from '../plugins/types';
+import { Plugin, PluginElement, PluginElementProps, PluginElementsMap } from '../plugins/types';
 import { generateId } from './generateId';
 
 export function getRootBlockElementType(elems: PluginElementsMap<string, unknown> | undefined): string | undefined {
@@ -114,4 +114,12 @@ export function buildBlockElementsStructure(editor: YooEditor, blockType: string
   };
 
   return rootElementNode;
+}
+
+export function getPluginByInlineElement(
+  plugins: YooEditor['plugins'],
+  elementType: string,
+): Plugin<string, unknown> | undefined {
+  const plugin = Object.values(plugins).find((plugin) => plugin.type === plugin.elements?.[elementType].original);
+  return plugin;
 }

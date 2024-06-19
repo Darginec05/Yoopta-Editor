@@ -226,7 +226,23 @@ const BasicExample = () => {
                 },
                 children: [
                   {
-                    text: 'First ',
+                    text: 'Fi',
+                  },
+                  {
+                    type: 'link',
+                    children: [
+                      {
+                        text: 'rst ',
+                      },
+                    ],
+                    props: {
+                      url: 'https://chatgpt.com/c/7762c854-c530-4fa6-b908-20b53fca25be',
+                      target: '_blank',
+                      rel: 'noopener noreferrer',
+                    },
+                  },
+                  {
+                    text: '',
                   },
                 ],
               },
@@ -248,7 +264,15 @@ const BasicExample = () => {
                 },
                 children: [
                   {
-                    text: 'Second',
+                    text: 'Se',
+                  },
+                  {
+                    text: 'co',
+                    underline: true,
+                  },
+                  {
+                    text: 'nd',
+                    italic: true,
                   },
                 ],
               },
@@ -271,6 +295,10 @@ const BasicExample = () => {
                 children: [
                   {
                     text: 'Third',
+                    bold: true,
+                    italic: true,
+                    underline: true,
+                    strike: true,
                   },
                 ],
               },

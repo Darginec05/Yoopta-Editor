@@ -21,7 +21,7 @@ const Paragraph = new YooptaPlugin({
         nodeNames: ['P'],
       },
       serialize: (element, text) => {
-        return `<p style="color: #292929; padding: 0; margin: 0">${text}</p>`;
+        return `<p>${text}</p>`;
       },
     },
     markdown: {

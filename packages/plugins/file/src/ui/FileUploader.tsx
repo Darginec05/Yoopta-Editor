@@ -1,5 +1,4 @@
 import { Elements, useYooptaEditor, useYooptaPluginOptions } from '@yoopta/editor';
-import { useEffect } from 'react';
 import { FileElementProps, FilePluginElements, FilePluginOptions } from '../types';
 
 type Props = {

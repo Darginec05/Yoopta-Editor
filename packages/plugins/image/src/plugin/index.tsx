@@ -44,6 +44,8 @@ const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePlug
               },
             };
 
+            console.log('props', props);
+
             const node = {
               id: generateId(),
               type: 'image',

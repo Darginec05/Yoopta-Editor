@@ -15,8 +15,8 @@ import { buildBlockData } from '../components/Editor/utils';
 
 // [TODO] - test
 import { withInlines } from './extenstions/withInlines';
-import { parsers } from '../parsers';
 import { IS_FOCUSED_EDITOR } from '../utils/weakMaps';
+import { deserializeHTML } from '../parsers/deserializeHTML';
 
 type Props<TKeys extends string, TProps, TOptions> = Plugin<TKeys, TProps, TOptions> & {
   id: string;
@@ -227,7 +227,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       const parsedHTML = new DOMParser().parseFromString(html, 'text/html');
 
       if (parsedHTML.body.childNodes.length > 0) {
-        const blocks = parsers.html.deserialize(editor, parsedHTML.body);
+        const blocks = deserializeHTML(editor, parsedHTML.body);
 
         if (blocks.length > 0) {
           editor.insertBlocks(blocks, { at: editor.selection, focus: true });
@@ -344,6 +344,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
           onKeyUp={onKeyUp}
           onFocus={onFocus}
           onClick={onClick}
+          onCopy={(e) => e.preventDefault()}
           decorate={decorate}
           // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
           onBlur={onBlur}
