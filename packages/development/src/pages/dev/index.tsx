@@ -1,191 +1,18 @@
 import YooptaEditor, {
   createYooptaEditor,
-  Tools,
   useYooptaEditor,
   useYooptaFocused,
   YooEditor,
   YooptaBlockData,
   YooptaContentValue,
 } from '@yoopta/editor';
-import Blockquote from '@yoopta/blockquote';
-import Paragraph from '@yoopta/paragraph';
-import Headings from '@yoopta/headings';
-import Image from '@yoopta/image';
-import { Bold, Italic, Highlight, CodeMark, Strike, Underline } from '@yoopta/marks';
-import Callout from '@yoopta/callout';
-import Lists from '@yoopta/lists';
-import Link from '@yoopta/link';
-import Video from '@yoopta/video';
-import File from '@yoopta/file';
 import { html, markdown } from '@yoopta/exports';
-import Embed from '@yoopta/embed';
-import AccordionPlugin from '@yoopta/accordion';
-import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
-import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
-import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { uploadToCloudinary } from '../../utils/cloudinary';
-
-import Code from '@yoopta/code';
-import { ActionNotionMenuExample } from '../../components/ActionMenuExamples/NotionExample/ActionNotionMenuExample';
-import { NotionToolbar } from '../../components/Toolbars/NotionToolbar/NotionToolbar';
-import { ACCORDION_BLOCK } from '../../components/customPlugins/Accordion/Accordion';
-// import Accordion from '../../components/customPlugins/Accordion/src';
-// import Mention from '@yoopta/mention';
-
-const plugins = [
-  AccordionPlugin,
-  Code,
-  File.extend({
-    options: {
-      onUpload: async (file: File) => {
-        const data = await uploadToCloudinary(file, 'auto');
-
-        return {
-          src: data.secure_url,
-          format: data.format,
-          name: data.name,
-          size: data.bytes,
-        };
-      },
-    },
-  }),
-  Paragraph.extend({
-    options: {
-      HTMLAttributes: {
-        className: 'paragraph-element-extended',
-      },
-    },
-  }),
-  Image.extend({
-    // renders: {
-    //   image: ({ attributes, children, element, blockId }) => {
-    //     return (
-    //       <div>
-    //         <img
-    //           draggable={false}
-    //           className="yoo-h-mt-6 yoo-h-scroll-m-20"
-    //           {...attributes}
-    //         />
-    //         {children}
-    //       </div>
-    //     );
-    //   },
-    // },
-    options: {
-      maxSizes: {
-        maxHeight: 800,
-      },
-      HTMLAttributes: {
-        className: 'image-element-extended',
-      },
-
-      onUpload: async (file: File) => {
-        const data = await uploadToCloudinary(file);
-
-        return {
-          src: data.secure_url,
-          alt: 'cloudinary',
-          fit: 'fill',
-          sizes: {
-            width: data.width,
-            height: data.height,
-          },
-        };
-      },
-    },
-  }),
-  Headings.HeadingOne.extend({
-    options: {
-      HTMLAttributes: {
-        className: 'heading-one-element-extended',
-        style: {
-          color: 'red !important',
-        },
-      },
-    },
-  }),
-  Headings.HeadingTwo.extend({
-    options: {
-      HTMLAttributes: {
-        className: 'heading-two-element-extended',
-      },
-    },
-  }),
-  Headings.HeadingThree,
-  Blockquote.extend({
-    options: {
-      HTMLAttributes: {
-        className: 'blockquote-element-extended',
-      },
-    },
-  }),
-  Callout.extend({
-    options: {
-      HTMLAttributes: {
-        className: 'callout-element-extended',
-      },
-    },
-  }),
-  Lists.BulletedList.extend({
-    options: {
-      HTMLAttributes: {
-        className: 'bulleted-list-element-extended',
-      },
-    },
-  }),
-  Lists.NumberedList,
-  Lists.TodoList,
-  Embed,
-  Video.extend({
-    options: {
-      HTMLAttributes: {
-        className: 'video-element-extended',
-      },
-      onUpload: async (file: File) => {
-        const data = await uploadToCloudinary(file, 'video');
-        return {
-          src: data.secure_url,
-          alt: 'cloudinary',
-          fit: 'cover',
-          sizes: {
-            width: data.width,
-            height: data.height,
-          },
-        };
-      },
-    },
-  }),
-  Link.extend({
-    options: {
-      HTMLAttributes: {
-        className: 'link-element',
-      },
-    },
-  }),
-];
-
-const MARKS = [Bold, Italic, Highlight, CodeMark, Strike, Underline];
-
-const TOOLS: Tools = {
-  ActionMenu: {
-    // render: ActionNotionMenuExample,
-    render: DefaultActionMenuRender,
-    tool: ActionMenuList,
-    props: {
-      // items: ['Callout', 'Blockquote', 'HeadingOne', 'HeadingTwo', 'HeadingThree', 'Image', 'File'],
-    },
-  },
-  Toolbar: {
-    render: DefaultToolbarRender,
-    // render: NotionToolbar,
-    tool: Toolbar,
-  },
-  LinkTool: {
-    render: DefaultLinkToolRender,
-    tool: LinkTool,
-  },
-};
+import { MarkdownPreview } from '../../components/parsers/markdown/MarkdownPreview/MarkdownPreview';
+import { HtmlPreview } from '../../components/parsers/html/HtmlPreview/HtmlPreview';
+import { MARKS } from '../../utils/yoopta/marks';
+import { YOOPTA_PLUGINS } from '../../utils/yoopta/plugins';
+import { TOOLS } from '../../utils/yoopta/tools';
 
 export type YooptaChildrenValue = Record<string, YooptaBlockData>;
 
@@ -204,452 +31,460 @@ const BasicExample = () => {
   };
 
   return (
-    <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={rectangleSelectionRef}>
-      <YooptaEditor
-        editor={editor}
-        plugins={plugins}
-        selectionBoxRoot={rectangleSelectionRef}
-        marks={MARKS}
-        autoFocus={true}
-        placeholder="Type / to open menu"
-        tools={TOOLS}
-        readOnly={readOnly}
-        value={{
-          '41cc6457-d708-493f-bd74-59a623b96a49': {
-            id: '41cc6457-d708-493f-bd74-59a623b96a49',
-            value: [
-              {
-                id: '248de772-684b-4f3d-9e5f-fb29594700cb',
-                type: 'heading-one',
-                props: {
-                  nodeType: 'block',
-                },
-                children: [
-                  {
-                    text: 'Fi',
+    <>
+      <div>
+        <MarkdownPreview />
+      </div>
+      <div>
+        <HtmlPreview />
+      </div>
+      <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={rectangleSelectionRef}>
+        <YooptaEditor
+          editor={editor}
+          plugins={YOOPTA_PLUGINS}
+          selectionBoxRoot={rectangleSelectionRef}
+          marks={MARKS}
+          autoFocus={true}
+          placeholder="Type / to open menu"
+          tools={TOOLS}
+          readOnly={readOnly}
+          value={{
+            '41cc6457-d708-493f-bd74-59a623b96a49': {
+              id: '41cc6457-d708-493f-bd74-59a623b96a49',
+              value: [
+                {
+                  id: '248de772-684b-4f3d-9e5f-fb29594700cb',
+                  type: 'heading-one',
+                  props: {
+                    nodeType: 'block',
                   },
-                  {
-                    type: 'link',
-                    children: [
-                      {
-                        text: 'rst ',
-                      },
-                    ],
-                    props: {
-                      url: 'https://chatgpt.com/c/7762c854-c530-4fa6-b908-20b53fca25be',
-                      target: '_blank',
-                      rel: 'noopener noreferrer',
+                  children: [
+                    {
+                      text: 'Fi',
                     },
-                  },
-                  {
-                    text: '',
-                  },
-                ],
-              },
-            ],
-            type: 'HeadingOne',
-            meta: {
-              order: 0,
-              depth: 0,
-            },
-          },
-          '0ae59575-78c5-4123-af3f-50bfd64c73b4': {
-            id: '0ae59575-78c5-4123-af3f-50bfd64c73b4',
-            value: [
-              {
-                id: '26ee49ff-7eb0-4ad8-b1b3-8176e1838fb2',
-                type: 'heading-two',
-                props: {
-                  nodeType: 'block',
+                    {
+                      type: 'link',
+                      children: [
+                        {
+                          text: 'rst ',
+                        },
+                      ],
+                      props: {
+                        url: 'https://chatgpt.com/c/7762c854-c530-4fa6-b908-20b53fca25be',
+                        target: '_blank',
+                        rel: 'noopener noreferrer',
+                      },
+                    },
+                    {
+                      text: '',
+                    },
+                  ],
                 },
-                children: [
-                  {
-                    text: 'Se',
-                  },
-                  {
-                    text: 'co',
-                    underline: true,
-                  },
-                  {
-                    text: 'nd',
-                    italic: true,
-                  },
-                ],
+              ],
+              type: 'HeadingOne',
+              meta: {
+                order: 0,
+                depth: 0,
               },
-            ],
-            type: 'HeadingTwo',
-            meta: {
-              order: 1,
-              depth: 0,
             },
-          },
-          '30e844f6-5501-4e7d-9ed1-e11d9b03592c': {
-            id: '30e844f6-5501-4e7d-9ed1-e11d9b03592c',
-            value: [
-              {
-                id: 'd79596d6-d4af-46cc-a064-10c691792bd4',
-                type: 'heading-three',
-                props: {
-                  nodeType: 'block',
+            '0ae59575-78c5-4123-af3f-50bfd64c73b4': {
+              id: '0ae59575-78c5-4123-af3f-50bfd64c73b4',
+              value: [
+                {
+                  id: '26ee49ff-7eb0-4ad8-b1b3-8176e1838fb2',
+                  type: 'heading-two',
+                  props: {
+                    nodeType: 'block',
+                  },
+                  children: [
+                    {
+                      text: 'Se',
+                    },
+                    {
+                      text: 'co',
+                      underline: true,
+                    },
+                    {
+                      text: 'nd',
+                      italic: true,
+                    },
+                  ],
                 },
-                children: [
-                  {
-                    text: 'Third',
-                    bold: true,
-                    italic: true,
-                    underline: true,
-                    strike: true,
-                  },
-                ],
+              ],
+              type: 'HeadingTwo',
+              meta: {
+                order: 1,
+                depth: 0,
               },
-            ],
-            type: 'HeadingThree',
-            meta: {
-              order: 2,
-              depth: 0,
             },
-          },
-          '6ca094dc-f6cc-441c-bdd0-936e473ab93b': {
-            id: '6ca094dc-f6cc-441c-bdd0-936e473ab93b',
-            value: [
-              {
-                id: 'ea5205eb-bb55-4af0-8e94-7dc9d29eb23d',
-                type: 'paragraph',
-                children: [
-                  {
-                    text: 'paragraph',
+            '30e844f6-5501-4e7d-9ed1-e11d9b03592c': {
+              id: '30e844f6-5501-4e7d-9ed1-e11d9b03592c',
+              value: [
+                {
+                  id: 'd79596d6-d4af-46cc-a064-10c691792bd4',
+                  type: 'heading-three',
+                  props: {
+                    nodeType: 'block',
                   },
-                ],
-                props: {
-                  nodeType: 'block',
+                  children: [
+                    {
+                      text: 'Third',
+                      bold: true,
+                      italic: true,
+                      underline: true,
+                      strike: true,
+                    },
+                  ],
                 },
+              ],
+              type: 'HeadingThree',
+              meta: {
+                order: 2,
+                depth: 0,
               },
-            ],
-            type: 'Paragraph',
-            meta: {
-              order: 3,
-              depth: 0,
             },
-          },
-          '1557f6b3-a573-442f-8bdf-ca09fc3bc83a': {
-            id: '1557f6b3-a573-442f-8bdf-ca09fc3bc83a',
-            value: [
-              {
-                id: 'f5d15bc1-2dd9-4e23-93ac-6a7068698511',
-                type: 'bulleted-list',
-                children: [
-                  {
-                    text: 'bullet-item',
+            '6ca094dc-f6cc-441c-bdd0-936e473ab93b': {
+              id: '6ca094dc-f6cc-441c-bdd0-936e473ab93b',
+              value: [
+                {
+                  id: 'ea5205eb-bb55-4af0-8e94-7dc9d29eb23d',
+                  type: 'paragraph',
+                  children: [
+                    {
+                      text: 'paragraph',
+                    },
+                  ],
+                  props: {
+                    nodeType: 'block',
                   },
-                ],
-              },
-            ],
-            type: 'BulletedList',
-            meta: {
-              order: 4,
-              depth: 0,
-            },
-          },
-          '3e42a2df-5cbd-4e5e-b86b-7bccdf93bac0': {
-            id: '3e42a2df-5cbd-4e5e-b86b-7bccdf93bac0',
-            value: [
-              {
-                id: '7106da3b-4e83-443b-955e-f071ce57c663',
-                type: 'bulleted-list',
-                children: [
-                  {
-                    text: 'bullet-item',
-                  },
-                ],
-                props: {
-                  nodeType: 'block',
                 },
+              ],
+              type: 'Paragraph',
+              meta: {
+                order: 3,
+                depth: 0,
               },
-            ],
-            type: 'BulletedList',
-            meta: {
-              order: 5,
-              depth: 0,
             },
-          },
-          '0c7bce51-8737-422c-9c5a-3d22fdda9f6e': {
-            id: '0c7bce51-8737-422c-9c5a-3d22fdda9f6e',
-            value: [
-              {
-                id: '670f63da-0365-4248-9fab-5784d5ad83e5',
-                type: 'numbered-list',
-                props: {
-                  nodeType: 'block',
+            '1557f6b3-a573-442f-8bdf-ca09fc3bc83a': {
+              id: '1557f6b3-a573-442f-8bdf-ca09fc3bc83a',
+              value: [
+                {
+                  id: 'f5d15bc1-2dd9-4e23-93ac-6a7068698511',
+                  type: 'bulleted-list',
+                  children: [
+                    {
+                      text: 'bullet-item',
+                    },
+                  ],
                 },
-                children: [
-                  {
-                    text: 'sadasdsa',
-                  },
-                ],
+              ],
+              type: 'BulletedList',
+              meta: {
+                order: 4,
+                depth: 0,
               },
-            ],
-            type: 'NumberedList',
-            meta: {
-              order: 6,
-              depth: 0,
             },
-          },
-          '72424a2b-c93f-442b-a52a-fd9cf14839e1': {
-            id: '72424a2b-c93f-442b-a52a-fd9cf14839e1',
-            value: [
-              {
-                id: 'b9bdac7d-b3b8-40ee-9189-09ffbbb3cfa3',
-                type: 'numbered-list',
-                children: [
-                  {
-                    text: 'dsadsadasd',
+            '3e42a2df-5cbd-4e5e-b86b-7bccdf93bac0': {
+              id: '3e42a2df-5cbd-4e5e-b86b-7bccdf93bac0',
+              value: [
+                {
+                  id: '7106da3b-4e83-443b-955e-f071ce57c663',
+                  type: 'bulleted-list',
+                  children: [
+                    {
+                      text: 'bullet-item',
+                    },
+                  ],
+                  props: {
+                    nodeType: 'block',
                   },
-                ],
-                props: {
-                  nodeType: 'block',
                 },
+              ],
+              type: 'BulletedList',
+              meta: {
+                order: 5,
+                depth: 0,
               },
-            ],
-            type: 'NumberedList',
-            meta: {
-              order: 7,
-              depth: 0,
             },
-          },
-          '5144a45d-ce4d-48e8-b8d6-892903bd1884': {
-            id: '5144a45d-ce4d-48e8-b8d6-892903bd1884',
-            value: [
-              {
-                id: '047304d7-1929-4b3e-b409-dae057c9928c',
-                type: 'todo-list',
-                props: {
-                  checked: false,
+            '0c7bce51-8737-422c-9c5a-3d22fdda9f6e': {
+              id: '0c7bce51-8737-422c-9c5a-3d22fdda9f6e',
+              value: [
+                {
+                  id: '670f63da-0365-4248-9fab-5784d5ad83e5',
+                  type: 'numbered-list',
+                  props: {
+                    nodeType: 'block',
+                  },
+                  children: [
+                    {
+                      text: 'sadasdsa',
+                    },
+                  ],
                 },
-                children: [
-                  {
-                    text: 'checkbox',
-                  },
-                ],
+              ],
+              type: 'NumberedList',
+              meta: {
+                order: 6,
+                depth: 0,
               },
-            ],
-            type: 'TodoList',
-            meta: {
-              order: 8,
-              depth: 0,
             },
-          },
-          '72505d70-a783-4461-935f-b2dcc62a6304': {
-            id: '72505d70-a783-4461-935f-b2dcc62a6304',
-            value: [
-              {
-                id: 'e25d50c0-4525-46a3-a80e-065ef23f77fb',
-                type: 'todo-list',
-                children: [
-                  {
-                    text: 'checkbox 2',
+            '72424a2b-c93f-442b-a52a-fd9cf14839e1': {
+              id: '72424a2b-c93f-442b-a52a-fd9cf14839e1',
+              value: [
+                {
+                  id: 'b9bdac7d-b3b8-40ee-9189-09ffbbb3cfa3',
+                  type: 'numbered-list',
+                  children: [
+                    {
+                      text: 'dsadsadasd',
+                    },
+                  ],
+                  props: {
+                    nodeType: 'block',
                   },
-                ],
-                props: {
-                  nodeType: 'block',
                 },
+              ],
+              type: 'NumberedList',
+              meta: {
+                order: 7,
+                depth: 0,
               },
-            ],
-            type: 'TodoList',
-            meta: {
-              order: 9,
-              depth: 0,
             },
-          },
-          'e548758e-a824-4469-8592-19db48a9ff4b': {
-            id: 'e548758e-a824-4469-8592-19db48a9ff4b',
-            value: [
-              {
-                id: 'd98bf12e-5e4e-46d7-860e-d97985cb7c37',
-                type: 'code',
-                props: {
-                  nodeType: 'void',
-                  language: 'javascript',
-                  theme: 'VSCode',
+            '5144a45d-ce4d-48e8-b8d6-892903bd1884': {
+              id: '5144a45d-ce4d-48e8-b8d6-892903bd1884',
+              value: [
+                {
+                  id: '047304d7-1929-4b3e-b409-dae057c9928c',
+                  type: 'todo-list',
+                  props: {
+                    checked: false,
+                  },
+                  children: [
+                    {
+                      text: 'checkbox',
+                    },
+                  ],
                 },
-                children: [
-                  {
-                    text: 'function getCode() {}',
-                  },
-                ],
+              ],
+              type: 'TodoList',
+              meta: {
+                order: 8,
+                depth: 0,
               },
-            ],
-            type: 'Code',
-            meta: {
-              order: 10,
-              depth: 0,
             },
-          },
-          '2550030a-cb66-49dd-9ad6-b6a45dbbd194': {
-            id: '2550030a-cb66-49dd-9ad6-b6a45dbbd194',
-            value: [
-              {
-                id: 'c434f4fd-98f9-4c74-9033-808055b0dc97',
-                type: 'image',
-                props: {
-                  src: 'https://res.cloudinary.com/ench-app/image/upload/v1718296658/ebae34f8d6a5a62c453e5b09f2994489_o5rzdp.jpg',
-                  alt: 'cloudinary',
-                  srcSet: null,
-                  fit: 'fill',
-                  sizes: {
-                    width: 640,
-                    height: 660,
+            '72505d70-a783-4461-935f-b2dcc62a6304': {
+              id: '72505d70-a783-4461-935f-b2dcc62a6304',
+              value: [
+                {
+                  id: 'e25d50c0-4525-46a3-a80e-065ef23f77fb',
+                  type: 'todo-list',
+                  children: [
+                    {
+                      text: 'checkbox 2',
+                    },
+                  ],
+                  props: {
+                    nodeType: 'block',
                   },
-                  nodeType: 'void',
                 },
-                children: [
-                  {
-                    text: '',
-                  },
-                ],
+              ],
+              type: 'TodoList',
+              meta: {
+                order: 9,
+                depth: 0,
               },
-            ],
-            type: 'Image',
-            meta: {
-              order: 12,
-              depth: 0,
             },
-          },
-          'e93d4bdf-ef30-44c9-8615-3d18682561b8': {
-            id: 'e93d4bdf-ef30-44c9-8615-3d18682561b8',
-            value: [
-              {
-                id: 'ade9b6c0-020a-4532-919d-0dea7bc3638f',
-                type: 'file',
-                props: {
-                  size: 533360,
-                  name: 'Screen Shot 2024-06-13 at 16.19.56',
-                  src: 'https://res.cloudinary.com/ench-app/image/upload/v1718296648/Screen_Shot_2024-06-13_at_16.19.56_januwr.png',
-                  format: 'png',
-                  nodeType: 'void',
+            'e548758e-a824-4469-8592-19db48a9ff4b': {
+              id: 'e548758e-a824-4469-8592-19db48a9ff4b',
+              value: [
+                {
+                  id: 'd98bf12e-5e4e-46d7-860e-d97985cb7c37',
+                  type: 'code',
+                  props: {
+                    nodeType: 'void',
+                    language: 'javascript',
+                    theme: 'VSCode',
+                  },
+                  children: [
+                    {
+                      text: 'function getCode() {}',
+                    },
+                  ],
                 },
-                children: [
-                  {
-                    text: '',
-                  },
-                ],
+              ],
+              type: 'Code',
+              meta: {
+                order: 10,
+                depth: 0,
               },
-            ],
-            type: 'File',
-            meta: {
-              order: 11,
-              depth: 0,
             },
-          },
-          'e3447578-f8ab-4a5d-b31d-c2d74d7f8403': {
-            id: 'e3447578-f8ab-4a5d-b31d-c2d74d7f8403',
-            value: [
-              {
-                id: '80d72f03-744a-4e77-b2ad-41f483c1364a',
-                type: 'blockquote',
-                children: [
-                  {
-                    text: 'blockquote',
+            '2550030a-cb66-49dd-9ad6-b6a45dbbd194': {
+              id: '2550030a-cb66-49dd-9ad6-b6a45dbbd194',
+              value: [
+                {
+                  id: 'c434f4fd-98f9-4c74-9033-808055b0dc97',
+                  type: 'image',
+                  props: {
+                    src: 'https://res.cloudinary.com/ench-app/image/upload/v1718296658/ebae34f8d6a5a62c453e5b09f2994489_o5rzdp.jpg',
+                    alt: 'cloudinary',
+                    srcSet: null,
+                    fit: 'fill',
+                    sizes: {
+                      width: 640,
+                      height: 660,
+                    },
+                    nodeType: 'void',
                   },
-                ],
-              },
-            ],
-            type: 'Blockquote',
-            meta: {
-              order: 13,
-              depth: 0,
-            },
-          },
-          '3e146b04-b00e-4321-b38f-c0e362b52784': {
-            id: '3e146b04-b00e-4321-b38f-c0e362b52784',
-            value: [
-              {
-                id: '12c0d3fe-23e3-431e-8b0f-e2ccb634d7b1',
-                type: 'callout',
-                props: {
-                  theme: 'default',
+                  children: [
+                    {
+                      text: '',
+                    },
+                  ],
                 },
-                children: [
-                  {
-                    text: 'callout',
-                  },
-                ],
+              ],
+              type: 'Image',
+              meta: {
+                order: 12,
+                depth: 0,
               },
-            ],
-            type: 'Callout',
-            meta: {
-              order: 14,
-              depth: 0,
             },
-          },
-          '11b2336f-ba64-412a-9568-d9474cfcae74': {
-            id: '11b2336f-ba64-412a-9568-d9474cfcae74',
-            value: [
-              {
-                id: 'c3d30c5d-15dd-40c4-9f7c-e860bcba5ba1',
-                type: 'video',
-                props: {
-                  src: 'https://res.cloudinary.com/ench-app/video/upload/v1718296710/link-tool_vymer5.mp4',
-                  srcSet: null,
-                  sizes: {
-                    width: 1708,
-                    height: 1460,
+            'e93d4bdf-ef30-44c9-8615-3d18682561b8': {
+              id: 'e93d4bdf-ef30-44c9-8615-3d18682561b8',
+              value: [
+                {
+                  id: 'ade9b6c0-020a-4532-919d-0dea7bc3638f',
+                  type: 'file',
+                  props: {
+                    size: 533360,
+                    name: 'Screen Shot 2024-06-13 at 16.19.56',
+                    src: 'https://res.cloudinary.com/ench-app/image/upload/v1718296648/Screen_Shot_2024-06-13_at_16.19.56_januwr.png',
+                    format: 'png',
+                    nodeType: 'void',
                   },
-                  nodeType: 'void',
-                  provider: {
-                    type: null,
-                    id: '',
-                  },
-                  settings: {
-                    controls: false,
-                    loop: true,
-                    muted: true,
-                    autoPlay: true,
-                  },
-                  fit: 'cover',
+                  children: [
+                    {
+                      text: '',
+                    },
+                  ],
                 },
-                children: [
-                  {
-                    text: '',
-                  },
-                ],
+              ],
+              type: 'File',
+              meta: {
+                order: 11,
+                depth: 0,
               },
-            ],
-            type: 'Video',
-            meta: {
-              order: 15,
-              depth: 0,
             },
-          },
-          'd07396a6-b9df-4dec-95f4-c0da616c7da7': {
-            id: 'd07396a6-b9df-4dec-95f4-c0da616c7da7',
-            value: [
-              {
-                id: '825b0931-0771-4f93-9500-23e0ccd39d01',
-                type: 'paragraph',
-                children: [
-                  {
-                    text: '',
-                  },
-                ],
-                props: {
-                  nodeType: 'block',
+            'e3447578-f8ab-4a5d-b31d-c2d74d7f8403': {
+              id: 'e3447578-f8ab-4a5d-b31d-c2d74d7f8403',
+              value: [
+                {
+                  id: '80d72f03-744a-4e77-b2ad-41f483c1364a',
+                  type: 'blockquote',
+                  children: [
+                    {
+                      text: 'blockquote',
+                    },
+                  ],
                 },
+              ],
+              type: 'Blockquote',
+              meta: {
+                order: 13,
+                depth: 0,
               },
-            ],
-            type: 'Paragraph',
-            meta: {
-              order: 16,
-              depth: 0,
             },
-          },
-        }}
-        style={{
-          width: 750,
-        }}
-      >
-        <Buttons onSubmit={onSubmit} />
-      </YooptaEditor>
-    </div>
+            '3e146b04-b00e-4321-b38f-c0e362b52784': {
+              id: '3e146b04-b00e-4321-b38f-c0e362b52784',
+              value: [
+                {
+                  id: '12c0d3fe-23e3-431e-8b0f-e2ccb634d7b1',
+                  type: 'callout',
+                  props: {
+                    theme: 'default',
+                  },
+                  children: [
+                    {
+                      text: 'callout',
+                    },
+                  ],
+                },
+              ],
+              type: 'Callout',
+              meta: {
+                order: 14,
+                depth: 0,
+              },
+            },
+            '11b2336f-ba64-412a-9568-d9474cfcae74': {
+              id: '11b2336f-ba64-412a-9568-d9474cfcae74',
+              value: [
+                {
+                  id: 'c3d30c5d-15dd-40c4-9f7c-e860bcba5ba1',
+                  type: 'video',
+                  props: {
+                    src: 'https://res.cloudinary.com/ench-app/video/upload/v1718296710/link-tool_vymer5.mp4',
+                    srcSet: null,
+                    sizes: {
+                      width: 1708,
+                      height: 1460,
+                    },
+                    nodeType: 'void',
+                    provider: {
+                      type: null,
+                      id: '',
+                    },
+                    settings: {
+                      controls: false,
+                      loop: true,
+                      muted: true,
+                      autoPlay: true,
+                    },
+                    fit: 'cover',
+                  },
+                  children: [
+                    {
+                      text: '',
+                    },
+                  ],
+                },
+              ],
+              type: 'Video',
+              meta: {
+                order: 15,
+                depth: 0,
+              },
+            },
+            'd07396a6-b9df-4dec-95f4-c0da616c7da7': {
+              id: 'd07396a6-b9df-4dec-95f4-c0da616c7da7',
+              value: [
+                {
+                  id: '825b0931-0771-4f93-9500-23e0ccd39d01',
+                  type: 'paragraph',
+                  children: [
+                    {
+                      text: '',
+                    },
+                  ],
+                  props: {
+                    nodeType: 'block',
+                  },
+                },
+              ],
+              type: 'Paragraph',
+              meta: {
+                order: 16,
+                depth: 0,
+              },
+            },
+          }}
+          style={{
+            width: 750,
+          }}
+        >
+          <Buttons onSubmit={onSubmit} />
+        </YooptaEditor>
+      </div>
+    </>
   );
 };
 

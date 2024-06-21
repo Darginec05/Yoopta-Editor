@@ -81,8 +81,6 @@ export function onKeyDown(editor: YooEditor) {
     if (HOTKEYS.isBackspace(event)) {
       if (event.isDefaultPrevented()) return;
 
-      const blockData = findPluginBlockBySelectionPath(editor, { at: editor.selection });
-      const block = editor.blocks[blockData?.type || ''];
       const parentPath = Path.parent(slate.selection.anchor.path);
       const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
 

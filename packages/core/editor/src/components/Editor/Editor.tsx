@@ -28,7 +28,7 @@ type Props = {
 const getEditorStyles = (styles: CSSProperties) => ({
   ...styles,
   width: styles.width || 400,
-  paddingBottom: styles.paddingBottom || 100,
+  paddingBottom: typeof styles.paddingBottom === 'number' ? styles.paddingBottom : 100,
 });
 
 type State = {
@@ -166,6 +166,8 @@ const Editor = ({
       if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
         const htmlString = serializeHTML(editor, editor.getEditorValue());
         const blob = new Blob([htmlString], { type: 'text/html' });
+        console.log('blob', blob);
+
         const item = new ClipboardItem({ 'text/html': blob });
 
         navigator.clipboard.write([item]).then(() => {

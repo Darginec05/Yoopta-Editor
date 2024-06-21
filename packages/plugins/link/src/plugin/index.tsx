@@ -28,29 +28,31 @@ const Link = new YooptaPlugin<LinkPluginElementKeys, LinkElementProps>({
         const { url, target, rel, title } = element.props;
         return `<a href="${url}" target="${target}" rel="${rel}">${title || text}</a>`;
       },
-      // deserialize: {
-      //   nodeNames: ['A'],
-      //   parse: (el) => {
-      //     if (el.nodeName === 'A') {
-      //       const url = el.getAttribute('href');
-      //       const target = el.getAttribute('target') || '';
-      //       const rel = el.getAttribute('rel') || '';
-      //       const title = el.textContent || '';
-      //       const props: LinkElementProps = {
-      //         url,
-      //         target,
-      //         rel,
-      //         title,
-      //         nodeType: 'inline',
-      //       };
-      //       return {
-      //         id: generateId(),
-      //         type: 'link',
-      //         props,
-      //         children: [{ text: title }],
-      //       };
-      //     }
-      //   },
+      deserialize: {
+        nodeNames: ['A'],
+        parse: (el) => {
+          if (el.nodeName === 'A') {
+            const url = el.getAttribute('href');
+            const target = el.getAttribute('target') || '';
+            const rel = el.getAttribute('rel') || '';
+            const title = el.textContent || '';
+            const props: LinkElementProps = {
+              url,
+              target,
+              rel,
+              title,
+              nodeType: 'inline',
+            };
+
+            return {
+              id: generateId(),
+              type: 'link',
+              props,
+              children: [{ text: title }],
+            };
+          }
+        },
+      },
     },
   },
 });

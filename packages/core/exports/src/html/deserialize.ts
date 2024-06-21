@@ -22,7 +22,7 @@ const MARKS_NODE_NAME_MATCHERS_MAP = {
   U: { type: 'underline' },
   S: { type: 'strike' },
   CODE: { type: 'code' },
-  EM: { type: 'code' },
+  EM: { type: 'italic' },
 };
 
 type PluginsMapByNodeNames = Record<string, { type: string; parse: PluginDeserializeParser['parse'] }>;
@@ -78,12 +78,23 @@ export function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames
     const mark = MARKS_NODE_NAME_MATCHERS_MAP[el.nodeName];
     const markType = mark.type;
     const text = el.textContent?.replace(/[\t\n\r\f\v]+/g, ' ');
-
     return { [markType]: true, text };
   }
 
-  if (pluginsMap[el.nodeName]) {
-    const plugin = pluginsMap[el.nodeName];
+  const plugin = pluginsMap[el.nodeName];
+
+  if (plugin) {
+    let nodeElementOrBlocks;
+
+    if (plugin.parse) {
+      nodeElementOrBlocks = plugin.parse(el as HTMLElement);
+
+      if (Element.isElement(nodeElementOrBlocks)) {
+        const isInline = nodeElementOrBlocks.props?.nodeType === 'inline';
+        if (isInline) return nodeElementOrBlocks;
+      }
+    }
+
     const block = editor.blocks[plugin.type];
     const rootElementType = getRootBlockElementType(block.elements) || '';
     const rootElement = block.elements[rootElementType];
@@ -97,16 +108,12 @@ export function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames
       props: { nodeType: 'block', ...rootElement.props },
     };
 
-    if (plugin.parse) {
-      const nodeElementOrBlocks = plugin.parse(el as HTMLElement);
-
-      if (nodeElementOrBlocks) {
-        if (Element.isElement(nodeElementOrBlocks)) {
-          rootNode = nodeElementOrBlocks;
-        } else if (Array.isArray(nodeElementOrBlocks)) {
-          const blocks = nodeElementOrBlocks;
-          return blocks;
-        }
+    if (nodeElementOrBlocks) {
+      if (Element.isElement(nodeElementOrBlocks)) {
+        rootNode = nodeElementOrBlocks;
+      } else if (Array.isArray(nodeElementOrBlocks)) {
+        const blocks = nodeElementOrBlocks;
+        return blocks;
       }
     }
 
@@ -133,6 +140,10 @@ export function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames
 function mapNodeChildren(child) {
   if (typeof child === 'string') {
     return { text: child };
+  }
+
+  if (Element.isElement(child)) {
+    return child;
   }
 
   if (Array.isArray(child)) {
