@@ -70,6 +70,8 @@ export function insertBlocks(editor: YooEditor, blocks: YooptaBlockData[], optio
   }
 
   editor.children = finishDraft(editor.children);
+
+  console.log('editor.children', editor.children);
   editor.applyChanges();
   editor.emit('change', editor.children);
 

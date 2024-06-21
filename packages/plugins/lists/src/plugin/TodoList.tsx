@@ -29,6 +29,20 @@ const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
         // add ignore or continue statement
         // nodeNames: ['OL', 'UL'],
         nodeNames: [],
+        shouldDeserialize(el) {
+          if (el.nodeName === 'OL' || el.nodeName === 'UL') {
+            const listItems = el.querySelectorAll('li');
+
+            return Array.from(listItems).some((listItem) => {
+              const textContent = listItem.textContent || '';
+              const isTodoListItem = /\[\s*\S?\s*\]/.test(textContent);
+
+              return isTodoListItem;
+            });
+          }
+
+          return false;
+        },
         parse(el) {
           if (el.nodeName === 'OL' || el.nodeName === 'UL') {
             const listItems = el.querySelectorAll('li');

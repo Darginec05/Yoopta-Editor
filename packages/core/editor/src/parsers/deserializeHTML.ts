@@ -16,7 +16,14 @@ const MARKS_NODE_NAME_MATCHERS_MAP = {
   EM: { type: 'italic' },
 };
 
-type PluginsMapByNodeNames = Record<string, { type: string; parse: PluginDeserializeParser['parse'] }>;
+type PluginsMapByNodeNames = Record<
+  string,
+  {
+    type: string;
+    parse: PluginDeserializeParser['parse'];
+    shouldDeserialize: PluginDeserializeParser['shouldDeserialize'];
+  }
+>;
 
 function getMappedPluginByNodeNames(editor: YooEditor): PluginsMapByNodeNames {
   const PLUGINS_NODE_NAME_MATCHERS_MAP: PluginsMapByNodeNames = {};
@@ -38,6 +45,7 @@ function getMappedPluginByNodeNames(editor: YooEditor): PluginsMapByNodeNames {
               PLUGINS_NODE_NAME_MATCHERS_MAP[nodeName] = {
                 type: pluginType,
                 parse: deserialize.parse,
+                shouldDeserialize: deserialize.shouldDeserialize,
               };
             });
           }
@@ -80,10 +88,8 @@ export function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames
     if (plugin.parse) {
       nodeElementOrBlocks = plugin.parse(el as HTMLElement);
 
-      if (Element.isElement(nodeElementOrBlocks)) {
-        const isInline = nodeElementOrBlocks.props?.nodeType === 'inline';
-        if (isInline) return nodeElementOrBlocks;
-      }
+      const isInline = Element.isElement(nodeElementOrBlocks) && nodeElementOrBlocks.props?.nodeType === 'inline';
+      if (isInline) return nodeElementOrBlocks;
     }
 
     const block = editor.blocks[plugin.type];
@@ -164,6 +170,8 @@ export function deserializeHTML(editor: YooEditor, html: HTMLElement) {
 
   const PLUGINS_NODE_NAME_MATCHERS_MAP = getMappedPluginByNodeNames(editor);
   const blocks = deserialize(editor, PLUGINS_NODE_NAME_MATCHERS_MAP, html).filter(isYooptaBlock) as YooptaBlockData[];
+
+  console.log('blocks', blocks);
 
   return blocks;
 }

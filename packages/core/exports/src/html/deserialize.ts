@@ -89,10 +89,8 @@ export function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames
     if (plugin.parse) {
       nodeElementOrBlocks = plugin.parse(el as HTMLElement);
 
-      if (Element.isElement(nodeElementOrBlocks)) {
-        const isInline = nodeElementOrBlocks.props?.nodeType === 'inline';
-        if (isInline) return nodeElementOrBlocks;
-      }
+      const isInline = Element.isElement(nodeElementOrBlocks) && nodeElementOrBlocks?.props?.nodeType === 'inline';
+      if (isInline) return nodeElementOrBlocks;
     }
 
     const block = editor.blocks[plugin.type];

@@ -87,6 +87,7 @@ export type PluginserializeParser = (element: SlateElement, text: string) => str
 export type PluginDeserializeParser = {
   nodeNames: string[];
   parse?: (el: HTMLElement) => SlateElement<string, any> | YooptaBlockData[] | void;
+  shouldDeserialize?: (el: HTMLElement) => boolean;
 };
 
 export type LeafFormats<K extends string, V> = {

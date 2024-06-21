@@ -124,9 +124,26 @@ const Editor = ({
   const onMouseDown = (event: React.MouseEvent) => {
     if (isReadOnly) return;
 
-    // [TODO] - handle shift+click
-    // if (event.shiftKey) {
-    // }
+    if (event.shiftKey) {
+      const currentSelectionIndex = editor.selection;
+      if (!currentSelectionIndex) return;
+
+      const targetBlock = (event.target as HTMLElement).closest('div[data-yoopta-block]');
+      const targetBlockId = targetBlock?.getAttribute('data-yoopta-block-id') || '';
+      const targetBlockIndex = editor.children[targetBlockId]?.meta.order;
+      if (typeof targetBlockIndex !== 'number') return;
+
+      const indexesBetween = Array.from({ length: Math.abs(targetBlockIndex - currentSelectionIndex[0]) }).map(
+        (_, index) =>
+          targetBlockIndex > currentSelectionIndex[0]
+            ? currentSelectionIndex[0] + index + 1
+            : currentSelectionIndex[0] - index - 1,
+      );
+
+      editor.blur();
+      editor.setBlockSelected([currentSelectionIndex[0], ...indexesBetween], { only: true });
+      return;
+    }
 
     resetSelectionState();
     handleEmptyZoneClick(event);
@@ -166,7 +183,6 @@ const Editor = ({
       if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
         const htmlString = serializeHTML(editor, editor.getEditorValue());
         const blob = new Blob([htmlString], { type: 'text/html' });
-        console.log('blob', blob);
 
         const item = new ClipboardItem({ 'text/html': blob });
 
@@ -174,6 +190,14 @@ const Editor = ({
           const html = new DOMParser().parseFromString(htmlString, 'text/html');
           console.log('HTML copied\n', html.body);
         });
+        return;
+      }
+    }
+
+    if (HOTKEYS.isCut(event)) {
+      if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
+        // [TODO] - handle cut
+
         return;
       }
     }

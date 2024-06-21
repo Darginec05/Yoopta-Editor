@@ -1,6 +1,6 @@
 import YooptaEditor, { createYooptaEditor, YooEditor } from '@yoopta/editor';
 import parsers from '@yoopta/exports';
-import { ReactElement, ReactNode, useEffect, useState } from 'react';
+import { ReactElement, ReactNode, useEffect, useMemo, useState } from 'react';
 import { MARKS } from '../../../../utils/yoopta/marks';
 import { YOOPTA_PLUGINS } from '../../../../utils/yoopta/plugins';
 import s from './MarkdownPreview.module.scss';
@@ -48,7 +48,6 @@ const ResultMarkdown = ({ editor, markdown }) => {
           <YooptaEditor
             id="markdown"
             editor={editor}
-            value={undefined}
             readOnly
             className={s.preview}
             plugins={YOOPTA_PLUGINS}
@@ -71,7 +70,8 @@ const TABS_COMPONENTS: Record<View, any> = {
 };
 
 const MarkdownPreview = () => {
-  const editor = createYooptaEditor();
+  const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
+
   const [view, setView] = useState<View>('write');
   const [markdown, setMarkdown] = useState('');
 

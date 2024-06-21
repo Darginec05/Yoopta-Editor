@@ -32,12 +32,12 @@ const BasicExample = () => {
 
   return (
     <>
-      <div>
+      {/* <div>
         <MarkdownPreview />
       </div>
       <div>
         <HtmlPreview />
-      </div>
+      </div> */}
       <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={rectangleSelectionRef}>
         <YooptaEditor
           editor={editor}
