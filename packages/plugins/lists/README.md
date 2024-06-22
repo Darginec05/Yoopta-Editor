@@ -15,7 +15,7 @@ yarn add @yoopta/lists
 ### Usage
 
 ```jsx
-import { NumberedList, BulletedList, TodoList } from '@yoopta/paragraph';
+import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 
 const plugins = [NumberedList, BulletedList, TodoList];
 
@@ -46,7 +46,7 @@ const NumberedList = new YooptaPlugin({
 });
 ```
 
-### Options to extend
+### How to extend
 
 ```tsx
 const plugins = [
@@ -92,7 +92,7 @@ const BulletedList = new YooptaPlugin({
 });
 ```
 
-### Options to extend
+### How to extend
 
 ```tsx
 const plugins = [
@@ -139,7 +139,7 @@ const TodoList = new YooptaPlugin({
 });
 ```
 
-### Options to extend
+### How to extend
 
 ```tsx
 const plugins = [

@@ -38,7 +38,7 @@ const Paragraph = new YooptaPlugin({
 });
 ```
 
-### Options to extend
+### How to extend
 
 ```tsx
 const plugins = [

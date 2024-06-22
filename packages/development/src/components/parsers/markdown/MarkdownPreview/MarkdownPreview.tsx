@@ -48,7 +48,7 @@ const ResultMarkdown = ({ editor, markdown }) => {
           <YooptaEditor
             id="markdown"
             editor={editor}
-            readOnly
+            // readOnly
             className={s.preview}
             plugins={YOOPTA_PLUGINS}
             marks={MARKS}
