@@ -1,8 +1,8 @@
 import withBaseFullSetup from '@/components/examples/withBaseFullSetup';
 // import withCustomComponent from '@/components/examples';
 // import withOffline from '@/components/examples/withOffline';
-// import withExports from '@/components/examples/withExports';
 // import { CheckSourceCode } from '@/components/CheckSourceCode/CheckSourceCode';
+import withExports from '@/components/examples/withExports';
 import withCustomHTMLAttributes from '@/components/examples/withCustomHTMLAttributes';
 import withCustomMark from '@/components/examples/withCustomMark';
 import withCustomPlugin from '@/components/examples/withCustomPlugin';
@@ -22,15 +22,18 @@ import withEditorFocusBlur from '@/components/examples/withEditorFocusBlur';
 import withMigrationGuide from '@/components/examples/withMigrationGuide';
 
 import { Head } from '@/components/Head/Head';
-import { Sheet } from '@/components/ui/sheet';
 import { useRouter } from 'next/router';
 import { ClientOnly } from '@/components/ClientOnly/ClientOnly';
 import { CheckSourceCode } from '@/components/CheckSourceCode/CheckSourceCode';
+import dynamic from 'next/dynamic';
+
+const Sheet = dynamic(() => import('@/components/ui/sheet').then((mod) => mod.Sheet), { ssr: false });
 
 export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withBaseFullSetup,
   withCustomToolbar,
   withNotionActionMenu,
+  withExports,
   withDarkTheme,
   withMediaAndVoids,
   withExtendedPlugin,
@@ -46,7 +49,6 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withEditorFocusBlur,
   withCraftExample,
   withMigrationGuide,
-  // withExports,
   // withOffline,
   // withCustomComponent,
 };
@@ -122,6 +124,10 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
   },
   withEditorFocusBlur: {
     title: 'Example with focus/blur',
+    description: '',
+  },
+  withExports: {
+    title: 'HTML/Markdown exports',
     description: '',
   },
 };

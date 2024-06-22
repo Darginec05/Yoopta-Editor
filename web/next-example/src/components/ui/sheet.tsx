@@ -55,12 +55,15 @@ interface SheetContentProps
     VariantProps<typeof sheetVariants> {}
 
 const SheetContent = React.forwardRef<React.ElementRef<typeof SheetPrimitive.Content>, SheetContentProps>(
-  ({ side = 'right', className, children, ...props }, ref) => (
+  ({ side = 'right', className, children, onOpenChange, ...props }, ref) => (
     <SheetPortal>
       {/* <SheetOverlay /> */}
       <SheetPrimitive.Content ref={ref} className={cn(sheetVariants({ side }), className)} {...props}>
         {children}
-        <SheetPrimitive.Close className="opacity-70 absolute right-4 top-4 rounded-sm lg:hidden ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+        <SheetPrimitive.Close
+          onClick={onOpenChange}
+          className="opacity-70 absolute right-4 top-4 rounded-sm lg:hidden ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary"
+        >
           <Cross2Icon className="h-4 w-4" />
           <span className="sr-only">Close</span>
         </SheetPrimitive.Close>
@@ -102,9 +105,19 @@ type SheetProps = {
 };
 
 const Sheet = ({ items, path }: SheetProps) => {
-  const isMobile = window.innerWidth < 991;
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 640);
   const [isOpen, onOpenChange] = React.useState(!isMobile);
   const { setTheme } = useTheme();
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // React.useEffect(() => {
   //   // https://github.com/radix-ui/primitives/issues/1386
@@ -117,16 +130,18 @@ const Sheet = ({ items, path }: SheetProps) => {
 
   if (isMobile) {
     rootProps.modal = true;
-    rootProps.onOpenChange = onOpenChange;
   }
+
+  console.log('isMobile', isMobile);
+  console.log('isOpen', isOpen);
 
   return (
     <div className="fixed left-0 top-0 h-auto px-4 py-4 border-r border-b flex items-center w-[100vw] bg-white md:bg-transparent md:w-auto md:h-full md:block">
-      <SheetRoot open={isOpen} {...rootProps}>
-        <SheetTrigger onClick={() => onOpenChange(true)}>
+      <SheetRoot defaultOpen={!isMobile} open={isOpen} {...rootProps}>
+        <SheetTrigger onClick={() => onOpenChange((p) => !p)}>
           <Sidebar size={24} />
         </SheetTrigger>
-        <SheetContent side="left" autoFocus={false}>
+        <SheetContent side="left" autoFocus={false} onOpenChange={() => onOpenChange((p) => !p)}>
           <SheetHeader>
             <SheetTitle>Yoopta examples</SheetTitle>
             <SheetDescription>

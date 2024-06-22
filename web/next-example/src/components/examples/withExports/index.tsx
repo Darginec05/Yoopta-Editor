@@ -1,4 +1,4 @@
-import YooptaEditor, { createYooptaEditor } from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor, Elements, Blocks, useYooptaEditor } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
@@ -8,6 +8,8 @@ import Link from '@yoopta/link';
 import Callout from '@yoopta/callout';
 import Video from '@yoopta/video';
 import File from '@yoopta/file';
+import Accordion from '@yoopta/accordion';
+import { html, markdown } from '@yoopta/exports';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
@@ -15,16 +17,16 @@ import Code from '@yoopta/code';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
-// import { DividerPlugin } from './customPlugins/Divider';
-
-import { Sheet } from '@/components/ui/sheet';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import { useEffect, useMemo, useRef } from 'react';
-import { WITH_EDITOR_CONTROL_INIT_VALUE } from './initValue';
+import { WITH_BASIC_INIT_VALUE } from './initValue';
+import { HtmlPreview } from '@/components/parsers/html/HtmlPreview/HtmlPreview';
+import { MarkdownPreview } from '@/components/parsers/markdown/MarkdownPreview/MarkdownPreview';
 
 const plugins = [
   Paragraph,
+  Accordion,
   HeadingOne,
   HeadingTwo,
   HeadingThree,
@@ -94,7 +96,7 @@ const TOOLS = {
 
 const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
-function WithEditorInstanceExample() {
+function WithExportsExample() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
 
@@ -110,63 +112,22 @@ function WithEditorInstanceExample() {
 
   return (
     <div
-      className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center flex-col items-center"
+      className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center"
       ref={selectionRef}
     >
-      <div className="flex flex-col md:flex-row flex-wrap md:max-w-[850px]">
-        <button
-          type="button"
-          className="bg-[#007aff] text-[14px] text-nowrap my-2 mr-0 md:mr-4 text-[#fff] px-4 py-2 rounded-md"
-          onClick={() => editor.moveBlock('788364f8-a2f2-443d-897b-a38ec349bda8', [0])}
-        >
-          Move Code block to first position
-        </button>
-        <button
-          type="button"
-          className="bg-[#007aff] text-[14px] text-nowrap my-2 mr-0 md:mr-4 text-[#fff] px-4 py-2 rounded-md"
-          onClick={() => editor.duplicateBlock({ at: [0], focus: true })}
-        >
-          Duplicate first block
-        </button>
-        <button
-          type="button"
-          className="bg-[#007aff] text-[14px] text-nowrap my-2 mr-0 md:mr-4 text-[#fff] px-4 py-2 rounded-md"
-          onClick={() => editor.blocks.Callout.toggle({ focus: true, at: [1] })}
-        >
-          Toggle second block into Callout
-        </button>
-        <button
-          type="button"
-          className="bg-[#007aff] text-[14px] text-nowrap my-2 mr-0 md:mr-4 text-[#fff] px-4 py-2 rounded-md"
-          onClick={() => editor.setBlockSelected([0, 1, 2, 3])}
-        >
-          Select first four blocks
-        </button>
-        <button
-          type="button"
-          className="bg-[#007aff] text-[14px] text-nowrap my-2 mr-0 md:mr-4 text-[#fff] px-4 py-2 rounded-md"
-          onClick={() => editor.formats.highlight.update({ color: 'blue' })}
-        >
-          Select text and highlight into blue color
-        </button>
-        <button
-          type="button"
-          className="bg-[#007aff] text-[14px] text-nowrap my-2 mr-0 md:mr-4 text-[#fff] px-4 py-2 rounded-md"
-          onClick={() => editor.increaseBlockDepth()}
-        >
-          Increase depth for active block
-        </button>
-      </div>
+      <HtmlPreview />
+      <MarkdownPreview />
       <YooptaEditor
         editor={editor}
         plugins={plugins}
         tools={TOOLS}
         marks={MARKS}
         selectionBoxRoot={selectionRef}
-        value={WITH_EDITOR_CONTROL_INIT_VALUE}
+        value={WITH_BASIC_INIT_VALUE}
+        autoFocus
       />
     </div>
   );
 }
 
-export default WithEditorInstanceExample;
+export default WithExportsExample;

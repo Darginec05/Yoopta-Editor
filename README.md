@@ -35,7 +35,7 @@ All of this is customizable, extensible, and easy to set up!
 - Indent and outdent for every plugin by tabs and shift+tabs
 - Editor instance to programmatically control your content
 - Editor events for saving to DB in real-time
-- Exports in markdown, plain text, html - [in progress. Currently available only HTML exports]
+- Exports in markdown, plain text, html
 - Shortcuts, hotkeys. And customization for this!
 - Super AI tools not for HYPE, but for real useful work with editor content - [in progress]
 - The soul invested in the development of this editor 💙
