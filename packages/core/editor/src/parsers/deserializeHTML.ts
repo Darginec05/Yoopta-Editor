@@ -21,7 +21,6 @@ type PluginsMapByNodeNames = Record<
   {
     type: string;
     parse: PluginDeserializeParser['parse'];
-    shouldDeserialize: PluginDeserializeParser['shouldDeserialize'];
   }
 >;
 
@@ -45,7 +44,6 @@ function getMappedPluginByNodeNames(editor: YooEditor): PluginsMapByNodeNames {
               PLUGINS_NODE_NAME_MATCHERS_MAP[nodeName] = {
                 type: pluginType,
                 parse: deserialize.parse,
-                shouldDeserialize: deserialize.shouldDeserialize,
               };
             });
           }
@@ -105,6 +103,8 @@ export function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames
       props: { nodeType: 'block', ...rootElement.props },
     };
 
+    console.log('nodeElementOrBlocks', nodeElementOrBlocks);
+
     if (nodeElementOrBlocks) {
       if (Element.isElement(nodeElementOrBlocks)) {
         rootNode = nodeElementOrBlocks;
@@ -127,6 +127,8 @@ export function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames
         depth: 0,
       },
     });
+
+    console.log('blockData', blockData);
 
     return blockData;
   }
@@ -152,6 +154,8 @@ function mapNodeChildren(child) {
   }
 
   if (isYooptaBlock(child)) {
+    console.log('isYooptaBlock(child)', child);
+
     const block = child as YooptaBlockData;
     let text = '';
 

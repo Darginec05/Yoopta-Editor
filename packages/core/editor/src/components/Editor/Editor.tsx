@@ -163,7 +163,6 @@ const Editor = ({
   const onKeyDown = (event) => {
     if (isReadOnly) return;
 
-    // [TODO] - handle shift+click?
     if (HOTKEYS.isSelect(event)) {
       const isAllBlocksSelected = editor.selectedBlocks?.length === Object.keys(editor.children).length;
 

@@ -1,4 +1,4 @@
-import { buildBlockData, generateId, YooptaPlugin } from '@yoopta/editor';
+import { buildBlockData, generateId, SlateElement, YooptaPlugin } from '@yoopta/editor';
 import { ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';
 import { ImageRender } from '../ui/Image';
 
@@ -36,7 +36,8 @@ const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePlug
           console.log('el.nodeName', el.nodeName);
 
           if (el.nodeName === 'IMG') {
-            const props = {
+            const props: SlateElement<'image', ImageElementProps>['props'] = {
+              nodeType: 'void',
               src: el.getAttribute('src') || '',
               alt: el.getAttribute('alt') || '',
               srcSet: el.getAttribute('srcset') || '',
@@ -46,9 +47,7 @@ const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePlug
               },
             };
 
-            console.log('props', props);
-
-            const node = {
+            const node: SlateElement = {
               id: generateId(),
               type: 'image',
               children: [{ text: '' }],

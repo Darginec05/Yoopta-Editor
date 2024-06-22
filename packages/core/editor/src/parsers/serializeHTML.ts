@@ -46,7 +46,6 @@ export function serializeHTML(editor: YooEditor, content: YooptaContentValue) {
     const plugin = editor.plugins[blockData.type];
 
     if (plugin && plugin.parsers?.html?.serialize) {
-      // Используем serializeChildren для обработки вложенных элементов
       const content = serializeChildren(blockData.value[0].children, editor.plugins);
 
       return plugin.parsers.html.serialize(blockData.value[0], content);
