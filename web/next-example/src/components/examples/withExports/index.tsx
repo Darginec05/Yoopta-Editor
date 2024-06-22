@@ -9,7 +9,6 @@ import Callout from '@yoopta/callout';
 import Video from '@yoopta/video';
 import File from '@yoopta/file';
 import Accordion from '@yoopta/accordion';
-import { html, markdown } from '@yoopta/exports';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
@@ -20,7 +19,7 @@ import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import { useEffect, useMemo, useRef } from 'react';
-import { WITH_BASIC_INIT_VALUE } from './initValue';
+import { WITH_EXPORTS_INIT_VALUE } from './initValue';
 import { HtmlPreview } from '@/components/parsers/html/HtmlPreview/HtmlPreview';
 import { MarkdownPreview } from '@/components/parsers/markdown/MarkdownPreview/MarkdownPreview';
 
@@ -111,21 +110,25 @@ function WithExportsExample() {
   }, [editor]);
 
   return (
-    <div
-      className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center"
-      ref={selectionRef}
-    >
-      <HtmlPreview />
-      <MarkdownPreview />
-      <YooptaEditor
-        editor={editor}
-        plugins={plugins}
-        tools={TOOLS}
-        marks={MARKS}
-        selectionBoxRoot={selectionRef}
-        value={WITH_BASIC_INIT_VALUE}
-        autoFocus
-      />
+    <div className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex flex-col justify-center items-center">
+      <div ref={selectionRef}>
+        <YooptaEditor
+          editor={editor}
+          plugins={plugins}
+          tools={TOOLS}
+          marks={MARKS}
+          selectionBoxRoot={selectionRef}
+          value={WITH_EXPORTS_INIT_VALUE}
+          autoFocus
+          style={{
+            paddingBottom: 10,
+          }}
+        />
+      </div>
+      {/* <div className="flex flex-col">
+        <HtmlPreview />
+        <MarkdownPreview />
+      </div> */}
     </div>
   );
 }
