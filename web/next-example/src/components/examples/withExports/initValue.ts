@@ -46,7 +46,7 @@ export const WITH_EXPORTS_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 1,
+      order: 2,
       depth: 0,
     },
   },
@@ -68,7 +68,7 @@ export const WITH_EXPORTS_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 2,
+      order: 3,
       depth: 0,
     },
   },
@@ -87,7 +87,7 @@ export const WITH_EXPORTS_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 3,
+      order: 4,
       depth: 0,
     },
   },
@@ -109,7 +109,7 @@ export const WITH_EXPORTS_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 4,
+      order: 5,
       depth: 0,
     },
   },
@@ -131,53 +131,31 @@ export const WITH_EXPORTS_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 5,
+      order: 6,
       depth: 0,
     },
   },
   '49f2983e-537e-44c1-a2ee-cbbe234665af': {
     id: '49f2983e-537e-44c1-a2ee-cbbe234665af',
-    type: 'HeadingThree',
-    meta: {
-      order: 6,
-      depth: 0,
-    },
     value: [
       {
-        id: '9c57618a-6e17-4fe2-ac8b-9f560b55a4f1',
-        type: 'heading-three',
-        children: [
-          {
-            text: "Let's test it in playground for markdown",
-          },
-        ],
+        id: '2116aed9-4a4e-4d8a-8d1b-ecafc599193b',
+        type: 'heading-two',
         props: {
           nodeType: 'block',
         },
-      },
-    ],
-  },
-  '3824bda0-3340-4d57-bc67-f2ec6946163a': {
-    id: '3824bda0-3340-4d57-bc67-f2ec6946163a',
-    type: 'HeadingThree',
-    meta: {
-      order: 9,
-      depth: 0,
-    },
-    value: [
-      {
-        id: '9c57618a-6e17-4fe2-ac8b-9f560b55a4f1',
-        type: 'heading-three',
         children: [
           {
-            text: "Let's test it in playground for markdown",
+            text: 'Examples',
           },
         ],
-        props: {
-          nodeType: 'block',
-        },
       },
     ],
+    type: 'HeadingTwo',
+    meta: {
+      order: 7,
+      depth: 0,
+    },
   },
   '156dbe5e-df64-48fe-9f07-eb5ec7589e28': {
     id: '156dbe5e-df64-48fe-9f07-eb5ec7589e28',
@@ -198,37 +176,6 @@ export const WITH_EXPORTS_INIT_VALUE = {
     type: 'Paragraph',
     meta: {
       order: 11,
-      depth: 0,
-    },
-  },
-  '8ed1a248-7422-41d0-a4e7-7f8d3257b722': {
-    id: '8ed1a248-7422-41d0-a4e7-7f8d3257b722',
-    value: [
-      {
-        id: '1ddcf6bd-947f-4612-95d3-f73a8822dac8',
-        type: 'embed',
-        props: {
-          sizes: {
-            width: 650,
-            height: 400,
-          },
-          nodeType: 'void',
-          provider: {
-            type: null,
-            id: 'https://codesandbox.io/embed/jfwmkd?view=preview&module=%2Fsrc%2Fcomponents%2FMarkdown%2FMarkdownPreview.tsx',
-            url: 'https://codesandbox.io/embed/jfwmkd?view=preview&module=%2Fsrc%2Fcomponents%2FMarkdown%2FMarkdownPreview.tsx',
-          },
-        },
-        children: [
-          {
-            text: '',
-          },
-        ],
-      },
-    ],
-    type: 'Embed',
-    meta: {
-      order: 7,
       depth: 0,
     },
   },
@@ -272,39 +219,116 @@ export const WITH_EXPORTS_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 8,
+      order: 10,
       depth: 0,
     },
   },
-  'f0489a57-fc04-46d3-82f0-7ed6f6cb5c7f': {
-    id: 'f0489a57-fc04-46d3-82f0-7ed6f6cb5c7f',
+  '2ac5febd-baa3-4af9-af77-a8fb1a05e83a': {
+    id: '2ac5febd-baa3-4af9-af77-a8fb1a05e83a',
     value: [
       {
-        id: 'fd6d6885-b192-4fbf-bd35-d37cd439dcc0',
-        type: 'embed',
-        props: {
-          sizes: {
-            width: 650,
-            height: 400,
-          },
-          nodeType: 'void',
-          provider: {
-            type: null,
-            id: 'https://codesandbox.io/embed/gn95rd?view=preview&module=%2Fsrc%2Fcomponents%2FHTMLPreview%2FHTMLPreview.tsx',
-            url: 'https://codesandbox.io/embed/gn95rd?view=preview&module=%2Fsrc%2Fcomponents%2FHTMLPreview%2FHTMLPreview.tsx',
-          },
-        },
+        id: '27a73a95-ea0a-43be-85b8-74b2437fe62d',
+        type: 'paragraph',
         children: [
+          {
+            text: 'Docs - ',
+          },
+          {
+            type: 'link',
+            children: [
+              {
+                text: 'https://yoodocs.space/yoopta-editor/yoopta/exportsimports-fUZcaVYc7w',
+              },
+            ],
+            props: {
+              url: 'https://yoodocs.space/yoopta-editor/yoopta/exportsimports-fUZcaVYc7w',
+              target: '_blank',
+              rel: 'noopener noreferrer',
+            },
+          },
+          {
+            text: '',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'Paragraph',
+    meta: {
+      order: 1,
+      depth: 0,
+    },
+  },
+  '7d7bd51e-a4b7-44f4-86d8-481c6e0ba03d': {
+    id: '7d7bd51e-a4b7-44f4-86d8-481c6e0ba03d',
+    value: [
+      {
+        id: '2a7c49ea-98c8-4037-a339-a15e4cc53ec0',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'Markdown - ',
+          },
+          {
+            type: 'link',
+            children: [
+              {
+                text: 'https://yoopta.dev/examples/withExports/markdown',
+              },
+            ],
+            props: {
+              url: 'https://yoopta.dev/examples/withExports/markdown',
+              target: '_blank',
+              rel: 'noopener noreferrer',
+            },
+          },
           {
             text: '',
           },
         ],
       },
     ],
-    type: 'Embed',
+    type: 'BulletedList',
     meta: {
-      order: 10,
+      order: 8,
       depth: 0,
     },
+  },
+  '7516291d-9ea0-418d-a4e7-c24cd5b84ffc': {
+    id: '7516291d-9ea0-418d-a4e7-c24cd5b84ffc',
+    type: 'BulletedList',
+    meta: {
+      order: 9,
+      depth: 0,
+    },
+    value: [
+      {
+        id: '2a7c49ea-98c8-4037-a339-a15e4cc53ec0',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'HTML - ',
+          },
+          {
+            type: 'link',
+            children: [
+              {
+                text: 'https://yoopta.dev/examples/withExports/html',
+              },
+            ],
+            props: {
+              url: 'https://yoopta.dev/examples/withExports/html',
+              target: '_blank',
+              rel: 'noopener noreferrer',
+            },
+          },
+          {
+            text: '',
+          },
+        ],
+      },
+    ],
   },
 };

@@ -119,7 +119,7 @@ function WithExportsExample() {
           marks={MARKS}
           selectionBoxRoot={selectionRef}
           value={WITH_EXPORTS_INIT_VALUE}
-          autoFocus
+          readOnly
           style={{
             paddingBottom: 10,
           }}

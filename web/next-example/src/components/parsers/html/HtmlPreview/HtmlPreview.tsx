@@ -22,6 +22,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { html as codemirrorHTML } from '@codemirror/lang-html';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
+import { Head } from '@/components/Head/Head';
 
 const LANGUAGES_MAP = {
   html: {
@@ -108,6 +109,7 @@ type ViewProps = {
 const WriteHTML = ({ editor, html, onChange, onChangeFocusedEditor }: ViewProps) => {
   return (
     <div className="w-1/2 mr-1">
+      <p className="my-2">Type some html here and see the result on the right side (Deserializing 🎊)</p>
       <div className={s.commentBox}>
         <CodeMirror
           value={html}
@@ -149,22 +151,25 @@ const ResultHTML = ({ editor, html, onChange, focusedEditor, onChangeFocusedEdit
   }, [editor, focusedEditor]);
 
   return (
-    <div className="w-1/2 ml-1 bg-[#30363d]">
-      <div className={s.previewBox} onMouseDown={() => onChangeFocusedEditor('yoopta')}>
-        <YooptaEditor
-          id="html"
-          editor={editor}
-          className={s.preview}
-          plugins={plugins}
-          marks={MARKS}
-          autoFocus={false}
-          selectionBoxRoot={false}
-          placeholder="Write content..."
-          style={{
-            width: '100%',
-            paddingBottom: 0,
-          }}
-        />
+    <div className="w-1/2 ml-1 ">
+      <p className="my-2">Type some content here and see the html on the left side (Serializing 🎉)</p>
+      <div className="bg-[#30363d]">
+        <div className={s.previewBox} onMouseDown={() => onChangeFocusedEditor('yoopta')}>
+          <YooptaEditor
+            id="html"
+            editor={editor}
+            className={s.preview}
+            plugins={plugins}
+            marks={MARKS}
+            autoFocus={false}
+            selectionBoxRoot={false}
+            placeholder="Write content..."
+            style={{
+              width: '100%',
+              paddingBottom: 0,
+            }}
+          />
+        </div>
       </div>
     </div>
   );
@@ -180,29 +185,32 @@ const HtmlPreview = () => {
   const onChange = (code: string) => setHTML(code);
 
   return (
-    <div className="w-full p-0 m-0 min-h-[100vh] overflow-hidden">
-      <h1 className="my-2 text-center">
-        This example shows how <b>html</b> deserialize/serialize methods from <b>@yoopta/exports</b> work
-      </h1>
-      <div className="h-full">
-        <div className="flex h-full">
-          <WriteHTML
-            html={html}
-            onChange={onChange}
-            focusedEditor={focusedEditor}
-            onChangeFocusedEditor={(type) => setFocusedEditor(type)}
-            editor={editor}
-          />
-          <ResultHTML
-            html={html}
-            onChange={onChange}
-            focusedEditor={focusedEditor}
-            onChangeFocusedEditor={(type) => setFocusedEditor(type)}
-            editor={editor}
-          />
+    <>
+      <Head />
+      <div className="w-full p-0 m-0 min-h-[100vh] overflow-hidden px-2">
+        <h1 className="text-center my-4 mx-auto scroll-m-20 text-3xl font-bold tracking-tight p-2 sm:p-0 sm:max-w-[60%]">
+          This example shows how <b>html</b> deserialize/serialize methods from <b>@yoopta/exports</b> work
+        </h1>
+        <div className="h-full">
+          <div className="flex h-full">
+            <WriteHTML
+              html={html}
+              onChange={onChange}
+              focusedEditor={focusedEditor}
+              onChangeFocusedEditor={(type) => setFocusedEditor(type)}
+              editor={editor}
+            />
+            <ResultHTML
+              html={html}
+              onChange={onChange}
+              focusedEditor={focusedEditor}
+              onChangeFocusedEditor={(type) => setFocusedEditor(type)}
+              editor={editor}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

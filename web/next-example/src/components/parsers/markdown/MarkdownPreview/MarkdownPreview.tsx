@@ -26,6 +26,7 @@ import { html as codemirrorHTML } from '@codemirror/lang-html';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 
 import { html, markdown } from '@yoopta/exports';
+import { Head } from '@/components/Head/Head';
 
 const LANGUAGES_MAP = {
   markdown: {
@@ -122,6 +123,7 @@ type ViewProps = {
 const WriteMarkdown = ({ editor, markdown, onChange, onChangeFocusedEditor }: ViewProps) => {
   return (
     <div className="w-1/2 mr-1">
+      <p className="my-2">Type some markdown here and see the result on the right side (Deserializing 🎊)</p>
       <div className={s.commentBox}>
         <CodeMirror
           value={markdown}
@@ -163,22 +165,25 @@ const ResultMarkdown = ({ editor, markdown, onChange, focusedEditor, onChangeFoc
   }, [editor, focusedEditor]);
 
   return (
-    <div className="w-1/2 ml-1 bg-[#30363d]">
-      <div className={s.previewBox} onMouseDown={() => onChangeFocusedEditor('yoopta')}>
-        <YooptaEditor
-          id="markdown"
-          editor={editor}
-          className={s.preview}
-          plugins={plugins}
-          marks={MARKS}
-          autoFocus={false}
-          selectionBoxRoot={false}
-          placeholder="Write content..."
-          style={{
-            width: '100%',
-            paddingBottom: 0,
-          }}
-        />
+    <div className="w-1/2 ml-1 ">
+      <p className="my-2">Type some content here and see the markdown on the left side (Serializing 🎉)</p>
+      <div className="bg-[#30363d]">
+        <div className={s.previewBox} onMouseDown={() => onChangeFocusedEditor('yoopta')}>
+          <YooptaEditor
+            id="markdown"
+            editor={editor}
+            className={s.preview}
+            plugins={plugins}
+            marks={MARKS}
+            autoFocus={false}
+            selectionBoxRoot={false}
+            placeholder="Write content..."
+            style={{
+              width: '100%',
+              paddingBottom: 0,
+            }}
+          />
+        </div>
       </div>
     </div>
   );
@@ -194,29 +199,32 @@ const MarkdownPreview = () => {
   const onChange = (code: string) => setMarkdown(code);
 
   return (
-    <div className="w-full p-0 m-0 min-h-[100vh] overflow-hidden">
-      <h1 className="my-2 text-center">
-        This example shows how <b>markdown</b> deserialize/serialize methods from <b>@yoopta/exports</b> work
-      </h1>
-      <div className="h-full">
-        <div className="flex h-full">
-          <WriteMarkdown
-            markdown={markdown}
-            onChange={onChange}
-            focusedEditor={focusedEditor}
-            onChangeFocusedEditor={(type) => setFocusedEditor(type)}
-            editor={editor}
-          />
-          <ResultMarkdown
-            markdown={markdown}
-            onChange={onChange}
-            focusedEditor={focusedEditor}
-            onChangeFocusedEditor={(type) => setFocusedEditor(type)}
-            editor={editor}
-          />
+    <>
+      <Head />
+      <div className="w-full p-0 m-0 min-h-[100vh] overflow-hidden px-2">
+        <h1 className="text-center my-4 mx-auto scroll-m-20 text-3xl font-bold tracking-tight max-w-[60%]">
+          This example shows how <b>markdown</b> deserialize/serialize methods from <b>@yoopta/exports</b> work
+        </h1>
+        <div className="h-full">
+          <div className="flex h-full">
+            <WriteMarkdown
+              markdown={markdown}
+              onChange={onChange}
+              focusedEditor={focusedEditor}
+              onChangeFocusedEditor={(type) => setFocusedEditor(type)}
+              editor={editor}
+            />
+            <ResultMarkdown
+              markdown={markdown}
+              onChange={onChange}
+              focusedEditor={focusedEditor}
+              onChangeFocusedEditor={(type) => setFocusedEditor(type)}
+              editor={editor}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
