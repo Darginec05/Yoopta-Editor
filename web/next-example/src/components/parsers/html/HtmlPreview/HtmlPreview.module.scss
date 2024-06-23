@@ -1,5 +1,5 @@
 .root {
-  width: 560px;
+  width: 100%;
   padding: 0;
   margin: 0;
   border: 0;
@@ -85,16 +85,15 @@
 
 .commentBox {
   border-color: transparent;
-  outline: 2px var(--focus-outlineColor, var(--color-accent-emphasis)) solid;
-  outline-offset: -1px;
-  box-shadow: none;
   display: block;
   width: auto;
   height: 100%;
-  margin: 0.5rem;
   overflow: hidden;
-  border: 1px solid #30363d;
-  border-radius: 6px;
+  border-right: 1px solid #30363d;
+
+  &>div {
+    height: 100%;
+  }
 }
 
 .textarea {
@@ -113,9 +112,10 @@
 }
 
 .previewBox {
-  padding: 10px;
   color: #fff;
   min-height: 300px;
+  padding: 28px 16px;
+  height: 100%;
 }
 
 .preview {

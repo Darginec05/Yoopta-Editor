@@ -31,6 +31,8 @@
     "@yoopta/paragraph": "^4.5.2-rc.0",
     "@yoopta/toolbar": "^4.5.2-rc.0",
     "@yoopta/video": "^4.5.2-rc.0",
+    "slate": "^0.102.0",
+    "slate-react": "^0.102.0",
     "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",
     "clsx": "^2.1.0",
@@ -41,11 +43,15 @@
     "react": "^18",
     "react-dom": "^18",
     "sass": "^1.75.0",
-    "slate": "^0.102.0",
-    "slate-react": "^0.102.0",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
-    "use-debounce": "^10.0.0"
+    "use-debounce": "^10.0.0",
+    "@codemirror/lang-html": "^6.4.8",
+    "@codemirror/lang-markdown": "^6.2.4",
+    "@codemirror/lang-xml": "^6.1.0",
+    "@uiw/codemirror-theme-vscode": "^4.21.24",
+    "@uiw/react-codemirror": "^4.21.25",
+    "codemirror": "^6.0.1"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",

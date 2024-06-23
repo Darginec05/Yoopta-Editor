@@ -47,7 +47,6 @@ export function serializeHTML(editor: YooEditor, content: YooptaContentValue) {
 
     if (plugin && plugin.parsers?.html?.serialize) {
       const content = serializeChildren(blockData.value[0].children, editor.plugins);
-
       return plugin.parsers.html.serialize(blockData.value[0], content);
     }
 

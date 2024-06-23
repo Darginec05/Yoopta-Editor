@@ -132,9 +132,6 @@ const Sheet = ({ items, path }: SheetProps) => {
     rootProps.modal = true;
   }
 
-  console.log('isMobile', isMobile);
-  console.log('isOpen', isOpen);
-
   return (
     <div className="fixed left-0 top-0 h-auto px-4 py-4 border-r border-b flex items-center w-[100vw] bg-white md:bg-transparent md:w-auto md:h-full md:block">
       <SheetRoot defaultOpen={!isMobile} open={isOpen} {...rootProps}>
@@ -145,7 +142,7 @@ const Sheet = ({ items, path }: SheetProps) => {
           <SheetHeader>
             <SheetTitle>Yoopta examples</SheetTitle>
             <SheetDescription>
-              Wanna more examples?
+              Found issue?
               <br />
               <a
                 href="https://github.com/Darginec05/Yoopta-Editor/issues"
@@ -153,7 +150,7 @@ const Sheet = ({ items, path }: SheetProps) => {
                 rel="noopener"
                 className="text-sky-500"
               >
-                Create issues in repo
+                Repoort it in repo
               </a>
             </SheetDescription>
             <div className="py-2">

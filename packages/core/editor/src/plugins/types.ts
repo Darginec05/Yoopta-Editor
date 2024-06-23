@@ -45,6 +45,7 @@ export type PluginElement<T> = {
   options?: PluginElementOptions;
   asRoot?: boolean;
   children?: string[];
+  rootPlugin?: string;
 };
 
 export type PluginElementsMap<TKeys extends string = string, TProps = PluginDefaultProps> = {

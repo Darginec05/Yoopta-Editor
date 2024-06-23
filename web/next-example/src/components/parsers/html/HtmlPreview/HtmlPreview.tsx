@@ -1,4 +1,4 @@
-import YooptaEditor, { createYooptaEditor, YooEditor } from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor, YooEditor, YooptaContentValue } from '@yoopta/editor';
 import parsers from '@yoopta/exports';
 import s from './HtmlPreview.module.scss';
 
@@ -15,11 +15,30 @@ import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import Code from '@yoopta/code';
+import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import { useEffect, useMemo, useState } from 'react';
 
-import { html, markdown } from '@yoopta/exports';
+import { html as codemirrorHTML } from '@codemirror/lang-html';
+import { vscodeDark } from '@uiw/codemirror-theme-vscode';
+
+const LANGUAGES_MAP = {
+  html: {
+    type: 'html',
+    name: 'HTML',
+    extension: codemirrorHTML(),
+  },
+};
+
+const codeMirrorSetup: BasicSetupOptions = {
+  lineNumbers: false,
+  autocompletion: false,
+  foldGutter: false,
+  highlightActiveLineGutter: false,
+  highlightActiveLine: false,
+  tabSize: 2,
+};
 
 const plugins = [
   Paragraph,
@@ -78,90 +97,110 @@ const plugins = [
 
 const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
-type View = 'write' | 'preview';
+type ViewProps = {
+  editor: YooEditor;
+  html: string;
+  onChange: (code: string) => void;
+  focusedEditor: FocusedView;
+  onChangeFocusedEditor: (type: FocusedView) => void;
+};
 
-const WriteHTML = ({ editor, html, onChange }) => {
+const WriteHTML = ({ editor, html, onChange, onChangeFocusedEditor }: ViewProps) => {
   return (
-    <div>
-      <div>
-        <div>
-          <div>
-            <div className={s.commentBox}>
-              <textarea placeholder="Add your html here..." value={html} onChange={onChange} className={s.textarea} />
-            </div>
-          </div>
-        </div>
+    <div className="w-1/2 mr-1">
+      <div className={s.commentBox}>
+        <CodeMirror
+          value={html}
+          height="100%"
+          extensions={[LANGUAGES_MAP.html.extension]}
+          onChange={onChange}
+          // width="100%"
+          theme={vscodeDark}
+          className="yoopta-code-cm-editor"
+          placeholder="Write some html..."
+          basicSetup={codeMirrorSetup}
+          style={{ caretColor: 'red', tabSize: 2 }}
+          onFocus={() => onChangeFocusedEditor('html')}
+        />
       </div>
     </div>
   );
 };
 
-const ResultHTML = ({ editor, html }) => {
+const ResultHTML = ({ editor, html, onChange, focusedEditor, onChangeFocusedEditor }: ViewProps) => {
   useEffect(() => {
+    if (focusedEditor === 'yoopta') return;
+
     if (html.length === 0) return;
     const deserialized = parsers.html.deserialize(editor, html);
     editor.setEditorValue(deserialized);
-  }, [html]);
+  }, [html, focusedEditor]);
+
+  useEffect(() => {
+    const handleChange = (value: YooptaContentValue) => {
+      const string = parsers.html.serialize(editor, value);
+      onChange(string);
+    };
+
+    if (focusedEditor === 'yoopta') {
+      editor.on('change', handleChange);
+      return () => editor.off('change', handleChange);
+    }
+  }, [editor, focusedEditor]);
 
   return (
-    <div>
-      <div className={s.previewBox}>
-        {html.length === 0 ? (
-          'Nothing to preview'
-        ) : (
-          <YooptaEditor
-            id="html"
-            editor={editor}
-            readOnly
-            className={s.preview}
-            plugins={plugins}
-            marks={MARKS}
-            selectionBoxRoot={false}
-            style={{
-              width: '100%',
-              paddingBottom: 0,
-            }}
-          />
-        )}
+    <div className="w-1/2 ml-1 bg-[#30363d]">
+      <div className={s.previewBox} onMouseDown={() => onChangeFocusedEditor('yoopta')}>
+        <YooptaEditor
+          id="html"
+          editor={editor}
+          className={s.preview}
+          plugins={plugins}
+          marks={MARKS}
+          autoFocus={false}
+          selectionBoxRoot={false}
+          placeholder="Write content..."
+          style={{
+            width: '100%',
+            paddingBottom: 0,
+          }}
+        />
       </div>
     </div>
   );
 };
 
-const TABS_COMPONENTS: Record<View, any> = {
-  write: WriteHTML,
-  preview: ResultHTML,
-};
+type FocusedView = 'html' | 'yoopta';
 
 const HtmlPreview = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
+  const [html, setHTML] = useState('');
+  const [focusedEditor, setFocusedEditor] = useState<FocusedView>('html');
 
-  const [view, setView] = useState<View>('write');
-  const [html, setHtml] = useState('');
-
-  const ViewComponent = TABS_COMPONENTS[view] || <></>;
+  const onChange = (code: string) => setHTML(code);
 
   return (
-    <div className={s.root}>
-      <div>
-        <legend>
-          <h4>Add HTML</h4>
-        </legend>
-      </div>
-      <label className={s.label}>Comment</label>
-      <div className={s.box}>
-        <div className={s.tabNav}>
-          <div className={s.tabs}>
-            <button onClick={() => setView('write')} className={s.tab} aria-selected={view === 'write'}>
-              Write
-            </button>
-            <button onClick={() => setView('preview')} className={s.tab} aria-selected={view === 'preview'}>
-              Preview
-            </button>
-          </div>
-          <div className={s.toolbar}></div>
+    <div className="w-full p-0 m-0 min-h-[100vh] overflow-hidden">
+      <h1 className="my-2 text-center">
+        This example shows how <b>html</b> deserialize/serialize methods from <b>@yoopta/exports</b> work
+      </h1>
+      <div className="h-full">
+        <div className="flex h-full">
+          <WriteHTML
+            html={html}
+            onChange={onChange}
+            focusedEditor={focusedEditor}
+            onChangeFocusedEditor={(type) => setFocusedEditor(type)}
+            editor={editor}
+          />
+          <ResultHTML
+            html={html}
+            onChange={onChange}
+            focusedEditor={focusedEditor}
+            onChangeFocusedEditor={(type) => setFocusedEditor(type)}
+            editor={editor}
+          />
         </div>
-        <ViewComponent html={html} onChange={(e) => setHtml(e.target.value)} editor={editor} />
       </div>
     </div>
   );

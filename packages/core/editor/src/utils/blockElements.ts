@@ -120,6 +120,8 @@ export function getPluginByInlineElement(
   plugins: YooEditor['plugins'],
   elementType: string,
 ): Plugin<string, unknown> | undefined {
-  const plugin = Object.values(plugins).find((plugin) => plugin.type === plugin.elements?.[elementType].original);
+  const plugin = Object.values(plugins).find((plugin) => {
+    return plugin.type === plugin.elements?.[elementType]?.rootPlugin;
+  });
   return plugin;
 }

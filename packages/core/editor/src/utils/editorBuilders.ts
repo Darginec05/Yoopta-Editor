@@ -132,7 +132,7 @@ export function buildPlugins(
         const nodeType = element.props?.nodeType;
 
         if (nodeType === 'inline' || nodeType === 'inlineVoid') {
-          inlineTopLevelPlugins[type] = { ...element, original: plugin.type };
+          inlineTopLevelPlugins[type] = { ...element, rootPlugin: plugin.type };
         }
       });
     }

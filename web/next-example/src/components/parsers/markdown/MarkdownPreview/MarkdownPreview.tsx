@@ -1,4 +1,4 @@
-import YooptaEditor, { createYooptaEditor, YooEditor } from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor, YooEditor, YooptaContentValue } from '@yoopta/editor';
 import parsers from '@yoopta/exports';
 import s from './MarkdownPreview.module.scss';
 
@@ -15,11 +15,44 @@ import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import Code from '@yoopta/code';
+import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import { useEffect, useMemo, useState } from 'react';
 
+import { markdown as codemirrorMD } from '@codemirror/lang-markdown';
+import { xml } from '@codemirror/lang-xml';
+import { html as codemirrorHTML } from '@codemirror/lang-html';
+import { vscodeDark } from '@uiw/codemirror-theme-vscode';
+
 import { html, markdown } from '@yoopta/exports';
+
+const LANGUAGES_MAP = {
+  markdown: {
+    type: 'markdown',
+    name: 'Markdown',
+    extension: codemirrorMD(),
+  },
+  xml: {
+    type: 'xml',
+    name: 'XML',
+    extension: xml(),
+  },
+  html: {
+    type: 'html',
+    name: 'HTML',
+    extension: codemirrorHTML(),
+  },
+};
+
+const codeMirrorSetup: BasicSetupOptions = {
+  lineNumbers: false,
+  autocompletion: false,
+  foldGutter: false,
+  highlightActiveLineGutter: false,
+  highlightActiveLine: false,
+  tabSize: 2,
+};
 
 const plugins = [
   Paragraph,
@@ -78,95 +111,110 @@ const plugins = [
 
 const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
-type View = 'write' | 'preview';
+type ViewProps = {
+  editor: YooEditor;
+  markdown: string;
+  onChange: (code: string) => void;
+  focusedEditor: FocusedView;
+  onChangeFocusedEditor: (type: FocusedView) => void;
+};
 
-const WriteMarkdown = ({ editor, markdown, onChange }) => {
+const WriteMarkdown = ({ editor, markdown, onChange, onChangeFocusedEditor }: ViewProps) => {
   return (
-    <div>
-      <div>
-        <div>
-          <div>
-            <div className={s.commentBox}>
-              <textarea
-                placeholder="Add your markdown here..."
-                value={markdown}
-                onChange={onChange}
-                className={s.textarea}
-              />
-            </div>
-          </div>
-        </div>
+    <div className="w-1/2 mr-1">
+      <div className={s.commentBox}>
+        <CodeMirror
+          value={markdown}
+          height="100%"
+          extensions={[LANGUAGES_MAP.markdown.extension]}
+          onChange={onChange}
+          width="100%"
+          theme={vscodeDark}
+          className="yoopta-code-cm-editor"
+          placeholder="Write some markdown..."
+          basicSetup={codeMirrorSetup}
+          style={{ caretColor: 'red', tabSize: 2 }}
+          onFocus={() => onChangeFocusedEditor('markdown')}
+        />
       </div>
     </div>
   );
 };
 
-const ResultMarkdown = ({ editor, markdown }) => {
+const ResultMarkdown = ({ editor, markdown, onChange, focusedEditor, onChangeFocusedEditor }: ViewProps) => {
   useEffect(() => {
+    if (focusedEditor === 'yoopta') return;
+
     if (markdown.length === 0) return;
     const deserialized = parsers.markdown.deserialize(editor, markdown);
     editor.setEditorValue(deserialized);
-  }, [markdown]);
+  }, [markdown, focusedEditor]);
+
+  useEffect(() => {
+    const handleChange = (value: YooptaContentValue) => {
+      const string = parsers.markdown.serialize(editor, value);
+      onChange(string);
+    };
+
+    if (focusedEditor === 'yoopta') {
+      editor.on('change', handleChange);
+      return () => editor.off('change', handleChange);
+    }
+  }, [editor, focusedEditor]);
 
   return (
-    <div>
-      <div className={s.previewBox}>
-        {markdown.length === 0 ? (
-          'Nothing to preview'
-        ) : (
-          <YooptaEditor
-            id="markdown"
-            editor={editor}
-            // readOnly
-            className={s.preview}
-            plugins={plugins}
-            marks={MARKS}
-            selectionBoxRoot={false}
-            style={{
-              width: '100%',
-              paddingBottom: 0,
-            }}
-          />
-        )}
+    <div className="w-1/2 ml-1 bg-[#30363d]">
+      <div className={s.previewBox} onMouseDown={() => onChangeFocusedEditor('yoopta')}>
+        <YooptaEditor
+          id="markdown"
+          editor={editor}
+          className={s.preview}
+          plugins={plugins}
+          marks={MARKS}
+          autoFocus={false}
+          selectionBoxRoot={false}
+          placeholder="Write content..."
+          style={{
+            width: '100%',
+            paddingBottom: 0,
+          }}
+        />
       </div>
     </div>
   );
 };
 
-const TABS_COMPONENTS: Record<View, any> = {
-  write: WriteMarkdown,
-  preview: ResultMarkdown,
-};
+type FocusedView = 'markdown' | 'yoopta';
 
 const MarkdownPreview = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
-
-  const [view, setView] = useState<View>('write');
   const [markdown, setMarkdown] = useState('');
+  const [focusedEditor, setFocusedEditor] = useState<FocusedView>('markdown');
 
-  const ViewComponent = TABS_COMPONENTS[view] || <></>;
+  const onChange = (code: string) => setMarkdown(code);
 
   return (
-    <div className={s.root}>
-      <div>
-        <legend>
-          <h4>Add markdown</h4>
-        </legend>
-      </div>
-      <label className={s.label}>Comment</label>
-      <div className={s.box}>
-        <div className={s.tabNav}>
-          <div className={s.tabs}>
-            <button onClick={() => setView('write')} className={s.tab} aria-selected={view === 'write'}>
-              Write
-            </button>
-            <button onClick={() => setView('preview')} className={s.tab} aria-selected={view === 'preview'}>
-              Preview
-            </button>
-          </div>
-          <div className={s.toolbar}></div>
+    <div className="w-full p-0 m-0 min-h-[100vh] overflow-hidden">
+      <h1 className="my-2 text-center">
+        This example shows how <b>markdown</b> deserialize/serialize methods from <b>@yoopta/exports</b> work
+      </h1>
+      <div className="h-full">
+        <div className="flex h-full">
+          <WriteMarkdown
+            markdown={markdown}
+            onChange={onChange}
+            focusedEditor={focusedEditor}
+            onChangeFocusedEditor={(type) => setFocusedEditor(type)}
+            editor={editor}
+          />
+          <ResultMarkdown
+            markdown={markdown}
+            onChange={onChange}
+            focusedEditor={focusedEditor}
+            onChangeFocusedEditor={(type) => setFocusedEditor(type)}
+            editor={editor}
+          />
         </div>
-        <ViewComponent markdown={markdown} onChange={(e) => setMarkdown(e.target.value)} editor={editor} />
       </div>
     </div>
   );
