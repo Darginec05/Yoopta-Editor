@@ -361,9 +361,6 @@ const Editor = ({
       ref={yooptaEditorRef}
       onMouseDown={onMouseDown}
       onBlur={onBlur}
-      /** This will not work */
-      // onCopy={(event: React.ClipboardEvent) => {
-      // }}
     >
       <RenderBlocks editor={editor} marks={marks} placeholder={placeholder} />
       {selectionBoxRoot !== false && (

@@ -1553,6 +1553,14 @@ const Buttons = ({ onSubmit }: any) => {
       <button
         className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
         onClick={() => {
+          editor.increaseBlockDepth({ at: [0] });
+        }}
+      >
+        Increase
+      </button>
+      <button
+        className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
+        onClick={() => {
           const data = editor.getEditorValue();
           console.log('HTML serialize data', html.serialize(editor, data));
         }}
