@@ -6,10 +6,8 @@ import YooptaEditor, {
   YooptaBlockData,
   YooptaContentValue,
 } from '@yoopta/editor';
-import { html, markdown } from '@yoopta/exports';
+import { html, markdown, plainText } from '@yoopta/exports';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { MarkdownPreview } from '../../components/parsers/markdown/MarkdownPreview/MarkdownPreview';
-import { HtmlPreview } from '../../components/parsers/html/HtmlPreview/HtmlPreview';
 import { MARKS } from '../../utils/yoopta/marks';
 import { YOOPTA_PLUGINS } from '../../utils/yoopta/plugins';
 import { TOOLS } from '../../utils/yoopta/tools';
@@ -213,10 +211,10 @@ const Buttons = ({ onSubmit }: any) => {
         className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
         onClick={() => {
           const data = editor.getEditorValue();
-          console.log('MD serialize data \n', markdown.serialize(editor, data));
+          console.log('plain text serialize data \n', plainText.serialize(editor, data));
         }}
       >
-        Serialize to Markdown
+        Serialize to Plaintext
       </button>
       <button
         className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"

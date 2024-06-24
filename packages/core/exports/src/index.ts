@@ -7,14 +7,14 @@ import { serializeText } from './text/serialize';
 
 const markdown = { deserialize: deserializeMarkdown, serialize: serializeMarkdown };
 const html = { deserialize: deserializeHTML, serialize: serializeHTML };
-const text = { deserialize: deserializeText, serialize: serializeText };
+const plainText = { deserialize: deserializeText, serialize: serializeText };
 
 const yooptaExports = {
   markdown,
   html,
-  text,
+  plainText,
 };
 
-export { markdown, html, text };
+export { markdown, html, plainText };
 
 export default yooptaExports;

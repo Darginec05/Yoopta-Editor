@@ -209,9 +209,11 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     (event: React.FocusEvent) => {
       if (editor.readOnly) return;
 
-      IS_FOCUSED_EDITOR.set(editor, true);
-      // [TODO] - as test
-      editor.emit('focus', true);
+      if (!editor.isFocused()) {
+        IS_FOCUSED_EDITOR.set(editor, true);
+        // [TODO] - as test
+        editor.emit('focus', true);
+      }
       eventHandlers?.onFocus?.(event);
     },
     [eventHandlers.onFocus, editor.readOnly],
@@ -224,7 +226,6 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       eventHandlers?.onPaste?.(event);
 
       const data = event.clipboardData;
-
       const html = data.getData('text/html');
       const parsedHTML = new DOMParser().parseFromString(html, 'text/html');
 
