@@ -30,6 +30,8 @@ export {
   PluginElementRenderProps,
   PluginEventHandlerOptions,
   PluginCustomEditorRenderProps,
+  PluginDeserializeParser,
+  PluginserializeParser,
   YooptaMarkProps,
 } from './plugins/types';
 

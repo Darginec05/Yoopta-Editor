@@ -34,7 +34,7 @@ const File = new YooptaPlugin<FilePluginElements, FileElementProps, FilePluginOp
         }</a></div>`;
       },
       deserialize: {
-        nodeNames: [],
+        nodeNames: ['A'],
         parse: (el) => {
           if (el.nodeName === 'A') {
             const hasDownloadAttr = !!el.getAttribute('download');

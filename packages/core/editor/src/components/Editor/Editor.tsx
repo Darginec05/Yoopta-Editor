@@ -178,8 +178,10 @@ const Editor = ({
       }
     }
 
-    if (HOTKEYS.isCopy(event)) {
+    if (HOTKEYS.isCopy(event) || HOTKEYS.isCut(event)) {
       if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
+        event.preventDefault();
+
         const htmlString = serializeHTML(editor, editor.getEditorValue());
         const blob = new Blob([htmlString], { type: 'text/html' });
 
@@ -189,14 +191,18 @@ const Editor = ({
           const html = new DOMParser().parseFromString(htmlString, 'text/html');
           console.log('HTML copied\n', html.body);
         });
-        return;
-      }
-    }
 
-    if (HOTKEYS.isCut(event)) {
-      if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
-        // [TODO] - handle cut
+        if (HOTKEYS.isCut(event)) {
+          const isAllBlocksSelected = editor.selectedBlocks.length === Object.keys(editor.children).length;
 
+          editor.deleteBlocks({ paths: editor.selectedBlocks, focus: false });
+          editor.setBlockSelected(null);
+          resetSelectionState();
+
+          if (isAllBlocksSelected) {
+            editor.insertBlock(buildBlockData({ id: generateId() }), { at: [0], focus: true });
+          }
+        }
         return;
       }
     }
