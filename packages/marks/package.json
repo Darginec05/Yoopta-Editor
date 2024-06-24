@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/marks",
-  "version": "4.5.0",
+  "version": "4.5.2-rc.2",
   "description": "Marks for Yoopta Editor",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
@@ -26,8 +26,8 @@
     "url": "git+https://github.com/Darginec05/Editor-Yoopta.git"
   },
   "scripts": {
-    "test": "node ./__tests__/@yoopta/paragraph.test.js",
     "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development",
+    "test": "node ./__tests__/@yoopta/paragraph.test.js",
     "prepublishOnly": "yarn build",
     "build": "rollup --config rollup.config.js --bundleConfigAsCjs --environment NODE_ENV:production"
   },
