@@ -23,29 +23,25 @@ import { html } from '@yoopta/exports';
 const Editor = () => {
   const editor = useMemo(() => createYooptaEditor(), []);
 
-  const deserializeHTML = () => {};
+  // from html to @yoopta content
+  const deserializeHTML = () => {
+    const htmlString = '<h1>First title</h1>';
+    const content = html.deserialize(editor, htmlString);
+
+    editor.setEditorValue(content);
+  };
+
+  // from @yoopta content to html string
+  const serializeHTML = () => {
+    const data = editor.getEditorValue();
+    const htmlString = html.serialize(editor, data);
+    console.log('html string', htmlString);
+  };
 
   return (
     <div>
-      <button
-        onClick={() => {
-          const htmlString = '<h1>First title</h1>';
-          const value = html.deserialize(editor, htmlString);
-
-          editor.setEditorValue(value);
-        }}
-      >
-        Deserialize from html to content
-      </button>
-
-      <button
-        onClick={() => {
-          const data = editor.getEditorValue();
-          const htmlString = html.serialize(editor, data);
-        }}
-      >
-        Serialize from content to html
-      </button>
+      <button onClick={deserializeHTML}>Deserialize from html to content</button>
+      <button onClick={serializeHTML}>Serialize from content to html</button>
 
       <YooptaEditor editor={editor} plugins={plugins} />
     </div>
@@ -63,29 +59,59 @@ import { markdown } from '@yoopta/exports';
 const Editor = () => {
   const editor = useMemo(() => createYooptaEditor(), []);
 
-  const deserializeHTML = () => {};
+  // from markdown to @yoopta content
+  const deserializeMarkdown = () => {
+    const markdownString = '# First title';
+    const value = markdown.deserialize(editor, markdownString);
+
+    editor.setEditorValue(value);
+  };
+
+  // from @yoopta content to markdown string
+  const serializeMarkdown = () => {
+    const data = editor.getEditorValue();
+    const markdownString = markdown.serialize(editor, data);
+    console.log('markdown string', markdownString);
+  };
 
   return (
     <div>
-      <button
-        onClick={() => {
-          const markdownString = '# First title';
-          const value = markdown.deserialize(editor, markdownString);
+      <button onClick={deserializeMarkdown}>Deserialize from markdown to content</button>
+      <button onClick={serializeMarkdown}>Serialize from content to markdown</button>
 
-          editor.setEditorValue(value);
-        }}
-      >
-        Deserialize from markdown to content
-      </button>
+      <YooptaEditor editor={editor} plugins={plugins} />
+    </div>
+  );
+};
+```
 
-      <buttonw
-        onClick={() => {
-          const data = editor.getEditorValue();
-          const markdownString = markdown.serialize(editor, data);
-        }}
-      >
-        Serialize from content to markdown
-      </button>
+Plain text exports/imports example
+
+```jsx
+import { plainText } from '@yoopta/exports';
+
+const Editor = () => {
+  const editor = useMemo(() => createYooptaEditor(), []);
+
+  // from plain text to @yoopta content
+  const deserializeText = () => {
+    const textString = '# First title';
+    const value = plainText.deserialize(editor, textString);
+
+    editor.setEditorValue(value);
+  };
+
+  // from @yoopta content to plain text string
+  const serializeText = () => {
+    const data = editor.getEditorValue();
+    const textString = plainText.serialize(editor, data);
+    console.log('plain text string', textString);
+  };
+
+  return (
+    <div>
+      <button onClick={deserializeText}>Deserialize from plain text to content</button>
+      <button onClick={serializeText}>Serialize from content to plain text</button>
 
       <YooptaEditor editor={editor} plugins={plugins} />
     </div>

@@ -2,7 +2,6 @@
 
 [![RepoRater](https://repo-rater.eddiehub.io/api/badge?owner=Darginec05&name=Yoopta-Editor)](https://repo-rater.eddiehub.io/rate?owner=Darginec05&name=Yoopta-Editor)
 ![npm](https://img.shields.io/npm/v/@yoopta/editor)
-![license](https://img.shields.io/npm/l/@yoopta/editor)
 ![downloads](https://img.shields.io/npm/dm/@yoopta/editor)
 [![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/Darginec05)
 
