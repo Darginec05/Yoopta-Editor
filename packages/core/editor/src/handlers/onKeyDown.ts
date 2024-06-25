@@ -157,8 +157,11 @@ export function onKeyDown(editor: YooEditor) {
       const fullRange = Editor.range(slate, firstElementPath, lastElementPath);
       const isAllBlockElementsSelected = Range.equals(slate.selection, fullRange);
 
-      // [TODO] - handle cases for void node elements and when string is empty
-      if (Range.isExpanded(slate.selection) && isAllBlockElementsSelected) {
+      const string = Editor.string(slate, fullRange);
+      const isElementEmpty = string.trim().length === 0;
+
+      // [TODO] - handle cases for void node elements
+      if ((Range.isExpanded(slate.selection) && isAllBlockElementsSelected) || isElementEmpty) {
         event.preventDefault();
 
         ReactEditor.blur(slate);
