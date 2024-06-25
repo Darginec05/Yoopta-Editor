@@ -25,8 +25,8 @@ import { xml } from '@codemirror/lang-xml';
 import { html as codemirrorHTML } from '@codemirror/lang-html';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 
-import { html, markdown } from '@yoopta/exports';
 import { Head } from '@/components/Head/Head';
+import NextLink from 'next/link';
 
 const LANGUAGES_MAP = {
   markdown: {
@@ -201,6 +201,9 @@ const MarkdownPreview = () => {
   return (
     <>
       <Head />
+      <NextLink href="/examples/withExports" className="text-blue-500 underline">
+        Back to examples
+      </NextLink>
       <div className="w-full p-0 m-0 min-h-[100vh] overflow-hidden px-2">
         <h1 className="text-center my-4 mx-auto scroll-m-20 text-3xl font-bold tracking-tight max-w-[60%]">
           This example shows how <b>markdown</b> deserialize/serialize methods from <b>@yoopta/exports</b> work

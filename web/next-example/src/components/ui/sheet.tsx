@@ -150,7 +150,7 @@ const Sheet = ({ items, path }: SheetProps) => {
                 rel="noopener"
                 className="text-sky-500"
               >
-                Repoort it in repo
+                Report it in repo
               </a>
             </SheetDescription>
             <div className="py-2">
