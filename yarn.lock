@@ -3848,6 +3848,11 @@
   resolved "https://registry.yarnpkg.com/@yoopta/lists/-/lists-4.5.1.tgz#5f2a81c081ea9d0cd6b23ca3ad598c8fbe8938b6"
   integrity sha512-EP40QlKem04oSuSw/jml6vQqF628zeGJFSz50G6jKFuTGAwbxmaa4NPPnYw2+6NxTdq805Tordrda3L3Idb6Iw==
 
+"@yoopta/marks@*":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@yoopta/marks/-/marks-4.5.0.tgz#a3ecf403dcb375f65e4b9dad2aa2eff66ff34a7d"
+  integrity sha512-tVRHIEMjYreUH50HIXPCxA6K23yVr+vuxJgEnOOiqqiuIt7Dq7wyIDOXtgVxO51jWbC8zvU4Hz4xyJUlGv+6TA==
+
 "@yoopta/paragraph@*":
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/@yoopta/paragraph/-/paragraph-4.5.1.tgz#f51ec0ae46525120bd96c414a5cc0e6227bc21a0"

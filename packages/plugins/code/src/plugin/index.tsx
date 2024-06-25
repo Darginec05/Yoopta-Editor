@@ -52,7 +52,7 @@ const Code = new YooptaPlugin<CodePluginElements, CodeElementProps, CodePluginBl
     },
     markdown: {
       serialize: (element, text) => {
-        return `\`\`\`${element.props.language || 'javascript'}\n${text.toString()}\n\`\`\``;
+        return `\`\`\`${element.props.language || 'javascript'}\n${text}\n\`\`\``;
       },
     },
   },

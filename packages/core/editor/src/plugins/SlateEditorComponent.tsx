@@ -347,7 +347,6 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
           onKeyUp={onKeyUp}
           onFocus={onFocus}
           onMouseDown={onMouseDown}
-          // onCopy={(e) => e.preventDefault()}
           decorate={decorate}
           // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
           onBlur={onBlur}
