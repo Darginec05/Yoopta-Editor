@@ -206,11 +206,7 @@ export const WITH_BASIC_INIT_VALUE = {
         type: 'bulleted-list',
         children: [
           {
-            text: 'Exports in markdown, plain text, html - ',
-          },
-          {
-            text: '[in progress. Currently available only HTML exports]',
-            italic: true,
+            text: 'Exports in markdown, plain text, html',
           },
         ],
         props: {

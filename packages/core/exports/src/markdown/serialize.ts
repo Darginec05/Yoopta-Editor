@@ -1,25 +1,30 @@
-import { Descendant, Text } from 'slate';
-import { mergePluginTypesToMap } from '../utils/mergePlugins';
+import { SlateElement, YooEditor, YooptaBlockData, YooptaContentValue } from '@yoopta/editor';
 
-const serializeNode = (node, pluginsMap) => {
-  if (Text.isText(node)) {
-    return node.text;
-  }
+export function serialize(editor: YooEditor, blocksData: YooptaBlockData[]) {
+  const blocks = blocksData.sort((a, b) => (a.meta.order > b.meta.order ? 1 : -1));
 
-  const children = node.children.map((n) => serializeNode(n, pluginsMap)).join('');
-  const plugin = pluginsMap[node.type];
+  const markdown = blocks.map((blockData) => {
+    const plugin = editor.plugins[blockData.type];
 
-  const serializeFn = plugin.exports?.markdown?.serialize;
+    if (plugin) {
+      const element = blockData.value[0] as SlateElement;
 
-  if (typeof serializeFn === 'function') {
-    return `${serializeFn(node, children)}\n`;
-  }
+      if (plugin.parsers?.markdown?.serialize) {
+        const serialized = plugin.parsers.markdown.serialize(
+          element,
+          element.children.map((child) => child.text).join(''),
+        );
+        if (serialized) return serialized;
+      }
+    }
 
-  return `\n${children}\n`;
-};
+    return '';
+  });
 
-export function serializeMarkdown(data: Descendant[], plugins) {
-  const pluginsMap = mergePluginTypesToMap(plugins);
-  const html = data.map((node) => serializeNode(node, pluginsMap)).join('');
-  return html;
+  return markdown.join('\n');
+}
+
+export function serializeMarkdown(editor: YooEditor, content: YooptaContentValue) {
+  const selectedBlocks = Object.values(content);
+  return serialize(editor, selectedBlocks);
 }

@@ -128,10 +128,11 @@ export function buildPlugins(
     if (plugin.elements) {
       Object.keys(plugin.elements).forEach((type) => {
         const element = plugin.elements[type];
+
         const nodeType = element.props?.nodeType;
 
         if (nodeType === 'inline' || nodeType === 'inlineVoid') {
-          inlineTopLevelPlugins[type] = element;
+          inlineTopLevelPlugins[type] = { ...element, rootPlugin: plugin.type };
         }
       });
     }

@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode, useEffect, useRef } from 'react';
+import { ClipboardEvent, CSSProperties, ReactNode, useEffect, useRef } from 'react';
 import { useYooptaEditor, useYooptaReadOnly } from '../../contexts/YooptaContext/YooptaContext';
 import { RenderBlocks } from './RenderBlocks';
 import { YooptaMark } from '../../marks';
@@ -12,6 +12,7 @@ import { ReactEditor } from 'slate-react';
 import { YooptaBlockPath } from '../../editor/types';
 import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
+import { serializeHTML } from '../../parsers/serializeHTML';
 
 type Props = {
   marks?: YooptaMark<any>[];
@@ -27,7 +28,7 @@ type Props = {
 const getEditorStyles = (styles: CSSProperties) => ({
   ...styles,
   width: styles.width || 400,
-  paddingBottom: styles.paddingBottom || 100,
+  paddingBottom: typeof styles.paddingBottom === 'number' ? styles.paddingBottom : 100,
 });
 
 type State = {
@@ -120,12 +121,29 @@ const Editor = ({
     state.selectionStarted = false;
   };
 
-  const onClick = (event: React.MouseEvent) => {
+  const onMouseDown = (event: React.MouseEvent) => {
     if (isReadOnly) return;
 
-    // [TODO] - handle shift+click
-    // if (event.shiftKey) {
-    // }
+    if (event.shiftKey) {
+      const currentSelectionIndex = editor.selection;
+      if (!currentSelectionIndex) return;
+
+      const targetBlock = (event.target as HTMLElement).closest('div[data-yoopta-block]');
+      const targetBlockId = targetBlock?.getAttribute('data-yoopta-block-id') || '';
+      const targetBlockIndex = editor.children[targetBlockId]?.meta.order;
+      if (typeof targetBlockIndex !== 'number') return;
+
+      const indexesBetween = Array.from({ length: Math.abs(targetBlockIndex - currentSelectionIndex[0]) }).map(
+        (_, index) =>
+          targetBlockIndex > currentSelectionIndex[0]
+            ? currentSelectionIndex[0] + index + 1
+            : currentSelectionIndex[0] - index - 1,
+      );
+
+      editor.blur();
+      editor.setBlockSelected([currentSelectionIndex[0], ...indexesBetween], { only: true });
+      return;
+    }
 
     resetSelectionState();
     handleEmptyZoneClick(event);
@@ -142,39 +160,9 @@ const Editor = ({
     resetSelectedBlocks();
   };
 
-  // [TODO] - implement with @yoopta/exports
-  const onCopy = (event: React.ClipboardEvent) => {
-    // function escapeHtml(text) {
-    //   const map = {
-    //     '&': '&amp;',
-    //     '<': '&lt;',
-    //     '>': '&gt;',
-    //     '"': '&quot;',
-    //     "'": '&#039;',
-    //   };
-    //   return text.replace(/[&<>"']/g, (m) => map[m]);
-    // }
-    // function serializeNode(node, plugins) {
-    //   if (Text.isText(node)) {
-    //     return escapeHtml(node.text);
-    //   }
-    //   const children = node.children.map((node) => serializeNode(node, plugins)).join('');
-    //   const plugin = plugins[node.type];
-    //   if (typeof plugin.exports?.html?.serialize === 'function') {
-    //     return plugin.exports.html.serialize(node, children);
-    //   }
-    //   return children;
-    // }
-    // export function serializeHtml(data: Descendant[], pluginsMap) {
-    //   const html = data.map((node) => serializeNode(node, pluginsMap)).join('');
-    //   return html;
-    // }
-  };
-
   const onKeyDown = (event) => {
     if (isReadOnly) return;
 
-    // [TODO] - handle shift+click?
     if (HOTKEYS.isSelect(event)) {
       const isAllBlocksSelected = editor.selectedBlocks?.length === Object.keys(editor.children).length;
 
@@ -186,6 +174,35 @@ const Editor = ({
       if (state.selectionStarted) {
         event.preventDefault();
         editor.setBlockSelected([], { allSelected: true });
+        return;
+      }
+    }
+
+    if (HOTKEYS.isCopy(event) || HOTKEYS.isCut(event)) {
+      if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
+        event.preventDefault();
+
+        const htmlString = serializeHTML(editor, editor.getEditorValue());
+        const blob = new Blob([htmlString], { type: 'text/html' });
+
+        const item = new ClipboardItem({ 'text/html': blob });
+
+        navigator.clipboard.write([item]).then(() => {
+          const html = new DOMParser().parseFromString(htmlString, 'text/html');
+          console.log('HTML copied\n', html.body);
+        });
+
+        if (HOTKEYS.isCut(event)) {
+          const isAllBlocksSelected = editor.selectedBlocks.length === Object.keys(editor.children).length;
+
+          editor.deleteBlocks({ paths: editor.selectedBlocks, focus: false });
+          editor.setBlockSelected(null);
+          resetSelectionState();
+
+          if (isAllBlocksSelected) {
+            editor.insertBlock(buildBlockData({ id: generateId() }), { at: [0], focus: true });
+          }
+        }
         return;
       }
     }
@@ -348,7 +365,7 @@ const Editor = ({
       className={className ? `yoopta-editor ${className}` : 'yoopta-editor'}
       style={editorStyles}
       ref={yooptaEditorRef}
-      onClick={onClick}
+      onMouseDown={onMouseDown}
       onBlur={onBlur}
     >
       <RenderBlocks editor={editor} marks={marks} placeholder={placeholder} />

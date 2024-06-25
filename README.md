@@ -2,7 +2,6 @@
 
 [![RepoRater](https://repo-rater.eddiehub.io/api/badge?owner=Darginec05&name=Yoopta-Editor)](https://repo-rater.eddiehub.io/rate?owner=Darginec05&name=Yoopta-Editor)
 ![npm](https://img.shields.io/npm/v/@yoopta/editor)
-![license](https://img.shields.io/npm/l/@yoopta/editor)
 ![downloads](https://img.shields.io/npm/dm/@yoopta/editor)
 [![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/Darginec05)
 
@@ -35,7 +34,7 @@ All of this is customizable, extensible, and easy to set up!
 - Indent and outdent for every plugin by tabs and shift+tabs
 - Editor instance to programmatically control your content
 - Editor events for saving to DB in real-time
-- Exports in markdown, plain text, html - [in progress. Currently available only HTML exports]
+- Exports in markdown, html, plain text
 - Shortcuts, hotkeys. And customization for this!
 - Super AI tools not for HYPE, but for real useful work with editor content - [in progress]
 - The soul invested in the development of this editor 💙
@@ -46,6 +45,7 @@ All of this is customizable, extensible, and easy to set up!
 - Core
 
   - [**@yoopta/editor**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/core/editor/README.md)
+  - [**@yoopta/exports**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/core/exports/README.md)
 
 - Plugins
 

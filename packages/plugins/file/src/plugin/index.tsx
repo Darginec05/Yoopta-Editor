@@ -1,4 +1,4 @@
-import { YooptaPlugin } from '@yoopta/editor';
+import { generateId, YooptaPlugin } from '@yoopta/editor';
 import { FileElementProps, FilePluginElements, FilePluginOptions } from '../types';
 import { FileRender } from '../ui/File';
 
@@ -25,32 +25,51 @@ const File = new YooptaPlugin<FilePluginElements, FileElementProps, FilePluginOp
     // onUpload: async () => Promise.resolve({ src: '' }),
   },
   parsers: {
-    // html: {
-    //   deserialize: {
-    //     nodeNames: ['A'],
-    //     parse: (el) => {
-    //       if (el.nodeName === 'A') {
-    //         const url = new URL(el.getAttribute('src') || '');
-    //         return {
-    //           id: generateId(),
-    //           type: 'file',
-    //           children: [{ text: '' }],
-    //           props: {
-    //             provider: {
-    //               id: url.href,
-    //               type: url.hostname,
-    //               url: url.href,
-    //             },
-    //             sizes: {
-    //               width: el.getAttribute('width') ? parseInt(el.getAttribute('width') || '650', 10) : 650,
-    //               height: el.getAttribute('height') ? parseInt(el.getAttribute('height') || '400', 10) : 400,
-    //             },
-    //           },
-    //         };
-    //       }
-    //     },
-    //   },
-    // },
+    html: {
+      serialize: (element, text) => {
+        return `<div><a href="${element.props.src}" data-size="${element.props.size}" download="${
+          element.props.name
+        }" target="_blank" rel="noopener noreferrer">${
+          element.props.format ? `${element.props.name}.${element.props.format}` : `${element.props.name}`
+        }</a></div>`;
+      },
+      deserialize: {
+        nodeNames: ['A'],
+        parse: (el) => {
+          if (el.nodeName === 'A') {
+            const hasDownloadAttr = !!el.getAttribute('download');
+            const href = el.getAttribute('href');
+
+            if (!hasDownloadAttr) return;
+            if (!href) return;
+
+            const url = new URL(href);
+
+            const name = el.textContent || '';
+            const format = name.split('.').pop();
+            const src = url.href;
+            const size = Number(el.dataset.size || 0);
+
+            return {
+              id: generateId(),
+              type: 'file',
+              children: [{ text: '' }],
+              props: {
+                name,
+                format,
+                src,
+                size,
+              },
+            };
+          }
+        },
+      },
+    },
+    markdown: {
+      serialize: (element, text) => {
+        return `[${element.props.name}](${element.props.src})`;
+      },
+    },
   },
 });
 

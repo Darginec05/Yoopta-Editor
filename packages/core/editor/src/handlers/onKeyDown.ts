@@ -2,7 +2,6 @@ import { isKeyHotkey } from 'is-hotkey';
 import { Editor, Path, Point, Range, Text, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { buildBlockData } from '../components/Editor/utils';
-import { Elements } from '../editor/elements';
 import { SlateEditor, YooEditor, YooptaBlockPath } from '../editor/types';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../utils/findSlateBySelectionPath';
@@ -81,8 +80,6 @@ export function onKeyDown(editor: YooEditor) {
     if (HOTKEYS.isBackspace(event)) {
       if (event.isDefaultPrevented()) return;
 
-      const blockData = findPluginBlockBySelectionPath(editor, { at: editor.selection });
-      const block = editor.blocks[blockData?.type || ''];
       const parentPath = Path.parent(slate.selection.anchor.path);
       const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
 
@@ -160,8 +157,11 @@ export function onKeyDown(editor: YooEditor) {
       const fullRange = Editor.range(slate, firstElementPath, lastElementPath);
       const isAllBlockElementsSelected = Range.equals(slate.selection, fullRange);
 
-      // [TODO] - handle cases for void node elements and when string is empty
-      if (Range.isExpanded(slate.selection) && isAllBlockElementsSelected) {
+      const string = Editor.string(slate, fullRange);
+      const isElementEmpty = string.trim().length === 0;
+
+      // [TODO] - handle cases for void node elements
+      if ((Range.isExpanded(slate.selection) && isAllBlockElementsSelected) || isElementEmpty) {
         event.preventDefault();
 
         ReactEditor.blur(slate);

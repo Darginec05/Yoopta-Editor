@@ -20,6 +20,14 @@ const Paragraph = new YooptaPlugin({
       deserialize: {
         nodeNames: ['P'],
       },
+      serialize: (element, text) => {
+        return `<p>${text}</p>`;
+      },
+    },
+    markdown: {
+      serialize: (element, text) => {
+        return `${text}\n`;
+      },
     },
   },
 });

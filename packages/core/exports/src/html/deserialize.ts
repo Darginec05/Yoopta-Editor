@@ -1,78 +1,207 @@
-import { YooptaBaseElement, YooptaPluginType } from '@yoopta/editor';
-import { Text } from 'slate';
-import { jsx } from 'slate-hyperscript';
-import { mergePluginTypesToMapHMTLNodeName } from '../utils/mergePlugins';
+import { Element } from 'slate';
+import {
+  buildBlockData,
+  SlateElement,
+  YooEditor,
+  YooptaBlockData,
+  getRootBlockElementType,
+  generateId,
+  YooptaContentValue,
+  PluginDeserializeParser,
+} from '@yoopta/editor';
 
-const TEXT_TAGS = {
-  DEL: () => ({ strikethrough: true }),
-  EM: () => ({ italic: true }),
-  I: () => ({ italic: true }),
-  S: () => ({ strikethrough: true }),
-  STRONG: () => ({ bold: true }),
-  U: () => ({ underline: true }),
+export function isYooptaBlock(block: any): boolean {
+  return !!block && !!block.id && !!block.type && !!block.value && !!block.meta;
+}
+
+const MARKS_NODE_NAME_MATCHERS_MAP = {
+  B: { type: 'bold' },
+  STRONG: { type: 'bold' },
+  I: { type: 'italic' },
+  U: { type: 'underline' },
+  S: { type: 'strike' },
+  CODE: { type: 'code' },
+  EM: { type: 'italic' },
 };
 
-const deserialize = (
-  el: HTMLElement | ChildNode,
-  pluginsMap: Record<YooptaBaseElement<string>['type'], YooptaPluginType<any, YooptaBaseElement<string>>>,
-) => {
+type PluginsMapByNode = {
+  type: string;
+  parse: PluginDeserializeParser['parse'];
+};
+
+type PluginsMapByNodeNames = Record<string, PluginsMapByNode | PluginsMapByNode[]>;
+
+function getMappedPluginByNodeNames(editor: YooEditor): PluginsMapByNodeNames {
+  const PLUGINS_NODE_NAME_MATCHERS_MAP: PluginsMapByNodeNames = {};
+
+  Object.keys(editor.plugins).forEach((pluginType) => {
+    const plugin = editor.plugins[pluginType];
+    const { parsers } = plugin;
+
+    if (parsers) {
+      const { html } = parsers;
+
+      if (html) {
+        const { deserialize } = html;
+
+        if (deserialize) {
+          const { nodeNames } = deserialize;
+          if (nodeNames) {
+            nodeNames.forEach((nodeName) => {
+              const nodeNameMap = PLUGINS_NODE_NAME_MATCHERS_MAP[nodeName];
+
+              if (nodeNameMap) {
+                const nodeNameItem = Array.isArray(nodeNameMap) ? nodeNameMap : [nodeNameMap];
+                PLUGINS_NODE_NAME_MATCHERS_MAP[nodeName] = [
+                  ...nodeNameItem,
+                  { type: pluginType, parse: deserialize.parse },
+                ];
+              } else {
+                PLUGINS_NODE_NAME_MATCHERS_MAP[nodeName] = {
+                  type: pluginType,
+                  parse: deserialize.parse,
+                };
+              }
+            });
+          }
+        }
+      }
+    }
+  });
+
+  return PLUGINS_NODE_NAME_MATCHERS_MAP;
+}
+
+function buildBlocks(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElement, children: any[]) {
+  let nodeElementOrBlocks;
+
+  if (plugin.parse) {
+    nodeElementOrBlocks = plugin.parse(el as HTMLElement);
+
+    const isInline = Element.isElement(nodeElementOrBlocks) && nodeElementOrBlocks.props?.nodeType === 'inline';
+    if (isInline) return nodeElementOrBlocks;
+  }
+
+  const block = editor.blocks[plugin.type];
+  const rootElementType = getRootBlockElementType(block.elements) || '';
+  const rootElement = block.elements[rootElementType];
+
+  const isVoid = rootElement.props?.nodeType === 'void';
+
+  let rootNode: SlateElement<string, any> | YooptaBlockData[] = {
+    id: generateId(),
+    type: rootElementType,
+    children: isVoid && !block.hasCustomEditor ? [{ text: '' }] : children.map(mapNodeChildren),
+    props: { nodeType: 'block', ...rootElement.props },
+  };
+
+  if (nodeElementOrBlocks) {
+    if (Element.isElement(nodeElementOrBlocks)) {
+      rootNode = nodeElementOrBlocks;
+    } else if (Array.isArray(nodeElementOrBlocks)) {
+      const blocks = nodeElementOrBlocks;
+      return blocks;
+    }
+  }
+
+  if (rootNode.children.length === 0) {
+    rootNode.children = [{ text: '' }];
+  }
+
+  const blockData = buildBlockData({
+    id: generateId(),
+    type: plugin.type,
+    value: [rootNode],
+    meta: {
+      order: 0,
+      depth: 0,
+    },
+  });
+
+  return blockData;
+}
+
+export function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames, el: HTMLElement | ChildNode) {
   if (el.nodeType === 3) {
-    return el.textContent;
+    const text = el.textContent?.replace(/[\t\n\r\f\v]+/g, ' ');
+    return text;
   } else if (el.nodeType !== 1) {
     return null;
   } else if (el.nodeName === 'BR') {
     return '\n';
   }
 
-  const { nodeName } = el;
-  let parent = el;
+  const parent = el;
 
   let children = Array.from(parent.childNodes)
-    .map((node) => deserialize(node, pluginsMap))
+    .map((node) => deserialize(editor, pluginsMap, node))
     .flat();
 
-  if (children.length === 0) {
-    children = [{ text: '' }];
+  if (MARKS_NODE_NAME_MATCHERS_MAP[el.nodeName]) {
+    const mark = MARKS_NODE_NAME_MATCHERS_MAP[el.nodeName];
+    const markType = mark.type;
+    const text = el.textContent?.replace(/[\t\n\r\f\v]+/g, ' ');
+    return { [markType]: true, text };
   }
 
-  if (el.nodeName === 'BODY') {
-    return jsx('fragment', {}, children);
-  }
+  const plugin = pluginsMap[el.nodeName];
 
-  if (pluginsMap[nodeName]) {
-    const plugin = pluginsMap[nodeName];
-
-    if (plugin) {
-      let node = plugin.defineElement();
-
-      if (typeof plugin.exports?.html.deserialize?.parse === 'function') {
-        const data = plugin.exports?.html.deserialize?.parse(el as HTMLElement);
-        node = { ...node, data };
-      }
-
-      return jsx('element', node, children);
+  if (plugin) {
+    if (Array.isArray(plugin)) {
+      return plugin.map((p) => buildBlocks(editor, p, el as HTMLElement, children));
     }
-  }
 
-  if (Text.isTextList(children)) {
-    return jsx('element', pluginsMap.P.defineElement(), children);
-  }
-
-  if (TEXT_TAGS[nodeName]) {
-    const attrs = TEXT_TAGS[nodeName](el);
-    const textNodes = children.map((child) => {
-      return Text.isText(child) ? jsx('text', attrs, child) : child;
-    });
-
-    return textNodes;
+    return buildBlocks(editor, plugin, el as HTMLElement, children);
   }
 
   return children;
-};
+}
 
-export function deserializeHtml(htmlString: string, plugins: YooptaPluginType<unknown, YooptaBaseElement<string>>[]) {
-  const pluginsMap = mergePluginTypesToMapHMTLNodeName(plugins);
+function mapNodeChildren(child) {
+  if (typeof child === 'string') {
+    return { text: child };
+  }
 
+  if (Element.isElement(child)) {
+    return child;
+  }
+
+  if (Array.isArray(child)) {
+    return { text: child[0] };
+  }
+
+  if (child.text) {
+    return child;
+  }
+
+  if (isYooptaBlock(child)) {
+    const block = child as YooptaBlockData;
+    let text = '';
+
+    block.value[0].children.forEach((child) => {
+      text += `${child.text}`;
+    });
+
+    return { text };
+  }
+
+  return { text: '' };
+}
+
+export function deserializeHTML(editor: YooEditor, htmlString: string): YooptaContentValue {
   const parsedHtml = new DOMParser().parseFromString(htmlString, 'text/html');
-  return deserialize(parsedHtml.body, pluginsMap);
+  const value: YooptaContentValue = {};
+
+  const PLUGINS_NODE_NAME_MATCHERS_MAP = getMappedPluginByNodeNames(editor);
+  const blocks = deserialize(editor, PLUGINS_NODE_NAME_MATCHERS_MAP, parsedHtml.body).filter(
+    isYooptaBlock,
+  ) as YooptaBlockData[];
+
+  blocks.forEach((block, i) => {
+    const blockData = block;
+    blockData.meta.order = i;
+    value[block.id] = blockData;
+  });
+
+  return value;
 }

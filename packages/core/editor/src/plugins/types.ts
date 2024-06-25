@@ -45,6 +45,7 @@ export type PluginElement<T> = {
   options?: PluginElementOptions;
   asRoot?: boolean;
   children?: string[];
+  rootPlugin?: string;
 };
 
 export type PluginElementsMap<TKeys extends string = string, TProps = PluginDefaultProps> = {
@@ -82,7 +83,7 @@ export type PluginParsers = {
 export type PluginParserTypes = 'html' | 'markdown';
 export type PluginParserValues = 'deserialize' | 'serialize';
 
-export type PluginserializeParser = (block) => string;
+export type PluginserializeParser = (element: SlateElement, text: string) => string;
 
 export type PluginDeserializeParser = {
   nodeNames: string[];

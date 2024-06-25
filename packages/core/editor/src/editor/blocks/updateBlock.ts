@@ -12,8 +12,6 @@ export function updateBlock<TElementKeys extends string, TProps>(
   const block = editor.children[blockId];
 
   if (!block) {
-    // [TODO] - some weird behaviour when copy/paste
-    console.log(`Block with id ${blockId} not found`);
     return;
   }
 

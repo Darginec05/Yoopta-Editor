@@ -10,9 +10,11 @@ export type EditorBlurOptions = Pick<YooptaEditorTransformOptions, 'slate'> & {
 };
 
 function blurFn(editor: YooEditor, slate: SlateEditor) {
-  ReactEditor.blur(slate);
-  ReactEditor.deselect(slate);
-  Transforms.deselect(slate);
+  try {
+    ReactEditor.blur(slate);
+    ReactEditor.deselect(slate);
+    Transforms.deselect(slate);
+  } catch (error) {}
 
   editor.setBlockSelected(null);
   editor.setSelection(null);

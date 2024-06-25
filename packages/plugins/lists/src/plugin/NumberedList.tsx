@@ -59,6 +59,14 @@ const NumberedList = new YooptaPlugin<'numbered-list', ListElementProps>({
           }
         },
       },
+      serialize: (element, text) => {
+        return `<ol><li>${text}</li></ol>`;
+      },
+    },
+    markdown: {
+      serialize: (element, text) => {
+        return `- ${text}`;
+      },
     },
   },
 });

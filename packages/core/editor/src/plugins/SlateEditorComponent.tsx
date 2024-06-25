@@ -15,8 +15,8 @@ import { buildBlockData } from '../components/Editor/utils';
 
 // [TODO] - test
 import { withInlines } from './extenstions/withInlines';
-import { parsers } from '../parsers';
 import { IS_FOCUSED_EDITOR } from '../utils/weakMaps';
+import { deserializeHTML } from '../parsers/deserializeHTML';
 
 type Props<TKeys extends string, TProps, TOptions> = Plugin<TKeys, TProps, TOptions> & {
   id: string;
@@ -183,16 +183,16 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     [eventHandlers.onKeyUp, editor.readOnly],
   );
 
-  const onClick = useCallback(
+  const onMouseDown = useCallback(
     (event: React.MouseEvent) => {
       if (editor.readOnly) return;
 
       if (editor.selection?.[0] !== block.meta.order) {
         editor.setSelection([block.meta.order]);
       }
-      eventHandlers?.onClick?.(event);
+      eventHandlers?.onMouseDown?.(event);
     },
-    [eventHandlers.onClick, editor.readOnly, editor.selection?.[0], block.meta.order],
+    [eventHandlers.onMouseDown, editor.readOnly, editor.selection?.[0], block.meta.order],
   );
 
   const onBlur = useCallback(
@@ -209,7 +209,11 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     (event: React.FocusEvent) => {
       if (editor.readOnly) return;
 
-      IS_FOCUSED_EDITOR.set(editor, true);
+      if (!editor.isFocused()) {
+        IS_FOCUSED_EDITOR.set(editor, true);
+        // [TODO] - as test
+        editor.emit('focus', true);
+      }
       eventHandlers?.onFocus?.(event);
     },
     [eventHandlers.onFocus, editor.readOnly],
@@ -222,12 +226,11 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       eventHandlers?.onPaste?.(event);
 
       const data = event.clipboardData;
-
       const html = data.getData('text/html');
       const parsedHTML = new DOMParser().parseFromString(html, 'text/html');
 
       if (parsedHTML.body.childNodes.length > 0) {
-        const blocks = parsers.html.deserialize(editor, parsedHTML.body);
+        const blocks = deserializeHTML(editor, parsedHTML.body);
 
         if (blocks.length > 0) {
           editor.insertBlocks(blocks, { at: editor.selection, focus: true });
@@ -278,7 +281,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       onKeyDown={onKeyDown}
       onKeyUp={onKeyUp}
       onFocus={onFocus}
-      onClick={onClick}
+      onMouseDown={onMouseDown}
       onBlur={onBlur}
       customEditor={customEditor}
       readOnly={editor.readOnly}
@@ -299,7 +302,7 @@ type SlateEditorInstanceProps = {
   onKeyDown: (event: React.KeyboardEvent) => void;
   onKeyUp: (event: React.KeyboardEvent) => void;
   onFocus: (event: React.FocusEvent) => void;
-  onClick: (event: React.MouseEvent) => void;
+  onMouseDown: (event: React.MouseEvent) => void;
   onBlur: (event: React.FocusEvent) => void;
   onPaste: (event: React.ClipboardEvent) => void;
   customEditor?: (props: PluginCustomEditorRenderProps) => JSX.Element;
@@ -319,7 +322,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     onKeyDown,
     onKeyUp,
     onFocus,
-    onClick,
+    onMouseDown,
     onBlur,
     onPaste,
     customEditor,
@@ -343,7 +346,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
           onKeyDown={onKeyDown}
           onKeyUp={onKeyUp}
           onFocus={onFocus}
-          onClick={onClick}
+          onMouseDown={onMouseDown}
           decorate={decorate}
           // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
           onBlur={onBlur}

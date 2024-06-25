@@ -19,12 +19,12 @@ export type YooptaBlockData<T = Descendant | SlateElement> = {
   meta: YooptaBlockBaseMeta;
 };
 
-export type YooptaContentValue = Record<string, YooptaBlockData>;
-
 export type YooptaBlockBaseMeta = {
   order: number;
   depth: number;
 };
+
+export type YooptaContentValue = Record<string, YooptaBlockData>;
 
 export type SlateEditor = Editor;
 

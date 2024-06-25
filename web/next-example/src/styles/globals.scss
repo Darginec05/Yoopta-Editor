@@ -81,12 +81,12 @@
 }
 
 .yoopta-editor {
-  width: 750px;
+  width: 750px !important;
 }
 
 @media (max-width: 768px) {
   .yoopta-editor {
-    width: 100%;
+    width: 100% !important;
 
     & .yoopta-block-actions-plus {
       display: none;
@@ -115,7 +115,6 @@
 [data-floating-ui-portal] {
   color: #000;
 }
-
 
 #slack .yoopta-editor .yoopta-block-actions-plus {
   display: none;

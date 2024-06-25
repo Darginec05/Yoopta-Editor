@@ -40,6 +40,14 @@ const HeadingThree = new YooptaPlugin({
       deserialize: {
         nodeNames: ['H3'],
       },
+      serialize: (element, text) => {
+        return `<h3>${text}</h3>`;
+      },
+    },
+    markdown: {
+      serialize: (element, text) => {
+        return `### ${text}\n`;
+      },
     },
   },
 });

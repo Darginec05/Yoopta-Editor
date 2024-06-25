@@ -1,4 +1,4 @@
-import { buildBlockData, generateId, YooptaPlugin } from '@yoopta/editor';
+import { buildBlockData, generateId, SlateElement, YooptaPlugin } from '@yoopta/editor';
 import { ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';
 import { ImageRender } from '../ui/Image';
 
@@ -33,8 +33,11 @@ const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePlug
       deserialize: {
         nodeNames: ['IMG'],
         parse: (el) => {
+          console.log('el.nodeName', el.nodeName);
+
           if (el.nodeName === 'IMG') {
-            const props = {
+            const props: SlateElement<'image', ImageElementProps>['props'] = {
+              nodeType: 'void',
               src: el.getAttribute('src') || '',
               alt: el.getAttribute('alt') || '',
               srcSet: el.getAttribute('srcset') || '',
@@ -44,7 +47,7 @@ const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePlug
               },
             };
 
-            const node = {
+            const node: SlateElement = {
               id: generateId(),
               type: 'image',
               children: [{ text: '' }],
@@ -54,6 +57,16 @@ const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePlug
             return node;
           }
         },
+      },
+      serialize: (element, text) => {
+        return `<div style="display: flex; width: 100%; justify-content: center">
+        <img src="${element.props.src}" alt="${element.props.alt}" width="${element.props.sizes.width}" height="${element.props.sizes.height}"  />
+        </div>`;
+      },
+    },
+    markdown: {
+      serialize: (element, text) => {
+        return `![${element.props.alt}](${element.props.src})\n`;
       },
     },
   },
