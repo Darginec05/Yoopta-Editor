@@ -1,4 +1,37 @@
-import { PluginElementRenderProps, useBlockData, useYooptaEditor } from '@yoopta/editor';
+import { PluginElementRenderProps, useBlockData, useYooptaEditor, YooEditor, YooptaBlockData } from '@yoopta/editor';
+
+function getNumberedListCount(editor: YooEditor, block: YooptaBlockData) {
+  const sortedKeys = Object.keys(editor.children).sort((a, b) => {
+    const blockA = editor.children[a];
+    const blockB = editor.children[b];
+    return blockA.meta.order - blockB.meta.order;
+  });
+
+  let index = 0;
+  let resetIndex = true;
+
+  for (let key of sortedKeys) {
+    const currentBlock = editor.children[key];
+    if (currentBlock.type !== 'NumberedList') {
+      resetIndex = true;
+      continue;
+    }
+
+    if (resetIndex) {
+      index = 0;
+      resetIndex = false;
+    }
+
+    if (currentBlock.meta.depth === block.meta.depth && currentBlock.type === 'NumberedList') {
+      index++;
+      if (key === block.id) break;
+    }
+  }
+
+  const count = index;
+
+  return count;
+}
 
 const NumberedListRender = ({
   attributes,
@@ -11,14 +44,7 @@ const NumberedListRender = ({
   const block = useBlockData(blockId);
   const editor = useYooptaEditor();
 
-  const index = Object.keys(editor.children)
-    .filter((key) => {
-      const childrenBlock = editor.children[key];
-      return childrenBlock.meta.depth === block.meta.depth && childrenBlock.type === 'NumberedList';
-    })
-    .findIndex((key) => key === blockId);
-
-  const count = index + 1;
+  const count = getNumberedListCount(editor, block);
 
   return (
     <div className={`yoopta-numbered-list ${className}`} {...htmlAttrs} {...attributes}>

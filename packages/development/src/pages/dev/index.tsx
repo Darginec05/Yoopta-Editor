@@ -56,81 +56,37 @@ const BasicExample = () => {
           tools={TOOLS}
           readOnly={readOnly}
           value={{
-            '9d98408d-b990-4ffc-a1d7-387084291b00': {
-              id: '9d98408d-b990-4ffc-a1d7-387084291b00',
+            '7453ac69-0d2a-4a27-ac48-21de5021c432': {
+              id: '7453ac69-0d2a-4a27-ac48-21de5021c432',
               value: [
                 {
-                  id: '0508777e-52a4-4168-87a0-bc7661e57aab',
-                  type: 'heading-one',
-                  children: [
-                    {
-                      text: 'Example with full setup of Yoopta-Editor',
-                    },
-                  ],
+                  id: '7021ff94-a84f-4ce7-9fcc-cae7eaf2588e',
+                  type: 'numbered-list',
                   props: {
                     nodeType: 'block',
                   },
+                  children: [
+                    {
+                      text: 'asd',
+                    },
+                  ],
                 },
               ],
-              type: 'HeadingOne',
+              type: 'NumberedList',
               meta: {
                 order: 0,
                 depth: 0,
               },
             },
-            'f99045cc-2391-4917-949d-ee3d2f6754b4': {
-              id: 'f99045cc-2391-4917-949d-ee3d2f6754b4',
+            'c55f8f56-d792-4c3a-aaf0-d90b8391e622': {
+              id: 'c55f8f56-d792-4c3a-aaf0-d90b8391e622',
               value: [
                 {
-                  id: '82587f96-506e-4e89-b958-61acd3ce881a',
-                  type: 'callout',
+                  id: 'acb880d7-5755-4a64-9aa8-7f0b0c87f18e',
+                  type: 'numbered-list',
                   children: [
                     {
-                      text: 'This example shows you full setup with all features of Yoopta-Editor',
-                    },
-                  ],
-                  props: {
-                    nodeType: 'block',
-                    theme: 'info',
-                  },
-                },
-              ],
-              type: 'Callout',
-              meta: {
-                order: 1,
-                depth: 0,
-              },
-            },
-            '697aa54b-aea0-4a88-82e5-ec5a6f2c5791': {
-              id: '697aa54b-aea0-4a88-82e5-ec5a6f2c5791',
-              type: 'HeadingThree',
-              meta: {
-                order: 3,
-                depth: 0,
-              },
-              value: [
-                {
-                  id: 'e7cfd6da-0ed1-4849-ae05-f52b9e65c87b',
-                  type: 'heading-three',
-                  children: [
-                    {
-                      text: 'F',
-                    },
-                    {
-                      type: 'link',
-                      children: [
-                        {
-                          text: 'AQs',
-                        },
-                      ],
-                      props: {
-                        url: 'https://www.youtube.com/watch?v=qwiLWD5x0Ls&ab_channel=shamil_77',
-                        target: '_blank',
-                        rel: 'noopener noreferrer',
-                      },
-                    },
-                    {
-                      text: '',
+                      text: 'asdasd',
                     },
                   ],
                   props: {
@@ -138,12 +94,39 @@ const BasicExample = () => {
                   },
                 },
               ],
+              type: 'NumberedList',
+              meta: {
+                order: 5,
+                depth: 0,
+              },
             },
-            '784122f7-2b72-4b19-a1e7-c4a06c013662': {
-              id: '784122f7-2b72-4b19-a1e7-c4a06c013662',
+            '4192a57a-3048-4819-a9b2-9bad2839ee38': {
+              id: '4192a57a-3048-4819-a9b2-9bad2839ee38',
               value: [
                 {
-                  id: 'c2b86108-7236-4a07-9440-f327ab3b16af',
+                  id: '0fb531fe-bb2d-4e0b-8422-7a82e95bc4d3',
+                  type: 'numbered-list',
+                  children: [
+                    {
+                      text: 'asdasdasd',
+                    },
+                  ],
+                  props: {
+                    nodeType: 'block',
+                  },
+                },
+              ],
+              type: 'NumberedList',
+              meta: {
+                order: 6,
+                depth: 0,
+              },
+            },
+            'e4283d23-bf3d-4df3-b372-a4cea302e91b': {
+              id: 'e4283d23-bf3d-4df3-b372-a4cea302e91b',
+              value: [
+                {
+                  id: '54a57ffd-7c8e-45c4-841d-e2bf07ff9f22',
                   type: 'paragraph',
                   children: [
                     {
@@ -157,33 +140,117 @@ const BasicExample = () => {
               ],
               type: 'Paragraph',
               meta: {
-                order: 4,
+                order: 7,
                 depth: 0,
               },
             },
-            '6f872126-e2dd-451d-8589-74ebd5e072cf': {
-              id: '6f872126-e2dd-451d-8589-74ebd5e072cf',
+            '8f85a7ea-e606-4684-a5d2-d20ef138080b': {
+              id: '8f85a7ea-e606-4684-a5d2-d20ef138080b',
               value: [
                 {
-                  id: '5cb0df42-3603-4b74-879a-982fb83b82af',
-                  type: 'file',
-                  props: {
-                    size: 212224,
-                    name: 'Screen Shot 2024-06-24 at 17.09.39',
-                    src: 'https://res.cloudinary.com/ench-app/image/upload/v1719259373/Screen_Shot_2024-06-24_at_17.09.39_hpobs9.png',
-                    format: 'png',
-                    nodeType: 'void',
-                  },
+                  id: 'd6931777-17b3-469c-83f2-0bf85842ca20',
+                  type: 'paragraph',
                   children: [
                     {
                       text: '',
                     },
                   ],
+                  props: {
+                    nodeType: 'block',
+                  },
                 },
               ],
-              type: 'File',
+              type: 'Paragraph',
+              meta: {
+                order: 8,
+                depth: 0,
+              },
+            },
+            'ee387b66-62c1-4c01-b9f6-35b2ecb01f1c': {
+              id: 'ee387b66-62c1-4c01-b9f6-35b2ecb01f1c',
+              value: [
+                {
+                  id: '6962f986-4d98-40ad-bb85-8262d7492b7f',
+                  type: 'paragraph',
+                  children: [
+                    {
+                      text: 'asdasdas',
+                    },
+                  ],
+                  props: {
+                    nodeType: 'block',
+                  },
+                },
+              ],
+              type: 'Paragraph',
+              meta: {
+                order: 1,
+                depth: 0,
+              },
+            },
+            'e382a6e4-ae76-4b27-9bcb-86b2c699fec4': {
+              id: 'e382a6e4-ae76-4b27-9bcb-86b2c699fec4',
+              value: [
+                {
+                  id: '21662b6c-0c59-4fd8-bd85-7b0578fc7cd7',
+                  type: 'paragraph',
+                  children: [
+                    {
+                      text: 'dasd',
+                    },
+                  ],
+                  props: {
+                    nodeType: 'block',
+                  },
+                },
+              ],
+              type: 'Paragraph',
               meta: {
                 order: 2,
+                depth: 0,
+              },
+            },
+            '1427c85a-2375-4d96-9535-2ec58f2903af': {
+              id: '1427c85a-2375-4d96-9535-2ec58f2903af',
+              value: [
+                {
+                  id: 'fc74e476-445a-426c-82d0-247c2440e52a',
+                  type: 'paragraph',
+                  children: [
+                    {
+                      text: 'sadsad',
+                    },
+                  ],
+                  props: {
+                    nodeType: 'block',
+                  },
+                },
+              ],
+              type: 'Paragraph',
+              meta: {
+                order: 3,
+                depth: 0,
+              },
+            },
+            '261951ac-1a43-4c0e-887d-a1cddf310071': {
+              id: '261951ac-1a43-4c0e-887d-a1cddf310071',
+              value: [
+                {
+                  id: 'e69c48ae-c423-46a7-965b-cec1669e6c6e',
+                  type: 'paragraph',
+                  children: [
+                    {
+                      text: 'asdsadasdasd',
+                    },
+                  ],
+                  props: {
+                    nodeType: 'block',
+                  },
+                },
+              ],
+              type: 'Paragraph',
+              meta: {
+                order: 4,
                 depth: 0,
               },
             },
