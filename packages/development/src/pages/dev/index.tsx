@@ -1,5 +1,7 @@
 import YooptaEditor, {
+  Blocks,
   createYooptaEditor,
+  Elements,
   useYooptaEditor,
   useYooptaFocused,
   YooEditor,
@@ -36,6 +38,14 @@ const BasicExample = () => {
     const editorData = editor.getEditorValue();
     console.log('EDITOR DATA', editorData);
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      Elements.insertElementText(editor, 'Super text', {
+        blockId: '7453ac69-0d2a-4a27-ac48-21de5021c432',
+      });
+    }, 1000);
+  }, [editor]);
 
   return (
     <>
@@ -140,7 +150,7 @@ const BasicExample = () => {
               ],
               type: 'Paragraph',
               meta: {
-                order: 7,
+                order: 8,
                 depth: 0,
               },
             },
@@ -162,7 +172,7 @@ const BasicExample = () => {
               ],
               type: 'Paragraph',
               meta: {
-                order: 8,
+                order: 9,
                 depth: 0,
               },
             },
@@ -240,7 +250,7 @@ const BasicExample = () => {
                   type: 'paragraph',
                   children: [
                     {
-                      text: 'asdsadasdasd',
+                      text: 'Super text',
                     },
                   ],
                   props: {
@@ -251,6 +261,56 @@ const BasicExample = () => {
               type: 'Paragraph',
               meta: {
                 order: 4,
+                depth: 0,
+              },
+            },
+            'a60daf05-5769-4dba-ad2c-b5db07085d00': {
+              id: 'a60daf05-5769-4dba-ad2c-b5db07085d00',
+              value: [
+                {
+                  id: 'ad69c236-35fe-463f-9634-ca24471648f4',
+                  type: 'accordion-list',
+                  children: [
+                    {
+                      id: '784c35bb-d361-40a7-941d-45786bbdbd11',
+                      type: 'accordion-list-item',
+                      children: [
+                        {
+                          id: '89779009-78a0-4c92-ad37-51e5e433ad99',
+                          type: 'accordion-list-item-heading',
+                          children: [
+                            {
+                              text: 'asdasdsadasdadasda',
+                            },
+                          ],
+                          props: {
+                            nodeType: 'block',
+                          },
+                        },
+                        {
+                          id: 'cfec5263-7b27-43e9-a561-a82e5e1f193f',
+                          type: 'accordion-list-item-content',
+                          children: [
+                            {
+                              text: 'asdsadsaddasdasdasd',
+                            },
+                          ],
+                          props: {
+                            nodeType: 'block',
+                          },
+                        },
+                      ],
+                      props: {
+                        nodeType: 'block',
+                        isExpanded: true,
+                      },
+                    },
+                  ],
+                },
+              ],
+              type: 'Accordion',
+              meta: {
+                order: 7,
                 depth: 0,
               },
             },
@@ -277,13 +337,13 @@ const Buttons = ({ onSubmit }: any) => {
       <button
         className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
         onClick={() => {
-          const data = editor.getEditorValue();
-          console.log('plain text serialize data \n', plainText.serialize(editor, data));
+          Elements.insertElementText(editor, 'Super text');
+          // Elements.insertElementText(editor, 'Super text', { at: 'current', as: 'last', marks: { bold: true } });
         }}
       >
-        Serialize to Plaintext
+        Insert text `Super text`
       </button>
-      <button
+      {/* <button
         className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
         onClick={() => {
           const markdownValue = markdown.deserialize(editor, mdValue);
@@ -300,7 +360,7 @@ const Buttons = ({ onSubmit }: any) => {
         }}
       >
         Increase
-      </button>
+      </button> */}
       <button
         className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
         onClick={() => {

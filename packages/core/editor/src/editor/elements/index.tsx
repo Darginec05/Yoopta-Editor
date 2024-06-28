@@ -1,6 +1,7 @@
 import { createElement } from './createElement';
 import { deleteElement } from './deleteElement';
 import { updateElement } from './updateElement';
+import { insertElementText } from './insertElementText';
 import { getElement } from './getElement';
 import { getElementChildren } from './getElementChildren';
 import { getElementEntry } from './getElementEntry';
@@ -12,6 +13,7 @@ export const Elements = {
   createElement,
   deleteElement,
   updateElement,
+  insertElementText,
   getElement,
   getElementChildren,
   getElementEntry,
