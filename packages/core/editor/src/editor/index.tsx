@@ -18,6 +18,7 @@ import { blur } from './core/blur';
 import { focus } from './core/focus';
 import { isFocused } from './core/isFocused';
 import { deleteBlocks } from './blocks/deleteBlocks';
+import { getBlock } from './blocks/getBlock';
 
 // export const YooEditor = {}
 // export const BlockTransforms = {}
@@ -55,7 +56,7 @@ export const createYooptaEditor = (): YooEditor => {
     decreaseBlockDepth: (...args) => decreaseBlockDepth(editor, ...args),
     moveBlock: (...args) => moveBlock(editor, ...args),
     focusBlock: (...args) => focusBlock(editor, ...args),
-    getBlock: (...args) => undefined,
+    getBlock: (...args) => getBlock(editor, ...args),
     updateBlock: (...args) => updateBlock(editor, ...args),
     splitBlock: (...args) => splitBlock(editor, ...args),
     setSelection: (...args) => setSelection(editor, ...args),

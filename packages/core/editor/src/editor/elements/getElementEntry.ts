@@ -1,9 +1,9 @@
-import { Editor, Element, Location, NodeEntry, Span } from 'slate';
+import { Editor, Element, Location, NodeEntry, Span, Selection } from 'slate';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { SlateElement, YooEditor } from '../types';
 
 export type GetBlockElementEntryOptions = {
-  path?: Location | Span;
+  path?: Selection | Location | Span;
   type?: string;
 };
 
