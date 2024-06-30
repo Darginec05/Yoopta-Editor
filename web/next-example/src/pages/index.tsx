@@ -31,7 +31,7 @@ export default function Home() {
       }}
     >
       <Head />
-      <header className="border-b border-b-muted-foreground flex items-center justify-between py-4 px-6">
+      <header className="border-b border-b-muted-foreground flex items-center justify-between py-4 px-6 flex-col md:flex-row">
         <NextLink
           href="https://github.com/Darginec05/Yoopta-Editor"
           target="_blank"
@@ -49,7 +49,7 @@ export default function Home() {
           </div>
           <span className="text-white text-base">opta :D</span>
         </NextLink>
-        <div className="flex items-center">
+        <div className="flex items-center text-nowrap md:mt-0 mt-3 scale-[.65] md:-scale-0">
           <NextLink
             href="https://yoodocs.space/yoopta-editor/yoopta/introduction-rsK_1fODIL"
             target="_blank"
@@ -91,7 +91,7 @@ export default function Home() {
           </NextLink>
         </div>
       </header>
-      <div className="mt-10 md:w-[70%] md:mx-auto flex flex-col items-center">
+      <div className="mt-10 md:w-[70%] md:mx-auto flex flex-col items-center px-4 md:px-0">
         <h1 className="text-center scroll-m-20 text-4xl font-bold tracking-tight">Meet Yoopta-Editor 🚀</h1>
         <p className="mt-6 md:w-[750px] text-base text-[#dae2ed] text-center">
           Open-source rich-text editor that's truly{' '}
@@ -144,7 +144,7 @@ export default function Home() {
           <h2 className="text-center font-heading mt-12 scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0">
             Sponsorship
           </h2>
-          <p className="mt-0 text-center text-muted-foreground w-[700px] text-[#dae2ed] mx-auto">
+          <p className="mt-0 text-center text-muted-foreground md:w-[700px] text-[#dae2ed] mx-auto">
             Your sponsorship motivates us to continuously improve the project and helps bring our ideas to fruition.
             Please consider supporting us as a sponsor. Thank you in advance 💙
           </p>
@@ -219,12 +219,12 @@ export default function Home() {
         </div>
         <div className="mt-6">
           <h2 className="text-center font-heading mt-12 scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0">
-            Future Plans 👨‍💻
+            Our Plans 👨‍💻
           </h2>
           {/* card list */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <Card
-              title="Continue improving the project"
+              title="Continue to improve the project"
               description="We're committed to enhancing Yoopta Editor by regularly updating it with new features and improvements based on community feedback."
             />
             <Card

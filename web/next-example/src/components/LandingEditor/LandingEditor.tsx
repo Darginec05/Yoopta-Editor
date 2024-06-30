@@ -115,7 +115,7 @@ export const LandingEditor = ({ selectionRef, editor }: Props) => {
       selectionBoxRoot={selectionRef}
       value={value}
       autoFocus={false}
-      className="py-4 !h-full"
+      className="py-4 !h-full md:max-w-none max-w-[100vw] md:px-0 px-2"
     />
   );
 };
