@@ -2,9 +2,19 @@ import { createYooptaEditor } from '@yoopta/editor';
 
 import { useEffect, useMemo, useRef } from 'react';
 import NextLink from 'next/link';
-import { ExpandIcon, CodeIcon, StarIcon, Send, Code2Icon, FileHeart } from 'lucide-react';
+import { ExpandIcon, CodeIcon, StarIcon, Send, Code2Icon, FileHeart, PlusIcon } from 'lucide-react';
 import { Head } from '@/components/Head/Head';
 import { LandingEditor } from '@/components/LandingEditor/LandingEditor';
+
+// Card component with title and description
+const Card = ({ title, description }) => {
+  return (
+    <div className="border border-[#fff] shadow-lg rounded-lg p-4">
+      <h3 className="text-xl font-semibold">{title}</h3>
+      <p className="text-base text-muted-foreground">{description}</p>
+    </div>
+  );
+};
 
 export default function Home() {
   const editor = useMemo(() => createYooptaEditor(), []);
@@ -91,12 +101,12 @@ export default function Home() {
       <div className="mt-10 md:w-[70%] md:mx-auto flex flex-col items-center">
         <h1 className="text-center scroll-m-20 text-4xl font-bold tracking-tight">Meet Yoopta-Editor 🚀</h1>
         <p className="mt-6 md:w-[750px] text-base text-[#dae2ed] text-center">
-          Open-source rich-text-editor that really{' '}
-          <u>
-            <b>rich</b>
-          </u>
-          . Install and use it in your project. It's easy to use and easy to customize. Just chill, we are aiming
-          resolve all your problems with rich-text-editors.
+          Open-source rich-text editor that's truly{' '}
+          <b>
+            <u>rich</u>
+          </b>
+          . Install and use it in your project. Easy to to use and fully customizable. Just relax, we're here to solve
+          all your challenges with rich-text editors.
         </p>
         <div ref={selectionRef} className="mt-4 flex flex-col items-center">
           <button
@@ -107,7 +117,7 @@ export default function Home() {
           >
             Play with live demo 👇
           </button>
-          <div className="relative min-h-[400px] max-h-[800px] overflow-y-auto my-4 mx-auto border md:w-[870px] pb-4 pt-2 rounded-sm flex justify-center bg-[#fafafa] text-black">
+          <div className="relative min-h-[40vh] max-h-[80vh] overflow-y-auto my-4 mx-auto border md:w-[870px] pb-4 pt-2 rounded-sm flex justify-center bg-[#fafafa] text-black">
             <div
               className="text-[#4d494d] absolute top-0 left-0 w-full z-10 px-2 bg-[#252b2f]"
               style={{
@@ -139,11 +149,11 @@ export default function Home() {
         </div>
         <div className="mt-4">
           <h2 className="text-center font-heading mt-12 scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0">
-            Sponsors
+            Sponsorship
           </h2>
           <p className="mt-0 text-center text-muted-foreground w-[700px] text-[#dae2ed] mx-auto">
-            Your sponsorship motivates me to work and improve the project, and also helps me bring all my ideas to
-            completion. Please consider becoming our sponsor. Thanks in advance 💙
+            Your sponsorship motivates me to continuously improve the project and helps bring my ideas to fruition.
+            Please consider supporting us as a sponsor. Thank you in advance 💙
           </p>
           <div className="w-full flex justify-center mt-2">
             <img
@@ -156,19 +166,117 @@ export default function Home() {
             />
           </div>
           <div>
-            <h4 className="text-center mt-4 text-lg font-semibold">Special sponsors</h4>
+            <h4 className="text-center mt-4 text-lg font-semibold">Current sponsors 💖</h4>
+            <div className="w-full flex-wrap flex justify-center">
+              <a
+                href="https://tapflow.co/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center w-18 h-18 rounded-full shadow-lg m-2"
+              >
+                <img
+                  src="https://framerusercontent.com/images/3deWAtwBX6tWvPegfQE2tNf0T0.png"
+                  alt="Tapflow logo"
+                  className="w-14 h-14 rounded-full"
+                />
+              </a>
+              <a
+                href="https://yoodocs.space/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center w-18 h-18 bg-white rounded-full shadow-lg m-2"
+              >
+                <img src="/yoopta-logo.png" alt="Yoodocs logo" className="w-14 h-14 rounded-full" />
+              </a>
+              <a
+                href="https://github.com/chrassendk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center w-18 h-18 bg-white rounded-full shadow-lg m-2"
+              >
+                <img
+                  src="https://avatars.githubusercontent.com/u/10469954?s=60&v=4"
+                  alt="yoopta logo"
+                  className="w-14 h-14 rounded-full"
+                />
+              </a>
+              <a
+                href="https://github.com/mrfullset"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center w-18 h-18 bg-white rounded-full shadow-lg m-2"
+              >
+                <img
+                  src="https://avatars.githubusercontent.com/u/98813378?s=60&v=4"
+                  alt="yoopta logo"
+                  className="w-14 h-14 rounded-full"
+                />
+              </a>
+              <a
+                href="https://github.com/sponsors/Darginec05"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Become sponsor"
+                className="flex items-center justify-center w-18 h-18 bg-[#181c21] rounded-full shadow-lg m-2"
+              >
+                <PlusIcon size={30} color="#1f6feb" className="w-14 h-14 rounded-full animate-pulse" />
+              </a>
+            </div>
           </div>
         </div>
-        <div className="mt-4">
-          <h2 className="font-heading mt-12 scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0">
-            Plans for future. Roadmap
+        <div className="mt-6">
+          <h2 className="text-center font-heading mt-12 scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0">
+            Future Plans 👨‍💻
           </h2>
+          {/* card list */}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <Card
+              title="Continued Innovation"
+              description="We are committed to continuously improving Yoopta Editor based on the feedback and needs of our developer community. Expect regular updates with new features that make the editor even more powerful and user-friendly."
+            />
+            <Card
+              title="Integration of AI-Powered Tools"
+              description="We aim to incorporate advanced AI features to streamline content creation and editing, making the editor smarter and more intuitive."
+            />
+            <Card
+              title="Customization Enhancements"
+              description="We plan to introduce more customizable options that allow deeper modifications and personalizations, making it easier than ever to tailor the editor to your specific needs."
+            />
+            <Card
+              title="Plugin Marketplace"
+              description="A one-stop-shop for plugins where developers can share and monetize their own plugins, and users can easily enhance their editor's capabilities."
+            />
+            <Card
+              title="Community Building Initiatives"
+              description="From webinars and workshops to meetups—expanding our community support to foster collaboration and learning among users and developers."
+            />
+            <Card
+              title="Open-Source Email Builder"
+              description="We are excited to announce that we will be expanding our suite of tools with the development of an open-source email builder. This new tool will empower users to create beautiful, responsive email templates with the same ease and flexibility they enjoy with Yoopta Editor."
+            />
+          </div>
+          {/* card list using grid */}
         </div>
         {/* <div className="mt-4">
           <h2 className="font-heading mt-12 scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0">
             Used by
           </h2>
         </div> */}
+        <footer>
+          <div className="mt-6 pb-6">
+            <p className="text-center text-muted-foreground">
+              Created by{' '}
+              <a
+                href="https://x.com/lebovskiYoo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#1f6feb] underline"
+              >
+                Darginec05
+              </a>
+            </p>
+          </div>
+        </footer>
       </div>
     </div>
   );
