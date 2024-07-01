@@ -39,22 +39,8 @@ const BasicExample = () => {
     console.log('EDITOR DATA', editorData);
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      Elements.insertElementText(editor, 'Super text', {
-        blockId: '7453ac69-0d2a-4a27-ac48-21de5021c432',
-      });
-    }, 1000);
-  }, [editor]);
-
   return (
     <>
-      {/* <div>
-        <MarkdownPreview />
-      </div> */}
-      {/* <div>
-        <HtmlPreview />
-      </div> */}
       <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={rectangleSelectionRef}>
         <YooptaEditor
           editor={editor}
@@ -65,6 +51,10 @@ const BasicExample = () => {
           placeholder="Type / to open menu"
           tools={TOOLS}
           readOnly={readOnly}
+          blockActionButtons={{
+            // drag: null,
+            plus: null,
+          }}
           value={{
             '7453ac69-0d2a-4a27-ac48-21de5021c432': {
               id: '7453ac69-0d2a-4a27-ac48-21de5021c432',
@@ -328,12 +318,9 @@ const BasicExample = () => {
 
 const Buttons = ({ onSubmit }: any) => {
   const editor = useYooptaEditor();
-  const isFocused = useYooptaFocused();
-  const [mdValue, setMdValue] = useState('');
 
   return (
     <div className="flex mt-4 mb-8">
-      <textarea value={mdValue} onChange={(e) => setMdValue(e.target.value)} />
       <button
         className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
         onClick={() => {
