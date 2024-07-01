@@ -49,7 +49,7 @@ export default function Home() {
           </div>
           <span className="text-white text-base">opta :D</span>
         </NextLink>
-        <div className="flex items-center text-nowrap md:mt-0 mt-3 scale-[.65] md:-scale-0">
+        <div className="flex items-center text-nowrap md:mt-0 mt-3 scale-[.65] md:-scale-[1]">
           <NextLink
             href="https://yoodocs.space/yoopta-editor/yoopta/introduction-rsK_1fODIL"
             target="_blank"
