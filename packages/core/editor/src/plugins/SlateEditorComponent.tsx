@@ -125,6 +125,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       }
 
       if (!ElementComponent) return <DefaultElement {...props} attributes={attributes} />;
+
       return (
         <ElementComponent
           {...props}

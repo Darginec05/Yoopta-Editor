@@ -9,7 +9,7 @@
 }
 
 .yoopta-accordion-list-item-heading {
-  @apply yoo-accordion-mb-0 yoo-accordion-relative yoo-accordion-w-full yoo-accordion-items-center yoo-accordion-border-0 yoo-accordion-rounded-none yoo-accordion-py-4 yoo-accordion-pr-8 yoo-accordion-text-left yoo-accordion-cursor-pointer yoo-accordion-relative yoo-accordion-text-base yoo-accordion-font-medium
+  @apply yoo-accordion-mb-0 yoo-accordion-relative yoo-accordion-w-full yoo-accordion-items-center yoo-accordion-border-0 yoo-accordion-rounded-none yoo-accordion-py-4 yoo-accordion-pr-8 yoo-accordion-cursor-pointer yoo-accordion-relative yoo-accordion-text-base yoo-accordion-font-medium
 }
 
 .yoopta-accordion-list-item-content {

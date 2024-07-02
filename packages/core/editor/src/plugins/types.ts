@@ -19,7 +19,6 @@ export type PluginOptions<T> = {
     icon?: string | ReactNode | ReactElement;
   };
   shortcuts?: string[];
-  align?: 'left' | 'center' | 'right';
   HTMLAttributes?: HTMLAttributes<HTMLElement>;
 } & T;
 

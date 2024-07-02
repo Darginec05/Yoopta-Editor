@@ -1,8 +1,21 @@
-import { Elements, UI, YooEditor, YooptaBlockData } from '@yoopta/editor';
-import { RowSpacingIcon, SizeIcon, WidthIcon } from '@radix-ui/react-icons';
+import { Blocks, Elements, UI, YooEditor, YooptaBlockData } from '@yoopta/editor';
+import {
+  RowSpacingIcon,
+  SizeIcon,
+  WidthIcon,
+  TextAlignCenterIcon,
+  TextAlignLeftIcon,
+  TextAlignRightIcon,
+} from '@radix-ui/react-icons';
 import { ImageElementProps, ImagePluginElements } from '../types';
 import CheckmarkIcon from '../icons/checkmark.svg';
 import DownloadIcon from '../icons/download.svg';
+
+const ALIGN_ICONS = {
+  left: TextAlignLeftIcon,
+  center: TextAlignCenterIcon,
+  right: TextAlignRightIcon,
+};
 
 const { ExtendedBlockActions, BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptionsSeparator } = UI;
 
@@ -47,7 +60,16 @@ const ImageBlockOptions = ({ editor, block, props: imageProps }: Props) => {
     document.body.removeChild(link);
   };
 
-  // const onAlternativeText = () => {};
+  const currentAlign = block?.meta?.align || 'center';
+  const AlignIcon = ALIGN_ICONS[currentAlign];
+
+  const onToggleAlign = () => {
+    const aligns = ['left', 'center', 'right'];
+    if (!block) return;
+
+    const nextAlign = aligns[(aligns.indexOf(currentAlign) + 1) % aligns.length] as YooptaBlockData['meta']['align'];
+    Blocks.updateBlock(editor, block.id, { meta: { ...block.meta, align: nextAlign } });
+  };
 
   return (
     <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])} className="yoopta-image-options">
@@ -91,21 +113,21 @@ const ImageBlockOptions = ({ editor, block, props: imageProps }: Props) => {
 
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>
+          <button
+            type="button"
+            className="yoo-image-rounded-sm hover:yoo-image-bg-[#37352f14] yoo-image-leading-[120%] yoo-image-px-2 yoo-image-py-1.5 yoo-image-mx-[4px] yoo-image-cursor-pointer yoo-image-w-full yoo-image-flex yoo-image-justify-start"
+            onClick={onToggleAlign}
+          >
+            <AlignIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
+            Alignment
+          </button>
+        </BlockOptionsMenuItem>
+        <BlockOptionsMenuItem>
           <button type="button" className="yoopta-block-options-button" onClick={onDownload}>
             <DownloadIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
             Download
           </button>
         </BlockOptionsMenuItem>
-        {/* <BlockOptionsMenuItem>
-          <button
-            type="button"
-            className="yoo-image-rounded-sm hover:yoo-image-bg-[#37352f14] yoo-image-leading-[120%] yoo-image-px-2 yoo-image-py-1.5 yoo-image-mx-[4px] yoo-image-cursor-pointer yoo-image-w-full yoo-image-flex yoo-image-justify-start"
-            onClick={onAlternativeText}
-          >
-            <TextIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
-            Alt
-          </button>
-        </BlockOptionsMenuItem> */}
       </BlockOptionsMenuGroup>
     </ExtendedBlockActions>
   );

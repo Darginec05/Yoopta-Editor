@@ -33,21 +33,18 @@ function getNumberedListCount(editor: YooEditor, block: YooptaBlockData) {
   return count;
 }
 
-const NumberedListRender = ({
-  attributes,
-  children,
-  element,
-  blockId,
-  HTMLAttributes = {},
-}: PluginElementRenderProps) => {
+const NumberedListRender = ({ attributes, children, blockId, HTMLAttributes = {} }: PluginElementRenderProps) => {
   const { className = '', ...htmlAttrs } = HTMLAttributes;
   const block = useBlockData(blockId);
   const editor = useYooptaEditor();
 
   const count = getNumberedListCount(editor, block);
 
+  const currentAlign = block?.meta?.align || 'left';
+  const alignClass = `yoopta-align-${currentAlign}`;
+
   return (
-    <div className={`yoopta-numbered-list ${className}`} {...htmlAttrs} {...attributes}>
+    <div className={`yoopta-numbered-list ${alignClass} ${className}`} {...htmlAttrs} {...attributes}>
       <span className="yoopta-numbered-list-count" contentEditable={false}>
         {count}.
       </span>

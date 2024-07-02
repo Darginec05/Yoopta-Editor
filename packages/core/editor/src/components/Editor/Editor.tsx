@@ -124,26 +124,26 @@ const Editor = ({
   const onMouseDown = (event: React.MouseEvent) => {
     if (isReadOnly) return;
 
-    if (event.shiftKey) {
-      const currentSelectionIndex = editor.selection;
-      if (!currentSelectionIndex) return;
+    // if (event.shiftKey) {
+    //   const currentSelectionIndex = editor.selection;
+    //   if (!currentSelectionIndex) return;
 
-      const targetBlock = (event.target as HTMLElement).closest('div[data-yoopta-block]');
-      const targetBlockId = targetBlock?.getAttribute('data-yoopta-block-id') || '';
-      const targetBlockIndex = editor.children[targetBlockId]?.meta.order;
-      if (typeof targetBlockIndex !== 'number') return;
+    //   const targetBlock = (event.target as HTMLElement).closest('div[data-yoopta-block]');
+    //   const targetBlockId = targetBlock?.getAttribute('data-yoopta-block-id') || '';
+    //   const targetBlockIndex = editor.children[targetBlockId]?.meta.order;
+    //   if (typeof targetBlockIndex !== 'number') return;
 
-      const indexesBetween = Array.from({ length: Math.abs(targetBlockIndex - currentSelectionIndex[0]) }).map(
-        (_, index) =>
-          targetBlockIndex > currentSelectionIndex[0]
-            ? currentSelectionIndex[0] + index + 1
-            : currentSelectionIndex[0] - index - 1,
-      );
+    //   const indexesBetween = Array.from({ length: Math.abs(targetBlockIndex - currentSelectionIndex[0]) }).map(
+    //     (_, index) =>
+    //       targetBlockIndex > currentSelectionIndex[0]
+    //         ? currentSelectionIndex[0] + index + 1
+    //         : currentSelectionIndex[0] - index - 1,
+    //   );
 
-      editor.blur();
-      editor.setBlockSelected([currentSelectionIndex[0], ...indexesBetween], { only: true });
-      return;
-    }
+    //   editor.blur();
+    //   editor.setBlockSelected([currentSelectionIndex[0], ...indexesBetween], { only: true });
+    //   return;
+    // }
 
     resetSelectionState();
     handleEmptyZoneClick(event);

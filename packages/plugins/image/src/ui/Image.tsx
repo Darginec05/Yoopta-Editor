@@ -17,7 +17,7 @@ import { Resizer } from './Resizer';
 
 const ImageRender = ({ element, attributes, children, blockId }: PluginElementRenderProps) => {
   const { src, alt, srcSet, bgColor, fit, sizes: propSizes } = element.props || {};
-  const block = useBlockData(blockId);
+  const blockData = useBlockData(blockId);
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
 
@@ -86,14 +86,17 @@ const ImageRender = ({ element, attributes, children, blockId }: PluginElementRe
     );
   }
 
+  const currentAlign = blockData?.meta?.align || 'center';
+  const alignClass = `yoopta-align-${currentAlign}`;
+
   return (
     <div
       contentEditable={false}
       draggable={false}
-      className="yoo-image-mt-4 yoo-image-relative yoopta-image"
+      className={`yoo-image-mt-4 yoo-image-relative yoo-image-flex ${alignClass} yoopta-image`}
       {...attributes}
     >
-      <Resizable {...resizeProps} className="yoo-image-mx-auto yoo-image-my-0 yoo-image-flex">
+      <Resizable {...resizeProps} className="yoo-image-my-0 yoo-image-flex">
         {blockSelected && (
           <div className="yoo-image-absolute yoo-image-pointer-events-none yoo-image-inset-0 yoo-image-bg-[rgba(35,131,226,0.14)] yoo-image-z-[81] yoo-image-rounded-[3px] yoo-image-opacity-100 yoo-image-transition-opacity yoo-image-duration-150 yoo-image-ease-in" />
         )}
@@ -106,7 +109,7 @@ const ImageRender = ({ element, attributes, children, blockId }: PluginElementRe
           bgColor={bgColor}
           height={sizes?.height}
         />
-        {!isReadOnly && <ImageBlockOptions block={block} editor={editor} props={element.props} />}
+        {!isReadOnly && <ImageBlockOptions block={blockData} editor={editor} props={element.props} />}
         {children}
       </Resizable>
     </div>

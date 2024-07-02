@@ -40,6 +40,7 @@ export function splitBlock(editor: YooEditor, options: YooptaEditorTransformOpti
       meta: {
         order: currentBlock.meta.order + 1,
         depth: currentBlock.meta.depth,
+        align: currentBlock.meta.align,
       },
       // [TODO] - check for mark text formats
       value: [nextBlockChildren],

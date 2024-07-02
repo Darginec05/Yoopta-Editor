@@ -130,3 +130,16 @@ pre {
 .yoopta-block-options-group {
   @apply yoo-editor-flex yoo-editor-flex-col
 }
+
+/* Aligment for elements */
+.yoopta-align-left {
+  @apply yoo-editor-justify-start yoo-editor-text-left
+}
+
+.yoopta-align-center {
+  @apply yoo-editor-justify-center yoo-editor-text-center
+}
+
+.yoopta-align-right {
+  @apply yoo-editor-justify-end yoo-editor-text-right
+}

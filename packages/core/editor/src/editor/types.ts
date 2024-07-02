@@ -23,6 +23,7 @@ export type YooptaBlockData<T = Descendant | SlateElement> = {
 export type YooptaBlockBaseMeta = {
   order: number;
   depth: number;
+  align?: 'left' | 'center' | 'right' | undefined;
 };
 
 export type YooptaContentValue = Record<string, YooptaBlockData>;
