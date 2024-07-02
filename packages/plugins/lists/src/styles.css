@@ -9,10 +9,6 @@
   @apply yoo-lists-min-w-[10px] yoo-lists-w-auto yoo-lists-select-none yoo-lists-absolute yoo-lists-left-0 yoo-lists-top-[2px]
 }
 
-/* .yoopta-numbered-list-content {
-  @apply yoo-lists-flex-grow
-} */
-
 /* Bulleted list */
 .yoopta-bulleted-list {
   @apply yoo-lists-ml-[10px] yoo-lists-flex yoo-lists-items-center yoo-lists-pl-4 yoo-lists-space-x-1 yoo-lists-py-[2px] yoo-lists-text-[16px] yoo-lists-leading-7 yoo-lists-relative
@@ -30,11 +26,6 @@
 .yoopta-todo-list {
   @apply yoo-lists-ml-[10px] yoo-lists-flex yoo-lists-items-center yoo-lists-pl-4 yoo-lists-space-x-1 yoo-lists-py-[2px] yoo-lists-text-[16px] yoo-lists-leading-[28px] yoo-lists-relative
 }
-
-/* 
-.yoopta-todo-list-content {
-  @apply yoo-lists-flex-grow
-} */
 
 .yoopta-todo-list-checkbox {
   @apply yoo-lists-select-none yoo-lists-cursor-pointer yoo-lists-absolute yoo-lists-left-0 yoo-lists-top-[4px]
