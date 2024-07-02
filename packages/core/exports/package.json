@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/exports",
-  "version": "4.6.1",
+  "version": "4.6.2",
   "description": "Serialize/deserialize exports in different formats for Yoopta-Editor",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
