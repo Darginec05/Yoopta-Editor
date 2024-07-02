@@ -137,9 +137,9 @@ pre {
 }
 
 .yoopta-align-center {
-  @apply yoo-editor-justify-start yoo-editor-text-center
+  @apply yoo-editor-justify-center yoo-editor-text-center
 }
 
 .yoopta-align-right {
-  @apply yoo-editor-justify-start yoo-editor-text-right
+  @apply yoo-editor-justify-end yoo-editor-text-right
 }

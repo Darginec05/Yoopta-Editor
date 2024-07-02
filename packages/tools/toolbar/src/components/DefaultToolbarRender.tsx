@@ -256,8 +256,6 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
     const aligns = ['left', 'center', 'right'];
     if (!blockData) return;
 
-    console.log('blockData', blockData);
-
     const currentAlign = blockData?.meta?.align || 'left';
     const nextAlign = aligns[(aligns.indexOf(currentAlign) + 1) % aligns.length] as YooptaBlockData['meta']['align'];
     Blocks.updateBlock(editor, blockData.id, { meta: { ...blockData.meta, align: nextAlign } });
@@ -380,7 +378,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
         <Toolbar.ToggleItem
           className="yoopta-button yoopta-toolbar-item-mark"
           value="align"
-          aria-label="Align"
+          aria-label="Alignment"
           style={getItemStyle('align')}
           onClick={onToggleAlign}
         >

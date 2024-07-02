@@ -81,14 +81,17 @@ const VideoRender = ({ element, attributes, children, blockId }: PluginElementRe
     );
   }
 
+  const currentAlign = block?.meta?.align || 'center';
+  const alignClass = `yoopta-align-${currentAlign}`;
+
   return (
     <div
       contentEditable={false}
       draggable={false}
-      className="yoo-video-mt-4 yoo-video-relative yoopta-video"
+      className={`yoo-video-mt-4 yoo-video-relative yoo-video-flex ${alignClass} yoopta-video`}
       {...attributes}
     >
-      <Resizable {...resizeProps} className="yoo-video-mx-auto yoo-video-my-0 yoo-video-flex">
+      <Resizable {...resizeProps} className="yoo-video-my-0 yoo-video-flex">
         {blockSelected && (
           <div className="yoo-video-absolute yoo-video-pointer-events-none yoo-video-inset-0 yoo-video-bg-[rgba(35,131,226,0.14)] yoo-video-z-[81] yoo-video-rounded-[3px] yoo-video-opacity-100 yoo-video-transition-opacity yoo-video-duration-150 yoo-video-ease-in" />
         )}

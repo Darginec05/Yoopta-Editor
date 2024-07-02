@@ -38,6 +38,7 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
     meta: {
       order: block.meta.order,
       depth: block.meta.depth,
+      align: block.meta.align,
     },
     value: [elements],
   });

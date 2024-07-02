@@ -81,14 +81,17 @@ const EmbedRender = ({ element, attributes, children, blockId }: PluginElementRe
     );
   }
 
+  const currentAlign = block?.meta?.align || 'center';
+  const alignClass = `yoopta-align-${currentAlign}`;
+
   return (
     <div
       contentEditable={false}
       draggable={false}
-      className="yoo-embed-mt-4 yoo-embed-relative yoopta-embed"
+      className={`yoo-embed-mt-4 yoo-embed-relative yoo-embed-flex ${alignClass} yoopta-embed`}
       {...attributes}
     >
-      <Resizable {...resizeProps} className="yoo-embed-mx-auto yoo-embed-my-0 yoo-embed-flex">
+      <Resizable {...resizeProps} className="yoo-embed-my-0 yoo-embed-flex">
         {blockSelected && (
           <div className="yoo-embed-absolute yoo-embed-pointer-events-none yoo-embed-inset-0 yoo-embed-bg-[rgba(35,131,226,0.14)] yoo-embed-z-[81] yoo-embed-rounded-[3px] yoo-embed-opacity-100 yoo-embed-transition-opacity yoo-embed-duration-150 yoo-embed-ease-in" />
         )}
