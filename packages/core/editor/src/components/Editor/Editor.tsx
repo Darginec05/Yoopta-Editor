@@ -352,8 +352,6 @@ const Editor = ({
     }
   };
 
-  console.log('editor.children', editor.children);
-
   const editorStyles: CSSProperties = getEditorStyles({
     userSelect: selectionBox.selection ? 'none' : 'auto',
     pointerEvents: selectionBox.selection ? 'none' : 'auto',

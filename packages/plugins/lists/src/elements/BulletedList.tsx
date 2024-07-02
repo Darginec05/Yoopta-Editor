@@ -1,10 +1,14 @@
-import { PluginElementRenderProps } from '@yoopta/editor';
+import { PluginElementRenderProps, useBlockData } from '@yoopta/editor';
 
-const BulletedListRender = ({ attributes, element, children, HTMLAttributes = {} }: PluginElementRenderProps) => {
+const BulletedListRender = ({ attributes, blockId, children, HTMLAttributes = {} }: PluginElementRenderProps) => {
   const { className = '', ...htmlAttrs } = HTMLAttributes;
+  const block = useBlockData(blockId);
+
+  const currentAlign = block?.meta?.align || 'left';
+  const alignClass = `yoopta-align-${currentAlign}`;
 
   return (
-    <div className={`yoopta-bulleted-list ${className}`} {...htmlAttrs} {...attributes}>
+    <div className={`yoopta-bulleted-list ${alignClass} ${className}`} {...htmlAttrs} {...attributes}>
       <span className="yoopta-bulleted-list-bullet" contentEditable={false}>
         •
       </span>
