@@ -1,6 +1,6 @@
 import { useYooptaEditor } from '../../contexts/YooptaContext/YooptaContext';
 import { useSortable } from '@dnd-kit/sortable';
-import { useState } from 'react';
+import { CSSProperties, useState } from 'react';
 import { BlockActions } from './BlockActions';
 
 const Block = ({ children, block, blockId }) => {
@@ -10,12 +10,15 @@ const Block = ({ children, block, blockId }) => {
   const { attributes, listeners, setNodeRef, setActivatorNodeRef, transform, transition, isOver, isDragging } =
     useSortable({ id: blockId, disabled: editor.readOnly });
 
-  const style = {
+  const align = block.meta.align || 'left';
+  const className = `yoopta-block yoopta-align-${align}`;
+
+  const style: CSSProperties = {
+    // [TODO] = handle max depth
+    marginLeft: `${block.meta.depth * 20}px`,
     transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : 'none',
     transition,
     opacity: isDragging ? 0.7 : 1,
-    // [TODO] = handle max depth
-    marginLeft: `${block.meta.depth * 20}px`,
   };
 
   const isSelected = editor.selectedBlocks?.includes(block.meta.order);
@@ -37,7 +40,7 @@ const Block = ({ children, block, blockId }) => {
   return (
     <div
       ref={setNodeRef}
-      className="yoopta-block"
+      className={className}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={style}

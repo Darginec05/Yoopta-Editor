@@ -50,7 +50,7 @@ export function buildBlocks(editor, plugins: Plugin<string, PluginElement<unknow
       });
 
       // Omit fetchers and other non-block related options
-      const { display, placeholder, align, shortcuts } = plugin.options || {};
+      const { display, placeholder, shortcuts } = plugin.options || {};
 
       blocks[plugin.type] = {
         type: plugin.type,
@@ -59,7 +59,6 @@ export function buildBlocks(editor, plugins: Plugin<string, PluginElement<unknow
         options: {
           display,
           placeholder,
-          align,
           shortcuts,
         },
         isActive: () => {

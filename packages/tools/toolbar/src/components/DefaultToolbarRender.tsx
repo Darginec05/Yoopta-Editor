@@ -6,12 +6,25 @@ import {
   UnderlineIcon,
   ChevronDownIcon,
   ChevronUpIcon,
+  TextAlignRightIcon,
+  TextAlignLeftIcon,
+  TextAlignCenterIcon,
 } from '@radix-ui/react-icons';
 import * as Toolbar from '@radix-ui/react-toolbar';
 import { useFloating, offset, flip, shift, inline, autoUpdate } from '@floating-ui/react';
 import { CSSProperties, MouseEvent, useEffect, useRef, useState } from 'react';
 import { HighlightColor } from './HighlightColor';
-import { findSlateBySelectionPath, HOTKEYS, SlateElement, useYooptaTools, UI } from '@yoopta/editor';
+import {
+  findSlateBySelectionPath,
+  HOTKEYS,
+  SlateElement,
+  useYooptaTools,
+  UI,
+  Elements,
+  Blocks,
+  findPluginBlockBySelectionPath,
+  YooptaBlockData,
+} from '@yoopta/editor';
 import { Editor, Element, NodeEntry, Range, Transforms } from 'slate';
 import { ToolbarRenderProps } from '../types';
 import { buildActionMenuRenderProps } from './utils';
@@ -30,6 +43,12 @@ const DEFAULT_LINK_VALUE: LinkValues = {
   url: '',
   target: '_blank',
   rel: 'noreferrer',
+};
+
+const ALIGN_ICONS = {
+  left: TextAlignLeftIcon,
+  center: TextAlignCenterIcon,
+  right: TextAlignRightIcon,
 };
 
 const getLinkEntry = (slate) => {
@@ -231,6 +250,21 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
     editor.formats[format].toggle();
   };
 
+  const blockData = findPluginBlockBySelectionPath(editor, { at: editor.selection });
+
+  const onToggleAlign = () => {
+    const aligns = ['left', 'center', 'right'];
+    if (!blockData) return;
+
+    console.log('blockData', blockData);
+
+    const currentAlign = blockData?.meta?.align || 'left';
+    const nextAlign = aligns[(aligns.indexOf(currentAlign) + 1) % aligns.length] as YooptaBlockData['meta']['align'];
+    Blocks.updateBlock(editor, blockData.id, { meta: { ...blockData.meta, align: nextAlign } });
+  };
+
+  const AlignIcon = ALIGN_ICONS[blockData?.meta?.align || 'left'];
+
   const onCloseActionMenu = () => onChangeModal('actionMenu', false);
 
   const actionMenuRenderProps = buildActionMenuRenderProps({ editor, onClose: onCloseActionMenu, view: 'small' });
@@ -316,6 +350,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
             <UnderlineIcon width={20} height={20} />
           </Toolbar.ToggleItem>
         )}
+
         {editor.formats.strike && (
           <Toolbar.ToggleItem
             className="yoopta-button yoopta-toolbar-item-mark"
@@ -339,6 +374,18 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
             <CodeIcon width={20} height={20} />
           </Toolbar.ToggleItem>
         )}
+      </Toolbar.ToggleGroup>
+      <Toolbar.Separator className="yoopta-toolbar-separator" />
+      <Toolbar.ToggleGroup className="yoopta-toolbar-group" type="multiple" aria-label="Text formatting">
+        <Toolbar.ToggleItem
+          className="yoopta-button yoopta-toolbar-item-mark"
+          value="align"
+          aria-label="Align"
+          style={getItemStyle('align')}
+          onClick={onToggleAlign}
+        >
+          <AlignIcon width={20} height={20} />
+        </Toolbar.ToggleItem>
         {editor.formats.highlight && (
           <>
             {modals.highlight && (

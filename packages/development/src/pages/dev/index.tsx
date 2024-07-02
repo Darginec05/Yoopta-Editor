@@ -21,40 +21,26 @@ const BasicExample = () => {
   const rectangleSelectionRef = useRef<HTMLDivElement>(null);
   const [readOnly, setReadOnly] = useState(false);
 
-  useEffect(() => {
-    const handleCopy = (value) => console.log('BLOCK COPY', value);
-    const handleFocus = (focused) => console.log('FOCUS', focused);
+  // useEffect(() => {
+  //   const handleCopy = (value) => console.log('BLOCK COPY', value);
+  //   const handleFocus = (focused) => console.log('FOCUS', focused);
 
-    editor.on('block:copy', handleCopy);
-    editor.on('focus', handleFocus);
+  //   editor.on('block:copy', handleCopy);
+  //   editor.on('focus', handleFocus);
 
-    return () => {
-      editor.off('block:copy', handleCopy);
-      editor.off('focus', handleFocus);
-    };
-  }, []);
+  //   return () => {
+  //     editor.off('block:copy', handleCopy);
+  //     editor.off('focus', handleFocus);
+  //   };
+  // }, []);
 
   const onSubmit = () => {
     const editorData = editor.getEditorValue();
     console.log('EDITOR DATA', editorData);
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      Elements.insertElementText(editor, 'Super text', {
-        blockId: '7453ac69-0d2a-4a27-ac48-21de5021c432',
-      });
-    }, 1000);
-  }, [editor]);
-
   return (
     <>
-      {/* <div>
-        <MarkdownPreview />
-      </div> */}
-      {/* <div>
-        <HtmlPreview />
-      </div> */}
       <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={rectangleSelectionRef}>
         <YooptaEditor
           editor={editor}
@@ -66,221 +52,25 @@ const BasicExample = () => {
           tools={TOOLS}
           readOnly={readOnly}
           value={{
-            '7453ac69-0d2a-4a27-ac48-21de5021c432': {
-              id: '7453ac69-0d2a-4a27-ac48-21de5021c432',
+            'e5bd3ee7-391c-4a6c-8d99-bd02fae4d4d2': {
+              id: 'e5bd3ee7-391c-4a6c-8d99-bd02fae4d4d2',
               value: [
                 {
-                  id: '7021ff94-a84f-4ce7-9fcc-cae7eaf2588e',
-                  type: 'numbered-list',
-                  props: {
-                    nodeType: 'block',
-                  },
-                  children: [
-                    {
-                      text: 'asd',
-                    },
-                  ],
-                },
-              ],
-              type: 'NumberedList',
-              meta: {
-                order: 0,
-                depth: 0,
-              },
-            },
-            'c55f8f56-d792-4c3a-aaf0-d90b8391e622': {
-              id: 'c55f8f56-d792-4c3a-aaf0-d90b8391e622',
-              value: [
-                {
-                  id: 'acb880d7-5755-4a64-9aa8-7f0b0c87f18e',
-                  type: 'numbered-list',
-                  children: [
-                    {
-                      text: 'asdasd',
-                    },
-                  ],
-                  props: {
-                    nodeType: 'block',
-                  },
-                },
-              ],
-              type: 'NumberedList',
-              meta: {
-                order: 5,
-                depth: 0,
-              },
-            },
-            '4192a57a-3048-4819-a9b2-9bad2839ee38': {
-              id: '4192a57a-3048-4819-a9b2-9bad2839ee38',
-              value: [
-                {
-                  id: '0fb531fe-bb2d-4e0b-8422-7a82e95bc4d3',
-                  type: 'numbered-list',
-                  children: [
-                    {
-                      text: 'asdasdasd',
-                    },
-                  ],
-                  props: {
-                    nodeType: 'block',
-                  },
-                },
-              ],
-              type: 'NumberedList',
-              meta: {
-                order: 6,
-                depth: 0,
-              },
-            },
-            'e4283d23-bf3d-4df3-b372-a4cea302e91b': {
-              id: 'e4283d23-bf3d-4df3-b372-a4cea302e91b',
-              value: [
-                {
-                  id: '54a57ffd-7c8e-45c4-841d-e2bf07ff9f22',
-                  type: 'paragraph',
-                  children: [
-                    {
-                      text: '',
-                    },
-                  ],
-                  props: {
-                    nodeType: 'block',
-                  },
-                },
-              ],
-              type: 'Paragraph',
-              meta: {
-                order: 8,
-                depth: 0,
-              },
-            },
-            '8f85a7ea-e606-4684-a5d2-d20ef138080b': {
-              id: '8f85a7ea-e606-4684-a5d2-d20ef138080b',
-              value: [
-                {
-                  id: 'd6931777-17b3-469c-83f2-0bf85842ca20',
-                  type: 'paragraph',
-                  children: [
-                    {
-                      text: '',
-                    },
-                  ],
-                  props: {
-                    nodeType: 'block',
-                  },
-                },
-              ],
-              type: 'Paragraph',
-              meta: {
-                order: 9,
-                depth: 0,
-              },
-            },
-            'ee387b66-62c1-4c01-b9f6-35b2ecb01f1c': {
-              id: 'ee387b66-62c1-4c01-b9f6-35b2ecb01f1c',
-              value: [
-                {
-                  id: '6962f986-4d98-40ad-bb85-8262d7492b7f',
-                  type: 'paragraph',
-                  children: [
-                    {
-                      text: 'asdasdas',
-                    },
-                  ],
-                  props: {
-                    nodeType: 'block',
-                  },
-                },
-              ],
-              type: 'Paragraph',
-              meta: {
-                order: 1,
-                depth: 0,
-              },
-            },
-            'e382a6e4-ae76-4b27-9bcb-86b2c699fec4': {
-              id: 'e382a6e4-ae76-4b27-9bcb-86b2c699fec4',
-              value: [
-                {
-                  id: '21662b6c-0c59-4fd8-bd85-7b0578fc7cd7',
-                  type: 'paragraph',
-                  children: [
-                    {
-                      text: 'dasd',
-                    },
-                  ],
-                  props: {
-                    nodeType: 'block',
-                  },
-                },
-              ],
-              type: 'Paragraph',
-              meta: {
-                order: 2,
-                depth: 0,
-              },
-            },
-            '1427c85a-2375-4d96-9535-2ec58f2903af': {
-              id: '1427c85a-2375-4d96-9535-2ec58f2903af',
-              value: [
-                {
-                  id: 'fc74e476-445a-426c-82d0-247c2440e52a',
-                  type: 'paragraph',
-                  children: [
-                    {
-                      text: 'sadsad',
-                    },
-                  ],
-                  props: {
-                    nodeType: 'block',
-                  },
-                },
-              ],
-              type: 'Paragraph',
-              meta: {
-                order: 3,
-                depth: 0,
-              },
-            },
-            '261951ac-1a43-4c0e-887d-a1cddf310071': {
-              id: '261951ac-1a43-4c0e-887d-a1cddf310071',
-              value: [
-                {
-                  id: 'e69c48ae-c423-46a7-965b-cec1669e6c6e',
-                  type: 'paragraph',
-                  children: [
-                    {
-                      text: 'Super text',
-                    },
-                  ],
-                  props: {
-                    nodeType: 'block',
-                  },
-                },
-              ],
-              type: 'Paragraph',
-              meta: {
-                order: 4,
-                depth: 0,
-              },
-            },
-            'a60daf05-5769-4dba-ad2c-b5db07085d00': {
-              id: 'a60daf05-5769-4dba-ad2c-b5db07085d00',
-              value: [
-                {
-                  id: 'ad69c236-35fe-463f-9634-ca24471648f4',
+                  id: '7cc1b41e-af96-4728-8422-f0e5ca319439',
                   type: 'accordion-list',
                   children: [
                     {
-                      id: '784c35bb-d361-40a7-941d-45786bbdbd11',
+                      id: '03ffc5a8-4882-44bc-a57b-af9fb773bc52',
                       type: 'accordion-list-item',
                       children: [
                         {
-                          id: '89779009-78a0-4c92-ad37-51e5e433ad99',
+                          id: '3f010f03-1d09-48a3-8b86-4eea5514ba46',
                           type: 'accordion-list-item-heading',
                           children: [
                             {
-                              text: 'asdasdsadasdadasda',
+                              text: 'Why copy/paste and not packaged as a dependency?',
+                              italic: true,
+                              bold: true,
                             },
                           ],
                           props: {
@@ -288,11 +78,79 @@ const BasicExample = () => {
                           },
                         },
                         {
-                          id: 'cfec5263-7b27-43e9-a561-a82e5e1f193f',
+                          id: '87fd7485-9864-478e-9b6d-8d4df789f3b9',
                           type: 'accordion-list-item-content',
                           children: [
                             {
-                              text: 'asdsadsaddasdasdasd',
+                              text: 'Start with some sensible defaults, then customize the components to your needs.',
+                            },
+                          ],
+                          props: {
+                            nodeType: 'block',
+                          },
+                        },
+                      ],
+                      props: {
+                        nodeType: 'block',
+                        isExpanded: false,
+                      },
+                    },
+                    {
+                      id: 'db504063-91e0-40b9-a7de-dec6731c8da9',
+                      type: 'accordion-list-item',
+                      children: [
+                        {
+                          id: '0527ee4f-7472-4c6e-8e58-0aee4c84db4e',
+                          type: 'accordion-list-item-heading',
+                          children: [
+                            {
+                              text: 'Do you plan to publish it as an npm package?',
+                            },
+                          ],
+                          props: {
+                            nodeType: 'block',
+                          },
+                        },
+                        {
+                          id: 'c6e12a11-a248-4385-80ad-36e933ec57f5',
+                          type: 'accordion-list-item-content',
+                          children: [
+                            {
+                              text: 'No. I have no plans to publish it as an npm package.',
+                            },
+                          ],
+                          props: {
+                            nodeType: 'block',
+                          },
+                        },
+                      ],
+                      props: {
+                        nodeType: 'block',
+                        isExpanded: false,
+                      },
+                    },
+                    {
+                      id: 'f89c14d3-88c6-43f1-b274-1cd32ef3ea2d',
+                      type: 'accordion-list-item',
+                      children: [
+                        {
+                          id: 'e058e58c-a56e-4eb2-8602-34b92cb0cc1b',
+                          type: 'accordion-list-item-heading',
+                          children: [
+                            {
+                              text: 'Which frameworks are supported?',
+                            },
+                          ],
+                          props: {
+                            nodeType: 'block',
+                          },
+                        },
+                        {
+                          id: '7d6b408f-a2f3-428f-89a0-f52b2848d972',
+                          type: 'accordion-list-item-content',
+                          children: [
+                            {
+                              text: 'You can use any framework that supports React. ',
                             },
                           ],
                           props: {
@@ -310,7 +168,341 @@ const BasicExample = () => {
               ],
               type: 'Accordion',
               meta: {
+                order: 2,
+                depth: 0,
+                align: 'center',
+              },
+            },
+            '6c7970dd-a624-4c42-a809-6863095419ae': {
+              id: '6c7970dd-a624-4c42-a809-6863095419ae',
+              value: [
+                {
+                  id: '80ad5c7d-c73c-40bb-b01d-5337357c1f95',
+                  type: 'heading-one',
+                  props: {
+                    nodeType: 'block',
+                  },
+                  children: [
+                    {
+                      text: 'Introduction',
+                    },
+                  ],
+                },
+              ],
+              type: 'HeadingOne',
+              meta: {
+                order: 0,
+                depth: 0,
+                align: 'center',
+              },
+            },
+            'b8a6e071-9393-4991-8d28-923d80c255ad': {
+              id: 'b8a6e071-9393-4991-8d28-923d80c255ad',
+              value: [
+                {
+                  id: 'fc748dc8-224a-4b6a-a319-cc942ae7de3b',
+                  type: 'image',
+                  props: {
+                    src: 'https://res.cloudinary.com/ench-app/image/upload/v1719855049/hold-up-let-him-cook_s4rrzh.gif',
+                    alt: 'cloudinary',
+                    srcSet: null,
+                    fit: 'fill',
+                    sizes: {
+                      width: 314,
+                      height: 309,
+                    },
+                    nodeType: 'void',
+                  },
+                  children: [
+                    {
+                      text: '',
+                    },
+                  ],
+                },
+              ],
+              type: 'Image',
+              meta: {
                 order: 7,
+                depth: 0,
+              },
+            },
+            '22d67b35-7897-42ac-92f4-ea00727a526a': {
+              id: '22d67b35-7897-42ac-92f4-ea00727a526a',
+              value: [
+                {
+                  id: 'd76ed64a-ff59-4df3-bd0e-f4fd38428883',
+                  type: 'paragraph',
+                  children: [
+                    {
+                      text: 'Beautifully designed components that you can copy and paste into your apps. Accessible. Customizable. Open Source.',
+                    },
+                  ],
+                  props: {
+                    nodeType: 'block',
+                  },
+                },
+              ],
+              type: 'Paragraph',
+              meta: {
+                order: 1,
+                depth: 0,
+                align: 'center',
+              },
+            },
+            '7ddfcf7f-adb6-401f-ba71-08e8830e81da': {
+              id: '7ddfcf7f-adb6-401f-ba71-08e8830e81da',
+              type: 'NumberedList',
+              meta: {
+                order: 4,
+                depth: 0,
+              },
+              value: [
+                {
+                  id: 'fbc9fb6a-3414-4337-a9e1-b88e6484df02',
+                  type: 'numbered-list',
+                  children: [
+                    {
+                      text: 'Other color formats',
+                    },
+                  ],
+                  props: {
+                    nodeType: 'block',
+                  },
+                },
+              ],
+            },
+            '3bec6a02-f31f-4809-86ac-e405d710ce6a': {
+              id: '3bec6a02-f31f-4809-86ac-e405d710ce6a',
+              value: [
+                {
+                  id: '2e5b398b-f997-43bc-a449-02999d657f20',
+                  type: 'paragraph',
+                  children: [
+                    {
+                      text: 'See the',
+                    },
+                    {
+                      text: ' ',
+                    },
+                    {
+                      text: '',
+                    },
+                    {
+                      id: '80ea61fd-5fb2-4909-ab33-b7baaef37879',
+                      type: 'link',
+                      props: {
+                        url: 'https://tailwindcss.com/docs/customizing-colors#using-css-variables',
+                        target: '',
+                        rel: '',
+                        title: 'Tailwind CSS documentation',
+                        nodeType: 'inline',
+                      },
+                      children: [
+                        {
+                          text: 'Tailwind CSS documentation',
+                        },
+                      ],
+                    },
+                    {
+                      text: ' ',
+                    },
+                    {
+                      text: 'for more information on using',
+                    },
+                    {
+                      text: ' ',
+                    },
+                    {
+                      code: true,
+                      text: 'rgb',
+                    },
+                    {
+                      text: ',',
+                    },
+                    {
+                      text: ' ',
+                    },
+                    {
+                      code: true,
+                      text: 'rgba',
+                    },
+                    {
+                      text: ' ',
+                    },
+                    {
+                      text: 'or',
+                    },
+                    {
+                      text: ' ',
+                    },
+                    {
+                      code: true,
+                      text: 'hsl',
+                    },
+                    {
+                      text: ' ',
+                    },
+                    {
+                      text: 'colors.',
+                    },
+                  ],
+                  props: {
+                    nodeType: 'block',
+                  },
+                },
+              ],
+              type: 'Paragraph',
+              meta: {
+                order: 5,
+                depth: 0,
+              },
+            },
+            '2ab847d7-c765-4e6f-9116-db6669f49318': {
+              id: '2ab847d7-c765-4e6f-9116-db6669f49318',
+              value: [
+                {
+                  id: '9977d4ba-6000-4996-a2fa-3b4ce07f71ee',
+                  type: 'numbered-list',
+                  children: [
+                    {
+                      text: 'I recommend using HSL c',
+                    },
+                    {
+                      text: 'olors for theming but you can al',
+                      bold: true,
+                    },
+                    {
+                      text: 'so use other color formats if you prefer.',
+                    },
+                  ],
+                  props: {
+                    nodeType: 'block',
+                  },
+                },
+              ],
+              type: 'NumberedList',
+              meta: {
+                order: 3,
+                depth: 0,
+              },
+            },
+            '9b0a0740-5a6d-4f58-beda-c0ec83fe2168': {
+              id: '9b0a0740-5a6d-4f58-beda-c0ec83fe2168',
+              value: [
+                {
+                  id: '8126d743-8102-4dff-ba98-e7a57c69886a',
+                  type: 'embed',
+                  props: {
+                    sizes: {
+                      width: 650,
+                      height: 400,
+                    },
+                    nodeType: 'void',
+                    provider: {
+                      type: 'youtube',
+                      id: 'evJ6gX1lp2o',
+                      url: 'https://www.youtube.com/watch?v=evJ6gX1lp2o&list=RDevJ6gX1lp2o&index=2&ab_channel=Artemas',
+                    },
+                  },
+                  children: [
+                    {
+                      text: '',
+                    },
+                  ],
+                },
+              ],
+              type: 'Embed',
+              meta: {
+                order: 8,
+                depth: 0,
+              },
+            },
+            'dc8409b8-0c20-4c47-ac60-2b2016393c53': {
+              id: 'dc8409b8-0c20-4c47-ac60-2b2016393c53',
+              value: [
+                {
+                  id: 'd6d7fb8a-9785-4c5f-a3c4-7c1ac100881b',
+                  type: 'video',
+                  props: {
+                    src: 'https://res.cloudinary.com/ench-app/video/upload/v1719868158/No_name_not19t.mp4',
+                    srcSet: null,
+                    sizes: {
+                      width: 416,
+                      height: 234,
+                    },
+                    nodeType: 'void',
+                    provider: {
+                      type: null,
+                      id: '',
+                    },
+                    settings: {
+                      controls: false,
+                      loop: true,
+                      muted: true,
+                      autoPlay: true,
+                    },
+                    fit: 'cover',
+                  },
+                  children: [
+                    {
+                      text: '',
+                    },
+                  ],
+                },
+              ],
+              type: 'Video',
+              meta: {
+                order: 9,
+                depth: 0,
+              },
+            },
+            'e805cb24-92ef-4b9f-a551-07d423be06ec': {
+              id: 'e805cb24-92ef-4b9f-a551-07d423be06ec',
+              value: [
+                {
+                  id: '423a5be5-0fa5-46a3-8318-73f82d75f86a',
+                  type: 'file',
+                  props: {
+                    size: 13206,
+                    name: 'editor',
+                    src: 'https://res.cloudinary.com/ench-app/raw/upload/v1719868177/editor_r8vu5j.json',
+                    format: 'json',
+                    nodeType: 'void',
+                  },
+                  children: [
+                    {
+                      text: '',
+                    },
+                  ],
+                },
+              ],
+              type: 'File',
+              meta: {
+                order: 6,
+                depth: 0,
+              },
+            },
+            'ce29e84c-a40e-4a4f-9734-839835cea334': {
+              id: 'ce29e84c-a40e-4a4f-9734-839835cea334',
+              value: [
+                {
+                  id: '142342e9-fdb6-4ea0-aa0f-a40569d1d9e0',
+                  type: 'code',
+                  props: {
+                    nodeType: 'void',
+                    language: 'javascript',
+                    theme: 'VSCode',
+                  },
+                  children: [
+                    {
+                      text: 'function getData() {}',
+                    },
+                  ],
+                },
+              ],
+              type: 'Code',
+              meta: {
+                order: 10,
                 depth: 0,
               },
             },
@@ -328,12 +520,9 @@ const BasicExample = () => {
 
 const Buttons = ({ onSubmit }: any) => {
   const editor = useYooptaEditor();
-  const isFocused = useYooptaFocused();
-  const [mdValue, setMdValue] = useState('');
 
   return (
     <div className="flex mt-4 mb-8">
-      <textarea value={mdValue} onChange={(e) => setMdValue(e.target.value)} />
       <button
         className="bg-[#007aff] mr-4 text-[#fff] px-4 py-2 rounded-md"
         onClick={() => {

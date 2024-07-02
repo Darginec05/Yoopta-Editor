@@ -56,7 +56,6 @@ const plugins = [
     },
     options: {
       shortcuts: [`<your custom shortcuts>`],
-      align: 'left' | 'center' | 'right',
       display: {
         title: `<your custom title>`,
         description: `<your custom description>`,
@@ -102,7 +101,6 @@ const plugins = [
     },
     options: {
       shortcuts: [`<your custom shortcuts>`],
-      align: 'left' | 'center' | 'right',
       display: {
         title: `<your custom title>`,
         description: `<your custom description>`,
@@ -149,7 +147,6 @@ const plugins = [
     },
     options: {
       shortcuts: [`<your custom shortcuts>`],
-      align: 'left' | 'center' | 'right',
       display: {
         title: `<your custom title>`,
         description: `<your custom description>`,
