@@ -26,9 +26,13 @@ export type PluginElementOptions = {
   draggable?: boolean;
 };
 
-export type PluginElementRenderProps = RenderSlateElementProps & {
+export type PluginElementExtendRenderProps = RenderSlateElementProps & {
   blockId: string;
   HTMLAttributes?: HTMLAttributes<HTMLElement>;
+};
+
+export type PluginElementRenderProps = PluginElementExtendRenderProps & {
+  extendRender?: (props: PluginElementExtendRenderProps) => JSX.Element;
 };
 
 export type PluginCustomEditorRenderProps = {

@@ -27,6 +27,10 @@ const LinkRender = (props: PluginElementRenderProps) => {
     delete linkProps.rel;
   }
 
+  if (props.render) {
+    return props.render(props);
+  }
+
   return (
     <a
       draggable={false}

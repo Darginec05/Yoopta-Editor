@@ -30,8 +30,15 @@ export class YooptaPlugin<TKeys extends string = string, TProps = Descendant, TO
     if (renders) {
       Object.keys(renders).forEach((elementType) => {
         const element = elements[elementType];
+
         if (element && element.render) {
-          elements[elementType].render = (props) => renders[elementType](props);
+          const customRenderFn = renders[elementType];
+
+          let elementRender = element.render;
+
+          element.render = (props) => {
+            return elementRender({ ...props, extendRender: customRenderFn });
+          };
         }
       });
     }

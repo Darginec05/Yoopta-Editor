@@ -4,7 +4,7 @@ import { Path } from 'slate';
 import { MouseEvent } from 'react';
 
 export const AccordionItemHeading = (props: PluginElementRenderProps) => {
-  const { attributes, children, blockId, element } = props;
+  const { attributes, children, blockId, element, extendRender } = props;
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
 
