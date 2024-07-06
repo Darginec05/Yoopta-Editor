@@ -3,8 +3,8 @@ import { useEffect, useRef } from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 import { EmbedElementProps, EmbedPluginElements, ProviderRenderProps } from '../types';
 
-function Twitter({ provider, blockId }: ProviderRenderProps) {
-  const twitterRootRef = useRef<HTMLDivElement>(null);
+function Twitter({ provider, blockId, attributes, children }: ProviderRenderProps) {
+  const twitterRootRef = useRef(null);
   const editor = useYooptaEditor();
 
   const { isIntersecting: isInViewport } = useIntersectionObserver(twitterRootRef, {
@@ -19,7 +19,7 @@ function Twitter({ provider, blockId }: ProviderRenderProps) {
 
     const script = document.createElement('script');
     script.src = 'https://platform.twitter.com/widgets.js';
-    twitterRootRef.current?.appendChild(script);
+    (twitterRootRef.current as unknown as HTMLDivElement)?.appendChild(script);
 
     script.onload = () => {
       if ((window as any).twttr) {
@@ -45,9 +45,15 @@ function Twitter({ provider, blockId }: ProviderRenderProps) {
     };
   }, [provider.id, isInViewport]);
 
+  const onRef = (node) => {
+    twitterRootRef.current = node;
+    attributes.ref(node);
+  };
+
   return (
-    <div className="yoo-embed-w-full yoo-embed-h-full" ref={twitterRootRef}>
+    <div className="yoo-embed-w-full yoo-embed-h-full" {...attributes} ref={onRef}>
       <div id={elementId} />
+      {children}
     </div>
   );
 }

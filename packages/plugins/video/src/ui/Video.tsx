@@ -85,14 +85,11 @@ const VideoRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
   const currentAlign = block?.meta?.align || 'center';
   const alignClass = `yoopta-align-${currentAlign}`;
 
-  console.log('video extendRender', extendRender);
-
   return (
     <div
       contentEditable={false}
       draggable={false}
       className={`yoo-video-mt-4 yoo-video-relative yoo-video-flex ${alignClass} yoopta-video`}
-      {...attributes}
     >
       <Resizable {...resizeProps} className="yoo-video-my-0 yoo-video-flex">
         {blockSelected && (
@@ -111,11 +108,13 @@ const VideoRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
             poster={poster}
             provider={provider}
             fit={fit}
-          />
+            attributes={attributes}
+          >
+            {children}
+          </VideoComponent>
         )}
 
         {!isReadOnly && <VideoBlockOptions block={block} editor={editor} settings={settings} props={element.props} />}
-        {children}
       </Resizable>
     </div>
   );

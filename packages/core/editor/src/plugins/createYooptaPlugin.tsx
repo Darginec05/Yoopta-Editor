@@ -6,7 +6,7 @@ export type ExtendPluginRender<TKeys extends string> = {
 };
 
 export type ExtendPlugin<TKeys extends string, TOptions> = {
-  renders?: ExtendPluginRender<TKeys>;
+  renders?: Partial<ExtendPluginRender<TKeys>>;
   options?: Partial<PluginOptions<TOptions>>;
 };
 

@@ -1,7 +1,7 @@
 import { Elements, PluginElementRenderProps, useYooptaEditor } from '@yoopta/editor';
 import { Path } from 'slate';
 
-export const AccordionItemContent = (props: PluginElementRenderProps) => {
+export const AccordionItemContent = ({ extendRender, ...props }: PluginElementRenderProps) => {
   const { attributes, children, blockId, element } = props;
   const editor = useYooptaEditor();
 
@@ -12,6 +12,8 @@ export const AccordionItemContent = (props: PluginElementRenderProps) => {
   });
 
   const isExpanded = parentListItem?.props?.isExpanded;
+
+  if (extendRender) return extendRender(props);
 
   return (
     <div

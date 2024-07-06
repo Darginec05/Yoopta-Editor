@@ -3,7 +3,7 @@ import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 
 const VIMEO_API_URI = 'https://vimeo.com/api/v2/video';
 
-function VimeoPlayer({ videoId, ...other }) {
+function VimeoPlayer({ videoId, children, attributes, ...other }) {
   const vimeoRootRef = useRef(null);
   const [src, setSrc] = useState(null);
   const [isFrameLoaded, setFrameLoaded] = useState(false);
@@ -20,8 +20,13 @@ function VimeoPlayer({ videoId, ...other }) {
       .catch(() => setSrc(null));
   }, [videoId]);
 
+  const onRef = (el) => {
+    vimeoRootRef.current = el;
+    attributes.ref(el);
+  };
+
   return (
-    <div ref={vimeoRootRef} className="yoo-video-relative">
+    <div {...attributes} ref={onRef} className="yoo-video-relative">
       <img
         src={src || ''}
         alt="vimeo_video_preview"
@@ -45,6 +50,7 @@ function VimeoPlayer({ videoId, ...other }) {
           {...other}
         />
       )}
+      {children}
     </div>
   );
 }

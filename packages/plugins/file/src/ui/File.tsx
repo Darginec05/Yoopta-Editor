@@ -9,7 +9,8 @@ import {
 import { Placeholder } from './Placeholder';
 import { FileBlockOptions } from './FileBlockOptions';
 
-const FileRender = ({ element, attributes, children, blockId, extendRender }: PluginElementRenderProps) => {
+const FileRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
+  const { element, attributes, children, blockId } = props;
   const { name, src, format, size } = element.props || {};
   const block = useBlockData(blockId);
   const editor = useYooptaEditor();
@@ -25,11 +26,7 @@ const FileRender = ({ element, attributes, children, blockId, extendRender }: Pl
     );
   }
 
-  const component = extendRender ? (
-    extendRender({ element, attributes, children, blockId })
-  ) : (
-    <FileComponent name={name} format={format} src={src} size={size} blockId={blockId} align={block.meta.align} />
-  );
+  if (extendRender) return extendRender(props);
 
   return (
     <div
@@ -41,7 +38,7 @@ const FileRender = ({ element, attributes, children, blockId, extendRender }: Pl
       {blockSelected && (
         <div className="yoo-file-absolute yoo-file-pointer-events-none yoo-file-inset-0 yoo-file-bg-[rgba(35,131,226,0.14)] yoo-file-z-[81] yoo-file-rounded-[3px] yoo-file-opacity-100 yoo-file-transition-opacity yoo-file-duration-150 yoo-file-ease-in" />
       )}
-      {component}
+      <FileComponent name={name} format={format} src={src} size={size} blockId={blockId} align={block.meta.align} />
       {!isReadOnly && <FileBlockOptions block={block} editor={editor} props={element.props} />}
       {children}
     </div>

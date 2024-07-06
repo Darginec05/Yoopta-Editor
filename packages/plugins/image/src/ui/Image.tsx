@@ -95,7 +95,6 @@ const ImageRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
       contentEditable={false}
       draggable={false}
       className={`yoo-image-mt-4 yoo-image-relative yoo-image-flex ${alignClass} yoopta-image`}
-      {...attributes}
     >
       <Resizable {...resizeProps} className="yoo-image-my-0 yoo-image-flex">
         {blockSelected && (
@@ -112,11 +111,12 @@ const ImageRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
             width={sizes?.width}
             bgColor={bgColor}
             height={sizes?.height}
-          />
+            attributes={attributes}
+          >
+            {children}
+          </ImageComponent>
         )}
-
         {!isReadOnly && <ImageBlockOptions block={blockData} editor={editor} props={element.props} />}
-        {children}
       </Resizable>
     </div>
   );

@@ -4,7 +4,7 @@ import { ProviderRenderProps } from '../types';
 
 const getDayliMotionAPI = (embedId: string) => `https://api.dailymotion.com/embed/${embedId}?fields=thumbnail_url`;
 
-function DailyMotion({ provider, width, height, blockId }: ProviderRenderProps) {
+function DailyMotion({ provider, width, height, attributes, children }: ProviderRenderProps) {
   const dailyMotionRootRef = useRef(null);
   const [src, setSrc] = useState(null);
   const [isFrameLoaded, setFrameLoaded] = useState(false);
@@ -21,8 +21,13 @@ function DailyMotion({ provider, width, height, blockId }: ProviderRenderProps) 
       .catch(() => setSrc(null));
   }, [provider.id]);
 
+  const onRef = (node) => {
+    dailyMotionRootRef.current = node;
+    attributes.ref(node);
+  };
+
   return (
-    <div ref={dailyMotionRootRef} className="yoo-embed-relative">
+    <div {...children} ref={onRef} className="yoo-embed-relative">
       <img
         src={src || ''}
         alt="daylimotion_embed_preview"
@@ -46,6 +51,7 @@ function DailyMotion({ provider, width, height, blockId }: ProviderRenderProps) 
           height={height}
         />
       )}
+      {children}
     </div>
   );
 }

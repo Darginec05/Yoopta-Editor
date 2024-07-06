@@ -2,16 +2,21 @@ import { useRef } from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 import { ProviderRenderProps } from '../types';
 
-const Figma = ({ provider, width, height, blockId }: ProviderRenderProps) => {
-  const figmaRootRef = useRef<HTMLDivElement>(null);
+const Figma = ({ provider, width, height, attributes, children }: ProviderRenderProps) => {
+  const figmaRootRef = useRef(null);
 
   const { isIntersecting: isInViewport } = useIntersectionObserver(figmaRootRef, {
     freezeOnceVisible: true,
     rootMargin: '50%',
   });
 
+  const onRef = (node) => {
+    figmaRootRef.current = node;
+    attributes.ref(node);
+  };
+
   return (
-    <div className="yoo-embed-relative" ref={figmaRootRef}>
+    <div className="yoo-embed-relative" {...attributes} ref={onRef}>
       {isInViewport && (
         <iframe
           src={`https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(provider?.url || '')}`}
@@ -22,6 +27,7 @@ const Figma = ({ provider, width, height, blockId }: ProviderRenderProps) => {
           height={height}
         />
       )}
+      {children}
     </div>
   );
 };

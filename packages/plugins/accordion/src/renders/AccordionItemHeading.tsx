@@ -3,8 +3,8 @@ import { ChevronUp, Plus, TrashIcon } from 'lucide-react';
 import { Path } from 'slate';
 import { MouseEvent } from 'react';
 
-export const AccordionItemHeading = (props: PluginElementRenderProps) => {
-  const { attributes, children, blockId, element, extendRender } = props;
+export const AccordionItemHeading = ({ extendRender, ...props }: PluginElementRenderProps) => {
+  const { attributes, children, blockId, element } = props;
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
 
@@ -68,6 +68,8 @@ export const AccordionItemHeading = (props: PluginElementRenderProps) => {
   const nodeEl = Elements.getElement(editor, blockId, { path: parentPath, type: 'accordion-list-item' });
   const isExpanded = nodeEl?.props?.isExpanded;
 
+  if (extendRender) return extendRender(props);
+
   return (
     <div
       {...attributes}
@@ -107,19 +109,3 @@ export const AccordionItemHeading = (props: PluginElementRenderProps) => {
     </div>
   );
 };
-
-// - Accordion
-//   - list
-//     - list-item
-//       - list-item-heading
-//       - list-item-content
-//     - list-item
-//       - list-item-heading
-//       - list-item-content
-//     - list-item
-//       - list-item-heading
-//       - list-item-content
-// - Paragraph
-//  - paragraph
-// - Image
-//  - image

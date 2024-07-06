@@ -1,13 +1,14 @@
 import { CSSProperties } from 'react';
+import { RenderElementProps } from 'slate-react';
 import { VideoElementProps } from '../types';
 import DailyMotion from './DailyMotionPlayer';
 import VimeoPlayer from './VimeoPlayer';
-import YouTubePlayer from './YootubePlayer';
+import YouTubePlayer from './YoutubePlayer';
 
 type VideoComponentProps = Omit<VideoElementProps, 'sizes'> & {
   width: number;
   height: number;
-};
+} & Pick<RenderElementProps, 'attributes' | 'children'>;
 
 const PROVIDERS = {
   vimeo: VimeoPlayer,
@@ -15,7 +16,17 @@ const PROVIDERS = {
   dailymotion: DailyMotion,
 };
 
-const VideoComponent = ({ width, height, src, bgColor, poster, provider, fit }: VideoComponentProps) => {
+const VideoComponent = ({
+  width,
+  height,
+  src,
+  bgColor,
+  poster,
+  provider,
+  fit,
+  attributes,
+  children,
+}: VideoComponentProps) => {
   const style: CSSProperties = {
     backgroundColor: bgColor || 'transparent',
     objectFit: fit || 'contain',
@@ -45,11 +56,15 @@ const VideoComponent = ({ width, height, src, bgColor, poster, provider, fit }: 
 
   if (provider && provider.id && provider.type && PROVIDERS[provider.type]) {
     const Provider = PROVIDERS[provider.type];
-    return <Provider videoId={provider.id} width={width} height={height} />;
+    return (
+      <Provider videoId={provider.id} width={width} height={height} attributes={attributes}>
+        {children}
+      </Provider>
+    );
   }
 
   return (
-    <div className="yoo-video-w-full">
+    <div className="yoo-video-w-full" {...attributes}>
       {src && (
         <video
           preload="metadata"
@@ -64,6 +79,7 @@ const VideoComponent = ({ width, height, src, bgColor, poster, provider, fit }: 
           controls
         />
       )}
+      {children}
     </div>
   );
 };

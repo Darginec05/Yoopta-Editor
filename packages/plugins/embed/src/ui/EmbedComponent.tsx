@@ -1,3 +1,4 @@
+import { RenderElementProps } from 'slate-react';
 import { DailyMotion } from '../providers/DailyMotion';
 import { Figma } from '../providers/Figma';
 import Twitter from '../providers/Twitter';
@@ -9,7 +10,7 @@ type EmbedComponentProps = Omit<EmbedElementProps, 'sizes'> & {
   width: number | 'auto';
   height: number | 'auto';
   blockId: string;
-};
+} & Pick<RenderElementProps, 'attributes' | 'children'>;
 
 const PROVIDERS = {
   vimeo: Vimeo,
@@ -19,16 +20,20 @@ const PROVIDERS = {
   twitter: Twitter,
 };
 
-const EmbedComponent = ({ width, height, provider, blockId }: EmbedComponentProps) => {
+const EmbedComponent = ({ width, height, provider, blockId, attributes, children }: EmbedComponentProps) => {
   if (!provider) return null;
 
   if (provider && provider.id && provider.type && PROVIDERS[provider.type]) {
     const Provider = PROVIDERS[provider.type];
-    return <Provider provider={provider} width={width} height={height} blockId={blockId} />;
+    return (
+      <Provider provider={provider} width={width} height={height} blockId={blockId} attributes={attributes}>
+        {children}
+      </Provider>
+    );
   }
 
   return (
-    <div className="yoo-embed-w-full">
+    <div className="yoo-embed-w-full" {...attributes}>
       <iframe
         src={provider.url}
         width="100%"
@@ -37,6 +42,7 @@ const EmbedComponent = ({ width, height, provider, blockId }: EmbedComponentProp
         allowFullScreen
         className="yoo-embed-absolute yoo-embed-top-0 yoo-embed-left-0"
       />
+      {children}
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 
 const getDayliMotionAPI = (videoId: string) => `https://api.dailymotion.com/video/${videoId}?fields=thumbnail_url`;
 
-function DailyMotion({ videoId, ...other }) {
+function DailyMotion({ videoId, attributes, children, ...other }) {
   const dailyMotionRootRef = useRef(null);
   const [src, setSrc] = useState(null);
   const [isFrameLoaded, setFrameLoaded] = useState(false);
@@ -20,8 +20,13 @@ function DailyMotion({ videoId, ...other }) {
       .catch(() => setSrc(null));
   }, [videoId]);
 
+  const onRef = (el) => {
+    dailyMotionRootRef.current = el;
+    attributes.ref(el);
+  };
+
   return (
-    <div ref={dailyMotionRootRef} className="yoo-video-relative">
+    <div {...attributes} ref={onRef} className="yoo-video-relative">
       <img
         src={src || ''}
         alt="daylimotion_video_preview"
@@ -44,6 +49,7 @@ function DailyMotion({ videoId, ...other }) {
           {...other}
         />
       )}
+      {children}
     </div>
   );
 }
