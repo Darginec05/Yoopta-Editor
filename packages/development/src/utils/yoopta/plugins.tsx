@@ -11,10 +11,11 @@ import Embed from '@yoopta/embed';
 import AccordionPlugin from '@yoopta/accordion';
 import Code from '@yoopta/code';
 
-import NextImage from 'next/image';
 import NextLink from 'next/link';
 import { uploadToCloudinary } from '../cloudinary';
-import { useBlockData } from '@yoopta/editor';
+import { Elements, useYooptaEditor } from '@yoopta/editor';
+import { YooptaWithNextImage } from '../../components/Extends/Image/Image';
+import { Checkbox } from '../../components/Extends/Checkbox/Checkbox';
 
 export const YOOPTA_PLUGINS = [
   AccordionPlugin,
@@ -23,7 +24,7 @@ export const YOOPTA_PLUGINS = [
       file: ({ attributes, children, element }) => {
         return (
           <div {...attributes} contentEditable={false}>
-            <a className="file-element-extended" href={element.props.src} download>
+            <a className="file-element-extended text-[red]" href={element.props.src} download>
               {element.props.name} ({element.props.size}) {element.props.format}
             </a>
             {children}
@@ -45,15 +46,6 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Paragraph.extend({
-    renders: {
-      paragraph: ({ attributes, children }) => {
-        return (
-          <p {...attributes} className="leading-7 [&:not(:first-child)]:mt-6">
-            {children}
-          </p>
-        );
-      },
-    },
     options: {
       HTMLAttributes: {
         className: 'paragraph-element-extended',
@@ -62,36 +54,7 @@ export const YOOPTA_PLUGINS = [
   }),
   Image.extend({
     renders: {
-      image: (props) => {
-        const { attributes, children, element, blockId } = props;
-        const block = useBlockData(blockId);
-        const isFill = element.props.fit === 'fill';
-        const imageProps = {
-          fill: isFill,
-          style: {
-            objectFit: isFill ? 'cover' : 'contain',
-          },
-        };
-
-        if (!imageProps.fill) {
-          imageProps.width = element.props.sizes.width;
-          imageProps.height = element.props.sizes.height;
-        }
-
-        return (
-          <div {...imageProps} contentEditable={false}>
-            <NextImage
-              draggable={false}
-              src={element.props.src}
-              alt={element.props.alt}
-              priority={block.meta.order === 0}
-              objectFit={element.props.fit}
-              {...imageProps}
-            />
-            {children}
-          </div>
-        );
-      },
+      image: YooptaWithNextImage,
     },
     options: {
       maxSizes: { maxHeight: 750, maxWidth: 750 },
@@ -142,6 +105,15 @@ export const YOOPTA_PLUGINS = [
   }),
   Headings.HeadingThree,
   Blockquote.extend({
+    renders: {
+      blockquote: ({ attributes, children }) => {
+        return (
+          <blockquote {...attributes} className="blockquote-element-extended text-gray-500">
+            {children}
+          </blockquote>
+        );
+      },
+    },
     options: {
       HTMLAttributes: {
         className: 'blockquote-element-extended',
@@ -149,6 +121,15 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Callout.extend({
+    renders: {
+      callout: ({ attributes, children }) => {
+        return (
+          <div {...attributes} className="callout-element-extended bg-gray-100 p-4">
+            {children}
+          </div>
+        );
+      },
+    },
     options: {
       HTMLAttributes: {
         className: 'callout-element-extended',
@@ -163,9 +144,50 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Lists.NumberedList,
-  Lists.TodoList,
+  Lists.TodoList.extend({
+    renders: {
+      'todo-list': ({ attributes, children, element, blockId }) => {
+        const editor = useYooptaEditor();
+        const { checked = false } = element.props;
+        const style = {
+          textDecoration: checked ? 'line-through' : 'none',
+        };
+
+        const onCheckedChange = (isChecked: boolean) => {
+          console.log('onCheckedChange', isChecked);
+
+          Elements.updateElement(editor, blockId, { type: 'todo-list', props: { checked: isChecked } });
+        };
+
+        return (
+          <Checkbox name="yoopta-extend-checkbox" checked={checked} onCheckedChange={onCheckedChange}>
+            {children}
+          </Checkbox>
+        );
+      },
+    },
+  }),
   Embed,
   Video.extend({
+    renders: {
+      video: ({ attributes, children, element }) => {
+        return (
+          <div {...attributes} contentEditable={false}>
+            <video
+              src={element.props.src}
+              width={element.props.sizes.width}
+              height={element.props.sizes.height}
+              poster={element.props.poster}
+              className="video-element-extended"
+              controls
+              playsInline
+              preload="metadata"
+            />
+            {children}
+          </div>
+        );
+      },
+    },
     options: {
       HTMLAttributes: {
         className: 'video-element-extended',
@@ -195,6 +217,7 @@ export const YOOPTA_PLUGINS = [
             href={element.props.url}
             target={element.props.target}
             rel={element.props.rel}
+            data-next-link
           >
             {children}
           </NextLink>

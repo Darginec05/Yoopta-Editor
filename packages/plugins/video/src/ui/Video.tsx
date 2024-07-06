@@ -15,7 +15,8 @@ import { VideoPluginOptions } from '../types';
 import { VideoBlockOptions } from './VideoBlockOptions';
 import { Resizer } from './Resizer';
 
-const VideoRender = ({ element, attributes, children, blockId }: PluginElementRenderProps) => {
+const VideoRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
+  const { element, blockId, attributes, children } = props;
   const { src, srcSet, bgColor, settings, sizes: propSizes, poster, provider, fit } = element.props || {};
   const block = useBlockData(blockId);
   const editor = useYooptaEditor();
@@ -84,6 +85,8 @@ const VideoRender = ({ element, attributes, children, blockId }: PluginElementRe
   const currentAlign = block?.meta?.align || 'center';
   const alignClass = `yoopta-align-${currentAlign}`;
 
+  console.log('video extendRender', extendRender);
+
   return (
     <div
       contentEditable={false}
@@ -95,17 +98,22 @@ const VideoRender = ({ element, attributes, children, blockId }: PluginElementRe
         {blockSelected && (
           <div className="yoo-video-absolute yoo-video-pointer-events-none yoo-video-inset-0 yoo-video-bg-[rgba(35,131,226,0.14)] yoo-video-z-[81] yoo-video-rounded-[3px] yoo-video-opacity-100 yoo-video-transition-opacity yoo-video-duration-150 yoo-video-ease-in" />
         )}
-        <VideoComponent
-          src={src}
-          srcSet={srcSet}
-          width={sizes?.width}
-          settings={settings}
-          bgColor={bgColor}
-          height={sizes?.height}
-          poster={poster}
-          provider={provider}
-          fit={fit}
-        />
+        {extendRender ? (
+          extendRender(props)
+        ) : (
+          <VideoComponent
+            src={src}
+            srcSet={srcSet}
+            width={sizes?.width}
+            settings={settings}
+            bgColor={bgColor}
+            height={sizes?.height}
+            poster={poster}
+            provider={provider}
+            fit={fit}
+          />
+        )}
+
         {!isReadOnly && <VideoBlockOptions block={block} editor={editor} settings={settings} props={element.props} />}
         {children}
       </Resizable>

@@ -1,9 +1,11 @@
 import { Elements, PluginElementRenderProps, useBlockData, useYooptaEditor } from '@yoopta/editor';
 import { TodoListElementProps } from '../types';
 
-const TodoListRender = ({ attributes, element, children, blockId, HTMLAttributes = {} }: PluginElementRenderProps) => {
+const TodoListRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
+  const { attributes, element, children, blockId, HTMLAttributes = {} } = props;
   const editor = useYooptaEditor();
   const block = useBlockData(blockId);
+
   const { className = '', ...htmlAttrs } = HTMLAttributes;
   const { checked = false } = (element.props || {}) as TodoListElementProps;
 
@@ -13,6 +15,10 @@ const TodoListRender = ({ attributes, element, children, blockId, HTMLAttributes
 
   const currentAlign = block?.meta?.align || 'left';
   const alignClass = `yoopta-align-${currentAlign}`;
+
+  if (extendRender) {
+    return extendRender(props);
+  }
 
   return (
     <div

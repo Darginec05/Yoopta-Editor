@@ -1,7 +1,10 @@
 import { PluginElementRenderProps, YooptaPlugin } from '@yoopta/editor';
 
-const HeadingTwoRender = ({ attributes, children, element, HTMLAttributes = {} }: PluginElementRenderProps) => {
+const HeadingTwoRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
+  const { element, HTMLAttributes = {}, attributes, children } = props;
   const { className = '', ...htmlAttrs } = HTMLAttributes;
+
+  if (extendRender) return extendRender(props);
 
   return (
     <h2 id={element.id} draggable={false} className={`yoopta-heading-two ${className}`} {...htmlAttrs} {...attributes}>

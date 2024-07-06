@@ -1,4 +1,4 @@
-import YooptaEditor, { createYooptaEditor, Elements, YooEditor } from '@yoopta/editor';
+import YooptaEditor, { YooEditor } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';

@@ -15,7 +15,8 @@ import { ImagePluginOptions } from '../types';
 import { ImageBlockOptions } from './ImageBlockOptions';
 import { Resizer } from './Resizer';
 
-const ImageRender = ({ element, attributes, children, blockId, extendRender, ...rest }: PluginElementRenderProps) => {
+const ImageRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
+  const { element, blockId, children, attributes } = props;
   const { src, alt, srcSet, bgColor, fit, sizes: propSizes } = element.props || {};
   const blockData = useBlockData(blockId);
   const editor = useYooptaEditor();
@@ -101,7 +102,7 @@ const ImageRender = ({ element, attributes, children, blockId, extendRender, ...
           <div className="yoo-image-absolute yoo-image-pointer-events-none yoo-image-inset-0 yoo-image-bg-[rgba(35,131,226,0.14)] yoo-image-z-[81] yoo-image-rounded-[3px] yoo-image-opacity-100 yoo-image-transition-opacity yoo-image-duration-150 yoo-image-ease-in" />
         )}
         {extendRender ? (
-          extendRender({ ...rest, element, attributes, children, blockId })
+          extendRender(props)
         ) : (
           <ImageComponent
             src={src}
