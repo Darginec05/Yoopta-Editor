@@ -119,14 +119,14 @@ function WithCustomToolbar() {
           style={toolbars.notion ? { backgroundColor: '#007aff' } : { backgroundColor: '#64748b' }}
           onClick={() => setToolbars({ medium: false, notion: true })}
         >
-          Notion toolbar
+          Switch to Notion toolbar
         </button>
         <button
           className="relative mx-2 px-6 py-2 rounded text-white flex items-center"
           style={toolbars.medium ? { backgroundColor: '#007aff' } : { backgroundColor: '#64748b' }}
           onClick={() => setToolbars({ medium: true, notion: false })}
         >
-          Medium toolbar
+          Switch to Medium toolbar
           {/* {toolbars.medium && <CheckIcon size={15} className="absolute right-2 top-1/2 -translate-y-1/2" />} */}
         </button>
       </div>
