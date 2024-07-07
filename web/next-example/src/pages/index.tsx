@@ -117,7 +117,10 @@ export default function Home() {
                 backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0))',
               }}
             >
-              <button className="bg-[#00ca56] rounded-full border-[#14ae46] w-[14px] h-[14px] relative">
+              <button
+                className="bg-[#00ca56] rounded-full border-[#14ae46] w-[14px] h-[14px] relative"
+                onClick={() => window.open('/playground', '_blank')}
+              >
                 <ExpandIcon
                   size={8}
                   color="#ebebeb"

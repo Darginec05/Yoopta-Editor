@@ -65,6 +65,7 @@ export const value = {
     meta: {
       order: 0,
       depth: 0,
+      align: 'center',
     },
   },
   '4bb3d300-aa26-4840-8f65-eef0b3ca749c': {

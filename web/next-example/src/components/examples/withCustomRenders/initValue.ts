@@ -428,4 +428,88 @@ export const WITH_CUSTOM_RENDERS_INIT_VALUE = {
       depth: 0,
     },
   },
+  '7c708171-938e-4d94-8325-b918936b9fe8': {
+    id: '7c708171-938e-4d94-8325-b918936b9fe8',
+    value: [
+      {
+        id: '15bdc8a0-27a7-4df4-a90e-38a89592a76d',
+        type: 'heading-three',
+        props: {
+          nodeType: 'block',
+        },
+        children: [
+          {
+            text: 'Example with ',
+          },
+          {
+            type: 'link',
+            children: [
+              {
+                text: '@mui/material',
+              },
+            ],
+            props: {
+              url: 'https://mui.com/material-ui/getting-started/',
+              target: '_blank',
+              rel: 'noopener noreferrer',
+            },
+          },
+          {
+            text: '',
+          },
+        ],
+      },
+    ],
+    type: 'HeadingThree',
+    meta: {
+      order: 15,
+      depth: 0,
+    },
+  },
+  '8b8ff20a-634c-4b0c-9887-2021dacf8497': {
+    id: '8b8ff20a-634c-4b0c-9887-2021dacf8497',
+    value: [
+      {
+        id: 'ba5357f2-3ee6-407e-b49d-7fb191b220a9',
+        type: 'code',
+        props: {
+          nodeType: 'void',
+          language: 'javascript',
+          theme: 'VSCode',
+        },
+        children: [
+          {
+            text: "import Link from '@yoopta/link';\nimport Typography from '@mui/material/Typography';\nimport { PluginElementRenderProps } from '@yoopta/editor'\n\n// list of yoopta plugins\nconst plugins = [\n  // ...other plugins\n  HeadingTwo.extend({\n    renders: {\n      'heading-two': ({ attributes, children }) => {\n        return (\n          // [NOTE] passing attributes is required\n          <Typography variant=\"h2\" {...attributes}>\n            {/* [NOTE] passing children is required */}\n            {children}\n          </Typography>\n        );\n      },\n    },\n  })\n]",
+          },
+        ],
+      },
+    ],
+    type: 'Code',
+    meta: {
+      order: 16,
+      depth: 0,
+    },
+  },
+  'e1de7ba6-42c6-449e-85dc-d9be79be327d': {
+    id: 'e1de7ba6-42c6-449e-85dc-d9be79be327d',
+    value: [
+      {
+        id: 'c4bae2f3-8f72-4f0c-bc76-bfc14b8286bc',
+        type: 'heading-two',
+        props: {
+          nodeType: 'block',
+        },
+        children: [
+          {
+            text: "Oh, I'm heading 2 rendered by Material MUI",
+          },
+        ],
+      },
+    ],
+    type: 'HeadingTwo',
+    meta: {
+      order: 17,
+      depth: 0,
+    },
+  },
 };

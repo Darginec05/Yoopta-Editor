@@ -1,9 +1,4 @@
-import YooptaEditor, {
-  createYooptaEditor,
-  createYooptaMark,
-  PluginElementRenderProps,
-  YooptaMarkProps,
-} from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor, PluginElementRenderProps, useBlockData } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
@@ -20,17 +15,29 @@ import Code from '@yoopta/code';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
-import s from './withCustomMark.module.scss';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import NextImage from 'next/image';
 import { useEffect, useMemo, useRef } from 'react';
 import { WITH_CUSTOM_RENDERS_INIT_VALUE } from './initValue';
+
+import NextImage, { ImageProps } from 'next/image';
+import NextLink from 'next/link';
+import Typography from '@mui/material/Typography';
 
 const plugins = [
   Paragraph,
   HeadingOne,
-  HeadingTwo,
+  HeadingTwo.extend({
+    renders: {
+      'heading-two': ({ attributes, children }) => {
+        return (
+          <Typography variant="h2" {...attributes}>
+            {children}
+          </Typography>
+        );
+      },
+    },
+  }),
   HeadingThree,
   Blockquote,
   Callout,
@@ -38,20 +45,55 @@ const plugins = [
   BulletedList,
   TodoList,
   Code,
-  Link,
+  Link.extend({
+    renders: {
+      link: ({ attributes, children, element }) => {
+        return (
+          <NextLink
+            {...attributes}
+            className="link-element-extended text-blue-500 hover:underline"
+            href={element.props.url}
+            target={element.props.target}
+            rel={element.props.rel}
+          >
+            {children}
+          </NextLink>
+        );
+      },
+    },
+  }),
   Embed,
   Image.extend({
     renders: {
       image: (props: PluginElementRenderProps) => {
-        const { children, element, attributes } = props;
+        const { children, element, blockId, attributes } = props;
+        const block = useBlockData(blockId);
+        const isFill = element.props.fit === 'fill';
+
+        const imageProps: Pick<ImageProps, 'fill' | 'style' | 'width' | 'height'> = {
+          fill: isFill,
+          style: {
+            objectFit: isFill ? 'cover' : 'contain',
+          },
+        };
+
+        if (!imageProps.fill) {
+          imageProps.width = element.props.sizes.width;
+          imageProps.height = element.props.sizes.height;
+          imageProps.style!.width = element.props.sizes.width;
+          imageProps.style!.height = element.props.sizes.height;
+        }
 
         return (
           <div contentEditable={false} {...attributes}>
             <NextImage
+              draggable={false}
               src={element.props.src}
               alt={element.props.alt}
-              width={element.props.sizes.width}
-              height={element.props.sizes.height}
+              // If image is first, set priority to true because LCP
+              priority={block.meta.order === 0}
+              objectFit={element.props.fit}
+              {...imageProps}
             />
             {children}
           </div>
