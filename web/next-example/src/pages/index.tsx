@@ -273,11 +273,6 @@ export default function Home() {
           </div>
           {/* card list using grid */}
         </div>
-        {/* <div className="mt-4">
-          <h2 className="font-heading mt-12 scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0">
-            Used by
-          </h2>
-        </div> */}
         <footer className="border-t mt-8">
           <div className="mt-2 pb-6">
             <p className="text-center text-muted-foreground">
