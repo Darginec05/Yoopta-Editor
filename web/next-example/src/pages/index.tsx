@@ -117,7 +117,10 @@ export default function Home() {
                 backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0))',
               }}
             >
-              <button className="bg-[#00ca56] rounded-full border-[#14ae46] w-[14px] h-[14px] relative">
+              <button
+                className="bg-[#00ca56] rounded-full border-[#14ae46] w-[14px] h-[14px] relative"
+                onClick={() => window.open('/playground', '_blank')}
+              >
                 <ExpandIcon
                   size={8}
                   color="#ebebeb"
@@ -140,7 +143,7 @@ export default function Home() {
             <LandingEditor editor={editor} selectionRef={selectionRef} />
           </div>
         </div>
-        <div className="mt-6">
+        <div className="mt-6 pb-4 border-b">
           <h2 className="text-center font-heading mt-12 scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0">
             Our Plans 👨‍💻
           </h2>
@@ -195,7 +198,7 @@ export default function Home() {
         </div>
         <div className="mt-6">
           <h2 className="text-center font-heading mt-12 scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0">
-            Sponsorship
+            Sponsorship 💖
           </h2>
           <p className="mt-0 text-center text-muted-foreground md:w-[700px] text-[#dae2ed] mx-auto">
             Your sponsorship motivates us to continuously improve the project and helps bring our ideas to fruition.
@@ -213,7 +216,7 @@ export default function Home() {
           </div>
           <div>
             <h4 className="text-center mt-4 text-lg font-semibold">Current sponsors 💖</h4>
-            <div className="w-full flex-wrap flex justify-center border-b py-2">
+            <div className="w-full flex-wrap flex justify-center py-2">
               <a
                 href="https://tapflow.co/"
                 target="_blank"

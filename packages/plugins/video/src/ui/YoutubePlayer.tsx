@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 
-function YouTubePlayer({ videoId, ...other }) {
+function YouTubePlayer({ videoId, children, attributes, ...other }) {
   const youtubeRootRef = useRef(null);
   const [isFrameLoaded, setFrameLoaded] = useState(false);
 
@@ -10,8 +10,13 @@ function YouTubePlayer({ videoId, ...other }) {
     rootMargin: '50%',
   });
 
+  const onRef = (el) => {
+    youtubeRootRef.current = el;
+    attributes.ref(el);
+  };
+
   return (
-    <div ref={youtubeRootRef} className="yoo-video-relative">
+    <div {...attributes} ref={onRef} className="yoo-video-relative">
       <img
         src={`https://i.ytimg.com/vi/${videoId}/default.jpg`}
         alt="youtube_video_preview"
@@ -35,6 +40,7 @@ function YouTubePlayer({ videoId, ...other }) {
           {...other}
         />
       )}
+      {children}
     </div>
   );
 }

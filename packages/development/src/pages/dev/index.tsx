@@ -8,8 +8,8 @@ import YooptaEditor, {
   YooptaBlockData,
   YooptaContentValue,
 } from '@yoopta/editor';
-import { html, markdown, plainText } from '@yoopta/exports';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { html } from '@yoopta/exports';
+import { useMemo, useRef, useState } from 'react';
 import { MARKS } from '../../utils/yoopta/marks';
 import { YOOPTA_PLUGINS } from '../../utils/yoopta/plugins';
 import { TOOLS } from '../../utils/yoopta/tools';
@@ -51,30 +51,46 @@ const BasicExample = () => {
           placeholder="Type / to open menu"
           tools={TOOLS}
           readOnly={readOnly}
-          blockActionButtons={{
-            // drag: null,
-            plus: null,
-          }}
           value={{
-            'e5bd3ee7-391c-4a6c-8d99-bd02fae4d4d2': {
-              id: 'e5bd3ee7-391c-4a6c-8d99-bd02fae4d4d2',
+            '36048c70-ce45-4fe6-ad92-70ef6810b88c': {
+              id: '36048c70-ce45-4fe6-ad92-70ef6810b88c',
               value: [
                 {
-                  id: '7cc1b41e-af96-4728-8422-f0e5ca319439',
+                  id: '66260b1b-1efd-4d8f-b6cd-3342480deea7',
+                  type: 'heading-two',
+                  children: [
+                    {
+                      text: 'Built-in Constraints',
+                    },
+                  ],
+                  props: {
+                    nodeType: 'block',
+                  },
+                },
+              ],
+              type: 'HeadingTwo',
+              meta: {
+                order: 0,
+                depth: 0,
+              },
+            },
+            '02fba3b4-f90e-4fe0-9284-9dff8cf5fa3b': {
+              id: '02fba3b4-f90e-4fe0-9284-9dff8cf5fa3b',
+              value: [
+                {
+                  id: '5ae35463-0542-4f9a-b3b2-8f86dc8a132f',
                   type: 'accordion-list',
                   children: [
                     {
-                      id: '03ffc5a8-4882-44bc-a57b-af9fb773bc52',
+                      id: 'c584e4fa-b735-4cd8-9c5e-a9f2ce765fbd',
                       type: 'accordion-list-item',
                       children: [
                         {
-                          id: '3f010f03-1d09-48a3-8b86-4eea5514ba46',
+                          id: '310aa032-aa99-42e1-b9d4-664a68c0c0ef',
                           type: 'accordion-list-item-heading',
                           children: [
                             {
-                              text: 'Why copy/paste and not packaged as a dependency?',
-                              italic: true,
-                              bold: true,
+                              text: 'Built-in Constraints',
                             },
                           ],
                           props: {
@@ -82,11 +98,11 @@ const BasicExample = () => {
                           },
                         },
                         {
-                          id: '87fd7485-9864-478e-9b6d-8d4df789f3b9',
+                          id: 'ad3fb9a9-1533-4080-82e1-c102a1e725c9',
                           type: 'accordion-list-item-content',
                           children: [
                             {
-                              text: 'Start with some sensible defaults, then customize the components to your needs.',
+                              text: 'Slate editors come with a few built-in constraints out of the box. These constraints are there to make working with content much more predictable than standard contenteditable. All of the built-in logic in Slate depends on these constraints, so unfortunately you cannot omit them. They are...',
                             },
                           ],
                           props: {
@@ -96,19 +112,19 @@ const BasicExample = () => {
                       ],
                       props: {
                         nodeType: 'block',
-                        isExpanded: false,
+                        isExpanded: true,
                       },
                     },
                     {
-                      id: 'db504063-91e0-40b9-a7de-dec6731c8da9',
+                      id: 'caffa035-bfe1-40be-b5a6-e41fcd74f189',
                       type: 'accordion-list-item',
                       children: [
                         {
-                          id: '0527ee4f-7472-4c6e-8e58-0aee4c84db4e',
+                          id: '4c5e2f14-4c1f-4a78-803a-27fae2d1fb5d',
                           type: 'accordion-list-item-heading',
                           children: [
                             {
-                              text: 'Do you plan to publish it as an npm package?',
+                              text: 'Adding Constraints',
                             },
                           ],
                           props: {
@@ -116,11 +132,11 @@ const BasicExample = () => {
                           },
                         },
                         {
-                          id: 'c6e12a11-a248-4385-80ad-36e933ec57f5',
+                          id: 'a1dc9763-e1fa-4e70-88b0-dfe335ae4344',
                           type: 'accordion-list-item-content',
                           children: [
                             {
-                              text: 'No. I have no plans to publish it as an npm package.',
+                              text: "All Element nodes must contain at least one Text descendant — even Void Elements. If an element node does not contain any children, an empty text node will be added as its only child. This constraint exists to ensure that the selection's anchor and focus points (which rely on referencing text nodes) can always be placed inside any node. Without this, empty elements (or void elements) wouldn't be selectable.",
                             },
                           ],
                           props: {
@@ -130,19 +146,19 @@ const BasicExample = () => {
                       ],
                       props: {
                         nodeType: 'block',
-                        isExpanded: false,
+                        isExpanded: true,
                       },
                     },
                     {
-                      id: 'f89c14d3-88c6-43f1-b274-1cd32ef3ea2d',
+                      id: '7a327ed3-b8d3-41a5-8292-64a2d82b57b6',
                       type: 'accordion-list-item',
                       children: [
                         {
-                          id: 'e058e58c-a56e-4eb2-8602-34b92cb0cc1b',
+                          id: 'e7b5774a-6bd7-47a1-b8d2-dddedcb28418',
                           type: 'accordion-list-item-heading',
                           children: [
                             {
-                              text: 'Which frameworks are supported?',
+                              text: 'Multi-pass Normalizing',
                             },
                           ],
                           props: {
@@ -150,11 +166,11 @@ const BasicExample = () => {
                           },
                         },
                         {
-                          id: '7d6b408f-a2f3-428f-89a0-f52b2848d972',
+                          id: '093afe90-0e9a-4602-81f6-66c55abb7ad7',
                           type: 'accordion-list-item-content',
                           children: [
                             {
-                              text: 'You can use any framework that supports React. ',
+                              text: "To do this, you extend the normalizeNode function on the editor. The normalizeNode function gets called every time an operation is applied that inserts or updates a node (or its descendants), giving you the opportunity to ensure that the changes didn't leave it in an invalid state, and correcting the node if so.",
                             },
                           ],
                           props: {
@@ -172,229 +188,15 @@ const BasicExample = () => {
               ],
               type: 'Accordion',
               meta: {
-                order: 2,
-                depth: 0,
-                align: 'center',
-              },
-            },
-            '6c7970dd-a624-4c42-a809-6863095419ae': {
-              id: '6c7970dd-a624-4c42-a809-6863095419ae',
-              value: [
-                {
-                  id: '80ad5c7d-c73c-40bb-b01d-5337357c1f95',
-                  type: 'heading-one',
-                  props: {
-                    nodeType: 'block',
-                  },
-                  children: [
-                    {
-                      text: 'Introduction',
-                    },
-                  ],
-                },
-              ],
-              type: 'HeadingOne',
-              meta: {
-                order: 0,
-                depth: 0,
-                align: 'center',
-              },
-            },
-            'b8a6e071-9393-4991-8d28-923d80c255ad': {
-              id: 'b8a6e071-9393-4991-8d28-923d80c255ad',
-              value: [
-                {
-                  id: 'fc748dc8-224a-4b6a-a319-cc942ae7de3b',
-                  type: 'image',
-                  props: {
-                    src: 'https://res.cloudinary.com/ench-app/image/upload/v1719855049/hold-up-let-him-cook_s4rrzh.gif',
-                    alt: 'cloudinary',
-                    srcSet: null,
-                    fit: 'fill',
-                    sizes: {
-                      width: 314,
-                      height: 309,
-                    },
-                    nodeType: 'void',
-                  },
-                  children: [
-                    {
-                      text: '',
-                    },
-                  ],
-                },
-              ],
-              type: 'Image',
-              meta: {
-                order: 7,
-                depth: 0,
-              },
-            },
-            '22d67b35-7897-42ac-92f4-ea00727a526a': {
-              id: '22d67b35-7897-42ac-92f4-ea00727a526a',
-              value: [
-                {
-                  id: 'd76ed64a-ff59-4df3-bd0e-f4fd38428883',
-                  type: 'paragraph',
-                  children: [
-                    {
-                      text: 'Beautifully designed components that you can copy and paste into your apps. Accessible. Customizable. Open Source.',
-                    },
-                  ],
-                  props: {
-                    nodeType: 'block',
-                  },
-                },
-              ],
-              type: 'Paragraph',
-              meta: {
                 order: 1,
                 depth: 0,
-                align: 'center',
               },
             },
-            '7ddfcf7f-adb6-401f-ba71-08e8830e81da': {
-              id: '7ddfcf7f-adb6-401f-ba71-08e8830e81da',
-              type: 'NumberedList',
-              meta: {
-                order: 4,
-                depth: 0,
-              },
+            '226f5963-b01c-4b14-a7e8-45f3cf6c6b95': {
+              id: '226f5963-b01c-4b14-a7e8-45f3cf6c6b95',
               value: [
                 {
-                  id: 'fbc9fb6a-3414-4337-a9e1-b88e6484df02',
-                  type: 'numbered-list',
-                  children: [
-                    {
-                      text: 'Other color formats',
-                    },
-                  ],
-                  props: {
-                    nodeType: 'block',
-                  },
-                },
-              ],
-            },
-            '3bec6a02-f31f-4809-86ac-e405d710ce6a': {
-              id: '3bec6a02-f31f-4809-86ac-e405d710ce6a',
-              value: [
-                {
-                  id: '2e5b398b-f997-43bc-a449-02999d657f20',
-                  type: 'paragraph',
-                  children: [
-                    {
-                      text: 'See the',
-                    },
-                    {
-                      text: ' ',
-                    },
-                    {
-                      text: '',
-                    },
-                    {
-                      id: '80ea61fd-5fb2-4909-ab33-b7baaef37879',
-                      type: 'link',
-                      props: {
-                        url: 'https://tailwindcss.com/docs/customizing-colors#using-css-variables',
-                        target: '',
-                        rel: '',
-                        title: 'Tailwind CSS documentation',
-                        nodeType: 'inline',
-                      },
-                      children: [
-                        {
-                          text: 'Tailwind CSS documentation',
-                        },
-                      ],
-                    },
-                    {
-                      text: ' ',
-                    },
-                    {
-                      text: 'for more information on using',
-                    },
-                    {
-                      text: ' ',
-                    },
-                    {
-                      code: true,
-                      text: 'rgb',
-                    },
-                    {
-                      text: ',',
-                    },
-                    {
-                      text: ' ',
-                    },
-                    {
-                      code: true,
-                      text: 'rgba',
-                    },
-                    {
-                      text: ' ',
-                    },
-                    {
-                      text: 'or',
-                    },
-                    {
-                      text: ' ',
-                    },
-                    {
-                      code: true,
-                      text: 'hsl',
-                    },
-                    {
-                      text: ' ',
-                    },
-                    {
-                      text: 'colors.',
-                    },
-                  ],
-                  props: {
-                    nodeType: 'block',
-                  },
-                },
-              ],
-              type: 'Paragraph',
-              meta: {
-                order: 5,
-                depth: 0,
-              },
-            },
-            '2ab847d7-c765-4e6f-9116-db6669f49318': {
-              id: '2ab847d7-c765-4e6f-9116-db6669f49318',
-              value: [
-                {
-                  id: '9977d4ba-6000-4996-a2fa-3b4ce07f71ee',
-                  type: 'numbered-list',
-                  children: [
-                    {
-                      text: 'I recommend using HSL c',
-                    },
-                    {
-                      text: 'olors for theming but you can al',
-                      bold: true,
-                    },
-                    {
-                      text: 'so use other color formats if you prefer.',
-                    },
-                  ],
-                  props: {
-                    nodeType: 'block',
-                  },
-                },
-              ],
-              type: 'NumberedList',
-              meta: {
-                order: 3,
-                depth: 0,
-              },
-            },
-            '9b0a0740-5a6d-4f58-beda-c0ec83fe2168': {
-              id: '9b0a0740-5a6d-4f58-beda-c0ec83fe2168',
-              value: [
-                {
-                  id: '8126d743-8102-4dff-ba98-e7a57c69886a',
+                  id: 'dcfc9ee2-db6e-4127-b40c-83bcd465c5dd',
                   type: 'embed',
                   props: {
                     sizes: {
@@ -404,8 +206,8 @@ const BasicExample = () => {
                     nodeType: 'void',
                     provider: {
                       type: 'youtube',
-                      id: 'evJ6gX1lp2o',
-                      url: 'https://www.youtube.com/watch?v=evJ6gX1lp2o&list=RDevJ6gX1lp2o&index=2&ab_channel=Artemas',
+                      id: 'bItAw5xgI4I',
+                      url: 'https://www.youtube.com/watch?v=bItAw5xgI4I&t=468s',
                     },
                   },
                   children: [
@@ -417,96 +219,7 @@ const BasicExample = () => {
               ],
               type: 'Embed',
               meta: {
-                order: 8,
-                depth: 0,
-              },
-            },
-            'dc8409b8-0c20-4c47-ac60-2b2016393c53': {
-              id: 'dc8409b8-0c20-4c47-ac60-2b2016393c53',
-              value: [
-                {
-                  id: 'd6d7fb8a-9785-4c5f-a3c4-7c1ac100881b',
-                  type: 'video',
-                  props: {
-                    src: 'https://res.cloudinary.com/ench-app/video/upload/v1719868158/No_name_not19t.mp4',
-                    srcSet: null,
-                    sizes: {
-                      width: 416,
-                      height: 234,
-                    },
-                    nodeType: 'void',
-                    provider: {
-                      type: null,
-                      id: '',
-                    },
-                    settings: {
-                      controls: false,
-                      loop: true,
-                      muted: true,
-                      autoPlay: true,
-                    },
-                    fit: 'cover',
-                  },
-                  children: [
-                    {
-                      text: '',
-                    },
-                  ],
-                },
-              ],
-              type: 'Video',
-              meta: {
-                order: 9,
-                depth: 0,
-              },
-            },
-            'e805cb24-92ef-4b9f-a551-07d423be06ec': {
-              id: 'e805cb24-92ef-4b9f-a551-07d423be06ec',
-              value: [
-                {
-                  id: '423a5be5-0fa5-46a3-8318-73f82d75f86a',
-                  type: 'file',
-                  props: {
-                    size: 13206,
-                    name: 'editor',
-                    src: 'https://res.cloudinary.com/ench-app/raw/upload/v1719868177/editor_r8vu5j.json',
-                    format: 'json',
-                    nodeType: 'void',
-                  },
-                  children: [
-                    {
-                      text: '',
-                    },
-                  ],
-                },
-              ],
-              type: 'File',
-              meta: {
-                order: 6,
-                depth: 0,
-              },
-            },
-            'ce29e84c-a40e-4a4f-9734-839835cea334': {
-              id: 'ce29e84c-a40e-4a4f-9734-839835cea334',
-              value: [
-                {
-                  id: '142342e9-fdb6-4ea0-aa0f-a40569d1d9e0',
-                  type: 'code',
-                  props: {
-                    nodeType: 'void',
-                    language: 'javascript',
-                    theme: 'VSCode',
-                  },
-                  children: [
-                    {
-                      text: 'function getData() {}',
-                    },
-                  ],
-                },
-              ],
-              type: 'Code',
-              meta: {
-                order: 10,
+                order: 2,
                 depth: 0,
               },
             },

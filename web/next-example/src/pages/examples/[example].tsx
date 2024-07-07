@@ -19,7 +19,7 @@ import withChatSlack from '@/components/examples/withChatSlack';
 import withCraftExample from '@/components/examples/withCraftExample';
 import withCustomStyles from '@/components/examples/withCustomStyles';
 import withEditorFocusBlur from '@/components/examples/withEditorFocusBlur';
-import withMigrationGuide from '@/components/examples/withMigrationGuide';
+import withCustomRenders from '@/components/examples/withCustomRenders';
 
 import { Head } from '@/components/Head/Head';
 import { useRouter } from 'next/router';
@@ -34,6 +34,7 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withCustomToolbar,
   withNotionActionMenu,
   withExports,
+  withCustomRenders,
   withDarkTheme,
   withMediaAndVoids,
   withExtendedPlugin,
@@ -48,7 +49,6 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withChatSlack,
   withEditorFocusBlur,
   withCraftExample,
-  withMigrationGuide,
   // withOffline,
   // withCustomComponent,
 };
@@ -128,6 +128,10 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
   },
   withExports: {
     title: 'HTML/Markdown exports',
+    description: '',
+  },
+  withCustomRenders: {
+    title: 'Custom Renders (next/image, next/link, etc.)',
     description: '',
   },
 };

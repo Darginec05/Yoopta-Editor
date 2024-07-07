@@ -4,7 +4,7 @@ import { ProviderRenderProps } from '../types';
 
 const VIMEO_API_URI = 'https://vimeo.com/api/v2/embed';
 
-function Vimeo({ provider, width, height, blockId }: ProviderRenderProps) {
+function Vimeo({ provider, width, height, attributes, children }: ProviderRenderProps) {
   const vimeoRootRef = useRef(null);
   const [src, setSrc] = useState(null);
   const [isFrameLoaded, setFrameLoaded] = useState(false);
@@ -21,8 +21,13 @@ function Vimeo({ provider, width, height, blockId }: ProviderRenderProps) {
       .catch(() => setSrc(null));
   }, [provider.id]);
 
+  const onRef = (node) => {
+    vimeoRootRef.current = node;
+    attributes.ref(node);
+  };
+
   return (
-    <div ref={vimeoRootRef} className="yoo-embed-relative">
+    <div {...attributes} ref={onRef} className="yoo-embed-relative">
       <img
         src={src || ''}
         alt="vimeo_embed_preview"
@@ -47,6 +52,7 @@ function Vimeo({ provider, width, height, blockId }: ProviderRenderProps) {
           height={height}
         />
       )}
+      {children}
     </div>
   );
 }

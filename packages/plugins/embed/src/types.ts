@@ -1,4 +1,5 @@
 import { type SlateElement } from '@yoopta/editor';
+import { RenderElementProps } from 'slate-react';
 
 export type EmbedSizes = {
   width: number | 'auto';
@@ -32,4 +33,4 @@ export type ProviderRenderProps = {
   blockId: string;
   width: number;
   height: number;
-};
+} & Pick<RenderElementProps, 'attributes' | 'children'>;

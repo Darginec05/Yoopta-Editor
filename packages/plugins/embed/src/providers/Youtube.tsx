@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 import { ProviderRenderProps } from '../types';
 
-function YouTube({ provider, width, height, blockId }: ProviderRenderProps) {
+function YouTube({ provider, width, height, attributes, children }: ProviderRenderProps) {
   const youtubeRootRef = useRef(null);
   const [isFrameLoaded, setFrameLoaded] = useState(false);
 
@@ -11,8 +11,13 @@ function YouTube({ provider, width, height, blockId }: ProviderRenderProps) {
     rootMargin: '50%',
   });
 
+  const onRef = (node) => {
+    youtubeRootRef.current = node;
+    attributes.ref(node);
+  };
+
   return (
-    <div ref={youtubeRootRef} className="yoo-embed-relative">
+    <div {...attributes} ref={onRef} className="yoo-embed-relative">
       <img
         src={`https://i.ytimg.com/vi/${provider.id}/default.jpg`}
         alt="youtube_embed_preview"
@@ -37,6 +42,7 @@ function YouTube({ provider, width, height, blockId }: ProviderRenderProps) {
           height={height}
         />
       )}
+      {children}
     </div>
   );
 }

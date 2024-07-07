@@ -1,15 +1,26 @@
 import { CSSProperties } from 'react';
+import { RenderElementProps } from 'slate-react';
 import { ImageElementProps } from '../types';
 
 type ImageComponentProps = Omit<ImageElementProps, 'sizes'> & {
   width: number;
   height: number;
   layout?: Layout;
-};
+} & Pick<RenderElementProps, 'attributes' | 'children'>;
 
 type Layout = 'fill' | 'responsive' | 'intrinsic' | 'fixed';
 
-const ImageComponent = ({ width, height, src, alt, fit, bgColor, layout = 'intrinsic' }: ImageComponentProps) => {
+const ImageComponent = ({
+  width,
+  height,
+  src,
+  alt,
+  fit,
+  bgColor,
+  attributes,
+  children,
+  layout = 'intrinsic',
+}: ImageComponentProps) => {
   const style: CSSProperties = {
     objectFit: fit || 'contain',
     backgroundColor: bgColor || 'transparent',
@@ -41,10 +52,11 @@ const ImageComponent = ({ width, height, src, alt, fit, bgColor, layout = 'intri
   }
 
   return (
-    <div className="yoo-image-w-full" data-layout={layout}>
+    <div className="yoo-image-w-full" data-layout={layout} {...attributes}>
       {src && (
         <img src={src} width={width} height={height} alt={alt || ''} decoding="async" loading="lazy" style={style} />
       )}
+      {children}
     </div>
   );
 };

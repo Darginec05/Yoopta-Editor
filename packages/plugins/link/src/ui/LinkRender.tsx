@@ -3,7 +3,7 @@ import { LinkElementProps } from '../types';
 
 const VALID_TARGET_VALUES = ['_blank', '_self', '_parent', '_top', 'framename'];
 
-const LinkRender = (props: PluginElementRenderProps) => {
+const LinkRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
   const { className = '', ...htmlAttrs } = props.HTMLAttributes || {};
 
   const { url, target = '', rel } = props.element.props || {};
@@ -25,6 +25,10 @@ const LinkRender = (props: PluginElementRenderProps) => {
 
   if (typeof rel !== 'string' || rel?.length === 0) {
     delete linkProps.rel;
+  }
+
+  if (extendRender) {
+    return extendRender(props);
   }
 
   return (

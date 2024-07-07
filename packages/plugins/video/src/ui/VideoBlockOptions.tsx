@@ -85,43 +85,45 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
     <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])} id="yoopta-video-options">
       <BlockOptionsSeparator />
       {!isExternalVideo && (
-        <BlockOptionsMenuGroup>
-          <BlockOptionsMenuItem>
-            <button type="button" className="yoopta-block-options-button yoo-video-justify-between" onClick={onFit}>
-              <span className="yoo-video-flex">
-                <RowSpacingIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
-                Fit
-              </span>
-              {videoProps?.fit === 'contain' && (
-                <CheckmarkIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4" />
-              )}
-            </button>
-          </BlockOptionsMenuItem>
-          <BlockOptionsMenuItem>
-            <button type="button" className="yoopta-block-options-button yoo-video-justify-between" onClick={onFill}>
-              <span className="yoo-video-flex">
-                <WidthIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
-                Fill
-              </span>
-              {videoProps?.fit === 'fill' && (
-                <CheckmarkIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4" />
-              )}
-            </button>
-          </BlockOptionsMenuItem>
-          <BlockOptionsMenuItem>
-            <button type="button" className="yoopta-block-options-button yoo-video-justify-between" onClick={onCover}>
-              <span className="yoo-video-flex">
-                <SizeIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
-                Cover
-              </span>
-              {videoProps?.fit === 'cover' && (
-                <CheckmarkIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4" />
-              )}
-            </button>
-          </BlockOptionsMenuItem>
-        </BlockOptionsMenuGroup>
+        <>
+          <BlockOptionsMenuGroup>
+            <BlockOptionsMenuItem>
+              <button type="button" className="yoopta-block-options-button yoo-video-justify-between" onClick={onFit}>
+                <span className="yoo-video-flex">
+                  <RowSpacingIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
+                  Fit
+                </span>
+                {videoProps?.fit === 'contain' && (
+                  <CheckmarkIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4" />
+                )}
+              </button>
+            </BlockOptionsMenuItem>
+            <BlockOptionsMenuItem>
+              <button type="button" className="yoopta-block-options-button yoo-video-justify-between" onClick={onFill}>
+                <span className="yoo-video-flex">
+                  <WidthIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
+                  Fill
+                </span>
+                {videoProps?.fit === 'fill' && (
+                  <CheckmarkIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4" />
+                )}
+              </button>
+            </BlockOptionsMenuItem>
+            <BlockOptionsMenuItem>
+              <button type="button" className="yoopta-block-options-button yoo-video-justify-between" onClick={onCover}>
+                <span className="yoo-video-flex">
+                  <SizeIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
+                  Cover
+                </span>
+                {videoProps?.fit === 'cover' && (
+                  <CheckmarkIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4" />
+                )}
+              </button>
+            </BlockOptionsMenuItem>
+          </BlockOptionsMenuGroup>
+          <BlockOptionsSeparator />
+        </>
       )}
-      <BlockOptionsSeparator />
 
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>

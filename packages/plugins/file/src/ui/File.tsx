@@ -9,7 +9,8 @@ import {
 import { Placeholder } from './Placeholder';
 import { FileBlockOptions } from './FileBlockOptions';
 
-const FileRender = ({ element, attributes, children, blockId }: PluginElementRenderProps) => {
+const FileRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
+  const { element, attributes, children, blockId } = props;
   const { name, src, format, size } = element.props || {};
   const block = useBlockData(blockId);
   const editor = useYooptaEditor();
@@ -24,6 +25,8 @@ const FileRender = ({ element, attributes, children, blockId }: PluginElementRen
       </Placeholder>
     );
   }
+
+  if (extendRender) return extendRender(props);
 
   return (
     <div

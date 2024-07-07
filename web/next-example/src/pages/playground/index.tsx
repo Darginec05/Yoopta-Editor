@@ -1,4 +1,4 @@
-import YooptaEditor, { YooEditor } from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor, Elements, Blocks, useYooptaEditor } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
@@ -18,8 +18,8 @@ import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { value } from './value';
-import { useEffect } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import { Head } from '@/components/Head/Head';
 
 const plugins = [
   Paragraph,
@@ -27,15 +27,7 @@ const plugins = [
   HeadingOne,
   HeadingTwo,
   HeadingThree,
-  Blockquote.extend({
-    options: {
-      HTMLAttributes: {
-        className: 'yoopta-main-page-blockquote',
-        spellCheck: true,
-      },
-      shortcuts: ['>', 'bq'],
-    },
-  }),
+  Blockquote,
   Callout,
   NumberedList,
   BulletedList,
@@ -101,22 +93,31 @@ const TOOLS = {
 
 const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
-type Props = {
-  editor: YooEditor;
-  selectionRef: React.RefObject<HTMLDivElement>;
-};
+function WithBaseFullSetup() {
+  const editor = useMemo(() => createYooptaEditor(), []);
+  const selectionRef = useRef(null);
 
-export const LandingEditor = ({ selectionRef, editor }: Props) => {
   return (
-    <YooptaEditor
-      editor={editor}
-      plugins={plugins}
-      marks={MARKS}
-      tools={TOOLS}
-      selectionBoxRoot={selectionRef}
-      value={value}
-      autoFocus={false}
-      className="py-10 !h-full md:max-w-none max-w-[100vw] md:px-0 px-2"
-    />
+    <>
+      <Head title="Yoopta - Playground" />
+      <div
+        id="playground"
+        className="lg:px-[120px] px-[15px] lg:pt-[80px] pt-[40px] pb-[40px] lg:max-w-[65vw] max-w-none mx-auto flex justify-center"
+        ref={selectionRef}
+      >
+        <YooptaEditor
+          editor={editor}
+          plugins={plugins}
+          tools={TOOLS}
+          marks={MARKS}
+          selectionBoxRoot={selectionRef}
+          style={{ width: '100%', height: '100%' }}
+          autoFocus
+          placeholder='Type "/" for commands'
+        />
+      </div>
+    </>
   );
-};
+}
+
+export default WithBaseFullSetup;
