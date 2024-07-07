@@ -37,18 +37,18 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   File.extend({
-    // renders: {
-    //   file: ({ attributes, children, element }) => {
-    //     return (
-    //       <div {...attributes} contentEditable={false}>
-    //         <a className="file-element-extended text-[red]" href={element.props.src} download>
-    //           {element.props.name} ({element.props.size}) {element.props.format}
-    //         </a>
-    //         {children}
-    //       </div>
-    //     );
-    //   },
-    // },
+    renders: {
+      file: ({ attributes, children, element }) => {
+        return (
+          <div {...attributes} contentEditable={false}>
+            <a className="file-element-extended text-[red]" href={element.props.src} download>
+              {element.props.name} ({element.props.size}) {element.props.format}
+            </a>
+            {children}
+          </div>
+        );
+      },
+    },
     options: {
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file, 'auto');
@@ -70,9 +70,9 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Image.extend({
-    // renders: {
-    //   image: YooptaWithNextImage,
-    // },
+    renders: {
+      image: YooptaWithNextImage,
+    },
     options: {
       maxSizes: { maxHeight: 750, maxWidth: 750 },
       HTMLAttributes: {
@@ -186,25 +186,25 @@ export const YOOPTA_PLUGINS = [
   }),
   Embed,
   Video.extend({
-    // renders: {
-    //   video: ({ attributes, children, element }) => {
-    //     return (
-    //       <div {...attributes} contentEditable={false}>
-    //         <video
-    //           src={element.props.src}
-    //           width={element.props.sizes.width}
-    //           height={element.props.sizes.height}
-    //           poster={element.props.poster}
-    //           className="video-element-extended"
-    //           controls
-    //           playsInline
-    //           preload="metadata"
-    //         />
-    //         {children}
-    //       </div>
-    //     );
-    //   },
-    // },
+    renders: {
+      video: ({ attributes, children, element }) => {
+        return (
+          <div {...attributes} contentEditable={false}>
+            <video
+              src={element.props.src}
+              width={element.props.sizes.width}
+              height={element.props.sizes.height}
+              poster={element.props.poster}
+              className="video-element-extended"
+              controls
+              playsInline
+              preload="metadata"
+            />
+            {children}
+          </div>
+        );
+      },
+    },
     options: {
       HTMLAttributes: {
         className: 'video-element-extended',

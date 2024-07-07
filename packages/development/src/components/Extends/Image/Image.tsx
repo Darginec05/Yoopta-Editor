@@ -2,7 +2,7 @@ import { PluginElementRenderProps, useBlockData } from '@yoopta/editor';
 import NextImage, { ImageProps } from 'next/image';
 
 export const YooptaWithNextImage = (props: PluginElementRenderProps) => {
-  const { children, element, blockId } = props;
+  const { children, element, blockId, attributes } = props;
   const block = useBlockData(blockId);
   const isFill = element.props.fit === 'fill';
 
@@ -21,7 +21,7 @@ export const YooptaWithNextImage = (props: PluginElementRenderProps) => {
   }
 
   return (
-    <div contentEditable={false}>
+    <div contentEditable={false} {...attributes}>
       <NextImage
         draggable={false}
         src={element.props.src}

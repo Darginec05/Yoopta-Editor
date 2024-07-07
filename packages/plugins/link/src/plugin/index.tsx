@@ -32,12 +32,12 @@ const Link = new YooptaPlugin<LinkPluginElementKeys, LinkElementProps>({
         nodeNames: ['A'],
         parse: (el) => {
           if (el.nodeName === 'A') {
-            const url = el.getAttribute('href');
+            const href = el.getAttribute('href') || '';
             const target = el.getAttribute('target') || '';
             const rel = el.getAttribute('rel') || '';
             const title = el.textContent || '';
             const props: LinkElementProps = {
-              url,
+              url: href,
               target,
               rel,
               title,
