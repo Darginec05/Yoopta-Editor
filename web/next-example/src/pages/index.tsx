@@ -1,20 +1,6 @@
-import { createYooptaEditor } from '@yoopta/editor';
-
-import { useMemo, useRef } from 'react';
 import NextLink from 'next/link';
-import {
-  ExpandIcon,
-  CodeIcon,
-  StarIcon,
-  Send,
-  Code2Icon,
-  FileHeart,
-  PlusIcon,
-  ExternalLinkIcon,
-  LucideGithub,
-} from 'lucide-react';
+import { StarIcon, Send, Code2Icon, FileHeart, PlusIcon, ExternalLinkIcon } from 'lucide-react';
 import { Head } from '@/components/Head/Head';
-import { LandingEditor } from '@/components/LandingEditor/LandingEditor';
 
 // Card component with title and description
 const Card = ({ title, description }) => {
@@ -29,7 +15,7 @@ const Card = ({ title, description }) => {
 const GithubButton = ({ repo }) => {
   return (
     <a
-      className="items-center text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-6 py-2 hidden max-w-52 overflow-hidden whitespace-pre md:flex group relative w-full justify-center gap-2 rounded-md transition-all duration-300 ease-out hover:ring-2 hover:ring-primary hover:ring-offset-2"
+      className="md:mt-0 mt-2 items-center text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-6 py-2 max-w-52 overflow-hidden whitespace-pre flex group relative w-full justify-center gap-2 rounded-md transition-all duration-300 ease-out hover:ring-2 hover:ring-primary hover:ring-offset-2"
       target="_blank"
       href="https://github.com/Darginec05/Yoopta-Editor"
     >
@@ -158,7 +144,7 @@ export default function Home({ repoData }) {
       </header>
       <div className="mt-10 md:w-[70%] md:mx-auto flex flex-col items-center px-4 md:px-0">
         <h1 className="text-center scroll-m-20 text-4xl font-bold tracking-tight">Meet Yoopta-Editor 🚀</h1>
-        <div className="flex items-center mt-4">
+        <div className="flex items-center mt-4 flex-col md:flex-row">
           <ProductHuntButton />
           {repoData && <GithubButton repo={repoData} />}
         </div>
