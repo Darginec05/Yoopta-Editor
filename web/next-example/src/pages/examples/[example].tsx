@@ -3,7 +3,7 @@ import withBaseFullSetup from '@/components/examples/withBaseFullSetup';
 // import withOffline from '@/components/examples/withOffline';
 // import { CheckSourceCode } from '@/components/CheckSourceCode/CheckSourceCode';
 import withExports from '@/components/examples/withExports';
-import withCustomHTMLAttributes from '@/components/examples/withCustomHTMLAttributes';
+// import withCustomHTMLAttributes from '@/components/examples/withCustomHTMLAttributes';
 import withCustomMark from '@/components/examples/withCustomMark';
 import withCustomPlugin from '@/components/examples/withCustomPlugin';
 import withCustomToolbar from '@/components/examples/withCustomToolbar';
@@ -16,10 +16,11 @@ import withSavingToDatabase from '@/components/examples/withSavingToDatabase';
 import withEditorControl from '@/components/examples/withEditorControl';
 import withLargeDocuments from '@/components/examples/withLargeDocuments';
 import withChatSlack from '@/components/examples/withChatSlack';
-import withCraftExample from '@/components/examples/withCraftExample';
+// import withCraftExample from '@/components/examples/withCraftExample';
 import withCustomStyles from '@/components/examples/withCustomStyles';
 import withEditorFocusBlur from '@/components/examples/withEditorFocusBlur';
 import withCustomRenders from '@/components/examples/withCustomRenders';
+// import withMultiPageEditors from '@/components/examples/withMultiPageEditors';
 
 import { Head } from '@/components/Head/Head';
 import { useRouter } from 'next/router';
@@ -40,7 +41,7 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withExtendedPlugin,
   withReadOnly,
   withEditorControl,
-  withCustomHTMLAttributes,
+  // withCustomHTMLAttributes,
   withCustomMark,
   withCustomPlugin,
   withSavingToDatabase,
@@ -48,7 +49,8 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withLargeDocuments,
   withChatSlack,
   withEditorFocusBlur,
-  withCraftExample,
+  // withMultiPageEditors,
+  // withCraftExample,
   // withOffline,
   // withCustomComponent,
 };
@@ -90,10 +92,14 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
     title: 'Custom Plugin',
     description: '',
   },
-  withCustomHTMLAttributes: {
-    title: 'Custom HTML Attributes',
+  withMultiPageEditors: {
+    title: 'Multi Page Editors',
     description: '',
   },
+  // withCustomHTMLAttributes: {
+  //   title: 'Custom HTML Attributes',
+  //   description: '',
+  // },
   withSavingToDatabase: {
     title: 'Saving to Database',
     description: '',
@@ -114,10 +120,10 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
     title: 'Chat Slack',
     description: '',
   },
-  withCraftExample: {
-    title: 'Craft Example',
-    description: '',
-  },
+  // withCraftExample: {
+  //   title: 'Craft Example',
+  //   description: '',
+  // },
   withMigrationGuide: {
     title: 'Migration Guide from v2 to v4',
     description: '',

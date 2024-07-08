@@ -93,7 +93,7 @@ const TOOLS = {
 
 const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
-function WithBaseFullSetup() {
+function WithMultiPageEditors() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
 
@@ -115,4 +115,4 @@ function WithBaseFullSetup() {
   );
 }
 
-export default WithBaseFullSetup;
+export default WithMultiPageEditors;
