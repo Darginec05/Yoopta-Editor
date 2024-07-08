@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@amplitude/analytics-browser": "^2.9.3",
     "@codemirror/lang-html": "^6.4.8",
     "@codemirror/lang-markdown": "^6.2.4",
     "@codemirror/lang-xml": "^6.1.0",
