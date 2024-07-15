@@ -9,18 +9,19 @@ const DEFAULT_LINK_VALUE: Link = {
   rel: 'noreferrer',
 };
 
-function isUrl(string: any): boolean {
-  try {
-    new URL(string);
-    return true;
-  } catch (_) {
-    return false;
-  }
-}
+// function isUrl(string: any): boolean {
+//   try {
+//     new URL(string);
+//     return true;
+//   } catch (_) {
+//     return false;
+//   }
+// }
 
 const DefaultLinkToolRender = (props: LinkToolRenderProps) => {
+  const { withLink = true, withTitle = true } = props;
   const [link, setLink] = useState(props?.link || DEFAULT_LINK_VALUE);
-  const [additionalPropsOpen, setAdditionPropsOpen] = useState(false);
+  const [isAdditionalPropsOpen, setAdditionPropsOpen] = useState(false);
 
   const onChange = (e: ChangeEvent) => {
     const target = e.target as HTMLInputElement;
@@ -42,45 +43,49 @@ const DefaultLinkToolRender = (props: LinkToolRenderProps) => {
 
   return (
     <div className="yoopta-link-tool yoo-link-tool-shadow-y-[4px]">
-      <div className="">
-        <label htmlFor="title" className="yoopta-link-tool-label">
-          Link title
-        </label>
-        <input
-          id="title"
-          type="text"
-          className="yoopta-link-tool-input"
-          name="title"
-          value={link.title}
-          onChange={onChange}
-          placeholder="Edit link title"
-          autoComplete="off"
-        />
-      </div>
-      <div className="yoo-link-tool-mt-2">
-        <label htmlFor="url" className="yoopta-link-tool-label">
-          Link URL
-        </label>
-        <input
-          id="url"
-          type="text"
-          className="yoopta-link-tool-input"
-          name="url"
-          value={link.url}
-          onChange={onChange}
-          placeholder="Edit link URL"
-          autoComplete="off"
-        />
-      </div>
+      {withTitle && (
+        <div>
+          <label htmlFor="title" className="yoopta-link-tool-label">
+            Link title
+          </label>
+          <input
+            id="title"
+            type="text"
+            className="yoopta-link-tool-input"
+            name="title"
+            value={link.title}
+            onChange={onChange}
+            placeholder="Edit link title"
+            autoComplete="off"
+          />
+        </div>
+      )}
+      {withLink && (
+        <div className={withTitle ? 'yoo-link-tool-mt-2' : ''}>
+          <label htmlFor="url" className="yoopta-link-tool-label">
+            Link URL
+          </label>
+          <input
+            id="url"
+            type="text"
+            className="yoopta-link-tool-input"
+            name="url"
+            value={link.url}
+            onChange={onChange}
+            placeholder="Edit link URL"
+            autoComplete="off"
+          />
+        </div>
+      )}
       <button
         type="button"
         className="yoopta-link-tool-label !yoo-link-tool-font-[500] yoo-link-tool-mt-2 !yoo-link-tool-mb-0 !yoo-link-tool-flex yoo-link-tool-justify-between yoo-link-tool-items-center yoo-link-tool-w-full"
         onClick={() => setAdditionPropsOpen((p) => !p)}
       >
         Additional props
-        <ChevronUp style={{ transform: additionalPropsOpen ? `rotate(180deg)` : `rotate(0deg)` }} />
+        <ChevronUp style={{ transform: isAdditionalPropsOpen ? `rotate(180deg)` : `rotate(0deg)` }} />
       </button>
-      {additionalPropsOpen && (
+      {isAdditionalPropsOpen && (
         <>
           <div className="yoo-link-tool-mt-2">
             <label htmlFor="target" className="yoopta-link-tool-label">
@@ -118,10 +123,10 @@ const DefaultLinkToolRender = (props: LinkToolRenderProps) => {
         <button
           type="button"
           className="yoopta-button yoo-link-tool-bg-[#1183ff] yoo-link-tool-text-[#fff] yoo-link-tool-text-sm yoo-link-tool-font-medium yoo-link-tool-py-[5px] yoo-link-tool-px-[10px] yoo-link-tool-rounded-md yoo-link-tool-shadow-sm disabled:yoo-link-tool-opacity-50"
-          disabled={!link.url || !isUrl(link.url)}
+          disabled={!link.url}
           onClick={onSave}
         >
-          Add
+          {props.link.url ? 'Update' : 'Add'}
         </button>
         <button
           type="button"

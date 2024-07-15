@@ -6,10 +6,9 @@ export type UpdateElementOptions = {
   path?: Path;
 };
 
-export type UpdateElement<TElementKeys, TElementProps> = {
-  type: TElementKeys;
-  props: TElementProps;
-};
+export type UpdateElement<TElementKeys extends string, TElementProps> = Partial<
+  Omit<SlateElement<TElementKeys, TElementProps>, 'id'>
+>;
 
 export function updateElement<TElementKeys extends string, TElementProps>(
   editor: YooEditor,
@@ -37,12 +36,13 @@ export function updateElement<TElementKeys extends string, TElementProps>(
     });
 
     const elementToUpdate = elementEntry?.[0];
+    const elementToUpdatePath = elementEntry?.[1];
 
     const props = elementToUpdate?.props || {};
-    const updatedNode = { props: { ...props, ...element.props } };
+    const updatedElement = { props: { ...props, ...element.props } };
 
-    Transforms.setNodes<SlateElement>(slate, updatedNode, {
-      at: options?.path || [0],
+    Transforms.setNodes<SlateElement>(slate, updatedElement, {
+      at: options?.path || elementToUpdatePath || [0],
       match: (n) => Element.isElement(n) && n.type === element.type,
       mode: 'lowest',
     });

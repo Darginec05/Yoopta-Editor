@@ -52,15 +52,15 @@ const BasicExample = () => {
           tools={TOOLS}
           readOnly={readOnly}
           value={{
-            '36048c70-ce45-4fe6-ad92-70ef6810b88c': {
-              id: '36048c70-ce45-4fe6-ad92-70ef6810b88c',
+            'b5709c7d-c79b-4786-8d72-8a4d727163d4': {
+              id: 'b5709c7d-c79b-4786-8d72-8a4d727163d4',
               value: [
                 {
-                  id: '66260b1b-1efd-4d8f-b6cd-3342480deea7',
-                  type: 'heading-two',
+                  id: '03bbf41c-d9c0-44ed-90d9-1bd17c66f94f',
+                  type: 'heading-one',
                   children: [
                     {
-                      text: 'Built-in Constraints',
+                      text: 'With custom renders ',
                     },
                   ],
                   props: {
@@ -68,158 +68,97 @@ const BasicExample = () => {
                   },
                 },
               ],
-              type: 'HeadingTwo',
+              type: 'HeadingOne',
               meta: {
                 order: 0,
                 depth: 0,
               },
             },
-            '02fba3b4-f90e-4fe0-9284-9dff8cf5fa3b': {
-              id: '02fba3b4-f90e-4fe0-9284-9dff8cf5fa3b',
+            '1c07a2a9-9dba-4626-86f9-7fa0dd8c9f83': {
+              id: '1c07a2a9-9dba-4626-86f9-7fa0dd8c9f83',
               value: [
                 {
-                  id: '5ae35463-0542-4f9a-b3b2-8f86dc8a132f',
-                  type: 'accordion-list',
+                  id: 'a5db0166-46c1-4170-94f9-12d758cdc882',
+                  type: 'callout',
                   children: [
                     {
-                      id: 'c584e4fa-b735-4cd8-9c5e-a9f2ce765fbd',
-                      type: 'accordion-list-item',
-                      children: [
-                        {
-                          id: '310aa032-aa99-42e1-b9d4-664a68c0c0ef',
-                          type: 'accordion-list-item-heading',
-                          children: [
-                            {
-                              text: 'Built-in Constraints',
-                            },
-                          ],
-                          props: {
-                            nodeType: 'block',
-                          },
-                        },
-                        {
-                          id: 'ad3fb9a9-1533-4080-82e1-c102a1e725c9',
-                          type: 'accordion-list-item-content',
-                          children: [
-                            {
-                              text: 'Slate editors come with a few built-in constraints out of the box. These constraints are there to make working with content much more predictable than standard contenteditable. All of the built-in logic in Slate depends on these constraints, so unfortunately you cannot omit them. They are...',
-                            },
-                          ],
-                          props: {
-                            nodeType: 'block',
-                          },
-                        },
-                      ],
-                      props: {
-                        nodeType: 'block',
-                        isExpanded: true,
-                      },
-                    },
-                    {
-                      id: 'caffa035-bfe1-40be-b5a6-e41fcd74f189',
-                      type: 'accordion-list-item',
-                      children: [
-                        {
-                          id: '4c5e2f14-4c1f-4a78-803a-27fae2d1fb5d',
-                          type: 'accordion-list-item-heading',
-                          children: [
-                            {
-                              text: 'Adding Constraints',
-                            },
-                          ],
-                          props: {
-                            nodeType: 'block',
-                          },
-                        },
-                        {
-                          id: 'a1dc9763-e1fa-4e70-88b0-dfe335ae4344',
-                          type: 'accordion-list-item-content',
-                          children: [
-                            {
-                              text: "All Element nodes must contain at least one Text descendant — even Void Elements. If an element node does not contain any children, an empty text node will be added as its only child. This constraint exists to ensure that the selection's anchor and focus points (which rely on referencing text nodes) can always be placed inside any node. Without this, empty elements (or void elements) wouldn't be selectable.",
-                            },
-                          ],
-                          props: {
-                            nodeType: 'block',
-                          },
-                        },
-                      ],
-                      props: {
-                        nodeType: 'block',
-                        isExpanded: true,
-                      },
-                    },
-                    {
-                      id: '7a327ed3-b8d3-41a5-8292-64a2d82b57b6',
-                      type: 'accordion-list-item',
-                      children: [
-                        {
-                          id: 'e7b5774a-6bd7-47a1-b8d2-dddedcb28418',
-                          type: 'accordion-list-item-heading',
-                          children: [
-                            {
-                              text: 'Multi-pass Normalizing',
-                            },
-                          ],
-                          props: {
-                            nodeType: 'block',
-                          },
-                        },
-                        {
-                          id: '093afe90-0e9a-4602-81f6-66c55abb7ad7',
-                          type: 'accordion-list-item-content',
-                          children: [
-                            {
-                              text: "To do this, you extend the normalizeNode function on the editor. The normalizeNode function gets called every time an operation is applied that inserts or updates a node (or its descendants), giving you the opportunity to ensure that the changes didn't leave it in an invalid state, and correcting the node if so.",
-                            },
-                          ],
-                          props: {
-                            nodeType: 'block',
-                          },
-                        },
-                      ],
-                      props: {
-                        nodeType: 'block',
-                        isExpanded: true,
-                      },
+                      text: 'This example will show you how to add custom renders to plugins',
                     },
                   ],
+                  props: {
+                    theme: 'info',
+                  },
                 },
               ],
-              type: 'Accordion',
+              type: 'Callout',
               meta: {
                 order: 1,
                 depth: 0,
               },
             },
-            '226f5963-b01c-4b14-a7e8-45f3cf6c6b95': {
-              id: '226f5963-b01c-4b14-a7e8-45f3cf6c6b95',
+            '18cb86e2-44df-4d76-94e0-cf71b78d8ee8': {
+              id: '18cb86e2-44df-4d76-94e0-cf71b78d8ee8',
               value: [
                 {
-                  id: 'dcfc9ee2-db6e-4127-b40c-83bcd465c5dd',
-                  type: 'embed',
-                  props: {
-                    sizes: {
-                      width: 650,
-                      height: 400,
-                    },
-                    nodeType: 'void',
-                    provider: {
-                      type: 'youtube',
-                      id: 'bItAw5xgI4I',
-                      url: 'https://www.youtube.com/watch?v=bItAw5xgI4I&t=468s',
-                    },
-                  },
+                  id: '83810c57-3b88-4f94-95ff-632f5e8d6c3f',
+                  type: 'heading-three',
                   children: [
+                    {
+                      text: 'Example with ',
+                    },
                     {
                       text: '',
                     },
+                    {
+                      id: 'c59655ae-fae4-472a-8fb3-e776e35395ad',
+                      type: 'link',
+                      props: {
+                        url: 'https://app.slack.com/client/T02V7P8BG/D02U1BMBYV6',
+                        target: '_self',
+                        rel: 'noreferrer',
+                        title: 'next/image',
+                        nodeType: 'inline',
+                      },
+                      children: [
+                        {
+                          text: 'next/image',
+                        },
+                      ],
+                    },
+                    {
+                      text: ' ',
+                    },
                   ],
+                  props: {
+                    nodeType: 'block',
+                  },
                 },
               ],
-              type: 'Embed',
+              type: 'HeadingThree',
               meta: {
                 order: 2,
+                depth: 0,
+              },
+            },
+            'ae04c7a1-fb94-4f0b-b428-3757a8d21196': {
+              id: 'ae04c7a1-fb94-4f0b-b428-3757a8d21196',
+              value: [
+                {
+                  id: '08a13b95-2371-4eac-9c30-83f1f8b72fc5',
+                  type: 'callout',
+                  children: [
+                    {
+                      text: "By default, the @yoopta/image plugin provides its own image rendering. \nBut what if you want to change the default rendering with powerful components like next/image, which provide top-level optimization and rendering with different layout. So, it's easy-peasy. ",
+                    },
+                  ],
+                  props: {
+                    theme: 'default',
+                  },
+                },
+              ],
+              type: 'Callout',
+              meta: {
+                order: 3,
                 depth: 0,
               },
             },

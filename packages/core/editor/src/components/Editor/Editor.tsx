@@ -60,6 +60,8 @@ const Editor = ({
 
   let state = useRef<State>(DEFAULT_STATE).current;
 
+  console.log('editor.children', editor.children);
+
   useEffect(() => {
     if (!autoFocus || isReadOnly) return;
     editor.focus();

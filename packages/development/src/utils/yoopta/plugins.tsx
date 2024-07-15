@@ -37,18 +37,18 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   File.extend({
-    renders: {
-      file: ({ attributes, children, element }) => {
-        return (
-          <div {...attributes} contentEditable={false}>
-            <a className="file-element-extended text-[red]" href={element.props.src} download>
-              {element.props.name} ({element.props.size}) {element.props.format}
-            </a>
-            {children}
-          </div>
-        );
-      },
-    },
+    // renders: {
+    //   file: ({ attributes, children, element }) => {
+    //     return (
+    //       <div {...attributes} contentEditable={false}>
+    //         <a className="file-element-extended text-[red]" href={element.props.src} download>
+    //           {element.props.name} ({element.props.size}) {element.props.format}
+    //         </a>
+    //         {children}
+    //       </div>
+    //     );
+    //   },
+    // },
     options: {
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file, 'auto');
@@ -70,9 +70,9 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Image.extend({
-    renders: {
-      image: YooptaWithNextImage,
-    },
+    // renders: {
+    //   image: YooptaWithNextImage,
+    // },
     options: {
       maxSizes: { maxHeight: 750, maxWidth: 750 },
       HTMLAttributes: {
@@ -95,15 +95,6 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Headings.HeadingOne.extend({
-    renders: {
-      'heading-one': ({ attributes, children, element, blockId }) => {
-        return (
-          <h1 {...attributes} className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-            {children}
-          </h1>
-        );
-      },
-    },
     options: {
       HTMLAttributes: {
         className: 'heading-one-element-extended',
@@ -122,15 +113,6 @@ export const YOOPTA_PLUGINS = [
   }),
   Headings.HeadingThree,
   Blockquote.extend({
-    renders: {
-      blockquote: ({ attributes, children }) => {
-        return (
-          <blockquote {...attributes} className="blockquote-element-extended text-gray-500">
-            {children}
-          </blockquote>
-        );
-      },
-    },
     options: {
       HTMLAttributes: {
         className: 'blockquote-element-extended',
@@ -138,15 +120,6 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Callout.extend({
-    renders: {
-      callout: ({ attributes, children }) => {
-        return (
-          <div {...attributes} className="callout-element-extended bg-gray-100 p-4">
-            {children}
-          </div>
-        );
-      },
-    },
     options: {
       HTMLAttributes: {
         className: 'callout-element-extended',
@@ -161,50 +134,9 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Lists.NumberedList,
-  Lists.TodoList.extend({
-    renders: {
-      'todo-list': ({ attributes, children, element, blockId }) => {
-        const editor = useYooptaEditor();
-        const { checked = false } = element.props;
-        const style = {
-          textDecoration: checked ? 'line-through' : 'none',
-        };
-
-        const onCheckedChange = (isChecked: boolean) => {
-          console.log('onCheckedChange', isChecked);
-
-          Elements.updateElement(editor, blockId, { type: 'todo-list', props: { checked: isChecked } });
-        };
-
-        return (
-          <Checkbox name="yoopta-extend-checkbox" checked={checked} onCheckedChange={onCheckedChange}>
-            {children}
-          </Checkbox>
-        );
-      },
-    },
-  }),
+  Lists.TodoList,
   Embed,
   Video.extend({
-    renders: {
-      video: ({ attributes, children, element }) => {
-        return (
-          <div {...attributes} contentEditable={false}>
-            <video
-              src={element.props.src}
-              width={element.props.sizes.width}
-              height={element.props.sizes.height}
-              poster={element.props.poster}
-              className="video-element-extended"
-              controls
-              playsInline
-              preload="metadata"
-            />
-            {children}
-          </div>
-        );
-      },
-    },
     options: {
       HTMLAttributes: {
         className: 'video-element-extended',
@@ -226,14 +158,26 @@ export const YOOPTA_PLUGINS = [
   Link.extend({
     renders: {
       link: ({ attributes, children, element }) => {
+        if (element.props.target === '_blank') {
+          return (
+            <a
+              {...attributes}
+              className="link-element-extended text-blue-500 hover:underline"
+              href={element.props.url}
+              target={element.props.target}
+              rel={element.props.rel}
+            >
+              {children}
+            </a>
+          );
+        }
+
         return (
           <NextLink
             {...attributes}
             data-key={element.id}
-            className="link-element-extended text-blue-500 hover:underline"
+            className="link-element-extended text-blue-500 hover:underline cursor-pointer"
             href={element.props.url}
-            target={element.props.target}
-            rel={element.props.rel}
             data-next-link
           >
             {children}
