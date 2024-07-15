@@ -36,7 +36,7 @@ const addLink = (editor, url: string) => {
     children: isCollapsed ? [{ text: url }] : [],
     props: {
       url,
-      target: '_blank',
+      target: '_self',
       rel: 'noopener noreferrer',
     },
   } as SlateElement;

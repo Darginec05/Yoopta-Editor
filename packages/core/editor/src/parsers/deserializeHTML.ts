@@ -184,6 +184,8 @@ export function deserializeHTML(editor: YooEditor, html: HTMLElement) {
   console.log('pasted html', html);
 
   const PLUGINS_NODE_NAME_MATCHERS_MAP = getMappedPluginByNodeNames(editor);
+  console.log('PLUGINS_NODE_NAME_MATCHERS_MAP', PLUGINS_NODE_NAME_MATCHERS_MAP);
+
   const blocks = deserialize(editor, PLUGINS_NODE_NAME_MATCHERS_MAP, html).filter(isYooptaBlock) as YooptaBlockData[];
 
   return blocks;

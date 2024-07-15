@@ -9,12 +9,12 @@ type Props = {
   style?: React.CSSProperties;
 };
 
-const Overlay = forwardRef(({ className, onClick, children, lockScroll = true, ...rest }: Props, ref) => {
+const Overlay = ({ className, onClick, children, lockScroll = true, ...rest }: Props) => {
   return (
-    <FloatingOverlay lockScroll={lockScroll} className={className} onClick={onClick} ref={ref} {...rest}>
+    <FloatingOverlay lockScroll={lockScroll} className={className} onClick={onClick} {...rest}>
       {children}
     </FloatingOverlay>
   );
-});
+};
 
 export { Overlay };

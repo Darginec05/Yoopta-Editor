@@ -50,18 +50,21 @@ const LinkHoverPreview = ({ style, setFloating, element, setHoldLinkTool, blockI
 
   const onDelete = () => {
     const slate = findSlateBySelectionPath(editor);
-    if (!slate || !slate.selection) return;
-    const linkNodeEntry = Elements.getElementEntry(editor, blockId);
+    const path = Elements.getElementPath(editor, blockId, element);
+
+    if (!slate) return;
+    const linkNodeEntry = Elements.getElementEntry(editor, blockId, { path, type: element.type });
 
     if (linkNodeEntry) {
       Transforms.unwrapNodes(slate, {
         match: (n) => !Editor.isEditor(n) && Element.isElement(n) && (n as SlateElement).type === element.type,
+        at: path || linkNodeEntry?.[1],
       });
     }
   };
 
   const onOpenLink = () => {
-    window.open(element.props.url, element.props.target || '_blank');
+    window.open(element.props.url, element.props.target || '_self');
   };
 
   return (

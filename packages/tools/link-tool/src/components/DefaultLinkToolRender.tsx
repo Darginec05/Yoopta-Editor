@@ -5,18 +5,9 @@ import ChevronUp from '../icons/chevronup.svg';
 const DEFAULT_LINK_VALUE: Link = {
   url: '',
   title: '',
-  target: '_blank',
+  target: '_self',
   rel: 'noreferrer',
 };
-
-// function isUrl(string: any): boolean {
-//   try {
-//     new URL(string);
-//     return true;
-//   } catch (_) {
-//     return false;
-//   }
-// }
 
 const DefaultLinkToolRender = (props: LinkToolRenderProps) => {
   const { withLink = true, withTitle = true } = props;

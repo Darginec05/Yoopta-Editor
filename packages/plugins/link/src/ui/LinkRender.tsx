@@ -62,11 +62,6 @@ const LinkRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
     onClose();
   };
 
-  const onRef = (node) => {
-    props.attributes.ref(node);
-    // linkPreviewRefs.setReference(node);
-  };
-
   return (
     <span ref={linkPreviewRefs.setReference} onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
       {extendRender ? (
@@ -76,7 +71,6 @@ const LinkRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
           {...linkProps}
           {...htmlAttrs}
           {...props.attributes}
-          // ref={onRef}
           draggable={false}
           href={url || ''}
           className={`yoopta-link ${className}`}

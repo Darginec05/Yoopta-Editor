@@ -113,7 +113,7 @@ const BasicExample = () => {
                       id: 'c59655ae-fae4-472a-8fb3-e776e35395ad',
                       type: 'link',
                       props: {
-                        url: 'https://app.slack.com/client/T02V7P8BG/D02U1BMBYV6',
+                        url: '/',
                         target: '_self',
                         rel: 'noreferrer',
                         title: 'next/image',
