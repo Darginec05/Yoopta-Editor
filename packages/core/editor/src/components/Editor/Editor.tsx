@@ -13,6 +13,7 @@ import { YooptaBlockPath } from '../../editor/types';
 import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
 import { serializeHTML } from '../../parsers/serializeHTML';
+import { Blocks } from '../../editor/blocks';
 
 type Props = {
   marks?: YooptaMark<any>[];
@@ -349,6 +350,34 @@ const Editor = ({
           state.selectionStarted = true;
         }
       }
+    }
+
+    if (HOTKEYS.isTab(event)) {
+      const selectedBlocks = editor.selectedBlocks;
+      if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
+        event.preventDefault();
+
+        // [TODO] - maybe we need to add support for passing blockIds?
+        selectedBlocks.forEach((index) => {
+          const block = Blocks.getBlock(editor, { at: [index] });
+          editor.increaseBlockDepth({ blockId: block?.id });
+        });
+      }
+      return;
+    }
+
+    if (HOTKEYS.isShiftTab(event)) {
+      const selectedBlocks = editor.selectedBlocks;
+      if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
+        event.preventDefault();
+
+        // [TODO] - maybe we need to add support for passing blockIds?
+        selectedBlocks.forEach((index) => {
+          const block = Blocks.getBlock(editor, { at: [index] });
+          editor.decreaseBlockDepth({ blockId: block?.id });
+        });
+      }
+      return;
     }
   };
 
