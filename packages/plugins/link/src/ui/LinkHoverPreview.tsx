@@ -45,7 +45,7 @@ const LinkHoverPreview = ({ style, setFloating, element, setHoldLinkTool, blockI
     });
 
     setIsEditLinkToolsOpen(false);
-    setHoldLinkTool(false);
+    onClose();
   };
 
   const onDelete = () => {
