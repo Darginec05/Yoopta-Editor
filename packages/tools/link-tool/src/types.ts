@@ -10,6 +10,8 @@ export type Link = {
 export type LinkToolRenderProps = {
   editor: YooEditor;
   link: Link;
+  withLink?: boolean;
+  withTitle?: boolean;
   onSave: (link: Link) => void;
   onDelete: () => void;
 };

@@ -41,7 +41,7 @@ type LinkValues = {
 const DEFAULT_LINK_VALUE: LinkValues = {
   title: '',
   url: '',
-  target: '_blank',
+  target: '_self',
   rel: 'noreferrer',
 };
 

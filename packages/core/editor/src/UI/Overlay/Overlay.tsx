@@ -1,17 +1,18 @@
 import { FloatingOverlay } from '@floating-ui/react';
-import { MouseEvent, ReactNode } from 'react';
+import { MouseEvent, ReactNode, forwardRef } from 'react';
 
 type Props = {
   children: ReactNode;
   lockScroll?: boolean;
   className?: string;
   onClick?: (e: MouseEvent) => void;
+  style?: React.CSSProperties;
 };
 
-const Overlay = (props: Props) => {
+const Overlay = ({ className, onClick, children, lockScroll = true, ...rest }: Props) => {
   return (
-    <FloatingOverlay lockScroll className={props.className} onClick={props.onClick}>
-      {props.children}
+    <FloatingOverlay lockScroll={lockScroll} className={className} onClick={onClick} {...rest}>
+      {children}
     </FloatingOverlay>
   );
 };

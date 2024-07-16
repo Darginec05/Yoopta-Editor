@@ -289,6 +289,18 @@ export default function Home({ repoData }) {
                 />
               </a>
               <a
+                href="https://github.com/bluewave-labs"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center w-18 h-18 bg-white rounded-full shadow-lg m-2"
+              >
+                <img
+                  src="https://avatars.githubusercontent.com/u/165089105?s=200&v=4"
+                  alt="yoopta logo"
+                  className="w-14 h-14 rounded-full"
+                />
+              </a>
+              <a
                 href="https://github.com/sponsors/Darginec05"
                 target="_blank"
                 rel="noopener noreferrer"

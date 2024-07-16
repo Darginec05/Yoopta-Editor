@@ -11,7 +11,7 @@ const DEFAULT_HANDLERS: YooptaEditorContext = {
   editor: {
     id: '',
 
-    getBlock: () => undefined,
+    getBlock: () => null,
     insertBlock: () => undefined,
     insertBlocks: () => undefined,
     updateBlock: () => undefined,
