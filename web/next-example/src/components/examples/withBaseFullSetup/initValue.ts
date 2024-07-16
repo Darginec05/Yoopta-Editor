@@ -604,7 +604,7 @@ export const WITH_BASIC_INIT_VALUE = {
     type: 'BulletedList',
     meta: {
       order: 23,
-      depth: 0,
+      depth: 1,
     },
   },
   '3d61674a-8d55-4b6f-9ff3-eb1518ec22b0': {
@@ -792,6 +792,7 @@ export const WITH_BASIC_INIT_VALUE = {
     meta: {
       order: 3,
       depth: 0,
+      align: 'center',
     },
     value: [
       {
@@ -1262,6 +1263,7 @@ export const WITH_BASIC_INIT_VALUE = {
     meta: {
       order: 5,
       depth: 0,
+      align: 'center',
     },
   },
   '62bcd227-f42c-426d-8b3a-9bff70b5308d': {
@@ -1280,19 +1282,7 @@ export const WITH_BASIC_INIT_VALUE = {
                 type: 'accordion-list-item-heading',
                 children: [
                   {
-                    text: 'Can I relax with Yoopta-Editor?',
-                  },
-                ],
-                props: {
-                  nodeType: 'block',
-                },
-              },
-              {
-                id: 'a203259d-f075-44a3-a557-7d89f15a3501',
-                type: 'accordion-list-item-content',
-                children: [
-                  {
-                    text: 'Definitely, yes. We are aiming to ensure that you never worry about developing rich-text editors, but just focus on business logic when writing your super applications.',
+                    text: 'Is Yoopta-Editor free?',
                   },
                 ],
                 props: {
@@ -1307,7 +1297,7 @@ export const WITH_BASIC_INIT_VALUE = {
                 },
                 children: [
                   {
-                    text: 'Just install the needed packages, make the necessary configuration and relax',
+                    text: "Yes! Just install and relax, it's under MIT license",
                     underline: true,
                   },
                 ],
@@ -1387,6 +1377,90 @@ export const WITH_BASIC_INIT_VALUE = {
             },
           },
           {
+            id: '79655082-d9b0-4ade-aecb-cb0599b0643f',
+            type: 'accordion-list-item',
+            children: [
+              {
+                id: '4ead075d-ed01-4e97-9ead-cd40e9b38f80',
+                type: 'accordion-list-item-heading',
+                children: [
+                  {
+                    text: 'We need collaborative! Any news?',
+                  },
+                ],
+                props: {
+                  nodeType: 'block',
+                },
+              },
+              {
+                id: '05d9e7d5-b827-4248-80a2-c53f0bbf89b9',
+                type: 'accordion-list-item-content',
+                children: [
+                  {
+                    text: 'Already in progress 😎',
+                  },
+                ],
+                props: {
+                  nodeType: 'block',
+                },
+              },
+            ],
+            props: {
+              nodeType: 'block',
+              isExpanded: true,
+            },
+          },
+          {
+            id: '5114a98e-7a17-44ff-b9b1-f95b8f03efdf',
+            type: 'accordion-list-item',
+            children: [
+              {
+                id: '9e367393-3c7c-4928-b62f-aa254ece444c',
+                type: 'accordion-list-item-heading',
+                children: [
+                  {
+                    text: 'How I can support project?',
+                  },
+                ],
+                props: {
+                  nodeType: 'block',
+                },
+              },
+              {
+                id: 'ac810605-4e80-47d0-b70f-6ea7ce630ef9',
+                type: 'accordion-list-item-content',
+                children: [
+                  {
+                    text: 'Support us using ',
+                  },
+                  {
+                    type: 'link',
+                    children: [
+                      {
+                        text: 'Github sponsor link',
+                      },
+                    ],
+                    props: {
+                      url: 'https://github.com/sponsors/Darginec05',
+                      target: '_self',
+                      rel: 'noopener noreferrer',
+                    },
+                  },
+                  {
+                    text: ' ❤️',
+                  },
+                ],
+                props: {
+                  nodeType: 'block',
+                },
+              },
+            ],
+            props: {
+              nodeType: 'block',
+              isExpanded: true,
+            },
+          },
+          {
             id: 'ec4816dd-c646-43c8-90cf-30fe02b2a93f',
             type: 'accordion-list-item',
             children: [
@@ -1437,6 +1511,7 @@ export const WITH_BASIC_INIT_VALUE = {
     meta: {
       order: 4,
       depth: 0,
+      align: 'center',
     },
   },
   '39f639c6-219f-4cb7-a817-cb9f4d6ea07c': {
@@ -1459,6 +1534,7 @@ export const WITH_BASIC_INIT_VALUE = {
     meta: {
       order: 2,
       depth: 0,
+      align: 'center',
     },
   },
 };
