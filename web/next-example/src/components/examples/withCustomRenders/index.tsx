@@ -24,7 +24,7 @@ import NextImage, { ImageProps } from 'next/image';
 import NextLink from 'next/link';
 import Typography from '@mui/material/Typography';
 
-const plugins = [
+const getPlugins = () => [
   Paragraph,
   HeadingOne,
   HeadingTwo.extend({
@@ -193,7 +193,7 @@ function WithCustomRenders() {
     >
       <YooptaEditor
         editor={editor}
-        plugins={plugins}
+        plugins={getPlugins()}
         tools={TOOLS}
         marks={MARKS}
         selectionBoxRoot={selectionRef}

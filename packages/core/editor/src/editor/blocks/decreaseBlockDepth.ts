@@ -3,12 +3,12 @@ import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySel
 import { YooEditor, YooptaEditorTransformOptions } from '../types';
 
 export function decreaseBlockDepth(editor: YooEditor, options: YooptaEditorTransformOptions = {}) {
-  const { at = editor.selection } = options;
+  const { at = editor.selection, blockId = '' } = options;
 
-  if (!at) return;
+  if (!blockId && !at) return;
   editor.children = createDraft(editor.children);
 
-  const block = findPluginBlockBySelectionPath(editor);
+  const block = editor.children[blockId] || findPluginBlockBySelectionPath(editor);
   if (!block) return;
 
   block.meta.depth = block.meta.depth === 0 ? 0 : block.meta.depth - 1;
