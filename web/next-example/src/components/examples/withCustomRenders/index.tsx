@@ -48,10 +48,24 @@ const plugins = [
   Link.extend({
     renders: {
       link: ({ attributes, children, element }) => {
+        if (element.props.target === '_blank') {
+          return (
+            <a
+              {...attributes}
+              className="link-element-extended text-blue-500 hover:underline"
+              href={element.props.url}
+              target={element.props.target}
+              rel="noreferrer noopener"
+            >
+              {children}
+            </a>
+          );
+        }
+
         return (
           <NextLink
             {...attributes}
-            className="link-element-extended text-blue-500 hover:underline"
+            className="link-element-extended text-blue-500 hover:underline cursor-pointer"
             href={element.props.url}
             target={element.props.target}
             rel={element.props.rel}
