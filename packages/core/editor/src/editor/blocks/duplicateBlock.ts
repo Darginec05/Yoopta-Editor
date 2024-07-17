@@ -5,9 +5,7 @@ import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySel
 import { generateId } from '../../utils/generateId';
 import { YooEditor, YooptaBlockData, YooptaEditorTransformOptions } from '../types';
 
-export type DuplicateBlockOptions = YooptaEditorTransformOptions & {
-  blockId?: string;
-};
+export type DuplicateBlockOptions = YooptaEditorTransformOptions;
 
 export function duplicateBlock(editor: YooEditor, options: DuplicateBlockOptions = {}) {
   const { blockId, focus } = options;

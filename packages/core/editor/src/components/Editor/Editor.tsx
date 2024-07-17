@@ -391,6 +391,7 @@ const Editor = ({
   return (
     <div
       data-yoopta-editor-id={editor.id}
+      data-testid="yoopta-editor"
       className={className ? `yoopta-editor ${className}` : 'yoopta-editor'}
       style={editorStyles}
       ref={yooptaEditorRef}
