@@ -11,7 +11,7 @@ function WithMultiPageEditors() {
           cases. Follow the{' '}
           <NextLink
             href="/examples/withMultiPageEditors/page_1"
-            className="text-[#007aff] hover:underline text-muted-foreground transition-all"
+            className="text-[#007aff] hover:underline transition-all"
           >
             link here
           </NextLink>{' '}
