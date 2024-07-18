@@ -102,9 +102,11 @@ SheetDescription.displayName = SheetPrimitive.Description.displayName;
 type SheetProps = {
   items: { id: string; title: string; href: string }[];
   path: string;
+  title?: string;
+  description?: string | React.ReactNode;
 };
 
-const Sheet = ({ items, path }: SheetProps) => {
+const Sheet = ({ items, path, title, description }: SheetProps) => {
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 640);
   const [isOpen, onOpenChange] = React.useState(!isMobile);
   const { setTheme } = useTheme();
@@ -140,19 +142,22 @@ const Sheet = ({ items, path }: SheetProps) => {
         </SheetTrigger>
         <SheetContent side="left" autoFocus={false} onOpenChange={() => onOpenChange((p) => !p)}>
           <SheetHeader>
-            <SheetTitle>Yoopta examples</SheetTitle>
-            <SheetDescription>
-              Found issue?
-              <br />
-              <a
-                href="https://github.com/Darginec05/Yoopta-Editor/issues"
-                target="_blank"
-                rel="noopener"
-                className="text-sky-500"
-              >
-                Report it in repo
-              </a>
-            </SheetDescription>
+            <SheetTitle>{title || 'Yoopta examples'}</SheetTitle>
+            {description || (
+              <SheetDescription>
+                Found issue?
+                <br />
+                <a
+                  href="https://github.com/Darginec05/Yoopta-Editor/issues"
+                  target="_blank"
+                  rel="noopener"
+                  className="text-sky-500"
+                >
+                  Report it in repo
+                </a>
+              </SheetDescription>
+            )}
+
             <div className="py-2">
               {items &&
                 items.map((item) => {

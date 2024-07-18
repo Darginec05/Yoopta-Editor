@@ -20,7 +20,7 @@ import withChatSlack from '@/components/examples/withChatSlack';
 import withCustomStyles from '@/components/examples/withCustomStyles';
 import withEditorFocusBlur from '@/components/examples/withEditorFocusBlur';
 import withCustomRenders from '@/components/examples/withCustomRenders';
-// import withMultiPageEditors from '@/components/examples/withMultiPageEditors';
+import withMultiPageEditors from '@/components/examples/withMultiPageEditors';
 
 import { Head } from '@/components/Head/Head';
 import { useRouter } from 'next/router';
@@ -49,7 +49,7 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withLargeDocuments,
   withChatSlack,
   withEditorFocusBlur,
-  // withMultiPageEditors,
+  withMultiPageEditors,
   // withCraftExample,
   // withOffline,
   // withCustomComponent,
@@ -142,7 +142,7 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
   },
 };
 
-const ExampleComponent = () => {
+const ExampleComponentPage = () => {
   const router = useRouter();
 
   const ExampleComponent = EXAMPLES[(router.query.example as string) || 'withBaseFullSetup'];
@@ -165,4 +165,4 @@ const ExampleComponent = () => {
   );
 };
 
-export default ExampleComponent;
+export default ExampleComponentPage;
