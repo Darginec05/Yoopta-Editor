@@ -1,6 +1,7 @@
 import { defineConfig, transformWithEsbuild } from 'vite';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
+import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [
@@ -26,5 +27,10 @@ export default defineConfig({
       'packages/development',
       'packages/development/**/*.{test,spec}.{ts,tsx}',
     ],
+  },
+  resolve: {
+    alias: {
+      'test-utils': resolve(__dirname, 'tests/test-utils.tsx'),
+    },
   },
 });

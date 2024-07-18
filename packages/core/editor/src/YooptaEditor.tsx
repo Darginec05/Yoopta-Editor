@@ -19,7 +19,7 @@ import { YooptaMark } from './marks';
 import { FakeSelectionMark } from './marks/FakeSelectionMark';
 import { generateId } from './utils/generateId';
 
-type Props = {
+export type YooptaEditorProps = {
   id?: string;
   editor: YooEditor;
   plugins: YooptaPlugin[];
@@ -81,7 +81,7 @@ const YooptaEditor = ({
   readOnly,
   width,
   style,
-}: Props) => {
+}: YooptaEditorProps) => {
   const applyChanges = () => {
     setEditorState((prev) => ({ ...prev, version: prev.version + 1 }));
   };
