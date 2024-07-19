@@ -1,0 +1,58 @@
+{
+  "name": "@yoopta/starter-kit",
+  "version": "4.6.4",
+  "description": "StarterKit for Yoopta Editor",
+  "author": "Darginec05 <devopsbanda@gmail.com>",
+  "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
+  "license": "MIT",
+  "private": false,
+  "main": "dist/index.js",
+  "type": "module",
+  "module": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "dependencies": {
+    "@yoopta/accordion": "^4.6.4",
+    "@yoopta/action-menu-list": "^4.6.4",
+    "@yoopta/blockquote": "^4.6.4",
+    "@yoopta/callout": "^4.6.4",
+    "@yoopta/code": "^4.6.4",
+    "@yoopta/editor": "^4.6.4",
+    "@yoopta/embed": "^4.6.4",
+    "@yoopta/exports": "^4.6.4",
+    "@yoopta/file": "^4.6.4",
+    "@yoopta/headings": "^4.6.4",
+    "@yoopta/image": "^4.6.4",
+    "@yoopta/link": "^4.6.4",
+    "@yoopta/link-tool": "^4.6.4",
+    "@yoopta/lists": "^4.6.4",
+    "@yoopta/marks": "^4.6.4",
+    "@yoopta/paragraph": "^4.6.4",
+    "@yoopta/toolbar": "^4.6.4",
+    "@yoopta/video": "^4.6.4",
+    "slate": "^0.102.0",
+    "slate-react": "^0.102.0"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.2",
+    "react-dom": ">=17.0.2"
+  },
+  "publishConfig": {
+    "registry": "https://registry.yarnpkg.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Darginec05/Editor-Yoopta.git"
+  },
+  "scripts": {
+    "test": "node ./__tests__/yoopta-starter-kit.test.js",
+    "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development",
+    "prepublishOnly": "yarn build",
+    "build": "rollup --config rollup.config.js --bundleConfigAsCjs --environment NODE_ENV:production"
+  },
+  "bugs": {
+    "url": "https://github.com/Darginec05/Editor-Yoopta/issues"
+  }
+}

@@ -1,5 +1,5 @@
 import { Video } from './plugin';
-import { VideoElement } from './types';
+import { VideoElement, VideoElementProps, VideoUploadResponse } from './types';
 import './styles.css';
 
 declare module 'slate' {
@@ -9,4 +9,4 @@ declare module 'slate' {
 }
 
 export default Video;
-export { VideoElement };
+export { VideoElement, VideoElementProps, VideoUploadResponse };
