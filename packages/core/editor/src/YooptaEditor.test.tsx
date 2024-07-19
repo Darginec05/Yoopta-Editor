@@ -1,21 +1,37 @@
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import { screen } from '@testing-library/react';
+import { renderYooptaEditor } from 'test-utils';
 
-import { YooptaEditor } from './YooptaEditor';
+describe('YooptaEditor Component', () => {
+  it('renders correctly with minimum props', () => {
+    renderYooptaEditor();
 
-describe('Yoopta Editor', () => {
-  it('renders yoopta editor', () => {
-    const { container } = render(<YooptaEditor value={[]} onChange={() => {}} />);
-
-    expect(container).toBeInTheDocument();
+    expect(screen.getByTestId('yoopta-editor')).toBeInTheDocument();
   });
 
-  it('renders yoopta tools', () => {
-    const { container } = render(<YooptaEditor value={[]} onChange={() => {}} />);
+  it('applies className and style correctly', () => {
+    const style = { width: '500px' };
+    const className = 'custom-class';
+    renderYooptaEditor({ className, style });
 
-    const toolbar = container.querySelector('.yoopta-toolbar');
-    const suggestionList = container.querySelector('.yoopta-suggestion_list');
+    const editorEl = screen.getByTestId('yoopta-editor');
+    expect(editorEl).toHaveClass(className);
+    expect(editorEl).toHaveStyle(style);
+  });
 
-    expect(toolbar).toBeInTheDocument();
-    expect(suggestionList).toBeInTheDocument();
+  it('validates initial value and handles invalid data gracefully', () => {
+    const consoleErrorMock = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const invalidValue = 'this is not a valid value';
+    renderYooptaEditor({ value: invalidValue });
+
+    expect(consoleErrorMock).toHaveBeenCalled();
+    consoleErrorMock.mockRestore();
+  });
+
+  it('displays a warning for legacy data usage', () => {
+    const value = [{ id: 'old-format', nodeType: 'old' }];
+    renderYooptaEditor({ value });
+
+    expect(screen.getByText(/legacy version of the Yoopta-Editor is used/i)).toBeInTheDocument();
   });
 });

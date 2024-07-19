@@ -7,7 +7,7 @@ export {
   useYooptaReadOnly,
   useYooptaPluginOptions,
 } from './contexts/YooptaContext/YooptaContext';
-import { YooptaEditor } from './YooptaEditor';
+import { YooptaEditor, type YooptaEditorProps } from './YooptaEditor';
 
 // [TODO] - should be in separated package @yoopta/common/ui or @yoopta/ui
 export { UI } from './UI';
@@ -40,3 +40,4 @@ export { Blocks } from './editor/blocks';
 
 import './styles.css';
 export default YooptaEditor;
+export { YooptaEditorProps };
