@@ -4,7 +4,7 @@ import { moveBlock } from './blocks/moveBlock';
 import { focusBlock } from './blocks/focusBlock';
 import { splitBlock } from './blocks/splitBlock';
 import { setSelection } from './selection/setSelection';
-import { YooEditor } from './types';
+import { YooEditor, YooptaContentValue } from './types';
 import { increaseBlockDepth } from './blocks/increaseBlockDepth';
 import { decreaseBlockDepth } from './blocks/decreaseBlockDepth';
 import { getEditorValue } from './core/getEditorValue';
@@ -19,6 +19,9 @@ import { focus } from './core/focus';
 import { isFocused } from './core/isFocused';
 import { deleteBlocks } from './blocks/deleteBlocks';
 import { getBlock } from './blocks/getBlock';
+import { getHTML } from '../parsers/getHTML';
+import { getMarkdown } from '../parsers/getMarkdown';
+import { getPlainText } from '../parsers/getPlainText';
 
 // export const YooEditor = {}
 // export const BlockTransforms = {}
@@ -75,6 +78,10 @@ export const createYooptaEditor = (): YooEditor => {
     isFocused: () => isFocused(editor),
     focus: () => focus(editor),
     blur: (...args) => blur(editor, ...args),
+
+    getHTML: (content: YooptaContentValue) => getHTML(editor, content),
+    getMarkdown: (content: YooptaContentValue) => getMarkdown(editor, content),
+    getPlainText: (content: YooptaContentValue) => getPlainText(editor, content),
   };
 
   return editor;

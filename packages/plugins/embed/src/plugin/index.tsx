@@ -62,7 +62,7 @@ const Embed = new YooptaPlugin<EmbedPluginElements, EmbedElementProps, EmbedPlug
         }
 
         return `<div style="display: flex; width: 100%; justify-content: center">
-        <iframe src="${url}" width="${element.props.sizes.width}" height="${element.props.sizes.height}"  /> </div>`;
+        <iframe src="${url}" width="${element.props.sizes.width}" height="${element.props.sizes.height}"></iframe> </div>`;
       },
     },
     markdown: {

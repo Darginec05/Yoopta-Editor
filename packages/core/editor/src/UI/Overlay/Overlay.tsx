@@ -11,7 +11,7 @@ type Props = {
 
 const Overlay = ({ className, onClick, children, lockScroll = true, ...rest }: Props) => {
   return (
-    <FloatingOverlay lockScroll={lockScroll} className={className} onClick={onClick} {...rest}>
+    <FloatingOverlay lockScroll={lockScroll} className={`yoopta-portal ${className}`} onClick={onClick} {...rest}>
       {children}
     </FloatingOverlay>
   );

@@ -13,10 +13,10 @@ import Code from '@yoopta/code';
 import { type MediaUploadsFn } from '../components/StarterKit/StarterKit';
 
 type PluginParams = {
-  mediaUploadsFn: MediaUploadsFn;
+  media?: MediaUploadsFn;
 };
 
-export const getPlugins = ({ mediaUploadsFn }: PluginParams) => {
+export const getPlugins = ({ media }: PluginParams) => {
   return [
     Paragraph,
     Accordion,
@@ -34,11 +34,11 @@ export const getPlugins = ({ mediaUploadsFn }: PluginParams) => {
     Image.extend({
       options: {
         async onUpload(file) {
-          if (!mediaUploadsFn?.image) {
+          if (!media?.imageUpload) {
             throw new Error('Image upload function is not provided');
           }
 
-          const data = await mediaUploadsFn?.image(file);
+          const data = await media?.imageUpload(file);
           return data;
         },
       },
@@ -46,11 +46,11 @@ export const getPlugins = ({ mediaUploadsFn }: PluginParams) => {
     Video.extend({
       options: {
         onUpload: async (file) => {
-          if (!mediaUploadsFn?.video) {
+          if (!media?.videoUpload) {
             throw new Error('Image upload function is not provided');
           }
 
-          const data = await mediaUploadsFn?.video(file);
+          const data = await media?.videoUpload(file);
           return data;
         },
       },
@@ -58,11 +58,11 @@ export const getPlugins = ({ mediaUploadsFn }: PluginParams) => {
     File.extend({
       options: {
         onUpload: async (file) => {
-          if (!mediaUploadsFn?.file) {
+          if (!media?.fileUpload) {
             throw new Error('Image upload function is not provided');
           }
 
-          const data = await mediaUploadsFn?.file(file);
+          const data = await media?.fileUpload(file);
           return data;
         },
       },

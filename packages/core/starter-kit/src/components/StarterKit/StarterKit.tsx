@@ -15,15 +15,16 @@ export type StarterKitProps = {
   readOnly?: boolean;
   autoFocus?: boolean;
   className?: string;
+  placeholder?: string;
   style?: CSSProperties;
   selectionRef?: React.RefObject<HTMLDivElement> | false;
-  mediaUploadsFn?: MediaUploadsFn;
+  media?: MediaUploadsFn;
 };
 
 export type MediaUploadsFn = {
-  image?: (file: File) => Promise<ImageUploadResponse>;
-  video?: (file: File) => Promise<VideoUploadResponse>;
-  file?: (file: File) => Promise<FileUploadResponse>;
+  imageUpload?: (file: File) => Promise<ImageUploadResponse>;
+  videoUpload?: (file: File) => Promise<VideoUploadResponse>;
+  fileUpload?: (file: File) => Promise<FileUploadResponse>;
 };
 
 function StarterKit({
@@ -34,7 +35,8 @@ function StarterKit({
   readOnly,
   autoFocus,
   className,
-  mediaUploadsFn,
+  placeholder,
+  media,
   selectionRef = false,
 }: StarterKitProps) {
   const editor = useMemo(() => createYooptaEditor(), []);
@@ -54,7 +56,7 @@ function StarterKit({
       id={id}
       selectionBoxRoot={selectionRef}
       editor={editor}
-      plugins={getPlugins({ mediaUploadsFn })}
+      plugins={getPlugins({ media })}
       tools={TOOLS}
       marks={MARKS}
       value={value}
@@ -62,6 +64,7 @@ function StarterKit({
       autoFocus={autoFocus}
       className={className}
       style={style}
+      placeholder={placeholder}
     />
   );
 }
