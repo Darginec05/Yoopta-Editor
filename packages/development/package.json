@@ -30,7 +30,6 @@
     "@yoopta/table": "*",
     "@yoopta/toolbar": "*",
     "@yoopta/video": "*",
-    "@yoopta/starter-kit": "*",
     "classnames": "^2.5.1",
     "katex": "^0.16.10",
     "lucide-react": "^0.378.0",
