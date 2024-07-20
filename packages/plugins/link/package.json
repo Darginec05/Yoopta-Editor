@@ -36,5 +36,6 @@
   },
   "dependencies": {
     "lucide-react": "^0.379.0"
-  }
+  },
+  "gitHead": "600e0cf267a0ce7df074ddc7db1114d67c4185d1"
 }
