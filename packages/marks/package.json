@@ -5,7 +5,7 @@
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
   "license": "MIT",
-  "private": false,
+  "private": true,
   "main": "dist/index.js",
   "type": "module",
   "module": "dist/index.js",
@@ -33,5 +33,6 @@
   },
   "bugs": {
     "url": "https://github.com/Darginec05/Editor-Yoopta/issues"
-  }
+  },
+  "gitHead": "600e0cf267a0ce7df074ddc7db1114d67c4185d1"
 }

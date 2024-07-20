@@ -10,7 +10,7 @@
   "private": true,
   "scripts": {
     "start": "yarn lerna run start --scope @yoopta/editor --scope @yoopta/starter-kit --scope @yoopta/action-menu-list --scope @yoopta/video --scope @yoopta/file --parallel --ignore development",
-    "build": "yarn clean && yarn lerna run build --parallel --ignore development",
+    "build": "yarn clean && yarn install && yarn lerna run build --parallel --ignore development",
     "clean": "find ./packages -type d -name dist ! -path './packages/development/*' -exec rm -rf {} +",
     "serve": "yarn lerna run dev --scope=development",
     "coverage": "vitest run --coverage",
