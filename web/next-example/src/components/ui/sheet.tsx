@@ -32,7 +32,7 @@ const SheetOverlay = React.forwardRef<
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName;
 
 const sheetVariants = cva(
-  'fixed z-50 gap-4 bg-background p-6 shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-500',
+  'overflow-y-auto fixed z-50 gap-4 bg-background p-6 shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-500',
   {
     variants: {
       side: {
@@ -135,7 +135,7 @@ const Sheet = ({ items, path, title, description }: SheetProps) => {
   }
 
   return (
-    <div className="fixed left-0 top-0 h-auto px-4 py-4 border-r border-b flex items-center w-[100vw] bg-white md:bg-transparent md:w-auto md:h-full md:block">
+    <div className="overflow-auto fixed left-0 top-0 h-auto px-4 py-4 border-r border-b flex items-center w-[100vw] bg-white md:bg-transparent md:w-auto md:h-full md:block">
       <SheetRoot defaultOpen={!isMobile} open={isOpen} {...rootProps}>
         <SheetTrigger onClick={() => onOpenChange((p) => !p)}>
           <Sidebar size={24} />
@@ -167,7 +167,7 @@ const Sheet = ({ items, path, title, description }: SheetProps) => {
                     <div key={item.id}>
                       <Link
                         href={item.href}
-                        className="group flex w-full items-center rounded-md border border-transparent px-2 py-1 hover:underline text-muted-foreground transition-all"
+                        className="group flex w-full items-center text-start rounded-md border border-transparent px-2 py-1 hover:underline text-muted-foreground transition-all"
                         onClick={() => setTheme('light')}
                         style={isCurrent ? { color: '#007aff', textDecoration: 'underline' } : undefined}
                       >

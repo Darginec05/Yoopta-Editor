@@ -13,6 +13,7 @@ const WithStarterKit = () => {
       className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center"
     >
       <YooptaStarterKit
+        id="starter-kit"
         value={value}
         onChange={(data) => setValue(data)}
         style={{ width: 650 }}

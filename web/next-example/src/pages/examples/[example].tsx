@@ -18,7 +18,7 @@ import withLargeDocuments from '@/components/examples/withLargeDocuments';
 import withChatSlack from '@/components/examples/withChatSlack';
 // import withCraftExample from '@/components/examples/withCraftExample';
 import withCustomStyles from '@/components/examples/withCustomStyles';
-import withEditorFocusBlur from '@/components/examples/withEditorFocusBlur';
+// import withEditorFocusBlur from '@/components/examples/withEditorFocusBlur';
 import withCustomRenders from '@/components/examples/withCustomRenders';
 import withMultiPageEditors from '@/components/examples/withMultiPageEditors';
 import WithStarterKit from '@/components/examples/withStarterKit';
@@ -37,9 +37,10 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withNotionActionMenu,
   withExports,
   withCustomRenders,
+  withExtendedPlugin,
+  WithStarterKit,
   withDarkTheme,
   withMediaAndVoids,
-  withExtendedPlugin,
   withReadOnly,
   withEditorControl,
   // withCustomHTMLAttributes,
@@ -49,9 +50,8 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withCustomStyles,
   withLargeDocuments,
   withMultiPageEditors,
-  WithStarterKit,
   withChatSlack,
-  withEditorFocusBlur,
+  // withEditorFocusBlur,
   // withCraftExample,
   // withOffline,
   // withCustomComponent,
@@ -130,10 +130,10 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
     title: 'Migration Guide from v2 to v4',
     description: '',
   },
-  withEditorFocusBlur: {
-    title: 'Example with focus/blur',
-    description: '',
-  },
+  // withEditorFocusBlur: {
+  //   title: 'Example with focus/blur',
+  //   description: '',
+  // },
   withExports: {
     title: 'HTML/Markdown exports',
     description: '',
