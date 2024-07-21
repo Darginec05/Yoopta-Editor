@@ -26,7 +26,7 @@ const BasicExample = () => {
 
   return (
     <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={selectionRef}>
-      <YooptaEditor
+      {/* <YooptaEditor
         editor={editor}
         plugins={YOOPTA_PLUGINS}
         selectionBoxRoot={selectionRef}
@@ -37,9 +37,10 @@ const BasicExample = () => {
         readOnly={readOnly}
         style={{ width: 750 }}
         value={value}
-      />
-      {/* 
+      /> */}
+
       <YooptaStarterKit
+        id="starter-kit"
         value={value}
         onChange={(data) => setValue(data)}
         style={{ width: 650 }}
@@ -74,7 +75,7 @@ const BasicExample = () => {
             };
           },
         }}
-      /> */}
+      />
     </div>
   );
 };

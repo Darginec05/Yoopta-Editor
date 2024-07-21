@@ -15,6 +15,7 @@ const Portal = (props: Props) => {
   useEffect(() => {
     setIsMounted(true);
     const editorEl = document.querySelector(`[data-yoopta-editor-id="${editor.id}"]`) as HTMLElement;
+
     const overlays = editorEl.querySelector('.yoopta-overlays');
     if (!overlays) {
       rootEl.current = document.createElement('div');
