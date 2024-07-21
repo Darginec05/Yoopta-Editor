@@ -4,7 +4,7 @@ import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { Editor } from './components/Editor/Editor';
 import { CSSProperties, useMemo, useState } from 'react';
 import { YooEditor, YooptaBlockData, YooptaContentValue } from './editor/types';
-import { Plugin } from './plugins/types';
+import { Plugin, PluginElementProps } from './plugins/types';
 import NoSSR from './components/NoSsr/NoSsr';
 import { Tools, ToolsProvider } from './contexts/YooptaContext/ToolsContext';
 import {
@@ -22,7 +22,7 @@ import { generateId } from './utils/generateId';
 type Props = {
   id?: string;
   editor: YooEditor;
-  plugins: YooptaPlugin[];
+  plugins: YooptaPlugin<string, PluginElementProps<any>, Record<string, unknown>>[];
   marks?: YooptaMark<any>[];
   value?: YooptaContentValue;
   autoFocus?: boolean;

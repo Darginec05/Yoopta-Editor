@@ -80,7 +80,7 @@ export const YOOPTA_PLUGINS = [
       },
 
       onUpload: async (file: File) => {
-        const data = await uploadToCloudinary(file);
+        const data = await uploadToCloudinary(file, 'image');
 
         return {
           src: data.secure_url,

@@ -1,4 +1,5 @@
-import { YooEditor, YooptaContentValue } from '../editor/types';
+import { BaseText, Descendant } from 'slate';
+import { SlateElement, YooEditor, YooptaContentValue } from '../editor/types';
 import { getPluginByInlineElement } from '../utils/blockElements';
 
 const MARKS_NODE_NAME_MATCHERS_MAP = {
@@ -37,7 +38,7 @@ function serializeChildren(children, plugins) {
     .join('');
 }
 
-export function serializeHTML(editor: YooEditor, content: YooptaContentValue) {
+export function getHTML(editor: YooEditor, content: YooptaContentValue): string {
   const blocks = Object.values(content)
     .filter((item) => editor.selectedBlocks?.includes(item.meta.order))
     .sort((a, b) => a.meta.order - b.meta.order);
@@ -46,8 +47,8 @@ export function serializeHTML(editor: YooEditor, content: YooptaContentValue) {
     const plugin = editor.plugins[blockData.type];
 
     if (plugin && plugin.parsers?.html?.serialize) {
-      const content = serializeChildren(blockData.value[0].children, editor.plugins);
-      return plugin.parsers.html.serialize(blockData.value[0], content);
+      const content = serializeChildren((blockData.value[0] as SlateElement).children, editor.plugins);
+      return plugin.parsers.html.serialize(blockData.value[0] as SlateElement, content);
     }
 
     return '';

@@ -12,7 +12,6 @@ import { ReactEditor } from 'slate-react';
 import { YooptaBlockPath } from '../../editor/types';
 import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
-import { serializeHTML } from '../../parsers/serializeHTML';
 import { Blocks } from '../../editor/blocks';
 
 type Props = {
@@ -155,8 +154,6 @@ const Editor = ({
     const isInsideEditor = yooptaEditorRef.current?.contains(event.relatedTarget as Node);
     if (isInsideEditor || isReadOnly) return;
 
-    editor.blur();
-
     resetSelectionState();
     resetSelectedBlocks();
   };
@@ -183,12 +180,17 @@ const Editor = ({
       if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
         event.preventDefault();
 
-        const htmlString = serializeHTML(editor, editor.getEditorValue());
-        const blob = new Blob([htmlString], { type: 'text/html' });
+        const htmlString = editor.getHTML(editor.getEditorValue());
+        const textString = editor.getPlainText(editor.getEditorValue());
+        const htmlBlob = new Blob([htmlString], { type: 'text/html' });
+        const textBlob = new Blob([textString], { type: 'text/plain' });
 
-        const item = new ClipboardItem({ 'text/html': blob });
+        const clipboardItem = new ClipboardItem({
+          'text/html': htmlBlob,
+          'text/plain': textBlob,
+        });
 
-        navigator.clipboard.write([item]).then(() => {
+        navigator.clipboard.write([clipboardItem]).then(() => {
           const html = new DOMParser().parseFromString(htmlString, 'text/html');
           console.log('HTML copied\n', html.body);
         });

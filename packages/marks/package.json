@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/marks",
-  "version": "4.6.4",
+  "version": "4.6.5-rc.3",
   "description": "Marks for Yoopta Editor",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
@@ -33,5 +33,6 @@
   },
   "bugs": {
     "url": "https://github.com/Darginec05/Editor-Yoopta/issues"
-  }
+  },
+  "gitHead": "600e0cf267a0ce7df074ddc7db1114d67c4185d1"
 }

@@ -170,7 +170,7 @@ function mapNodeChildren(child) {
     const block = child as YooptaBlockData;
     let text = '';
 
-    block.value[0].children.forEach((child) => {
+    (block.value[0] as SlateElement).children.forEach((child: any) => {
       text += `${child.text}`;
     });
 
@@ -184,7 +184,6 @@ export function deserializeHTML(editor: YooEditor, html: HTMLElement) {
   console.log('pasted html', html);
 
   const PLUGINS_NODE_NAME_MATCHERS_MAP = getMappedPluginByNodeNames(editor);
-  console.log('PLUGINS_NODE_NAME_MATCHERS_MAP', PLUGINS_NODE_NAME_MATCHERS_MAP);
 
   const blocks = deserialize(editor, PLUGINS_NODE_NAME_MATCHERS_MAP, html).filter(isYooptaBlock) as YooptaBlockData[];
 

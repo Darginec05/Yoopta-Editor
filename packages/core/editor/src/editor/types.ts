@@ -105,9 +105,15 @@ export type YooEditor<TNodes = any> = {
   emit: (event: YooEditorEvents, payload: any) => void;
   readOnly: boolean;
 
+  // focus handlers
   isFocused: () => boolean;
   blur: (options?: EditorBlurOptions) => void;
   focus: () => void;
+
+  // parser handlers
+  getHTML: (content: YooptaContentValue) => string;
+  getMarkdown: (content: YooptaContentValue) => string;
+  getPlainText: (content: YooptaContentValue) => string;
 };
 
 // types for slate values

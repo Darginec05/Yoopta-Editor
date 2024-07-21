@@ -2568,35 +2568,35 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
-"@yoopta/accordion@^4.6.4":
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/@yoopta/accordion/-/accordion-4.6.4.tgz#7e822d15cd9fb035495a34fb6e69f26f546677c4"
-  integrity sha512-Ihm691wirRaD28IPTyrEl/WEv9kb5r3U/s4zaqMte87u0ugEeO26axs27GKu4mBtW3boBHYKzSenY35ihSQ5kg==
+"@yoopta/accordion@^4.6.5-rc.3", "@yoopta/accordion@latest":
+  version "4.6.5-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/accordion/-/accordion-4.6.5-rc.3.tgz#5f68a1ce8765fa16c3127cc46becd490d7d6f983"
+  integrity sha512-vN1sgqSAY2NiCQvkeUncaSaIlUHSPRZrhAhjK5wv3ey0jIUedMAhA/3FO4yFM2fJf0NvOX2TbwYgE+fMrCIBBw==
   dependencies:
     lucide-react "^0.378.0"
 
-"@yoopta/action-menu-list@^4.6.4":
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/@yoopta/action-menu-list/-/action-menu-list-4.6.4.tgz#b3d702a5f7016960cf24e31feb89a360840f6521"
-  integrity sha512-mAa34H5ld1o4s/CopZ3vRYlMyLPnwVRwkcahbpFyvKop01GQ1wiCBjiOz1scYKnLoX9oBPv0yR8C3Ux9Zdztaw==
+"@yoopta/action-menu-list@^4.6.5-rc.3", "@yoopta/action-menu-list@latest":
+  version "4.6.5-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/action-menu-list/-/action-menu-list-4.6.5-rc.3.tgz#5d8db051d10f37f14327ef789d39429ba559086f"
+  integrity sha512-kNFFMPo4O3pP9xHpLp1F0U7zFFf8lcYfdSGLTFe6aL0cCBTg27XSUtbKs9MH0e0PuKqK080JgJzl2+udkma+lQ==
   dependencies:
     "@floating-ui/react" "^0.26.9"
     "@radix-ui/react-icons" "^1.3.0"
 
-"@yoopta/blockquote@^4.6.4":
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/@yoopta/blockquote/-/blockquote-4.6.4.tgz#05ba800592d72cb2ab497036f425ed3ae27cecea"
-  integrity sha512-PcYDyVDwSFyG5p2kKUUPWIi1c2uqVSSk7jd/Me3TrYCKMVrXVC0bYC/MTQAylZ6VI9I9HKwA45DZ4qy4KU5oGQ==
+"@yoopta/blockquote@^4.6.5-rc.3", "@yoopta/blockquote@latest":
+  version "4.6.5-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/blockquote/-/blockquote-4.6.5-rc.3.tgz#8c38c07f42e6791411741eca0879dddf1aa61e88"
+  integrity sha512-GQ6/uf3sEDNIn7FT3C/KE+5sRKjSin/h28lXvG4mjK82OhfdHb+0eyAzNQtLD2biUZ15qXetuf1Z7KG5YuDaOA==
 
-"@yoopta/callout@^4.6.4":
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/@yoopta/callout/-/callout-4.6.4.tgz#9098ee62a0512b5967f52c394597310478a348e0"
-  integrity sha512-nsuJx6PX+TSHrKhn67WEEaE1sRhWchQP2WTBwzRDZwAvBWt6ZvFfDh3+gzsVO8+a7LHMwXIQv+bAo/13U5OAjQ==
+"@yoopta/callout@^4.6.5-rc.3", "@yoopta/callout@latest":
+  version "4.6.5-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/callout/-/callout-4.6.5-rc.3.tgz#60ce847a26575e85188d2ba0b555ef3d0130fa35"
+  integrity sha512-MXE1uB7qkthROL/u/l3pKkBmDqKQUrVj2iYJNV4wYGUauL2f9uljVk9CLrjC45CKg1zY7ZE2POxBKtLxsaG3cQ==
 
-"@yoopta/code@^4.6.4":
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/@yoopta/code/-/code-4.6.4.tgz#f1465940b4b4171f78bcbf4e3b5a338bae364050"
-  integrity sha512-Z/9LLHW3IZa44uBtw/QnysX2DT6eqdvYmiCgYoYs/Pj4rrXBnd/A+CIG44ixKoVMo7TRSiqjvhBl8hvBqRBrAw==
+"@yoopta/code@^4.6.5-rc.3", "@yoopta/code@latest":
+  version "4.6.5-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/code/-/code-4.6.5-rc.3.tgz#6f3eedb019d55e922faef971c97b2ba4d248510e"
+  integrity sha512-B672APUtsu0G/Smmvg/+1V0dWrAn9a+KHID3iM1vgLkrgVBrP09755smwtJaoHg93oeNhPuDaH3Loj/fCvVlHQ==
   dependencies:
     "@codemirror/lang-angular" "^0.1.3"
     "@codemirror/lang-cpp" "^6.0.2"
@@ -2629,10 +2629,10 @@
     codemirror "^6.0.1"
     copy-to-clipboard "^3.3.3"
 
-"@yoopta/editor@^4.6.4":
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/@yoopta/editor/-/editor-4.6.4.tgz#9cf851f0ff32d9c56d53a722706680005b929502"
-  integrity sha512-66BgsCxTf533QEBJOpg2dO9pWnZMuYz6Z8+6xQWLsvkabhLH++RZFvib2aj+drtF3WQOjkvahuDw/FKchOUhAg==
+"@yoopta/editor@^4.6.5-rc.3", "@yoopta/editor@latest":
+  version "4.6.5-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/editor/-/editor-4.6.5-rc.3.tgz#4d48eb1d022b9f7d423bc6fcf879b96518f544f4"
+  integrity sha512-2jlh+iNe/m6sc23p8h0bcGL+n3WZGoeo8ecHa5hf7nurG+S7curQstmrsaRAPoRiWKHZiuREgNZ3hEKV1/ikcw==
   dependencies:
     "@dnd-kit/core" "^6.1.0"
     "@dnd-kit/sortable" "^8.0.0"
@@ -2645,85 +2645,111 @@
     lodash.clonedeep "^4.5.0"
     slate-history "^0.100.0"
 
-"@yoopta/embed@^4.6.4":
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/@yoopta/embed/-/embed-4.6.4.tgz#56f2c9eba4b5dceeec32d2bb9cb533cdd4918fc8"
-  integrity sha512-qgPD7MXz7OVMwdg7zeiA2o4tqBDLC1KuAsaS5ZJNrkt+vPg6abKL+Erz+tfCo+eEnVfnVlC9dHfFzsbdt9kXJw==
+"@yoopta/embed@^4.6.5-rc.3", "@yoopta/embed@latest":
+  version "4.6.5-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/embed/-/embed-4.6.5-rc.3.tgz#23e2cf517a5746f104d76a6c61f2263f58903961"
+  integrity sha512-VI9F1lGGhaaDvsVBSBP1q+mevtP6GHu74OYLRNrxNRgT09EpzjsbU4OoGhAThaQOQ+dok0oXubnZTBVwmaZMvg==
   dependencies:
     "@floating-ui/react" "^0.26.9"
     "@radix-ui/react-icons" "^1.3.0"
     re-resizable "^6.9.11"
 
-"@yoopta/exports@^4.6.4":
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/@yoopta/exports/-/exports-4.6.4.tgz#261a6b0f7b0d084669504460c72ef0e358869f73"
-  integrity sha512-9qPu7R3g+lPm46fN3dyPipLAHbk6+uVH8FOO5LNEsAG2eSAIzy7B96UYH135JJxE7P5PxoXDkBXtjK2QOHjUZg==
+"@yoopta/exports@^4.6.5-rc.3", "@yoopta/exports@latest":
+  version "4.6.5-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/exports/-/exports-4.6.5-rc.3.tgz#efd85edba43b69d957c3e26906fcb34c945bdd3f"
+  integrity sha512-PDUK/6ocJq6HKXRXyh9paqpDREAQR2ao25r/p2V32HyEpMY9MNqRJBdMDHvuqrXU9jXlJuou6P6xldWXRNTZ0w==
   dependencies:
     marked "^13.0.0"
 
-"@yoopta/file@^4.6.4":
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/@yoopta/file/-/file-4.6.4.tgz#d43edf26552a5223d88f497db93cb93f68b0c5c2"
-  integrity sha512-QnQeVPBDQcskaIYKNAITblColiba4fMKNgoFd7d+Q1XrAfuegJvdcMNjjTLTUvB7Ob8vfm1FHcIDTEQwl0YDyg==
+"@yoopta/file@^4.6.5-rc.3", "@yoopta/file@latest":
+  version "4.6.5-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/file/-/file-4.6.5-rc.3.tgz#1f01c3b52a0dc79a9d844a672b26fce51d1cda9d"
+  integrity sha512-sX9W2hattzXVNj2cMiPzAolnEcRDZJLsmKdhXAQPxVL4HWK+ZkMMfh58hpyhgNh7HkuX6YqtymFIGuMdCYc2bw==
   dependencies:
     "@floating-ui/react" "^0.26.9"
     "@radix-ui/react-icons" "^1.3.0"
 
-"@yoopta/headings@^4.6.4":
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/@yoopta/headings/-/headings-4.6.4.tgz#8c24b7fe7522479ab57eb4a8a5ce2f914d94d984"
-  integrity sha512-svd3N68Z+Krwjo9ZUYkCFM7l1QUO/PTwxWkBhjQ9Eqr5qDriCiA3SxagW/Qbm6VuucSY+WAhV3wP1fK6Kn76xA==
+"@yoopta/headings@^4.6.5-rc.3", "@yoopta/headings@latest":
+  version "4.6.5-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/headings/-/headings-4.6.5-rc.3.tgz#6c319ab2926259ec27aedf67915215745ba11a93"
+  integrity sha512-qLb4icngk9VtAHuxt/U+ganwN9PDQ9jGBsYP5acmBsmxLPwMRrqnFTsem1xlr3GfrKaIOFU5psAST/dioSYxFQ==
 
-"@yoopta/image@^4.6.4":
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/@yoopta/image/-/image-4.6.4.tgz#8a986583a6936397055ed1820d39b957b3bf1075"
-  integrity sha512-//1m63th5NnSObrBhvQxh3vSbUAKwHcfywFfVcavFjfNgTLvIMY+qv3WthQI/0Aq3gZ0ZWm41QexiuQT3NnOWg==
+"@yoopta/image@^4.6.5-rc.3", "@yoopta/image@latest":
+  version "4.6.5-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/image/-/image-4.6.5-rc.3.tgz#2503b7547aa13242cc2fc3dc50fe2d7480e1bc12"
+  integrity sha512-LRml2yDOYj9tlTPp59XbZzbQZFrOe1vVRv2AUDa1Y3q/mdy++CdalNrauITn6Pjsj+VnFJ8qW6tV/l+TYs25Lw==
   dependencies:
     "@floating-ui/react" "^0.26.9"
     "@radix-ui/react-icons" "^1.3.0"
     re-resizable "^6.9.11"
 
-"@yoopta/link-tool@^4.6.4":
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/@yoopta/link-tool/-/link-tool-4.6.4.tgz#3f867bcdfdc947188b53389b269cbe01ac5c9004"
-  integrity sha512-66Dm4RlceaHuh+cL1IKred5royFmUSaVP+keMtmfKxz96kPuqFZlYRF9WU2iXUAW0DMv+tXeK6oFzsrnXKG9ew==
+"@yoopta/link-tool@^4.6.5-rc.3", "@yoopta/link-tool@latest":
+  version "4.6.5-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/link-tool/-/link-tool-4.6.5-rc.3.tgz#4a2a284f2ef4dcf64a0682c46b525bf58bc6fcd7"
+  integrity sha512-XtvwT0wYCAyUzsal703U7SZM9t7hRVAzZ5EI4qtw8QQ3w+wX1fv7ltbVAKODgFRVoCdVf2VT2QPP3q41t05pdg==
 
-"@yoopta/link@^4.6.4":
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/@yoopta/link/-/link-4.6.4.tgz#6a30dc5ae3c80a1a5980355233ef3309f6f60b46"
-  integrity sha512-NziIYDIAue7IoNsLdOo2ISrzfAltpKQwb6xRK8duQ3PKTQ0RhpkOeBt+MA480UXg2eDDgJmg+brprS95yaVmJg==
+"@yoopta/link@^4.6.5-rc.3", "@yoopta/link@latest":
+  version "4.6.5-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/link/-/link-4.6.5-rc.3.tgz#25a19b3a54a907ec39a05a9bd935c2b376d7c850"
+  integrity sha512-66oDwrdnht2obCTqFAdTDYpu9PcPZP5HWTakEJlEQ/52DExcBjm4OnnQEbFlTRzpc2D46SgTqmq3ov2P5BGptw==
   dependencies:
     lucide-react "^0.379.0"
 
-"@yoopta/lists@^4.6.4":
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/@yoopta/lists/-/lists-4.6.4.tgz#1f9d08276fe84cf9d6d399b0247b754577bca0c4"
-  integrity sha512-jwEql3JdOHMRqOW+26bCTFC+tbSeU5lv0g3wR7w303E0j/7ZljG3vvapmQUBZqYME609e3X8MilNz9GSgzdJYg==
+"@yoopta/lists@^4.6.5-rc.3", "@yoopta/lists@latest":
+  version "4.6.5-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/lists/-/lists-4.6.5-rc.3.tgz#d84011722baef71b37a99762d8a07a790c8ad2b6"
+  integrity sha512-HarODFVghnKSurgTv5QX37mdo581OXNM7Yyylp0euklkMTv9pwqAncle3k449WZgx2NDOuD1Tih/yBvKgw/ziw==
 
-"@yoopta/marks@^4.6.4":
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/@yoopta/marks/-/marks-4.6.4.tgz#b0443d4fb74e62f19086d90894996a49af315910"
-  integrity sha512-ycWhUsZXaEhGVeHVdy+G40HlRJHHA/UUFjt+cXhuo5Pp3pU2OHURDJyzYVtG/PoOt0R5U3MHqI8D4znw5/DimQ==
+"@yoopta/marks@^4.6.5-rc.3", "@yoopta/marks@latest":
+  version "4.6.5-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/marks/-/marks-4.6.5-rc.3.tgz#b29245931a8d21f8d8b981c1a5db57373471b64b"
+  integrity sha512-j9q2yb02oGA3tAQCYny70qFxPrqPkBciOFZ/0Me65YwgwVsLNw9d5hYe5/qOdGAn8G9ovyWjZmui8t+wv6jdpw==
 
-"@yoopta/paragraph@^4.6.4":
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/@yoopta/paragraph/-/paragraph-4.6.4.tgz#00584880f2898bcc1541a4b2ccd126aec3a91d9f"
-  integrity sha512-7IBpWd6mRI5Frwkd5ptWiNGF/oUBqWjDyAoqh3893REAodEcXwMoxp9XzTqoftiOZVR+yyZxSNaHeoFpoJy44g==
+"@yoopta/paragraph@^4.6.5-rc.3", "@yoopta/paragraph@latest":
+  version "4.6.5-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/paragraph/-/paragraph-4.6.5-rc.3.tgz#f09c2dbef01310515c6b8e70c850d139632b9cd9"
+  integrity sha512-Wbi3DzYm0I5tteTOjw9rUZJYJujzKkv8K4mYLuLUz2A1bw2t+LoXHpphpo3yRKJ9cFzsU6/nZlk7qRQTRQ5Xjw==
 
-"@yoopta/toolbar@^4.6.4":
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/@yoopta/toolbar/-/toolbar-4.6.4.tgz#bc9ad9828424ce697bb5475dfc2e1b24bab7400f"
-  integrity sha512-3V+L1F/eCGM3wQy6f0Oul4MbmYrJhiTae9esmA85O9GqUVh/62OyKmQXYJ475GTEEXBfWvSJ/Zy+l9XXy/DLnw==
+"@yoopta/starter-kit@^4.6.5-rc.3":
+  version "4.6.5-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/starter-kit/-/starter-kit-4.6.5-rc.3.tgz#ded0b4fc659f9f41d4173698e716a65b839ce6b1"
+  integrity sha512-xMCX+Vhi+p0LiamNPn41739MSTP2YPVQHb5hq9ry2fGh3VgVKqk+dw/bTSj+8TkDWBOY33WBuU6jc8GZJwucWA==
+  dependencies:
+    "@yoopta/accordion" latest
+    "@yoopta/action-menu-list" latest
+    "@yoopta/blockquote" latest
+    "@yoopta/callout" latest
+    "@yoopta/code" latest
+    "@yoopta/editor" latest
+    "@yoopta/embed" latest
+    "@yoopta/exports" latest
+    "@yoopta/file" latest
+    "@yoopta/headings" latest
+    "@yoopta/image" latest
+    "@yoopta/link" latest
+    "@yoopta/link-tool" latest
+    "@yoopta/lists" latest
+    "@yoopta/marks" latest
+    "@yoopta/paragraph" latest
+    "@yoopta/toolbar" latest
+    "@yoopta/video" latest
+    slate "^0.102.0"
+    slate-react "^0.102.0"
+
+"@yoopta/toolbar@^4.6.5-rc.3", "@yoopta/toolbar@latest":
+  version "4.6.5-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/toolbar/-/toolbar-4.6.5-rc.3.tgz#75fbfd30ee904d97850274069e54b5dd16112a1a"
+  integrity sha512-T6lIabSCGYaBgBO1pOnGnRcmleNkRHCwRdz/fdjjtCkNdM0Dd0qmldShNBxuqP3gZZQTvlRLXSRo2D0LD61uaQ==
   dependencies:
     "@floating-ui/react" "^0.26.9"
     "@radix-ui/react-icons" "^1.3.0"
     "@radix-ui/react-toolbar" "^1.0.4"
     lodash.throttle "^4.1.1"
 
-"@yoopta/video@^4.6.4":
-  version "4.6.4"
-  resolved "https://registry.yarnpkg.com/@yoopta/video/-/video-4.6.4.tgz#e5d205d95c4be31e99493ea063ef733c69309f0c"
-  integrity sha512-iQ1OT4VWcdDpyUAQp/o0wcSGPut6ZiFK8g35mNllhHtGb69jiSX6XzYLTSkFcQV7vghw4CelItR5CUniELMHZA==
+"@yoopta/video@^4.6.5-rc.3", "@yoopta/video@latest":
+  version "4.6.5-rc.3"
+  resolved "https://registry.yarnpkg.com/@yoopta/video/-/video-4.6.5-rc.3.tgz#22a5436c809f72f2a2d0d76d15e1ba32e53f2411"
+  integrity sha512-fFqh4Qf44nGqYSWvyGo1cqXxBWBtVcKANSO4ZUsm5TxP3Wgi3BSWR3qc0r9l5ewwPiaLGFz4C6IwggkO26SlFQ==
   dependencies:
     "@floating-ui/react" "^0.26.9"
     "@radix-ui/react-icons" "^1.3.0"
