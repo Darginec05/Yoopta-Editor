@@ -82,6 +82,8 @@ export const createYooptaEditor = (): YooEditor => {
     getHTML: (content: YooptaContentValue) => getHTML(editor, content),
     getMarkdown: (content: YooptaContentValue) => getMarkdown(editor, content),
     getPlainText: (content: YooptaContentValue) => getPlainText(editor, content),
+
+    refElement: null,
   };
 
   return editor;

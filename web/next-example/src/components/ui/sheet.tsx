@@ -145,10 +145,10 @@ const Sheet = ({ items, path, title, description }: SheetProps) => {
             <SheetTitle>{title || 'Yoopta examples'}</SheetTitle>
             {description || (
               <SheetDescription>
-                Found issue?
+                Wanna more examples?
                 <br />
                 <a
-                  href="https://github.com/Darginec05/Yoopta-Editor/issues"
+                  href="https://github.com/Darginec05/Yoopta-Editor/issues/new?assignees=&labels=Example+Request&projects=&template=example_request.yml&title=%5BExample+Request%5D%3A+"
                   target="_blank"
                   rel="noopener"
                   className="text-sky-500"

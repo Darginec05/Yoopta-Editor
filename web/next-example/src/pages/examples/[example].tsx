@@ -21,7 +21,7 @@ import withCustomStyles from '@/components/examples/withCustomStyles';
 // import withEditorFocusBlur from '@/components/examples/withEditorFocusBlur';
 import withCustomRenders from '@/components/examples/withCustomRenders';
 import withMultiPageEditors from '@/components/examples/withMultiPageEditors';
-import WithStarterKit from '@/components/examples/withStarterKit';
+import withStarterKit from '@/components/examples/withStarterKit';
 
 import { Head } from '@/components/Head/Head';
 import { useRouter } from 'next/router';
@@ -38,7 +38,7 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withExports,
   withCustomRenders,
   withExtendedPlugin,
-  WithStarterKit,
+  withStarterKit,
   withDarkTheme,
   withMediaAndVoids,
   withReadOnly,
@@ -142,7 +142,7 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
     title: 'Custom Renders (next/image, next/link, etc.)',
     description: '',
   },
-  WithStarterKit: {
+  withStarterKit: {
     title: 'Using Starter Kit with full setup',
     description: '',
   },

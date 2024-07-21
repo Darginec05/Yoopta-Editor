@@ -73,185 +73,57 @@ type Props = {
 };
 ```
 
-### API from editor instance
+### Editor API
 
 ```tsx
-type YooEditor<TNodes> = {
-  /**
-   * Unique identifier for the editor instance.
-   */
+export type YooEditor<TNodes> = {
   id: string;
-
-  /**
-   * Inserts a single block of data into the editor.
-   */
+  readOnly: boolean;
   insertBlock: (data: YooptaBlockData, options?: YooptaEditorTransformOptions) => void;
-
-  /**
-   * Inserts multiple blocks of data into the editor at once.
-   */
   insertBlocks: (blocks: YooptaBlockData[], options?: YooptaEditorTransformOptions) => void;
-
-  /**
-   * Splits the current block at the cursor's position.
-   */
   splitBlock: (options?: YooptaEditorTransformOptions) => void;
-
-  /**
-   * Updates a block with new data based on its id.
-   */
   updateBlock: (id: string, data: Partial<YooptaBlockData>) => void;
-
-  /**
-   * Deletes block from the editor children.
-   */
   deleteBlock: (options?: DeleteBlockOptions) => void;
-
-  /**
-   * Deletes blocks from paths or blockIds
-   *
-   */
   deleteBlocks: (options?: DeleteBlocksOptions) => void;
-
-  /**
-   * Duplicates a block within the editor.
-   */
   duplicateBlock: (options?: DuplicateBlockOptions) => void;
-
-  /**
-   * Retrieves a block's data based on provided options.
-   */
-  getBlock: (options?: YooptaEditorTransformOptions) => void;
-
-  /**
-   * Toggles a block's type in the editor.
-   */
-  toggleBlock: (toBlockType?: string, options?: ToggleBlockOptions) => void;
-
-  /**
-   * Increases the depth of a block, typically used for nested structures like lists.
-   */
+  toggleBlock: (toBlockType: string, options?: ToggleBlockOptions) => void;
   increaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
-
-  /**
-   * Decreases the depth of a block.
-   */
   decreaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
-
-  /**
-   * Applies any staged changes to the editor.
-   */
   applyChanges: () => void;
-
-  /**
-   * Moves a block to a different position within the editor.
-   */
   moveBlock: (blockId: string, to: YooptaBlockPath) => void;
-
-  /**
-   * Focuses on a block based on its id.
-   */
   focusBlock: (id: string, options?: FocusBlockOptions) => void;
-
-  /**
-   * Current selection path in the editor.
-   */
+  getBlock: (options: GetBlockOptions) => YooptaBlockData | null;
   selection: YooptaBlockPath | null;
-
-  /**
-   * Array of currently selected block indices.
-   */
   selectedBlocks: number[] | null;
-
-  /**
-   * Holds the structured data representing the editor's content.
-   */
   children: Record<string, YooptaBlockData>;
-
-  /**
-   * Retrieves the entire editor's value.
-   */
   getEditorValue: () => TNodes;
-
-  /**
-   * Sets the editor's content.
-   */
   setEditorValue: (value: YooptaContentValue) => void;
-
-  /**
-   * Sets the selection path in the editor.
-   */
   setSelection: (path: YooptaBlockPath | null, options?: SetSelectionOptions) => void;
-
-  /**
-   * Sets or clears the selection for a block.
-   */
   setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
-
-  /**
-   * Map of individual block editors.
-   */
   blockEditorsMap: YooptaPluginsEditorMap;
-
-  /**
-   * Definitions of all blocks in the editor.
-   */
   blocks: YooptaBlocks;
-
-  /**
-   * Formatting options available in the editor.
-   */
   formats: YooptaFormats;
-
-  /**
-   * Keyboard shortcuts configured for the editor.
-   */
   shortcuts: Record<string, YooptaBlock>;
-
-  /**
-   * Registered plugins.
-   */
   plugins: Record<string, Plugin<string, unknown>>;
 
-  /**
-   * Subscribes to an event.
-   */
+  // events handlers
   on: (event: YooEditorEvents, fn: (payload: any) => void) => void;
-
-  /**
-   * Subscribes once to an event.
-   */
   once: (event: YooEditorEvents, fn: (payload: any) => void) => void;
-
-  /**
-   * Unsubscribes from an event.
-   */
   off: (event: YooEditorEvents, fn: (payload: any) => void) => void;
-
-  /**
-   * Emits an event.
-   */
   emit: (event: YooEditorEvents, payload: any) => void;
 
-  /**
-   * Indicates if the editor is read-only.
-   */
-  readOnly: boolean;
-
-  /**
-   * Returns whether the editor is focused.
-   */
+  // focus handlers
   isFocused: () => boolean;
-
-  /**
-   * Blurs the editor, removing focus.
-   */
   blur: (options?: EditorBlurOptions) => void;
-
-  /**
-   * Focuses the editor.
-   */
   focus: () => void;
+
+  // parser handlers
+  getHTML: (content: YooptaContentValue) => string;
+  getMarkdown: (content: YooptaContentValue) => string;
+  getPlainText: (content: YooptaContentValue) => string;
+
+  // ref to editor element
+  refElement: HTMLElement | null;
 };
 ```
 

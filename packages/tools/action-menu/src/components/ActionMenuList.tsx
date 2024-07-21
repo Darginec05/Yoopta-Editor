@@ -75,12 +75,11 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
   };
 
   useEffect(() => {
-    const yooptaEditorRef = document.querySelector(`[data-yoopta-editor-id="${editor.id}"]`);
     updateActionMenuPosition();
 
     const handleActionMenuKeyUp = (event: KeyboardEvent) => {
       const slate = findSlateBySelectionPath(editor, { at: editor.selection });
-      const isInsideEditor = yooptaEditorRef?.contains(event.target as Node);
+      const isInsideEditor = editor.refElement?.contains(event.target as Node);
 
       if (!slate || !slate.selection || !isInsideEditor) return;
 
@@ -236,7 +235,7 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
       const block = findPluginBlockBySelectionPath(editor, { at: editor.selection });
       if (!block) return;
 
-      const slateEditorRef = yooptaEditorRef?.querySelector(`#yoopta-slate-editor-${block.id}`) as HTMLElement;
+      const slateEditorRef = editor.refElement?.querySelector(`#yoopta-slate-editor-${block.id}`) as HTMLElement;
       if (!slateEditorRef) return;
 
       slateEditorRef.addEventListener('keydown', handleActionMenuKeyDown);

@@ -53,16 +53,16 @@ All of this is customizable, extensible, and easy to set up!
 
   - [**@yoopta/paragraph**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/paragraph/README.md)
   - [**@yoopta/accordion**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/accordion/README.md)
-  - **@yoopta/blockquote**
-  - **@yoopta/code**
-  - **@yoopta/embed**
-  - **@yoopta/image**
-  - **@yoopta/link**
-  - **@yoopta/file**
-  - **@yoopta/callout**
-  - **@yoopta/video**
+  - [**@yoopta/blockquote**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/blockquote/README.md)
+  - [**@yoopta/code**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/code/README.md)
+  - [**@yoopta/embed**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/embed/README.md)
+  - [**@yoopta/image**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/image/README.md)
+  - [**@yoopta/link**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/link/README.md)
+  - [**@yoopta/file**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/file/README.md)
+  - [**@yoopta/callout**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/callout/README.md)
+  - [**@yoopta/video**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/video/README.md)
   - [**@yoopta/lists**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/lists/README.md)
-  - **@yoopta/headings**
+  - [**@yoopta/headings**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/headings/README.md)
 
 - Tools
 
@@ -288,16 +288,16 @@ Find below useful examples of utilising the Yoopta-Editor in your projects. Thes
 
 Okay, let's go!
 
-- [With basic example](https://yoopta-editor.vercel.app/examples/withBaseFullSetup)
-- [With custom toolbar (Notion and Medium example)](https://yoopta-editor.vercel.app/examples/withCustomToolbar)
-- [With Notion Action Menu](https://yoopta-editor.vercel.app/examples/withNotionActionMenu)
-- [With dark theme](https://yoopta-editor.vercel.app/examples/withDarkTheme)
-- [With media plugins](https://yoopta-editor.vercel.app/examples/withMedia)
-- [With extended plugins](https://yoopta-editor.vercel.app/examples/withExtendedPlugin)
-- [With readonly](https://yoopta-editor.vercel.app/examples/withReadOnly)
-- [With custom HTML attributes](https://yoopta-editor.vercel.app/examples/withCustomHTMLAttributes)
-- [With custom mark](https://yoopta-editor.vercel.app/examples/withCustomMark)
-- [With chat slack](https://yoopta-editor.vercel.app/examples/withChatSlack)
+- [With basic example](https://yoopta.dev/examples/withBaseFullSetup)
+- [With custom toolbar (Notion and Medium example)](https://yoopta.dev/examples/withCustomToolbar)
+- [With Notion Action Menu](https://yoopta.dev/examples/withNotionActionMenu)
+- [With dark theme](https://yoopta.dev/examples/withDarkTheme)
+- [With media plugins](https://yoopta.dev/examples/withMedia)
+- [With extended plugins](https://yoopta.dev/examples/withExtendedPlugin)
+- [With readonly](https://yoopta.dev/examples/withReadOnly)
+- [With custom HTML attributes](https://yoopta.dev/examples/withCustomHTMLAttributes)
+- [With custom mark](https://yoopta.dev/examples/withCustomMark)
+- [With chat slack](https://yoopta.dev/examples/withChatSlack)
 - ...and check other examples in the sidebar list
 
 ## Give us ⭐️ star

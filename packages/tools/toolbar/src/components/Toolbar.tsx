@@ -36,7 +36,6 @@ const Toolbar = ({ render }: ToolbarToolProps) => {
     const text = domRange.toString().trim();
 
     const pluginWithCustomEditor = document.querySelectorAll('[data-custom-editor]');
-    const yooptaEditorEl = document.querySelector(`[data-yoopta-editor-id="${editor.id}"]`);
     const ancestor = domRange?.commonAncestorContainer;
 
     let isInsideCustomEditor = false;
@@ -47,7 +46,7 @@ const Toolbar = ({ render }: ToolbarToolProps) => {
       }
     }
 
-    if (!yooptaEditorEl?.contains(ancestor) || isInsideCustomEditor) {
+    if (!editor.refElement?.contains(ancestor) || isInsideCustomEditor) {
       return setIsToolbarOpen(false);
     }
 
