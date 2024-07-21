@@ -54,6 +54,7 @@
     "react": "^18",
     "react-dom": "^18",
     "sass": "^1.75.0",
+    "sharp": "^0.33.4",
     "slate": "^0.102.0",
     "slate-react": "^0.102.0",
     "tailwind-merge": "^2.2.2",

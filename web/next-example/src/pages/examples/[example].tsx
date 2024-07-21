@@ -38,7 +38,7 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withExports,
   withCustomRenders,
   withExtendedPlugin,
-  withStarterKit,
+  // withStarterKit,
   withDarkTheme,
   withMediaAndVoids,
   withReadOnly,
