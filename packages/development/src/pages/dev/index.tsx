@@ -22,11 +22,11 @@ const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef<HTMLDivElement>(null);
   const [readOnly, setReadOnly] = useState(false);
-  const [value, setValue] = useState();
+  const [value, setValue] = useState<YooptaContentValue>();
 
   return (
     <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={selectionRef}>
-      {/* <YooptaEditor
+      <YooptaEditor
         editor={editor}
         plugins={YOOPTA_PLUGINS}
         selectionBoxRoot={selectionRef}
@@ -37,14 +37,14 @@ const BasicExample = () => {
         readOnly={readOnly}
         style={{ width: 750 }}
         value={value}
-      /> */}
+      />
 
-      <YooptaStarterKit
+      {/* <YooptaStarterKit
         id="starter-kit"
         value={value}
         onChange={(data) => setValue(data)}
         style={{ width: 650 }}
-        selectionRef={selectionRef}
+        selectionBoxRoot={selectionRef}
         placeholder="Start typing here..."
         media={{
           imageUpload: async (file: File) => {
@@ -75,7 +75,7 @@ const BasicExample = () => {
             };
           },
         }}
-      />
+      /> */}
     </div>
   );
 };

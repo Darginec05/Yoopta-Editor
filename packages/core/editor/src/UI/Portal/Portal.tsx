@@ -14,7 +14,9 @@ const Portal = (props: Props) => {
 
   useEffect(() => {
     setIsMounted(true);
-    const editorEl = document.querySelector(`[data-yoopta-editor-id="${editor.id}"]`) as HTMLElement;
+    const editorEl = editor.refElement;
+
+    if (!editorEl) return;
 
     const overlays = editorEl.querySelector('.yoopta-overlays');
     if (!overlays) {
@@ -33,7 +35,7 @@ const Portal = (props: Props) => {
   if (!isMounted) return null;
 
   return (
-    <FloatingPortal id={`${props.id}-${editor.id}`} root={rootEl.current}>
+    <FloatingPortal id={`${props.id}-${editor.id}`} root={rootEl.current || editor.refElement}>
       {props.children}
     </FloatingPortal>
   );

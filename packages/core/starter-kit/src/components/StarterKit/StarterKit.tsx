@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useMemo, useRef } from 'react';
+import { CSSProperties, useEffect, useMemo } from 'react';
 import YooptaEditor, { createYooptaEditor, YooptaContentValue } from '@yoopta/editor';
 
 import { TOOLS } from '../../utilts/tools';
@@ -17,7 +17,7 @@ export type StarterKitProps = {
   className?: string;
   placeholder?: string;
   style?: CSSProperties;
-  selectionRef?: React.RefObject<HTMLDivElement> | false;
+  selectionBoxRoot?: React.RefObject<HTMLDivElement> | false;
   media?: MediaUploadsFn;
 };
 
@@ -37,7 +37,7 @@ function StarterKit({
   className,
   placeholder,
   media,
-  selectionRef = false,
+  selectionBoxRoot = false,
 }: StarterKitProps) {
   const editor = useMemo(() => createYooptaEditor(), []);
 
@@ -54,7 +54,7 @@ function StarterKit({
     <YooptaEditor
       key={id}
       id={id}
-      selectionBoxRoot={selectionRef}
+      selectionBoxRoot={selectionBoxRoot}
       editor={editor}
       plugins={getPlugins({ media })}
       tools={TOOLS}

@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { YooEditor } from '../../editor/types';
 import { RectangeSelectionProps, RectangeSelectionState } from './SelectionBox';
 
-const findBlocksUnderSelection = (editorId, origin, coords) => {
+const findBlocksUnderSelection = (editor: YooEditor, origin, coords) => {
   const blocksUnderSelection: number[] = [];
+  const blocks = editor.refElement?.querySelectorAll(`[data-yoopta-block]`);
 
-  const blocks = document.querySelectorAll(`[data-yoopta-editor-id="${editorId}"] [data-yoopta-block]`);
+  if (!blocks) return blocksUnderSelection;
 
   blocks.forEach((blockEl, i) => {
     if (!blockEl) return;
@@ -36,11 +38,7 @@ type RectangeSelectionReturn = RectangeSelectionState & {
 
 // [TODO] - Fix selection when multiple editors
 // Maybe move to a separate npm package?
-export const useRectangeSelectionBox = ({
-  editor,
-  yooptaEditorRef,
-  root,
-}: RectangeSelectionProps): RectangeSelectionReturn => {
+export const useRectangeSelectionBox = ({ editor, root }: RectangeSelectionProps): RectangeSelectionReturn => {
   const [state, setState] = useState<RectangeSelectionState>({
     origin: [0, 0],
     coords: [0, 0],
@@ -50,7 +48,7 @@ export const useRectangeSelectionBox = ({
   const onMouseDown = (event) => {
     if (editor.readOnly || root === false) return;
 
-    const isInsideEditor = yooptaEditorRef.current?.contains(event.target as Node);
+    const isInsideEditor = editor.refElement?.contains(event.target as Node);
 
     if (
       !isInsideEditor &&
@@ -86,7 +84,7 @@ export const useRectangeSelectionBox = ({
       coords: [event.pageX, event.pageY - window.pageYOffset],
     }));
 
-    const blocksUnderSelection = findBlocksUnderSelection(editor.id, state.origin, [
+    const blocksUnderSelection = findBlocksUnderSelection(editor, state.origin, [
       event.pageX,
       event.pageY - window.pageYOffset,
     ]);
@@ -119,7 +117,7 @@ export const useRectangeSelectionBox = ({
       throw new Error('Root element should be a DOM element or a ref object. Please check the `selectionBoxRoot` prop');
     }
 
-    if (yooptaEditorRef.current?.contains(elementMouseEl)) {
+    if (editor.refElement?.contains(elementMouseEl)) {
       throw new Error('Root element should not be a child of the editor. Please check the `selectionBoxRoot` prop');
     }
 

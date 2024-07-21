@@ -73,6 +73,7 @@ export type YooEditorEvents = 'change' | 'focus' | 'blur' | 'block:copy';
 // [TODO] - Fix generic and default types
 export type YooEditor<TNodes = any> = {
   id: string;
+  readOnly: boolean;
   insertBlock: (data: YooptaBlockData, options?: YooptaEditorTransformOptions) => void;
   insertBlocks: (blocks: YooptaBlockData[], options?: YooptaEditorTransformOptions) => void;
   splitBlock: (options?: YooptaEditorTransformOptions) => void;
@@ -99,11 +100,12 @@ export type YooEditor<TNodes = any> = {
   formats: YooptaFormats;
   shortcuts: Record<string, YooptaBlock>;
   plugins: Record<string, Plugin<string, unknown>>;
+
+  // events handlers
   on: (event: YooEditorEvents, fn: (payload: any) => void) => void;
   once: (event: YooEditorEvents, fn: (payload: any) => void) => void;
   off: (event: YooEditorEvents, fn: (payload: any) => void) => void;
   emit: (event: YooEditorEvents, payload: any) => void;
-  readOnly: boolean;
 
   // focus handlers
   isFocused: () => boolean;
@@ -114,6 +116,9 @@ export type YooEditor<TNodes = any> = {
   getHTML: (content: YooptaContentValue) => string;
   getMarkdown: (content: YooptaContentValue) => string;
   getPlainText: (content: YooptaContentValue) => string;
+
+  // ref to editor element
+  refElement: HTMLElement | null;
 };
 
 // types for slate values

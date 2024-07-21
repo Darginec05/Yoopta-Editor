@@ -55,8 +55,7 @@ const Editor = ({
 }: Props) => {
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
-  const yooptaEditorRef = useRef<HTMLDivElement>(null);
-  const selectionBox = useRectangeSelectionBox({ editor, yooptaEditorRef, root: selectionBoxRoot });
+  const selectionBox = useRectangeSelectionBox({ editor, root: selectionBoxRoot });
 
   let state = useRef<State>(DEFAULT_STATE).current;
 
@@ -73,11 +72,11 @@ const Editor = ({
   }, [editor.selectedBlocks, isReadOnly]);
 
   const handleEmptyZoneClick = (e: React.MouseEvent) => {
-    const editorRef = yooptaEditorRef.current;
-    if (!editorRef) return;
+    const editorEl = editor.refElement;
+    if (!editorEl) return;
 
-    const { bottom } = editorRef.getBoundingClientRect();
-    const paddingBottom = parseInt(getComputedStyle(editorRef).paddingBottom, 10);
+    const { bottom } = editorEl.getBoundingClientRect();
+    const paddingBottom = parseInt(getComputedStyle(editorEl).paddingBottom, 10);
     const paddingBottomAreaTop = bottom - paddingBottom;
     const defaultBlock = buildBlockData({ id: generateId() });
 
@@ -151,7 +150,7 @@ const Editor = ({
   };
 
   const onBlur = (event: React.FocusEvent) => {
-    const isInsideEditor = yooptaEditorRef.current?.contains(event.relatedTarget as Node);
+    const isInsideEditor = editor.refElement?.contains(event.relatedTarget as Node);
     if (isInsideEditor || isReadOnly) return;
 
     resetSelectionState();
@@ -392,10 +391,9 @@ const Editor = ({
 
   return (
     <div
-      data-yoopta-editor-id={editor.id}
+      ref={(ref) => (editor.refElement = ref)}
       className={className ? `yoopta-editor ${className}` : 'yoopta-editor'}
       style={editorStyles}
-      ref={yooptaEditorRef}
       onMouseDown={onMouseDown}
       onBlur={onBlur}
     >

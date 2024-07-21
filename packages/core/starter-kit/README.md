@@ -16,18 +16,18 @@ import StarterKit from '@yoopta/starter-kit';
 
 const Editor = () => {
   const [value, setValue] = useState<YooptaContentValue>();
-  const selectionRef = useRef<HTMLDivElement | null>(null);
+  const selectionBoxRoot = useRef<HTMLDivElement | null>(null);
 
   return (
     <div
-      ref={selectionRef}
+      ref={selectionBoxRoot}
       className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center"
     >
       <YooptaStarterKit
         value={value}
         onChange={(data) => setValue(data)}
         style={{ width: 650 }}
-        selectionRef={selectionRef}
+        selectionBoxRoot={selectionBoxRoot}
         placeholder="Start typing here..."
         media={{
           imageUpload: async (file) => {
@@ -76,7 +76,7 @@ type StarterKitProps = {
   className?: string;
   placeholder?: string;
   style?: CSSProperties;
-  selectionRef?: React.RefObject<HTMLDivElement> | false;
+  selectionBoxRoot?: React.RefObject<HTMLDivElement> | false;
   media?: MediaUploadsFn;
 };
 ```

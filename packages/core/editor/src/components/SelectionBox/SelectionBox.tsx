@@ -3,7 +3,6 @@ import { YooEditor } from '../../editor/types';
 
 export type RectangeSelectionProps = {
   editor: YooEditor;
-  yooptaEditorRef: React.RefObject<HTMLDivElement>;
   root?: HTMLElement | React.MutableRefObject<HTMLElement | null> | false;
 };
 
