@@ -170,7 +170,7 @@ function mapNodeChildren(child) {
     const block = child as YooptaBlockData;
     let text = '';
 
-    block.value[0].children.forEach((child) => {
+    (block.value[0] as SlateElement).children.forEach((child: any) => {
       text += `${child.text}`;
     });
 

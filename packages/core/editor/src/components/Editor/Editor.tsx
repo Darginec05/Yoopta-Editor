@@ -122,10 +122,7 @@ const Editor = ({
   };
 
   const onMouseDown = (event: React.MouseEvent) => {
-    const isTargetInsidePortal =
-      event.target instanceof HTMLElement && !!event.target.closest('[data-floating-ui-portal]');
-
-    if (isReadOnly || isTargetInsidePortal) return;
+    if (isReadOnly) return;
 
     // if (event.shiftKey) {
     //   const currentSelectionIndex = editor.selection;
@@ -156,8 +153,6 @@ const Editor = ({
   const onBlur = (event: React.FocusEvent) => {
     const isInsideEditor = yooptaEditorRef.current?.contains(event.relatedTarget as Node);
     if (isInsideEditor || isReadOnly) return;
-
-    editor.blur();
 
     resetSelectionState();
     resetSelectedBlocks();

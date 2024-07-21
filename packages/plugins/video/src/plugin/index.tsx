@@ -74,7 +74,6 @@ const Video = new YooptaPlugin<VideoPluginElements, VideoElementProps, VideoPlug
 
           // [TODO] - add support for video links. Ex. from notion
           // if (el.nodeName === 'A') {
-          //   console.log('el', el);
 
           //   const href = el.getAttribute('href');
           //   if (href?.endsWith('.mp4')) {

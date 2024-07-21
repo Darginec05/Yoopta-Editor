@@ -138,7 +138,6 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
   // parsers: {
   //   html: {
   //     serialize: (element) => {
-  //       console.log('accordion element', element);
   //       return '';
   //     },
   //   },

@@ -6,12 +6,29 @@ type Props = {
   lockScroll?: boolean;
   className?: string;
   onClick?: (e: MouseEvent) => void;
+  onMouseDown?: (e: MouseEvent) => void;
   style?: React.CSSProperties;
 };
 
-const Overlay = ({ className, onClick, children, lockScroll = true, ...rest }: Props) => {
+const Overlay = ({ className, children, lockScroll = true, ...props }: Props) => {
+  const onMouseDown = (e: MouseEvent) => {
+    e.stopPropagation();
+    props.onMouseDown?.(e);
+  };
+
+  const onClick = (e: MouseEvent) => {
+    e.stopPropagation();
+    props.onClick?.(e);
+  };
+
   return (
-    <FloatingOverlay lockScroll={lockScroll} className={className} onClick={onClick} {...rest}>
+    <FloatingOverlay
+      lockScroll={lockScroll}
+      className={className}
+      {...props}
+      onClick={onClick}
+      onMouseDown={onMouseDown}
+    >
       {children}
     </FloatingOverlay>
   );

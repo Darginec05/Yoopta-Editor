@@ -9,13 +9,13 @@
   ],
   "private": true,
   "scripts": {
-    "start": "yarn lerna run start --scope @yoopta/editor --scope @yoopta/starter-kit --scope @yoopta/action-menu-list --scope @yoopta/video --scope @yoopta/file --parallel --ignore development",
+    "dev": "npm-run-all --parallel start serve",
+    "start": "yarn lerna run start --scope @yoopta/editor --parallel --ignore development",
+    "serve": "yarn lerna run dev --scope=development",
     "build": "yarn clean && yarn install && yarn lerna run build --parallel --ignore development",
     "clean": "find ./packages -type d -name dist ! -path './packages/development/*' -exec rm -rf {} +",
-    "serve": "yarn lerna run dev --scope=development",
     "coverage": "vitest run --coverage",
     "test": "vitest",
-    "dev": "npm-run-all --parallel start serve",
     "test:ui": "vitest --ui",
     "test:integration": "playwright test",
     "release": "yarn clean && yarn build && yarn lerna publish --no-private"

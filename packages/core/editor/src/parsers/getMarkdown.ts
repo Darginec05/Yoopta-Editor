@@ -1,4 +1,4 @@
-import { SlateElement, YooEditor, YooptaBlockData, YooptaContentValue } from '@yoopta/editor';
+import { SlateElement, YooEditor, YooptaBlockData, YooptaContentValue } from '../editor/types';
 
 export function serialize(editor: YooEditor, blocksData: YooptaBlockData[]) {
   const blocks = blocksData.sort((a, b) => (a.meta.order > b.meta.order ? 1 : -1));

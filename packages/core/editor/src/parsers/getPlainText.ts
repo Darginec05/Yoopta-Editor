@@ -1,4 +1,4 @@
-import { YooEditor, YooptaContentValue } from '@yoopta/editor';
+import { YooEditor, YooptaContentValue } from '../editor/types';
 import { getHTML } from './getHTML';
 
 export function getPlainText(editor: YooEditor, content: YooptaContentValue) {

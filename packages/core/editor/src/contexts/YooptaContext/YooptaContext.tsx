@@ -50,6 +50,10 @@ const DEFAULT_HANDLERS: YooptaEditorContext = {
     blur: () => undefined,
     isFocused: () => false,
     focus: () => undefined,
+
+    getHTML: () => '',
+    getMarkdown: () => '',
+    getPlainText: () => '',
   },
 };
 

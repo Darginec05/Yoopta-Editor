@@ -16,8 +16,8 @@ function blurFn(editor: YooEditor, slate: SlateEditor) {
     Transforms.deselect(slate);
   } catch (error) {}
 
-  editor.setBlockSelected(null);
-  editor.setSelection(null);
+  // editor.setBlockSelected(null);
+  // editor.setSelection(null);
 }
 
 export function blur(editor: YooEditor, options: EditorBlurOptions = {}) {

@@ -33,8 +33,6 @@ const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePlug
       deserialize: {
         nodeNames: ['IMG'],
         parse: (el) => {
-          console.log('el.nodeName', el.nodeName);
-
           if (el.nodeName === 'IMG') {
             const props: SlateElement<'image', ImageElementProps>['props'] = {
               nodeType: 'void',
