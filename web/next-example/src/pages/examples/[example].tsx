@@ -21,7 +21,7 @@ import withCustomStyles from '@/components/examples/withCustomStyles';
 import withEditorFocusBlur from '@/components/examples/withEditorFocusBlur';
 import withCustomRenders from '@/components/examples/withCustomRenders';
 import withMultiPageEditors from '@/components/examples/withMultiPageEditors';
-import WithStarterKit from '@/components/examples/WithStarterKit';
+import WithStarterKit from '@/components/examples/withStarterKit';
 
 import { Head } from '@/components/Head/Head';
 import { useRouter } from 'next/router';
