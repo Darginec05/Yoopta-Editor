@@ -91,7 +91,7 @@ export default function Home({ repoData }) {
         >
           <div className="rounded-full bg-white relative w-[42px] h-[42px]">
             <img
-              src="/yoopta-logo.png"
+              src="/yoopta/yoopta-logo.png"
               width={42}
               height={42}
               alt="yooptae editor logo"
@@ -143,12 +143,20 @@ export default function Home({ repoData }) {
         </div>
       </header>
       <div className="mt-10 md:w-[70%] md:mx-auto flex flex-col items-center px-4 md:px-0">
+        <a
+          href="https://yoopta.dev/examples/withBaseFullSetup"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center w-18 h-18 bg-white rounded-full shadow-lg m-2"
+        >
+          <img src="/yoopta/yoopta-logo.png" alt="Yoopta logo" className="w-14 h-14 rounded-full" />
+        </a>
         <h1 className="text-center scroll-m-20 text-4xl font-bold tracking-tight">Meet Yoopta-Editor 🚀</h1>
         <div className="flex items-center mt-4 flex-col md:flex-row">
           <ProductHuntButton />
           {repoData && <GithubButton repo={repoData} />}
         </div>
-        <p className="mt-6 md:w-[750px] text-base text-[#dae2ed] text-center">
+        <p className="mt-6 md:w-[680px] text-base text-[#dae2ed] text-center">
           Open-source rich-text editor that's truly{' '}
           <b>
             <u>rich</u>
@@ -158,15 +166,15 @@ export default function Home({ repoData }) {
         </p>
         <div className="mt-4 flex flex-col items-center">
           <button
-            onClick={() => window.open('/playground', '_blank')}
+            onClick={() => window.open('/examples/withBaseFullSetup', '_blank')}
             className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-[#1f6feb] text-primary-foreground shadow hover:bg-[#1f6feb]/90 h-9 px-4 py-2"
           >
-            Play with live demo <ExternalLinkIcon size={16} className="ml-2" />
+            Play with demo's <ExternalLinkIcon size={16} className="ml-2" />
           </button>
         </div>
         <div className="mt-4">
           <video className="w-full h-auto" autoPlay loop muted playsInline controls>
-            <source src="/Yoopta_Intro.mp4" type="video/mp4" />
+            <source src="/yoopta/Yoopta_Intro.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
@@ -262,7 +270,7 @@ export default function Home({ repoData }) {
                 rel="noopener noreferrer"
                 className="flex items-center justify-center w-18 h-18 bg-white rounded-full shadow-lg m-2"
               >
-                <img src="/yoopta-logo.png" alt="Yoodocs logo" className="w-14 h-14 rounded-full" />
+                <img src="/yoopta/yoopta-logo.png" alt="Yoopta logo" className="w-14 h-14 rounded-full" />
               </a>
               <a
                 href="https://github.com/chrassendk"
