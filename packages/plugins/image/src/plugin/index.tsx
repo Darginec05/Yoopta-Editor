@@ -1,6 +1,12 @@
-import { buildBlockData, generateId, SlateElement, YooptaPlugin } from '@yoopta/editor';
+import { generateId, SlateElement, YooptaPlugin } from '@yoopta/editor';
 import { ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';
 import { ImageRender } from '../ui/Image';
+
+const ALIGNS_TO_JUSTIFY = {
+  left: 'flex-start',
+  center: 'center',
+  right: 'flex-end',
+};
 
 // [TODO] - caption element??,
 const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePluginOptions>({
@@ -39,6 +45,7 @@ const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePlug
               src: el.getAttribute('src') || '',
               alt: el.getAttribute('alt') || '',
               srcSet: el.getAttribute('srcset') || '',
+              fit: (el.getAttribute('objectFit') || 'contain') as ImageElementProps['fit'],
               sizes: {
                 width: el.getAttribute('width') ? parseInt(el.getAttribute('width') || '650', 10) : 650,
                 height: el.getAttribute('height') ? parseInt(el.getAttribute('height') || '500', 10) : 500,
@@ -56,9 +63,12 @@ const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePlug
           }
         },
       },
-      serialize: (element, text) => {
-        return `<div style="display: flex; width: 100%; justify-content: center">
-        <img src="${element.props.src}" alt="${element.props.alt}" width="${element.props.sizes.width}" height="${element.props.sizes.height}"  />
+      serialize: (element, text, blockMeta) => {
+        const { align = 'center', depth = 0 } = blockMeta || {};
+        const justify = ALIGNS_TO_JUSTIFY[align] || 'center';
+
+        return `<div style="margin-left: ${depth}px; display: flex; width: 100%; justify-content: ${justify}">
+        <img data-meta-align="${align}" data-meta-depth="${depth}" src="${element.props.src}" alt="${element.props.alt}" width="${element.props.sizes.width}" height="${element.props.sizes.height}" objectFit="${element.props.fit}"  />
         </div>`;
       },
     },

@@ -1,4 +1,5 @@
-import { PluginElementRenderProps, YooptaPlugin } from '@yoopta/editor';
+import { buildBlockData, buildBlockElement, generateId, PluginElementRenderProps, YooptaPlugin } from '@yoopta/editor';
+import { YooptaBlockBaseMeta } from '@yoopta/editor/src/editor/types';
 
 const HeadingTwoRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
   const { element, HTMLAttributes = {}, attributes, children } = props;
@@ -37,8 +38,10 @@ const HeadingTwo = new YooptaPlugin({
       deserialize: {
         nodeNames: ['H2'],
       },
-      serialize: (element, text) => {
-        return `<h2>${text}</h2>`;
+      serialize: (element, text, blockMeta) => {
+        const { depth = 0, align = 'left' } = blockMeta || {};
+
+        return `<h2 data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}">${text}</h2>`;
       },
     },
     markdown: {

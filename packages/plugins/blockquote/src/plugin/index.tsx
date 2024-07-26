@@ -20,8 +20,9 @@ const Blockquote = new YooptaPlugin({
       deserialize: {
         nodeNames: ['BLOCKQUOTE'],
       },
-      serialize: (element, text) => {
-        return `<blockquote style="border-left: 3px solid; color: #292929; padding: 2px 14px; margin-top: 8px;">${text}</blockquote>`;
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+        return `<blockquote data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}; border-left: 3px solid; color: #292929; padding: 2px 14px; margin-top: 8px;">${text}</blockquote>`;
       },
     },
     markdown: {

@@ -59,8 +59,10 @@ const NumberedList = new YooptaPlugin<'numbered-list', ListElementProps>({
           }
         },
       },
-      serialize: (element, text) => {
-        return `<ol><li>${text}</li></ol>`;
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+
+        return `<ol data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}"><li>${text}</li></ol>`;
       },
     },
     markdown: {

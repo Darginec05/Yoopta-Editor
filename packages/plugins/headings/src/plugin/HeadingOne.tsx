@@ -37,8 +37,10 @@ const HeadingOne = new YooptaPlugin({
       deserialize: {
         nodeNames: ['H1'],
       },
-      serialize: (element, text) => {
-        return `<h1>${text}</h1>`;
+      serialize: (element, text, blockMeta) => {
+        const { depth = 0, align = 'left' } = blockMeta || {};
+
+        return `<h1 data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}">${text}</h1>`;
       },
     },
     markdown: {
