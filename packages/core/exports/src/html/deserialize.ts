@@ -114,8 +114,7 @@ function buildBlock(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElement
     rootNode.children = [{ text: '' }];
   }
 
-  const metaAlign = el.getAttribute('data-meta-align');
-  const align = JUSTIFY_TO_ALIGNS[metaAlign || ''] || 'left';
+  const align = (el.getAttribute('data-meta-align') || 'left') as YooptaBlockData['meta']['align'];
   const depth = parseInt(el.getAttribute('data-meta-depth') || '0', 10);
 
   const blockData = buildBlockData({

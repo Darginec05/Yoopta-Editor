@@ -23,102 +23,12 @@ const BasicExample = () => {
   const selectionRef = useRef<HTMLDivElement>(null);
   const [readOnly, setReadOnly] = useState(false);
   const [value, setValue] = useState<YooptaContentValue>({
-    'b0defd51-217f-436c-a8ed-905068adadae': {
-      id: 'b0defd51-217f-436c-a8ed-905068adadae',
-      value: [
-        {
-          id: '9c535e92-e63e-41b2-b38e-e24b4cb20c02',
-          type: 'bulleted-list',
-          children: [
-            {
-              text: 'Many typical solved problems in UX behavior.',
-            },
-          ],
-          props: {
-            nodeType: 'block',
-          },
-        },
-      ],
-      type: 'BulletedList',
-      meta: {
-        order: 0,
-        depth: 0,
-      },
-    },
-    '2aea3408-3081-4c45-a782-ba48f6e00a5b': {
-      id: '2aea3408-3081-4c45-a782-ba48f6e00a5b',
-      value: [
-        {
-          id: 'c9833dfa-a724-499b-b4cf-385d5730be2d',
-          type: 'bulleted-list',
-          children: [
-            {
-              text: 'Media plugins on steroids with optimization and lazy loadings',
-            },
-          ],
-          props: {
-            nodeType: 'block',
-          },
-        },
-      ],
-      type: 'BulletedList',
-      meta: {
-        order: 1,
-        depth: 0,
-        align: 'center',
-      },
-    },
-    '3d402583-48e6-4970-b6a1-697bc8157e4e': {
-      id: '3d402583-48e6-4970-b6a1-697bc8157e4e',
-      value: [
-        {
-          id: '1aa1c5ee-19a9-4179-be5a-c148e3071ee2',
-          type: 'bulleted-list',
-          children: [
-            {
-              text: 'Code plugin on steroids with themes and languages',
-            },
-          ],
-          props: {
-            nodeType: 'block',
-          },
-        },
-      ],
-      type: 'BulletedList',
-      meta: {
-        order: 2,
-        depth: 0,
-        align: 'center',
-      },
-    },
-    'e21d680d-c802-4fe4-a3ee-30e83e649c14': {
-      id: 'e21d680d-c802-4fe4-a3ee-30e83e649c14',
-      value: [
-        {
-          id: 'b3ddb481-02c7-4776-92c3-3151840314f3',
-          type: 'bulleted-list',
-          children: [
-            {
-              text: 'Each plugin can be easily customized and extensible',
-            },
-          ],
-          props: {
-            nodeType: 'block',
-          },
-        },
-      ],
-      type: 'BulletedList',
-      meta: {
-        order: 3,
-        depth: 0,
-      },
-    },
     '96e0ceb5-1df2-4275-9ed0-59ab571066f9': {
       id: '96e0ceb5-1df2-4275-9ed0-59ab571066f9',
       type: 'HeadingOne',
       meta: {
-        order: 4,
-        depth: 5,
+        order: 0,
+        depth: 0,
       },
       value: [
         {
@@ -139,100 +49,11 @@ const BasicExample = () => {
         },
       ],
     },
-    '79b7379d-4b4c-4642-bd19-ba37ab8f6574': {
-      id: '79b7379d-4b4c-4642-bd19-ba37ab8f6574',
-      value: [
-        {
-          id: '4e75620a-3a25-4936-a2cd-b8f4c4c730a5',
-          type: 'bulleted-list',
-          children: [
-            {
-              text: 'Selection box for manipulating with multiple blocks at once',
-            },
-          ],
-          props: {
-            nodeType: 'block',
-          },
-        },
-      ],
-      type: 'BulletedList',
-      meta: {
-        order: 5,
-        depth: 2,
-      },
-    },
-    '618838b9-c0fd-40b3-b3e8-6a544fb9229c': {
-      id: '618838b9-c0fd-40b3-b3e8-6a544fb9229c',
-      value: [
-        {
-          id: '4ec2f9b0-598e-4c29-8d78-9722f537fbc0',
-          type: 'heading-two',
-          children: [
-            {
-              text: 'Roadmap',
-            },
-          ],
-          props: {
-            nodeType: 'block',
-          },
-        },
-      ],
-      type: 'HeadingTwo',
-      meta: {
-        order: 6,
-        depth: 0,
-        align: 'center',
-      },
-    },
-    '265ee1dd-3922-4033-9dab-5103ab15ea79': {
-      id: '265ee1dd-3922-4033-9dab-5103ab15ea79',
-      type: 'Blockquote',
-      meta: {
-        order: 7,
-        depth: 3,
-      },
-      value: [
-        {
-          id: '932ca5b6-159b-4174-97c4-4d9e2c1af5a2',
-          type: 'blockquote',
-          children: [
-            {
-              text: 'Develop other powerful plugins',
-            },
-          ],
-          props: {
-            nodeType: 'block',
-          },
-        },
-      ],
-    },
-    '980c4088-ec98-4dd9-b6bd-01ec45062e5d': {
-      id: '980c4088-ec98-4dd9-b6bd-01ec45062e5d',
-      value: [
-        {
-          id: 'cd8cc627-9da5-441d-9c50-f34239b0e008',
-          type: 'bulleted-list',
-          children: [
-            {
-              text: 'Super AI tools not for HYPE, but for real useful work with editor content',
-            },
-          ],
-          props: {
-            nodeType: 'block',
-          },
-        },
-      ],
-      type: 'BulletedList',
-      meta: {
-        order: 8,
-        depth: 3,
-      },
-    },
     '124268a3-ea74-4e8c-992f-67c6373285de': {
       id: '124268a3-ea74-4e8c-992f-67c6373285de',
       type: 'Callout',
       meta: {
-        order: 9,
+        order: 1,
         depth: 0,
         align: 'center',
       },
@@ -255,7 +76,7 @@ const BasicExample = () => {
       id: '174ac0e2-ced5-4696-b281-efc2c32d7766',
       type: 'Paragraph',
       meta: {
-        order: 10,
+        order: 2,
         depth: 0,
         align: 'center',
       },
@@ -267,86 +88,6 @@ const BasicExample = () => {
             {
               text: 'Collabrative mode super',
               bold: true,
-            },
-          ],
-          props: {
-            nodeType: 'block',
-          },
-        },
-      ],
-    },
-    '0f1e3251-324f-47fa-907d-52688bd12820': {
-      id: '0f1e3251-324f-47fa-907d-52688bd12820',
-      type: 'NumberedList',
-      meta: {
-        order: 11,
-        depth: 0,
-      },
-      value: [
-        {
-          id: 'd3925cbc-c272-4b10-ba96-a2ecfa4e6a85',
-          type: 'numbered-list',
-          children: [
-            {
-              text: 'Plugin system',
-            },
-          ],
-          props: {
-            nodeType: 'block',
-          },
-        },
-      ],
-    },
-    '6dc9b36c-adb8-4557-aa3e-e45ac37065a2': {
-      id: '6dc9b36c-adb8-4557-aa3e-e45ac37065a2',
-      type: 'NumberedList',
-      meta: {
-        order: 12,
-        depth: 0,
-      },
-      value: [
-        {
-          id: '7da33851-2a9d-421a-ba60-4c49c3eb9934',
-          type: 'numbered-list',
-          children: [
-            {
-              text: 'Optimizations for media components (',
-            },
-            {
-              bold: true,
-              text: 'srcSet ',
-            },
-            {
-              text: 'for image and ',
-            },
-            {
-              bold: true,
-              text: 'sources',
-            },
-            {
-              text: ' for video)',
-            },
-          ],
-          props: {
-            nodeType: 'block',
-          },
-        },
-      ],
-    },
-    'd6185ad3-7ad6-41bf-9a30-fb44dbc802c9': {
-      id: 'd6185ad3-7ad6-41bf-9a30-fb44dbc802c9',
-      type: 'NumberedList',
-      meta: {
-        order: 13,
-        depth: 0,
-      },
-      value: [
-        {
-          id: 'a9de8e64-1c45-4467-a0ea-9bfb29719b48',
-          type: 'numbered-list',
-          children: [
-            {
-              text: 'Rethink approach for just rendering to increase SEO perfomance',
             },
           ],
           props: {
@@ -373,7 +114,157 @@ const BasicExample = () => {
       ],
       type: 'BulletedList',
       meta: {
-        order: 14,
+        order: 3,
+        depth: 0,
+      },
+    },
+    '7d35407d-dec8-4cb9-8220-d551f4f4e81d': {
+      id: '7d35407d-dec8-4cb9-8220-d551f4f4e81d',
+      value: [
+        {
+          id: '37d7b8d3-5575-44c8-b075-c3a6ababfc34',
+          type: 'image',
+          props: {
+            src: 'https://res.cloudinary.com/ench-app/image/upload/v1722025817/Screen_Shot_2024-07-26_at_11.59.26_q52gco.png',
+            alt: 'cloudinary',
+            srcSet: null,
+            fit: 'contain',
+            sizes: {
+              width: 300,
+              height: 300,
+            },
+            nodeType: 'void',
+          },
+          children: [
+            {
+              text: '',
+            },
+          ],
+        },
+      ],
+      type: 'Image',
+      meta: {
+        order: 4,
+        depth: 0,
+      },
+    },
+    '04bafc81-ac52-4f64-bff5-a381ae78cb44': {
+      id: '04bafc81-ac52-4f64-bff5-a381ae78cb44',
+      value: [
+        {
+          id: '12ebec46-67fc-4809-853f-02215987465d',
+          type: 'embed',
+          props: {
+            sizes: {
+              width: 554,
+              height: 341,
+            },
+            nodeType: 'void',
+            provider: {
+              type: 'youtube',
+              id: 'leKOlt3g6HA',
+              url: 'https://www.youtube.com/watch?v=leKOlt3g6HA&ab_channel=%D0%9F%D1%80%D0%B8%D0%B7%D1%8B%D0%B2Dawah',
+            },
+          },
+          children: [
+            {
+              text: '',
+            },
+          ],
+        },
+      ],
+      type: 'Embed',
+      meta: {
+        order: 5,
+        depth: 0,
+        align: 'right',
+      },
+    },
+    '2cef9067-dc5c-4c1d-b298-27fbaad4abd5': {
+      id: '2cef9067-dc5c-4c1d-b298-27fbaad4abd5',
+      value: [
+        {
+          id: '4ee172b3-98c3-4cf4-bf12-d108ce8e856e',
+          type: 'video',
+          props: {
+            src: 'https://res.cloudinary.com/ench-app/video/upload/v1722025885/Coding_vv9a8u.mov',
+            srcSet: null,
+            sizes: {
+              width: 566,
+              height: 479,
+            },
+            nodeType: 'void',
+            provider: {
+              type: null,
+              id: '',
+            },
+            settings: {
+              controls: false,
+              loop: true,
+              muted: true,
+              autoPlay: true,
+            },
+            fit: 'cover',
+          },
+          children: [
+            {
+              text: '',
+            },
+          ],
+        },
+      ],
+      type: 'Video',
+      meta: {
+        order: 6,
+        depth: 0,
+        align: 'left',
+      },
+    },
+    '571842af-eb2a-4c85-ab56-6f5e8572f475': {
+      id: '571842af-eb2a-4c85-ab56-6f5e8572f475',
+      value: [
+        {
+          id: 'c6f3ad75-ba61-40d1-8526-2117ad6e16ef',
+          type: 'file',
+          props: {
+            size: 1084157,
+            name: 'Screen Shot 2024-07-26 at 15.20.34',
+            src: 'https://res.cloudinary.com/ench-app/image/upload/v1722025896/Screen_Shot_2024-07-26_at_15.20.34_au4l0g.png',
+            format: 'png',
+            nodeType: 'void',
+          },
+          children: [
+            {
+              text: '',
+            },
+          ],
+        },
+      ],
+      type: 'File',
+      meta: {
+        order: 7,
+        depth: 0,
+      },
+    },
+    'ba3b3e24-7a26-42b3-93d2-f36b7d149e5b': {
+      id: 'ba3b3e24-7a26-42b3-93d2-f36b7d149e5b',
+      value: [
+        {
+          id: '533311c7-3407-4ca5-814c-ac979e10f47c',
+          type: 'paragraph',
+          children: [
+            {
+              text: '',
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'Paragraph',
+      meta: {
+        order: 8,
         depth: 0,
       },
     },
@@ -382,6 +273,8 @@ const BasicExample = () => {
   useEffect(() => {
     editor.on('change', (data) => setValue(data));
   }, []);
+
+  console.log(value);
 
   return (
     <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={selectionRef}>
