@@ -33,8 +33,8 @@ const File = new YooptaPlugin<FilePluginElements, FileElementProps, FilePluginOp
   parsers: {
     html: {
       serialize: (element, text, blockMeta) => {
-        const { align = 'center', depth = 0 } = blockMeta || {};
-        const justify = ALIGNS_TO_JUSTIFY[align] || 'center';
+        const { align = 'left', depth = 0 } = blockMeta || {};
+        const justify = ALIGNS_TO_JUSTIFY[align] || 'left';
 
         return `<div style="margin-left: ${depth}px; display: flex; width: 100%; justify-content: ${justify}"><a data-meta-align="${align}" data-meta-depth="${depth}" href="${
           element.props.src

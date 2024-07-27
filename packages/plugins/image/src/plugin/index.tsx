@@ -67,8 +67,8 @@ const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePlug
         const { align = 'center', depth = 0 } = blockMeta || {};
         const justify = ALIGNS_TO_JUSTIFY[align] || 'center';
 
-        return `<div style="margin-left: ${depth}px; display: flex; width: 100%; justify-content: ${justify}">
-        <img data-meta-align="${align}" data-meta-depth="${depth}" src="${element.props.src}" alt="${element.props.alt}" width="${element.props.sizes.width}" height="${element.props.sizes.height}" objectFit="${element.props.fit}"  />
+        return `<div style="margin-left: ${depth}px; display: flex; width: 100%; justify-content: "${justify}"">
+        <img data-meta-align="${align}" data-meta-depth="${depth}" src="${element.props.src}" alt="${element.props.alt}" width="${element.props.sizes.width}" height="${element.props.sizes.height}" objectFit="${element.props.fit}"></img>
         </div>`;
       },
     },

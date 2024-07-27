@@ -2,6 +2,12 @@ import { generateId, YooptaPlugin } from '@yoopta/editor';
 import { CodeElementProps, CodePluginBlockOptions, CodePluginElements } from '../types';
 import { CodeEditor } from '../ui/Code';
 
+const ALIGNS_TO_JUSTIFY = {
+  left: 'flex-start',
+  center: 'center',
+  right: 'flex-end',
+};
+
 const Code = new YooptaPlugin<CodePluginElements, CodeElementProps, CodePluginBlockOptions>({
   type: 'Code',
   customEditor: CodeEditor,
@@ -28,7 +34,7 @@ const Code = new YooptaPlugin<CodePluginElements, CodeElementProps, CodePluginBl
     html: {
       deserialize: {
         nodeNames: ['PRE'],
-        parse(el) {
+        parse: (el) => {
           if (el.nodeName === 'PRE') {
             const code = el.querySelector('code');
             const textContent = code ? code.textContent : el.textContent;
@@ -46,8 +52,11 @@ const Code = new YooptaPlugin<CodePluginElements, CodeElementProps, CodePluginBl
           }
         },
       },
-      serialize: (element, text) => {
-        return `<pre style="background-color: #263238; color: #fff; padding: 20px 24px; white-space: pre-line;"><code>${`${text}`}</code></pre>`;
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+        const justify = ALIGNS_TO_JUSTIFY[align] || 'left';
+
+        return `<pre data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; display: flex; width: 100%; justify-content: "${justify}"; background-color: #263238; color: #fff; padding: 20px 24px; white-space: pre-line;"><code>${text}</code></pre>`.toString();
       },
     },
     markdown: {

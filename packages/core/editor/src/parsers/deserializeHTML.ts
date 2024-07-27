@@ -16,12 +16,6 @@ const MARKS_NODE_NAME_MATCHERS_MAP = {
   EM: { type: 'italic' },
 };
 
-const JUSTIFY_TO_ALIGNS = {
-  'flex-start': 'left',
-  center: 'center',
-  'flex-end': 'right',
-};
-
 type PluginsMapByNode = {
   type: string;
   parse: PluginDeserializeParser['parse'];

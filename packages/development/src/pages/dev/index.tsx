@@ -53,7 +53,7 @@ const BasicExample = () => {
       id: '124268a3-ea74-4e8c-992f-67c6373285de',
       type: 'Callout',
       meta: {
-        order: 1,
+        order: 3,
         depth: 0,
         align: 'center',
       },
@@ -76,7 +76,7 @@ const BasicExample = () => {
       id: '174ac0e2-ced5-4696-b281-efc2c32d7766',
       type: 'Paragraph',
       meta: {
-        order: 2,
+        order: 4,
         depth: 0,
         align: 'center',
       },
@@ -114,7 +114,7 @@ const BasicExample = () => {
       ],
       type: 'BulletedList',
       meta: {
-        order: 3,
+        order: 5,
         depth: 0,
       },
     },
@@ -144,7 +144,7 @@ const BasicExample = () => {
       ],
       type: 'Image',
       meta: {
-        order: 4,
+        order: 6,
         depth: 0,
       },
     },
@@ -175,7 +175,7 @@ const BasicExample = () => {
       ],
       type: 'Embed',
       meta: {
-        order: 5,
+        order: 7,
         depth: 0,
         align: 'right',
       },
@@ -215,7 +215,7 @@ const BasicExample = () => {
       ],
       type: 'Video',
       meta: {
-        order: 6,
+        order: 8,
         depth: 0,
         align: 'left',
       },
@@ -242,7 +242,7 @@ const BasicExample = () => {
       ],
       type: 'File',
       meta: {
-        order: 7,
+        order: 9,
         depth: 0,
       },
     },
@@ -264,7 +264,53 @@ const BasicExample = () => {
       ],
       type: 'Paragraph',
       meta: {
-        order: 8,
+        order: 10,
+        depth: 0,
+      },
+    },
+    'c4f4d5ca-6ea0-46b9-9b62-bbfca4ffa687': {
+      id: 'c4f4d5ca-6ea0-46b9-9b62-bbfca4ffa687',
+      value: [
+        {
+          id: 'ce9480b7-3a45-4fd8-b792-00c0df0a985e',
+          type: 'paragraph',
+          children: [
+            {
+              text: '',
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'Paragraph',
+      meta: {
+        order: 1,
+        depth: 0,
+      },
+    },
+    '2500180a-2795-4600-848f-c5dfd3643023': {
+      id: '2500180a-2795-4600-848f-c5dfd3643023',
+      value: [
+        {
+          id: '6aa5696a-5a8b-49fd-b45d-1414dd6b3c68',
+          type: 'code',
+          props: {
+            nodeType: 'void',
+            language: 'javascript',
+            theme: 'VSCode',
+          },
+          children: [
+            {
+              text: "import { generateId, SlateElement, YooptaPlugin } from '@yoopta/editor';\nimport { ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';\nimport { ImageRender } from '../ui/Image';\n\nconst ALIGNS_TO_JUSTIFY = {\n  left: 'flex-start',\n  center: 'center',\n  right: 'flex-end',\n};\n\n// [TODO] - caption element??,\nconst Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePluginOptions>({\n  type: 'Image',\n  elements: {\n    image: {\n      render: ImageRender,\n      props: {\n        src: null,\n        alt: null,\n        srcSet: null,\n        bgColor: null,\n        fit: 'contain',\n        sizes: { width: 650, height: 500 },\n        nodeType: 'void',\n      },\n    },\n  },\n  options: {\n    display: {\n      title: 'Image',\n      description: 'Upload from device or embed with link',\n    },\n    onUpload: () => Promise.resolve({ src: null, alt: null }),\n    accept: 'image/png, image/jpeg, image/gif, image/webp',\n    maxSizes: { maxWidth: 650, maxHeight: 550 },\n  },\n  parsers: {\n    html: {\n      deserialize: {\n        nodeNames: ['IMG'],\n        parse: (el) => {\n          if (el.nodeName === 'IMG') {\n            const props: SlateElement<'image', ImageElementProps>['props'] = {\n              nodeType: 'void',\n              src: el.getAttribute('src') || '',\n              alt: el.getAttribute('alt') || '',\n              srcSet: el.getAttribute('srcset') || '',\n              fit: (el.getAttribute('objectFit') || 'contain') as ImageElementProps['fit'],\n              sizes: {\n                width: el.getAttribute('width') ? parseInt(el.getAttribute('width') || '650', 10) : 650,\n                height: el.getAttribute('height') ? parseInt(el.getAttribute('height') || '500', 10) : 500,\n              },\n            };\n\n            const node: SlateElement = {\n              id: generateId(),\n              type: 'image',\n              children: [{ text: '' }],\n              props,\n            };\n\n            return node;\n          }\n        },\n      },\n      serialize: (element, text, blockMeta) => {\n        const { align = 'center', depth = 0 } = blockMeta || {};\n        const justify = ALIGNS_TO_JUSTIFY[align] || 'center';\n\n        return `<div style=\"margin-left: ${depth}px; display: flex; width: 100%; justify-content: ${justify}\">\n        <img data-meta-align=\"${align}\" data-meta-depth=\"${depth}\" src=\"${element.props.src}\" alt=\"${element.props.alt}\" width=\"${element.props.sizes.width}\" height=\"${element.props.sizes.height}\" objectFit=\"${element.props.fit}\"  />\n        </div>`;\n      },\n    },\n    markdown: {\n      serialize: (element, text) => {\n        return `![${element.props.alt}](${element.props.src})\\n`;\n      },\n    },\n  },\n});\n\nexport { Image };\n",
+            },
+          ],
+        },
+      ],
+      type: 'Code',
+      meta: {
+        order: 2,
         depth: 0,
       },
     },
