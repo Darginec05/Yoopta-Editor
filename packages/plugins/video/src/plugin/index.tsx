@@ -2,6 +2,12 @@ import { generateId, YooptaPlugin } from '@yoopta/editor';
 import { VideoElementProps, VideoPluginElements, VideoPluginOptions } from '../types';
 import { VideoRender } from '../ui/Video';
 
+const ALIGNS_TO_JUSTIFY = {
+  left: 'flex-start',
+  center: 'center',
+  right: 'flex-end',
+};
+
 const Video = new YooptaPlugin<VideoPluginElements, VideoElementProps, VideoPluginOptions>({
   type: 'Video',
   elements: {
@@ -14,6 +20,7 @@ const Video = new YooptaPlugin<VideoPluginElements, VideoElementProps, VideoPlug
         bgColor: null,
         sizes: { width: 650, height: 400 },
         nodeType: 'void',
+        fit: 'cover',
         provider: {
           type: null,
           id: '',
@@ -50,12 +57,14 @@ const Video = new YooptaPlugin<VideoPluginElements, VideoElementProps, VideoPlug
             const loop = el.getAttribute('loop');
             const muted = el.getAttribute('muted');
             const autoPlay = el.getAttribute('autoplay');
+            const fit = el.getAttribute('objectFit') || 'cover';
 
             const props = {
               src,
               srcSet,
               bgColor,
               sizes,
+              fit,
               settings: {
                 controls: !!controls,
                 loop: !!loop,
@@ -96,10 +105,13 @@ const Video = new YooptaPlugin<VideoPluginElements, VideoElementProps, VideoPlug
           // }
         },
       },
-      serialize: (element, text) => {
+      serialize: (element, text, blockMeta) => {
+        const { align = 'center', depth = 0 } = blockMeta || {};
+        const justify = ALIGNS_TO_JUSTIFY[align] || 'center';
+
         return `
-        <div style="display: flex; width: 100%; justify-content: center">
-        <video src="${element.props.src}" width="${element.props.sizes.width}" height="${element.props.sizes.height}" controls="${element.props.settings.controls}" loop="${element.props.settings.loop}" muted="${element.props.settings.muted}" autoplay="${element.props.settings.autoPlay}" style="margin: 0 auto;" />
+        <div style="margin-left: ${depth}px; display: flex; width: 100%; justify-content: "${justify}"">
+        <video data-meta-align="${align}" data-meta-depth="${depth}" src="${element.props.src}" width="${element.props.sizes.width}" height="${element.props.sizes.height}" controls="${element.props.settings.controls}" loop="${element.props.settings.loop}" muted="${element.props.settings.muted}" autoplay="${element.props.settings.autoPlay}" style="margin: 0 auto;" objectFit="${element.props.fit}" />
         </div>`;
       },
     },

@@ -40,12 +40,13 @@ const Callout = new YooptaPlugin<CalloutPluginElementKeys, CalloutElementProps>(
           }
         },
       },
-      serialize: (element, text) => {
+      serialize: (element, text, blockMeta) => {
         const theme: CSSProperties = CALLOUT_THEME_STYLES[element.props?.theme || 'default'];
+        const { align = 'left', depth = 0 } = blockMeta || {};
 
         return `<dl data-theme="${
           element.props?.theme || 'default'
-        }" style="padding: .5rem .5rem .5rem 1rem; margin-top: .5rem; border-radius: .375rem; color: ${
+        }" data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}; padding: .5rem .5rem .5rem 1rem; margin-top: .5rem; border-radius: .375rem; color: ${
           theme.color
         }; border-left: ${theme.borderLeft || 0}; background-color: ${theme.backgroundColor}">${text}</dl>`;
       },

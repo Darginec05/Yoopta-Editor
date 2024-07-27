@@ -20,8 +20,9 @@ const Paragraph = new YooptaPlugin({
       deserialize: {
         nodeNames: ['P'],
       },
-      serialize: (element, text) => {
-        return `<p>${text}</p>`;
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+        return `<p data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}">${text}</p>`;
       },
     },
     markdown: {

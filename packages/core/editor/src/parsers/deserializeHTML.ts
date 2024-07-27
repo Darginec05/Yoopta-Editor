@@ -1,6 +1,6 @@
 import { Element } from 'slate';
 import { buildBlockData } from '../components/Editor/utils';
-import { SlateElement, YooEditor, YooptaBlockData } from '../editor/types';
+import { SlateElement, YooEditor, YooptaBlockBaseMeta, YooptaBlockData } from '../editor/types';
 import { PluginDeserializeParser } from '../plugins/types';
 import { getRootBlockElementType } from '../utils/blockElements';
 import { generateId } from '../utils/generateId';
@@ -64,7 +64,7 @@ function getMappedPluginByNodeNames(editor: YooEditor): PluginsMapByNodeNames {
   return PLUGINS_NODE_NAME_MATCHERS_MAP;
 }
 
-function buildBlocks(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElement, children: any[]) {
+function buildBlock(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElement, children: any[]) {
   let nodeElementOrBlocks;
 
   if (plugin.parse) {
@@ -100,13 +100,17 @@ function buildBlocks(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElemen
     rootNode.children = [{ text: '' }];
   }
 
+  const align = (el.getAttribute('data-meta-align') || 'left') as YooptaBlockBaseMeta['align'];
+  const depth = parseInt(el.getAttribute('data-meta-depth') || '0', 10);
+
   const blockData = buildBlockData({
     id: generateId(),
     type: plugin.type,
     value: [rootNode],
     meta: {
       order: 0,
-      depth: 0,
+      depth: depth,
+      align: align,
     },
   });
 
@@ -140,10 +144,10 @@ export function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames
 
   if (plugin) {
     if (Array.isArray(plugin)) {
-      return plugin.map((p) => buildBlocks(editor, p, el as HTMLElement, children));
+      return plugin.map((p) => buildBlock(editor, p, el as HTMLElement, children));
     }
 
-    return buildBlocks(editor, plugin, el as HTMLElement, children);
+    return buildBlock(editor, plugin, el as HTMLElement, children);
   }
 
   return children;

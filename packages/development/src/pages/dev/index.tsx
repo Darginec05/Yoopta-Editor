@@ -10,7 +10,7 @@ import YooptaEditor, {
 } from '@yoopta/editor';
 import YooptaStarterKit from '@yoopta/starter-kit';
 import { html } from '@yoopta/exports';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { uploadToCloudinary } from '../../utils/cloudinary';
 import { MARKS } from '../../utils/yoopta/marks';
 import { YOOPTA_PLUGINS } from '../../utils/yoopta/plugins';
@@ -23,6 +23,12 @@ const BasicExample = () => {
   const selectionRef = useRef<HTMLDivElement>(null);
   const [readOnly, setReadOnly] = useState(false);
   const [value, setValue] = useState<YooptaContentValue>();
+
+  useEffect(() => {
+    editor.on('change', (data) => setValue(data));
+  }, []);
+
+  console.log(value);
 
   return (
     <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={selectionRef}>

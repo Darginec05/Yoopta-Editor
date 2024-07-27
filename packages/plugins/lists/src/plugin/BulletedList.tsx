@@ -57,8 +57,10 @@ const BulletedList = new YooptaPlugin<BulletedListPluginKeys, BulletedListElemen
           }
         },
       },
-      serialize: (element, text) => {
-        return `<ul><li>${text}</li></ul>`;
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+
+        return `<ul data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}"><li>${text}</li></ul>`;
       },
     },
     markdown: {
