@@ -1,5 +1,4 @@
-import { buildBlockData, buildBlockElement, generateId, PluginElementRenderProps, YooptaPlugin } from '@yoopta/editor';
-import { YooptaBlockBaseMeta } from '@yoopta/editor/src/editor/types';
+import { PluginElementRenderProps, YooptaPlugin } from '@yoopta/editor';
 
 const HeadingTwoRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
   const { element, HTMLAttributes = {}, attributes, children } = props;
