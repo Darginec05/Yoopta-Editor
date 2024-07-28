@@ -7,7 +7,7 @@ import { YooptaMark } from '../marks';
 import { ExtendedLeafProps, PluginCustomEditorRenderProps, PluginEventHandlerOptions, Plugin } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
-import { Editor, NodeEntry, Range } from 'slate';
+import { Editor, Element, Node, NodeEntry, Path, Range, Transforms } from 'slate';
 import { TextLeaf } from '../components/TextLeaf/TextLeaf';
 
 import { generateId } from '../utils/generateId';
@@ -17,6 +17,7 @@ import { buildBlockData } from '../components/Editor/utils';
 import { withInlines } from './extenstions/withInlines';
 import { IS_FOCUSED_EDITOR } from '../utils/weakMaps';
 import { deserializeHTML } from '../parsers/deserializeHTML';
+import { SlateElement } from '../editor/types';
 
 type Props<TKeys extends string, TProps, TOptions> = Plugin<TKeys, TProps, TOptions> & {
   id: string;
@@ -59,29 +60,51 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     let slateEditor = editor.blockEditorsMap[id];
     const elementTypes = Object.keys(elements);
 
-    elementTypes.forEach((elementType) => {
-      const nodeType = elements[elementType].props?.nodeType;
+    const { normalizeNode } = slateEditor;
 
-      const isInline = nodeType === 'inline';
-      const isVoid = nodeType === 'void';
-      const isInlineVoid = nodeType === 'inlineVoid';
+    slateEditor.normalizeNode = (entry) => {
+      const [node, path] = entry;
 
-      if (isInlineVoid) {
-        slateEditor.markableVoid = (element) => element.type === elementType;
+      if (Element.isElement(node) && node.type === 'accordion-list-item') {
+        let headingExists = false;
+        let contentExists = false;
+
+        for (const [child, childPath] of Node.children(slateEditor, path)) {
+          if (Element.isElement(child)) {
+            if (child.type === 'accordion-list-item-heading') {
+              headingExists = true;
+            } else if (child.type === 'accordion-list-item-content') {
+              contentExists = true;
+            } else {
+              Transforms.removeNodes(slateEditor, { at: childPath });
+            }
+          }
+        }
+
+        if (!headingExists) {
+          const newHeading = {
+            id: generateId(),
+            type: 'accordion-list-item-heading',
+            children: [{ text: 'New Heading' }],
+            props: { nodeType: 'block' },
+          };
+          Transforms.insertNodes(slateEditor, newHeading, { at: path.concat(0) });
+        }
+
+        if (!contentExists) {
+          const newContent = {
+            id: generateId(),
+            type: 'accordion-list-item-content',
+            children: [{ text: 'New Content' }],
+            props: { nodeType: 'block' },
+          };
+
+          Transforms.insertNodes(slateEditor, newContent, { at: path.concat(headingExists ? 1 : 0) });
+        }
       }
 
-      if (isVoid || isInlineVoid) {
-        slateEditor.isVoid = (element) => element.type === elementType;
-      }
-
-      if (isInline || isInlineVoid) {
-        slateEditor.isInline = (element) => element.type === elementType;
-
-        // [TODO] - as test
-        // [TODO] - should extend all slate editors for every block
-        slateEditor = withInlines(slateEditor);
-      }
-    });
+      normalizeNode(entry);
+    };
 
     return slateEditor;
   }, [elements]);

@@ -135,13 +135,27 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
     },
     shortcuts: ['accordion'],
   },
-  // parsers: {
-  //   html: {
-  //     serialize: (element) => {
-  //       return '';
-  //     },
-  //   },
-  // },
+  parsers: {
+    html: {
+      serialize: (element, text, blockMeta) => {
+        return element.children
+          .map((listItem) => {
+            return `<details>${listItem.children
+              .map((item) => {
+                if (item.type === 'accordion-list-item-heading') {
+                  return `<summary>${item.children.map((item) => item.text).join('')}</summary>`;
+                }
+                return `<p>${item.children.map((item) => item.text).join('')}</p>`;
+              })
+              .join('')}</details>`;
+          })
+          .join('');
+      },
+      deserialize: {
+        nodeNames: ['DETAILS'],
+      },
+    },
+  },
 });
 
 export { Accordion };

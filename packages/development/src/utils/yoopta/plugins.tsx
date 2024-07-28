@@ -29,7 +29,7 @@ export const YOOPTA_PLUGINS = [
       },
       'accordion-list-item': ({ attributes, children, element, blockId }) => {
         return (
-          <li {...attributes} className="accordion-list-item-element-extended">
+          <li {...attributes} className="accordion-list-item-element-extended border-b">
             {children}
           </li>
         );
