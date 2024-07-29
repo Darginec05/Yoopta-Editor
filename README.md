@@ -217,7 +217,7 @@ const TOOLS = {
     render: DefaultToolbarRender,
   },
   ActionMenu: {
-    tool: ActionMenuList,
+    tool: ActionMenu,
     render: DefaultActionMenuRender,
   },
   LinkTool: {
