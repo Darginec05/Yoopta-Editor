@@ -65,41 +65,21 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     slateEditor.normalizeNode = (entry) => {
       const [node, path] = entry;
 
+      if (Element.isElement(node) && node.type === 'blockquote') {
+        const rootNode = console.log('Blockquote', node, path);
+      }
+
       if (Element.isElement(node) && node.type === 'accordion-list-item') {
-        let headingExists = false;
-        let contentExists = false;
-
         for (const [child, childPath] of Node.children(slateEditor, path)) {
-          if (Element.isElement(child)) {
-            if (child.type === 'accordion-list-item-heading') {
-              headingExists = true;
-            } else if (child.type === 'accordion-list-item-content') {
-              contentExists = true;
-            } else {
-              Transforms.removeNodes(slateEditor, { at: childPath });
-            }
+          if (Element.isElement(child) && child.type === 'accordion-list') {
+            Transforms.unwrapNodes(slateEditor, { at: childPath });
+            return;
           }
-        }
 
-        if (!headingExists) {
-          const newHeading = {
-            id: generateId(),
-            type: 'accordion-list-item-heading',
-            children: [{ text: 'New Heading' }],
-            props: { nodeType: 'block' },
-          };
-          Transforms.insertNodes(slateEditor, newHeading, { at: path.concat(0) });
-        }
-
-        if (!contentExists) {
-          const newContent = {
-            id: generateId(),
-            type: 'accordion-list-item-content',
-            children: [{ text: 'New Content' }],
-            props: { nodeType: 'block' },
-          };
-
-          Transforms.insertNodes(slateEditor, newContent, { at: path.concat(headingExists ? 1 : 0) });
+          if (Element.isElement(child) && child.type === 'accordion-list-item') {
+            Transforms.unwrapNodes(slateEditor, { at: childPath });
+            return;
+          }
         }
       }
 

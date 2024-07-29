@@ -138,7 +138,7 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
   parsers: {
     html: {
       serialize: (element, text, blockMeta) => {
-        return element.children
+        return `<div>${element.children
           .map((listItem) => {
             return `<details>${listItem.children
               .map((item) => {
@@ -149,7 +149,7 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
               })
               .join('')}</details>`;
           })
-          .join('');
+          .join('')}</div>`;
       },
       deserialize: {
         nodeNames: ['DETAILS'],
