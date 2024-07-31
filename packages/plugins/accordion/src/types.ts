@@ -11,3 +11,6 @@ export type AccordionListItemProps = {
 };
 
 export type AccordionItemElement = SlateElement<'accordion-list-item', AccordionListItemProps>;
+export type AccordionListElement = SlateElement<'accordion-list'>;
+export type AccordionListItemHeadingElement = SlateElement<'accordion-list-item-heading'>;
+export type AccordionListItemContentElement = SlateElement<'accordion-list-item-content'>;

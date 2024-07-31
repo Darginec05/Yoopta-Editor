@@ -6,11 +6,11 @@ import { buildBlockData } from '../../components/Editor/utils';
 import { withShortcuts } from '../../extensions/shortcuts';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../../utils/generateId';
-import { YooEditor, YooptaEditorTransformOptions } from '../types';
+import { SlateEditor, YooEditor, YooptaEditorTransformOptions } from '../types';
 // // [TODO] Circular deps
 // import { buildSlateEditor } from '../../utils/editorBuilders';
 
-function buildSlateEditor(editor: YooEditor): Editor {
+function buildSlateEditor(editor: YooEditor): SlateEditor {
   const slate = withShortcuts(editor, withHistory(withReact(createEditor())));
   return slate;
 }

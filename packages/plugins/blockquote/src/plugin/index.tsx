@@ -1,4 +1,5 @@
-import { YooptaPlugin } from '@yoopta/editor';
+import { Elements, generateId, YooptaPlugin } from '@yoopta/editor';
+import { Element, Transforms } from 'slate';
 import { BlockquoteRender } from '../ui/Blockquote';
 
 const Blockquote = new YooptaPlugin({
@@ -30,6 +31,23 @@ const Blockquote = new YooptaPlugin({
         return `> ${text}`;
       },
     },
+  },
+  normalize: (slate, editor) => {
+    const { normalizeNode } = slate;
+
+    slate.normalizeNode = (entry) => {
+      const [node, path] = entry;
+
+      if (Element.isElement(node) && node.type !== 'blockquote') {
+        console.log('NOT_MATCHED => blockquote node', node, path);
+        Transforms.setNodes(slate, { type: 'blockquote' }, { at: path });
+        return;
+      }
+
+      normalizeNode(entry);
+    };
+
+    return slate;
   },
 });
 

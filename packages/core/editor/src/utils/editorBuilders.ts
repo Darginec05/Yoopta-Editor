@@ -1,7 +1,7 @@
 import { withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
 import { createEditor, Editor } from 'slate';
-import { YooEditor, YooptaBlockData } from '../editor/types';
+import { SlateEditor, YooEditor, YooptaBlockData } from '../editor/types';
 import { Plugin, PluginElement, PluginElementsMap } from '../plugins/types';
 import { YooptaMark } from '../marks';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
@@ -93,7 +93,7 @@ export function buildBlockSlateEditors(editor: YooEditor) {
   return blockEditorsMap;
 }
 
-export function buildSlateEditor(editor: YooEditor): Editor {
+export function buildSlateEditor(editor: YooEditor): SlateEditor {
   const slate = withShortcuts(editor, withHistory(withReact(createEditor())));
   return slate;
 }

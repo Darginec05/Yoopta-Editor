@@ -1,6 +1,6 @@
 import { Editor, Element, NodeEntry, Path } from 'slate';
 import { buildBlockElement } from '../components/Editor/utils';
-import { SlateElement, YooEditor, YooptaBlock } from '../editor/types';
+import { SlateEditor, SlateElement, YooEditor, YooptaBlock } from '../editor/types';
 import { Plugin, PluginElement, PluginElementProps, PluginElementsMap } from '../plugins/types';
 import { generateId } from './generateId';
 
@@ -35,7 +35,7 @@ export type GetBlockElementNodeOptions = {
 };
 
 export function getBlockElementNode(
-  slate: Editor,
+  slate: SlateEditor,
   options: GetBlockElementNodeOptions = {},
 ): NodeEntry<SlateElement> | undefined {
   const { at, elementType } = options;
@@ -72,6 +72,7 @@ export function buildSlateNodeElement(
 function recursivelyCollectElementChildren(
   blockElement: PluginElement<unknown>,
   blockElements: PluginElementsMap,
+  elementsMapWithTextContent?: ElementsMapWithTextContent,
 ): SlateElement[] {
   return (
     blockElement.children?.map((elementType) => {
@@ -86,15 +87,24 @@ function recursivelyCollectElementChildren(
         props: childElement.props,
         children:
           childElement.children && childElement.children.length > 0
-            ? recursivelyCollectElementChildren(childElement, blockElements)
-            : [{ text: '' }],
+            ? recursivelyCollectElementChildren(childElement, blockElements, elementsMapWithTextContent)
+            : [{ text: elementsMapWithTextContent?.[elementType] || '' }],
       });
 
       return childNode;
     }) || []
   );
 }
-export function buildBlockElementsStructure(editor: YooEditor, blockType: string): SlateElement {
+
+type ElementsMapWithTextContent = {
+  [key: string]: string;
+};
+
+export function buildBlockElementsStructure(
+  editor: YooEditor,
+  blockType: string,
+  elementsMapWithTextContent?: ElementsMapWithTextContent,
+): SlateElement {
   const block: YooptaBlock = editor.blocks[blockType];
   const blockElements = block.elements;
   const rootBlockElementType = getRootBlockElementType(blockElements);
@@ -109,7 +119,7 @@ export function buildBlockElementsStructure(editor: YooEditor, blockType: string
     props: rootBlockElement.props,
     children:
       rootBlockElement.children && rootBlockElement.children.length > 0
-        ? recursivelyCollectElementChildren(rootBlockElement, blockElements)
+        ? recursivelyCollectElementChildren(rootBlockElement, blockElements, elementsMapWithTextContent)
         : [{ text: '' }],
   };
 

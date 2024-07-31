@@ -68,7 +68,7 @@ function buildBlock(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElement
   let nodeElementOrBlocks;
 
   if (plugin.parse) {
-    nodeElementOrBlocks = plugin.parse(el as HTMLElement);
+    nodeElementOrBlocks = plugin.parse(el as HTMLElement, editor);
 
     const isInline = Element.isElement(nodeElementOrBlocks) && nodeElementOrBlocks.props?.nodeType === 'inline';
     if (isInline) return nodeElementOrBlocks;

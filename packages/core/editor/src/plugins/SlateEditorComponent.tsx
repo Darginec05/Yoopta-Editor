@@ -17,7 +17,8 @@ import { buildBlockData } from '../components/Editor/utils';
 import { withInlines } from './extenstions/withInlines';
 import { IS_FOCUSED_EDITOR } from '../utils/weakMaps';
 import { deserializeHTML } from '../parsers/deserializeHTML';
-import { SlateElement } from '../editor/types';
+import { getRootBlockElementType } from '../utils/blockElements';
+import { Elements } from '../editor/elements';
 
 type Props<TKeys extends string, TProps, TOptions> = Plugin<TKeys, TProps, TOptions> & {
   id: string;
@@ -48,6 +49,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   events,
   options,
   placeholder = `Type '/' for commands`,
+  normalize,
 }: Props<TKeys, TProps, TOptions>) => {
   const editor = useYooptaEditor();
   const block = useBlockData(id);
@@ -58,27 +60,60 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
 
   const slate = useMemo(() => {
     let slateEditor = editor.blockEditorsMap[id];
+    const { normalizeNode } = slateEditor;
     const elementTypes = Object.keys(elements);
 
-    const { normalizeNode } = slateEditor;
+    elementTypes.forEach((elementType) => {
+      const nodeType = elements[elementType].props?.nodeType;
 
-    slateEditor.normalizeNode = (entry) => {
-      const [node, path] = entry;
+      const isInline = nodeType === 'inline';
+      const isVoid = nodeType === 'void';
+      const isInlineVoid = nodeType === 'inlineVoid';
 
-      if (Element.isElement(node) && node.type === 'blockquote') {
-        const rootNode = console.log('Blockquote', node, path);
+      if (isInlineVoid) {
+        slateEditor.markableVoid = (element) => element.type === elementType;
       }
 
-      if (Element.isElement(node) && node.type === 'accordion-list-item') {
-        for (const [child, childPath] of Node.children(slateEditor, path)) {
-          if (Element.isElement(child) && child.type === 'accordion-list') {
-            Transforms.unwrapNodes(slateEditor, { at: childPath });
-            return;
-          }
+      if (isVoid || isInlineVoid) {
+        slateEditor.isVoid = (element) => element.type === elementType;
+      }
 
-          if (Element.isElement(child) && child.type === 'accordion-list-item') {
-            Transforms.unwrapNodes(slateEditor, { at: childPath });
-            return;
+      if (isInline || isInlineVoid) {
+        slateEditor.isInline = (element) => element.type === elementType;
+
+        // [TODO] - as test
+        // [TODO] - should extend all slate editors for every block
+        slateEditor = withInlines(slateEditor);
+      }
+    });
+
+    // This normalization is needed to validate the elements structure
+    slateEditor.normalizeNode = (entry) => {
+      const [node, path] = entry;
+      const blockElements = editor.blocks[block.type].elements;
+
+      // Normalize only `simple` block elements.
+      // Simple elements are elements that have only one defined block element type.
+      if (Object.keys(blockElements).length > 1) {
+        return normalizeNode(entry);
+      }
+
+      if (Element.isElement(node)) {
+        const { type } = node;
+        const rootElementType = getRootBlockElementType(blockElements);
+
+        if (!elementTypes.includes(type)) {
+          const element = Elements.getElement(editor, block.id, { path: path });
+          Transforms.setNodes(slateEditor, { type: rootElementType, props: { ...node.props } }, { at: path });
+          return;
+        }
+
+        if (node.type === rootElementType) {
+          for (const [child, childPath] of Node.children(slateEditor, path)) {
+            if (Element.isElement(child) && !slateEditor.isInline(child)) {
+              Transforms.unwrapNodes(slateEditor, { at: childPath });
+              return;
+            }
           }
         }
       }
@@ -86,8 +121,12 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       normalizeNode(entry);
     };
 
+    if (typeof normalize === 'function') {
+      slateEditor = normalize(slateEditor, editor);
+    }
+
     return slateEditor;
-  }, [elements]);
+  }, [elements, id]);
 
   const eventHandlers = useMemo<EditorEventHandlers>(() => {
     if (!events || editor.readOnly) return {};
@@ -231,6 +270,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
 
       const data = event.clipboardData;
       const html = data.getData('text/html');
+
       const parsedHTML = new DOMParser().parseFromString(html, 'text/html');
 
       if (parsedHTML.body.childNodes.length > 0) {

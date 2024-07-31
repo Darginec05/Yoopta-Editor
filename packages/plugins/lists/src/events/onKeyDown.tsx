@@ -6,13 +6,14 @@ import {
   buildBlockData,
   buildBlockElement,
   Elements,
+  SlateEditor,
 } from '@yoopta/editor';
 import { Editor, Element, Path } from 'slate';
 import { BulletedListElement, NumberedListElement, TodoListElement } from '../types';
 
 type ListNode = NumberedListElement | BulletedListElement | TodoListElement;
 
-export function onKeyDown(editor: YooEditor, slate: Editor, { hotkeys, defaultBlock }: PluginEventHandlerOptions) {
+export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, defaultBlock }: PluginEventHandlerOptions) {
   return (event) => {
     Editor.withoutNormalizing(slate, () => {
       const block = findPluginBlockBySelectionPath(editor);

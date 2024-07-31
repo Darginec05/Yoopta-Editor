@@ -1,4 +1,4 @@
-import { Descendant, Editor, Path, Point } from 'slate';
+import { Descendant, Path, Point } from 'slate';
 import { Plugin, PluginElementsMap, PluginOptions, PluginElementProps } from '../plugins/types';
 import { EditorBlurOptions } from './core/blur';
 import { BlockSelectedOptions } from './selection/setBlockSelected';
@@ -10,6 +10,8 @@ import { FocusBlockOptions } from './blocks/focusBlock';
 import { ToggleBlockOptions } from './blocks/toggleBlock';
 import { DeleteBlocksOptions } from './blocks/deleteBlocks';
 import { GetBlockOptions } from './blocks/getBlock';
+import { ReactEditor } from 'slate-react';
+import { HistoryEditor } from 'slate-history';
 
 export type YooptaBlockPath = [number];
 
@@ -28,7 +30,7 @@ export type YooptaBlockBaseMeta = {
 
 export type YooptaContentValue = Record<string, YooptaBlockData>;
 
-export type SlateEditor = Editor;
+export type SlateEditor = ReactEditor & HistoryEditor;
 
 // add 'end' | 'start'
 export type FocusAt = Path | Point;

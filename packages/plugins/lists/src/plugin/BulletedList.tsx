@@ -1,4 +1,5 @@
 import { buildBlockData, generateId, YooptaBlockData, YooptaPlugin } from '@yoopta/editor';
+import { Element, Transforms } from 'slate';
 import { BulletedListRender } from '../elements/BulletedList';
 import { onKeyDown } from '../events/onKeyDown';
 import { BulletedListElement, BulletedListPluginKeys } from '../types';
@@ -68,6 +69,23 @@ const BulletedList = new YooptaPlugin<BulletedListPluginKeys, BulletedListElemen
         return `- ${text}`;
       },
     },
+  },
+  normalize: (slate, editor) => {
+    const { normalizeNode } = slate;
+
+    slate.normalizeNode = (entry) => {
+      const [node, path] = entry;
+
+      if (Element.isElement(node) && node.type !== 'bulleted-list') {
+        console.log('NOT_MATCHED => bulleted-list node', node, path);
+        Transforms.setNodes(slate, { type: 'bulleted-list' }, { at: path });
+        return;
+      }
+
+      normalizeNode(entry);
+    };
+
+    return slate;
   },
 });
 

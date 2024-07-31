@@ -58,6 +58,7 @@ const RenderBlocks = ({ editor, marks, placeholder }: Props) => {
           elements={plugin.elements}
           options={plugin.options}
           placeholder={placeholder}
+          normalize={plugin.normalize}
         />
       </Block>,
     );
