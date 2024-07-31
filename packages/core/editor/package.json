@@ -1,5 +1,5 @@
 {
-  "name": "@yoopta/editor",
+  "name": "@team-tells-yoopta/editor",
   "version": "4.6.7",
   "license": "MIT",
   "private": false,
@@ -66,6 +66,5 @@
   "bugs": {
     "url": "https://github.com/Darginec05/Yoopta-Editor/issues"
   },
-  "homepage": "https://github.com/Darginec05/Yoopta-Editor#readme",
-  "gitHead": "600e0cf267a0ce7df074ddc7db1114d67c4185d1"
+  "homepage": "https://github.com/Darginec05/Yoopta-Editor#readme"
 }
