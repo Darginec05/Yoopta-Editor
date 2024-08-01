@@ -1,7 +1,6 @@
 import { createDraft, finishDraft } from 'immer';
 import { Editor, Element, Transforms } from 'slate';
 import { getRootBlockElementType } from '../../utils/blockElements';
-import { deepClone } from '../../utils/deepClone';
 import { buildSlateEditor } from '../../utils/editorBuilders';
 
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
@@ -67,10 +66,6 @@ export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options?:
     editor.children[block.id] = block;
 
     block.value = newSlate.children;
-
-    newSlate.redo();
-    newSlate.undo();
-    Editor.normalize(newSlate, { force: true });
 
     editor.children = finishDraft(editor.children);
     editor.applyChanges();

@@ -1,10 +1,18 @@
-import { Blocks, Elements, YooptaPlugin, SlateEditor, generateId, buildBlockElementsStructure } from '@yoopta/editor';
+import {
+  Blocks,
+  Elements,
+  YooptaPlugin,
+  SlateEditor,
+  generateId,
+  buildBlockElementsStructure,
+  SlateElement,
+} from '@yoopta/editor';
 import { AccordionElementKeys, AccordionListItemProps } from '../types';
 import { AccordionList } from '../renders/AccordionList';
 import { AccordionListItem } from '../renders/AccordionListItem';
 import { AccordionItemHeading } from '../renders/AccordionItemHeading';
 import { AccordionItemContent } from '../renders/AccordionItemContent';
-import { Element, Node, Transforms } from 'slate';
+import { Transforms } from 'slate';
 import { ListCollapse } from 'lucide-react';
 
 const ACCORDION_ELEMENTS = {
@@ -153,9 +161,11 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
         },
       },
       serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+
         return `<div>${element.children
           .map((listItem) => {
-            return `<details>${listItem.children
+            return `<details data-meta-align="${align}" data-meta-depth="${depth}">${listItem.children
               .map((item) => {
                 if (item.type === 'accordion-list-item-heading') {
                   return `<summary>${item.children.map((item) => item.text).join('')}</summary>`;
@@ -167,31 +177,6 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
           .join('')}</div>`;
       },
     },
-  },
-  normalize: (slate: SlateEditor) => {
-    const { normalizeNode } = slate;
-
-    slate.normalizeNode = (entry) => {
-      const [node, path] = entry;
-
-      if (Element.isElement(node) && node.type === 'accordion-list-item') {
-        for (const [child, childPath] of Node.children(slate, path)) {
-          if (Element.isElement(child) && child.type === 'accordion-list') {
-            Transforms.unwrapNodes(slate, { at: childPath });
-            return;
-          }
-
-          if (Element.isElement(child) && child.type === 'accordion-list-item') {
-            Transforms.unwrapNodes(slate, { at: childPath });
-            return;
-          }
-        }
-      }
-
-      normalizeNode(entry);
-    };
-
-    return slate;
   },
 });
 
