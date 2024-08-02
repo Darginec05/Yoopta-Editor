@@ -32,23 +32,6 @@ const Blockquote = new YooptaPlugin({
       },
     },
   },
-  normalize: (slate, editor) => {
-    const { normalizeNode } = slate;
-
-    slate.normalizeNode = (entry) => {
-      const [node, path] = entry;
-
-      if (Element.isElement(node) && node.type !== 'blockquote') {
-        console.log('NOT_MATCHED => blockquote node', node, path);
-        Transforms.setNodes(slate, { type: 'blockquote' }, { at: path });
-        return;
-      }
-
-      normalizeNode(entry);
-    };
-
-    return slate;
-  },
 });
 
 export { Blockquote };

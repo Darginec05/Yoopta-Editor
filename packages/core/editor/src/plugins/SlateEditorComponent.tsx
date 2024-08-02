@@ -49,7 +49,6 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   events,
   options,
   placeholder = `Type '/' for commands`,
-  normalize,
 }: Props<TKeys, TProps, TOptions>) => {
   const editor = useYooptaEditor();
   const block = useBlockData(id);
@@ -94,6 +93,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
 
       // Normalize only `simple` block elements.
       // Simple elements are elements that have only one defined block element type.
+      // [TODO] - handle validation for complex block elements
       if (Object.keys(blockElements).length > 1) {
         return normalizeNode(entry);
       }
@@ -103,7 +103,6 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
         const rootElementType = getRootBlockElementType(blockElements);
 
         if (!elementTypes.includes(type)) {
-          const element = Elements.getElement(editor, block.id, { path: path });
           Transforms.setNodes(slateEditor, { type: rootElementType, props: { ...node.props } }, { at: path });
           return;
         }
@@ -120,10 +119,6 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
 
       normalizeNode(entry);
     };
-
-    if (typeof normalize === 'function') {
-      slateEditor = normalize(slateEditor, editor);
-    }
 
     return slateEditor;
   }, [elements, id]);
@@ -276,7 +271,9 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       if (parsedHTML.body.childNodes.length > 0) {
         const blocks = deserializeHTML(editor, parsedHTML.body);
 
+        // If no blocks from HTML, then paste as plain text using default behavior from Slate
         if (blocks.length > 0) {
+          event.preventDefault();
           editor.insertBlocks(blocks, { at: editor.selection, focus: true });
           return;
         }

@@ -32,23 +32,6 @@ const Paragraph = new YooptaPlugin({
       },
     },
   },
-  normalize: (slate) => {
-    const { normalizeNode } = slate;
-
-    slate.normalizeNode = (entry) => {
-      const [node, path] = entry;
-
-      if (Element.isElement(node) && node.type !== 'paragraph') {
-        console.log('NOT_MATCHED => paragraph node', node, path);
-        Transforms.setNodes(slate, { type: 'paragraph' }, { at: path });
-        return;
-      }
-
-      normalizeNode(entry);
-    };
-
-    return slate;
-  },
 });
 
 export { Paragraph };

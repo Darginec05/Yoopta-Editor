@@ -10,7 +10,7 @@
   "private": true,
   "scripts": {
     "dev": "npm-run-all --parallel start serve",
-    "start": "yarn lerna run start --scope @yoopta/editor --scope @yoopta/accordion --scope @yoopta/link --scope @yoopta/blockquote --scope @yoopta/headings --scope @yoopta/paragraph --scope @yoopta/lists --parallel --ignore development",
+    "start": "yarn lerna run start --scope @yoopta/editor --scope @yoopta/accordion --scope @yoopta/link --scope @yoopta/blockquote --scope @yoopta/headings --scope @yoopta/paragraph --scope @yoopta/lists --scope @yoopta/file --parallel --ignore development",
     "serve": "yarn lerna run dev --scope=development",
     "build": "yarn clean && yarn install && yarn lerna run build --parallel --ignore development",
     "clean": "find ./packages -type d -name dist ! -path './packages/development/*' -exec rm -rf {} +",

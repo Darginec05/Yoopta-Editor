@@ -24,11 +24,7 @@ const MARKS_NODE_NAME_MATCHERS_MAP = {
   EM: { type: 'italic' },
 };
 
-const JUSTIFY_TO_ALIGNS = {
-  'flex-start': 'left',
-  center: 'center',
-  'flex-end': 'right',
-};
+const VALID_TEXT_ALIGNS = ['left', 'center', 'right', undefined];
 
 type PluginsMapByNode = {
   type: string;
@@ -114,7 +110,7 @@ function buildBlock(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElement
     rootNode.children = [{ text: '' }];
   }
 
-  const align = (el.getAttribute('data-meta-align') || 'left') as YooptaBlockData['meta']['align'];
+  const align = el.getAttribute('data-meta-align') as YooptaBlockData['meta']['align'];
   const depth = parseInt(el.getAttribute('data-meta-depth') || '0', 10);
 
   const blockData = buildBlockData({
@@ -123,8 +119,8 @@ function buildBlock(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElement
     value: [rootNode],
     meta: {
       order: 0,
-      align,
       depth,
+      align: VALID_TEXT_ALIGNS.includes(align) ? align : undefined,
     },
   });
 
@@ -158,7 +154,8 @@ export function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames
 
   if (plugin) {
     if (Array.isArray(plugin)) {
-      return plugin.map((p) => buildBlock(editor, p, el as HTMLElement, children));
+      const blocks = plugin.map((p) => buildBlock(editor, p, el as HTMLElement, children)).filter(Boolean);
+      return blocks;
     }
 
     return buildBlock(editor, plugin, el as HTMLElement, children);
@@ -180,7 +177,7 @@ function mapNodeChildren(child) {
     return { text: child[0] };
   }
 
-  if (child.text) {
+  if (child?.text) {
     return child;
   }
 

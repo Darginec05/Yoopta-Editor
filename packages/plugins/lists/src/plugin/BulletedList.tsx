@@ -70,23 +70,6 @@ const BulletedList = new YooptaPlugin<BulletedListPluginKeys, BulletedListElemen
       },
     },
   },
-  normalize: (slate, editor) => {
-    const { normalizeNode } = slate;
-
-    slate.normalizeNode = (entry) => {
-      const [node, path] = entry;
-
-      if (Element.isElement(node) && node.type !== 'bulleted-list') {
-        console.log('NOT_MATCHED => bulleted-list node', node, path);
-        Transforms.setNodes(slate, { type: 'bulleted-list' }, { at: path });
-        return;
-      }
-
-      normalizeNode(entry);
-    };
-
-    return slate;
-  },
 });
 
 export { BulletedList };

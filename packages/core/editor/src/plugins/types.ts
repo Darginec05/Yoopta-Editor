@@ -76,7 +76,6 @@ export type Plugin<TKeys extends string = string, TProps = Descendant, TOptions 
   events?: EventHandlers;
   options?: PluginOptions<TOptions>;
   parsers?: Partial<Record<PluginParserTypes, PluginParsers>>;
-  normalize?: (slate: SlateEditor, editor: YooEditor) => SlateEditor;
 };
 
 export type PluginParsers = {

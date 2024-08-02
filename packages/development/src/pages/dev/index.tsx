@@ -1,17 +1,5 @@
-import YooptaEditor, {
-  Blocks,
-  createYooptaEditor,
-  Elements,
-  useYooptaEditor,
-  useYooptaFocused,
-  YooEditor,
-  YooptaBlockData,
-  YooptaContentValue,
-} from '@yoopta/editor';
-import YooptaStarterKit from '@yoopta/starter-kit';
-import { html } from '@yoopta/exports';
+import YooptaEditor, { createYooptaEditor, YooEditor, YooptaBlockData, YooptaContentValue } from '@yoopta/editor';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { uploadToCloudinary } from '../../utils/cloudinary';
 import { MARKS } from '../../utils/yoopta/marks';
 import { YOOPTA_PLUGINS } from '../../utils/yoopta/plugins';
 import { TOOLS } from '../../utils/yoopta/tools';
@@ -103,49 +91,641 @@ const BasicExample = () => {
       ],
       type: 'Accordion',
       meta: {
-        order: 0,
+        order: 11,
         depth: 0,
       },
     },
-    '642727c9-732c-43ec-8b98-e49e73421641': {
-      id: '642727c9-732c-43ec-8b98-e49e73421641',
+    'b54622ee-0c19-4120-827e-4369cb0f1d03': {
+      id: 'b54622ee-0c19-4120-827e-4369cb0f1d03',
       value: [
         {
-          id: '9a1703cf-7c05-47ea-81a6-c8901fabb5f0',
-          type: 'blockquote',
+          id: 'f51016be-6081-4114-972f-bd93869b216e',
+          type: 'heading-one',
           children: [
             {
-              text: 'Some blockquote',
+              text: 'Getting Started',
+            },
+            {
+              text: '',
+            },
+            {
+              id: '536e7d93-d806-45c7-93cc-e8f7d9045190',
+              type: 'link',
+              props: {
+                url: 'https://vitejs.dev/guide/#getting-started',
+                target: '',
+                rel: '',
+                title: '​',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: '​',
+                },
+              ],
             },
           ],
+          props: {
+            nodeType: 'block',
+          },
         },
       ],
-      type: 'Blockquote',
+      type: 'HeadingOne',
+      meta: {
+        order: 0,
+        depth: 0,
+        align: 'left',
+      },
+    },
+    'b7caf1a0-686a-45b2-912f-5cbbef94fc62': {
+      id: 'b7caf1a0-686a-45b2-912f-5cbbef94fc62',
+      value: [
+        {
+          id: 'ccda7c3f-3c0b-4f93-a3a4-61183a9c96c3',
+          type: 'heading-two',
+          children: [
+            {
+              text: 'Overview',
+            },
+            {
+              text: '',
+            },
+            {
+              id: 'fd86e870-5697-45ea-8acf-53c136544c48',
+              type: 'link',
+              props: {
+                url: 'https://vitejs.dev/guide/#overview',
+                target: '',
+                rel: '',
+                title: '​',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: '​',
+                },
+              ],
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'HeadingTwo',
       meta: {
         order: 1,
         depth: 0,
+        align: 'left',
       },
     },
-    '4f7b258d-3e71-4cfa-8f90-2e8c54a1b6e1': {
-      id: '4f7b258d-3e71-4cfa-8f90-2e8c54a1b6e1',
+    '0143333d-9f44-4e36-a8ef-7a13b411cb25': {
+      id: '0143333d-9f44-4e36-a8ef-7a13b411cb25',
       value: [
         {
-          id: '9d8d60ab-95b7-44d6-a2c0-8ad3a53f2e93',
-          type: 'callout',
-          props: {
-            theme: 'info',
-          },
+          id: '590ef55a-b0db-47fc-ad67-85fe643b9cec',
+          type: 'paragraph',
           children: [
             {
-              text: 'Callout in da house',
+              text: 'Vite (French word for "quick", pronounced',
+            },
+            {
+              text: ' ',
+            },
+            {
+              code: true,
+              text: '/vit/',
+            },
+            {
+              text: ', like "veet") is a build tool that aims to provide a faster and leaner development experience for modern web projects. It consists of two major parts:',
             },
           ],
+          props: {
+            nodeType: 'block',
+          },
         },
       ],
-      type: 'Callout',
+      type: 'Paragraph',
       meta: {
         order: 2,
         depth: 0,
+        align: 'left',
+      },
+    },
+    '74d84542-a671-4d14-8557-be19b22d64b1': {
+      id: '74d84542-a671-4d14-8557-be19b22d64b1',
+      value: [
+        {
+          id: '637e1399-2ac8-40bf-9ce4-27ef58e62095',
+          type: 'bulleted-list',
+          children: [
+            {
+              text: 'A dev server that provides rich feature enhancements over native ES modules, for example extremely fast Hot Module Replacement (HMR).',
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'BulletedList',
+      meta: {
+        order: 3,
+        depth: 0,
+      },
+    },
+    '176a4353-c2da-4537-b369-d4953ceab75b': {
+      id: '176a4353-c2da-4537-b369-d4953ceab75b',
+      value: [
+        {
+          id: 'dc94b211-4f81-4da5-ae5d-406eca35f5f5',
+          type: 'bulleted-list',
+          children: [
+            {
+              text: 'A build command that bundles your code with Rollup, pre-configured to output highly optimized static assets for production.',
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'BulletedList',
+      meta: {
+        order: 4,
+        depth: 0,
+      },
+    },
+    'a33d3bb7-7cd0-4f04-bd63-d146e3a593d6': {
+      id: 'a33d3bb7-7cd0-4f04-bd63-d146e3a593d6',
+      value: [
+        {
+          id: 'a5354895-951c-4d2f-aaa3-69d8d7ee298b',
+          type: 'paragraph',
+          children: [
+            {
+              text: "Vite is opinionated and comes with sensible defaults out of the box. Read about what's possible in the",
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: '',
+            },
+            {
+              id: 'd8e67ce2-c59d-4b28-9ac4-e499abf59979',
+              type: 'link',
+              props: {
+                url: 'https://vitejs.dev/guide/features',
+                target: '',
+                rel: '',
+                title: 'Features Guide',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: 'Features Guide',
+                },
+              ],
+            },
+            {
+              text: '. Support for frameworks or integration with other tools is possible through',
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: '',
+            },
+            {
+              id: 'ad3de686-083d-4e61-afce-56355b649d6f',
+              type: 'link',
+              props: {
+                url: 'https://vitejs.dev/guide/using-plugins',
+                target: '',
+                rel: '',
+                title: 'Plugins',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: 'Plugins',
+                },
+              ],
+            },
+            {
+              text: '. The',
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: '',
+            },
+            {
+              id: '4287179d-f36f-4ebe-9626-69ad49f599cc',
+              type: 'link',
+              props: {
+                url: 'https://vitejs.dev/config/',
+                target: '',
+                rel: '',
+                title: 'Config Section',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: 'Config Section',
+                },
+              ],
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: 'explains how to adapt Vite to your project if needed.',
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'Paragraph',
+      meta: {
+        order: 5,
+        depth: 0,
+        align: 'left',
+      },
+    },
+    'edef9098-e1bd-4ada-8fec-8fd0bdd79099': {
+      id: 'edef9098-e1bd-4ada-8fec-8fd0bdd79099',
+      value: [
+        {
+          id: '9846750a-b86f-417f-b098-a61184d0b84b',
+          type: 'paragraph',
+          children: [
+            {
+              text: 'Vite is also highly extensible via its',
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: '',
+            },
+            {
+              id: 'f9402699-9ba6-44a2-b8f0-9fbfe830d367',
+              type: 'link',
+              props: {
+                url: 'https://vitejs.dev/guide/api-plugin',
+                target: '',
+                rel: '',
+                title: 'Plugin API',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: 'Plugin API',
+                },
+              ],
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: 'and',
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: '',
+            },
+            {
+              id: '67eba545-98e3-4a4a-b001-4919e5b39eaf',
+              type: 'link',
+              props: {
+                url: 'https://vitejs.dev/guide/api-javascript',
+                target: '',
+                rel: '',
+                title: 'JavaScript API',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: 'JavaScript API',
+                },
+              ],
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: 'with full typing support.',
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'Paragraph',
+      meta: {
+        order: 6,
+        depth: 0,
+        align: 'left',
+      },
+    },
+    '438f8e49-4fd0-4e35-8f2b-ef16e05fac25': {
+      id: '438f8e49-4fd0-4e35-8f2b-ef16e05fac25',
+      value: [
+        {
+          id: '95133998-f55b-4c39-ab8b-f9755c29f288',
+          type: 'paragraph',
+          children: [
+            {
+              text: 'You can learn more about the rationale behind the project in the',
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: '',
+            },
+            {
+              id: '0cf96852-c959-4ae4-af12-0ad3a99a9ca1',
+              type: 'link',
+              props: {
+                url: 'https://vitejs.dev/guide/why',
+                target: '',
+                rel: '',
+                title: 'Why Vite',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: 'Why Vite',
+                },
+              ],
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: 'section.',
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'Paragraph',
+      meta: {
+        order: 7,
+        depth: 0,
+        align: 'left',
+      },
+    },
+    '8eec0a67-08d9-4762-9f6e-be74718c2ecd': {
+      id: '8eec0a67-08d9-4762-9f6e-be74718c2ecd',
+      value: [
+        {
+          id: '52cb9a00-0fed-4608-b030-8035704477b6',
+          type: 'heading-two',
+          children: [
+            {
+              text: 'Browser Support',
+            },
+            {
+              text: '',
+            },
+            {
+              id: 'ef7f17ab-3744-4b4d-a842-700a7770e436',
+              type: 'link',
+              props: {
+                url: 'https://vitejs.dev/guide/#browser-support',
+                target: '',
+                rel: '',
+                title: '​',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: '​',
+                },
+              ],
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'HeadingTwo',
+      meta: {
+        order: 8,
+        depth: 0,
+        align: 'left',
+      },
+    },
+    '21f0a01e-d7fd-4924-9e1d-d9684aed05db': {
+      id: '21f0a01e-d7fd-4924-9e1d-d9684aed05db',
+      value: [
+        {
+          id: 'a65abaa1-7f6f-4af9-a596-871248332e8c',
+          type: 'paragraph',
+          children: [
+            {
+              text: 'During development, Vite sets',
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: '',
+            },
+            {
+              id: '4537b140-1be7-44d2-a889-dfab7cd53b82',
+              type: 'link',
+              props: {
+                url: 'https://esbuild.github.io/api/#target',
+                target: '_blank',
+                rel: 'noreferrer',
+                title: 'esnext as the transform target',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: 'esnext as the transform target',
+                },
+              ],
+            },
+            {
+              text: ', because we assume a modern browser is used and it supports all of the latest JavaScript and CSS features. This prevents syntax lowering, letting Vite serve modules as close as possible to the original source code.',
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'Paragraph',
+      meta: {
+        order: 9,
+        depth: 0,
+        align: 'left',
+      },
+    },
+    'f719be9a-f174-40ef-b88d-f7f147a740aa': {
+      id: 'f719be9a-f174-40ef-b88d-f7f147a740aa',
+      value: [
+        {
+          id: '3fad48bf-69fa-4f0e-ad78-b2e433f94786',
+          type: 'paragraph',
+          children: [
+            {
+              text: 'For the production build, by default Vite targets browsers that support',
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: '',
+            },
+            {
+              id: '3ff92ea3-4046-4352-974d-bbaf88429aba',
+              type: 'link',
+              props: {
+                url: 'https://caniuse.com/es6-module',
+                target: '_blank',
+                rel: 'noreferrer',
+                title: 'native ES Modules',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: 'native ES Modules',
+                },
+              ],
+            },
+            {
+              text: ',',
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: '',
+            },
+            {
+              id: '76d0b035-b408-4500-bec5-fcac5b74740e',
+              type: 'link',
+              props: {
+                url: 'https://caniuse.com/es6-module-dynamic-import',
+                target: '_blank',
+                rel: 'noreferrer',
+                title: 'native ESM dynamic import',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: 'native ESM dynamic import',
+                },
+              ],
+            },
+            {
+              text: ', and',
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: '',
+            },
+            {
+              id: '90c30151-630a-48da-bcf8-7959abd17a12',
+              type: 'link',
+              props: {
+                url: 'https://caniuse.com/mdn-javascript_operators_import_meta',
+                target: '_blank',
+                rel: 'noreferrer',
+                title: 'import.meta',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: 'import.meta',
+                },
+              ],
+            },
+            {
+              text: '. Legacy browsers can be supported via the official',
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: '',
+            },
+            {
+              id: 'ab0c677a-ae60-49b8-a232-134e0b29f9b1',
+              type: 'link',
+              props: {
+                url: 'https://github.com/vitejs/vite/tree/main/packages/plugin-legacy',
+                target: '_blank',
+                rel: 'noreferrer',
+                title: '@vitejs/plugin-legacy',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: '@vitejs/plugin-legacy',
+                },
+              ],
+            },
+            {
+              text: '. See the',
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: '',
+            },
+            {
+              id: '1d1ffc4b-f272-4aa4-8b85-45505f2c80ae',
+              type: 'link',
+              props: {
+                url: 'https://vitejs.dev/guide/build',
+                target: '',
+                rel: '',
+                title: 'Building for Production',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: 'Building for Production',
+                },
+              ],
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: 'section for more details.',
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'Paragraph',
+      meta: {
+        order: 10,
+        depth: 0,
+        align: 'left',
       },
     },
   });
@@ -154,10 +734,8 @@ const BasicExample = () => {
     editor.on('change', (data) => setValue(data));
   }, []);
 
-  console.log(value['5bdec252-def2-49d1-9a6d-414bc5d1b5e6'].value);
-
   return (
-    <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={selectionRef}>
+    <form className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={selectionRef}>
       <YooptaEditor
         editor={editor}
         plugins={YOOPTA_PLUGINS}
@@ -170,45 +748,7 @@ const BasicExample = () => {
         style={{ width: 750 }}
         value={value}
       />
-
-      {/* <YooptaStarterKit
-        id="starter-kit"
-        value={value}
-        onChange={(data) => setValue(data)}
-        style={{ width: 650 }}
-        selectionBoxRoot={selectionRef}
-        placeholder="Start typing here..."
-        media={{
-          imageUpload: async (file: File) => {
-            const data = await uploadToCloudinary(file, 'image');
-
-            return {
-              src: data.secure_url,
-              alt: 'cloudinary',
-              sizes: {
-                width: data.width,
-                height: data.height,
-              },
-            };
-          },
-          fileUpload: async (file: File) => {
-            const response = await uploadToCloudinary(file, 'auto');
-            return { src: response.url, name: response.name };
-          },
-          videoUpload: async (file: File) => {
-            const data = await uploadToCloudinary(file, 'video');
-            return {
-              src: data.secure_url,
-              alt: 'cloudinary',
-              sizes: {
-                width: data.width,
-                height: data.height,
-              },
-            };
-          },
-        }}
-      /> */}
-    </div>
+    </form>
   );
 };
 

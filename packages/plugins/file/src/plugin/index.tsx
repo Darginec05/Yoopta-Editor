@@ -51,6 +51,11 @@ const File = new YooptaPlugin<FilePluginElements, FileElementProps, FilePluginOp
             const hasDownloadAttr = !!el.getAttribute('download');
             const href = el.getAttribute('href');
 
+            // console.log({
+            //   href,
+            //   hasDownloadAttr,
+            // });
+
             if (!hasDownloadAttr) return;
             if (!href) return;
 
