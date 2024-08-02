@@ -41,16 +41,17 @@ const SelectContent = ({ children }) => {
   );
 };
 
-const SelectItem = ({ value, children }) => {
+const SelectItem = ({ value, children, onChange }) => {
   return (
-    <SelectPrimitive.Item
-      value={value}
+    <button
+      type="button"
       className="yoo-code-relative yoo-code-flex yoo-code-w-full yoo-code-cursor-pointer yoo-code-select-none yoo-code-items-center yoo-code-rounded-sm yoo-code-py-1.5 yoo-code-pl-2 yoo-code-pr-2 yoo-code-text-sm yoo-code-outline-none focus:yoo-code-bg-[#eeeeee] focus:yoo-code-text-accent-foreground data-[disabled]:yoo-code-pointer-events-none data-[disabled]:yoo-code-opacity-50"
+      onClick={() => onChange(value)}
     >
       <span className="yoo-code-capitalize yoo-code-flex yoo-code-justify-between yoo-code-items-center yoo-code-w-full">
         {children}
       </span>
-    </SelectPrimitive.Item>
+    </button>
   );
 };
 
@@ -64,7 +65,7 @@ type SelectProps = {
 
 const Select = ({ options, onChange, value, children, className }: SelectProps) => {
   return (
-    <SelectRoot onValueChange={onChange} value={value}>
+    <SelectRoot value={value}>
       {children || (
         <SelectTrigger className={className}>
           <SelectValue placeholder="Theme" />
@@ -74,7 +75,7 @@ const Select = ({ options, onChange, value, children, className }: SelectProps) 
         {options.map((option) => {
           const isCurrent = option.value === value;
           return (
-            <SelectItem key={option.value} value={option.value}>
+            <SelectItem key={option.value} value={option.value} onChange={onChange}>
               {option.label}
               {isCurrent && <CheckmarkIcon />}
             </SelectItem>

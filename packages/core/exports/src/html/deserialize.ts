@@ -110,6 +110,8 @@ function buildBlock(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElement
     rootNode.children = [{ text: '' }];
   }
 
+  if (!nodeElementOrBlocks && plugin.parse) return;
+
   const align = el.getAttribute('data-meta-align') as YooptaBlockData['meta']['align'];
   const depth = parseInt(el.getAttribute('data-meta-depth') || '0', 10);
 
