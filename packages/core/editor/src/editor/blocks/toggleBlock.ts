@@ -1,7 +1,7 @@
 import { createDraft, finishDraft } from 'immer';
 import { Editor, Element, Transforms } from 'slate';
 import { getRootBlockElementType } from '../../utils/blockElements';
-import { buildSlateEditor } from '../../utils/editorBuilders';
+import { buildSlateEditor } from '../../utils/buildSlate';
 
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';

@@ -46,7 +46,10 @@ const SelectItem = ({ value, children, onChange }) => {
     <button
       type="button"
       className="yoo-code-relative yoo-code-flex yoo-code-w-full yoo-code-cursor-pointer yoo-code-select-none yoo-code-items-center yoo-code-rounded-sm yoo-code-py-1.5 yoo-code-pl-2 yoo-code-pr-2 yoo-code-text-sm yoo-code-outline-none focus:yoo-code-bg-[#eeeeee] focus:yoo-code-text-accent-foreground data-[disabled]:yoo-code-pointer-events-none data-[disabled]:yoo-code-opacity-50"
-      onClick={() => onChange(value)}
+      onClick={(e) => {
+        onChange(value);
+        console.log('onChange(value)', onChange(value));
+      }}
     >
       <span className="yoo-code-capitalize yoo-code-flex yoo-code-justify-between yoo-code-items-center yoo-code-w-full">
         {children}
@@ -63,17 +66,18 @@ type SelectProps = {
   children?: React.ReactNode;
 };
 
-const Select = ({ options, onChange, value, children, className }: SelectProps) => {
+const Select = ({ options, onChange, value, children }: SelectProps) => {
   return (
     <SelectRoot value={value}>
-      {children || (
-        <SelectTrigger className={className}>
-          <SelectValue placeholder="Theme" />
-        </SelectTrigger>
-      )}
+      {children}
       <SelectContent>
         {options.map((option) => {
           const isCurrent = option.value === value;
+          if (isCurrent) {
+            console.log('option.value', option.value);
+            console.log('value', value);
+          }
+
           return (
             <SelectItem key={option.value} value={option.value} onChange={onChange}>
               {option.label}

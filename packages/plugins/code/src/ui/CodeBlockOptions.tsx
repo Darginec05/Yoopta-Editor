@@ -1,4 +1,4 @@
-import { UI as UI_HELPERS, YooEditor, YooptaBlockData } from '@yoopta/editor';
+import { Elements, UI as UI_HELPERS, YooEditor, YooptaBlockData } from '@yoopta/editor';
 import { Select } from './Select';
 import { THEMES_MAP } from '../utils/themes';
 
@@ -24,10 +24,15 @@ export const CodeBlockOptions = ({ block, editor, element }: Props) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const onChangeTheme = (theme: string) => {
+    // We change it directly in the block because this plugin doesn't have Slate instance
+    // because it's a plugin with custom editor
     editor.updateBlock(block.id, { value: [{ ...element, props: { ...element.props, theme } }] });
   };
 
   const onChangeLanguage = (language: string) => {
+    // We change it directly in the block because this plugin doesn't have Slate instance
+    // because it's a plugin with custom editor
+
     editor.updateBlock(block.id, { value: [{ ...element, props: { ...element.props, language } }] });
   };
 

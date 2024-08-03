@@ -1,6 +1,6 @@
 import { createDraft, finishDraft } from 'immer';
+import { buildSlateEditor } from '../../utils/buildSlate';
 import { deepClone } from '../../utils/deepClone';
-import { buildSlateEditor } from '../../utils/editorBuilders';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../../utils/generateId';
 import { YooEditor, YooptaBlockData, YooptaEditorTransformOptions } from '../types';

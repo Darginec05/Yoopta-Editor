@@ -2,12 +2,11 @@ import { createDraft, finishDraft } from 'immer';
 import { Transforms } from 'slate';
 import { buildBlockData } from '../../components/Editor/utils';
 import { buildBlockElementsStructure } from '../../utils/blockElements';
-import { deepClone } from '../../utils/deepClone';
-import { buildSlateEditor } from '../../utils/editorBuilders';
+import { buildSlateEditor } from '../../utils/buildSlate';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { generateId } from '../../utils/generateId';
-import { YooEditor, YooptaEditorTransformOptions, SlateElement, YooptaBlock } from '../types';
+import { YooEditor, YooptaEditorTransformOptions } from '../types';
 
 export type CreateBlockOptions = YooptaEditorTransformOptions & {
   deleteText?: boolean;

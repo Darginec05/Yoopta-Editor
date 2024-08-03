@@ -48,7 +48,7 @@ export function serialize(editor: YooEditor, blocksData: YooptaBlockData[]) {
     const plugin = editor.plugins[blockData.type];
 
     if (plugin && plugin.parsers?.html?.serialize) {
-      const content = serializeChildren(blockData.value[0].children, editor.plugins);
+      const content = serializeChildren((blockData.value[0] as SlateElement).children, editor.plugins);
       const text = plugin.parsers.html.serialize(blockData.value[0] as SlateElement, content);
       return `${text}\n`;
     }

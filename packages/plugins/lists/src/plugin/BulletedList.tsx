@@ -54,7 +54,7 @@ const BulletedList = new YooptaPlugin<BulletedListPluginKeys, BulletedListElemen
                 });
               });
 
-            if (bulletListBlocks.length > 1) return bulletListBlocks;
+            if (bulletListBlocks.length > 0) return bulletListBlocks;
           }
         },
       },
