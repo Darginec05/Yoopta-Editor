@@ -66,7 +66,9 @@ type SelectProps = {
   children?: React.ReactNode;
 };
 
-const Select = ({ options, onChange, value, children }: SelectProps) => {
+const Select = ({ options, onChange, value, children, className }: SelectProps) => {
+  console.log(className, ' :value: ', value);
+
   return (
     <SelectRoot value={value}>
       {children}
@@ -74,8 +76,7 @@ const Select = ({ options, onChange, value, children }: SelectProps) => {
         {options.map((option) => {
           const isCurrent = option.value === value;
           if (isCurrent) {
-            console.log('option.value', option.value);
-            console.log('value', value);
+            console.log(className, ' :option.value: ', option.value);
           }
 
           return (
