@@ -1,4 +1,5 @@
 import { buildBlockData, generateId, YooptaBlockData, YooptaPlugin } from '@yoopta/editor';
+import { Element, Transforms } from 'slate';
 import { BulletedListRender } from '../elements/BulletedList';
 import { onKeyDown } from '../events/onKeyDown';
 import { BulletedListElement, BulletedListPluginKeys } from '../types';
@@ -53,7 +54,7 @@ const BulletedList = new YooptaPlugin<BulletedListPluginKeys, BulletedListElemen
                 });
               });
 
-            if (bulletListBlocks.length > 1) return bulletListBlocks;
+            if (bulletListBlocks.length > 0) return bulletListBlocks;
           }
         },
       },

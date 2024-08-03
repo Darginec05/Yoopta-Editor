@@ -1,6 +1,3 @@
-import { withReact } from 'slate-react';
-import { withHistory } from 'slate-history';
-import { createEditor, Editor } from 'slate';
 import { YooEditor, YooptaBlockData } from '../editor/types';
 import { Plugin, PluginElement, PluginElementsMap } from '../plugins/types';
 import { YooptaMark } from '../marks';
@@ -10,11 +7,11 @@ import { getValue } from '../editor/textFormats/getValue';
 import { isActive } from '../editor/textFormats/isActive';
 import { toggle } from '../editor/textFormats/toggle';
 import { update } from '../editor/textFormats/update';
-import { withShortcuts } from '../extensions/shortcuts';
 import { getRootBlockElement } from './blockElements';
 import { updateBlock } from '../editor/blocks/updateBlock';
 import { toggleBlock, ToggleBlockOptions } from '../editor/blocks/toggleBlock';
 import { deleteBlock, DeleteBlockOptions } from '../editor/blocks/deleteBlock';
+import { buildSlateEditor } from './buildSlate';
 
 export function buildMarks(editor, marks: YooptaMark<any>[]) {
   const formats: YooEditor['formats'] = {};
@@ -91,11 +88,6 @@ export function buildBlockSlateEditors(editor: YooEditor) {
   });
 
   return blockEditorsMap;
-}
-
-export function buildSlateEditor(editor: YooEditor): Editor {
-  const slate = withShortcuts(editor, withHistory(withReact(createEditor())));
-  return slate;
 }
 
 export function buildBlockShortcuts(editor: YooEditor) {

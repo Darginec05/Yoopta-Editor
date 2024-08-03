@@ -1,7 +1,7 @@
 import { createDraft, finishDraft } from 'immer';
 import { Editor, Path } from 'slate';
 import { ReactEditor } from 'slate-react';
-import { buildSlateEditor } from '../../utils/editorBuilders';
+import { buildSlateEditor } from '../../utils/buildSlate';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { YooEditor, YooptaEditorTransformOptions, YooptaBlockData, YooptaBlockPath } from '../types';

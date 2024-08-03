@@ -10,8 +10,6 @@ export const getChildren = (props) => {
     const n = node.children[i];
 
     if (isElement(n)) {
-      if (node.type === 'code' || node.type === 'code-line') console.log('node', node);
-
       children.push(
         <RenderElement
           key={n.id}

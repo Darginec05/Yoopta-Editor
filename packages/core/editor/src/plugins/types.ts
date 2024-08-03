@@ -1,7 +1,7 @@
 import { HTMLAttributes, ReactElement, ReactNode } from 'react';
 import { Descendant, Editor, Path } from 'slate';
 import { RenderElementProps as RenderSlateElementProps, RenderLeafProps } from 'slate-react';
-import { SlateElement, YooEditor, YooptaBlockBaseMeta, YooptaBlockData } from '../editor/types';
+import { SlateEditor, SlateElement, YooEditor, YooptaBlockBaseMeta, YooptaBlockData } from '../editor/types';
 import { YooptaMark } from '../marks';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS_TYPE } from '../utils/hotkeys';
@@ -58,7 +58,7 @@ export type PluginElementsMap<TKeys extends string = string, TProps = PluginDefa
 export type EventHandlers = {
   [key in keyof EditorEventHandlers]: (
     editor: YooEditor,
-    slate: Editor,
+    slate: SlateEditor,
     options: PluginEventHandlerOptions,
   ) => EditorEventHandlers[key] | void;
 };
@@ -94,7 +94,7 @@ export type PluginserializeParser = (
 
 export type PluginDeserializeParser = {
   nodeNames: string[];
-  parse?: (el: HTMLElement) => SlateElement<string, any> | YooptaBlockData[] | void;
+  parse?: (el: HTMLElement, editor: YooEditor) => SlateElement<string, any> | YooptaBlockData[] | void;
 };
 
 export type LeafFormats<K extends string, V> = {

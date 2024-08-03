@@ -2,12 +2,17 @@ import { Editor, Element as SlateElement, Transforms, Range } from 'slate';
 
 // [TODO] - JUST FOR TEST
 function isUrl(string) {
-  try {
-    new URL(string);
-    return true;
-  } catch (_) {
-    return false;
-  }
+  const pattern = new RegExp(
+    '^(https?:\\/\\/)?' +
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' +
+      '((\\d{1,3}\\.){3}\\d{1,3}))' +
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' +
+      '(\\?[;&a-z\\d%_.~+=-]*)?' +
+      '(\\#[-a-z\\d_]*)?$',
+    'i',
+  );
+
+  return !!pattern.test(string);
 }
 
 const isLinkActive = (editor) => {

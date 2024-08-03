@@ -2,9 +2,11 @@ import { createDraft, finishDraft } from 'immer';
 import { Transforms } from 'slate';
 import { buildBlockData } from '../../components/Editor/utils';
 import { buildBlockElementsStructure } from '../../utils/blockElements';
+import { buildSlateEditor } from '../../utils/buildSlate';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
-import { YooEditor, YooptaEditorTransformOptions, SlateElement, YooptaBlock } from '../types';
+import { generateId } from '../../utils/generateId';
+import { YooEditor, YooptaEditorTransformOptions } from '../types';
 
 export type CreateBlockOptions = YooptaEditorTransformOptions & {
   deleteText?: boolean;
@@ -13,47 +15,44 @@ export type CreateBlockOptions = YooptaEditorTransformOptions & {
 export function createBlock(editor: YooEditor, type: string, options?: CreateBlockOptions) {
   editor.children = createDraft(editor.children);
 
-  const block = findPluginBlockBySelectionPath(editor);
-  if (!block) throw new Error(`No block found in the current selection path. Passed path: ${editor.selection}`);
+  const fromBlock = findPluginBlockBySelectionPath(editor);
+  if (!fromBlock) throw new Error(`No fromBlock found in the current selection path. Passed path: ${editor.selection}`);
 
-  const slate = options?.slate || findSlateBySelectionPath(editor, { at: [block?.meta.order] });
+  const slate = options?.slate || findSlateBySelectionPath(editor, { at: [fromBlock?.meta.order] });
   if (!slate || !slate.selection) return;
 
   const selectedBlock = editor.blocks[type];
   const elements = buildBlockElementsStructure(editor, type);
 
-  // Transforms.setNodes(slate, elements, {
-  //   at: [0],
-  //   match: (n) => Element.isElement(n),
-  //   mode: 'highest',
-  // });
-
-  // Transforms.insertNodes(slate, elements, { at: slate.selection.anchor.path.slice(0, 1) });
-
   if (options?.deleteText) Transforms.delete(slate, { at: [0, 0] });
 
   const blockData = buildBlockData({
-    id: block.id,
+    id: generateId(),
     type: selectedBlock.type,
     meta: {
-      order: block.meta.order,
-      depth: block.meta.depth,
-      align: block.meta.align,
+      order: fromBlock.meta.order,
+      depth: fromBlock.meta.depth,
+      align: fromBlock.meta.align,
     },
-    value: [elements],
   });
 
-  slate.children = blockData.value;
-  const blockId = blockData.id;
+  const newSlate = buildSlateEditor(editor);
+  newSlate.children = [elements];
 
-  editor.children[blockId] = blockData;
-  editor.blockEditorsMap[blockId] = slate;
+  delete editor.children[fromBlock.id];
+  delete editor.blockEditorsMap[fromBlock.id];
+
+  editor.blockEditorsMap[blockData.id] = newSlate;
+  editor.children[blockData.id] = blockData;
+
+  blockData.value = newSlate.children;
+  const blockId = blockData.id;
 
   editor.children = finishDraft(editor.children);
   editor.applyChanges();
   editor.emit('change', editor.children);
 
   if (options?.focus) {
-    editor.focusBlock(blockId, { slate, waitExecution: true });
+    editor.focusBlock(blockId, { slate: newSlate, waitExecution: true });
   }
 }

@@ -30,7 +30,7 @@ const FileUploader = ({ accept = '', onClose, blockId, onSetLoading }: Props) =>
           src: response.src,
           name: response.name || file.name,
           size: response.size || file.size,
-          format: format,
+          format: response.format,
         },
       });
     } catch (error) {

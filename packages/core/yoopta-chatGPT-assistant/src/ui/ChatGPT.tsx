@@ -199,8 +199,6 @@ const ChatGPTAssistant = ({
     const { anchor, focus } = lastSelection;
     const string = Editor.string(editor, anchor.path);
 
-    console.log('string', string);
-    console.log('is', string.trim() === TRIGGER);
     const fromTrigger = string.trim() === TRIGGER;
 
     if (fromTrigger) {

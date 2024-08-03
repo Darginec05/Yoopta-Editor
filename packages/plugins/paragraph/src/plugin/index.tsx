@@ -1,4 +1,5 @@
 import { YooptaPlugin } from '@yoopta/editor';
+import { Element, Transforms } from 'slate';
 import { ParagraphRender } from '../ui/Paragraph';
 
 const Paragraph = new YooptaPlugin({

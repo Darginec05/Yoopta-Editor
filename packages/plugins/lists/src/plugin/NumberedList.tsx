@@ -55,7 +55,7 @@ const NumberedList = new YooptaPlugin<'numbered-list', ListElementProps>({
                   meta: { order: 0, depth: 0 },
                 });
               });
-            if (numberedListBlocks.length > 1) return numberedListBlocks;
+            if (numberedListBlocks.length > 0) return numberedListBlocks;
           }
         },
       },

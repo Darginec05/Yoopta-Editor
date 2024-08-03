@@ -4,7 +4,7 @@ export type FileElementProps = {
   size: number | null;
   name: string | null;
   src: string | null;
-  format: string | null;
+  format?: string | null;
 };
 
 export type FilePluginElements = 'file';

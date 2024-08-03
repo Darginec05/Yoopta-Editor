@@ -60,7 +60,7 @@ const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
                 });
               });
 
-            if (todoListBlocks.length > 1) return todoListBlocks;
+            if (todoListBlocks.length > 0) return todoListBlocks;
           }
         },
       },

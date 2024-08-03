@@ -1,19 +1,9 @@
 import { createDraft, finishDraft } from 'immer';
-import { createEditor, Editor } from 'slate';
-import { withHistory } from 'slate-history';
-import { withReact } from 'slate-react';
 import { buildBlockData } from '../../components/Editor/utils';
-import { withShortcuts } from '../../extensions/shortcuts';
+import { buildSlateEditor } from '../../utils/buildSlate';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../../utils/generateId';
 import { YooEditor, YooptaEditorTransformOptions } from '../types';
-// // [TODO] Circular deps
-// import { buildSlateEditor } from '../../utils/editorBuilders';
-
-function buildSlateEditor(editor: YooEditor): Editor {
-  const slate = withShortcuts(editor, withHistory(withReact(createEditor())));
-  return slate;
-}
 
 export type DeleteBlockOptions = YooptaEditorTransformOptions & {
   deleteAll?: boolean;

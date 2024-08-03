@@ -37,8 +37,8 @@ const RenderBlocks = ({ editor, marks, placeholder }: Props) => {
   const blocks: JSX.Element[] = [];
 
   for (let i = 0; i < childrenKeys.length; i++) {
-    const childrenId = childrenKeys[i];
-    const block = editor.children[childrenId];
+    const blockId = childrenKeys[i];
+    const block = editor.children[blockId];
     const plugin = editor.plugins[block.type];
 
     if (!block || !plugin) {
@@ -47,11 +47,11 @@ const RenderBlocks = ({ editor, marks, placeholder }: Props) => {
     }
 
     blocks.push(
-      <Block key={childrenId} block={block} blockId={childrenId}>
+      <Block key={blockId} block={block} blockId={blockId}>
         <SlateEditorComponent
-          key={childrenId}
+          key={blockId}
           type={block.type}
-          id={childrenId}
+          id={blockId}
           marks={marks}
           customEditor={plugin.customEditor}
           events={plugin.events}

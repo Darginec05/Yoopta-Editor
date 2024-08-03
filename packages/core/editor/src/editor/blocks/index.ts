@@ -10,6 +10,7 @@ import { duplicateBlock } from './duplicateBlock';
 import { updateBlock } from './updateBlock';
 import { toggleBlock } from './toggleBlock';
 import { insertBlocks } from './insertBlocks';
+import { createBlock } from './createBlock';
 import { getBlock } from './getBlock';
 
 export const Blocks = {
@@ -24,6 +25,7 @@ export const Blocks = {
   updateBlock,
   toggleBlock,
   insertBlocks,
+  createBlock,
   deleteBlocks,
   getBlock,
   // [TODO]

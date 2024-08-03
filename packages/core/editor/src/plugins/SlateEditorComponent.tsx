@@ -7,7 +7,7 @@ import { YooptaMark } from '../marks';
 import { ExtendedLeafProps, PluginCustomEditorRenderProps, PluginEventHandlerOptions, Plugin } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS } from '../utils/hotkeys';
-import { Editor, NodeEntry, Range } from 'slate';
+import { Editor, Element, Node, NodeEntry, Path, Range, Transforms } from 'slate';
 import { TextLeaf } from '../components/TextLeaf/TextLeaf';
 
 import { generateId } from '../utils/generateId';
@@ -17,6 +17,8 @@ import { buildBlockData } from '../components/Editor/utils';
 import { withInlines } from './extenstions/withInlines';
 import { IS_FOCUSED_EDITOR } from '../utils/weakMaps';
 import { deserializeHTML } from '../parsers/deserializeHTML';
+import { getRootBlockElementType } from '../utils/blockElements';
+import { Elements } from '../editor/elements';
 
 type Props<TKeys extends string, TProps, TOptions> = Plugin<TKeys, TProps, TOptions> & {
   id: string;
@@ -57,6 +59,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
 
   const slate = useMemo(() => {
     let slateEditor = editor.blockEditorsMap[id];
+    const { normalizeNode } = slateEditor;
     const elementTypes = Object.keys(elements);
 
     elementTypes.forEach((elementType) => {
@@ -83,8 +86,42 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       }
     });
 
+    // This normalization is needed to validate the elements structure
+    slateEditor.normalizeNode = (entry) => {
+      const [node, path] = entry;
+      const blockElements = editor.blocks[block.type].elements;
+
+      // Normalize only `simple` block elements.
+      // Simple elements are elements that have only one defined block element type.
+      // [TODO] - handle validation for complex block elements
+      if (Object.keys(blockElements).length > 1) {
+        return normalizeNode(entry);
+      }
+
+      if (Element.isElement(node)) {
+        const { type } = node;
+        const rootElementType = getRootBlockElementType(blockElements);
+
+        if (!elementTypes.includes(type)) {
+          Transforms.setNodes(slateEditor, { type: rootElementType, props: { ...node.props } }, { at: path });
+          return;
+        }
+
+        if (node.type === rootElementType) {
+          for (const [child, childPath] of Node.children(slateEditor, path)) {
+            if (Element.isElement(child) && !slateEditor.isInline(child)) {
+              Transforms.unwrapNodes(slateEditor, { at: childPath });
+              return;
+            }
+          }
+        }
+      }
+
+      normalizeNode(entry);
+    };
+
     return slateEditor;
-  }, [elements]);
+  }, [elements, id]);
 
   const eventHandlers = useMemo<EditorEventHandlers>(() => {
     if (!events || editor.readOnly) return {};
@@ -228,12 +265,15 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
 
       const data = event.clipboardData;
       const html = data.getData('text/html');
+
       const parsedHTML = new DOMParser().parseFromString(html, 'text/html');
 
       if (parsedHTML.body.childNodes.length > 0) {
         const blocks = deserializeHTML(editor, parsedHTML.body);
 
+        // If no blocks from HTML, then paste as plain text using default behavior from Slate
         if (blocks.length > 0) {
+          event.preventDefault();
           editor.insertBlocks(blocks, { at: editor.selection, focus: true });
           return;
         }

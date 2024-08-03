@@ -1,4 +1,12 @@
-import { Blocks, Elements, YooptaPlugin } from '@yoopta/editor';
+import {
+  Blocks,
+  Elements,
+  YooptaPlugin,
+  SlateEditor,
+  generateId,
+  buildBlockElementsStructure,
+  SlateElement,
+} from '@yoopta/editor';
 import { AccordionElementKeys, AccordionListItemProps } from '../types';
 import { AccordionList } from '../renders/AccordionList';
 import { AccordionListItem } from '../renders/AccordionListItem';
@@ -135,13 +143,41 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
     },
     shortcuts: ['accordion'],
   },
-  // parsers: {
-  //   html: {
-  //     serialize: (element) => {
-  //       return '';
-  //     },
-  //   },
-  // },
+  parsers: {
+    html: {
+      deserialize: {
+        nodeNames: ['DETAILS'],
+        parse: (el, editor) => {
+          if (el.nodeName === 'DETAILS') {
+            const summary = el.querySelector('summary');
+            const p = el.querySelector('p');
+            const elementsStructure = buildBlockElementsStructure(editor, 'Accordion', {
+              [ACCORDION_ELEMENTS.AccordionListItemHeading]: summary?.textContent || '',
+              [ACCORDION_ELEMENTS.AccordionListItemContent]: p?.textContent || '',
+            });
+
+            return elementsStructure;
+          }
+        },
+      },
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+
+        return `<div>${element.children
+          .map((listItem) => {
+            return `<details data-meta-align="${align}" data-meta-depth="${depth}">${listItem.children
+              .map((item) => {
+                if (item.type === 'accordion-list-item-heading') {
+                  return `<summary>${item.children.map((item) => item.text).join('')}</summary>`;
+                }
+                return `<p>${item.children.map((item) => item.text).join('')}</p>`;
+              })
+              .join('')}</details>`;
+          })
+          .join('')}</div>`;
+      },
+    },
+  },
 });
 
 export { Accordion };
