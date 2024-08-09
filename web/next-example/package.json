@@ -59,7 +59,8 @@
     "slate-react": "^0.102.0",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
-    "use-debounce": "^10.0.0"
+    "use-debounce": "^10.0.0",
+    "yjs": "^13.6.18"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",

@@ -14,13 +14,15 @@
     "@dnd-kit/core": "^6.1.0",
     "@dnd-kit/sortable": "^8.0.0",
     "@floating-ui/react": "^0.26.9",
+    "@hocuspocus/provider": "^2.13.5",
     "@radix-ui/react-icons": "^1.3.0",
     "copy-to-clipboard": "^3.3.3",
     "eventemitter3": "^5.0.1",
     "immer": "^10.0.3",
     "is-hotkey": "^0.2.0",
     "lodash.clonedeep": "^4.5.0",
-    "slate-history": "^0.100.0"
+    "slate-history": "^0.100.0",
+    "yjs": "^13.6.18"
   },
   "peerDependencies": {
     "react": ">=17.0.2",
@@ -55,7 +57,11 @@
     "wysiwym"
   ],
   "devDependencies": {
-    "@types/lodash.uniqwith": "^4.5.7"
+    "@types/lodash.uniqwith": "^4.5.7",
+    "y-indexeddb": "^9.0.12",
+    "y-webrtc": "^10.3.0",
+    "y-websocket": "^2.0.4",
+    "yjs": "^13.6.18"
   },
   "description": "<h2 align=\"center\">Yoopta-Editor v1 🎉</h2> <p align=\"center\">Yoopta-Editor - is an open source notion-like editor 💥</p> <div align=\"center\"> <img width=\"574\" alt=\"Screen Shot 2023-01-25 at 16 04 29\" src=\"https://user-images.githubusercontent.com/29093118/215324525-882bf403-646c-4267-bb5f-c0f37509ac09.png\"> </div>",
   "repository": {

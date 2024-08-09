@@ -1,0 +1,288 @@
+{
+  "62989425-250c-4a20-8a0e-6734f0667dc8": {
+    "id": "62989425-250c-4a20-8a0e-6734f0667dc8",
+    "value": [
+      {
+        "id": "18460065-2142-415c-8a4b-b56bb0040cd1",
+        "type": "paragraph",
+        "children": [
+          {
+            "text": ""
+          }
+        ],
+        "props": {
+          "nodeType": "block"
+        }
+      }
+    ],
+    "type": "Paragraph",
+    "meta": {
+      "order": 1,
+      "depth": 0
+    }
+  },
+  "2b3f5216-6ff1-493b-a4ed-1aa51ee61269": {
+    "id": "2b3f5216-6ff1-493b-a4ed-1aa51ee61269",
+    "value": [
+      {
+        "id": "0fb20c7d-32f2-4f05-89f1-acd7d34c670d",
+        "type": "paragraph",
+        "children": [
+          {
+            "text": ""
+          }
+        ],
+        "props": {
+          "nodeType": "block"
+        }
+      }
+    ],
+    "type": "Paragraph",
+    "meta": {
+      "order": 12,
+      "depth": 0
+    }
+  },
+  "31b4af0e-8275-4e6b-8e79-042da8500751": {
+    "id": "31b4af0e-8275-4e6b-8e79-042da8500751",
+    "value": [
+      {
+        "id": "2a9c40e9-85ab-47d3-ac83-ea33c8fa7c27",
+        "type": "paragraph",
+        "children": [
+          {
+            "text": ""
+          }
+        ],
+        "props": {
+          "nodeType": "block"
+        }
+      }
+    ],
+    "type": "Paragraph",
+    "meta": {
+      "order": 12,
+      "depth": 0
+    }
+  },
+  "4f7a6dfc-f0e9-4ac3-9658-8518c9af6666": {
+    "id": "4f7a6dfc-f0e9-4ac3-9658-8518c9af6666",
+    "value": [
+      {
+        "id": "f98bb876-688b-4d39-a309-ae8f1f076f28",
+        "type": "heading-three",
+        "children": [
+          {
+            "text": "5. Отладка и Тестирование"
+          }
+        ],
+        "props": {
+          "nodeType": "block"
+        }
+      }
+    ],
+    "type": "HeadingThree",
+    "meta": {
+      "order": 2,
+      "depth": 0
+    }
+  },
+  "e723e412-1381-4827-bc9a-7e783dc6fc93": {
+    "id": "e723e412-1381-4827-bc9a-7e783dc6fc93",
+    "value": [
+      {
+        "id": "00a2d764-b831-4492-8fbf-bdbc44b4c855",
+        "type": "paragraph",
+        "children": [
+          {
+            "text": "Убедитесь, что вы тщательно тестируете все аспекты коллаборации, включая:"
+          }
+        ],
+        "props": {
+          "nodeType": "block"
+        }
+      }
+    ],
+    "type": "Paragraph",
+    "meta": {
+      "order": 3,
+      "depth": 0
+    }
+  },
+  "d1a71a7c-be9a-4d37-9778-035ebb4333ce": {
+    "id": "d1a71a7c-be9a-4d37-9778-035ebb4333ce",
+    "value": [
+      {
+        "id": "40cb06ff-c404-4c2e-9ee5-1101cb1acfe9",
+        "type": "bulleted-list",
+        "children": [
+          {
+            "text": "Тестирование с несколькими пользователями в реальном времени."
+          }
+        ],
+        "props": {
+          "nodeType": "block"
+        }
+      }
+    ],
+    "type": "BulletedList",
+    "meta": {
+      "order": 4,
+      "depth": 0
+    }
+  },
+  "32482ab7-1af2-459e-b6dd-59c287aad7fc": {
+    "id": "32482ab7-1af2-459e-b6dd-59c287aad7fc",
+    "value": [
+      {
+        "id": "58cf5c3d-0348-4259-b4cf-f5e27f6bcca6",
+        "type": "bulleted-list",
+        "children": [
+          {
+            "text": "Тестирование отключения сети и повторного подключения."
+          }
+        ],
+        "props": {
+          "nodeType": "block"
+        }
+      }
+    ],
+    "type": "BulletedList",
+    "meta": {
+      "order": 5,
+      "depth": 0
+    }
+  },
+  "f4fbb8f2-6b46-4be2-a5b5-ae94c4b71dd1": {
+    "id": "f4fbb8f2-6b46-4be2-a5b5-ae94c4b71dd1",
+    "value": [
+      {
+        "id": "68380c1f-1d97-4f54-b5ff-30787d1dbbfc",
+        "type": "bulleted-list",
+        "children": [
+          {
+            "text": "Проверка поведения при различных сценариях редактирования и конфликтах."
+          }
+        ],
+        "props": {
+          "nodeType": "block"
+        }
+      }
+    ],
+    "type": "BulletedList",
+    "meta": {
+      "order": 6,
+      "depth": 0
+    }
+  },
+  "b3ee3236-0f22-49f0-b37e-a5021509348a": {
+    "id": "b3ee3236-0f22-49f0-b37e-a5021509348a",
+    "value": [
+      {
+        "id": "ae9b8b38-5aad-4df2-b75f-0f26f80b26bd",
+        "type": "heading-three",
+        "children": [
+          {
+            "text": "6. Оптимизация и Улучшения"
+          }
+        ],
+        "props": {
+          "nodeType": "block"
+        }
+      }
+    ],
+    "type": "HeadingThree",
+    "meta": {
+      "order": 7,
+      "depth": 0
+    }
+  },
+  "b779f865-b7a9-4e3b-934b-c4ae1a138511": {
+    "id": "b779f865-b7a9-4e3b-934b-c4ae1a138511",
+    "value": [
+      {
+        "id": "f49f096e-59b9-40c4-a25d-d0ea305e6c8c",
+        "type": "paragraph",
+        "children": [
+          {
+            "text": "После первоначальной интеграции и тестирования вы можете рассмотреть возможности оптимизации:"
+          }
+        ],
+        "props": {
+          "nodeType": "block"
+        }
+      }
+    ],
+    "type": "Paragraph",
+    "meta": {
+      "order": 8,
+      "depth": 0
+    }
+  },
+  "89f7be96-5bcf-4058-a481-89db3bec30ee": {
+    "id": "89f7be96-5bcf-4058-a481-89db3bec30ee",
+    "value": [
+      {
+        "id": "68512cef-afd0-4eb3-8f55-4f1625c4fa94",
+        "type": "bulleted-list",
+        "children": [
+          {
+            "text": "Улучшение производительности синхронизации."
+          }
+        ],
+        "props": {
+          "nodeType": "block"
+        }
+      }
+    ],
+    "type": "BulletedList",
+    "meta": {
+      "order": 9,
+      "depth": 0
+    }
+  },
+  "7b4fceb5-0823-4902-9248-968d9829a9e9": {
+    "id": "7b4fceb5-0823-4902-9248-968d9829a9e9",
+    "value": [
+      {
+        "id": "c156acb3-5bb3-4012-b7a7-23f03386a36d",
+        "type": "bulleted-list",
+        "children": [
+          {
+            "text": "Уменьшение объема трафика и данных, отправляемых через WebSocket."
+          }
+        ],
+        "props": {
+          "nodeType": "block"
+        }
+      }
+    ],
+    "type": "BulletedList",
+    "meta": {
+      "order": 10,
+      "depth": 0
+    }
+  },
+  "d5cfa7d3-a939-4d50-bd95-a9814f07d6bf": {
+    "id": "d5cfa7d3-a939-4d50-bd95-a9814f07d6bf",
+    "value": [
+      {
+        "id": "95d1fc98-1f59-4e08-8acf-e943c1658403",
+        "type": "paragraph",
+        "children": [
+          {
+            "text": "Ваш подход будет сильно зависеть от конкретной архитектуры и потребностей вашего приложения. Применение Yjs в проекте с rich-text редактором, как Yoopta-Editor, может стать сложным, но в то же время дает мощный инструмент для реализации реального времени коллаборации."
+          }
+        ],
+        "props": {
+          "nodeType": "block"
+        }
+      }
+    ],
+    "type": "Paragraph",
+    "meta": {
+      "order": 11,
+      "depth": 0
+    }
+  }
+}

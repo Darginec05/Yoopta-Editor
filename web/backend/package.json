@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "@hocuspocus/extension-logger": "^2.13.5",
+    "@hocuspocus/extension-sqlite": "^2.13.5",
+    "@hocuspocus/server": "^2.13.5",
+    "y-protocols": "^1.0.6",
+    "yjs": "^13.6.18"
+  },
+  "devDependencies": {
+    "tsup": "^8.2.4"
+  },
+  "scripts": {
+    "start": "node dist/server.js",
+    "build": "yarn run tsup",
+    "dev": "yarn build --watch --onSuccess \"yarn run start\""
+  }
+}

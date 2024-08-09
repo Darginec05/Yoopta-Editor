@@ -76,6 +76,7 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
 
   editor.children = finishDraft(editor.children);
   editor.applyChanges();
+
   editor.emit('change', editor.children);
 
   if (focus) {

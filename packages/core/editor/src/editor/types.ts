@@ -12,6 +12,57 @@ import { DeleteBlocksOptions } from './blocks/deleteBlocks';
 import { GetBlockOptions } from './blocks/getBlock';
 import { ReactEditor } from 'slate-react';
 import { HistoryEditor } from 'slate-history';
+import { Doc } from 'yjs';
+
+export type YooEditor<TNodes = any> = {
+  id: string;
+  readOnly: boolean;
+  insertBlock: (data: YooptaBlockData, options?: YooptaEditorTransformOptions) => void;
+  insertBlocks: (blocks: YooptaBlockData[], options?: YooptaEditorTransformOptions) => void;
+  splitBlock: (options?: YooptaEditorTransformOptions) => void;
+  updateBlock: (id: string, data: Partial<YooptaBlockData>) => void;
+  deleteBlock: (options?: DeleteBlockOptions) => void;
+  deleteBlocks: (options?: DeleteBlocksOptions) => void;
+  duplicateBlock: (options?: DuplicateBlockOptions) => void;
+  toggleBlock: (toBlockType: string, options?: ToggleBlockOptions) => void;
+  increaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
+  decreaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
+  applyChanges: () => void;
+  moveBlock: (blockId: string, to: YooptaBlockPath) => void;
+  focusBlock: (id: string, options?: FocusBlockOptions) => void;
+  getBlock: (options: GetBlockOptions) => YooptaBlockData | null;
+  selection: YooptaBlockPath | null;
+  selectedBlocks: number[] | null;
+  children: Record<string, YooptaBlockData>;
+  getEditorValue: () => TNodes;
+  setEditorValue: (value: YooptaContentValue) => void;
+  setSelection: (path: YooptaBlockPath | null, options?: SetSelectionOptions) => void;
+  setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
+  blockEditorsMap: YooptaPluginsEditorMap;
+  blocks: YooptaBlocks;
+  formats: YooptaFormats;
+  shortcuts: Record<string, YooptaBlock>;
+  plugins: Record<string, Plugin<string, unknown>>;
+
+  // events handlers
+  on: (event: YooEditorEvents, fn: (payload: any) => void) => void;
+  once: (event: YooEditorEvents, fn: (payload: any) => void) => void;
+  off: (event: YooEditorEvents, fn: (payload: any) => void) => void;
+  emit: (event: YooEditorEvents, payload: any) => void;
+
+  // focus handlers
+  isFocused: () => boolean;
+  blur: (options?: EditorBlurOptions) => void;
+  focus: () => void;
+
+  // parser handlers
+  getHTML: (content: YooptaContentValue) => string;
+  getMarkdown: (content: YooptaContentValue) => string;
+  getPlainText: (content: YooptaContentValue) => string;
+
+  // ref to editor element
+  refElement: HTMLElement | null;
+};
 
 export type YooptaBlockPath = [number];
 
@@ -71,57 +122,6 @@ export type YooptaBlocks = Record<string, YooptaBlock>;
 export type YooptaFormats = Record<string, TextFormat>;
 
 export type YooEditorEvents = 'change' | 'focus' | 'blur' | 'block:copy';
-
-// [TODO] - Fix generic and default types
-export type YooEditor<TNodes = any> = {
-  id: string;
-  readOnly: boolean;
-  insertBlock: (data: YooptaBlockData, options?: YooptaEditorTransformOptions) => void;
-  insertBlocks: (blocks: YooptaBlockData[], options?: YooptaEditorTransformOptions) => void;
-  splitBlock: (options?: YooptaEditorTransformOptions) => void;
-  updateBlock: (id: string, data: Partial<YooptaBlockData>) => void;
-  deleteBlock: (options?: DeleteBlockOptions) => void;
-  deleteBlocks: (options?: DeleteBlocksOptions) => void;
-  duplicateBlock: (options?: DuplicateBlockOptions) => void;
-  toggleBlock: (toBlockType: string, options?: ToggleBlockOptions) => void;
-  increaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
-  decreaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
-  applyChanges: () => void;
-  moveBlock: (blockId: string, to: YooptaBlockPath) => void;
-  focusBlock: (id: string, options?: FocusBlockOptions) => void;
-  getBlock: (options: GetBlockOptions) => YooptaBlockData | null;
-  selection: YooptaBlockPath | null;
-  selectedBlocks: number[] | null;
-  children: Record<string, YooptaBlockData>;
-  getEditorValue: () => TNodes;
-  setEditorValue: (value: YooptaContentValue) => void;
-  setSelection: (path: YooptaBlockPath | null, options?: SetSelectionOptions) => void;
-  setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
-  blockEditorsMap: YooptaPluginsEditorMap;
-  blocks: YooptaBlocks;
-  formats: YooptaFormats;
-  shortcuts: Record<string, YooptaBlock>;
-  plugins: Record<string, Plugin<string, unknown>>;
-
-  // events handlers
-  on: (event: YooEditorEvents, fn: (payload: any) => void) => void;
-  once: (event: YooEditorEvents, fn: (payload: any) => void) => void;
-  off: (event: YooEditorEvents, fn: (payload: any) => void) => void;
-  emit: (event: YooEditorEvents, payload: any) => void;
-
-  // focus handlers
-  isFocused: () => boolean;
-  blur: (options?: EditorBlurOptions) => void;
-  focus: () => void;
-
-  // parser handlers
-  getHTML: (content: YooptaContentValue) => string;
-  getMarkdown: (content: YooptaContentValue) => string;
-  getPlainText: (content: YooptaContentValue) => string;
-
-  // ref to editor element
-  refElement: HTMLElement | null;
-};
 
 // types for slate values
 export type SlateElement<K extends string = string, T = any> = {

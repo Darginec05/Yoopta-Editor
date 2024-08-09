@@ -1,4 +1,4 @@
-import { ClipboardEvent, CSSProperties, ReactNode, useEffect, useRef } from 'react';
+import { ClipboardEvent, CSSProperties, ReactNode, useEffect, useMemo, useRef } from 'react';
 import { useYooptaEditor, useYooptaReadOnly } from '../../contexts/YooptaContext/YooptaContext';
 import { RenderBlocks } from './RenderBlocks';
 import { YooptaMark } from '../../marks';
@@ -13,6 +13,8 @@ import { YooptaBlockPath } from '../../editor/types';
 import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
 import { Blocks } from '../../editor/blocks';
+
+export const LOCAL_ORIGIN = new WeakMap();
 
 type Props = {
   marks?: YooptaMark<any>[];
@@ -58,6 +60,8 @@ const Editor = ({
   const selectionBox = useRectangeSelectionBox({ editor, root: selectionBoxRoot });
 
   let state = useRef<State>(DEFAULT_STATE).current;
+
+  console.log('editor.children', editor.children);
 
   useEffect(() => {
     if (!autoFocus || isReadOnly) return;

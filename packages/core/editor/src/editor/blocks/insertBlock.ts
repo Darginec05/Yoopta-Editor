@@ -1,5 +1,6 @@
 import { createDraft, finishDraft } from 'immer';
 import { Editor } from 'slate';
+import { LOCAL_ORIGIN } from '../../components/Editor/Editor';
 import { buildSlateEditor } from '../../utils/buildSlate';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../../utils/generateId';
@@ -58,6 +59,7 @@ export function insertBlock(editor: YooEditor, blockData: YooptaBlockData, optio
 
   editor.children = finishDraft(editor.children);
   editor.applyChanges();
+
   editor.emit('change', editor.children);
 
   if (focus) {
