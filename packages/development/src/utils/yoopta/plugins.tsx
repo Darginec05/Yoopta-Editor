@@ -191,5 +191,13 @@ export const YOOPTA_PLUGINS = [
       },
     },
   }),
-  Code,
+  Code.extend({
+    defaultProps: {
+      code: (props) => ({
+        ...props,
+        language: 'javascript',
+        theme: 'GithubDark',
+      }),
+    },
+  }),
 ];
