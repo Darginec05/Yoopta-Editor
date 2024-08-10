@@ -22,15 +22,16 @@ const FileUploader = ({ accept = 'image/*', onClose, blockId, onSetLoading }: Pr
 
     try {
       const data = await options?.onUpload(file);
+      const defaultImageProps = editor.plugins.Image.elements.image.props as ImageElementProps;
 
       Elements.updateElement<ImagePluginElements, ImageElementProps>(editor, blockId, {
         type: 'image',
         props: {
           src: data.src,
           alt: data.alt,
-          sizes: data.sizes,
-          bgColor: data.bgColor,
-          fit: data.fit || 'fill',
+          sizes: data.sizes || defaultImageProps.sizes,
+          bgColor: data.bgColor || defaultImageProps.bgColor,
+          fit: data.fit || defaultImageProps.fit || 'fill',
         },
       });
     } catch (error) {

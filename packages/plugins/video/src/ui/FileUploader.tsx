@@ -1,5 +1,4 @@
 import { Elements, useYooptaEditor, useYooptaPluginOptions } from '@yoopta/editor';
-import { useEffect } from 'react';
 import { VideoElementProps, VideoPluginElements, VideoPluginOptions } from '../types';
 
 type Props = {
@@ -23,14 +22,16 @@ const FileUploader = ({ accept = 'video/*', onClose, blockId, onSetLoading }: Pr
     try {
       // [TODO] - abort controller?
       const data = await options?.onUpload(file);
+      const defaultVideoProps = editor.plugins.Video.elements.video.props as VideoElementProps;
 
       Elements.updateElement<VideoPluginElements, VideoElementProps>(editor, blockId, {
         type: 'video',
         props: {
           src: data.src,
-          sizes: data.sizes,
-          bgColor: data.bgColor,
-          fit: data.fit || 'contain',
+          sizes: data.sizes || defaultVideoProps.sizes,
+          bgColor: data.bgColor || defaultVideoProps.bgColor,
+          fit: data.fit || defaultVideoProps.fit || 'contain',
+          settings: data.settings || defaultVideoProps.settings,
         },
       });
     } catch (error) {
