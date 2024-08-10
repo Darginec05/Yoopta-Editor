@@ -1,5 +1,5 @@
 import { LISTS } from './plugin';
-import { NumberedListElement, BulletedListElement, TodoListElement } from './types';
+import { NumberedListElement, BulletedListElement, TodoListElement, TodoListElementProps } from './types';
 import './styles.css';
 
 declare module 'slate' {
@@ -22,4 +22,5 @@ export {
   NumberedList,
   BulletedList,
   TodoList,
+  TodoListElementProps,
 };

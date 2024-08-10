@@ -4,6 +4,7 @@ import {
   AccordionItemElement,
   AccordionListItemHeadingElement,
   AccordionListItemContentElement,
+  AccordionListItemProps,
 } from './types';
 import './styles.css';
 
@@ -18,4 +19,4 @@ declare module 'slate' {
 }
 
 export default Accordion;
-export { AccordionItemElement };
+export { AccordionItemElement, AccordionListItemProps };
