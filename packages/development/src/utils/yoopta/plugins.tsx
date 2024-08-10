@@ -180,7 +180,7 @@ export const YOOPTA_PLUGINS = [
           src: data.secure_url,
           alt: 'cloudinary',
           fit: 'cover',
-          poster: 'https://res.cloudinary.com/ench-app/image/upload/v1713029072/ImageTransformer_hlr9eo.jpg',
+          // poster: 'https://res.cloudinary.com/ench-app/image/upload/v1713029072/ImageTransformer_hlr9eo.jpg',
           sizes: {
             width: data.width,
             height: data.height,

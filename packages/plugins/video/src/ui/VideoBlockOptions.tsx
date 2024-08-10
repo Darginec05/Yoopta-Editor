@@ -132,8 +132,8 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
         src: data.src,
         sizes: data.sizes || defaultVideoProps.sizes,
         bgColor: data.bgColor || defaultVideoProps.bgColor,
-        fit: data.fit || defaultVideoProps.fit || 'cover',
-        settings: data.settings || defaultVideoProps.settings,
+        fit: videoProps?.fit || data.fit || defaultVideoProps.fit || 'cover',
+        settings: videoProps?.settings || data.settings || defaultVideoProps.settings,
       },
     });
 
@@ -186,29 +186,31 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
       {!isExternalVideo && (
         <>
           <BlockOptionsMenuGroup>
-            <BlockOptionsMenuItem>
-              <label
-                htmlFor="video-poster-uploader"
-                className="yoo-video-rounded-sm yoo-video-relative hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start data-[disabled=true]:yoo-video-cursor-not-allowed data-[disabled=true]:yoo-video-pointer-events-none data-[disabled=true]:yoo-video-opacity-50"
-                data-disabled={loaders.poster}
-              >
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple={false}
-                  id="video-poster-uploader"
-                  className="yoo-video-absolute yoo-video-hidden"
-                  onChange={onUploadPoster}
-                  disabled={loaders.poster}
-                />
-                {loaders.poster ? (
-                  <Loader className="yoo-video-mr-2 yoo-video-user-select-none" width={24} height={24} />
-                ) : (
-                  <ImageIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
-                )}
-                {videoProps?.poster ? 'Update poster' : 'Add poster'}
-              </label>
-            </BlockOptionsMenuItem>
+            {options.onUploadPoster && (
+              <BlockOptionsMenuItem>
+                <label
+                  htmlFor="video-poster-uploader"
+                  className="yoo-video-rounded-sm yoo-video-relative hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start data-[disabled=true]:yoo-video-cursor-not-allowed data-[disabled=true]:yoo-video-pointer-events-none data-[disabled=true]:yoo-video-opacity-50"
+                  data-disabled={loaders.poster}
+                >
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple={false}
+                    id="video-poster-uploader"
+                    className="yoo-video-absolute yoo-video-hidden"
+                    onChange={onUploadPoster}
+                    disabled={loaders.poster}
+                  />
+                  {loaders.poster ? (
+                    <Loader className="yoo-video-mr-2 yoo-video-user-select-none" width={24} height={24} />
+                  ) : (
+                    <ImageIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
+                  )}
+                  {videoProps?.poster ? 'Update poster' : 'Add poster'}
+                </label>
+              </BlockOptionsMenuItem>
+            )}
             <BlockOptionsMenuItem>
               <label
                 htmlFor="video-uploader"
@@ -236,7 +238,6 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
           <BlockOptionsSeparator />
         </>
       )}
-
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>
           <button
