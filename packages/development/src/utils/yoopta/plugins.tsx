@@ -231,8 +231,8 @@ export const YOOPTA_PLUGINS = [
     defaultProps: {
       code: (props) => ({
         ...props,
-        language: 'php',
-        theme: 'Dracula',
+        language: 'javascript',
+        theme: 'GithubDark',
       }),
     },
   }),
