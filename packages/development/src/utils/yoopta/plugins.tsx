@@ -16,12 +16,11 @@ import { uploadToCloudinary } from '../cloudinary';
 import { Elements, PluginElementRenderProps, useYooptaEditor } from '@yoopta/editor';
 import { YooptaWithNextImage } from '../../components/Extends/Image/Image';
 import { Checkbox } from '../../components/Extends/Checkbox/Checkbox';
-import { AccordionListItemProps } from '@yoopta/accordion/dist/types';
 
 export const YOOPTA_PLUGINS = [
   AccordionPlugin.extend({
     defaultProps: {
-      'accordion-list-item': (props: AccordionListItemProps) => {
+      'accordion-list-item': (props) => {
         return {
           ...props,
           isExpanded: false,
@@ -155,13 +154,16 @@ export const YOOPTA_PLUGINS = [
   }),
   Embed,
   Video.extend({
-    props: {
-      video: (defaultProps: VideoElementProps) => ({
-        ...defaultProps,
-        controls: true,
-        loop: true,
-        muted: true,
-        playsInline: true,
+    defaultProps: {
+      video: (props: VideoElementProps) => ({
+        ...props,
+        fit: 'contain',
+        settings: {
+          controls: true,
+          loop: true,
+          muted: true,
+          playsInline: true,
+        },
       }),
     },
     options: {
@@ -173,7 +175,7 @@ export const YOOPTA_PLUGINS = [
         return {
           src: data.secure_url,
           alt: 'cloudinary',
-          fit: 'cover',
+          // fit: 'cover',
           sizes: {
             width: data.width,
             height: data.height,

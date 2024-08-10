@@ -30,8 +30,6 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
   const block = useBlockData(blockId);
   const [code, setCode] = useState(() => getCodeElementText(block) || '');
 
-  console.log('block', block);
-
   const element = getCodeElement(block) as CodeElement;
 
   const theme = element.props?.theme || 'VSCode';
