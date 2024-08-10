@@ -82,7 +82,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
 
         // [TODO] - as test
         // [TODO] - should extend all slate editors for every block
-        slateEditor = withInlines(slateEditor);
+        slateEditor = withInlines(editor, slateEditor);
       }
     });
 

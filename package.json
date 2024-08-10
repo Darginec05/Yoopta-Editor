@@ -10,7 +10,7 @@
   "private": true,
   "scripts": {
     "dev": "npm-run-all --parallel start serve",
-    "start": "yarn lerna run start --parallel --ignore development",
+    "start": "yarn lerna run start --scope @yoopta/editor --scope @yoopta/code --scope @yoopta/link --scope @yoopta/image --scope @yoopta/video --scope @yoopta/embed --scope @yoopta/file--parallel --ignore development",
     "serve": "yarn lerna run dev --scope=development",
     "build": "yarn clean && yarn install && yarn lerna run build --parallel --ignore development",
     "clean": "find ./packages -type d -name dist ! -path './packages/development/*' -exec rm -rf {} +",

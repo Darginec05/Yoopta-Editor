@@ -77,6 +77,8 @@ const ImageRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
     [sizes.width, sizes.height],
   );
 
+  console.log('ImageRender', element);
+
   if (!src) {
     if (isReadOnly) return <></>;
 
