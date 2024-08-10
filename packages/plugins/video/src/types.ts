@@ -37,6 +37,7 @@ export type VideoUploadResponse = Omit<VideoElementProps, 'srcSet'>;
 
 export type VideoPluginOptions = {
   onUpload: (file: File) => Promise<VideoUploadResponse>;
+  onUploadPoster?: (file: File) => Promise<string>;
   accept?: string;
   maxSizes?: {
     maxWidth?: number;

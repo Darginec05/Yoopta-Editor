@@ -170,12 +170,17 @@ export const YOOPTA_PLUGINS = [
       HTMLAttributes: {
         className: 'video-element-extended',
       },
+      onUploadPoster: async (file: File) => {
+        const data = await uploadToCloudinary(file, 'image');
+        return data.secure_url;
+      },
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file, 'video');
         return {
           src: data.secure_url,
           alt: 'cloudinary',
-          // fit: 'cover',
+          fit: 'cover',
+          poster: 'https://res.cloudinary.com/ench-app/image/upload/v1713029072/ImageTransformer_hlr9eo.jpg',
           sizes: {
             width: data.width,
             height: data.height,
