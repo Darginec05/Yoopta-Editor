@@ -11,14 +11,6 @@ export type ExtendPlugin<TKeys extends string, TProps, TOptions> = {
   defaultProps?: Partial<Record<TKeys, (props: TProps) => TProps>>;
 };
 
-// props: {
-//   link: (defaultProps) => ({
-//     ...defaultProps,
-//     target: '_blank',
-//     rel: 'noopener noreferrer',
-//   }),
-// },
-
 export class YooptaPlugin<TKeys extends string = string, TProps = Descendant, TOptions = Record<string, unknown>> {
   private readonly plugin: Plugin<TKeys, TProps, TOptions>;
 
