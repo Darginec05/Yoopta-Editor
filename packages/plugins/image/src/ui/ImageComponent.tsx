@@ -58,7 +58,7 @@ const ImageComponent = ({
       )}
       {children}
       {alt && (
-        <div className="yoopta-image-alt yoo-image-bg-[rgba(0, 0, 0, 0.6)]" title={alt} contentEditable="false">
+        <div className="yoopta-image-alt" title={alt}>
           <div className="yoopta-image-alt-text">ALT</div>
         </div>
       )}

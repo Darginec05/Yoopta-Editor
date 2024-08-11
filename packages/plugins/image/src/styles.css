@@ -22,7 +22,7 @@
 }
 
 .yoopta-image-alt {
-  @apply yoo-image-absolute yoo-image-right-[8px] yoo-image-bottom-[8px] yoo-image-rounded
+  @apply yoo-image-absolute yoo-image-right-[8px] yoo-image-bottom-[8px] yoo-image-rounded yoo-image-bg-[#00000099]
 }
 
 .yoopta-image-alt-text {

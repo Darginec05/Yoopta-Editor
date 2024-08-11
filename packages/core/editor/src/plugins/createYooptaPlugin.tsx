@@ -8,7 +8,7 @@ export type ExtendPluginRender<TKeys extends string> = {
 export type ExtendPlugin<TKeys extends string, TProps, TOptions> = {
   renders?: Partial<ExtendPluginRender<TKeys>>;
   options?: Partial<PluginOptions<TOptions>>;
-  defaultProps?: Partial<Record<TKeys, (props: TProps) => TProps>>;
+  elementProps?: Partial<Record<TKeys, (props: TProps) => TProps>>;
 };
 
 export class YooptaPlugin<TKeys extends string = string, TProps = Descendant, TOptions = Record<string, unknown>> {
@@ -23,7 +23,7 @@ export class YooptaPlugin<TKeys extends string = string, TProps = Descendant, TO
   }
 
   extend(extendPlugin: ExtendPlugin<TKeys, TProps, TOptions>): YooptaPlugin<TKeys, TProps, TOptions> {
-    const { renders, options, defaultProps } = extendPlugin;
+    const { renders, options, elementProps } = extendPlugin;
 
     const extendedOptions = { ...this.plugin.options, ...options };
     const elements = { ...this.plugin.elements };
@@ -44,15 +44,15 @@ export class YooptaPlugin<TKeys extends string = string, TProps = Descendant, TO
       });
     }
 
-    if (defaultProps) {
-      Object.keys(defaultProps).forEach((elementType) => {
+    if (elementProps) {
+      Object.keys(elementProps).forEach((elementType) => {
         const element = elements[elementType];
 
         if (element) {
-          const defaultPropsFn = defaultProps[elementType];
-          const elementProps = element.props;
+          const defaultPropsFn = elementProps[elementType];
+          const updatedElementProps = element.props;
 
-          element.props = defaultPropsFn(elementProps);
+          element.props = defaultPropsFn(updatedElementProps);
         }
       });
     }

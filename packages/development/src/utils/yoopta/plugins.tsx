@@ -13,17 +13,15 @@ import Code from '@yoopta/code';
 
 import NextLink from 'next/link';
 import { uploadToCloudinary } from '../cloudinary';
-import { Elements, PluginElementRenderProps, useYooptaEditor } from '@yoopta/editor';
-import { YooptaWithNextImage } from '../../components/Extends/Image/Image';
-import { Checkbox } from '../../components/Extends/Checkbox/Checkbox';
+import { PluginElementRenderProps } from '@yoopta/editor';
 
 export const YOOPTA_PLUGINS = [
   AccordionPlugin.extend({
-    defaultProps: {
+    elementProps: {
       'accordion-list-item': (props) => {
         return {
           ...props,
-          isExpanded: false,
+          isExpanded: true,
         };
       },
     },
@@ -66,7 +64,7 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Image.extend({
-    defaultProps: {
+    elementProps: {
       image: (props: ImageElementProps) => ({
         ...props,
         alt: 'cloudinary',
@@ -122,7 +120,7 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Callout.extend({
-    defaultProps: {
+    elementProps: {
       callout: (props: CalloutElement['props']) => ({
         ...props,
         theme: 'info',
@@ -143,7 +141,7 @@ export const YOOPTA_PLUGINS = [
   }),
   Lists.NumberedList,
   Lists.TodoList.extend({
-    defaultProps: {
+    elementProps: {
       'todo-list': (props: TodoListElement['props']) => ({
         ...props,
         checked: true,
@@ -152,7 +150,7 @@ export const YOOPTA_PLUGINS = [
   }),
   Embed,
   Video.extend({
-    defaultProps: {
+    elementProps: {
       video: (props: VideoElementProps) => ({
         ...props,
         fit: 'contain',
@@ -186,7 +184,7 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Link.extend({
-    defaultProps: {
+    elementProps: {
       link: (props) => ({
         ...props,
         target: '_blank',
@@ -229,7 +227,7 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Code.extend({
-    defaultProps: {
+    elementProps: {
       code: (props) => ({
         ...props,
         language: 'javascript',
