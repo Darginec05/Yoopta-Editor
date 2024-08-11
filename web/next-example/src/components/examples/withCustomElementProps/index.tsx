@@ -33,7 +33,16 @@ const plugins = [
   BulletedList,
   TodoList,
   Code,
-  Link,
+  Link.extend({
+    elementProps: {
+      link: (props) => {
+        return {
+          ...props,
+          target: '_blank',
+        };
+      },
+    },
+  }),
   Embed,
   Image.extend({
     elementProps: {
