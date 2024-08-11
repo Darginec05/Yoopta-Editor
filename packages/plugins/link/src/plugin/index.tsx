@@ -30,11 +30,15 @@ const Link = new YooptaPlugin<LinkPluginElementKeys, LinkElementProps>({
       },
       deserialize: {
         nodeNames: ['A'],
-        parse: (el) => {
+        parse: (el, editor) => {
           if (el.nodeName === 'A') {
             const href = el.getAttribute('href') || '';
-            const target = el.getAttribute('target') || '';
-            const rel = el.getAttribute('rel') || '';
+
+            const defaultLinkProps = editor.plugins.LinkPlugin.elements.link.props as LinkElementProps;
+
+            // [TODO] Add target
+            const target = el.getAttribute('target') || defaultLinkProps.target;
+            const rel = el.getAttribute('rel') || defaultLinkProps.rel;
             const title = el.textContent || '';
             const props: LinkElementProps = {
               url: href,

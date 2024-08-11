@@ -8,7 +8,7 @@ import {
   TextAlignLeftIcon,
   TextAlignRightIcon,
   ImageIcon,
-  VideoIcon,
+  UpdateIcon,
 } from '@radix-ui/react-icons';
 import { VideoElementProps, VideoPluginElements, VideoPluginOptions } from '../types';
 import CheckmarkIcon from '../icons/checkmark.svg';
@@ -186,6 +186,29 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
       {!isExternalVideo && (
         <>
           <BlockOptionsMenuGroup>
+            <BlockOptionsMenuItem>
+              <label
+                htmlFor="video-uploader"
+                className="yoo-video-rounded-sm yoo-video-relative hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start data-[disabled=true]:yoo-video-cursor-not-allowed data-[disabled=true]:yoo-video-pointer-events-none data-[disabled=true]:yoo-video-opacity-50"
+                data-disabled={loaders.video}
+              >
+                <input
+                  type="file"
+                  accept={options.accept}
+                  multiple={false}
+                  id="video-uploader"
+                  className="yoo-video-absolute yoo-video-hidden"
+                  onChange={onUpload}
+                  disabled={loaders.video}
+                />
+                {loaders.video ? (
+                  <Loader className="yoo-video-mr-2 yoo-video-user-select-none" width={24} height={24} />
+                ) : (
+                  <UpdateIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
+                )}
+                Replace video
+              </label>
+            </BlockOptionsMenuItem>
             {options.onUploadPoster && (
               <BlockOptionsMenuItem>
                 <label
@@ -207,33 +230,10 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
                   ) : (
                     <ImageIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
                   )}
-                  {videoProps?.poster ? 'Update poster' : 'Add poster'}
+                  {videoProps?.poster ? 'Replace poster' : 'Add poster'}
                 </label>
               </BlockOptionsMenuItem>
             )}
-            <BlockOptionsMenuItem>
-              <label
-                htmlFor="video-uploader"
-                className="yoo-video-rounded-sm yoo-video-relative hover:yoo-video-bg-[#37352f14] yoo-video-leading-[120%] yoo-video-px-2 yoo-video-py-1.5 yoo-video-mx-[4px] yoo-video-cursor-pointer yoo-video-w-full yoo-video-flex yoo-video-justify-start data-[disabled=true]:yoo-video-cursor-not-allowed data-[disabled=true]:yoo-video-pointer-events-none data-[disabled=true]:yoo-video-opacity-50"
-                data-disabled={loaders.video}
-              >
-                <input
-                  type="file"
-                  accept={options.accept}
-                  multiple={false}
-                  id="video-uploader"
-                  className="yoo-video-absolute yoo-video-hidden"
-                  onChange={onUpload}
-                  disabled={loaders.video}
-                />
-                {loaders.video ? (
-                  <Loader className="yoo-video-mr-2 yoo-video-user-select-none" width={24} height={24} />
-                ) : (
-                  <VideoIcon width={16} height={16} className="yoo-video-w-4 yoo-video-h-4 yoo-video-mr-2" />
-                )}
-                {videoProps?.src ? 'Update video' : 'Add video'}
-              </label>
-            </BlockOptionsMenuItem>
           </BlockOptionsMenuGroup>
           <BlockOptionsSeparator />
         </>

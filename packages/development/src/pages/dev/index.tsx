@@ -37,6 +37,8 @@ const BasicExample = () => {
               muted: true,
               playsInline: true,
             },
+            poster:
+              'https://res.cloudinary.com/ench-app/image/upload/v1723381664/bc9ccb58-2383-4be3-a936-8255a0bcb5e4_sp0zvo.jpg',
           },
           children: [
             {
@@ -46,6 +48,59 @@ const BasicExample = () => {
         },
       ],
       type: 'Video',
+      meta: {
+        order: 2,
+        depth: 0,
+      },
+    },
+    '39aeb682-8ce1-4eea-9bd1-4d22bd8cf60e': {
+      id: '39aeb682-8ce1-4eea-9bd1-4d22bd8cf60e',
+      value: [
+        {
+          id: '28d07225-34de-4fa5-bdce-619d749f7954',
+          type: 'heading-one',
+          props: {
+            nodeType: 'block',
+          },
+          children: [
+            {
+              text: 'Image is first',
+            },
+          ],
+        },
+      ],
+      type: 'HeadingOne',
+      meta: {
+        order: 1,
+        depth: 0,
+      },
+    },
+    '2458cd0e-015f-414c-8352-d45051f2c0cb': {
+      id: '2458cd0e-015f-414c-8352-d45051f2c0cb',
+      value: [
+        {
+          id: 'cfb42efa-41b8-412f-a41f-2a2dec812116',
+          type: 'image',
+          props: {
+            src: 'https://res.cloudinary.com/ench-app/image/upload/v1723381864/GPcx5zma8AAAQ1W_vscnie.jpg',
+            alt: 'cloudinary',
+            srcSet: null,
+            bgColor: null,
+            fit: 'contain',
+            sizes: {
+              width: 510,
+              height: 510,
+            },
+            nodeType: 'void',
+          },
+          children: [
+            {
+              text: '',
+            },
+          ],
+        },
+      ],
+      type: 'Image',
       meta: {
         order: 0,
         depth: 0,
