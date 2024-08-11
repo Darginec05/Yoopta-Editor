@@ -1,4 +1,4 @@
-import YooptaEditor, { createYooptaEditor } from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor, Elements, Blocks, useYooptaEditor } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
@@ -8,6 +8,7 @@ import Link from '@yoopta/link';
 import Callout from '@yoopta/callout';
 import Video from '@yoopta/video';
 import File from '@yoopta/file';
+import Accordion from '@yoopta/accordion';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
@@ -15,12 +16,14 @@ import Code from '@yoopta/code';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
+
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { useMemo, useRef } from 'react';
-import { WITH_CUSTOM_HTML_ATTRS_INIT_VALUE } from './initValue';
+import { useEffect, useMemo, useRef } from 'react';
+import { WITH_CUSTOM_ELEMENTS_PROPS_INIT_VALUE } from './initValue';
 
 const plugins = [
   Paragraph,
+  Accordion,
   HeadingOne,
   HeadingTwo,
   HeadingThree,
@@ -33,6 +36,14 @@ const plugins = [
   Link,
   Embed,
   Image.extend({
+    elementProps: {
+      image: (props) => {
+        return {
+          ...props,
+          fit: 'cover',
+        };
+      },
+    },
     options: {
       async onUpload(file) {
         const data = await uploadToCloudinary(file, 'image');
@@ -94,9 +105,15 @@ const TOOLS = {
 
 const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
-function WithCustomHTMLAttributes() {
+function WithCustomElementProps() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
+
+  useEffect(() => {
+    editor.on('change', (value) => {
+      console.log(value);
+    });
+  }, []);
 
   return (
     <div
@@ -109,10 +126,11 @@ function WithCustomHTMLAttributes() {
         tools={TOOLS}
         marks={MARKS}
         selectionBoxRoot={selectionRef}
-        value={WITH_CUSTOM_HTML_ATTRS_INIT_VALUE}
+        value={WITH_CUSTOM_ELEMENTS_PROPS_INIT_VALUE}
+        autoFocus
       />
     </div>
   );
 }
 
-export default WithCustomHTMLAttributes;
+export default WithCustomElementProps;
