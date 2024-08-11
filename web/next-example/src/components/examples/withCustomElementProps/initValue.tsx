@@ -74,7 +74,7 @@ export const WITH_CUSTOM_ELEMENTS_PROPS_INIT_VALUE = {
         props: {
           nodeType: 'void',
           language: 'javascript',
-          theme: 'VSCode',
+          theme: 'GithubDark',
         },
         children: [
           {
@@ -102,7 +102,7 @@ export const WITH_CUSTOM_ELEMENTS_PROPS_INIT_VALUE = {
           {
             text: 'image',
             bold: true,
-            italic: true,
+            underline: true,
           },
           {
             text: ' element has some default props',
@@ -178,7 +178,15 @@ export const WITH_CUSTOM_ELEMENTS_PROPS_INIT_VALUE = {
         type: 'paragraph',
         children: [
           {
-            text: 'So, every next image will be created with ',
+            text: 'So, every next ',
+          },
+          {
+            text: 'image',
+            bold: true,
+            underline: true,
+          },
+          {
+            text: ' will be created with ',
           },
           {
             text: "fit: 'cover'",
@@ -213,7 +221,7 @@ export const WITH_CUSTOM_ELEMENTS_PROPS_INIT_VALUE = {
         props: {
           nodeType: 'void',
           language: 'javascript',
-          theme: 'VSCode',
+          theme: 'GithubDark',
         },
         children: [
           {
@@ -303,7 +311,7 @@ export const WITH_CUSTOM_ELEMENTS_PROPS_INIT_VALUE = {
         props: {
           nodeType: 'void',
           language: 'javascript',
-          theme: 'VSCode',
+          theme: 'GithubDark',
         },
         children: [
           {
@@ -326,7 +334,15 @@ export const WITH_CUSTOM_ELEMENTS_PROPS_INIT_VALUE = {
         type: 'paragraph',
         children: [
           {
-            text: 'Every next link will be opened in new tab',
+            text: 'Every next ',
+          },
+          {
+            text: 'link',
+            bold: true,
+            underline: true,
+          },
+          {
+            text: ' will be opened in new tab',
           },
         ],
         props: {
@@ -337,6 +353,74 @@ export const WITH_CUSTOM_ELEMENTS_PROPS_INIT_VALUE = {
     type: 'Paragraph',
     meta: {
       order: 13,
+      depth: 0,
+    },
+  },
+  '0317b5a2-3de0-45ae-a54e-fdda3f64f296': {
+    id: '0317b5a2-3de0-45ae-a54e-fdda3f64f296',
+    type: 'HeadingThree',
+    meta: {
+      order: 15,
+      depth: 0,
+    },
+    value: [
+      {
+        id: '0ce06ec0-b83d-4cd3-8cc2-3c15d67eace0',
+        type: 'heading-three',
+        children: [
+          {
+            text: 'Example with Code plugin:',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+  },
+  '4eea207b-696c-446a-be29-2b75dfa21e55': {
+    id: '4eea207b-696c-446a-be29-2b75dfa21e55',
+    value: [
+      {
+        id: '6b7cb844-2a91-41ed-86a9-8266fd185d17',
+        type: 'paragraph',
+        children: [
+          {
+            text: '',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'Paragraph',
+    meta: {
+      order: 14,
+      depth: 0,
+    },
+  },
+  '938b13f0-c053-4df1-80b1-405564babb27': {
+    id: '938b13f0-c053-4df1-80b1-405564babb27',
+    value: [
+      {
+        id: 'f2327a6d-60fe-4809-a077-99ce0c5b5ad9',
+        type: 'code',
+        props: {
+          nodeType: 'void',
+          language: 'javascript',
+          theme: 'GithubDark',
+        },
+        children: [
+          {
+            text: 'import Code, { CodeElementProps } from \'@yoopta/code\'\n\nconst plugins = [\n  // other plugins\n  Code.extend({\n    elementProps: {\n      code: (props: CodeElementProps) => ({\n        ...props,\n        // "javascript" | "css" | "php" | "python" | "markdown" | "vue" | "json" | "sql" | "angular" | "rust" | "xml" | "yaml" | "java" | "html" | "cpp"\n        language: \'javascript\',\n        // "BasicLight" | "BasicDark" | "GithubDark" | "Sublime" | "Okaidia" | "Monokai" | "MaterialDark" | "MaterialLight" | "GithubDark" | "GithubLight" | "Dracula" | "Copilot"\n        theme: \'GithubDark\',\n      }),\n    },\n  })\n]',
+          },
+        ],
+      },
+    ],
+    type: 'Code',
+    meta: {
+      order: 16,
       depth: 0,
     },
   },

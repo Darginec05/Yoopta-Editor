@@ -32,7 +32,15 @@ const plugins = [
   NumberedList,
   BulletedList,
   TodoList,
-  Code,
+  Code.extend({
+    elementProps: {
+      code: (props) => ({
+        ...props,
+        language: 'javascript',
+        theme: 'GithubDark',
+      }),
+    },
+  }),
   Link.extend({
     elementProps: {
       link: (props) => {
