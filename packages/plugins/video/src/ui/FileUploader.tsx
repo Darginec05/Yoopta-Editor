@@ -30,8 +30,9 @@ const FileUploader = ({ accept = 'video/*', onClose, blockId, onSetLoading }: Pr
           src: data.src,
           sizes: data.sizes || defaultVideoProps.sizes,
           bgColor: data.bgColor || defaultVideoProps.bgColor,
-          fit: data.fit || defaultVideoProps.fit || 'contain',
+          fit: data.fit || defaultVideoProps.fit || 'cover',
           settings: data.settings || defaultVideoProps.settings,
+          poster: data.poster || defaultVideoProps.poster,
         },
       });
     } catch (error) {

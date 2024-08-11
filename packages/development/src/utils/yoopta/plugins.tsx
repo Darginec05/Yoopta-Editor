@@ -88,8 +88,6 @@ export const YOOPTA_PLUGINS = [
 
         return {
           src: data.secure_url,
-          alt: 'cloudinary',
-          // fit: 'fill',
           sizes: {
             width: data.width,
             height: data.height,
@@ -170,12 +168,15 @@ export const YOOPTA_PLUGINS = [
       HTMLAttributes: {
         className: 'video-element-extended',
       },
+      onUploadPoster: async (file: File) => {
+        const data = await uploadToCloudinary(file, 'image');
+        return data.secure_url;
+      },
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file, 'video');
         return {
           src: data.secure_url,
-          alt: 'cloudinary',
-          // fit: 'cover',
+          fit: 'cover',
           sizes: {
             width: data.width,
             height: data.height,
