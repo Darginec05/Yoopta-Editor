@@ -1,5 +1,5 @@
 import { Embed } from './plugin';
-import { EmbedElement } from './types';
+import { EmbedElement, EmbedElementProps } from './types';
 import './styles.css';
 
 declare module 'slate' {
@@ -9,4 +9,4 @@ declare module 'slate' {
 }
 
 export default Embed;
-export { EmbedElement };
+export { EmbedElement, EmbedElementProps };

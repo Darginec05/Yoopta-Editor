@@ -1,11 +1,11 @@
 import Blockquote from '@yoopta/blockquote';
 import Paragraph from '@yoopta/paragraph';
 import Headings from '@yoopta/headings';
-import Image from '@yoopta/image';
-import Callout from '@yoopta/callout';
-import Lists from '@yoopta/lists';
+import Image, { ImageElementProps } from '@yoopta/image';
+import Callout, { CalloutElement } from '@yoopta/callout';
+import Lists, { TodoListElement } from '@yoopta/lists';
 import Link from '@yoopta/link';
-import Video from '@yoopta/video';
+import Video, { VideoElementProps } from '@yoopta/video';
 import File from '@yoopta/file';
 import Embed from '@yoopta/embed';
 import AccordionPlugin from '@yoopta/accordion';
@@ -13,21 +13,27 @@ import Code from '@yoopta/code';
 
 import NextLink from 'next/link';
 import { uploadToCloudinary } from '../cloudinary';
-import { Elements, useYooptaEditor } from '@yoopta/editor';
-import { YooptaWithNextImage } from '../../components/Extends/Image/Image';
-import { Checkbox } from '../../components/Extends/Checkbox/Checkbox';
+import { PluginElementRenderProps } from '@yoopta/editor';
 
 export const YOOPTA_PLUGINS = [
   AccordionPlugin.extend({
+    elementProps: {
+      'accordion-list-item': (props) => {
+        return {
+          ...props,
+          isExpanded: true,
+        };
+      },
+    },
     renders: {
-      'accordion-list': ({ attributes, children }) => {
+      'accordion-list': ({ attributes, children }: PluginElementRenderProps) => {
         return (
           <ul {...attributes} className="accordion-list-element-extended">
             {children}
           </ul>
         );
       },
-      'accordion-list-item': ({ attributes, children, element, blockId }) => {
+      'accordion-list-item': ({ attributes, children, element, blockId }: PluginElementRenderProps) => {
         return (
           <li {...attributes} className="accordion-list-item-element-extended border-b">
             {children}
@@ -37,18 +43,6 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   File.extend({
-    // renders: {
-    //   file: ({ attributes, children, element }) => {
-    //     return (
-    //       <div {...attributes} contentEditable={false}>
-    //         <a className="file-element-extended text-[red]" href={element.props.src} download>
-    //           {element.props.name} ({element.props.size}) {element.props.format}
-    //         </a>
-    //         {children}
-    //       </div>
-    //     );
-    //   },
-    // },
     options: {
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file, 'auto');
@@ -70,9 +64,17 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Image.extend({
-    // renders: {
-    //   image: YooptaWithNextImage,
-    // },
+    elementProps: {
+      image: (props: ImageElementProps) => ({
+        ...props,
+        alt: 'cloudinary',
+        sizes: {
+          width: 500,
+          height: 500,
+        },
+        fit: 'contain',
+      }),
+    },
     options: {
       maxSizes: { maxHeight: 750, maxWidth: 750 },
       HTMLAttributes: {
@@ -84,8 +86,6 @@ export const YOOPTA_PLUGINS = [
 
         return {
           src: data.secure_url,
-          alt: 'cloudinary',
-          fit: 'fill',
           sizes: {
             width: data.width,
             height: data.height,
@@ -120,6 +120,12 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Callout.extend({
+    elementProps: {
+      callout: (props: CalloutElement['props']) => ({
+        ...props,
+        theme: 'info',
+      }),
+    },
     options: {
       HTMLAttributes: {
         className: 'callout-element-extended',
@@ -134,18 +140,40 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Lists.NumberedList,
-  Lists.TodoList,
+  Lists.TodoList.extend({
+    elementProps: {
+      'todo-list': (props: TodoListElement['props']) => ({
+        ...props,
+        checked: true,
+      }),
+    },
+  }),
   Embed,
   Video.extend({
+    elementProps: {
+      video: (props: VideoElementProps) => ({
+        ...props,
+        fit: 'contain',
+        settings: {
+          controls: true,
+          loop: true,
+          muted: true,
+          playsInline: true,
+        },
+      }),
+    },
     options: {
       HTMLAttributes: {
         className: 'video-element-extended',
+      },
+      onUploadPoster: async (file: File) => {
+        const data = await uploadToCloudinary(file, 'image');
+        return data.secure_url;
       },
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file, 'video');
         return {
           src: data.secure_url,
-          alt: 'cloudinary',
           fit: 'cover',
           sizes: {
             width: data.width,
@@ -156,6 +184,13 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Link.extend({
+    elementProps: {
+      link: (props) => ({
+        ...props,
+        target: '_blank',
+        rel: 'noopener noreferrer',
+      }),
+    },
     renders: {
       link: ({ attributes, children, element }) => {
         if (element.props.target === '_blank') {
@@ -191,5 +226,13 @@ export const YOOPTA_PLUGINS = [
       },
     },
   }),
-  Code,
+  Code.extend({
+    elementProps: {
+      code: (props) => ({
+        ...props,
+        language: 'javascript',
+        theme: 'GithubDark',
+      }),
+    },
+  }),
 ];

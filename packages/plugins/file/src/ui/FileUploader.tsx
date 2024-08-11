@@ -22,7 +22,6 @@ const FileUploader = ({ accept = '', onClose, blockId, onSetLoading }: Props) =>
     try {
       // [TODO] - abort controller?
       const response = await options?.onUpload(file);
-      const format = response.format || file.name.split('.').pop() || null;
 
       Elements.updateElement<FilePluginElements, FileElementProps>(editor, blockId, {
         type: 'file',

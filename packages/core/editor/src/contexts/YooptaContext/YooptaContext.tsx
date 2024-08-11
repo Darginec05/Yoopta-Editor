@@ -87,8 +87,8 @@ const useYooptaEditor = (): YooEditor => {
 const useBlockData = (blockId: string) => useYooptaEditor().children[blockId];
 const useYooptaFocused = () => useYooptaEditor().isFocused();
 const useYooptaReadOnly = () => useYooptaEditor().readOnly;
-const useYooptaPluginOptions = <TOptions,>(blockType: string): PluginOptions<TOptions> =>
-  useYooptaEditor().plugins[blockType]?.options as PluginOptions<TOptions>;
+const useYooptaPluginOptions = <TOptions,>(pluginType: string): PluginOptions<TOptions> =>
+  useYooptaEditor().plugins[pluginType]?.options as PluginOptions<TOptions>;
 
 type UseBlockSelectedProps = { blockId: string; path?: YooptaBlockPath } | { path: YooptaBlockPath; blockId?: string };
 const useBlockSelected = ({ blockId, path }: UseBlockSelectedProps) => {

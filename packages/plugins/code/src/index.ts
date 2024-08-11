@@ -1,5 +1,5 @@
 import { Code } from './plugin';
-import { CodeElement } from './types';
+import { CodeElement, CodeElementProps } from './types';
 import './styles.css';
 
 declare module 'slate' {
@@ -9,4 +9,4 @@ declare module 'slate' {
 }
 
 export default Code;
-export { CodeElement };
+export { CodeElement, CodeElementProps };

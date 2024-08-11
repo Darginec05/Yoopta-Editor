@@ -4,6 +4,11 @@ import { CSSProperties, useState } from 'react';
 import { VideoUploader } from './VideoUploader';
 import { Loader } from './Loader';
 
+const loadingStyles: CSSProperties = {
+  width: '100%',
+  transition: 'width 100ms ease-in',
+};
+
 const Placeholder = ({ attributes, children, blockId }) => {
   const [isUploaderOpen, setIsUploaderOpen] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -15,12 +20,7 @@ const Placeholder = ({ attributes, children, blockId }) => {
     middleware: [inline(), flip(), shift(), offset(10)],
   });
 
-  const loadingStyles: CSSProperties = {
-    width: '100%',
-    transition: 'width 100ms ease-in',
-  };
-
-  const onSetLoading = (slate: boolean) => setLoading(slate);
+  const onSetLoading = (state: boolean) => setLoading(state);
 
   return (
     <div

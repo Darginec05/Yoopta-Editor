@@ -21,7 +21,8 @@ import withCustomStyles from '@/components/examples/withCustomStyles';
 // import withEditorFocusBlur from '@/components/examples/withEditorFocusBlur';
 import withCustomRenders from '@/components/examples/withCustomRenders';
 import withMultiPageEditors from '@/components/examples/withMultiPageEditors';
-import withStarterKit from '@/components/examples/withStarterKit';
+import withCustomElementProps from '@/components/examples/withCustomElementProps';
+// import withStarterKit from '@/components/examples/withStarterKit';
 
 import { Head } from '@/components/Head/Head';
 import { useRouter } from 'next/router';
@@ -37,6 +38,7 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withNotionActionMenu,
   withExports,
   withCustomRenders,
+  withCustomElementProps,
   withExtendedPlugin,
   // withStarterKit,
   withDarkTheme,
@@ -140,6 +142,10 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
   },
   withCustomRenders: {
     title: 'Custom Renders (next/image, next/link, etc.)',
+    description: '',
+  },
+  withCustomElementProps: {
+    title: 'Override element props',
     description: '',
   },
   withStarterKit: {

@@ -1,4 +1,4 @@
-import YooptaEditor, { createYooptaEditor } from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor, Elements, Blocks, useYooptaEditor } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
@@ -8,6 +8,7 @@ import Link from '@yoopta/link';
 import Callout from '@yoopta/callout';
 import Video from '@yoopta/video';
 import File from '@yoopta/file';
+import Accordion from '@yoopta/accordion';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
@@ -15,15 +16,14 @@ import Code from '@yoopta/code';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
-// import { DividerPlugin } from './customPlugins/Divider';
-
-import { Sheet } from '@/components/ui/sheet';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import { WITH_CUSTOM_ELEMENTS_PROPS_INIT_VALUE } from './initValue';
 
 const plugins = [
   Paragraph,
+  Accordion,
   HeadingOne,
   HeadingTwo,
   HeadingThree,
@@ -32,10 +32,35 @@ const plugins = [
   NumberedList,
   BulletedList,
   TodoList,
-  Code,
-  Link,
+  Code.extend({
+    elementProps: {
+      code: (props) => ({
+        ...props,
+        language: 'javascript',
+        theme: 'GithubDark',
+      }),
+    },
+  }),
+  Link.extend({
+    elementProps: {
+      link: (props) => {
+        return {
+          ...props,
+          target: '_blank',
+        };
+      },
+    },
+  }),
   Embed,
   Image.extend({
+    elementProps: {
+      image: (props) => {
+        return {
+          ...props,
+          fit: 'cover',
+        };
+      },
+    },
     options: {
       async onUpload(file) {
         const data = await uploadToCloudinary(file, 'image');
@@ -97,9 +122,15 @@ const TOOLS = {
 
 const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
-function WithCodaExample() {
+function WithCustomElementProps() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
+
+  useEffect(() => {
+    editor.on('change', (value) => {
+      console.log(value);
+    });
+  }, []);
 
   return (
     <div
@@ -112,34 +143,11 @@ function WithCodaExample() {
         tools={TOOLS}
         marks={MARKS}
         selectionBoxRoot={selectionRef}
-        readOnly
-        value={{
-          '7e11916a-b983-48ca-aeff-bf6b04f5ee2b': {
-            id: '7e11916a-b983-48ca-aeff-bf6b04f5ee2b',
-            type: 'HeadingTwo',
-            meta: {
-              order: 0,
-              depth: 0,
-            },
-            value: [
-              {
-                id: '4325c741-1445-450f-be2d-f51368b1a3ff',
-                type: 'heading-two',
-                children: [
-                  {
-                    text: 'Example in progress..',
-                  },
-                ],
-                props: {
-                  nodeType: 'block',
-                },
-              },
-            ],
-          },
-        }}
+        value={WITH_CUSTOM_ELEMENTS_PROPS_INIT_VALUE}
+        autoFocus
       />
     </div>
   );
 }
 
-export default WithCodaExample;
+export default WithCustomElementProps;
