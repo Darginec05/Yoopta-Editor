@@ -143,6 +143,10 @@ const getPlugins = () => [
           },
         };
       },
+      onUploadPoster: async (file) => {
+        const image = await uploadToCloudinary(file, 'image');
+        return image.secure_url;
+      },
     },
   }),
   File.extend({
