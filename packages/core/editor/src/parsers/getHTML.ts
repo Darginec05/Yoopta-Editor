@@ -41,7 +41,13 @@ function serializeChildren(children, plugins) {
 
 export function getHTML(editor: YooEditor, content: YooptaContentValue): string {
   const blocks = Object.values(content)
-    .filter((item) => editor.selectedBlocks?.includes(item.meta.order))
+    .filter((item) => {
+      if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
+        return editor.selectedBlocks?.includes(item.meta.order);
+      }
+
+      return true;
+    })
     .sort((a, b) => a.meta.order - b.meta.order);
 
   const html = blocks.map((blockData) => {

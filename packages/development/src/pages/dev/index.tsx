@@ -9,7 +9,7 @@ export type YooptaChildrenValue = Record<string, YooptaBlockData>;
 const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef<HTMLDivElement>(null);
-  const [readOnly, setReadOnly] = useState(false);
+  const [readOnly, setReadOnly] = useState(true);
   const [value, setValue] = useState<YooptaContentValue>();
 
   useEffect(() => {
