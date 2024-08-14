@@ -178,10 +178,17 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
         Editor.insertText(slate, link.title || link.url, { at: slate.selection });
         Transforms.collapse(slate, { edge: 'end' });
       } else {
+        const defaultLinkProps: Record<string, unknown> | undefined = editor.plugins?.LinkPlugin?.elements?.link?.props;
+
         const linkNode = {
           type: 'link',
           children: [{ text: link.title }],
-          props: { ...link, nodeType: 'inline' },
+          props: {
+            ...link,
+            target: defaultLinkProps?.target || link.target || '_self',
+            rel: defaultLinkProps?.rel || link.rel || 'noopener noreferrer',
+            nodeType: 'inline',
+          },
         } as SlateElement;
 
         Transforms.wrapNodes(slate, linkNode, { split: true, at: slate.selection });

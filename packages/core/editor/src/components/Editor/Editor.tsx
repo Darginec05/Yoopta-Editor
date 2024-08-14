@@ -9,7 +9,7 @@ import { HOTKEYS } from '../../utils/hotkeys';
 import { Editor as SlateEditor, Element, Path, Range, Transforms } from 'slate';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { ReactEditor } from 'slate-react';
-import { YooptaBlockPath } from '../../editor/types';
+import { YooptaBlockPath, YooptaContentValue } from '../../editor/types';
 import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
 import { Blocks } from '../../editor/blocks';
@@ -382,6 +382,37 @@ const Editor = ({
     }
   };
 
+  // This event handler will be fired only in read-only mode
+  const onCopy = (e: ClipboardEvent) => {
+    if (!isReadOnly) return;
+    const clipboardData: Pick<DataTransfer, 'getData' | 'setData'> = e.clipboardData;
+
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      if (range.collapsed) return;
+
+      const clonedContent = range.cloneContents();
+      const blocksEl = clonedContent.querySelectorAll('[data-yoopta-block-id]');
+
+      if (!blocksEl.length) return;
+
+      const content: YooptaContentValue = Array.from(blocksEl).reduce((acc, blockEl) => {
+        const blockId = blockEl.getAttribute('data-yoopta-block-id') || '';
+        const block = editor.children[blockId];
+        if (block) acc[blockId] = block;
+        return acc;
+      }, {});
+
+      const htmlString = editor.getHTML(content);
+      const textString = editor.getPlainText(content);
+
+      clipboardData.setData('text/html', htmlString);
+      clipboardData.setData('text/plain', textString);
+      return;
+    }
+  };
+
   const editorStyles: CSSProperties = getEditorStyles({
     userSelect: selectionBox.selection ? 'none' : 'auto',
     pointerEvents: selectionBox.selection ? 'none' : 'auto',
@@ -396,6 +427,8 @@ const Editor = ({
       style={editorStyles}
       onMouseDown={onMouseDown}
       onBlur={onBlur}
+      onCopy={onCopy}
+      onCut={onCopy}
     >
       <RenderBlocks editor={editor} marks={marks} placeholder={placeholder} />
       {selectionBoxRoot !== false && (
