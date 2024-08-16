@@ -39,6 +39,7 @@ const DEFAULT_HANDLERS: YooptaEditorContext = {
     formats: {},
     selection: null,
     readOnly: false,
+    isEmpty: () => false,
     blockEditorsMap: {},
     children: {},
 
