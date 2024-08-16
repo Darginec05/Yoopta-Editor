@@ -29,6 +29,9 @@ const BulletedList = new YooptaPlugin<BulletedListPluginKeys, BulletedListElemen
           if (el.nodeName === 'UL') {
             const listItems = el.querySelectorAll('li');
 
+            const align = (el.getAttribute('data-meta-align') || 'left') as YooptaBlockData['meta']['align'];
+            const depth = parseInt(el.getAttribute('data-meta-depth') || '0', 10);
+
             const bulletListBlocks: YooptaBlockData[] = Array.from(listItems)
               .filter((listItem) => {
                 const textContent = listItem.textContent || '';
@@ -50,7 +53,7 @@ const BulletedList = new YooptaPlugin<BulletedListPluginKeys, BulletedListElemen
                       props: { nodeType: 'block' },
                     },
                   ],
-                  meta: { order: 0, depth: 0 },
+                  meta: { order: 0, depth: depth, align },
                 });
               });
 
