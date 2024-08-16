@@ -93,7 +93,7 @@ export type YooEditor<TNodes = any> = {
   getBlock: (options: GetBlockOptions) => YooptaBlockData | null;
   selection: YooptaBlockPath | null;
   selectedBlocks: number[] | null;
-  children: Record<string, YooptaBlockData>;
+  children: YooptaContentValue;
   getEditorValue: () => TNodes;
   setEditorValue: (value: YooptaContentValue) => void;
   setSelection: (path: YooptaBlockPath | null, options?: SetSelectionOptions) => void;
