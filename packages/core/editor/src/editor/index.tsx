@@ -22,22 +22,7 @@ import { getBlock } from './blocks/getBlock';
 import { getHTML } from '../parsers/getHTML';
 import { getMarkdown } from '../parsers/getMarkdown';
 import { getPlainText } from '../parsers/getPlainText';
-
-// export const YooEditor = {}
-// export const BlockTransforms = {}
-// export const Selection = {}
-// export const TextFormats = {}
-
-// YooEditor.get(editor, 'children');
-// YooEditor.applyChanges(editor);
-
-// Block.get(editor, 'paragraph');
-// BlockTransforms.update(editor, 'paragraph', { elements: {} });
-// BlockTransforms.create();
-// BlockTransforms.delete();
-
-// TextFormats.get(editor, 'bold');
-// TextFormats.TextFormats.update(editor, 'bold', true);
+import { isEmpty } from './core/isEmpty';
 
 export const createYooptaEditor = (): YooEditor => {
   const editor: YooEditor = {
@@ -46,6 +31,7 @@ export const createYooptaEditor = (): YooEditor => {
     selection: null,
     selectedBlocks: null,
     readOnly: false,
+    isEmpty: () => isEmpty(editor),
     getEditorValue: () => getEditorValue(editor),
     setEditorValue: (...args) => setEditorValue(editor, ...args),
     applyChanges: () => {},

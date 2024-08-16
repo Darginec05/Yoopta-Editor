@@ -76,6 +76,7 @@ export type YooEditorEvents = 'change' | 'focus' | 'blur' | 'block:copy';
 export type YooEditor<TNodes = any> = {
   id: string;
   readOnly: boolean;
+  isEmpty: () => boolean;
   insertBlock: (data: YooptaBlockData, options?: YooptaEditorTransformOptions) => void;
   insertBlocks: (blocks: YooptaBlockData[], options?: YooptaEditorTransformOptions) => void;
   splitBlock: (options?: YooptaEditorTransformOptions) => void;
