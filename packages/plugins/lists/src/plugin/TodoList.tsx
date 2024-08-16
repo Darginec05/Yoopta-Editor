@@ -27,11 +27,13 @@ const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
     html: {
       deserialize: {
         // add ignore or continue statement
-        // nodeNames: ['OL', 'UL'],
-        nodeNames: [],
+        nodeNames: ['OL', 'UL'],
+        // nodeNames: [],
         parse(el) {
           if (el.nodeName === 'OL' || el.nodeName === 'UL') {
             const listItems = el.querySelectorAll('li');
+
+            console.log('listItems', listItems);
 
             const todoListBlocks: YooptaBlockData[] = Array.from(listItems)
               .filter((listItem) => {
@@ -59,6 +61,8 @@ const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
                   meta: { order: 0, depth: 0 },
                 });
               });
+
+            console.log('todoListBlocks', todoListBlocks);
 
             if (todoListBlocks.length > 0) return todoListBlocks;
           }

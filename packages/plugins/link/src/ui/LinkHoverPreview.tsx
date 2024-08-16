@@ -86,18 +86,19 @@ const LinkHoverPreview = ({ style, setFloating, element, setHoldLinkTool, blockI
           onClick={() => {
             navigator.clipboard.writeText(element.props.url);
           }}
+          className="yoopta-button"
         >
           <Copy size={14} strokeWidth={1} />
         </button>
         <span className="yoopta-link-preview-separator" />
-        <button type="button" onClick={onOpenLink}>
+        <button type="button" onClick={onOpenLink} className="yoopta-button">
           <SquareArrowOutUpRight size={14} strokeWidth={1} />
         </button>
         <span className="yoopta-link-preview-separator" />
         <button
           ref={linkToolRefs.setReference}
           type="button"
-          className="yoopta-link-edit-button"
+          className="yoopta-button yoopta-link-edit-button"
           onClick={() => {
             setHoldLinkTool((prev) => !prev);
             setIsEditLinkToolsOpen((prev) => !prev);
