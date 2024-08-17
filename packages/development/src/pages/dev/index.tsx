@@ -14,16 +14,12 @@ const BasicExample = () => {
 
   useEffect(() => {
     editor.on('change', (data) => {
-      console.log('IS EMPTY', editor.isEmpty());
       setValue(data);
     });
   }, []);
 
   return (
     <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={selectionRef}>
-      <div>
-        <input type="checkbox" checked={editor.isEmpty()} onChange={() => setReadOnly((prev) => !prev)} />
-      </div>
       <YooptaEditor
         editor={editor}
         plugins={YOOPTA_PLUGINS}

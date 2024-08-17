@@ -1,7 +1,7 @@
-/* @tailwind base;
-@tailwind components; */
+@tailwind base;
+@tailwind components;
 @tailwind utilities;
-/* 
+
 body {
   font-family: 'Montserrat', sans-serif;
 }
@@ -45,4 +45,4 @@ body {
 #slack .yoopta-editor .yoopta-code .cm-content {
   padding: 8px;
   line-height: 1.46668;
-} */
+}
