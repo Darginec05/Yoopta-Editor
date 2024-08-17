@@ -1,50 +1,8 @@
-/* @tailwind base; */
 @tailwind utilities;
 
-*,
-:after,
-:before {
+.yoopta-editor * {
   box-sizing: border-box;
   border: 0 solid #e5e7eb;
-}
-
-button {
-  cursor: pointer;
-  background-color: transparent;
-  border: none;
-}
-
-button,
-input,
-optgroup,
-select,
-textarea {
-  font-family: inherit;
-  font-feature-settings: inherit;
-  font-variation-settings: inherit;
-  font-size: 100%;
-  font-weight: inherit;
-  line-height: inherit;
-  letter-spacing: inherit;
-  color: inherit;
-  margin: 0;
-  padding: 0;
-}
-
-blockquote,
-dd,
-dl,
-figure,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-hr,
-p,
-pre {
-  margin: 0;
 }
 
 ::-moz-selection {
@@ -53,10 +11,6 @@ pre {
 
 ::selection {
   background: #c6ddf8;
-}
-
-.yoopta-editor {
-  height: auto;
 }
 
 .yoopta-placeholder::after {
@@ -74,10 +28,9 @@ pre {
   font-style: inherit;
 }
 
-
 /* common */
 .yoopta-button {
-  @apply yoo-editor-cursor-pointer yoo-editor-bg-transparent yoo-editor-border-none
+  @apply yoo-editor-cursor-pointer yoo-editor-bg-transparent yoo-editor-border-none;
 }
 
 /* Block styles  */

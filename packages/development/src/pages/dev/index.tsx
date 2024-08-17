@@ -13,7 +13,9 @@ const BasicExample = () => {
   const [value, setValue] = useState<YooptaContentValue>();
 
   useEffect(() => {
-    editor.on('change', (data) => setValue(data));
+    editor.on('change', (data) => {
+      setValue(data);
+    });
   }, []);
 
   return (

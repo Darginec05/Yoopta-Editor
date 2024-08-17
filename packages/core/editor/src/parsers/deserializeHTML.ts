@@ -149,6 +149,7 @@ export function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames
   if (plugin) {
     if (Array.isArray(plugin)) {
       const blocks = plugin.map((p) => buildBlock(editor, p, el as HTMLElement, children)).filter(Boolean);
+      console.log('blocks', blocks);
 
       return blocks;
     }
@@ -194,7 +195,10 @@ export function deserializeHTML(editor: YooEditor, html: HTMLElement) {
   console.log('pasted html', html);
 
   const PLUGINS_NODE_NAME_MATCHERS_MAP = getMappedPluginByNodeNames(editor);
-  const blocks = deserialize(editor, PLUGINS_NODE_NAME_MATCHERS_MAP, html).filter(isYooptaBlock) as YooptaBlockData[];
+
+  const blocks = deserialize(editor, PLUGINS_NODE_NAME_MATCHERS_MAP, html)
+    .flat()
+    .filter(isYooptaBlock) as YooptaBlockData[];
 
   return blocks;
 }

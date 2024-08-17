@@ -70,7 +70,7 @@ const DefaultLinkToolRender = (props: LinkToolRenderProps) => {
       )}
       <button
         type="button"
-        className="yoopta-link-tool-label !yoo-link-tool-font-[500] yoo-link-tool-mt-2 !yoo-link-tool-mb-0 !yoo-link-tool-flex yoo-link-tool-justify-between yoo-link-tool-items-center yoo-link-tool-w-full"
+        className="yoopta-button yoopta-link-tool-label !yoo-link-tool-font-[500] yoo-link-tool-mt-2 !yoo-link-tool-mb-0 !yoo-link-tool-flex yoo-link-tool-justify-between yoo-link-tool-items-center yoo-link-tool-w-full"
         onClick={() => setAdditionPropsOpen((p) => !p)}
       >
         Additional props

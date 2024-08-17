@@ -76,6 +76,7 @@ export type YooEditorEvents = 'change' | 'focus' | 'blur' | 'block:copy';
 export type YooEditor<TNodes = any> = {
   id: string;
   readOnly: boolean;
+  isEmpty: () => boolean;
   insertBlock: (data: YooptaBlockData, options?: YooptaEditorTransformOptions) => void;
   insertBlocks: (blocks: YooptaBlockData[], options?: YooptaEditorTransformOptions) => void;
   splitBlock: (options?: YooptaEditorTransformOptions) => void;
@@ -92,7 +93,7 @@ export type YooEditor<TNodes = any> = {
   getBlock: (options: GetBlockOptions) => YooptaBlockData | null;
   selection: YooptaBlockPath | null;
   selectedBlocks: number[] | null;
-  children: Record<string, YooptaBlockData>;
+  children: YooptaContentValue;
   getEditorValue: () => TNodes;
   setEditorValue: (value: YooptaContentValue) => void;
   setSelection: (path: YooptaBlockPath | null, options?: SetSelectionOptions) => void;

@@ -1,7 +1,7 @@
 import { YooEditor, YooptaBlockData, SlateElement, YooptaContentValue } from '@yoopta/editor';
 
 export function getPluginByInlineElement(plugins: YooEditor['plugins'], elementType: string) {
-  const plugin = Object.values(plugins).find((plugin) => plugin.type === plugin.elements?.[elementType].rootPlugin);
+  const plugin = Object.values(plugins).find((plugin) => plugin.type === plugin.elements?.[elementType]?.rootPlugin);
   return plugin;
 }
 

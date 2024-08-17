@@ -78,6 +78,9 @@ type Props = {
 ```tsx
 export type YooEditor<TNodes> = {
   id: string;
+  // Method to check if editor is empty
+  // [NOTE] - Empty editor means the next: If the Editor has one block with the default type "Paragraph", and this block does not contain text content
+  isEmpty: () => boolean;
   readOnly: boolean;
   insertBlock: (data: YooptaBlockData, options?: YooptaEditorTransformOptions) => void;
   insertBlocks: (blocks: YooptaBlockData[], options?: YooptaEditorTransformOptions) => void;

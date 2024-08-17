@@ -25,22 +25,6 @@ export const YOOPTA_PLUGINS = [
         };
       },
     },
-    renders: {
-      'accordion-list': ({ attributes, children }: PluginElementRenderProps) => {
-        return (
-          <ul {...attributes} className="accordion-list-element-extended">
-            {children}
-          </ul>
-        );
-      },
-      'accordion-list-item': ({ attributes, children, element, blockId }: PluginElementRenderProps) => {
-        return (
-          <li {...attributes} className="accordion-list-item-element-extended border-b">
-            {children}
-          </li>
-        );
-      },
-    },
   }),
   File.extend({
     options: {
@@ -190,35 +174,6 @@ export const YOOPTA_PLUGINS = [
         target: '_blank',
         rel: 'noopener noreferrer',
       }),
-    },
-    renders: {
-      link: ({ attributes, children, element }) => {
-        if (element.props.target === '_blank') {
-          return (
-            <a
-              {...attributes}
-              className="link-element-extended text-blue-500 hover:underline"
-              href={element.props.url}
-              target={element.props.target}
-              rel={element.props.rel}
-            >
-              {children}
-            </a>
-          );
-        }
-
-        return (
-          <NextLink
-            {...attributes}
-            data-key={element.id}
-            className="link-element-extended text-blue-500 hover:underline cursor-pointer"
-            href={element.props.url}
-            data-next-link
-          >
-            {children}
-          </NextLink>
-        );
-      },
     },
     options: {
       HTMLAttributes: {
