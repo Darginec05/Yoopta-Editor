@@ -10,12 +10,16 @@ import File from '@yoopta/file';
 import Embed from '@yoopta/embed';
 import AccordionPlugin from '@yoopta/accordion';
 import Code from '@yoopta/code';
+import Table from '@yoopta/table';
 
-import NextLink from 'next/link';
 import { uploadToCloudinary } from '../cloudinary';
-import { PluginElementRenderProps } from '@yoopta/editor';
+
+// Table.insertTable();
+// Table.insertTableRow();
+// Table.insertTableColumn();
 
 export const YOOPTA_PLUGINS = [
+  Table,
   AccordionPlugin.extend({
     elementProps: {
       'accordion-list-item': (props) => {

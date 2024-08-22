@@ -153,20 +153,21 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       const { attributes, ...props } = elementProps;
       attributes['data-element-type'] = props.element.type;
 
-      let path;
+      // [TODO] - REMOVE
+      // let path;
 
-      try {
-        path = ReactEditor.findPath(slate, elementProps.element);
-      } catch (error) {
-        path = [];
-      }
+      // try {
+      //   path = ReactEditor.findPath(slate, elementProps.element);
+      // } catch (error) {
+      //   path = [];
+      // }
 
       if (!ElementComponent) return <DefaultElement {...props} attributes={attributes} />;
 
       return (
         <ElementComponent
           {...props}
-          path={path}
+          // path={path}
           attributes={attributes}
           blockId={id}
           HTMLAttributes={options?.HTMLAttributes}

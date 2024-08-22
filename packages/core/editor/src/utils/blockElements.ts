@@ -1,6 +1,6 @@
 import { Editor, Element, NodeEntry, Path } from 'slate';
 import { buildBlockElement } from '../components/Editor/utils';
-import { SlateEditor, SlateElement, YooEditor, YooptaBlock } from '../editor/types';
+import { SlateEditor, SlateElement, YooEditor, YooptaBlock, YooptaBlockData } from '../editor/types';
 import { Plugin, PluginElement, PluginElementProps, PluginElementsMap } from '../plugins/types';
 import { generateId } from './generateId';
 
@@ -66,7 +66,7 @@ export function buildSlateNodeElement(
   type: string,
   props: PluginElementProps<unknown> = { nodeType: 'block' },
 ): SlateElement<any> {
-  return { id: generateId(), type, children: [{ text: '' }], props: props };
+  return { id: generateId(), type, children: [{ text: '' }], props };
 }
 
 function recursivelyCollectElementChildren(
@@ -105,8 +105,80 @@ export function buildBlockElementsStructure(
   blockType: string,
   elementsMapWithTextContent?: ElementsMapWithTextContent,
 ): SlateElement {
+  const plugin = editor.plugins[blockType];
   const block: YooptaBlock = editor.blocks[blockType];
   const blockElements = block.elements;
+
+  if (typeof plugin.defineInitialStructure === 'function') {
+    const structure = plugin.defineInitialStructure(editor);
+    // [TODO] - check if structure is valid
+
+    // structure
+    // {
+    //   type: 'table',
+    //   children: [
+    //     {
+    //       type: 'table-head',
+    //       children: [
+    //         {
+    //           type: 'table-row',
+    //           children: [
+    //             { type: 'table-head-cell' },
+    //             { type: 'table-head-cell' },
+    //             { type: 'table-head-cell' },
+    //             { type: 'table-head-cell' },
+    //           ],
+    //         },
+    //       ],
+    //     },
+    //     {
+    //       type: 'tbody',
+    //       children: [
+    //         {
+    //           type: 'table-row',
+    //           children: [
+    //             { type: 'table-data-cell' },
+    //             { type: 'table-data-cell' },
+    //             { type: 'table-data-cell' },
+    //             { type: 'table-data-cell' },
+    //           ],
+    //         },
+    //         {
+    //           type: 'table-row',
+    //           children: [
+    //             { type: 'table-data-cell' },
+    //             { type: 'table-data-cell' },
+    //             { type: 'table-data-cell' },
+    //             { type: 'table-data-cell' },
+    //           ],
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // }
+
+    function recursivelyBuildElementsFromStructure(structure: any): SlateElement {
+      // if (structure.children && structure.children.length > 0) {
+      const children = structure.children
+        ? structure.children.map((child: any) => {
+            return recursivelyBuildElementsFromStructure(child);
+          })
+        : [{ text: '' }];
+      // }
+
+      const element: SlateElement = {
+        id: generateId(),
+        type: structure.type,
+        props: blockElements[structure.type].props,
+        children,
+      };
+
+      return element;
+    }
+
+    return recursivelyBuildElementsFromStructure(structure);
+  }
+
   const rootBlockElementType = getRootBlockElementType(blockElements);
   if (!rootBlockElementType) {
     throw new Error(`Root element type not found for block type ${blockType}`);

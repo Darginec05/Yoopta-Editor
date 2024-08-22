@@ -24,6 +24,16 @@ const ACCORDION_ELEMENTS = {
 
 const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>({
   type: 'Accordion',
+  rules: () => {
+    return `
+      <accordion-list>
+        <accordion-list-item>
+          <accordion-list-item-heading>Accordion Item</accordion-list-item-heading>
+          <accordion-list-item-content>Accordion Content</accordion-list-item-content>
+        </accordion-list-item>
+      </accordion-list>
+      `;
+  },
   elements: {
     'accordion-list': {
       asRoot: true,

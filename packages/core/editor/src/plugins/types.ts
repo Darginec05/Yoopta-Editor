@@ -71,6 +71,7 @@ export type PluginEventHandlerOptions = {
 
 export type Plugin<TKeys extends string = string, TProps = Descendant, TOptions = Record<string, unknown>> = {
   type: string;
+  defineInitialStructure?: (editor: YooEditor) => Pick<SlateElement<TKeys>, 'type'>;
   customEditor?: (props: PluginCustomEditorRenderProps) => JSX.Element;
   elements: PluginElementsMap<TKeys, TProps>;
   events?: EventHandlers;

@@ -23,6 +23,7 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
 
   const selectedBlock = editor.blocks[type];
   const elements = buildBlockElementsStructure(editor, type);
+  console.log('elements', elements);
 
   if (options?.deleteText) Transforms.delete(slate, { at: [0, 0] });
 
@@ -38,6 +39,7 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
 
   const newSlate = buildSlateEditor(editor);
   newSlate.children = [elements];
+  console.log('newSlate.children', newSlate.children);
 
   delete editor.children[fromBlock.id];
   delete editor.blockEditorsMap[fromBlock.id];
