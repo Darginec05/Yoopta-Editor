@@ -8,7 +8,7 @@ import { TableBody } from '../elements/TableBody';
 import { TableFooter } from '../elements/TableFooter';
 import { ColGroup } from '../elements/ColGroup';
 import { Col } from '../elements/Col';
-import { Editor } from 'slate';
+import { Editor, Element } from 'slate';
 
 type TablePluginElementKeys =
   | 'table'
@@ -96,6 +96,13 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
   events: {
     onKeyDown(editor, slate, options) {
       return (event) => {
+        const element = Editor.above(slate, {
+          match: (n) => Element.isElement(n),
+          at: slate.selection!,
+        });
+        console.log('slate.selection', slate.selection);
+        console.log('element', element?.[0]);
+
         if (options.hotkeys.isEnter(event)) {
           event.preventDefault();
         }
