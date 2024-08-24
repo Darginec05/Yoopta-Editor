@@ -24,14 +24,14 @@ const TableColumnOptions = ({ editor, blockId, element, onClose, ...props }: Pro
   const insertColumnBefore = () => {
     let path = Elements.getElementPath(editor, blockId, element);
     console.log('deleteColumnBefore path', path);
-    // TABLE_API.deleteColumn(editor, blockId);
+    TABLE_API.insertColumn(editor, blockId);
     onClose();
   };
 
   const insertColumnAfter = () => {
     let path = Elements.getElementPath(editor, blockId, element);
     console.log('insertColumnAfter path', path);
-    // TABLE_API.deleteColumn(editor, blockId);
+    TABLE_API.insertColumn(editor, blockId);
     onClose();
   };
 

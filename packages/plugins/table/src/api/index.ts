@@ -23,7 +23,7 @@ export const TABLE_API = {
       type: 'table',
       children: [
         { id: generateId(), type: 'table-head', children: [] },
-        { id: generateId(), type: 'tbody', children: [] },
+        { id: generateId(), type: 'table-body', children: [] },
       ],
     };
 
@@ -151,6 +151,8 @@ export const TABLE_API = {
           type: parent?.type === 'table-head' ? 'table-head-cell' : 'table-data-cell',
           children: [{ text: '' }],
         };
+
+        console.log('path ', [...tableRowPath, tableRowEl.children.length]);
         Transforms.insertNodes(slate, newDataCell, { at: [...tableRowPath, tableRowEl.children.length] });
       }
     });

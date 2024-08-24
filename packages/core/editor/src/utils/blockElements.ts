@@ -132,7 +132,7 @@ export function buildBlockElementsStructure(
     //       ],
     //     },
     //     {
-    //       type: 'tbody',
+    //       type: 'table-body',
     //       children: [
     //         {
     //           type: 'table-row',

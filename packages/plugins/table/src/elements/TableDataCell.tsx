@@ -11,9 +11,11 @@ const TableDataCell = ({ attributes, children, element, blockId }: PluginElement
       >
         {children}
       </div>
-      <div contentEditable={false} className="absolute right-0 w-0 top-0 flex-grow-0 h-full z-[1]">
-        <div className="absolute w-[3px] -ml-[1px] -mt-[1px] h-[calc(100%+2px)] transition-[background] duration-[150ms] delay-[50ms] hover:bg-[#74b6db] bg-[#2383e200] cursor-col-resize"></div>
-      </div>
+      {!editor.readOnly && (
+        <div contentEditable={false} className="absolute right-0 w-0 top-0 flex-grow-0 h-full z-[1]">
+          <div className="absolute w-[3px] -ml-[1px] -mt-[1px] h-[calc(100%+2px)] transition-[background] duration-[150ms] delay-[50ms] hover:bg-[#74b6db] bg-[#2383e200] cursor-col-resize"></div>
+        </div>
+      )}
     </td>
   );
 };

@@ -15,7 +15,7 @@ type TablePluginElementKeys =
   | 'colgroup'
   | 'col'
   | 'table-head'
-  | 'tbody'
+  | 'table-body'
   | 'table-foot'
   | 'table-row'
   | 'table-head-cell'
@@ -37,7 +37,7 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
           ],
         },
         {
-          type: 'tbody',
+          type: 'table-body',
           children: [
             {
               type: 'table-row',
@@ -60,7 +60,7 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
     table: {
       render: TableRender,
       asRoot: true,
-      children: ['table-head', 'tbody', 'table-foot', 'colgroup'],
+      children: ['table-head', 'table-body', 'table-foot', 'colgroup'],
     },
     colgroup: {
       render: ColGroup,
@@ -73,7 +73,7 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
       render: TableHead,
       children: ['table-row'],
     },
-    tbody: {
+    table-body: {
       render: TableBody,
       children: ['table-row'],
     },
@@ -99,15 +99,13 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
           match: (n) => Element.isElement(n),
           at: slate.selection!,
         });
-        console.log('slate.selection', slate.selection);
-        console.log('element', element?.[0]);
 
         if (options.hotkeys.isEnter(event)) {
           event.preventDefault();
         }
 
         if (options.hotkeys.isBackspace(event)) {
-          event.preventDefault();
+          // event.preventDefault();
         }
       };
     },
