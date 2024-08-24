@@ -63,12 +63,11 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
       children: ['table-head', 'tbody', 'table-foot', 'colgroup'],
     },
     colgroup: {
-      children: ['col'],
       render: ColGroup,
+      children: ['col'],
     },
     col: {
       render: Col,
-      props: { nodeType: 'void' },
     },
     'table-head': {
       render: TableHead,

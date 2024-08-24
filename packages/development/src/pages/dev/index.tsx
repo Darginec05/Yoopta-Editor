@@ -76,7 +76,7 @@ const BasicExample = () => {
                       type: 'table-head-cell',
                       children: [
                         {
-                          text: 'Header one',
+                          text: 'Table head 1',
                         },
                       ],
                     },
@@ -85,7 +85,7 @@ const BasicExample = () => {
                       type: 'table-head-cell',
                       children: [
                         {
-                          text: 'Header second',
+                          text: 'Table head 2',
                         },
                       ],
                     },

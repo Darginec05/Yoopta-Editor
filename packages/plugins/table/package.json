@@ -33,6 +33,8 @@
     "url": "https://github.com/Darginec05/Editor-Yoopta/issues"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.26.22",
+    "@radix-ui/react-icons": "^1.3.0",
     "slate-hyperscript": "^0.100.0"
   }
 }
