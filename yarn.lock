@@ -8547,6 +8547,11 @@ lucide-react@^0.379.0:
   resolved "https://registry.yarnpkg.com/lucide-react/-/lucide-react-0.379.0.tgz#29e34eeffae7fb241b64b09868cbe3ab888ef7cc"
   integrity sha512-KcdeVPqmhRldldAAgptb8FjIunM2x2Zy26ZBh1RsEUcdLIvsEmbcw7KpzFYUy5BbpGeWhPu9Z9J5YXfStiXwhg==
 
+lucide-react@^0.436.0:
+  version "0.436.0"
+  resolved "https://registry.yarnpkg.com/lucide-react/-/lucide-react-0.436.0.tgz#020c75031fbba5e01f7188991fa5a50195098f50"
+  integrity sha512-N292bIxoqm1aObAg0MzFtvhYwgQE6qnIOWx/GLj5ONgcTPH6N0fD9bVq/GfdeC9ZORBXozt/XeEKDpiB3x3vlQ==
+
 lz-string@^1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/lz-string/-/lz-string-1.5.0.tgz#c1ab50f77887b712621201ba9fd4e3a6ed099941"
@@ -10574,6 +10579,11 @@ re-resizable@^6.9.11:
   resolved "https://registry.yarnpkg.com/re-resizable/-/re-resizable-6.9.11.tgz#f356e27877f12d926d076ab9ad9ff0b95912b475"
   integrity sha512-a3hiLWck/NkmyLvGWUuvkAmN1VhwAz4yOhS6FdMTaxCUVN9joIWkT11wsO68coG/iEYuwn+p/7qAmfQzRhiPLQ==
 
+re-resizable@^6.9.17:
+  version "6.9.17"
+  resolved "https://registry.yarnpkg.com/re-resizable/-/re-resizable-6.9.17.tgz#78e4349934ff24a8fcb4b6b5a43ff9ed5f319d2a"
+  integrity sha512-OBqd1BwVXpEJJn/yYROG+CbeqIDBWIp6wathlpB0kzZWWZIY1gPTsgK2yJEui5hOvkCdC2mcexF2V3DZVfLq2g==
+
 react-dom@^18, react-dom@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"
@@ -11380,13 +11390,6 @@ slate-history@^0.100.0:
   version "0.100.0"
   resolved "https://registry.yarnpkg.com/slate-history/-/slate-history-0.100.0.tgz#a8549af61182a18db2dfedff6ebab7452c841666"
   integrity sha512-x5rUuWLNtH97hs9PrFovGgt3Qc5zkTm/5mcUB+0NR/TK923eLax4HsL6xACLHMs245nI6aJElyM1y6hN0y5W/Q==
-  dependencies:
-    is-plain-object "^5.0.0"
-
-slate-hyperscript@^0.100.0:
-  version "0.100.0"
-  resolved "https://registry.yarnpkg.com/slate-hyperscript/-/slate-hyperscript-0.100.0.tgz#79470c385e96bd3c5fb6477c610c2102d4a889a9"
-  integrity sha512-fb2KdAYg6RkrQGlqaIi4wdqz3oa0S4zKNBJlbnJbNOwa23+9FLD6oPVx9zUGqCSIpy+HIpOeqXrg0Kzwh/Ii4A==
   dependencies:
     is-plain-object "^5.0.0"
 

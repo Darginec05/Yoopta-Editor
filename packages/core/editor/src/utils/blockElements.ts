@@ -29,6 +29,26 @@ export function isRootElementVoid(elems: PluginElementsMap<string, unknown> | un
   return rootElement?.props?.nodeType === 'void';
 }
 
+function recursivelyBuildElementsFromStructure(blockElements, structure: any): SlateElement {
+  console.log('recursivelyBuildElementsFromStructure', { structure, blockElements });
+  // if (structure.children && structure.children.length > 0) {
+  const children = structure.children
+    ? structure.children.map((child: any) => {
+        return recursivelyBuildElementsFromStructure(blockElements, child);
+      })
+    : [{ text: '' }];
+  // }
+
+  const element: SlateElement = {
+    id: generateId(),
+    type: structure.type,
+    props: blockElements[structure.type].props,
+    children,
+  };
+
+  return element;
+}
+
 export type GetBlockElementNodeOptions = {
   at?: Path;
   elementType?: string;
@@ -113,70 +133,7 @@ export function buildBlockElementsStructure(
     const structure = plugin.defineInitialStructure(editor);
     // [TODO] - check if structure is valid
 
-    // structure
-    // {
-    //   type: 'table',
-    //   children: [
-    //     {
-    //       type: 'table-head',
-    //       children: [
-    //         {
-    //           type: 'table-row',
-    //           children: [
-    //             { type: 'table-head-cell' },
-    //             { type: 'table-head-cell' },
-    //             { type: 'table-head-cell' },
-    //             { type: 'table-head-cell' },
-    //           ],
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       type: 'table-body',
-    //       children: [
-    //         {
-    //           type: 'table-row',
-    //           children: [
-    //             { type: 'table-data-cell' },
-    //             { type: 'table-data-cell' },
-    //             { type: 'table-data-cell' },
-    //             { type: 'table-data-cell' },
-    //           ],
-    //         },
-    //         {
-    //           type: 'table-row',
-    //           children: [
-    //             { type: 'table-data-cell' },
-    //             { type: 'table-data-cell' },
-    //             { type: 'table-data-cell' },
-    //             { type: 'table-data-cell' },
-    //           ],
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // }
-
-    function recursivelyBuildElementsFromStructure(structure: any): SlateElement {
-      // if (structure.children && structure.children.length > 0) {
-      const children = structure.children
-        ? structure.children.map((child: any) => {
-            return recursivelyBuildElementsFromStructure(child);
-          })
-        : [{ text: '' }];
-      // }
-
-      const element: SlateElement = {
-        id: generateId(),
-        type: structure.type,
-        props: blockElements[structure.type].props,
-        children,
-      };
-
-      return element;
-    }
-
-    return recursivelyBuildElementsFromStructure(structure);
+    return recursivelyBuildElementsFromStructure(blockElements, structure);
   }
 
   const rootBlockElementType = getRootBlockElementType(blockElements);

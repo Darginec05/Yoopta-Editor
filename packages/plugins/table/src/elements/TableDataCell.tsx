@@ -1,22 +1,68 @@
-import { PluginElementRenderProps, useYooptaEditor } from '@yoopta/editor';
+import { Elements, PluginElementRenderProps, useYooptaEditor } from '@yoopta/editor';
+import { useState } from 'react';
+import { ResizeHandle } from '../components/ResizeHandle';
+import { TableColumnDragButton } from '../components/TableColumnDragButton';
+import { TableRowDragButton } from '../components/TableRowDragButton';
+import { TableCellElement, TableCellProps } from '../types';
 
 const TableDataCell = ({ attributes, children, element, blockId }: PluginElementRenderProps) => {
   const editor = useYooptaEditor();
+  const tableElement = Elements.getElement(editor, blockId, { type: 'table' });
+  const path = Elements.getElementPath(editor, blockId, element);
+  const tableRowElement = Elements.getElement(editor, blockId, { type: 'table-row', path: path?.slice(0, -1) });
+
+  const [width, setWidth] = useState<number>(element.props?.width || 249);
+
+  const isColumnAsHeader = tableElement?.props?.headerColumn;
+  const isRowAsHeader = tableElement?.props?.headerRow;
+
+  const isFirstDataCell = path?.[path.length - 1] === 0;
+  const isFirstRow = path?.[path.length - 2] === 0;
+
+  let isDataCellAsHeader = false;
+
+  if ((isFirstDataCell && isColumnAsHeader) || (isRowAsHeader && isFirstRow)) {
+    isDataCellAsHeader = true;
+  }
+
+  const onResize = (newWidth) => {
+    console.log('width - newWidth', newWidth + width);
+
+    setWidth(newWidth + width);
+    // Elements.updateElement<'table-data-cell', TableCellProps>(
+    //   editor,
+    //   blockId,
+    //   { props: { width: newWidth + width }, type: 'table-data-cell' },
+    //   { path },
+    // );
+  };
+
+  const onResizeStop = () => {
+    console.log('onResizeStop', width);
+  };
+
+  const Node = isDataCellAsHeader ? 'th' : 'td';
+  const style = { minWidth: `${width}px`, maxWidth: `${width}px` };
 
   return (
-    <td className="group text-inherit fill-current border border-[rgb(233,233,231)] relative align-top text-left min-w-[249px] max-w-[249px] min-h-[32px]">
+    <Node
+      style={style}
+      className="group text-inherit fill-current border border-[rgb(233,233,231)] relative align-top text-left min-h-[32px]"
+    >
       <div
         className="max-w-full w-full whitespace-pre-wrap break-words caret-[rgb(55,53,47)] p-[7px_9px] bg-transparent text-[14px] leading-[20px]"
         {...attributes}
       >
         {children}
       </div>
-      {!editor.readOnly && (
-        <div contentEditable={false} className="absolute right-0 w-0 top-0 flex-grow-0 h-full z-[1]">
-          <div className="absolute w-[3px] -ml-[1px] -mt-[1px] h-[calc(100%+2px)] transition-[background] duration-[150ms] delay-[50ms] hover:bg-[#74b6db] bg-[#2383e200] cursor-col-resize"></div>
-        </div>
+      {!editor.readOnly && isFirstDataCell && <ResizeHandle onResize={onResize} onResizeStop={onResizeStop} />}
+      {!editor.readOnly && isFirstRow && tableRowElement && (
+        <TableColumnDragButton editor={editor} blockId={blockId} trElement={tableRowElement} tdElement={element} />
       )}
-    </td>
+      {!editor.readOnly && isFirstDataCell && tableRowElement && (
+        <TableRowDragButton editor={editor} blockId={blockId} trElement={tableRowElement} tdElement={element} />
+      )}
+    </Node>
   );
 };
 

@@ -18,6 +18,8 @@ import { uploadToCloudinary } from '../cloudinary';
 // Table.insertTableRow();
 // Table.insertTableColumn();
 
+// Table.commands.insertTable();
+
 export const YOOPTA_PLUGINS = [
   Table,
   AccordionPlugin.extend({

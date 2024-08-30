@@ -1,5 +1,6 @@
 import { Elements, findSlateBySelectionPath, generateId, SlateElement, YooEditor } from '@yoopta/editor';
 import { Editor, Element, Path, Transforms } from 'slate';
+import { TableCellElement, TableElement, TableRowElement } from '../types';
 
 type Options = {
   path?: Path;
@@ -9,6 +10,13 @@ type Options = {
 type InsertTableOptions = {
   rows: number;
   columns: number;
+  headerColumn?: boolean;
+  headerRow?: boolean;
+};
+
+type MoveTableOptions = {
+  from: Path;
+  to: Path;
 };
 
 export const TABLE_API = {
@@ -18,24 +26,25 @@ export const TABLE_API = {
 
     const { rows, columns } = options;
 
-    const table: SlateElement = {
+    const table: TableElement = {
       id: generateId(),
       type: 'table',
-      children: [
-        { id: generateId(), type: 'table-head', children: [] },
-        { id: generateId(), type: 'table-body', children: [] },
-      ],
+      children: [],
+      props: {
+        headerColumn: !!options.headerColumn,
+        headerRow: !!options.headerColumn,
+      },
     };
 
     for (let i = 0; i < rows; i++) {
-      const row: SlateElement = {
+      const row: TableRowElement = {
         id: generateId(),
         type: 'table-row',
         children: [],
       };
 
       for (let j = 0; j < columns; j++) {
-        const cell: SlateElement = {
+        const cell: TableCellElement = {
           id: generateId(),
           type: 'table-data-cell',
           children: [{ text: '' }],
@@ -44,12 +53,13 @@ export const TABLE_API = {
         row.children.push(cell);
       }
 
-      table.children[1].children.push(row);
+      table.children.push(row);
     }
 
+    // [TODO] - Add table as block
     Transforms.insertNodes(slate, table, { at: [0] });
   },
-  insertRow: (editor: YooEditor, blockId: string, options?: Options) => {
+  insertRow: (editor: YooEditor, blockId: string, options?: Pick<Options, 'path'>) => {
     const slate = editor.blockEditorsMap[blockId];
     if (!slate) return;
 
@@ -119,12 +129,6 @@ export const TABLE_API = {
         path = Elements.getElementPath(editor, blockId, options.element);
       }
 
-      // if (options?.path === 'before') {
-      // }
-
-      // if (options?.path === 'after') {
-      // }
-
       if (!path) {
         path = tableRows[tableRows.length - 1][1];
       }
@@ -132,7 +136,39 @@ export const TABLE_API = {
       Transforms.removeNodes(slate, { at: path, match: (n) => Element.isElement(n) && n.type === 'table-row' });
     });
   },
-  insertColumn: (editor: YooEditor, blockId: string) => {
+  moveRow: (editor: YooEditor, blockId: string, { from, to }: MoveTableOptions) => {
+    const slate = editor.blockEditorsMap[blockId];
+    if (!slate) return;
+
+    Editor.withoutNormalizing(slate, () => {
+      Transforms.moveNodes(slate, {
+        at: from,
+        to: to,
+        match: (n) => Element.isElement(n) && n.type === 'table-row',
+      });
+    });
+  },
+  moveColumn: (editor: YooEditor, blockId: string, { from, to }: MoveTableOptions) => {
+    const slate = editor.blockEditorsMap[blockId];
+    if (!slate) return;
+
+    Editor.withoutNormalizing(slate, () => {
+      const tableRowEntries = Editor.nodes<SlateElement>(slate, {
+        at: [0],
+        match: (n) => Element.isElement(n) && n.type === 'table-row',
+        mode: 'all',
+      });
+
+      Array.from(tableRowEntries).forEach(([tableRowElement, tableRowPath]) => {
+        Transforms.moveNodes(slate, {
+          at: tableRowPath.concat(from[from.length - 1]),
+          to: [...tableRowPath, to[to.length - 1]],
+          match: (n) => Element.isElement(n),
+        });
+      });
+    });
+  },
+  insertColumn: (editor: YooEditor, blockId: string, options?: Pick<Options, 'path'>) => {
     const slate = editor.blockEditorsMap[blockId];
     if (!slate) return;
 
@@ -144,20 +180,21 @@ export const TABLE_API = {
       });
 
       for (const [tableRowEl, tableRowPath] of elementEntries) {
-        const parent = Elements.getElement(editor, blockId, { type: 'table-head', path: tableRowPath });
-
-        const newDataCell: SlateElement<'table-data-cell' | 'table-head-cell'> = {
+        const newDataCell: TableCellElement = {
           id: generateId(),
-          type: parent?.type === 'table-head' ? 'table-head-cell' : 'table-data-cell',
+          type: 'table-data-cell',
           children: [{ text: '' }],
         };
 
+        const columnInsertIndex = options?.path ? options.path[options.path.length - 1] : tableRowEl.children.length;
+
         console.log('path ', [...tableRowPath, tableRowEl.children.length]);
-        Transforms.insertNodes(slate, newDataCell, { at: [...tableRowPath, tableRowEl.children.length] });
+        console.log('columnInsertIndex ', columnInsertIndex);
+        Transforms.insertNodes(slate, newDataCell, { at: [...tableRowPath, columnInsertIndex] });
       }
     });
   },
-  deleteColumn: (editor: YooEditor, blockId: string, { index }) => {
+  deleteColumn: (editor: YooEditor, blockId: string, options?: Pick<Options, 'path'>) => {
     const slate = editor.blockEditorsMap[blockId];
     if (!slate) return;
 
@@ -168,9 +205,15 @@ export const TABLE_API = {
         mode: 'all',
       });
 
-      const dataCellPaths = Array.from(tableRowEntries).map(([row, path]) => {
+      const rows = Array.from(tableRowEntries);
+      if (rows[0][0].children.length <= 1) return;
+
+      const index = options?.path ? options.path[options.path.length - 1] : 0;
+      const dataCellPaths = rows.map(([row, path]) => {
         return row.children[index] ? [...path, index] : null;
       });
+
+      // [TODO] - Check if there are other columns
 
       dataCellPaths.forEach((path) => {
         if (path) {

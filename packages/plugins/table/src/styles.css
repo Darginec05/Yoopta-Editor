@@ -1,3 +1,19 @@
-@tailwind base;
-@tailwind components;
 @tailwind utilities;
+
+.yoopta-table .yoopta-table-options {
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.yoopta-table:hover .yoopta-table-options {
+  opacity: 1;
+}
+
+.yoopta-table .data-cell-selected {
+  border-color: #73b6db;
+  border-width: 2px;
+}
+
+.yoopta-table th {
+  background-color: #37352f14;
+}

@@ -62,114 +62,185 @@ const BasicExample = () => {
         {
           id: '347767ed-7c47-4a96-a59d-1fc292ff05e0',
           type: 'table',
+          props: {
+            headerRow: true,
+            headerColumn: false,
+          },
           children: [
             {
-              id: 'c2bbd42c-9ad0-49e1-a9e2-49e22d9f9caa',
-              type: 'table-head',
+              id: '8ca2cfcb-22ae-4f5d-9b61-22051ad4e160',
+              type: 'table-row',
               children: [
                 {
-                  id: 'c7e6d771-5019-4538-8825-d26e991f5dae',
-                  type: 'table-row',
+                  id: 'a2cd8005-b434-45bd-b010-d9b8476d675f',
+                  type: 'table-data-cell',
                   children: [
                     {
-                      id: 'b6c55e6d-d29d-4bbc-a79d-4f5af0047177',
-                      type: 'table-head-cell',
-                      children: [
-                        {
-                          text: 'Table head 1',
-                        },
-                      ],
+                      text: 'First row',
                     },
+                  ],
+                },
+                {
+                  id: 'e3ca917f-f1ec-4458-acac-d2106372ac9f',
+                  type: 'table-data-cell',
+                  children: [
                     {
-                      id: 'd2c8877a-0f28-439e-ba4d-e9bb0acca9ec',
-                      type: 'table-head-cell',
-                      children: [
-                        {
-                          text: 'Table head 2',
-                        },
-                      ],
+                      text: 'Second column',
+                    },
+                  ],
+                },
+                {
+                  id: 'bf3111bf-c6c1-4639-9d89-a5edefcd7de6',
+                  type: 'table-data-cell',
+                  children: [
+                    {
+                      text: '',
+                    },
+                  ],
+                },
+                {
+                  id: '0eb973a8-92e8-42da-94d6-2db321bb8af5',
+                  type: 'table-data-cell',
+                  children: [
+                    {
+                      text: '',
                     },
                   ],
                 },
               ],
             },
             {
-              id: '62e26267-912b-467e-881f-17bcb0c208db',
-              type: 'tbody',
+              id: '6b4a16d4-b1ad-4833-8a0e-5e5912ae6148',
+              type: 'table-row',
               children: [
                 {
-                  id: '6b4a16d4-b1ad-4833-8a0e-5e5912ae6148',
-                  type: 'table-row',
+                  id: 'a2cd8005-b434-45bd-b010-d9b8476d675f',
+                  type: 'table-data-cell',
                   children: [
                     {
-                      id: 'a2cd8005-b434-45bd-b010-d9b8476d675f',
-                      type: 'table-data-cell',
-                      children: [
-                        {
-                          text: '',
-                        },
-                      ],
-                    },
-                    {
-                      id: 'e3ca917f-f1ec-4458-acac-d2106372ac9f',
-                      type: 'table-data-cell',
-                      children: [
-                        {
-                          text: '',
-                        },
-                      ],
+                      text: 'Second row',
                     },
                   ],
                 },
                 {
-                  id: '6b4a16d4-b1ad-4833-8a0e-5e5912ae6148',
-                  type: 'table-row',
+                  id: 'e3ca917f-f1ec-4458-acac-d2106372ac9f',
+                  type: 'table-data-cell',
                   children: [
                     {
-                      id: 'a2cd8005-b434-45bd-b010-d9b8476d675f',
-                      type: 'table-data-cell',
-                      children: [
-                        {
-                          text: '',
-                        },
-                      ],
-                    },
-                    {
-                      id: 'e3ca917f-f1ec-4458-acac-d2106372ac9f',
-                      type: 'table-data-cell',
-                      children: [
-                        {
-                          text: '',
-                        },
-                      ],
+                      text: '',
                     },
                   ],
                 },
                 {
-                  id: '332d7700-fa24-4c51-8027-faf18d2a8c4d',
-                  type: 'table-row',
+                  id: '43d688ce-03b7-49ab-850a-9742cb7c0ff2',
+                  type: 'table-data-cell',
                   children: [
                     {
-                      id: '9490c499-3a12-4e10-b857-4fe8b9ca0eda',
-                      type: 'table-data-cell',
-                      children: [
-                        {
-                          text: '',
-                        },
-                      ],
+                      text: '',
                     },
+                  ],
+                },
+                {
+                  id: '591f81eb-ed11-4f8c-87b2-3acf81df6118',
+                  type: 'table-data-cell',
+                  children: [
                     {
-                      id: '2c0e0066-8d7d-45ef-a5e8-ab3f50597e70',
-                      type: 'table-data-cell',
-                      children: [
-                        {
-                          text: '',
-                        },
-                      ],
+                      text: '',
                     },
                   ],
                 },
               ],
+            },
+            {
+              id: '332d7700-fa24-4c51-8027-faf18d2a8c4d',
+              type: 'table-row',
+              children: [
+                {
+                  id: '9490c499-3a12-4e10-b857-4fe8b9ca0eda',
+                  type: 'table-data-cell',
+                  children: [
+                    {
+                      text: 'Third ',
+                    },
+                    {
+                      bold: true,
+                      text: 'row',
+                    },
+                  ],
+                },
+                {
+                  id: '2c0e0066-8d7d-45ef-a5e8-ab3f50597e70',
+                  type: 'table-data-cell',
+                  children: [
+                    {
+                      text: '',
+                    },
+                  ],
+                },
+                {
+                  id: '1f7bc81f-1c4e-4a3c-9ab2-f74c4b8c3b2e',
+                  type: 'table-data-cell',
+                  children: [
+                    {
+                      text: '',
+                    },
+                  ],
+                },
+                {
+                  id: 'b813c809-9e85-4af2-b244-8692f1f8b36f',
+                  type: 'table-data-cell',
+                  children: [
+                    {
+                      text: '',
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              id: 'e027a48c-ec2f-43ef-9e75-99017c88489a',
+              type: 'table-row',
+              children: [
+                {
+                  id: '7807959f-54b1-45b8-9d1a-98c107a14f5f',
+                  type: 'table-data-cell',
+                  children: [
+                    {
+                      text: '',
+                    },
+                  ],
+                },
+                {
+                  id: '4f97c4f6-37fb-48c8-a35c-3d07472a7155',
+                  type: 'table-data-cell',
+                  children: [
+                    {
+                      text: '',
+                    },
+                  ],
+                },
+                {
+                  id: 'f16f3621-a960-496d-ac86-e1e102ff61f1',
+                  type: 'table-data-cell',
+                  children: [
+                    {
+                      text: '',
+                    },
+                  ],
+                },
+                {
+                  id: '4bbfb8ae-d0b1-462e-b176-79fcee897d7a',
+                  type: 'table-data-cell',
+                  children: [
+                    {
+                      text: '',
+                    },
+                  ],
+                },
+              ],
+              props: {
+                nodeType: 'block',
+              },
             },
           ],
         },

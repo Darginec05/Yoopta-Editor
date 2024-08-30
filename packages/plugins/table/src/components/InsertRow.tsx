@@ -10,7 +10,7 @@ const InsertRow = ({ blockId }) => {
       <div className="flex w-full h-full opacity-100 transition-opacity duration-[150ms] delay-[50ms]">
         <button
           type="button"
-          className="yoopta-button cursor-pointer transition-[background] duration-[20ms] ease-in cursor-col-resize flex-[1_1_0%] w-[16px] h-[16px] rounded-[4px] overflow-hidden"
+          className="yoopta-button p-0 cursor-pointer transition-[background] duration-[20ms] ease-in cursor-col-resize flex-[1_1_0%] w-[16px] h-[16px] rounded-[4px] overflow-hidden"
           onClick={() => TABLE_API.insertRow(editor, blockId)}
         >
           <div className="h-full w-full flex items-center justify-center bg-[rgba(55,53,47,0.06)]">
