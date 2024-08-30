@@ -29,20 +29,20 @@ const TableDataCell = ({ attributes, children, element, blockId }: PluginElement
     console.log('width - newWidth', newWidth + width);
 
     setWidth(newWidth + width);
-    // Elements.updateElement<'table-data-cell', TableCellProps>(
-    //   editor,
-    //   blockId,
-    //   { props: { width: newWidth + width }, type: 'table-data-cell' },
-    //   { path },
-    // );
   };
 
-  const onResizeStop = () => {
-    console.log('onResizeStop', width);
+  const onResizeStop = (newWidth) => {
+    console.log('onResizeStop', newWidth + width);
+    Elements.updateElement<'table-data-cell', TableCellProps>(
+      editor,
+      blockId,
+      { props: { width: newWidth + width }, type: 'table-data-cell' },
+      { path },
+    );
   };
 
   const Node = isDataCellAsHeader ? 'th' : 'td';
-  const style = { minWidth: `${width}px`, maxWidth: `${width}px` };
+  const style = isFirstRow ? { minWidth: `${width}px`, maxWidth: `${width}px` } : undefined;
 
   return (
     <Node
@@ -55,7 +55,7 @@ const TableDataCell = ({ attributes, children, element, blockId }: PluginElement
       >
         {children}
       </div>
-      {!editor.readOnly && isFirstDataCell && <ResizeHandle onResize={onResize} onResizeStop={onResizeStop} />}
+      {!editor.readOnly && isFirstRow && <ResizeHandle onResize={onResize} onResizeStop={onResizeStop} />}
       {!editor.readOnly && isFirstRow && tableRowElement && (
         <TableColumnDragButton editor={editor} blockId={blockId} trElement={tableRowElement} tdElement={element} />
       )}

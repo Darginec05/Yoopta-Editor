@@ -3,7 +3,7 @@ import { Elements, SlateElement, UI, YooEditor } from '@yoopta/editor';
 import { CSSProperties } from 'react';
 import { Editor, Element, Path, Transforms } from 'slate';
 import { TrashIcon, ArrowRightIcon, ArrowLeftIcon, MoveRightIcon, MoveLeftIcon } from 'lucide-react';
-import { TABLE_API } from '../api';
+import { TableTransforms } from '../api';
 
 const { BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptions, BlockOptionsSeparator } = UI;
 
@@ -32,7 +32,7 @@ const TableColumnOptions = ({ editor, blockId, element, onClose, ...props }: Pro
     if (!tdElementEntry) return;
     const [, tdPath] = tdElementEntry;
 
-    TABLE_API.insertColumn(editor, blockId, { path: tdPath });
+    TableTransforms.insertColumn(editor, blockId, { path: tdPath });
     onClose();
   };
 
@@ -47,7 +47,7 @@ const TableColumnOptions = ({ editor, blockId, element, onClose, ...props }: Pro
     if (!tdElementEntry) return;
     const [, tdPath] = tdElementEntry;
 
-    TABLE_API.insertColumn(editor, blockId, { path: Path.next(tdPath) });
+    TableTransforms.insertColumn(editor, blockId, { path: Path.next(tdPath) });
     onClose();
   };
 
@@ -55,7 +55,7 @@ const TableColumnOptions = ({ editor, blockId, element, onClose, ...props }: Pro
     let path = Elements.getElementPath(editor, blockId, element);
     if (!path) return;
 
-    TABLE_API.deleteColumn(editor, blockId, { path });
+    TableTransforms.deleteColumn(editor, blockId, { path });
     onClose();
   };
 
@@ -77,7 +77,7 @@ const TableColumnOptions = ({ editor, blockId, element, onClose, ...props }: Pro
       if (!nextTdEntry) return;
 
       const [, nextTdPath] = nextTdEntry;
-      TABLE_API.moveColumn(editor, blockId, { from: tdPath, to: nextTdPath });
+      TableTransforms.moveColumn(editor, blockId, { from: tdPath, to: nextTdPath });
     }
   };
 
@@ -100,7 +100,7 @@ const TableColumnOptions = ({ editor, blockId, element, onClose, ...props }: Pro
       if (!prevTdEntry) return;
 
       const [, prevTdPath] = prevTdEntry;
-      TABLE_API.moveColumn(editor, blockId, { from: tdPath, to: prevTdPath });
+      TableTransforms.moveColumn(editor, blockId, { from: tdPath, to: prevTdPath });
     }
   };
 

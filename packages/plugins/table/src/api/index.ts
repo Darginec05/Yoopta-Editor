@@ -19,7 +19,7 @@ type MoveTableOptions = {
   to: Path;
 };
 
-export const TABLE_API = {
+export const TableTransforms = {
   insertTable: (editor: YooEditor, options: InsertTableOptions) => {
     const slate = findSlateBySelectionPath(editor);
     if (!slate) return;

@@ -1,11 +1,21 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-const ResizeHandle = ({ onResize }) => {
-  const resizeRef = useRef(null);
+const ResizeHandle = ({ onResize, onResizeStop }) => {
+  const resizeRef = useRef<HTMLDivElement>(null);
   const startWidth = useRef(0);
+  const resizeWidth = useRef(0);
   const startX = useRef(0);
 
-  // Обработчик начала перетаскивания
+  useEffect(() => {
+    const table = document.querySelector('.yoopta-table table') as HTMLElement;
+    if (!table) return;
+
+    const tableHeight = table?.offsetHeight;
+    if (!resizeRef.current) return;
+
+    resizeRef.current.style.height = `${tableHeight}px`;
+  }, []);
+
   const handleMouseDown = (e) => {
     startX.current = e.clientX;
     startWidth.current = resizeRef.current ? resizeRef.current.offsetWidth : 0;
@@ -14,15 +24,16 @@ const ResizeHandle = ({ onResize }) => {
     document.addEventListener('mouseup', handleMouseUp);
   };
 
-  // Обработчик перемещения мыши
   const handleMouseMove = (e) => {
     const currentX = e.clientX;
     const newWidth = startWidth.current + (currentX - startX.current);
+    resizeWidth.current = newWidth;
     onResize(newWidth);
   };
 
-  // Обработчик отпускания кнопки мыши
   const handleMouseUp = () => {
+    onResizeStop(resizeWidth.current);
+    resizeWidth.current = 0;
     document.removeEventListener('mousemove', handleMouseMove);
     document.removeEventListener('mouseup', handleMouseUp);
   };

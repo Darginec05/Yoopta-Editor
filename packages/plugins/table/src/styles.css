@@ -3,6 +3,7 @@
 .yoopta-table .yoopta-table-options {
   opacity: 0;
   transition: opacity 0.15s ease-in-out;
+  top: 12px;
 }
 
 .yoopta-table:hover .yoopta-table-options {

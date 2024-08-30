@@ -3,7 +3,7 @@ import { Elements, SlateElement, UI, YooEditor } from '@yoopta/editor';
 import { CSSProperties } from 'react';
 import { Editor, Element, Path } from 'slate';
 import { TrashIcon, MoveDownIcon, MoveUpIcon, CornerUpRight, CornerDownRight } from 'lucide-react';
-import { TABLE_API } from '../api';
+import { TableTransforms } from '../api';
 
 const { BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptions, BlockOptionsSeparator } = UI;
 
@@ -23,7 +23,7 @@ export type Props = {
 const TableRowOptions = ({ editor, blockId, element, onClose, ...props }: Props) => {
   const insertRowBefore = () => {
     let path = Elements.getElementPath(editor, blockId, element);
-    TABLE_API.insertRow(editor, blockId, { path: path });
+    TableTransforms.insertRow(editor, blockId, { path: path });
     onClose();
   };
 
@@ -32,12 +32,12 @@ const TableRowOptions = ({ editor, blockId, element, onClose, ...props }: Props)
     let nextPath;
     if (path) nextPath = Path.next(path);
 
-    TABLE_API.insertRow(editor, blockId, { path: nextPath });
+    TableTransforms.insertRow(editor, blockId, { path: nextPath });
     onClose();
   };
 
   const deleteRow = () => {
-    TABLE_API.deleteRow(editor, blockId, { element });
+    TableTransforms.deleteRow(editor, blockId, { element });
     onClose();
   };
 
@@ -51,7 +51,7 @@ const TableRowOptions = ({ editor, blockId, element, onClose, ...props }: Props)
     });
 
     if (!nextElementEntry) return onClose();
-    TABLE_API.moveRow(editor, blockId, { from: path!, to: nextElementEntry[1] });
+    TableTransforms.moveRow(editor, blockId, { from: path!, to: nextElementEntry[1] });
   };
 
   const moveRowUp = () => {
@@ -64,7 +64,7 @@ const TableRowOptions = ({ editor, blockId, element, onClose, ...props }: Props)
     });
 
     if (!prevElementEntry) return onClose();
-    TABLE_API.moveRow(editor, blockId, { from: path!, to: prevElementEntry[1] });
+    TableTransforms.moveRow(editor, blockId, { from: path!, to: prevElementEntry[1] });
   };
 
   return (

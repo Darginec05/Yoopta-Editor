@@ -2,8 +2,9 @@ import { YooptaPlugin } from '@yoopta/editor';
 import { Table as TableRender } from '../elements/Table';
 import { TableDataCell } from '../elements/TableDataCell';
 import { TableRow } from '../elements/TableRow';
-import { Editor, Element, Path, Transforms } from 'slate';
+import { Editor, Element, Path, Range, Transforms } from 'slate';
 import { TablePluginElementKeys } from '../types';
+import { TableTransforms } from '../api';
 
 const Table = new YooptaPlugin<TablePluginElementKeys, any>({
   type: 'Table',
@@ -49,7 +50,7 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
     },
   },
   events: {
-    onKeyDown(editor, slate, options) {
+    onKeyDown(editor, slate, { hotkeys, currentBlock }) {
       return (event) => {
         if (!slate.selection) return;
 
@@ -58,31 +59,30 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
           at: slate.selection!,
         });
 
-        if (options.hotkeys.isEnter(event)) {
+        if (hotkeys.isEnter(event)) {
           event.preventDefault();
           Transforms.insertText(slate, '\n');
         }
 
-        if (options.hotkeys.isBackspace(event)) {
+        if (hotkeys.isBackspace(event)) {
           const parentPath = Path.parent(slate.selection.anchor.path);
           const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
-          if (isStart) {
+
+          if (isStart && Range.isCollapsed(slate.selection)) {
             event.preventDefault();
             return;
           }
         }
 
-        if (options.hotkeys.isCmdEnter(event)) {
+        if (hotkeys.isCmdEnter(event)) {
           event.preventDefault();
-          // TABLE_API.insertRow(editor, options.currentBlock.id,);
+          TableTransforms.insertRow(editor, currentBlock.id);
         }
 
-        if (options.hotkeys.isSelect(event)) {
+        if (hotkeys.isSelect(event)) {
           const tdElementEntry = Editor.above(slate, {
             match: (n) => Element.isElement(n) && n.type === 'table-data-cell',
           });
-
-          console.log('slate.selection', slate.selection);
 
           if (tdElementEntry) {
             event.preventDefault();
@@ -91,8 +91,6 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
           }
 
           console.log('tdElementEntry', tdElementEntry);
-
-          // event.preventDefault();
         }
       };
     },
