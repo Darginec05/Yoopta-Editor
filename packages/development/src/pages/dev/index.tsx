@@ -65,6 +65,24 @@ const BasicExample = () => {
           props: {
             headerRow: true,
             headerColumn: false,
+            columns: [
+              {
+                id: '0',
+                width: 150,
+              },
+              {
+                id: '1',
+                width: 180,
+              },
+              {
+                id: '2',
+                width: 220,
+              },
+              {
+                id: '3',
+                width: 300,
+              },
+            ],
           },
           children: [
             {

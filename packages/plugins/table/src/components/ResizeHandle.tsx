@@ -1,51 +1,51 @@
 import { useEffect, useRef } from 'react';
 
-const ResizeHandle = ({ onResize, onResizeStop }) => {
+const ResizeHandle = ({ onResize, tableElement, rows, columnIndex }) => {
   const resizeRef = useRef<HTMLDivElement>(null);
   const startWidth = useRef(0);
-  const resizeWidth = useRef(0);
   const startX = useRef(0);
 
   useEffect(() => {
-    const table = document.querySelector('.yoopta-table table') as HTMLElement;
-    if (!table) return;
+    const tableEl = document.querySelector('.yoopta-table') as HTMLElement;
+    if (!tableEl) return;
 
-    const tableHeight = table?.offsetHeight;
+    const tableHeight = tableEl?.offsetHeight;
     if (!resizeRef.current) return;
 
     resizeRef.current.style.height = `${tableHeight}px`;
-  }, []);
+  }, [rows]);
 
-  const handleMouseDown = (e) => {
-    startX.current = e.clientX;
-    startWidth.current = resizeRef.current ? resizeRef.current.offsetWidth : 0;
+  useEffect(() => {
+    const handleMouseDown = (e) => {
+      startX.current = e.clientX;
+      startWidth.current = tableElement.props.columns[columnIndex].width;
 
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-  };
+      const handleMouseMove = (event) => {
+        const currentX = event.clientX;
+        const newWidth = startWidth.current + (currentX - startX.current);
 
-  const handleMouseMove = (e) => {
-    const currentX = e.clientX;
-    const newWidth = startWidth.current + (currentX - startX.current);
-    resizeWidth.current = newWidth;
-    onResize(newWidth);
-  };
+        onResize(newWidth);
+      };
 
-  const handleMouseUp = () => {
-    onResizeStop(resizeWidth.current);
-    resizeWidth.current = 0;
-    document.removeEventListener('mousemove', handleMouseMove);
-    document.removeEventListener('mouseup', handleMouseUp);
-  };
+      const handleMouseUp = () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    };
+
+    resizeRef.current?.addEventListener('mousedown', handleMouseDown);
+
+    return () => {
+      resizeRef.current?.removeEventListener('mousedown', handleMouseDown);
+    };
+  }, [columnIndex, tableElement.props.columns]);
 
   return (
-    <div
-      ref={resizeRef}
-      onMouseDown={handleMouseDown}
-      contentEditable={false}
-      className="absolute right-0 w-0 top-0 flex-grow-0 h-full z-[1]"
-    >
-      <div className="absolute w-[3px] -ml-[1px] -mt-[1px] h-[calc(100%+2px)] transition-[background] duration-[150ms] delay-[50ms] hover:bg-[#74b6db] bg-[#2383e200] cursor-col-resize"></div>
+    <div ref={resizeRef} className="resize-handle" contentEditable={false}>
+      <div className="resize-handle-inner" />
     </div>
   );
 };

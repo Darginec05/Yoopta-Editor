@@ -72,33 +72,33 @@ const TableRowOptions = ({ editor, blockId, element, onClose, ...props }: Props)
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>
           <button type="button" className="yoopta-block-options-button" onClick={insertRowBefore}>
-            <CornerUpRight className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
+            <CornerUpRight className="yoopta-table-icons" />
             Insert above
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <button type="button" className="yoopta-block-options-button" onClick={insertRowAfter}>
-            <CornerDownRight className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
+            <CornerDownRight className="yoopta-table-icons" />
             Insert below
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsSeparator />
         <BlockOptionsMenuItem>
           <button type="button" className="yoopta-block-options-button" onClick={moveRowUp}>
-            <MoveUpIcon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
+            <MoveUpIcon className="yoopta-table-icons" />
             Move up
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <button type="button" className="yoopta-block-options-button" onClick={moveRowDown}>
-            <MoveDownIcon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
+            <MoveDownIcon className="yoopta-table-icons" />
             Move down
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsSeparator />
         <BlockOptionsMenuItem>
           <button type="button" className="yoopta-block-options-button" onClick={deleteRow}>
-            <TrashIcon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
+            <TrashIcon className="yoopta-table-icons" />
             Delete row
           </button>
         </BlockOptionsMenuItem>

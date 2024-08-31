@@ -48,6 +48,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   marks,
   events,
   options,
+  extendSlate,
   placeholder = `Type '/' for commands`,
 }: Props<TKeys, TProps, TOptions>) => {
   const editor = useYooptaEditor();
@@ -119,6 +120,10 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
 
       normalizeNode(entry);
     };
+
+    if (extendSlate) {
+      slateEditor = extendSlate(slateEditor);
+    }
 
     return slateEditor;
   }, [elements, id]);

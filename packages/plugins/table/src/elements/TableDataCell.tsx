@@ -1,9 +1,9 @@
 import { Elements, PluginElementRenderProps, useYooptaEditor } from '@yoopta/editor';
-import { useState } from 'react';
+import { Editor, Element, NodeEntry, Transforms } from 'slate';
 import { ResizeHandle } from '../components/ResizeHandle';
 import { TableColumnDragButton } from '../components/TableColumnDragButton';
 import { TableRowDragButton } from '../components/TableRowDragButton';
-import { TableCellElement, TableCellProps } from '../types';
+import { TableElement } from '../types';
 
 const TableDataCell = ({ attributes, children, element, blockId }: PluginElementRenderProps) => {
   const editor = useYooptaEditor();
@@ -11,7 +11,7 @@ const TableDataCell = ({ attributes, children, element, blockId }: PluginElement
   const path = Elements.getElementPath(editor, blockId, element);
   const tableRowElement = Elements.getElement(editor, blockId, { type: 'table-row', path: path?.slice(0, -1) });
 
-  const [width, setWidth] = useState<number>(element.props?.width || 249);
+  const columnIndex = path?.[path.length - 1];
 
   const isColumnAsHeader = tableElement?.props?.headerColumn;
   const isRowAsHeader = tableElement?.props?.headerRow;
@@ -25,37 +25,67 @@ const TableDataCell = ({ attributes, children, element, blockId }: PluginElement
     isDataCellAsHeader = true;
   }
 
+  // const onResize = (newWidth) => {
+  //   const slate = editor.blockEditorsMap[blockId];
+
+  //   // update cells width in the column
+  //   if (!path) return;
+
+  //   const tableEntry: NodeEntry<TableElement> | undefined = Elements.getElementEntry(editor, blockId, {
+  //     type: 'table',
+  //   });
+
+  //   if (!tableEntry) return;
+
+  //   const [tableNode, tablePath] = tableEntry;
+
+  //   const columns = structuredClone(tableNode.props?.columns || []);
+  //   const column = columns[columnIndex];
+  //   const width = column.width || 49;
+
+  //   columns[columnIndex] = { ...columns[columnIndex], width: newWidth + width };
+
+  //   Transforms.setNodes(
+  //     slate,
+  //     { props: { ...tableNode.props, columns } },
+  //     { at: tablePath, match: (node) => Element.isElement(node) && node.type === 'table' },
+  //   );
+  // };
+
   const onResize = (newWidth) => {
-    console.log('width - newWidth', newWidth + width);
+    console.log('onResize', newWidth);
 
-    setWidth(newWidth + width);
-  };
+    const slate = editor.blockEditorsMap[blockId];
 
-  const onResizeStop = (newWidth) => {
-    console.log('onResizeStop', newWidth + width);
-    Elements.updateElement<'table-data-cell', TableCellProps>(
-      editor,
-      blockId,
-      { props: { width: newWidth + width }, type: 'table-data-cell' },
-      { path },
+    const updatedColumns = tableElement?.props.columns.map((col, index) => {
+      if (index === columnIndex) {
+        return { ...col, width: newWidth };
+      }
+      return col;
+    });
+
+    Transforms.setNodes(
+      slate,
+      { props: { ...tableElement?.props, columns: updatedColumns } },
+      { at: [0], match: (node) => Element.isElement(node) && node.type === 'table' },
     );
   };
 
   const Node = isDataCellAsHeader ? 'th' : 'td';
-  const style = isFirstRow ? { minWidth: `${width}px`, maxWidth: `${width}px` } : undefined;
 
   return (
-    <Node
-      style={style}
-      className="group text-inherit fill-current border border-[rgb(233,233,231)] relative align-top text-left min-h-[32px]"
-    >
-      <div
-        className="max-w-full w-full whitespace-pre-wrap break-words caret-[rgb(55,53,47)] p-[7px_9px] bg-transparent text-[14px] leading-[20px]"
-        {...attributes}
-      >
+    <Node scope={isDataCellAsHeader ? 'col' : undefined} colSpan={1} rowSpan={1} className="yoopta-table-data-cell">
+      <div className="yoopta-table-data-cell-content" {...attributes}>
         {children}
       </div>
-      {!editor.readOnly && isFirstRow && <ResizeHandle onResize={onResize} onResizeStop={onResizeStop} />}
+      {!editor.readOnly && isFirstRow && (
+        <ResizeHandle
+          onResize={onResize}
+          rows={tableElement?.children.length}
+          tableElement={tableElement}
+          columnIndex={columnIndex}
+        />
+      )}
       {!editor.readOnly && isFirstRow && tableRowElement && (
         <TableColumnDragButton editor={editor} blockId={blockId} trElement={tableRowElement} tdElement={element} />
       )}

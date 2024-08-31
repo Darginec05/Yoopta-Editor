@@ -90,7 +90,7 @@ const TableColumnDragButton = ({ editor, blockId, trElement, tdElement }: TableR
         ref={refs.setReference}
         onClick={onClick}
         contentEditable={false}
-        className="yoopta-button opacity-0 group-hover:opacity-100 cursor-pointer select-none transition-opacity duration-[150ms] cursor-pointer fill-[rgba(55,53,47,0.35)] absolute flex items-center justify-center rounded-[4px] bg-white shadow-[rgba(15,15,15,0.1)_0px_0px_0px_1px,rgba(15,15,15,0.1)_0px_2px_4px] z-[4] top-[-8px] left-[calc(50%-13px)] h-[16px] w-[26px] p-[2px_4px]"
+        className="yoopta-table-column-button"
       >
         <DragIcon />
       </button>

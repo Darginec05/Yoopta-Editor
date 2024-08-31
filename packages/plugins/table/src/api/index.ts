@@ -56,8 +56,9 @@ export const TableTransforms = {
       table.children.push(row);
     }
 
-    // [TODO] - Add table as block
-    Transforms.insertNodes(slate, table, { at: [0] });
+    // Insert the table as block
+
+    return table;
   },
   insertRow: (editor: YooEditor, blockId: string, options?: Pick<Options, 'path'>) => {
     const slate = editor.blockEditorsMap[blockId];

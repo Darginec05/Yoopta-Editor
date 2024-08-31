@@ -109,26 +109,26 @@ const TableColumnOptions = ({ editor, blockId, element, onClose, ...props }: Pro
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>
           <button type="button" className="yoopta-block-options-button" onClick={insertColumnBefore}>
-            <ArrowLeftIcon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
+            <ArrowLeftIcon className="yoopta-table-icons" />
             Insert left
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <button type="button" className="yoopta-block-options-button" onClick={insertColumnAfter}>
-            <ArrowRightIcon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
+            <ArrowRightIcon className="yoopta-table-icons" />
             Insert right
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsSeparator />
         <BlockOptionsMenuItem>
           <button type="button" className="yoopta-block-options-button" onClick={moveColumnRight}>
-            <MoveRightIcon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
+            <MoveRightIcon className="yoopta-table-icons" />
             Move right
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <button type="button" className="yoopta-block-options-button" onClick={moveColumnLeft}>
-            <MoveLeftIcon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
+            <MoveLeftIcon className="yoopta-table-icons" />
             Move left
           </button>
         </BlockOptionsMenuItem>
@@ -136,7 +136,7 @@ const TableColumnOptions = ({ editor, blockId, element, onClose, ...props }: Pro
 
         <BlockOptionsMenuItem>
           <button type="button" className="yoopta-block-options-button" onClick={deleteColumn}>
-            <TrashIcon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
+            <TrashIcon className="yoopta-table-icons" />
             Delete
           </button>
         </BlockOptionsMenuItem>
