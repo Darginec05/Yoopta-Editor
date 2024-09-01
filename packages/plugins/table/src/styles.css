@@ -27,10 +27,6 @@
   border-width: 2px;
 }
 
-.yoopta-table th {
-  background-color: #37352f14;
-}
-
 .yoopta-table-row {
   @apply transition-colors relative;
 }
@@ -43,6 +39,10 @@
 .yoopta-table-data-cell {
   @apply transition-colors text-inherit fill-current border relative align-top text-left min-h-[32px];
   border: 1px solid #e9e9e7;
+}
+
+.yoopta-table-data-cell-head {
+  background-color: #f7f6f3;
 }
 
 .yoopta-table-data-cell:hover .yoopta-table-column-button {

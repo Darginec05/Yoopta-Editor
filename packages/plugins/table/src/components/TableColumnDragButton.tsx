@@ -1,11 +1,9 @@
 import { Elements, SlateElement, YooEditor } from '@yoopta/editor';
 import { useFloating, inline, flip, shift, offset } from '@floating-ui/react';
 import { useState } from 'react';
-import { TableRowOptions } from './TableRowOptions';
 import DragIcon from '../icons/drag.svg';
 import { TableColumnOptions } from './TableColumnOptions';
 import { Transforms } from 'slate';
-import { TableTransforms } from '../transforms';
 
 type TableRowProps = {
   editor: YooEditor;
@@ -34,7 +32,7 @@ const TableColumnDragButton = ({ editor, blockId, trElement, tdElement }: TableR
     }
 
     const tdIndex = tdElementPath?.[tdElementPath.length - 1];
-    const tableRowElements = document.querySelectorAll(`.yoopta-table tr`);
+    const tableRowElements = document.querySelectorAll(`[data-yoopta-block-id="${blockId}"] .yoopta-table tr`);
 
     if (tableRowElements) {
       tableRowElements.forEach((rowEl) => {
@@ -56,7 +54,7 @@ const TableColumnDragButton = ({ editor, blockId, trElement, tdElement }: TableR
     const tdElementPath = Elements.getElementPath(editor, blockId, tdElement);
 
     const tdIndex = tdElementPath?.[tdElementPath.length - 1];
-    const tableRowElements = document.querySelectorAll(`.yoopta-table tr`);
+    const tableRowElements = document.querySelectorAll(`[data-yoopta-block-id="${blockId}"] .yoopta-table tr`);
 
     if (tableRowElements) {
       tableRowElements.forEach((rowEl) => {

@@ -32,14 +32,14 @@ const TableRowDragButton = ({ editor, blockId, trElement, tdElement }: TableRowP
       Transforms.select(slate, { offset: 0, path: [...tdElementPath, 0] });
     }
 
-    const trEl = document.querySelector(`[data-element-id="${trElement.id}"]`);
+    const trEl = document.querySelector(`[data-yoopta-block-id="${blockId}"] [data-element-id="${trElement.id}"]`);
     trEl?.classList.add('yoopta-table-row-selected');
 
     setIsTableRowActionsOpen(true);
   };
 
   const onClose = () => {
-    const trEl = document.querySelector(`[data-element-id="${trElement.id}"]`);
+    const trEl = document.querySelector(`[data-yoopta-block-id="${blockId}"] [data-element-id="${trElement.id}"]`);
     trEl?.classList.remove('yoopta-table-row-selected');
 
     setIsTableRowActionsOpen(false);

@@ -46,14 +46,12 @@ const TableDataCell = ({ attributes, children, element, blockId }: PluginElement
     minWidth: tableElement?.props.columns[columnIndex]?.width || 150,
   };
 
+  const className = isDataCellAsHeader
+    ? 'yoopta-table-data-cell yoopta-table-data-cell-head'
+    : 'yoopta-table-data-cell';
+
   return (
-    <Node
-      scope={isDataCellAsHeader ? 'col' : undefined}
-      style={style}
-      colSpan={1}
-      rowSpan={1}
-      className="yoopta-table-data-cell"
-    >
+    <Node scope={isDataCellAsHeader ? 'col' : undefined} style={style} colSpan={1} rowSpan={1} className={className}>
       <div className="yoopta-table-data-cell-content" {...attributes}>
         {children}
       </div>

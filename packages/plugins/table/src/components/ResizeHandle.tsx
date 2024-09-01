@@ -18,7 +18,7 @@ const ResizeHandle = ({ onResize, tableElement, rows, columnIndex }) => {
   useEffect(() => {
     const handleMouseDown = (e) => {
       startX.current = e.clientX;
-      startWidth.current = tableElement.props.columns[columnIndex].width;
+      startWidth.current = tableElement.props.columns[columnIndex]?.width;
 
       const handleMouseMove = (event) => {
         const currentX = event.clientX;

@@ -3,7 +3,7 @@ import { Table as TableRender } from '../elements/Table';
 import { TableDataCell } from '../elements/TableDataCell';
 import { TableRow } from '../elements/TableRow';
 import { Editor, Element, Node, Path, Point, Range, Transforms } from 'slate';
-import { TableElementProps, TablePluginElementKeys, TableRowElement } from '../types';
+import { TablePluginElementKeys } from '../types';
 import { TableTransforms } from '../transforms';
 
 const Table = new YooptaPlugin<TablePluginElementKeys, any>({
