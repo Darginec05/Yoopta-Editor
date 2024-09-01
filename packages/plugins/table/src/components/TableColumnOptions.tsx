@@ -3,7 +3,7 @@ import { Elements, SlateElement, UI, YooEditor } from '@yoopta/editor';
 import { CSSProperties } from 'react';
 import { Editor, Element, Path, Transforms } from 'slate';
 import { TrashIcon, ArrowRightIcon, ArrowLeftIcon, MoveRightIcon, MoveLeftIcon } from 'lucide-react';
-import { TableTransforms } from '../api';
+import { TableTransforms } from '../transforms';
 
 const { BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptions, BlockOptionsSeparator } = UI;
 

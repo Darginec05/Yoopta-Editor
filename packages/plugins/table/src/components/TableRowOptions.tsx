@@ -3,7 +3,7 @@ import { Elements, SlateElement, UI, YooEditor } from '@yoopta/editor';
 import { CSSProperties } from 'react';
 import { Editor, Element, Path } from 'slate';
 import { TrashIcon, MoveDownIcon, MoveUpIcon, CornerUpRight, CornerDownRight } from 'lucide-react';
-import { TableTransforms } from '../api';
+import { TableTransforms } from '../transforms';
 
 const { BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptions, BlockOptionsSeparator } = UI;
 
@@ -37,7 +37,8 @@ const TableRowOptions = ({ editor, blockId, element, onClose, ...props }: Props)
   };
 
   const deleteRow = () => {
-    TableTransforms.deleteRow(editor, blockId, { element });
+    let path = Elements.getElementPath(editor, blockId, element);
+    TableTransforms.deleteRow(editor, blockId, { path });
     onClose();
   };
 

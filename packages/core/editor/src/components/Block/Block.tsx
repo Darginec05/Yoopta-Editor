@@ -35,7 +35,7 @@ const Block = ({ children, block, blockId }) => {
     setActiveBlockId(null);
   };
 
-  const contentStyles = { borderBottom: isOver && !isDragging ? '2px solid #007aff' : 'none' };
+  const contentStyles = isOver && !isDragging ? { borderBottom: '2px solid #007aff' } : undefined;
 
   return (
     <div

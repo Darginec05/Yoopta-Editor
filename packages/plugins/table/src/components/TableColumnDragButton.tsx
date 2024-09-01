@@ -5,7 +5,7 @@ import { TableRowOptions } from './TableRowOptions';
 import DragIcon from '../icons/drag.svg';
 import { TableColumnOptions } from './TableColumnOptions';
 import { Transforms } from 'slate';
-import { TableTransforms } from '../api';
+import { TableTransforms } from '../transforms';
 
 type TableRowProps = {
   editor: YooEditor;

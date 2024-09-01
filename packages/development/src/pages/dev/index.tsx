@@ -67,19 +67,19 @@ const BasicExample = () => {
             headerColumn: false,
             columns: [
               {
-                id: '0',
+                index: 0,
                 width: 150,
               },
               {
-                id: '1',
+                index: 1,
                 width: 180,
               },
               {
-                id: '2',
+                index: 2,
                 width: 220,
               },
               {
-                id: '3',
+                index: 3,
                 width: 300,
               },
             ],

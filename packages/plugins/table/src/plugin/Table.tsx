@@ -2,9 +2,9 @@ import { generateId, SlateEditor, YooEditor, YooptaPlugin } from '@yoopta/editor
 import { Table as TableRender } from '../elements/Table';
 import { TableDataCell } from '../elements/TableDataCell';
 import { TableRow } from '../elements/TableRow';
-import { Editor, Element, Node, NodeMatch, Path, Point, Range, Transforms } from 'slate';
+import { Editor, Element, Node, Path, Point, Range, Transforms } from 'slate';
 import { TableElementProps, TablePluginElementKeys, TableRowElement } from '../types';
-import { TableTransforms } from '../api';
+import { TableTransforms } from '../transforms';
 
 const Table = new YooptaPlugin<TablePluginElementKeys, any>({
   type: 'Table',
@@ -36,6 +36,8 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
         nodeType: 'block',
         headerRow: false,
         headerColumn: false,
+        columns: [],
+        defaultColumnWidth: 200,
       },
     },
     'table-row': {
@@ -50,6 +52,12 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
     onKeyDown(editor, slate, { hotkeys, currentBlock }) {
       return (event) => {
         if (!slate.selection) return;
+
+        if (hotkeys.isShiftEnter(event)) {
+          event.preventDefault();
+          TableTransforms.insertColumn(editor, currentBlock.id, { select: true });
+          return;
+        }
 
         if (hotkeys.isEnter(event)) {
           event.preventDefault();
@@ -68,7 +76,8 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
 
         if (hotkeys.isCmdEnter(event)) {
           event.preventDefault();
-          TableTransforms.insertRow(editor, currentBlock.id);
+          TableTransforms.insertRow(editor, currentBlock.id, { select: true });
+          return;
         }
 
         if (hotkeys.isSelect(event)) {
@@ -86,26 +95,48 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
     },
   },
   extendSlate: (slate: SlateEditor, editor: YooEditor) => {
-    const { deleteFragment, normalizeNode, insertText, deleteBackward, deleteForward } = slate;
+    const { normalizeNode, deleteBackward } = slate;
+
+    slate.deleteBackward = (unit) => {
+      const { selection } = slate;
+
+      if (!selection || Range.isExpanded(selection)) {
+        return deleteBackward(unit);
+      }
+
+      const [td] = Editor.nodes(slate, {
+        match: (n) => Element.isElement(n) && n.type === 'table-data-cell',
+        at: selection,
+      });
+
+      const before = Editor.before(slate, selection, { unit });
+      const [tdBefore] = before
+        ? Editor.nodes(slate, {
+            match: (n) => Element.isElement(n) && n.type === 'table-data-cell',
+            at: before,
+          })
+        : [undefined];
+
+      if (!td && !tdBefore) {
+        return deleteBackward(unit);
+      }
+
+      if (!td && tdBefore && before) {
+        return Transforms.select(slate, before);
+      }
+
+      const [, tdPath] = td;
+      const start = Editor.start(slate, tdPath);
+
+      if (Point.equals(selection.anchor, start)) {
+        return;
+      }
+
+      deleteBackward(unit);
+    };
 
     slate.normalizeNode = (entry, options) => {
       const [node, path] = entry;
-
-      if (Element.isElement(node) && node.type === 'table') {
-        const firstRow = node.children[0] as TableRowElement;
-        if (node.children.length > 0 && firstRow.children.length > 0) {
-          const colsCount = firstRow.children.length;
-
-          if (!node.props?.columns || node.props?.columns?.length !== colsCount) {
-            const newProps: TableElementProps = {
-              ...node.props,
-              columns: Array.from({ length: colsCount }, (_, i) => ({ id: i, index: i, width: 200 })),
-            };
-
-            Transforms.setNodes(slate, { props: newProps }, { at: path });
-          }
-        }
-      }
 
       if (Element.isElement(node) && node.type === 'table-row') {
         for (const [child, childPath] of Node.children(slate, path)) {
@@ -116,9 +147,6 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
                 id: generateId(),
                 type: 'table-data-cell',
                 children: [child],
-                props: {
-                  width: 200,
-                },
               } as Element,
               { at: childPath },
             );

@@ -1,4 +1,4 @@
-import { Elements, PluginElementRenderProps, useBlockData, useYooptaEditor } from '@yoopta/editor';
+import { PluginElementRenderProps, useBlockData, useYooptaEditor } from '@yoopta/editor';
 import { useMemo } from 'react';
 import { TableBlockOptions } from '../components/TableBlockOptions';
 import { TableColumn } from '../types';
@@ -8,8 +8,6 @@ const Table = ({ attributes, children, blockId, element, HTMLAttributes }: Plugi
   const blockData = useBlockData(blockId);
   const isReadOnly = editor.readOnly;
 
-  // const tableCells = Elements.getElementChildren(editor, blockId, { type: 'table-row' });
-
   const colgroup = useMemo(() => {
     const columns: TableColumn[] = element.props.columns;
     if (!element.props.columns) return null;
@@ -17,7 +15,7 @@ const Table = ({ attributes, children, blockId, element, HTMLAttributes }: Plugi
     return (
       <colgroup>
         {columns?.map((col, i) => (
-          <col key={col.id || i} width={col.width} />
+          <col key={col.index || i} width={col.width} />
         ))}
       </colgroup>
     );

@@ -1,15 +1,17 @@
 import { Elements, findSlateBySelectionPath, generateId, SlateElement, YooEditor } from '@yoopta/editor';
 import { Editor, Element, Path, Transforms } from 'slate';
-import { TableCellElement, TableElement, TableRowElement } from '../types';
+import { ReactEditor } from 'slate-react';
+import { TableCellElement, TableColumn, TableElement, TableElementProps, TableRowElement } from '../types';
 
 type Options = {
   path?: Path;
-  element?: SlateElement;
+  select?: boolean;
 };
 
 type InsertTableOptions = {
   rows: number;
   columns: number;
+  columnWidth?: number;
   headerColumn?: boolean;
   headerRow?: boolean;
 };
@@ -24,15 +26,22 @@ export const TableTransforms = {
     const slate = findSlateBySelectionPath(editor);
     if (!slate) return;
 
-    const { rows, columns } = options;
+    const { rows, columns, columnWidth, headerColumn, headerRow } = options;
+    const tableElementProps = editor.blocks.Table.elements.table.props as TableElementProps;
+    const defaultColumnWidth = columnWidth || tableElementProps?.defaultColumnWidth || 200;
 
     const table: TableElement = {
       id: generateId(),
       type: 'table',
       children: [],
       props: {
-        headerColumn: !!options.headerColumn,
-        headerRow: !!options.headerColumn,
+        headerColumn: headerColumn,
+        headerRow: headerRow,
+        columns: Array.from({ length: columns }).map((col, i) => ({
+          index: i,
+          width: defaultColumnWidth,
+        })),
+        defaultColumnWidth,
       },
     };
 
@@ -57,10 +66,9 @@ export const TableTransforms = {
     }
 
     // Insert the table as block
-
     return table;
   },
-  insertRow: (editor: YooEditor, blockId: string, options?: Pick<Options, 'path'>) => {
+  insertRow: (editor: YooEditor, blockId: string, options?: Options) => {
     const slate = editor.blockEditorsMap[blockId];
     if (!slate) return;
 
@@ -94,6 +102,9 @@ export const TableTransforms = {
       };
 
       Transforms.insertNodes(slate, newRow, { at: newRowPath });
+      if (options?.select) {
+        Transforms.select(slate, [...newRowPath, 0]);
+      }
     });
   },
   deleteRow: (editor: YooEditor, blockId: string, options?: Options) => {
@@ -124,10 +135,6 @@ export const TableTransforms = {
 
       if (options && Path.isPath(options?.path)) {
         path = options.path;
-      }
-
-      if (options?.element) {
-        path = Elements.getElementPath(editor, blockId, options.element);
       }
 
       if (!path) {
@@ -169,7 +176,7 @@ export const TableTransforms = {
       });
     });
   },
-  insertColumn: (editor: YooEditor, blockId: string, options?: Pick<Options, 'path'>) => {
+  insertColumn: (editor: YooEditor, blockId: string, options?: Options) => {
     const slate = editor.blockEditorsMap[blockId];
     if (!slate) return;
 
@@ -180,22 +187,38 @@ export const TableTransforms = {
         mode: 'lowest',
       });
 
-      for (const [tableRowEl, tableRowPath] of elementEntries) {
+      const tableElement = Elements.getElement(editor, blockId, { type: 'table', path: [0] }) as TableElement;
+      const columns: TableColumn[] = tableElement.props?.columns ? structuredClone(tableElement.props?.columns) : [];
+      const columnInsertIndex = options?.path ? options.path[options.path.length - 1] : columns.length;
+
+      for (const [, tableRowPath] of elementEntries) {
         const newDataCell: TableCellElement = {
           id: generateId(),
           type: 'table-data-cell',
           children: [{ text: '' }],
         };
 
-        const columnInsertIndex = options?.path ? options.path[options.path.length - 1] : tableRowEl.children.length;
-
-        console.log('path ', [...tableRowPath, tableRowEl.children.length]);
-        console.log('columnInsertIndex ', columnInsertIndex);
         Transforms.insertNodes(slate, newDataCell, { at: [...tableRowPath, columnInsertIndex] });
+      }
+
+      columns.splice(columnInsertIndex, 0, {
+        index: columnInsertIndex,
+        width: tableElement.props?.defaultColumnWidth || 200,
+      });
+
+      columns.forEach((column, index) => (column.index = index));
+
+      Elements.updateElement(editor, blockId, {
+        props: { columns },
+        type: 'table',
+      });
+
+      if (options?.select) {
+        Transforms.select(slate, [0, 0, columnInsertIndex, 0]);
       }
     });
   },
-  deleteColumn: (editor: YooEditor, blockId: string, options?: Pick<Options, 'path'>) => {
+  deleteColumn: (editor: YooEditor, blockId: string, options?: Options) => {
     const slate = editor.blockEditorsMap[blockId];
     if (!slate) return;
 
@@ -206,6 +229,9 @@ export const TableTransforms = {
         mode: 'all',
       });
 
+      const tableElement = Elements.getElement(editor, blockId, { type: 'table', path: [0] }) as TableElement;
+      const columns: TableColumn[] = tableElement.props?.columns ? structuredClone(tableElement.props?.columns) : [];
+
       const rows = Array.from(tableRowEntries);
       if (rows[0][0].children.length <= 1) return;
 
@@ -215,11 +241,18 @@ export const TableTransforms = {
       });
 
       // [TODO] - Check if there are other columns
-
       dataCellPaths.forEach((path) => {
         if (path) {
           Transforms.removeNodes(slate, { at: path });
         }
+      });
+
+      columns.splice(index, 1);
+      columns.forEach((column, index) => (column.index = index));
+
+      Elements.updateElement(editor, blockId, {
+        props: { columns },
+        type: 'table',
       });
     });
   },

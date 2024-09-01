@@ -11,7 +11,7 @@ const TableDataCell = ({ attributes, children, element, blockId }: PluginElement
   const path = Elements.getElementPath(editor, blockId, element);
   const tableRowElement = Elements.getElement(editor, blockId, { type: 'table-row', path: path?.slice(0, -1) });
 
-  const columnIndex = path?.[path.length - 1];
+  const columnIndex = path?.[path.length - 1] || 0;
 
   const isColumnAsHeader = tableElement?.props?.headerColumn;
   const isRowAsHeader = tableElement?.props?.headerRow;
@@ -25,42 +25,11 @@ const TableDataCell = ({ attributes, children, element, blockId }: PluginElement
     isDataCellAsHeader = true;
   }
 
-  // const onResize = (newWidth) => {
-  //   const slate = editor.blockEditorsMap[blockId];
-
-  //   // update cells width in the column
-  //   if (!path) return;
-
-  //   const tableEntry: NodeEntry<TableElement> | undefined = Elements.getElementEntry(editor, blockId, {
-  //     type: 'table',
-  //   });
-
-  //   if (!tableEntry) return;
-
-  //   const [tableNode, tablePath] = tableEntry;
-
-  //   const columns = structuredClone(tableNode.props?.columns || []);
-  //   const column = columns[columnIndex];
-  //   const width = column.width || 49;
-
-  //   columns[columnIndex] = { ...columns[columnIndex], width: newWidth + width };
-
-  //   Transforms.setNodes(
-  //     slate,
-  //     { props: { ...tableNode.props, columns } },
-  //     { at: tablePath, match: (node) => Element.isElement(node) && node.type === 'table' },
-  //   );
-  // };
-
   const onResize = (newWidth) => {
-    console.log('onResize', newWidth);
-
     const slate = editor.blockEditorsMap[blockId];
 
     const updatedColumns = tableElement?.props.columns.map((col, index) => {
-      if (index === columnIndex) {
-        return { ...col, width: newWidth };
-      }
+      if (index === columnIndex) return { ...col, width: newWidth };
       return col;
     });
 
@@ -72,9 +41,19 @@ const TableDataCell = ({ attributes, children, element, blockId }: PluginElement
   };
 
   const Node = isDataCellAsHeader ? 'th' : 'td';
+  const style = {
+    maxWidth: tableElement?.props.columns[columnIndex]?.width || 150,
+    minWidth: tableElement?.props.columns[columnIndex]?.width || 150,
+  };
 
   return (
-    <Node scope={isDataCellAsHeader ? 'col' : undefined} colSpan={1} rowSpan={1} className="yoopta-table-data-cell">
+    <Node
+      scope={isDataCellAsHeader ? 'col' : undefined}
+      style={style}
+      colSpan={1}
+      rowSpan={1}
+      className="yoopta-table-data-cell"
+    >
       <div className="yoopta-table-data-cell-content" {...attributes}>
         {children}
       </div>

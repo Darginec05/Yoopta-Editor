@@ -384,7 +384,6 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
       <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onChange={onChange}>
         <Editable
           key={`editable-${id}`}
-          id={`yoopta-slate-editor-${id}`}
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           className="yoopta-slate"

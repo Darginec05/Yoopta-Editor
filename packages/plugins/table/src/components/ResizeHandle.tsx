@@ -45,7 +45,7 @@ const ResizeHandle = ({ onResize, tableElement, rows, columnIndex }) => {
 
   return (
     <div ref={resizeRef} className="resize-handle" contentEditable={false}>
-      <div className="resize-handle-inner" />
+      <div className="resize-handle-inner" contentEditable={false} />
     </div>
   );
 };
