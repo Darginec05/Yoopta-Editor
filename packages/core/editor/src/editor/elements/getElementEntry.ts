@@ -32,6 +32,7 @@ export function getElementEntry<TElementKeys extends string>(
   }
 
   try {
+    // to Editor.above
     const [elementEntry] = Editor.nodes<SlateElement>(slate, {
       at: options?.path || slate.selection || [0],
       match,

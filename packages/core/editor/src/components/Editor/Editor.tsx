@@ -123,6 +123,11 @@ const Editor = ({
   const onMouseDown = (event: React.MouseEvent) => {
     if (isReadOnly) return;
 
+    // editor.refElement?.addEventListener('mousemove', (e) => {
+    //   const { clientX, clientY } = e;
+    //   console.log({ x: clientX, y: clientY });
+    // });
+
     // if (event.shiftKey) {
     //   const currentSelectionIndex = editor.selection;
     //   if (!currentSelectionIndex) return;

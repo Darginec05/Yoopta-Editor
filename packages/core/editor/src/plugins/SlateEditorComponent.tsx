@@ -53,7 +53,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
 }: Props<TKeys, TProps, TOptions>) => {
   const editor = useYooptaEditor();
   const block = useBlockData(id);
-  const initialValue = useRef(block.value).current;
+  let initialValue = useRef(block.value).current;
 
   const ELEMENTS_MAP = useMemo(() => getMappedElements(elements), [elements]);
   const MARKS_MAP = useMemo(() => getMappedMarks(marks), [marks]);
@@ -122,7 +122,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     };
 
     if (extendSlate) {
-      slateEditor = extendSlate(slateEditor);
+      slateEditor = extendSlate(slateEditor, editor, id);
     }
 
     return slateEditor;
@@ -150,7 +150,14 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     return eventHandlersMap;
   }, [events, editor, block]);
 
-  const onChange = useCallback((value) => editor.updateBlock(id, { value }), [id]);
+  // const onChange = useCallback((value) => editor.updateBlock(id, { value }), [id]);
+  const onChange = useCallback(
+    (value) => {
+      // initialValue = value;
+      editor.updateBlock(id, { value });
+    },
+    [id],
+  );
 
   const renderElement = useCallback(
     (elementProps: RenderElementProps) => {
@@ -172,6 +179,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       return (
         <ElementComponent
           {...props}
+          // [TODO] - REMOVE
           // path={path}
           attributes={attributes}
           blockId={id}
@@ -296,19 +304,19 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       const [node, path] = nodeEntry;
       const isCurrent = editor.selection?.[0] === block.meta.order;
 
-      if (slate.selection && isCurrent) {
-        if (
-          !Editor.isEditor(node) &&
-          Editor.string(slate, [path[0]]) === '' &&
-          Range.includes(slate.selection, path) &&
-          Range.isCollapsed(slate.selection)
-        ) {
-          ranges.push({
-            ...slate.selection,
-            withPlaceholder: true,
-          });
-        }
-      }
+      // if (slate.selection && isCurrent) {
+      //   if (
+      //     !Editor.isEditor(node) &&
+      //     Editor.string(slate, [path[0]]) === '' &&
+      //     Range.includes(slate.selection, path) &&
+      //     Range.isCollapsed(slate.selection)
+      //   ) {
+      //     ranges.push({
+      //       ...slate.selection,
+      //       withPlaceholder: true,
+      //     });
+      //   }
+      // }
 
       return ranges;
     },

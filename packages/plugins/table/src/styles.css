@@ -66,7 +66,7 @@
 }
 
 .yoopta-table-row-button {
-  @apply opacity-0 cursor-pointer select-none transition-opacity duration-[150ms] cursor-pointer absolute flex items-center justify-center rounded-[4px] bg-white z-[4] top-[calc(50%-13px)] left-[-4px] w-[16px] h-[26px] p-[4px_2px];
+  @apply opacity-0 cursor-pointer select-none transition-opacity duration-[150ms] cursor-pointer absolute flex items-center justify-center rounded-[4px] bg-white z-[4] top-[calc(50%-13px)] left-[-8px] w-[16px] h-[26px] p-[4px_2px];
   composes: yoopta-button;
   fill: rgba(55, 53, 47, 0.35);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), hsla(0, 0%, 6%, .1) 0px 0px 0px 1px, hsla(0, 0%, 6%, .1) 0px 2px 4px;

@@ -7,6 +7,10 @@ import { TOOLS } from '../../utils/yoopta/tools';
 
 export type YooptaChildrenValue = Record<string, YooptaBlockData>;
 
+const EDITOR_STYLE = {
+  width: 750,
+};
+
 const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef<HTMLDivElement>(null);
@@ -2131,7 +2135,7 @@ const BasicExample = () => {
         placeholder="Type / to open menu"
         tools={TOOLS}
         readOnly={readOnly}
-        style={{ width: 750 }}
+        style={EDITOR_STYLE}
         value={value}
       />
     </div>

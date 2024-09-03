@@ -23,7 +23,7 @@ export type Props = {
 const TableRowOptions = ({ editor, blockId, element, onClose, ...props }: Props) => {
   const insertRowBefore = () => {
     let path = Elements.getElementPath(editor, blockId, element);
-    TableTransforms.insertRow(editor, blockId, { path: path });
+    TableTransforms.insertTableRow(editor, blockId, { path: path });
     onClose();
   };
 
@@ -32,13 +32,13 @@ const TableRowOptions = ({ editor, blockId, element, onClose, ...props }: Props)
     let nextPath;
     if (path) nextPath = Path.next(path);
 
-    TableTransforms.insertRow(editor, blockId, { path: nextPath });
+    TableTransforms.insertTableRow(editor, blockId, { path: nextPath });
     onClose();
   };
 
-  const deleteRow = () => {
+  const deleteTableRow = () => {
     let path = Elements.getElementPath(editor, blockId, element);
-    TableTransforms.deleteRow(editor, blockId, { path });
+    TableTransforms.deleteTableRow(editor, blockId, { path });
     onClose();
   };
 
@@ -52,7 +52,7 @@ const TableRowOptions = ({ editor, blockId, element, onClose, ...props }: Props)
     });
 
     if (!nextElementEntry) return onClose();
-    TableTransforms.moveRow(editor, blockId, { from: path!, to: nextElementEntry[1] });
+    TableTransforms.moveTableRow(editor, blockId, { from: path!, to: nextElementEntry[1] });
   };
 
   const moveRowUp = () => {
@@ -65,7 +65,7 @@ const TableRowOptions = ({ editor, blockId, element, onClose, ...props }: Props)
     });
 
     if (!prevElementEntry) return onClose();
-    TableTransforms.moveRow(editor, blockId, { from: path!, to: prevElementEntry[1] });
+    TableTransforms.moveTableRow(editor, blockId, { from: path!, to: prevElementEntry[1] });
   };
 
   return (
@@ -98,7 +98,7 @@ const TableRowOptions = ({ editor, blockId, element, onClose, ...props }: Props)
         </BlockOptionsMenuItem>
         <BlockOptionsSeparator />
         <BlockOptionsMenuItem>
-          <button type="button" className="yoopta-block-options-button" onClick={deleteRow}>
+          <button type="button" className="yoopta-block-options-button" onClick={deleteTableRow}>
             <TrashIcon className="yoopta-table-icons" />
             Delete row
           </button>

@@ -55,7 +55,7 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
 
         if (hotkeys.isShiftEnter(event)) {
           event.preventDefault();
-          TableTransforms.insertColumn(editor, currentBlock.id, { select: true });
+          TableTransforms.insertTableColumn(editor, currentBlock.id, { select: true });
           return;
         }
 
@@ -76,7 +76,7 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
 
         if (hotkeys.isCmdEnter(event)) {
           event.preventDefault();
-          TableTransforms.insertRow(editor, currentBlock.id, { select: true });
+          TableTransforms.insertTableRow(editor, currentBlock.id, { select: true });
           return;
         }
 
@@ -159,18 +159,19 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
 
     return slate;
   },
-  parsers: {
-    html: {
-      serialize: (element, text, meta) => {
-        console.log('serialize table', element);
+  // parsers: {
+  //   html: {
+  //     serialize: (element, text, meta) => {
+  //       console.log('serialize table', element);
 
-        return `<table></table>`;
-      },
-      deserialize: (editor, element, children) => {
-        console.log('deserialize table', element);
-      },
-    },
-  },
+  //       return `<table></table>`;
+  //     },
+  //     deserialize: (editor, element, children) => {
+  //       console.log('deserialize table', element);
+  //     },
+  //   },
+  // },
+  commands: TableTransforms,
 });
 
 export { Table };

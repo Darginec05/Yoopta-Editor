@@ -32,7 +32,7 @@ const TableColumnOptions = ({ editor, blockId, element, onClose, ...props }: Pro
     if (!tdElementEntry) return;
     const [, tdPath] = tdElementEntry;
 
-    TableTransforms.insertColumn(editor, blockId, { path: tdPath });
+    TableTransforms.insertTableColumn(editor, blockId, { path: tdPath });
     onClose();
   };
 
@@ -47,15 +47,15 @@ const TableColumnOptions = ({ editor, blockId, element, onClose, ...props }: Pro
     if (!tdElementEntry) return;
     const [, tdPath] = tdElementEntry;
 
-    TableTransforms.insertColumn(editor, blockId, { path: Path.next(tdPath) });
+    TableTransforms.insertTableColumn(editor, blockId, { path: Path.next(tdPath) });
     onClose();
   };
 
-  const deleteColumn = () => {
+  const deleteTableColumn = () => {
     let path = Elements.getElementPath(editor, blockId, element);
     if (!path) return;
 
-    TableTransforms.deleteColumn(editor, blockId, { path });
+    TableTransforms.deleteTableColumn(editor, blockId, { path });
     onClose();
   };
 
@@ -77,7 +77,7 @@ const TableColumnOptions = ({ editor, blockId, element, onClose, ...props }: Pro
       if (!nextTdEntry) return;
 
       const [, nextTdPath] = nextTdEntry;
-      TableTransforms.moveColumn(editor, blockId, { from: tdPath, to: nextTdPath });
+      TableTransforms.moveTableColumn(editor, blockId, { from: tdPath, to: nextTdPath });
     }
   };
 
@@ -100,7 +100,7 @@ const TableColumnOptions = ({ editor, blockId, element, onClose, ...props }: Pro
       if (!prevTdEntry) return;
 
       const [, prevTdPath] = prevTdEntry;
-      TableTransforms.moveColumn(editor, blockId, { from: tdPath, to: prevTdPath });
+      TableTransforms.moveTableColumn(editor, blockId, { from: tdPath, to: prevTdPath });
     }
   };
 
@@ -135,7 +135,7 @@ const TableColumnOptions = ({ editor, blockId, element, onClose, ...props }: Pro
         <BlockOptionsSeparator />
 
         <BlockOptionsMenuItem>
-          <button type="button" className="yoopta-block-options-button" onClick={deleteColumn}>
+          <button type="button" className="yoopta-block-options-button" onClick={deleteTableColumn}>
             <TrashIcon className="yoopta-table-icons" />
             Delete
           </button>

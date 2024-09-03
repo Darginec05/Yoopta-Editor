@@ -1,4 +1,4 @@
-import { Elements, findSlateBySelectionPath, generateId, SlateElement, YooEditor } from '@yoopta/editor';
+import { Blocks, Elements, findSlateBySelectionPath, generateId, SlateElement, YooEditor } from '@yoopta/editor';
 import { Editor, Element, Path, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { TableCellElement, TableColumn, TableElement, TableElementProps, TableRowElement } from '../types';
@@ -65,10 +65,12 @@ export const TableTransforms = {
       table.children.push(row);
     }
 
+    // Blocks.insertBlock(editor, table);
+
     // Insert the table as block
     return table;
   },
-  insertRow: (editor: YooEditor, blockId: string, options?: Options) => {
+  insertTableRow: (editor: YooEditor, blockId: string, options?: Options) => {
     const slate = editor.blockEditorsMap[blockId];
     if (!slate) return;
 
@@ -107,7 +109,7 @@ export const TableTransforms = {
       }
     });
   },
-  deleteRow: (editor: YooEditor, blockId: string, options?: Options) => {
+  deleteTableRow: (editor: YooEditor, blockId: string, options?: Options) => {
     const slate = editor.blockEditorsMap[blockId];
     if (!slate) return;
 
@@ -144,7 +146,7 @@ export const TableTransforms = {
       Transforms.removeNodes(slate, { at: path, match: (n) => Element.isElement(n) && n.type === 'table-row' });
     });
   },
-  moveRow: (editor: YooEditor, blockId: string, { from, to }: MoveTableOptions) => {
+  moveTableRow: (editor: YooEditor, blockId: string, { from, to }: MoveTableOptions) => {
     const slate = editor.blockEditorsMap[blockId];
     if (!slate) return;
 
@@ -156,7 +158,7 @@ export const TableTransforms = {
       });
     });
   },
-  moveColumn: (editor: YooEditor, blockId: string, { from, to }: MoveTableOptions) => {
+  moveTableColumn: (editor: YooEditor, blockId: string, { from, to }: MoveTableOptions) => {
     const slate = editor.blockEditorsMap[blockId];
     if (!slate) return;
 
@@ -176,7 +178,7 @@ export const TableTransforms = {
       });
     });
   },
-  insertColumn: (editor: YooEditor, blockId: string, options?: Options) => {
+  insertTableColumn: (editor: YooEditor, blockId: string, options?: Options) => {
     const slate = editor.blockEditorsMap[blockId];
     if (!slate) return;
 
@@ -218,7 +220,7 @@ export const TableTransforms = {
       }
     });
   },
-  deleteColumn: (editor: YooEditor, blockId: string, options?: Options) => {
+  deleteTableColumn: (editor: YooEditor, blockId: string, options?: Options) => {
     const slate = editor.blockEditorsMap[blockId];
     if (!slate) return;
 
