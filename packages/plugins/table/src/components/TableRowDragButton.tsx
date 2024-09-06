@@ -5,7 +5,6 @@ import { TableRowOptions } from './TableRowOptions';
 import DragIcon from '../icons/drag.svg';
 import { Transforms } from 'slate';
 import { TABLE_ROW_TO_SELECTED_WEAK_MAP } from '../utils/weakMaps';
-import { TableRowElement } from '../types';
 
 type TableRowProps = {
   editor: YooEditor;
@@ -29,19 +28,9 @@ const TableRowDragButton = ({ editor, blockId, tdElement }: TableRowProps) => {
     const slate = editor.blockEditorsMap[blockId];
     const tdElementPath = Elements.getElementPath(editor, blockId, tdElement);
 
-    if (tdElementPath) {
-      Transforms.select(slate, { offset: 0, path: [...tdElementPath, 0] });
-    }
+    if (!tdElementPath) return;
 
-    const tableRowElement = Elements.getElement(editor, blockId, {
-      type: 'table-row',
-      path: tdElementPath?.slice(0, -1),
-    }) as TableRowElement;
-
-    const selectedRowSet = new WeakSet();
-    selectedRowSet.add(tableRowElement);
-    TABLE_ROW_TO_SELECTED_WEAK_MAP.set(slate, selectedRowSet);
-
+    Transforms.select(slate, { offset: 0, path: [...tdElementPath, 0] });
     setIsTableRowActionsOpen(true);
   };
 

@@ -12,23 +12,9 @@ const Table = ({ attributes, children, blockId, element, HTMLAttributes }: Plugi
 
   const isSelecting = EDITOR_TO_SELECTION_SET.get(slate);
 
-  // const colgroup = useMemo(() => {
-  //   const columns: TableColumn[] = element.props.columns;
-  //   if (element.props.columns) return null;
-
-  //   return (
-  //     <colgroup>
-  //       {columns?.map((col, i) => (
-  //         <col key={col.index || i} width={col.width} />
-  //       ))}
-  //     </colgroup>
-  //   );
-  // }, [element.props.columns]);
-
   return (
     <div className="yoopta-table-block">
       <table className={`yoopta-table ${!!isSelecting && 'yoopta-table-selecting'}`}>
-        {/* {colgroup} */}
         <tbody {...attributes}>{children}</tbody>
       </table>
       {!isReadOnly && <TableBlockOptions block={blockData} editor={editor} table={element as TableElement} />}

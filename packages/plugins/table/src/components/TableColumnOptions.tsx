@@ -22,32 +22,12 @@ export type Props = {
 
 const TableColumnOptions = ({ editor, blockId, element, onClose, ...props }: Props) => {
   const insertColumnBefore = () => {
-    const path = Elements.getElementPath(editor, blockId, element);
-    if (!path) return;
-
-    const tdElementEntry = Elements.getElementEntry(editor, blockId, {
-      type: 'table-data-cell',
-    });
-
-    if (!tdElementEntry) return;
-    const [, tdPath] = tdElementEntry;
-
-    TableTransforms.insertTableColumn(editor, blockId, { path: tdPath });
+    TableTransforms.insertTableColumn(editor, blockId, { insertMode: 'before' });
     onClose();
   };
 
   const insertColumnAfter = () => {
-    const path = Elements.getElementPath(editor, blockId, element);
-    if (!path) return;
-
-    const tdElementEntry = Elements.getElementEntry(editor, blockId, {
-      type: 'table-data-cell',
-    });
-
-    if (!tdElementEntry) return;
-    const [, tdPath] = tdElementEntry;
-
-    TableTransforms.insertTableColumn(editor, blockId, { path: Path.next(tdPath) });
+    TableTransforms.insertTableColumn(editor, blockId, { insertMode: 'after' });
     onClose();
   };
 

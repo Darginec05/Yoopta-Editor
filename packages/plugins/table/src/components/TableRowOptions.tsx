@@ -22,25 +22,32 @@ export type Props = {
 
 const TableRowOptions = ({ editor, blockId, onClose, tdElement, ...props }: Props) => {
   const insertRowBefore = () => {
-    const tdPath = Elements.getElementPath(editor, blockId, tdElement);
-    const trElement = Elements.getElement(editor, blockId, { type: 'table-row', path: tdPath });
-    if (!trElement) return;
+    const slate = editor.blockEditorsMap[blockId];
+    console.log('insertRowBefore', slate.selection);
 
-    let path = Elements.getElementPath(editor, blockId, trElement);
-    TableTransforms.insertTableRow(editor, blockId, { path: path });
+    // const tdPath = Elements.getElementPath(editor, blockId, tdElement);
+    // const trElement = Elements.getElement(editor, blockId, { type: 'table-row', path: tdPath });
+    // if (!trElement) return;
+
+    // let path = Elements.getElementPath(editor, blockId, trElement);
+
+    TableTransforms.insertTableRow(editor, blockId, { insertMode: 'before', select: true });
     onClose();
   };
 
   const insertRowAfter = () => {
-    const tdPath = Elements.getElementPath(editor, blockId, tdElement);
-    const trElement = Elements.getElement(editor, blockId, { type: 'table-row', path: tdPath });
-    if (!trElement) return;
+    const slate = editor.blockEditorsMap[blockId];
+    console.log('insertRowAfter', slate.selection);
 
-    let path = Elements.getElementPath(editor, blockId, trElement);
-    let nextPath;
-    if (path) nextPath = Path.next(path);
+    // const tdPath = Elements.getElementPath(editor, blockId, tdElement);
+    // const trElement = Elements.getElement(editor, blockId, { type: 'table-row', path: tdPath });
+    // if (!trElement) return;
 
-    TableTransforms.insertTableRow(editor, blockId, { path: nextPath });
+    // let path = Elements.getElementPath(editor, blockId, trElement);
+    // let nextPath;
+    // if (path) nextPath = Path.next(path);
+
+    TableTransforms.insertTableRow(editor, blockId, { insertMode: 'after', select: true });
     onClose();
   };
 

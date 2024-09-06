@@ -44,31 +44,51 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, curr
       }
     }
 
-    // prevent any action if data cells are selected
-    // if (EDITOR_TO_SELECTION_SET.has(slate)) {
-    //   event.preventDefault();
-    //   return;
-    // }
-
     if (hotkeys.isShiftDelete(event)) {
       console.log('isShiftDelete');
     }
 
+    // add new row before current row
+    if (hotkeys.isCmdShiftEnter(event)) {
+      event.preventDefault();
+      TableTransforms.insertTableRow(editor, currentBlock.id, { select: true, insertMode: 'before' });
+      return;
+    }
+
+    // add new row after current row
     if (hotkeys.isShiftEnter(event)) {
       event.preventDefault();
-      TableTransforms.insertTableColumn(editor, currentBlock.id, { select: true });
+      TableTransforms.insertTableRow(editor, currentBlock.id, { select: true, insertMode: 'after' });
+      return;
+    }
+
+    if (hotkeys.isCmdShiftRight(event)) {
+      event.preventDefault();
+      TableTransforms.insertTableColumn(editor, currentBlock.id, { select: true, insertMode: 'after' });
+      return;
+    }
+
+    if (hotkeys.isCmdShiftLeft(event)) {
+      event.preventDefault();
+      TableTransforms.insertTableColumn(editor, currentBlock.id, { select: true, insertMode: 'before' });
+      return;
+    }
+
+    if (hotkeys.isCmdShiftDelete(event)) {
+      event.preventDefault();
+      TableTransforms.deleteTableRow(editor, currentBlock.id, { select: true });
+      return;
+    }
+
+    if (hotkeys.isCmdAltDelete(event)) {
+      event.preventDefault();
+      TableTransforms.deleteTableColumn(editor, currentBlock.id, { select: true });
       return;
     }
 
     if (hotkeys.isEnter(event)) {
       event.preventDefault();
       Transforms.insertText(slate, '\n');
-    }
-
-    if (hotkeys.isCmdEnter(event)) {
-      event.preventDefault();
-      TableTransforms.insertTableRow(editor, currentBlock.id, { select: true });
-      return;
     }
 
     if (hotkeys.isSelect(event)) {

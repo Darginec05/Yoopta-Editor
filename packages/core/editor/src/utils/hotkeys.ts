@@ -28,9 +28,14 @@ const HOTKEYS_MAP = {
   tab: 'tab',
   cmd: 'mod',
   cmdEnter: 'mod+enter',
+  cmdShiftEnter: 'mod+shift+enter',
   slashCommand: '/',
   copy: 'mod+c',
   cut: 'mod+x',
+  cmdShiftRight: 'mod+shift+right',
+  cmdShiftLeft: 'mod+shift+left',
+  cmdShiftDelete: 'mod+shift+backspace',
+  cmdAltDelete: 'mod+alt+backspace',
 };
 
 const APPLE_HOTKEYS = {
@@ -113,6 +118,11 @@ export const HOTKEYS = {
   isCopy: create('copy'),
   isCut: create('cut'),
   isShiftDelete: create('shiftDelete'),
+  isCmdShiftEnter: create('cmdShiftEnter'),
+  isCmdShiftRight: create('cmdShiftRight'),
+  isCmdShiftLeft: create('cmdShiftLeft'),
+  isCmdShiftDelete: create('cmdShiftDelete'),
+  isCmdAltDelete: create('cmdAltDelete'),
 };
 
 export type HOTKEYS_TYPE = {
