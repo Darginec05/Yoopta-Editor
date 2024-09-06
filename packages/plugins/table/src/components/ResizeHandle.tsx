@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-const ResizeHandle = ({ onResize, tableElement, rows, columnIndex }) => {
+const ResizeHandle = ({ onResize, tdWidth, columnIndex }) => {
   const resizeRef = useRef<HTMLDivElement>(null);
   const startWidth = useRef(0);
   const startX = useRef(0);
@@ -13,12 +13,19 @@ const ResizeHandle = ({ onResize, tableElement, rows, columnIndex }) => {
     if (!resizeRef.current) return;
 
     resizeRef.current.style.height = `${tableHeight}px`;
-  }, [rows]);
+  }, []);
 
   useEffect(() => {
+    const tableEl = document.querySelector('.yoopta-table') as HTMLElement;
+    if (!tableEl) return;
+
     const handleMouseDown = (e) => {
+      const tableHeight = tableEl?.offsetHeight;
+      if (!resizeRef.current) return;
+      resizeRef.current.style.height = `${tableHeight}px`;
+
       startX.current = e.clientX;
-      startWidth.current = tableElement.props.columns[columnIndex]?.width;
+      startWidth.current = tdWidth;
 
       const handleMouseMove = (event) => {
         const currentX = event.clientX;
@@ -28,12 +35,12 @@ const ResizeHandle = ({ onResize, tableElement, rows, columnIndex }) => {
       };
 
       const handleMouseUp = () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
+        tableEl.removeEventListener('mousemove', handleMouseMove);
+        tableEl.removeEventListener('mouseup', handleMouseUp);
       };
 
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+      tableEl.addEventListener('mousemove', handleMouseMove);
+      tableEl.addEventListener('mouseup', handleMouseUp);
     };
 
     resizeRef.current?.addEventListener('mousedown', handleMouseDown);
@@ -41,7 +48,7 @@ const ResizeHandle = ({ onResize, tableElement, rows, columnIndex }) => {
     return () => {
       resizeRef.current?.removeEventListener('mousedown', handleMouseDown);
     };
-  }, [columnIndex, tableElement.props.columns]);
+  }, [columnIndex, tdWidth]);
 
   return (
     <div ref={resizeRef} className="resize-handle" contentEditable={false}>

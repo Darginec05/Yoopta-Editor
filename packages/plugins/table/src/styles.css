@@ -18,6 +18,10 @@
   @apply select-none border-collapse border-spacing-0 w-auto caption-bottom text-sm table-fixed;
 }
 
+.yoopta-table-selecting *::selection {
+  background: none;
+}
+
 .yoopta-table tbody {
   @apply select-none;
 }

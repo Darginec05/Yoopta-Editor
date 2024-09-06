@@ -258,4 +258,81 @@ export const TableTransforms = {
       });
     });
   },
+  updateColumnWidth: (editor: YooEditor, blockId: string, columnIndex: number, width: number) => {
+    const slate = editor.blockEditorsMap[blockId];
+    if (!slate) return;
+
+    Editor.withoutNormalizing(slate, () => {
+      const tableDataCellsPerColumn = Editor.nodes<TableCellElement>(slate, {
+        at: [0],
+        match: (n) => Element.isElement(n) && n.type === 'table-data-cell',
+        mode: 'all',
+      });
+
+      Array.from(tableDataCellsPerColumn).forEach(([cell, path]) => {
+        if (path[path.length - 1] === columnIndex) {
+          Transforms.setNodes(
+            slate,
+            { props: { ...cell.props, width } },
+            {
+              at: path,
+              match: (n) => Element.isElement(n) && n.type === 'table-data-cell',
+            },
+          );
+        }
+      });
+    });
+  },
+  toggleHeaderRow: (editor: YooEditor, blockId: string) => {
+    const slate = editor.blockEditorsMap[blockId];
+    if (!slate) return;
+
+    Editor.withoutNormalizing(slate, () => {
+      const firstTableRowChildren = Editor.nodes<SlateElement>(slate, {
+        at: [0, 0],
+        match: (n) => Element.isElement(n) && n.type === 'table-data-cell',
+        mode: 'all',
+      });
+
+      Array.from(firstTableRowChildren).forEach(([cell, path]) => {
+        Transforms.setNodes(
+          slate,
+          { props: { ...cell.props, asHeader: !cell.props.asHeader } },
+          {
+            at: path,
+            match: (n) => Element.isElement(n) && n.type === 'table-data-cell',
+          },
+        );
+      });
+    });
+  },
+  toggleHeaderColumn: (editor: YooEditor, blockId: string) => {
+    const slate = editor.blockEditorsMap[blockId];
+    if (!slate) return;
+
+    Editor.withoutNormalizing(slate, () => {
+      const tableRows = Editor.nodes<SlateElement>(slate, {
+        at: [0],
+        match: (n) => Element.isElement(n) && n.type === 'table-row',
+        mode: 'all',
+      });
+
+      Array.from(tableRows).forEach(([row, path]) => {
+        const cell = row.children[0] as TableCellElement;
+        const isFirstCell = path[path.length - 1] === 0;
+
+        // if (isFirstCell && cell.props?.asHeader) {
+        // } else {
+        Transforms.setNodes(
+          slate,
+          { props: { ...cell.props, asHeader: !cell.props?.asHeader } },
+          {
+            at: path.concat(0),
+            match: (n) => Element.isElement(n) && n.type === 'table-data-cell',
+          },
+        );
+        // }
+      });
+    });
+  },
 };

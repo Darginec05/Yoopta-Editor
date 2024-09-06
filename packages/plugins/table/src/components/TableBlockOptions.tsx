@@ -1,31 +1,28 @@
 import { Blocks, Elements, UI, YooEditor, YooptaBlockData } from '@yoopta/editor';
-import { Sheet, TableProperties, CheckIcon } from 'lucide-react';
-import { TableElementProps } from '../types';
+import { Sheet, TableProperties, CheckIcon, Table } from 'lucide-react';
+import { TableTransforms } from '../transforms';
+import { TableElement, TableElementProps } from '../types';
 
 const { ExtendedBlockActions, BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptionsSeparator } = UI;
 
 type Props = {
   editor: YooEditor;
   block: YooptaBlockData;
-  props?: TableElementProps;
+  table: TableElement;
 };
 
-const TableBlockOptions = ({ editor, block, props: tableProps }: Props) => {
+const TableBlockOptions = ({ editor, block, table }: Props) => {
+  const tableProps = table.props;
+
   const isHeaderRowEnabled = tableProps?.headerRow;
   const isHeaderColumnEnabled = tableProps?.headerColumn;
 
   const onSwitchHeaderRow = () => {
-    Elements.updateElement<string, TableElementProps>(editor, block.id, {
-      type: 'table',
-      props: { headerRow: !isHeaderRowEnabled },
-    });
+    TableTransforms.toggleHeaderRow(editor, block.id);
   };
 
   const onSwitchHeaderColumn = () => {
-    Elements.updateElement<string, TableElementProps>(editor, block.id, {
-      type: 'table',
-      props: { headerColumn: !isHeaderColumnEnabled },
-    });
+    TableTransforms.toggleHeaderColumn(editor, block.id);
   };
 
   return (

@@ -17,18 +17,26 @@ export type Props = {
 } & {
   editor: YooEditor;
   blockId: string;
-  element: SlateElement;
+  tdElement: SlateElement;
 };
 
-const TableRowOptions = ({ editor, blockId, element, onClose, ...props }: Props) => {
+const TableRowOptions = ({ editor, blockId, onClose, tdElement, ...props }: Props) => {
   const insertRowBefore = () => {
-    let path = Elements.getElementPath(editor, blockId, element);
+    const tdPath = Elements.getElementPath(editor, blockId, tdElement);
+    const trElement = Elements.getElement(editor, blockId, { type: 'table-row', path: tdPath });
+    if (!trElement) return;
+
+    let path = Elements.getElementPath(editor, blockId, trElement);
     TableTransforms.insertTableRow(editor, blockId, { path: path });
     onClose();
   };
 
   const insertRowAfter = () => {
-    let path = Elements.getElementPath(editor, blockId, element);
+    const tdPath = Elements.getElementPath(editor, blockId, tdElement);
+    const trElement = Elements.getElement(editor, blockId, { type: 'table-row', path: tdPath });
+    if (!trElement) return;
+
+    let path = Elements.getElementPath(editor, blockId, trElement);
     let nextPath;
     if (path) nextPath = Path.next(path);
 
@@ -37,13 +45,21 @@ const TableRowOptions = ({ editor, blockId, element, onClose, ...props }: Props)
   };
 
   const deleteTableRow = () => {
-    let path = Elements.getElementPath(editor, blockId, element);
+    const tdPath = Elements.getElementPath(editor, blockId, tdElement);
+    const trElement = Elements.getElement(editor, blockId, { type: 'table-row', path: tdPath });
+    if (!trElement) return;
+
+    let path = Elements.getElementPath(editor, blockId, trElement);
     TableTransforms.deleteTableRow(editor, blockId, { path });
     onClose();
   };
 
   const moveRowDown = () => {
-    let path = Elements.getElementPath(editor, blockId, element);
+    const tdPath = Elements.getElementPath(editor, blockId, tdElement);
+    const trElement = Elements.getElement(editor, blockId, { type: 'table-row', path: tdPath });
+    if (!trElement) return;
+
+    let path = Elements.getElementPath(editor, blockId, trElement);
 
     const slate = editor.blockEditorsMap[blockId];
     const nextElementEntry = Editor.next(slate, {
@@ -56,7 +72,11 @@ const TableRowOptions = ({ editor, blockId, element, onClose, ...props }: Props)
   };
 
   const moveRowUp = () => {
-    let path = Elements.getElementPath(editor, blockId, element);
+    const tdPath = Elements.getElementPath(editor, blockId, tdElement);
+    const trElement = Elements.getElement(editor, blockId, { type: 'table-row', path: tdPath });
+    if (!trElement) return;
+
+    let path = Elements.getElementPath(editor, blockId, trElement);
 
     const slate = editor.blockEditorsMap[blockId];
     const prevElementEntry = Editor.previous(slate, {

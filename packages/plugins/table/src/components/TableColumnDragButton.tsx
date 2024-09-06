@@ -8,11 +8,10 @@ import { Transforms } from 'slate';
 type TableRowProps = {
   editor: YooEditor;
   blockId: string;
-  trElement: SlateElement;
   tdElement: SlateElement;
 };
 
-const TableColumnDragButton = ({ editor, blockId, trElement, tdElement }: TableRowProps) => {
+const TableColumnDragButton = ({ editor, blockId, tdElement }: TableRowProps) => {
   const [isTableColumnActionsOpen, setIsTableColumnActionsOpen] = useState(false);
 
   const { refs, floatingStyles } = useFloating({

@@ -57,7 +57,7 @@ const RenderBlocks = ({ editor, marks, placeholder }: Props) => {
           events={plugin.events}
           elements={plugin.elements}
           options={plugin.options}
-          extendSlate={plugin.extendSlate}
+          extensions={plugin.extensions}
           placeholder={placeholder}
         />
       </Block>,

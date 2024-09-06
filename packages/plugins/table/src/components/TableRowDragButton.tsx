@@ -4,15 +4,16 @@ import { useState } from 'react';
 import { TableRowOptions } from './TableRowOptions';
 import DragIcon from '../icons/drag.svg';
 import { Transforms } from 'slate';
+import { TABLE_ROW_TO_SELECTED_WEAK_MAP } from '../utils/weakMaps';
+import { TableRowElement } from '../types';
 
 type TableRowProps = {
   editor: YooEditor;
   blockId: string;
-  trElement: SlateElement;
   tdElement: SlateElement;
 };
 
-const TableRowDragButton = ({ editor, blockId, trElement, tdElement }: TableRowProps) => {
+const TableRowDragButton = ({ editor, blockId, tdElement }: TableRowProps) => {
   const [isTableRowActionsOpen, setIsTableRowActionsOpen] = useState(false);
 
   const { refs, floatingStyles } = useFloating({
@@ -32,15 +33,21 @@ const TableRowDragButton = ({ editor, blockId, trElement, tdElement }: TableRowP
       Transforms.select(slate, { offset: 0, path: [...tdElementPath, 0] });
     }
 
-    const trEl = document.querySelector(`[data-yoopta-block-id="${blockId}"] [data-element-id="${trElement.id}"]`);
-    trEl?.classList.add('yoopta-table-row-selected');
+    const tableRowElement = Elements.getElement(editor, blockId, {
+      type: 'table-row',
+      path: tdElementPath?.slice(0, -1),
+    }) as TableRowElement;
+
+    const selectedRowSet = new WeakSet();
+    selectedRowSet.add(tableRowElement);
+    TABLE_ROW_TO_SELECTED_WEAK_MAP.set(slate, selectedRowSet);
 
     setIsTableRowActionsOpen(true);
   };
 
   const onClose = () => {
-    const trEl = document.querySelector(`[data-yoopta-block-id="${blockId}"] [data-element-id="${trElement.id}"]`);
-    trEl?.classList.remove('yoopta-table-row-selected');
+    const slate = editor.blockEditorsMap[blockId];
+    TABLE_ROW_TO_SELECTED_WEAK_MAP.delete(slate);
 
     setIsTableRowActionsOpen(false);
   };
@@ -54,7 +61,7 @@ const TableRowDragButton = ({ editor, blockId, trElement, tdElement }: TableRowP
         style={floatingStyles}
         editor={editor}
         blockId={blockId}
-        element={trElement}
+        tdElement={tdElement}
       />
       <button
         ref={refs.setReference}

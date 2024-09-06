@@ -1,49 +1,36 @@
 import { Elements, PluginElementRenderProps, useYooptaEditor } from '@yoopta/editor';
-import { Editor, Element, NodeEntry, Transforms } from 'slate';
 import { ResizeHandle } from '../components/ResizeHandle';
 import { TableColumnDragButton } from '../components/TableColumnDragButton';
 import { TableRowDragButton } from '../components/TableRowDragButton';
-import { TableElement } from '../types';
+import { TableTransforms } from '../transforms';
+import { TableCellElement } from '../types';
+import { EDITOR_TO_SELECTION_SET } from '../utils/weakMaps';
 
 const TableDataCell = ({ attributes, children, element, blockId }: PluginElementRenderProps) => {
   const editor = useYooptaEditor();
-  const tableElement = Elements.getElement(editor, blockId, { type: 'table' });
+  const slate = editor.blockEditorsMap[blockId];
+
   const path = Elements.getElementPath(editor, blockId, element);
-  const tableRowElement = Elements.getElement(editor, blockId, { type: 'table-row', path: path?.slice(0, -1) });
+
+  const selected = EDITOR_TO_SELECTION_SET.get(slate)?.has(element as TableCellElement);
 
   const columnIndex = path?.[path.length - 1] || 0;
-
-  const isColumnAsHeader = tableElement?.props?.headerColumn;
-  const isRowAsHeader = tableElement?.props?.headerRow;
+  const elementWidth = element?.props?.width || 200;
 
   const isFirstDataCell = path?.[path.length - 1] === 0;
   const isFirstRow = path?.[path.length - 2] === 0;
 
-  let isDataCellAsHeader = false;
+  let isDataCellAsHeader = element?.props?.asHeader || false;
 
-  if ((isFirstDataCell && isColumnAsHeader) || (isRowAsHeader && isFirstRow)) {
-    isDataCellAsHeader = true;
-  }
-
-  const onResize = (newWidth) => {
-    const slate = editor.blockEditorsMap[blockId];
-
-    const updatedColumns = tableElement?.props.columns.map((col, index) => {
-      if (index === columnIndex) return { ...col, width: newWidth };
-      return col;
-    });
-
-    Transforms.setNodes(
-      slate,
-      { props: { ...tableElement?.props, columns: updatedColumns } },
-      { at: [0], match: (node) => Element.isElement(node) && node.type === 'table' },
-    );
+  const onResize = (newWidth: number) => {
+    TableTransforms.updateColumnWidth(editor, blockId, columnIndex, newWidth);
   };
 
   const Node = isDataCellAsHeader ? 'th' : 'td';
   const style = {
-    maxWidth: tableElement?.props.columns[columnIndex]?.width || 150,
-    minWidth: tableElement?.props.columns[columnIndex]?.width || 150,
+    maxWidth: elementWidth,
+    minWidth: elementWidth,
+    backgroundColor: selected ? '#37352f14' : undefined,
   };
 
   const className = isDataCellAsHeader
@@ -56,18 +43,13 @@ const TableDataCell = ({ attributes, children, element, blockId }: PluginElement
         {children}
       </div>
       {!editor.readOnly && isFirstRow && (
-        <ResizeHandle
-          onResize={onResize}
-          rows={tableElement?.children.length}
-          tableElement={tableElement}
-          columnIndex={columnIndex}
-        />
+        <ResizeHandle onResize={onResize} tdWidth={elementWidth} columnIndex={columnIndex} />
       )}
-      {!editor.readOnly && isFirstRow && tableRowElement && (
-        <TableColumnDragButton editor={editor} blockId={blockId} trElement={tableRowElement} tdElement={element} />
+      {!editor.readOnly && isFirstRow && (
+        <TableColumnDragButton editor={editor} blockId={blockId} tdElement={element} />
       )}
-      {!editor.readOnly && isFirstDataCell && tableRowElement && (
-        <TableRowDragButton editor={editor} blockId={blockId} trElement={tableRowElement} tdElement={element} />
+      {!editor.readOnly && isFirstDataCell && (
+        <TableRowDragButton editor={editor} blockId={blockId} tdElement={element} />
       )}
     </Node>
   );

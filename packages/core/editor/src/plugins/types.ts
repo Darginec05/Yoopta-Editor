@@ -73,7 +73,7 @@ export type Plugin<TKeys extends string = string, TProps = Descendant, TOptions 
   type: string;
   defineInitialStructure?: (editor: YooEditor) => Pick<SlateElement<TKeys>, 'type'>;
   customEditor?: (props: PluginCustomEditorRenderProps) => JSX.Element;
-  extendSlate?: (slate: SlateEditor, editor: YooEditor, blockId: string) => SlateEditor;
+  extensions?: (slate: SlateEditor, editor: YooEditor, blockId: string) => SlateEditor;
   commands?: Record<string, (editor: YooEditor, blockId: string, options?: Record<string, unknown>) => void>;
   elements: PluginElementsMap<TKeys, TProps>;
   events?: EventHandlers;

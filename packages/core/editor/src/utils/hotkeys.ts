@@ -15,6 +15,7 @@ const HOTKEYS_MAP = {
   backspace: 'backspace',
   deleteForward: 'shift?+delete',
   extendBackward: 'shift+left',
+  shiftDelete: 'shift+delete',
   extendForward: 'shift+right',
   shiftEnter: 'shift+enter',
   enter: 'enter',
@@ -111,6 +112,7 @@ export const HOTKEYS = {
   isShiftArrowDown: create('shiftArrowDown'),
   isCopy: create('copy'),
   isCut: create('cut'),
+  isShiftDelete: create('shiftDelete'),
 };
 
 export type HOTKEYS_TYPE = {
