@@ -44,10 +44,6 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, curr
       }
     }
 
-    if (hotkeys.isShiftDelete(event)) {
-      console.log('isShiftDelete');
-    }
-
     // add new row before current row
     if (hotkeys.isCmdShiftEnter(event)) {
       event.preventDefault();
@@ -91,6 +87,7 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, curr
       Transforms.insertText(slate, '\n');
     }
 
+    // if first select then select the whole row
     if (hotkeys.isSelect(event)) {
       const tdElementEntry = Editor.above(slate, {
         match: (n) => Element.isElement(n) && n.type === 'table-data-cell',

@@ -10,15 +10,11 @@ export type TableColumn = {
 export type TableDataCellElementProps = {
   width: number;
   asHeader: boolean;
-  asHeaderRow: boolean;
-  asHeaderColumn: boolean;
 };
 
 export type TableElementProps = {
   headerRow?: boolean;
   headerColumn?: boolean;
-  // columns?: TableColumn[];
-  // defaultColumnWidth?: number;
 };
 
 export type TableElement = SlateElement<'table', TableElementProps>;

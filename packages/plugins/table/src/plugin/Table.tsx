@@ -1,4 +1,4 @@
-import { SlateEditor, YooEditor, YooptaPlugin } from '@yoopta/editor';
+import { YooptaPlugin } from '@yoopta/editor';
 import { Table as TableRender } from '../elements/Table';
 import { TableDataCell } from '../elements/TableDataCell';
 import { TableRow } from '../elements/TableRow';
@@ -36,10 +36,8 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
       children: ['table-row'],
       props: {
         nodeType: 'block',
-        // headerRow: false,
-        // headerColumn: false,
-        // columns: [],
-        // defaultColumnWidth: 200,
+        headerRow: false,
+        headerColumn: false,
       },
     },
     'table-row': {

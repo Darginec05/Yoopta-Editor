@@ -3,7 +3,8 @@ import { useFloating, inline, flip, shift, offset } from '@floating-ui/react';
 import { useState } from 'react';
 import DragIcon from '../icons/drag.svg';
 import { TableColumnOptions } from './TableColumnOptions';
-import { Transforms } from 'slate';
+import { Editor, Path, Transforms } from 'slate';
+import { EDITOR_TO_SELECTION_SET } from '../utils/weakMaps';
 
 type TableRowProps = {
   editor: YooEditor;
@@ -25,49 +26,32 @@ const TableColumnDragButton = ({ editor, blockId, tdElement }: TableRowProps) =>
     if (editor.readOnly) return;
     const slate = editor.blockEditorsMap[blockId];
     const tdElementPath = Elements.getElementPath(editor, blockId, tdElement);
+    if (!tdElementPath) return;
 
-    if (tdElementPath) {
-      Transforms.select(slate, { offset: 0, path: [...tdElementPath, 0] });
-    }
+    Transforms.select(slate, { offset: 0, path: [...tdElementPath, 0] });
+    const tableElement = Elements.getElement(editor, blockId, { type: 'table', path: [0] });
+    if (!tableElement) return;
 
-    const tdIndex = tdElementPath?.[tdElementPath.length - 1];
-    const tableRowElements = document.querySelectorAll(`[data-yoopta-block-id="${blockId}"] .yoopta-table tr`);
+    const firstEntry = Editor.first(slate, tdElementPath);
+    const lastEntry = Editor.last(slate, [0]);
 
-    if (tableRowElements) {
-      tableRowElements.forEach((rowEl) => {
-        const dataCells = rowEl.childNodes as NodeListOf<HTMLElement>;
-        if (dataCells) {
-          dataCells.forEach((cell, cellIndex) => {
-            if (cellIndex === tdIndex) {
-              cell.classList.add('data-cell-selected');
-            }
-          });
-        }
-      });
-    }
+    if (!firstEntry || !lastEntry) return;
+
+    const [, firstPath] = firstEntry;
+    const [, lastPath] = lastEntry;
+
+    Transforms.setSelection(slate, {
+      anchor: { path: firstPath, offset: 0 },
+      focus: { path: lastPath, offset: 0 },
+    });
 
     setIsTableColumnActionsOpen(true);
   };
 
   const onClose = () => {
-    const tdElementPath = Elements.getElementPath(editor, blockId, tdElement);
+    const slate = editor.blockEditorsMap[blockId];
 
-    const tdIndex = tdElementPath?.[tdElementPath.length - 1];
-    const tableRowElements = document.querySelectorAll(`[data-yoopta-block-id="${blockId}"] .yoopta-table tr`);
-
-    if (tableRowElements) {
-      tableRowElements.forEach((rowEl) => {
-        const dataCells = rowEl.childNodes as NodeListOf<HTMLElement>;
-        if (dataCells) {
-          dataCells.forEach((cell, cellIndex) => {
-            if (cellIndex === tdIndex) {
-              cell.classList.remove('data-cell-selected');
-            }
-          });
-        }
-      });
-    }
-
+    EDITOR_TO_SELECTION_SET.delete(slate);
     setIsTableColumnActionsOpen(false);
   };
 

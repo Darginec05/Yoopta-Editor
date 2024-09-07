@@ -1,7 +1,6 @@
-import { Blocks, Elements, findSlateBySelectionPath, generateId, SlateElement, YooEditor } from '@yoopta/editor';
-import { BaseRange, Editor, Element, Path, Transforms } from 'slate';
-import { ReactEditor } from 'slate-react';
-import { TableCellElement, TableColumn, TableElement, TableElementProps, TableRowElement } from '../types';
+import { Elements, findSlateBySelectionPath, generateId, SlateElement, YooEditor } from '@yoopta/editor';
+import { Editor, Element, Path, Transforms } from 'slate';
+import { TableCellElement, TableElement, TableRowElement } from '../types';
 
 type Options = {
   path?: Range | Path;
@@ -9,7 +8,7 @@ type Options = {
   insertMode?: 'before' | 'after';
 };
 
-type DeleteOptions = Omit<Options, 'insertMode'>;
+type DeleteOptions = Omit<Options, 'insertMode' | 'select'>;
 
 type InsertTableOptions = {
   rows: number;
@@ -115,7 +114,7 @@ export const TableTransforms = {
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
-      const { path = slate.selection, select = true } = options || {};
+      const { path = slate.selection } = options || {};
 
       const currentRowElementEntryByPath = Elements.getElementEntry(editor, blockId, {
         path,
@@ -208,7 +207,7 @@ export const TableTransforms = {
         Transforms.insertNodes(slate, newDataCell, { at: [...tableRowPath, columnInsertIndex] });
       }
 
-      if (options?.select) {
+      if (select) {
         Transforms.select(slate, [0, 0, columnInsertIndex, 0]);
       }
     });
@@ -218,7 +217,7 @@ export const TableTransforms = {
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
-      const { path = slate.selection, select = true } = options || {};
+      const { path = slate.selection } = options || {};
 
       const tableRowEntries = Editor.nodes<SlateElement>(slate, {
         at: [0],
@@ -281,6 +280,9 @@ export const TableTransforms = {
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
+      const table = Elements.getElement(editor, blockId, { type: 'table', path: [0] });
+      const headerRow = table?.props?.headerRow || false;
+
       const firstTableRowChildren = Editor.nodes<SlateElement>(slate, {
         at: [0, 0],
         match: (n) => Element.isElement(n) && n.type === 'table-data-cell',
@@ -297,6 +299,15 @@ export const TableTransforms = {
           },
         );
       });
+
+      Transforms.setNodes(
+        slate,
+        { props: { ...table?.props, headerRow: !headerRow } },
+        {
+          at: [0],
+          match: (n) => Element.isElement(n) && n.type === 'table',
+        },
+      );
     });
   },
   toggleHeaderColumn: (editor: YooEditor, blockId: string) => {
@@ -304,6 +315,9 @@ export const TableTransforms = {
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
+      const table = Elements.getElement(editor, blockId, { type: 'table', path: [0] });
+      const headerColumn = table?.props?.headerColumn || false;
+
       const tableRows = Editor.nodes<SlateElement>(slate, {
         at: [0],
         match: (n) => Element.isElement(n) && n.type === 'table-row',
@@ -314,6 +328,10 @@ export const TableTransforms = {
         const cell = row.children[0] as TableCellElement;
         const isFirstCell = path[path.length - 1] === 0;
 
+        if (isFirstCell) {
+          console.log('cell', cell);
+        }
+
         Transforms.setNodes(
           slate,
           { props: { ...cell.props, asHeader: !cell.props?.asHeader } },
@@ -323,6 +341,15 @@ export const TableTransforms = {
           },
         );
       });
+
+      Transforms.setNodes(
+        slate,
+        { props: { ...table?.props, headerColumn: !headerColumn } },
+        {
+          at: [0],
+          match: (n) => Element.isElement(n) && n.type === 'table',
+        },
+      );
     });
   },
 };

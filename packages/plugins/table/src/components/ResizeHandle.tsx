@@ -35,12 +35,12 @@ const ResizeHandle = ({ onResize, tdWidth, columnIndex }) => {
       };
 
       const handleMouseUp = () => {
-        tableEl.removeEventListener('mousemove', handleMouseMove);
-        tableEl.removeEventListener('mouseup', handleMouseUp);
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
       };
 
-      tableEl.addEventListener('mousemove', handleMouseMove);
-      tableEl.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
     };
 
     resizeRef.current?.addEventListener('mousedown', handleMouseDown);

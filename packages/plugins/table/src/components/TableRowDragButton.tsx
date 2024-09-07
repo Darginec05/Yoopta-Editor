@@ -3,8 +3,8 @@ import { useFloating, inline, flip, shift, offset } from '@floating-ui/react';
 import { useState } from 'react';
 import { TableRowOptions } from './TableRowOptions';
 import DragIcon from '../icons/drag.svg';
-import { Transforms } from 'slate';
-import { TABLE_ROW_TO_SELECTED_WEAK_MAP } from '../utils/weakMaps';
+import { Editor, Element, Path, Transforms } from 'slate';
+import { EDITOR_TO_SELECTION_SET, TABLE_ROW_TO_SELECTED_WEAK_MAP } from '../utils/weakMaps';
 
 type TableRowProps = {
   editor: YooEditor;
@@ -31,14 +31,42 @@ const TableRowDragButton = ({ editor, blockId, tdElement }: TableRowProps) => {
     if (!tdElementPath) return;
 
     Transforms.select(slate, { offset: 0, path: [...tdElementPath, 0] });
+
+    const parentPath = Path.parent(tdElementPath);
+
+    const firstEntry = Editor.first(slate, parentPath);
+    const lastEntry = Editor.last(slate, parentPath);
+
+    if (!firstEntry || !lastEntry) return;
+
+    const [, firstPath] = firstEntry;
+    const [, lastPath] = lastEntry;
+
+    Transforms.setSelection(slate, {
+      anchor: { path: firstPath, offset: 0 },
+      focus: { path: lastPath, offset: 0 },
+    });
+
     setIsTableRowActionsOpen(true);
   };
 
   const onClose = () => {
     const slate = editor.blockEditorsMap[blockId];
-    TABLE_ROW_TO_SELECTED_WEAK_MAP.delete(slate);
-
+    EDITOR_TO_SELECTION_SET.delete(slate);
     setIsTableRowActionsOpen(false);
+
+    const tdElementPath = Elements.getElementPath(editor, blockId, tdElement);
+    if (!tdElementPath) return;
+
+    const parentPath = Path.parent(tdElementPath);
+    const firstEntry = Editor.first(slate, parentPath);
+    if (!firstEntry) return;
+    const [, firstPath] = firstEntry;
+
+    Transforms.setSelection(slate, {
+      anchor: { path: firstPath, offset: 0 },
+      focus: { path: firstPath, offset: 0 },
+    });
   };
 
   return (

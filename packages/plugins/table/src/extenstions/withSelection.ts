@@ -7,12 +7,6 @@ export function withSelection(slate: SlateEditor): SlateEditor {
   const { apply } = slate;
 
   slate.apply = (op) => {
-    if (EDITOR_TO_SELECTION_SET.has(slate)) {
-      // if (op.type === 'remove_node' || op.type === 'remove_text') {
-      //   return;
-      // }
-    }
-
     if (!Operation.isSelectionOperation(op) || !op.newProperties) {
       EDITOR_TO_SELECTION_SET.delete(slate);
       EDITOR_TO_SELECTION.delete(slate);
@@ -23,6 +17,9 @@ export function withSelection(slate: SlateEditor): SlateEditor {
       ...slate.selection,
       ...op.newProperties,
     };
+
+    console.log('apply', op);
+    console.log('apply selection', selection);
 
     if (!Range.isRange(selection)) {
       EDITOR_TO_SELECTION_SET.delete(slate);
@@ -40,6 +37,8 @@ export function withSelection(slate: SlateEditor): SlateEditor {
       match: (n) => Element.isElement(n) && n.type === 'table-data-cell',
       at: Range.end(selection),
     });
+
+    console.log({ fromEntry, toEntry });
 
     if (!fromEntry || !toEntry) {
       EDITOR_TO_SELECTION_SET.delete(slate);
