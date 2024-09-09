@@ -72,8 +72,12 @@ export type YooptaFormats = Record<string, TextFormat>;
 
 export type YooEditorEvents = 'change' | 'focus' | 'blur' | 'block:copy';
 
+// type ExtractCommands<T> = T extends Plugin<any, any, infer C> ? C : never;
+// type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
+// type MergeCommands<T extends readonly Plugin<any, any, any>[]> = UnionToIntersection<ExtractCommands<T[number]>>;
+
 // [TODO] - Fix generic and default types
-export type YooEditor<TNodes = any> = {
+export type YooEditor = {
   id: string;
   readOnly: boolean;
   isEmpty: () => boolean;
@@ -94,7 +98,7 @@ export type YooEditor<TNodes = any> = {
   selection: YooptaBlockPath | null;
   selectedBlocks: number[] | null;
   children: YooptaContentValue;
-  getEditorValue: () => TNodes;
+  getEditorValue: () => YooptaContentValue;
   setEditorValue: (value: YooptaContentValue) => void;
   setSelection: (path: YooptaBlockPath | null, options?: SetSelectionOptions) => void;
   setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
@@ -103,6 +107,7 @@ export type YooEditor<TNodes = any> = {
   formats: YooptaFormats;
   shortcuts: Record<string, YooptaBlock>;
   plugins: Record<string, Plugin<Record<string, SlateElement>, unknown>>;
+  commands: Record<string, (...args: any[]) => void>;
 
   // events handlers
   on: (event: YooEditorEvents, fn: (payload: any) => void) => void;

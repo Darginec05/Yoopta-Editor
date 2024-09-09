@@ -1,5 +1,5 @@
-import { YooEditor, YooptaBlockData } from '../editor/types';
-import { Plugin, PluginElement, PluginElementsMap } from '../plugins/types';
+import { SlateElement, YooEditor, YooptaBlockData } from '../editor/types';
+import { Plugin, PluginElementsMap } from '../plugins/types';
 import { YooptaMark } from '../marks';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
 import { createBlock } from '../editor/blocks/createBlock';
@@ -31,7 +31,7 @@ export function buildMarks(editor, marks: YooptaMark<any>[]) {
   return formats;
 }
 
-export function buildBlocks(editor, plugins: Plugin<string, PluginElement<unknown>>[]) {
+export function buildBlocks(editor, plugins: Plugin<Record<string, SlateElement>>[]) {
   const blocks: YooEditor['blocks'] = {};
 
   plugins.forEach((plugin) => {
@@ -110,8 +110,8 @@ export function buildBlockShortcuts(editor: YooEditor) {
 // const DEFAULT_PLUGIN_OPTIONS: PluginOptions = {};
 
 export function buildPlugins(
-  plugins: Plugin<string, PluginElement<unknown>>[],
-): Record<string, Plugin<string, unknown>> {
+  plugins: Plugin<Record<string, SlateElement>>[],
+): Record<string, Plugin<Record<string, SlateElement>>> {
   const pluginsMap = {};
   const inlineTopLevelPlugins: PluginElementsMap<string, any> = {};
 
@@ -139,4 +139,20 @@ export function buildPlugins(
   });
 
   return pluginsMap;
+}
+
+export function buildCommands(editor: YooEditor, plugins: Plugin<Record<string, SlateElement>>[]) {
+  const commands = {};
+
+  plugins.forEach((plugin) => {
+    if (plugin.commands) {
+      Object.keys(plugin.commands).forEach((command) => {
+        if (plugin.commands?.[command]) {
+          commands[command] = (...args) => plugin.commands?.[command](editor, ...args);
+        }
+      });
+    }
+  });
+
+  return commands;
 }

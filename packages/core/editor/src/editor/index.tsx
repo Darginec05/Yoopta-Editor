@@ -23,8 +23,9 @@ import { getHTML } from '../parsers/getHTML';
 import { getMarkdown } from '../parsers/getMarkdown';
 import { getPlainText } from '../parsers/getPlainText';
 import { isEmpty } from './core/isEmpty';
+import { Plugin } from '../plugins/types';
 
-export const createYooptaEditor = (): YooEditor => {
+export function createYooptaEditor(): YooEditor {
   const editor: YooEditor = {
     id: '',
     children: {},
@@ -55,6 +56,7 @@ export const createYooptaEditor = (): YooEditor => {
     formats: {},
     shortcuts: {},
     plugins: {},
+    commands: {},
 
     on: (event, callback) => {},
     off: (event, callback) => {},
@@ -73,6 +75,6 @@ export const createYooptaEditor = (): YooEditor => {
   };
 
   return editor;
-};
+}
 
 export const EDITOR_TO_ON_CHANGE = new WeakMap();

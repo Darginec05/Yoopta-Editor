@@ -1,4 +1,12 @@
-import { Elements, findSlateBySelectionPath, generateId, SlateElement, YooEditor } from '@yoopta/editor';
+import {
+  Blocks,
+  buildBlockData,
+  Elements,
+  findSlateBySelectionPath,
+  generateId,
+  SlateElement,
+  YooEditor,
+} from '@yoopta/editor';
 import { Editor, Element, Path, Span, Transforms } from 'slate';
 import { InsertTableOptions, TableCellElement, TableElement, TableOptions, TableRowElement } from '../types';
 
@@ -15,19 +23,26 @@ type MoveTableOptions = {
   to: Path;
 };
 
-export const TableTransforms = {
-  insertTable: (editor: YooEditor, options: InsertTableOptions) => {
+type InsertOptions = Partial<
+  InsertTableOptions & {
+    at: number;
+  }
+>;
+
+export const TableCommands = {
+  insertTable: (editor: YooEditor, options?: InsertOptions) => {
     const slate = findSlateBySelectionPath(editor);
     if (!slate) return;
 
-    const tablePluginOptions = editor.plugins.table.options as TableOptions;
+    const tablePluginOptions = editor.plugins.Table.options as TableOptions;
+
     const {
       rows = (tablePluginOptions.rows || 3) as number,
       columns = (tablePluginOptions.columns || 3) as number,
       columnWidth = (tablePluginOptions.columnWidth || 200) as number,
       headerColumn = tablePluginOptions.headerColumn,
       headerRow = tablePluginOptions.headerRow,
-    } = options;
+    } = options || {};
 
     const table: TableElement = {
       id: generateId(),
@@ -63,10 +78,8 @@ export const TableTransforms = {
       table.children.push(row);
     }
 
-    // Blocks.insertBlock(editor, table);
-
-    // Insert the table as block
-    return table;
+    const insertBlockOptions = typeof options?.at === 'number' ? { at: [options.at] } : {};
+    Blocks.insertBlock(editor, buildBlockData({ value: [table], type: 'Table' }), insertBlockOptions);
   },
   deleteTable: (editor: YooEditor, blockId: string) => {
     editor.deleteBlock({ blockId });

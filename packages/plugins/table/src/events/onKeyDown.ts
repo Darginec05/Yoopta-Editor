@@ -1,6 +1,6 @@
 import { SlateEditor, YooEditor, PluginEventHandlerOptions } from '@yoopta/editor';
 import { Editor, Element, Node, Path, Range, Text, Transforms } from 'slate';
-import { TableTransforms } from '../transforms';
+import { TableCommands } from '../commands';
 import { EDITOR_TO_SELECTION, EDITOR_TO_SELECTION_SET } from '../utils/weakMaps';
 
 export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, currentBlock }: PluginEventHandlerOptions) {
@@ -47,38 +47,38 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, curr
     // add new row before current row
     if (hotkeys.isCmdShiftEnter(event)) {
       event.preventDefault();
-      TableTransforms.insertTableRow(editor, currentBlock.id, { select: true, insertMode: 'before' });
+      TableCommands.insertTableRow(editor, currentBlock.id, { select: true, insertMode: 'before' });
       return;
     }
 
     // add new row after current row
     if (hotkeys.isShiftEnter(event)) {
       event.preventDefault();
-      TableTransforms.insertTableRow(editor, currentBlock.id, { select: true, insertMode: 'after' });
+      TableCommands.insertTableRow(editor, currentBlock.id, { select: true, insertMode: 'after' });
       return;
     }
 
     if (hotkeys.isCmdShiftRight(event)) {
       event.preventDefault();
-      TableTransforms.insertTableColumn(editor, currentBlock.id, { select: true, insertMode: 'after' });
+      TableCommands.insertTableColumn(editor, currentBlock.id, { select: true, insertMode: 'after' });
       return;
     }
 
     if (hotkeys.isCmdShiftLeft(event)) {
       event.preventDefault();
-      TableTransforms.insertTableColumn(editor, currentBlock.id, { select: true, insertMode: 'before' });
+      TableCommands.insertTableColumn(editor, currentBlock.id, { select: true, insertMode: 'before' });
       return;
     }
 
     if (hotkeys.isCmdShiftDelete(event)) {
       event.preventDefault();
-      TableTransforms.deleteTableRow(editor, currentBlock.id, { select: true });
+      TableCommands.deleteTableRow(editor, currentBlock.id);
       return;
     }
 
     if (hotkeys.isCmdAltDelete(event)) {
       event.preventDefault();
-      TableTransforms.deleteTableColumn(editor, currentBlock.id, { select: true });
+      TableCommands.deleteTableColumn(editor, currentBlock.id);
       return;
     }
 

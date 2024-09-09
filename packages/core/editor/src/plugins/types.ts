@@ -81,11 +81,17 @@ export type PluginEventHandlerOptions = {
 
 export type ElementPropsMap = Record<string, Record<string, unknown>>;
 
-export type Plugin<TElementMap extends Record<string, SlateElement>, TOptions = Record<string, unknown>> = {
+export type PluginCommands = Record<string, (...args: any[]) => void>;
+
+export type Plugin<
+  TElementMap extends Record<string, SlateElement>,
+  TOptions = Record<string, unknown>,
+  TCommands extends PluginCommands = {},
+> = {
   type: string;
   customEditor?: (props: PluginCustomEditorRenderProps) => JSX.Element;
   extensions?: (slate: SlateEditor, editor: YooEditor, blockId: string) => SlateEditor;
-  commands?: Record<string, (editor: YooEditor, ...args: any[]) => void>;
+  commands?: TCommands;
   elements: {
     [K in keyof TElementMap]: PluginElement<TElementMap[K]['props']>;
   };

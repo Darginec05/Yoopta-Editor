@@ -1,7 +1,7 @@
 import { PluginElementRenderProps, useBlockData, useYooptaEditor } from '@yoopta/editor';
 import { useMemo } from 'react';
 import { TableBlockOptions } from '../components/TableBlockOptions';
-import { TableColumn, TableElement } from '../types';
+import { TableElement } from '../types';
 import { EDITOR_TO_SELECTION_SET } from '../utils/weakMaps';
 
 const Table = ({ attributes, children, blockId, element, HTMLAttributes }: PluginElementRenderProps) => {

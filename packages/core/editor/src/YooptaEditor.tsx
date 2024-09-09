@@ -3,7 +3,7 @@ import { YooptaContextProvider } from './contexts/YooptaContext/YooptaContext';
 import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { Editor } from './components/Editor/Editor';
 import { CSSProperties, useMemo, useState } from 'react';
-import { YooEditor, YooptaBlockData, YooptaContentValue } from './editor/types';
+import { SlateElement, YooEditor, YooptaBlockData, YooptaContentValue } from './editor/types';
 import { Plugin, PluginElementProps } from './plugins/types';
 import NoSSR from './components/NoSsr/NoSsr';
 import { Tools, ToolsProvider } from './contexts/YooptaContext/ToolsContext';
@@ -11,6 +11,7 @@ import {
   buildBlocks,
   buildBlockShortcuts,
   buildBlockSlateEditors,
+  buildCommands,
   buildMarks,
   buildPlugins,
 } from './utils/editorBuilders';
@@ -22,7 +23,7 @@ import { generateId } from './utils/generateId';
 type Props = {
   id?: string;
   editor: YooEditor;
-  plugins: YooptaPlugin<string, PluginElementProps<any>, Record<string, unknown>>[];
+  plugins: Readonly<YooptaPlugin<Record<string, SlateElement>>[]>;
   marks?: YooptaMark<any>[];
   value?: YooptaContentValue;
   autoFocus?: boolean;
@@ -80,10 +81,10 @@ const YooptaEditor = ({
   }, [marksProps]);
 
   const plugins = useMemo(() => {
-    return pluginsProps.map((plugin) => plugin.getPlugin as Plugin<string, any, any>);
+    return pluginsProps.map((plugin) => plugin.getPlugin as Plugin<Record<string, SlateElement>>);
   }, [pluginsProps]);
 
-  const [editorState, setEditorState] = useState<{ editor: YooEditor<any>; version: number }>(() => {
+  const [editorState, setEditorState] = useState<{ editor: YooEditor; version: number }>(() => {
     if (!editor.id) editor.id = id || generateId();
     editor.applyChanges = applyChanges;
     editor.readOnly = readOnly || false;
@@ -102,6 +103,7 @@ const YooptaEditor = ({
     editor.blockEditorsMap = buildBlockSlateEditors(editor);
     editor.shortcuts = buildBlockShortcuts(editor);
     editor.plugins = buildPlugins(plugins);
+    editor.commands = buildCommands(editor, plugins);
 
     editor.on = Events.on;
     editor.once = Events.once;

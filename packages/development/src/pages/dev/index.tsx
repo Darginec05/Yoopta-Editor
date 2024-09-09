@@ -1,4 +1,5 @@
 import YooptaEditor, { createYooptaEditor, YooEditor, YooptaBlockData, YooptaContentValue } from '@yoopta/editor';
+import { TableCommands } from '@yoopta/table';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { MARKS } from '../../utils/yoopta/marks';
@@ -449,28 +450,27 @@ const BasicExample = () => {
     },
   });
 
-  useEffect(() => {
-    editor.on('change', (data) => {
-      setValue(data);
-    });
-  }, []);
-  console.log(value);
-
   return (
-    <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={selectionRef}>
-      <YooptaEditor
-        editor={editor}
-        plugins={YOOPTA_PLUGINS}
-        selectionBoxRoot={selectionRef}
-        marks={MARKS}
-        autoFocus={true}
-        placeholder="Type / to open menu"
-        tools={TOOLS}
-        readOnly={readOnly}
-        style={EDITOR_STYLE}
-        value={value}
-      />
-    </div>
+    <>
+      <button onClick={() => editor.commands?.insertTable({ columnWidth: 350 })} type="button">
+        Insert table
+      </button>
+
+      <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={selectionRef}>
+        <YooptaEditor
+          editor={editor}
+          plugins={YOOPTA_PLUGINS}
+          selectionBoxRoot={selectionRef}
+          marks={MARKS}
+          autoFocus={true}
+          placeholder="Type / to open menu"
+          tools={TOOLS}
+          readOnly={readOnly}
+          style={EDITOR_STYLE}
+          value={value}
+        />
+      </div>
+    </>
   );
 };
 

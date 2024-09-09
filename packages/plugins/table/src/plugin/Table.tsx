@@ -3,7 +3,7 @@ import { Table as TableRender } from '../elements/Table';
 import { TableDataCell } from '../elements/TableDataCell';
 import { TableRow } from '../elements/TableRow';
 import { TableElementMap, TableOptions } from '../types';
-import { TableTransforms } from '../transforms';
+import { TableCommands } from '../commands';
 import { TableIcon } from 'lucide-react';
 
 import { withTable } from '../extenstions/withTable';
@@ -60,7 +60,7 @@ const Table = new YooptaPlugin<TableElementMap, TableOptions>({
       icon: TableIcon,
     },
   },
-  commands: TableTransforms,
+  commands: TableCommands,
 });
 
 export { Table };

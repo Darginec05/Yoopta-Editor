@@ -196,4 +196,4 @@ export const YOOPTA_PLUGINS = [
       }),
     },
   }),
-];
+] as const;

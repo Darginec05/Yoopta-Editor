@@ -4,7 +4,7 @@ import { Editor, Element } from 'slate';
 import { ResizeHandle } from '../components/ResizeHandle';
 import { TableColumnDragButton } from '../components/TableColumnDragButton';
 import { TableRowDragButton } from '../components/TableRowDragButton';
-import { TableTransforms } from '../transforms';
+import { TableCommands } from '../commands';
 import { TableCellElement, TableElement, TableElementProps } from '../types';
 import { EDITOR_TO_SELECTION_SET } from '../utils/weakMaps';
 
@@ -53,7 +53,7 @@ const TableDataCell = ({ attributes, children, element, blockId }: PluginElement
   }
 
   const onResize = (newWidth: number) => {
-    TableTransforms.updateColumnWidth(editor, blockId, columnIndex, newWidth);
+    TableCommands.updateColumnWidth(editor, blockId, columnIndex, newWidth);
   };
 
   const Node = isDataCellAsHeader ? 'th' : 'td';

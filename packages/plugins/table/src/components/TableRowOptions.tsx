@@ -3,7 +3,7 @@ import { Elements, SlateElement, UI, YooEditor } from '@yoopta/editor';
 import { CSSProperties } from 'react';
 import { Editor, Element, Path } from 'slate';
 import { TrashIcon, MoveDownIcon, MoveUpIcon, CornerUpRight, CornerDownRight } from 'lucide-react';
-import { TableTransforms } from '../transforms';
+import { TableCommands } from '../commands';
 
 const { BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptions, BlockOptionsSeparator } = UI;
 
@@ -31,7 +31,7 @@ const TableRowOptions = ({ editor, blockId, onClose, tdElement, ...props }: Prop
 
     // let path = Elements.getElementPath(editor, blockId, trElement);
 
-    TableTransforms.insertTableRow(editor, blockId, { insertMode: 'before', select: true });
+    TableCommands.insertTableRow(editor, blockId, { insertMode: 'before', select: true });
     onClose();
   };
 
@@ -47,7 +47,7 @@ const TableRowOptions = ({ editor, blockId, onClose, tdElement, ...props }: Prop
     // let nextPath;
     // if (path) nextPath = Path.next(path);
 
-    TableTransforms.insertTableRow(editor, blockId, { insertMode: 'after', select: true });
+    TableCommands.insertTableRow(editor, blockId, { insertMode: 'after', select: true });
     onClose();
   };
 
@@ -57,7 +57,7 @@ const TableRowOptions = ({ editor, blockId, onClose, tdElement, ...props }: Prop
     if (!trElement) return;
 
     let path = Elements.getElementPath(editor, blockId, trElement);
-    TableTransforms.deleteTableRow(editor, blockId, { path });
+    TableCommands.deleteTableRow(editor, blockId, { path });
     onClose();
   };
 
@@ -75,7 +75,7 @@ const TableRowOptions = ({ editor, blockId, onClose, tdElement, ...props }: Prop
     });
 
     if (!nextElementEntry) return onClose();
-    TableTransforms.moveTableRow(editor, blockId, { from: path!, to: nextElementEntry[1] });
+    TableCommands.moveTableRow(editor, blockId, { from: path!, to: nextElementEntry[1] });
   };
 
   const moveRowUp = () => {
@@ -92,7 +92,7 @@ const TableRowOptions = ({ editor, blockId, onClose, tdElement, ...props }: Prop
     });
 
     if (!prevElementEntry) return onClose();
-    TableTransforms.moveTableRow(editor, blockId, { from: path!, to: prevElementEntry[1] });
+    TableCommands.moveTableRow(editor, blockId, { from: path!, to: prevElementEntry[1] });
   };
 
   return (
