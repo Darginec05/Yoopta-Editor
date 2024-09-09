@@ -9,3 +9,7 @@ export type LinkElementProps = {
   title?: string | null;
 };
 export type LinkElement = SlateElement<'link', LinkElementProps>;
+
+export type LinkElementMap = {
+  link: LinkElement;
+};

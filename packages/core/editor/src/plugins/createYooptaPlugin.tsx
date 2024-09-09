@@ -1,28 +1,38 @@
-import { Descendant } from 'slate';
-import { PluginElementRenderProps, Plugin, PluginOptions } from './types';
+import { SlateElement } from '../editor/types';
+import { PluginElementRenderProps, Plugin, PluginOptions, ElementPropsMap } from './types';
 
 export type ExtendPluginRender<TKeys extends string> = {
   [x in TKeys]: (props: PluginElementRenderProps) => JSX.Element;
 };
 
-export type ExtendPlugin<TKeys extends string, TProps, TOptions> = {
-  renders?: Partial<ExtendPluginRender<TKeys>>;
+type ExtractProps<T> = T extends SlateElement<any, infer P> ? P : never;
+
+export type ExtendPlugin<TElementMap extends Record<string, SlateElement>, TOptions> = {
+  renders?: {
+    [K in keyof TElementMap]?: (props: PluginElementRenderProps & { element: TElementMap[K] }) => JSX.Element;
+  };
   options?: Partial<PluginOptions<TOptions>>;
-  elementProps?: Partial<Record<TKeys, (props: TProps) => TProps>>;
+  elementProps?: {
+    [K in keyof TElementMap]?: (props: ExtractProps<TElementMap[K]>) => ExtractProps<TElementMap[K]>;
+  };
 };
 
-export class YooptaPlugin<TKeys extends string = string, TProps = Descendant, TOptions = Record<string, unknown>> {
-  private readonly plugin: Plugin<TKeys, TProps, TOptions>;
-
-  constructor(plugin: Plugin<TKeys, TProps, TOptions>) {
+export class YooptaPlugin<TElementMap extends Record<string, SlateElement>, TOptions = Record<string, unknown>> {
+  private readonly plugin: Plugin<TElementMap, TOptions>;
+  constructor(plugin: Plugin<TElementMap, TOptions>) {
     this.plugin = plugin;
   }
 
-  get getPlugin() {
+  get getPlugin(): Plugin<TElementMap, TOptions> {
     return this.plugin;
   }
 
-  extend(extendPlugin: ExtendPlugin<TKeys, TProps, TOptions>): YooptaPlugin<TKeys, TProps, TOptions> {
+  // [TODO] - add validation
+  // validatePlugin(): boolean {
+  //   return true
+  // }
+
+  extend(extendPlugin: ExtendPlugin<TElementMap, TOptions>): YooptaPlugin<TElementMap, TOptions> {
     const { renders, options, elementProps } = extendPlugin;
 
     const extendedOptions = { ...this.plugin.options, ...options };
@@ -51,13 +61,14 @@ export class YooptaPlugin<TKeys extends string = string, TProps = Descendant, TO
         if (element) {
           const defaultPropsFn = elementProps[elementType];
           const updatedElementProps = element.props;
-
-          element.props = defaultPropsFn(updatedElementProps);
+          if (defaultPropsFn && updatedElementProps) {
+            element.props = defaultPropsFn(updatedElementProps);
+          }
         }
       });
     }
 
-    return new YooptaPlugin<TKeys, TProps, TOptions>({
+    return new YooptaPlugin<TElementMap, TOptions>({
       ...this.plugin,
       elements: elements,
       options: extendedOptions as PluginOptions<TOptions>,

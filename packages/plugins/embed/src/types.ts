@@ -34,3 +34,7 @@ export type ProviderRenderProps = {
   width: number;
   height: number;
 } & Pick<RenderElementProps, 'attributes' | 'children'>;
+
+export type EmbedElementMap = {
+  embed: EmbedElement;
+};

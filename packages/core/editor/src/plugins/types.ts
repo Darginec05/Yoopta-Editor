@@ -1,26 +1,27 @@
 import { HTMLAttributes, ReactElement, ReactNode } from 'react';
-import { Descendant, Editor, Path } from 'slate';
 import { RenderElementProps as RenderSlateElementProps, RenderLeafProps } from 'slate-react';
 import { SlateEditor, SlateElement, YooEditor, YooptaBlockBaseMeta, YooptaBlockData } from '../editor/types';
-import { YooptaMark } from '../marks';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS_TYPE } from '../utils/hotkeys';
 
-export type RenderPluginProps<TKeys extends string, TProps, TOptions> = {
-  id: string;
-  elements: Plugin<TKeys, TProps, TOptions>['elements'];
-  marks?: YooptaMark<unknown>[];
-};
+export enum NodeType {
+  Block = 'block',
+  Inline = 'inline',
+  Void = 'void',
+  InlineVoid = 'inlineVoid',
+}
 
-export type PluginOptions<T> = {
-  display?: {
-    title?: string;
-    description?: string;
-    icon?: string | ReactNode | ReactElement;
-  };
-  shortcuts?: string[];
-  HTMLAttributes?: HTMLAttributes<HTMLElement>;
-} & T;
+export type PluginOptions<T> = Partial<
+  {
+    display?: {
+      title?: string;
+      description?: string;
+      icon?: string | ReactNode | ReactElement;
+    };
+    shortcuts?: string[];
+    HTMLAttributes?: HTMLAttributes<HTMLElement>;
+  } & T
+>;
 
 export type PluginElementOptions = {
   draggable?: boolean;
@@ -51,6 +52,15 @@ export type PluginElement<T> = {
   rootPlugin?: string;
 };
 
+// export type PluginElement<T> = {
+//   render: (props: PluginElementRenderProps & { element: { props: T } }) => JSX.Element;
+//   props?: T;
+//   options?: PluginElementOptions;
+//   asRoot?: boolean;
+//   children?: string[];
+//   rootPlugin?: string;
+// };
+
 export type PluginElementsMap<TKeys extends string = string, TProps = PluginDefaultProps> = {
   [key in TKeys]: PluginElement<TProps>;
 };
@@ -69,13 +79,16 @@ export type PluginEventHandlerOptions = {
   currentBlock: YooptaBlockData;
 };
 
-export type Plugin<TKeys extends string = string, TProps = Descendant, TOptions = Record<string, unknown>> = {
+export type ElementPropsMap = Record<string, Record<string, unknown>>;
+
+export type Plugin<TElementMap extends Record<string, SlateElement>, TOptions = Record<string, unknown>> = {
   type: string;
-  defineInitialStructure?: (editor: YooEditor) => Pick<SlateElement<TKeys>, 'type'>;
   customEditor?: (props: PluginCustomEditorRenderProps) => JSX.Element;
   extensions?: (slate: SlateEditor, editor: YooEditor, blockId: string) => SlateEditor;
-  commands?: Record<string, (editor: YooEditor, blockId: string, options?: Record<string, unknown>) => void>;
-  elements: PluginElementsMap<TKeys, TProps>;
+  commands?: Record<string, (editor: YooEditor, ...args: any[]) => void>;
+  elements: {
+    [K in keyof TElementMap]: PluginElement<TElementMap[K]['props']>;
+  };
   events?: EventHandlers;
   options?: PluginOptions<TOptions>;
   parsers?: Partial<Record<PluginParserTypes, PluginParsers>>;

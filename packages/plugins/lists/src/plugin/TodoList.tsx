@@ -1,9 +1,9 @@
 import { buildBlockData, generateId, YooptaBlockData, YooptaPlugin } from '@yoopta/editor';
 import { TodoListRender } from '../elements/TodoList';
 import { onKeyDown } from '../events/onKeyDown';
-import { TodoListElementProps, TodoListPluginKeys } from '../types';
+import { ListElementMap } from '../types';
 
-const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
+const TodoList = new YooptaPlugin<Pick<ListElementMap, 'todo-list'>>({
   type: 'TodoList',
   elements: {
     'todo-list': {

@@ -102,7 +102,7 @@ export type YooEditor<TNodes = any> = {
   blocks: YooptaBlocks;
   formats: YooptaFormats;
   shortcuts: Record<string, YooptaBlock>;
-  plugins: Record<string, Plugin<string, unknown>>;
+  plugins: Record<string, Plugin<Record<string, SlateElement>, unknown>>;
 
   // events handlers
   on: (event: YooEditorEvents, fn: (payload: any) => void) => void;

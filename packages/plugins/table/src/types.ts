@@ -1,11 +1,6 @@
-import { SlateElement } from '@yoopta/editor';
+import { PluginOptions, SlateElement } from '@yoopta/editor';
 
 export type TablePluginElementKeys = 'table' | 'table-row' | 'table-data-cell';
-
-export type TableColumn = {
-  index: number;
-  width: number;
-};
 
 export type TableDataCellElementProps = {
   width: number;
@@ -20,3 +15,19 @@ export type TableElementProps = {
 export type TableElement = SlateElement<'table', TableElementProps>;
 export type TableCellElement = SlateElement<'table-data-cell', TableDataCellElementProps>;
 export type TableRowElement = SlateElement;
+
+export type TableElementMap = {
+  table: TableElement;
+  'table-data-cell': TableCellElement;
+  'table-row': TableRowElement;
+};
+
+export type InsertTableOptions = {
+  rows: number;
+  columns: number;
+  columnWidth?: number;
+  headerColumn?: boolean;
+  headerRow?: boolean;
+};
+
+export type TableOptions = PluginOptions<InsertTableOptions>;

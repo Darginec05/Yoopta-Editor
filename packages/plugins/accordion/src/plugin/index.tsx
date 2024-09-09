@@ -7,7 +7,7 @@ import {
   buildBlockElementsStructure,
   SlateElement,
 } from '@yoopta/editor';
-import { AccordionElementKeys, AccordionListItemProps } from '../types';
+import { AccordionElementKeys, AccordionElementMap, AccordionListItemProps } from '../types';
 import { AccordionList } from '../renders/AccordionList';
 import { AccordionListItem } from '../renders/AccordionListItem';
 import { AccordionItemHeading } from '../renders/AccordionItemHeading';
@@ -22,18 +22,8 @@ const ACCORDION_ELEMENTS = {
   AccordionListItemContent: 'accordion-list-item-content',
 };
 
-const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>({
+const Accordion = new YooptaPlugin<AccordionElementMap>({
   type: 'Accordion',
-  rules: () => {
-    return `
-      <accordion-list>
-        <accordion-list-item>
-          <accordion-list-item-heading>Accordion Item</accordion-list-item-heading>
-          <accordion-list-item-content>Accordion Content</accordion-list-item-content>
-        </accordion-list-item>
-      </accordion-list>
-      `;
-  },
   elements: {
     'accordion-list': {
       asRoot: true,

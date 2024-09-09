@@ -1,6 +1,6 @@
 import { Elements, findSlateBySelectionPath, generateId, SlateElement, YooEditor } from '@yoopta/editor';
 import { Editor, Element, Path, Span, Transforms } from 'slate';
-import { TableCellElement, TableElement, TableRowElement } from '../types';
+import { InsertTableOptions, TableCellElement, TableElement, TableOptions, TableRowElement } from '../types';
 
 type Options = {
   path?: Location | Span;
@@ -9,14 +9,6 @@ type Options = {
 };
 
 type DeleteOptions = Omit<Options, 'insertMode' | 'select'>;
-
-type InsertTableOptions = {
-  rows: number;
-  columns: number;
-  columnWidth?: number;
-  headerColumn?: boolean;
-  headerRow?: boolean;
-};
 
 type MoveTableOptions = {
   from: Path;
@@ -28,7 +20,14 @@ export const TableTransforms = {
     const slate = findSlateBySelectionPath(editor);
     if (!slate) return;
 
-    const { rows, columns, columnWidth, headerColumn, headerRow } = options;
+    const tablePluginOptions = editor.plugins.table.options as TableOptions;
+    const {
+      rows = (tablePluginOptions.rows || 3) as number,
+      columns = (tablePluginOptions.columns || 3) as number,
+      columnWidth = (tablePluginOptions.columnWidth || 200) as number,
+      headerColumn = tablePluginOptions.headerColumn,
+      headerRow = tablePluginOptions.headerRow,
+    } = options;
 
     const table: TableElement = {
       id: generateId(),

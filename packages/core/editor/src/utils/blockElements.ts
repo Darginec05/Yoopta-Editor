@@ -129,13 +129,6 @@ export function buildBlockElementsStructure(
   const block: YooptaBlock = editor.blocks[blockType];
   const blockElements = block.elements;
 
-  if (typeof plugin.defineInitialStructure === 'function') {
-    const structure = plugin.defineInitialStructure(editor);
-    // [TODO] - check if structure is valid
-
-    return recursivelyBuildElementsFromStructure(blockElements, structure);
-  }
-
   const rootBlockElementType = getRootBlockElementType(blockElements);
   if (!rootBlockElementType) {
     throw new Error(`Root element type not found for block type ${blockType}`);
@@ -158,7 +151,7 @@ export function buildBlockElementsStructure(
 export function getPluginByInlineElement(
   plugins: YooEditor['plugins'],
   elementType: string,
-): Plugin<string, unknown> | undefined {
+): Plugin<Record<string, SlateElement>, unknown> | undefined {
   const plugin = Object.values(plugins).find((plugin) => {
     return plugin.type === plugin.elements?.[elementType]?.rootPlugin;
   });

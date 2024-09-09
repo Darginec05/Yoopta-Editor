@@ -2,40 +2,22 @@ import { YooptaPlugin } from '@yoopta/editor';
 import { Table as TableRender } from '../elements/Table';
 import { TableDataCell } from '../elements/TableDataCell';
 import { TableRow } from '../elements/TableRow';
-import { TablePluginElementKeys } from '../types';
+import { TableElementMap, TableOptions } from '../types';
 import { TableTransforms } from '../transforms';
+import { TableIcon } from 'lucide-react';
 
 import { withTable } from '../extenstions/withTable';
 import { onKeyDown } from '../events/onKeyDown';
 
-const Table = new YooptaPlugin<TablePluginElementKeys, any>({
+// [TODO] - exports TableElementMap [in every plugin]
+const Table = new YooptaPlugin<TableElementMap, TableOptions>({
   type: 'Table',
-  defineInitialStructure(editor) {
-    return {
-      type: 'table',
-      children: [
-        {
-          type: 'table-row',
-          children: [{ type: 'table-data-cell' }, { type: 'table-data-cell' }],
-        },
-        {
-          type: 'table-row',
-          children: [{ type: 'table-data-cell' }, { type: 'table-data-cell' }],
-        },
-        {
-          type: 'table-row',
-          children: [{ type: 'table-data-cell' }, { type: 'table-data-cell' }],
-        },
-      ],
-    };
-  },
   elements: {
     table: {
       render: TableRender,
       asRoot: true,
       children: ['table-row'],
       props: {
-        nodeType: 'block',
         headerRow: false,
         headerColumn: false,
       },
@@ -47,8 +29,8 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
     'table-data-cell': {
       render: TableDataCell,
       props: {
-        width: 200,
         asHeader: false,
+        width: 200,
       },
     },
   },
@@ -66,6 +48,18 @@ const Table = new YooptaPlugin<TablePluginElementKeys, any>({
   //     },
   //   },
   // },
+  options: {
+    columnWidth: 200,
+    rows: 3,
+    columns: 3,
+    headerRow: true,
+    headerColumn: true,
+    display: {
+      title: 'Table',
+      description: 'Add simple table',
+      icon: TableIcon,
+    },
+  },
   commands: TableTransforms,
 });
 

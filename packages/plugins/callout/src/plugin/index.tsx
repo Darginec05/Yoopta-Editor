@@ -1,10 +1,10 @@
 import { generateId, YooptaPlugin } from '@yoopta/editor';
 import { CSSProperties } from 'react';
-import { CalloutElementProps, CalloutPluginElementKeys, CalloutTheme } from '../types';
+import { CalloutElementMap, CalloutTheme } from '../types';
 import { CalloutRender } from '../ui/Callout';
 import { CALLOUT_THEME_STYLES } from '../utils';
 
-const Callout = new YooptaPlugin<CalloutPluginElementKeys, CalloutElementProps>({
+const Callout = new YooptaPlugin<CalloutElementMap>({
   type: 'Callout',
   elements: {
     callout: {

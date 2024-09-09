@@ -28,7 +28,7 @@ export const DEFAULT_ICONS_MAP: Record<string, any> = {
   TodoList: TodoListIcon,
   BulletedList: BulletedListIcon,
   NumberedList: NumberedListIcon,
-  Table: TableIcon,
+  // Table: TableIcon,
   Callout: CalloutIcon,
   File: FileIcon,
 };

@@ -34,6 +34,7 @@ export {
   PluginDeserializeParser,
   PluginserializeParser,
   YooptaMarkProps,
+  PluginOptions,
 } from './plugins/types';
 
 export { Elements } from './editor/elements';

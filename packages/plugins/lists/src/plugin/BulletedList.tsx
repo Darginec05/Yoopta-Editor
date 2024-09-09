@@ -2,9 +2,9 @@ import { buildBlockData, generateId, YooptaBlockData, YooptaPlugin } from '@yoop
 import { Element, Transforms } from 'slate';
 import { BulletedListRender } from '../elements/BulletedList';
 import { onKeyDown } from '../events/onKeyDown';
-import { BulletedListElement, BulletedListPluginKeys } from '../types';
+import { ListElementMap } from '../types';
 
-const BulletedList = new YooptaPlugin<BulletedListPluginKeys, BulletedListElement>({
+const BulletedList = new YooptaPlugin<Pick<ListElementMap, 'bulleted-list'>>({
   type: 'BulletedList',
   elements: {
     'bulleted-list': {

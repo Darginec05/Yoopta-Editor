@@ -1,8 +1,9 @@
 import { YooptaPlugin } from '@yoopta/editor';
 import { Element, Transforms } from 'slate';
+import { ParagraphElementMap } from '../types';
 import { ParagraphRender } from '../ui/Paragraph';
 
-const Paragraph = new YooptaPlugin({
+const Paragraph = new YooptaPlugin<ParagraphElementMap>({
   type: 'Paragraph',
   elements: {
     paragraph: {
