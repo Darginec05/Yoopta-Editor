@@ -1,9 +1,9 @@
 import { Elements, findSlateBySelectionPath, generateId, SlateElement, YooEditor } from '@yoopta/editor';
-import { Editor, Element, Path, Transforms } from 'slate';
+import { Editor, Element, Path, Span, Transforms } from 'slate';
 import { TableCellElement, TableElement, TableRowElement } from '../types';
 
 type Options = {
-  path?: Range | Path;
+  path?: Location | Span;
   select?: boolean;
   insertMode?: 'before' | 'after';
 };
@@ -54,6 +54,7 @@ export const TableTransforms = {
           children: [{ text: '' }],
           props: {
             width: columnWidth || 200,
+            asHeader: i === 0 ? !!headerRow : false,
           },
         };
 
@@ -67,6 +68,9 @@ export const TableTransforms = {
 
     // Insert the table as block
     return table;
+  },
+  deleteTable: (editor: YooEditor, blockId: string) => {
+    editor.deleteBlock({ blockId });
   },
   insertTableRow: (editor: YooEditor, blockId: string, options?: Options) => {
     const slate = editor.blockEditorsMap[blockId];

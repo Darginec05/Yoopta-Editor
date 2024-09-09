@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { TableRowOptions } from './TableRowOptions';
 import DragIcon from '../icons/drag.svg';
 import { Editor, Element, Path, Transforms } from 'slate';
-import { EDITOR_TO_SELECTION_SET, TABLE_ROW_TO_SELECTED_WEAK_MAP } from '../utils/weakMaps';
+import { EDITOR_TO_SELECTION_SET } from '../utils/weakMaps';
 
 type TableRowProps = {
   editor: YooEditor;

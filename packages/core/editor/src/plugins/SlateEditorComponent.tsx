@@ -19,6 +19,7 @@ import { IS_FOCUSED_EDITOR } from '../utils/weakMaps';
 import { deserializeHTML } from '../parsers/deserializeHTML';
 import { getRootBlockElementType } from '../utils/blockElements';
 import { Elements } from '../editor/elements';
+import { useEventHandlers, useSlateEditor } from './hooks';
 
 type Props<TKeys extends string, TProps, TOptions> = Plugin<TKeys, TProps, TOptions> & {
   id: string;
@@ -58,105 +59,14 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   const ELEMENTS_MAP = useMemo(() => getMappedElements(elements), [elements]);
   const MARKS_MAP = useMemo(() => getMappedMarks(marks), [marks]);
 
-  const slate = useMemo(() => {
-    let slateEditor = editor.blockEditorsMap[id];
-    const { normalizeNode } = slateEditor;
-    const elementTypes = Object.keys(elements);
+  const slate = useSlateEditor(id, editor, block, elements, withExtensions);
+  const eventHandlers = useEventHandlers(events, editor, block, slate);
 
-    elementTypes.forEach((elementType) => {
-      const nodeType = elements[elementType].props?.nodeType;
-
-      const isInline = nodeType === 'inline';
-      const isVoid = nodeType === 'void';
-      const isInlineVoid = nodeType === 'inlineVoid';
-
-      if (isInlineVoid) {
-        slateEditor.markableVoid = (element) => element.type === elementType;
-      }
-
-      if (isVoid || isInlineVoid) {
-        slateEditor.isVoid = (element) => element.type === elementType;
-      }
-
-      if (isInline || isInlineVoid) {
-        slateEditor.isInline = (element) => element.type === elementType;
-
-        // [TODO] - as test
-        // [TODO] - should extend all slate editors for every block
-        slateEditor = withInlines(editor, slateEditor);
-      }
-    });
-
-    // This normalization is needed to validate the elements structure
-    slateEditor.normalizeNode = (entry) => {
-      const [node, path] = entry;
-      const blockElements = editor.blocks[block.type].elements;
-
-      // Normalize only `simple` block elements.
-      // Simple elements are elements that have only one defined block element type.
-      // [TODO] - handle validation for complex block elements
-      if (Object.keys(blockElements).length > 1) {
-        return normalizeNode(entry);
-      }
-
-      if (Element.isElement(node)) {
-        const { type } = node;
-        const rootElementType = getRootBlockElementType(blockElements);
-
-        if (!elementTypes.includes(type)) {
-          Transforms.setNodes(slateEditor, { type: rootElementType, props: { ...node.props } }, { at: path });
-          return;
-        }
-
-        if (node.type === rootElementType) {
-          for (const [child, childPath] of Node.children(slateEditor, path)) {
-            if (Element.isElement(child) && !slateEditor.isInline(child)) {
-              Transforms.unwrapNodes(slateEditor, { at: childPath });
-              return;
-            }
-          }
-        }
-      }
-
-      normalizeNode(entry);
-    };
-
-    if (withExtensions) {
-      slateEditor = withExtensions(slateEditor, editor, id);
-    }
-
-    return slateEditor;
-  }, [elements, id]);
-
-  const eventHandlers = useMemo<EditorEventHandlers>(() => {
-    if (!events || editor.readOnly) return {};
-
-    const eventHandlersOptions: PluginEventHandlerOptions = {
-      hotkeys: HOTKEYS,
-      currentBlock: block,
-      defaultBlock: buildBlockData({ id: generateId() }),
-    };
-    const eventHandlersMap = {};
-
-    Object.keys(events).forEach((eventType) => {
-      eventHandlersMap[eventType] = function handler(event) {
-        if (events[eventType]) {
-          const handler = events[eventType](editor, slate, eventHandlersOptions);
-          handler(event);
-        }
-      };
-    });
-
-    return eventHandlersMap;
-  }, [events, editor, block]);
-
-  // const onChange = useCallback((value) => editor.updateBlock(id, { value }), [id]);
   const onChange = useCallback(
     (value) => {
-      // initialValue = value;
       editor.updateBlock(id, { value });
     },
-    [id],
+    [id, editor],
   );
 
   const renderElement = useCallback(
@@ -165,26 +75,10 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       const { attributes, ...props } = elementProps;
       attributes['data-element-type'] = props.element.type;
 
-      // [TODO] - REMOVE
-      // let path;
-
-      // try {
-      //   path = ReactEditor.findPath(slate, elementProps.element);
-      // } catch (error) {
-      //   path = [];
-      // }
-
       if (!ElementComponent) return <DefaultElement {...props} attributes={attributes} />;
 
       return (
-        <ElementComponent
-          {...props}
-          // [TODO] - REMOVE
-          // path={path}
-          attributes={attributes}
-          blockId={id}
-          HTMLAttributes={options?.HTMLAttributes}
-        />
+        <ElementComponent {...props} attributes={attributes} blockId={id} HTMLAttributes={options?.HTMLAttributes} />
       );
     },
     [elements, slate.children],

@@ -54,18 +54,6 @@ function validateInitialValue(value: any): boolean {
   return true;
 }
 
-const isLegacyVersionInUse = (value: any): boolean => {
-  if (Array.isArray(value) && value.length > 0) {
-    return value.some((node) => {
-      if (node.id || node.nodeType || node.type || node.children) {
-        return true;
-      }
-    });
-  }
-
-  return false;
-};
-
 const YooptaEditor = ({
   id,
   editor,
@@ -122,32 +110,6 @@ const YooptaEditor = ({
 
     return { editor, version: 0 };
   });
-
-  if (isLegacyVersionInUse(value)) {
-    console.error('Legacy version of Yoopta-Editor in use');
-
-    return (
-      <div>
-        <h1>Legacy version of the Yoopta-Editor is used</h1>
-        <p>It looks like you are using a legacy version of the editor.</p>
-        <p>
-          The structure of value has changed in new <b>@v4</b> version
-        </p>
-        <p>
-          {/* [TODO] - add link to migration guide */}
-          Please, check the migration guide to update your editor to the new <b>@v4</b> version.
-          <a href="" />
-        </p>
-        <p>
-          If you have specific case please{' '}
-          <a href="https://github.com/Darginec05/Yoopta-Editor/issues" target="_blank" rel="noopener noreferrer">
-            open the issue
-          </a>{' '}
-          and we will solve your problem with migration
-        </p>
-      </div>
-    );
-  }
 
   return (
     <NoSSR>
