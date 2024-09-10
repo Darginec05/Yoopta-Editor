@@ -28,30 +28,11 @@ const TableColumnDragButton = ({ editor, blockId, tdElement }: TableRowProps) =>
     const tdElementPath = Elements.getElementPath(editor, blockId, tdElement);
     if (!tdElementPath) return;
 
-    Transforms.select(slate, { offset: 0, path: [...tdElementPath, 0] });
-    const tableElement = Elements.getElement(editor, blockId, { type: 'table', path: [0] });
-    if (!tableElement) return;
-
-    const firstEntry = Editor.first(slate, tdElementPath);
-    const lastEntry = Editor.last(slate, [0]);
-
-    if (!firstEntry || !lastEntry) return;
-
-    const [, firstPath] = firstEntry;
-    const [, lastPath] = lastEntry;
-
-    Transforms.setSelection(slate, {
-      anchor: { path: firstPath, offset: 0 },
-      focus: { path: lastPath, offset: 0 },
-    });
-
+    Transforms.select(slate, { path: tdElementPath.concat([0]), offset: 0 });
     setIsTableColumnActionsOpen(true);
   };
 
   const onClose = () => {
-    const slate = editor.blockEditorsMap[blockId];
-
-    EDITOR_TO_SELECTION_SET.delete(slate);
     setIsTableColumnActionsOpen(false);
   };
 
@@ -71,6 +52,7 @@ const TableColumnDragButton = ({ editor, blockId, tdElement }: TableRowProps) =>
         ref={refs.setReference}
         onClick={onClick}
         contentEditable={false}
+        style={isTableColumnActionsOpen ? { opacity: 1 } : undefined}
         className="yoopta-table-column-button"
       >
         <DragIcon />

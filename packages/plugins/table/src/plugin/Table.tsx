@@ -36,18 +36,6 @@ const Table = new YooptaPlugin<TableElementMap, TableOptions>({
   },
   events: { onKeyDown },
   extensions: withTable,
-  // parsers: {
-  //   html: {
-  //     serialize: (element, text, meta) => {
-  //       console.log('serialize table', element);
-
-  //       return `<table></table>`;
-  //     },
-  //     deserialize: (editor, element, children) => {
-  //       console.log('deserialize table', element);
-  //     },
-  //   },
-  // },
   options: {
     columnWidth: 200,
     rows: 3,

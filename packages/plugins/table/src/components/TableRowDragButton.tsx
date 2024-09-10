@@ -27,46 +27,14 @@ const TableRowDragButton = ({ editor, blockId, tdElement }: TableRowProps) => {
 
     const slate = editor.blockEditorsMap[blockId];
     const tdElementPath = Elements.getElementPath(editor, blockId, tdElement);
-
     if (!tdElementPath) return;
-
-    Transforms.select(slate, { offset: 0, path: [...tdElementPath, 0] });
-
-    const parentPath = Path.parent(tdElementPath);
-
-    const firstEntry = Editor.first(slate, parentPath);
-    const lastEntry = Editor.last(slate, parentPath);
-
-    if (!firstEntry || !lastEntry) return;
-
-    const [, firstPath] = firstEntry;
-    const [, lastPath] = lastEntry;
-
-    Transforms.setSelection(slate, {
-      anchor: { path: firstPath, offset: 0 },
-      focus: { path: lastPath, offset: 0 },
-    });
+    Transforms.select(slate, { path: tdElementPath.concat([0]), offset: 0 });
 
     setIsTableRowActionsOpen(true);
   };
 
   const onClose = () => {
-    const slate = editor.blockEditorsMap[blockId];
-    EDITOR_TO_SELECTION_SET.delete(slate);
     setIsTableRowActionsOpen(false);
-
-    const tdElementPath = Elements.getElementPath(editor, blockId, tdElement);
-    if (!tdElementPath) return;
-
-    const parentPath = Path.parent(tdElementPath);
-    const firstEntry = Editor.first(slate, parentPath);
-    if (!firstEntry) return;
-    const [, firstPath] = firstEntry;
-
-    Transforms.setSelection(slate, {
-      anchor: { path: firstPath, offset: 0 },
-      focus: { path: firstPath, offset: 0 },
-    });
   };
 
   return (
@@ -86,6 +54,7 @@ const TableRowDragButton = ({ editor, blockId, tdElement }: TableRowProps) => {
         onClick={onClick}
         contentEditable={false}
         className="yoopta-table-row-button"
+        style={isTableRowActionsOpen ? { opacity: 1 } : undefined}
       >
         <DragIcon className="w-[14px] h-[14px] block flex-shrink-0" style={{ transform: 'rotate(0deg)' }} />
       </button>

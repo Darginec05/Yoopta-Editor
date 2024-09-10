@@ -1,7 +1,7 @@
 import { SlateEditor, YooEditor, PluginEventHandlerOptions } from '@yoopta/editor';
 import { Editor, Element, Node, Path, Range, Text, Transforms } from 'slate';
 import { TableCommands } from '../commands';
-import { EDITOR_TO_SELECTION, EDITOR_TO_SELECTION_SET } from '../utils/weakMaps';
+import { EDITOR_TO_SELECTION } from '../utils/weakMaps';
 
 export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, currentBlock }: PluginEventHandlerOptions) {
   return (event) => {
@@ -17,7 +17,7 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, curr
 
         Editor.withoutNormalizing(slate, () => {
           // just remove text in selected nodes
-          for (const [element, path] of elementEntries) {
+          for (const [, path] of elementEntries) {
             for (const [childNode, childPath] of Node.children(slate, path)) {
               if (Text.isText(childNode)) {
                 const textLength = Node.string(childNode).length;
@@ -87,7 +87,7 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, curr
       Transforms.insertText(slate, '\n');
     }
 
-    // if first select then select the whole row
+    // if first select then select the whole table
     if (hotkeys.isSelect(event)) {
       const tdElementEntry = Editor.above(slate, {
         match: (n) => Element.isElement(n) && n.type === 'table-data-cell',
@@ -96,8 +96,26 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, curr
       if (tdElementEntry) {
         event.preventDefault();
         const [tdElement, tdElementPath] = tdElementEntry;
+        const string = Editor.string(slate, tdElementPath);
+
+        if (Range.isExpanded(slate.selection) || string.length === 0) {
+          editor.blur();
+          editor.setBlockSelected([currentBlock.meta.order]);
+          return;
+        }
+
         Transforms.select(slate, tdElementPath);
       }
+    }
+
+    if ((event.metaKey || event.ctrlKey) && event.shiftKey && event.key === 'h') {
+      event.preventDefault();
+      TableCommands.toggleHeaderRow(editor, currentBlock.id);
+    }
+
+    if ((event.metaKey || event.ctrlKey) && event.shiftKey && event.key === 'v') {
+      event.preventDefault();
+      TableCommands.toggleHeaderColumn(editor, currentBlock.id);
     }
   };
 }

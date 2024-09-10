@@ -1,7 +1,7 @@
 import { SlateEditor, SlateElement } from '@yoopta/editor';
 import { Editor, Element, Operation, Path, Range } from 'slate';
 import { TableCellElement } from '../types';
-import { EDITOR_TO_SELECTION, EDITOR_TO_SELECTION_SET, NodeEntryWithContext } from '../utils/weakMaps';
+import { EDITOR_TO_SELECTION, EDITOR_TO_SELECTION_SET, SlateNodeEntry } from '../utils/weakMaps';
 
 export function withSelection(slate: SlateEditor): SlateEditor {
   const { apply } = slate;
@@ -17,9 +17,6 @@ export function withSelection(slate: SlateEditor): SlateEditor {
       ...slate.selection,
       ...op.newProperties,
     };
-
-    console.log('apply', op);
-    console.log('apply selection', selection);
 
     if (!Range.isRange(selection)) {
       EDITOR_TO_SELECTION_SET.delete(slate);
@@ -37,8 +34,6 @@ export function withSelection(slate: SlateEditor): SlateEditor {
       match: (n) => Element.isElement(n) && n.type === 'table-data-cell',
       at: Range.end(selection),
     });
-
-    console.log({ fromEntry, toEntry });
 
     if (!fromEntry || !toEntry) {
       EDITOR_TO_SELECTION_SET.delete(slate);
@@ -67,7 +62,7 @@ export function withSelection(slate: SlateEditor): SlateEditor {
       }),
     );
 
-    const selected: NodeEntryWithContext[] = [];
+    const selected: SlateNodeEntry[] = [];
 
     for (const [element, path] of nodesInRange) {
       if (Element.isElement(element) && element.type === 'table-data-cell') {

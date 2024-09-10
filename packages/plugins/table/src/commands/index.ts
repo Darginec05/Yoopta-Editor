@@ -308,7 +308,7 @@ export const TableCommands = {
       Array.from(firstTableRowChildren).forEach(([cell, path]) => {
         Transforms.setNodes(
           slate,
-          { props: { ...cell.props, asHeader: !cell.props.asHeader } },
+          { props: { ...cell.props, asHeader: !cell.props?.asHeader } },
           {
             at: path,
             match: (n) => Element.isElement(n) && n.type === 'table-data-cell',
