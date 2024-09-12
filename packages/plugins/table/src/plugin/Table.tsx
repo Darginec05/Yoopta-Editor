@@ -34,7 +34,12 @@ const Table = new YooptaPlugin<TableElementMap, TableOptions>({
       },
     },
   },
-  events: { onKeyDown },
+  events: {
+    onKeyDown,
+    onBeforeCreate: (editor) => {
+      return TableCommands.buildTableElements(editor, { columns: 5 });
+    },
+  },
   extensions: withTable,
   options: {
     columnWidth: 200,

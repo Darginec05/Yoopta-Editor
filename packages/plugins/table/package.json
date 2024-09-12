@@ -34,7 +34,6 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.26.22",
-    "lucide-react": "^0.436.0",
-    "re-resizable": "^6.9.17"
+    "lucide-react": "^0.436.0"
   }
 }

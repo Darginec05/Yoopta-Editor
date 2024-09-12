@@ -10,18 +10,25 @@ import File from '@yoopta/file';
 import Embed from '@yoopta/embed';
 import AccordionPlugin from '@yoopta/accordion';
 import Code from '@yoopta/code';
-import Table from '@yoopta/table';
+import Table, { TableCommands } from '@yoopta/table';
 
 import { uploadToCloudinary } from '../cloudinary';
-
-// Table.insertTable();
-// Table.insertTableRow();
-// Table.insertTableColumn();
-
-// Table.commands.insertTable();
+import { generateId } from '@yoopta/editor';
 
 export const YOOPTA_PLUGINS = [
-  Table,
+  Table.extend({
+    events: {
+      onBeforeCreate: (editor) => {
+        return TableCommands.buildTableElements(editor, { columns: 5, rows: 12, headerRow: false });
+      },
+      onCreate: (editor, id) => {
+        console.log('Table onCreate', editor, id);
+      },
+      onDestroy(editor, blockId) {
+        console.log('Table onDestroy', editor, blockId);
+      },
+    },
+  }),
   AccordionPlugin.extend({
     elementProps: {
       'accordion-list-item': (props) => {
@@ -47,6 +54,17 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Paragraph.extend({
+    events: {
+      onBeforeCreate: (editor) => {
+        return [{ id: generateId(), type: 'paragraph', value: [{ type: 'text', value: 'Hello World' }] }];
+      },
+      onDestroy: (editor, id) => {
+        console.log('Paragraph onDestroy', editor, id);
+      },
+      onCreate: (editor, id) => {
+        console.log('Paragraph onCreate', editor, id);
+      },
+    },
     options: {
       HTMLAttributes: {
         className: 'paragraph-element-extended',
@@ -54,6 +72,14 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Image.extend({
+    events: {
+      onDestroy: (editor, id) => {
+        console.log('Image onDestroy', editor, id);
+      },
+      onCreate: (editor, id) => {
+        console.log('Image onCreate', editor, id);
+      },
+    },
     elementProps: {
       image: (props: ImageElementProps) => ({
         ...props,
@@ -85,6 +111,14 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Headings.HeadingOne.extend({
+    events: {
+      onCreate: (editor, id) => {
+        console.log('HeadingOne onCreate', editor, id);
+      },
+      onDestroy: (editor, id) => {
+        console.log('HeadingOne onDestroy', editor, id);
+      },
+    },
     options: {
       HTMLAttributes: {
         className: 'heading-one-element-extended',

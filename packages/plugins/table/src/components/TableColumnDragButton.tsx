@@ -3,8 +3,7 @@ import { useFloating, inline, flip, shift, offset } from '@floating-ui/react';
 import { useState } from 'react';
 import DragIcon from '../icons/drag.svg';
 import { TableColumnOptions } from './TableColumnOptions';
-import { Editor, Path, Transforms } from 'slate';
-import { EDITOR_TO_SELECTION_SET } from '../utils/weakMaps';
+import { Transforms } from 'slate';
 
 type TableRowProps = {
   editor: YooEditor;

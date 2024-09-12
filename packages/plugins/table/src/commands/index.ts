@@ -29,11 +29,23 @@ type InsertOptions = Partial<
   }
 >;
 
-export const TableCommands = {
-  insertTable: (editor: YooEditor, options?: InsertOptions) => {
-    const slate = findSlateBySelectionPath(editor);
-    if (!slate) return;
+export type TableCommands = {
+  buildTableElements: (editor: YooEditor, options?: InsertOptions) => TableElement;
+  insertTable: (editor: YooEditor, options?: InsertOptions) => void;
+  deleteTable: (editor: YooEditor, blockId: string) => void;
+  insertTableRow: (editor: YooEditor, blockId: string, options?: Options) => void;
+  deleteTableRow: (editor: YooEditor, blockId: string, options?: DeleteOptions) => void;
+  moveTableRow: (editor: YooEditor, blockId: string, options: MoveTableOptions) => void;
+  moveTableColumn: (editor: YooEditor, blockId: string, options: MoveTableOptions) => void;
+  insertTableColumn: (editor: YooEditor, blockId: string, options?: Options) => void;
+  deleteTableColumn: (editor: YooEditor, blockId: string, options?: DeleteOptions) => void;
+  updateColumnWidth: (editor: YooEditor, blockId: string, columnIndex: number, width: number) => void;
+  toggleHeaderRow: (editor: YooEditor, blockId: string) => void;
+  toggleHeaderColumn: (editor: YooEditor, blockId: string) => void;
+};
 
+export const TableCommands = {
+  buildTableElements: (editor: YooEditor, options?: InsertOptions) => {
     const tablePluginOptions = editor.plugins.Table.options as TableOptions;
 
     const {
@@ -78,6 +90,10 @@ export const TableCommands = {
       table.children.push(row);
     }
 
+    return table;
+  },
+  insertTable: (editor: YooEditor, options?: InsertOptions) => {
+    const table = TableCommands.buildTableElements(editor, options);
     const insertBlockOptions = typeof options?.at === 'number' ? { at: [options.at] } : {};
     Blocks.insertBlock(editor, buildBlockData({ value: [table], type: 'Table' }), insertBlockOptions);
   },
@@ -100,9 +116,6 @@ export const TableCommands = {
 
       const [currentRowElement, currentRowPath] = currentRowElementEntryByPath;
       const insertPath = insertMode === 'before' ? currentRowPath : Path.next(currentRowPath);
-
-      console.log('currentRowElement', currentRowElement);
-      console.log('insertPath', insertPath);
 
       const newRow: SlateElement = {
         id: generateId(),
@@ -342,11 +355,6 @@ export const TableCommands = {
 
       Array.from(tableRows).forEach(([row, path]) => {
         const cell = row.children[0] as TableCellElement;
-        const isFirstCell = path[path.length - 1] === 0;
-
-        if (isFirstCell) {
-          console.log('cell', cell);
-        }
 
         Transforms.setNodes(
           slate,

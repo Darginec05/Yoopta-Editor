@@ -1,7 +1,7 @@
-import { Blocks, Elements, UI, YooEditor, YooptaBlockData } from '@yoopta/editor';
-import { Sheet, TableProperties, CheckIcon, Table } from 'lucide-react';
+import { UI, YooEditor, YooptaBlockData } from '@yoopta/editor';
+import { Sheet, TableProperties, CheckIcon } from 'lucide-react';
 import { TableCommands } from '../commands';
-import { TableElement, TableElementProps } from '../types';
+import { TableElement } from '../types';
 
 const { ExtendedBlockActions, BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptionsSeparator } = UI;
 

@@ -1,31 +1,25 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef } from 'react';
-import { DefaultElement, Editable, ReactEditor, RenderElementProps, Slate } from 'slate-react';
+import React, { memo, useCallback, useMemo, useRef } from 'react';
+import { DefaultElement, Editable, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useBlockData } from '../contexts/YooptaContext/YooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../marks';
 
-import { ExtendedLeafProps, PluginCustomEditorRenderProps, PluginEventHandlerOptions, Plugin } from './types';
+import { ExtendedLeafProps, PluginCustomEditorRenderProps, Plugin, PluginEvents } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
-import { HOTKEYS } from '../utils/hotkeys';
-import { Editor, Element, Node, NodeEntry, Path, Range, Transforms } from 'slate';
+import { Editor, NodeEntry, Range } from 'slate';
 import { TextLeaf } from '../components/TextLeaf/TextLeaf';
 
-import { generateId } from '../utils/generateId';
-import { buildBlockData } from '../components/Editor/utils';
-
-// [TODO] - test
-import { withInlines } from './extenstions/withInlines';
 import { IS_FOCUSED_EDITOR } from '../utils/weakMaps';
 import { deserializeHTML } from '../parsers/deserializeHTML';
-import { getRootBlockElementType } from '../utils/blockElements';
-import { Elements } from '../editor/elements';
 import { useEventHandlers, useSlateEditor } from './hooks';
+import { SlateElement } from '../editor/types';
 
-type Props<TKeys extends string, TProps, TOptions> = Plugin<TKeys, TProps, TOptions> & {
+type Props<TElementMap extends Record<string, SlateElement>, TOptions> = Plugin<TElementMap, TOptions> & {
   id: string;
   marks?: YooptaMark<any>[];
-  options: Plugin<TKeys, TProps, TOptions>['options'];
+  options: Plugin<TElementMap, TOptions>['options'];
   placeholder?: string;
+  events?: PluginEvents;
 };
 
 const getMappedElements = (elements) => {
@@ -42,7 +36,7 @@ const getMappedMarks = (marks?: YooptaMark<any>[]) => {
   return mappedMarks;
 };
 
-const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
+const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, TOptions>({
   id,
   customEditor,
   elements,
@@ -51,7 +45,7 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   options,
   extensions: withExtensions,
   placeholder = `Type '/' for commands`,
-}: Props<TKeys, TProps, TOptions>) => {
+}: Props<TElementMap, TOptions>) => {
   const editor = useYooptaEditor();
   const block = useBlockData(id);
   let initialValue = useRef(block.value).current;
@@ -198,19 +192,19 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       const [node, path] = nodeEntry;
       const isCurrent = editor.selection?.[0] === block.meta.order;
 
-      // if (slate.selection && isCurrent) {
-      //   if (
-      //     !Editor.isEditor(node) &&
-      //     Editor.string(slate, [path[0]]) === '' &&
-      //     Range.includes(slate.selection, path) &&
-      //     Range.isCollapsed(slate.selection)
-      //   ) {
-      //     ranges.push({
-      //       ...slate.selection,
-      //       withPlaceholder: true,
-      //     });
-      //   }
-      // }
+      if (slate.selection && isCurrent) {
+        if (
+          !Editor.isEditor(node) &&
+          Editor.string(slate, [path[0]]) === '' &&
+          Range.includes(slate.selection, path) &&
+          Range.isCollapsed(slate.selection)
+        ) {
+          ranges.push({
+            ...slate.selection,
+            withPlaceholder: true,
+          });
+        }
+      }
 
       return ranges;
     },

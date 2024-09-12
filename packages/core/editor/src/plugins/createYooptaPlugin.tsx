@@ -1,5 +1,5 @@
 import { SlateElement } from '../editor/types';
-import { PluginElementRenderProps, Plugin, PluginOptions, ElementPropsMap } from './types';
+import { PluginElementRenderProps, Plugin, PluginOptions, ElementPropsMap, PluginEvents } from './types';
 
 export type ExtendPluginRender<TKeys extends string> = {
   [x in TKeys]: (props: PluginElementRenderProps) => JSX.Element;
@@ -15,6 +15,7 @@ export type ExtendPlugin<TElementMap extends Record<string, SlateElement>, TOpti
   elementProps?: {
     [K in keyof TElementMap]?: (props: ExtractProps<TElementMap[K]>) => ExtractProps<TElementMap[K]>;
   };
+  events?: Partial<PluginEvents>;
 };
 
 export class YooptaPlugin<TElementMap extends Record<string, SlateElement>, TOptions = Record<string, unknown>> {
@@ -33,7 +34,7 @@ export class YooptaPlugin<TElementMap extends Record<string, SlateElement>, TOpt
   // }
 
   extend(extendPlugin: ExtendPlugin<TElementMap, TOptions>): YooptaPlugin<TElementMap, TOptions> {
-    const { renders, options, elementProps } = extendPlugin;
+    const { renders, options, elementProps, events } = extendPlugin;
 
     const extendedOptions = { ...this.plugin.options, ...options };
     const elements = { ...this.plugin.elements };
@@ -64,6 +65,17 @@ export class YooptaPlugin<TElementMap extends Record<string, SlateElement>, TOpt
           if (defaultPropsFn && updatedElementProps) {
             element.props = defaultPropsFn(updatedElementProps);
           }
+        }
+      });
+    }
+
+    if (events) {
+      Object.keys(events).forEach((event) => {
+        const eventHandler = events[event];
+
+        if (eventHandler) {
+          if (!this.plugin.events) this.plugin.events = {};
+          this.plugin.events[event] = eventHandler;
         }
       });
     }

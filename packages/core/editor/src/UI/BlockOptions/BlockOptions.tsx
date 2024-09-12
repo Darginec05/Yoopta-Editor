@@ -109,7 +109,7 @@ const BlockOptions = ({ isOpen, onClose, refs, style, actions = DEFAULT_ACTIONS,
     // [TODO] - take care about SSR
     <Portal id="yoo-block-options-portal">
       <Overlay lockScroll className="yoo-editor-z-[100]" onClick={onClose}>
-        <div style={style} ref={refs.setFloating}>
+        <div style={style} ref={refs.setFloating} contentEditable={false}>
           <BlockOptionsMenuContent>
             {actions !== null && (
               <BlockOptionsMenuGroup>

@@ -14,7 +14,7 @@ const Table = ({ attributes, children, blockId, element, HTMLAttributes }: Plugi
 
   return (
     <div className="yoopta-table-block">
-      <table className={`yoopta-table ${!!isSelecting && 'yoopta-table-selecting'}`}>
+      <table {...HTMLAttributes} className={`yoopta-table ${!!isSelecting ? 'yoopta-table-selecting' : ''}`}>
         <tbody {...attributes}>{children}</tbody>
       </table>
       {!isReadOnly && <TableBlockOptions block={blockData} editor={editor} table={element as TableElement} />}

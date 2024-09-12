@@ -41,7 +41,7 @@
 }
 
 .yoopta-table-data-cell {
-  @apply transition-colors text-inherit fill-current border relative align-top text-left min-h-[32px];
+  @apply transition-colors text-inherit fill-current border relative align-top min-h-[32px];
   border: 1px solid #e9e9e7;
 }
 

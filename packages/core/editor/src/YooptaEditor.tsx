@@ -4,7 +4,7 @@ import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { Editor } from './components/Editor/Editor';
 import { CSSProperties, useMemo, useState } from 'react';
 import { SlateElement, YooEditor, YooptaBlockData, YooptaContentValue } from './editor/types';
-import { Plugin, PluginElementProps } from './plugins/types';
+import { Plugin } from './plugins/types';
 import NoSSR from './components/NoSsr/NoSsr';
 import { Tools, ToolsProvider } from './contexts/YooptaContext/ToolsContext';
 import {

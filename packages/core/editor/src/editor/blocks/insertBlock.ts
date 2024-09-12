@@ -15,6 +15,11 @@ export function insertBlock(
   const { at = null, focus = false, slate = null } = options;
 
   const currentBlock = findPluginBlockBySelectionPath(editor);
+
+  const plugin = editor.plugins[blockData.type];
+  const pluginEvents = plugin.events || {};
+  const { onCreate } = pluginEvents;
+
   const nextBlockPath = at;
   const newPluginBlock = {
     id: generateId(),
@@ -59,6 +64,8 @@ export function insertBlock(
 
   editor.children[newPluginBlock.id] = newPluginBlock;
   const currentBlockId = currentBlock?.id;
+
+  onCreate?.(editor, newPluginBlock.id);
 
   editor.children = finishDraft(editor.children);
   editor.applyChanges();

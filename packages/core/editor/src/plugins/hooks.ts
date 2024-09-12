@@ -2,13 +2,13 @@ import { useMemo } from 'react';
 import { Element, Node, Transforms } from 'slate';
 import { buildBlockData } from '../components/Editor/utils';
 import { useYooptaEditor } from '../contexts/YooptaContext/YooptaContext';
-import { SlateEditor, YooEditor, YooptaBlockData } from '../editor/types';
+import { SlateEditor, SlateElement, YooEditor, YooptaBlockData } from '../editor/types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { getRootBlockElementType } from '../utils/blockElements';
 import { generateId } from '../utils/generateId';
 import { HOTKEYS } from '../utils/hotkeys';
 import { withInlines } from './extenstions/withInlines';
-import { PluginEventHandlerOptions } from './types';
+import { Plugin, PluginEventHandlerOptions, PluginEvents } from './types';
 
 export const useSlateEditor = (
   id: string,
@@ -89,9 +89,15 @@ export const useSlateEditor = (
   }, [elements, id, withExtensions]);
 };
 
-export const useEventHandlers = (events: any, editor: YooEditor, block: YooptaBlockData, slate: SlateEditor) => {
+export const useEventHandlers = (
+  events: PluginEvents | undefined,
+  editor: YooEditor,
+  block: YooptaBlockData,
+  slate: SlateEditor,
+) => {
   return useMemo<EditorEventHandlers>(() => {
     if (!events || editor.readOnly) return {};
+    const { onBeforeCreate, onDestroy, onCreate, ...eventHandlers } = events || {};
 
     const eventHandlersOptions: PluginEventHandlerOptions = {
       hotkeys: HOTKEYS,
@@ -100,10 +106,10 @@ export const useEventHandlers = (events: any, editor: YooEditor, block: YooptaBl
     };
     const eventHandlersMap = {};
 
-    Object.keys(events).forEach((eventType) => {
+    Object.keys(eventHandlers).forEach((eventType) => {
       eventHandlersMap[eventType] = function handler(event) {
-        if (events[eventType]) {
-          const handler = events[eventType](editor, slate, eventHandlersOptions);
+        if (eventHandlers[eventType]) {
+          const handler = eventHandlers[eventType](editor, slate, eventHandlersOptions);
           handler(event);
         }
       };
