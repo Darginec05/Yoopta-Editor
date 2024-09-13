@@ -8,6 +8,7 @@ import { TableIcon } from 'lucide-react';
 
 import { withTable } from '../extenstions/withTable';
 import { onKeyDown } from '../events/onKeyDown';
+import { TABLE_SLATE_TO_SELECTION_SET } from '../utils/weakMaps';
 
 // [TODO] - exports TableElementMap [in every plugin]
 const Table = new YooptaPlugin<TableElementMap, TableOptions>({
@@ -38,6 +39,9 @@ const Table = new YooptaPlugin<TableElementMap, TableOptions>({
     onKeyDown,
     onBeforeCreate: (editor) => {
       return TableCommands.buildTableElements(editor, { columns: 5 });
+    },
+    onBlur: (editor, slate) => () => {
+      TABLE_SLATE_TO_SELECTION_SET.delete(slate);
     },
   },
   extensions: withTable,

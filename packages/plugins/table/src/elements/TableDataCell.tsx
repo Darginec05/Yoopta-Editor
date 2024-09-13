@@ -6,14 +6,14 @@ import { TableColumnDragButton } from '../components/TableColumnDragButton';
 import { TableRowDragButton } from '../components/TableRowDragButton';
 import { TableCommands } from '../commands';
 import { TableCellElement, TableElement, TableElementProps } from '../types';
-import { EDITOR_TO_SELECTION_SET } from '../utils/weakMaps';
+import { TABLE_SLATE_TO_SELECTION_SET } from '../utils/weakMaps';
 
 const TableDataCell = ({ attributes, children, element, blockId }: PluginElementRenderProps) => {
   const editor = useYooptaEditor();
   const slate = editor.blockEditorsMap[blockId];
 
   const path = Elements.getElementPath(editor, blockId, element);
-  const selected = EDITOR_TO_SELECTION_SET.get(slate)?.has(element as TableCellElement);
+  const selected = TABLE_SLATE_TO_SELECTION_SET.get(slate)?.has(element as TableCellElement);
   const asHeader = element?.props?.asHeader || false;
 
   const tableProps = useMemo<TableElementProps | null>(() => {

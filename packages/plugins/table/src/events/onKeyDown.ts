@@ -82,6 +82,54 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, curr
       return;
     }
 
+    if (hotkeys.isArrowUp(event)) {
+      event.preventDefault();
+
+      const dataCellEntry = Editor.above(slate, {
+        at: slate.selection.anchor,
+        match: (n) => Element.isElement(n) && n.type === 'table-data-cell',
+      });
+
+      if (!dataCellEntry) return;
+      const [dataCellNode, dataCellpath] = dataCellEntry;
+
+      try {
+        const columnIndex = dataCellpath[dataCellpath.length - 1];
+        const prevRowPath = Path.previous(dataCellpath.slice(0, -1));
+        const prevDataCellPath = prevRowPath.concat(columnIndex);
+
+        // throws error if no node found in the path
+        Editor.node(slate, prevDataCellPath);
+        Transforms.select(slate, prevDataCellPath);
+      } catch (error) {}
+
+      return;
+    }
+
+    if (hotkeys.isArrowDown(event)) {
+      event.preventDefault();
+
+      const dataCellEntry = Editor.above(slate, {
+        at: slate.selection.anchor,
+        match: (n) => Element.isElement(n) && n.type === 'table-data-cell',
+      });
+
+      if (!dataCellEntry) return;
+      const [dataCellNode, dataCellpath] = dataCellEntry;
+
+      try {
+        const columnIndex = dataCellpath[dataCellpath.length - 1];
+        const nextRowPath = Path.next(dataCellpath.slice(0, -1));
+        const nextDataCellPath = nextRowPath.concat(columnIndex);
+
+        // throws error if no node found in the path
+        Editor.node(slate, nextDataCellPath);
+        Transforms.select(slate, nextDataCellPath);
+      } catch (error) {}
+
+      return;
+    }
+
     if (hotkeys.isEnter(event)) {
       event.preventDefault();
       Transforms.insertText(slate, '\n');

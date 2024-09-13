@@ -1,5 +1,5 @@
 import { Descendant, Path, Point } from 'slate';
-import { Plugin, PluginElementsMap, PluginOptions, PluginElementProps } from '../plugins/types';
+import { Plugin, PluginElementsMap, PluginOptions, PluginElementProps, PluginCommands } from '../plugins/types';
 import { EditorBlurOptions } from './core/blur';
 import { BlockSelectedOptions } from './selection/setBlockSelected';
 import { SetSelectionOptions } from './selection/setSelection';
@@ -107,7 +107,7 @@ export type YooEditor = {
   formats: YooptaFormats;
   shortcuts: Record<string, YooptaBlock>;
   plugins: Record<string, Plugin<Record<string, SlateElement>, unknown>>;
-  commands: Record<string, (...args: any[]) => void>;
+  commands: PluginCommands;
 
   // events handlers
   on: (event: YooEditorEvents, fn: (payload: any) => void) => void;

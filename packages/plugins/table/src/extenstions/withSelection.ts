@@ -1,14 +1,14 @@
 import { SlateEditor, SlateElement } from '@yoopta/editor';
 import { Editor, Element, Operation, Path, Range } from 'slate';
 import { TableCellElement } from '../types';
-import { EDITOR_TO_SELECTION, EDITOR_TO_SELECTION_SET, SlateNodeEntry } from '../utils/weakMaps';
+import { EDITOR_TO_SELECTION, TABLE_SLATE_TO_SELECTION_SET, SlateNodeEntry } from '../utils/weakMaps';
 
 export function withSelection(slate: SlateEditor): SlateEditor {
   const { apply } = slate;
 
   slate.apply = (op) => {
     if (!Operation.isSelectionOperation(op) || !op.newProperties) {
-      EDITOR_TO_SELECTION_SET.delete(slate);
+      TABLE_SLATE_TO_SELECTION_SET.delete(slate);
       EDITOR_TO_SELECTION.delete(slate);
       return apply(op);
     }
@@ -19,7 +19,7 @@ export function withSelection(slate: SlateEditor): SlateEditor {
     };
 
     if (!Range.isRange(selection)) {
-      EDITOR_TO_SELECTION_SET.delete(slate);
+      TABLE_SLATE_TO_SELECTION_SET.delete(slate);
       EDITOR_TO_SELECTION.delete(slate);
 
       return apply(op);
@@ -36,7 +36,7 @@ export function withSelection(slate: SlateEditor): SlateEditor {
     });
 
     if (!fromEntry || !toEntry) {
-      EDITOR_TO_SELECTION_SET.delete(slate);
+      TABLE_SLATE_TO_SELECTION_SET.delete(slate);
       EDITOR_TO_SELECTION.delete(slate);
 
       return apply(op);
@@ -46,7 +46,7 @@ export function withSelection(slate: SlateEditor): SlateEditor {
     const [, toPath] = toEntry;
 
     if (Path.equals(fromPath, toPath)) {
-      EDITOR_TO_SELECTION_SET.delete(slate);
+      TABLE_SLATE_TO_SELECTION_SET.delete(slate);
       EDITOR_TO_SELECTION.delete(slate);
 
       return apply(op);
@@ -72,7 +72,7 @@ export function withSelection(slate: SlateEditor): SlateEditor {
     }
 
     EDITOR_TO_SELECTION.set(slate, selected);
-    EDITOR_TO_SELECTION_SET.set(slate, selectedSet);
+    TABLE_SLATE_TO_SELECTION_SET.set(slate, selectedSet);
 
     apply(op);
   };

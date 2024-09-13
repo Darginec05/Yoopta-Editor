@@ -2,7 +2,7 @@ import { PluginElementRenderProps, useBlockData, useYooptaEditor } from '@yoopta
 import { useMemo } from 'react';
 import { TableBlockOptions } from '../components/TableBlockOptions';
 import { TableElement } from '../types';
-import { EDITOR_TO_SELECTION_SET } from '../utils/weakMaps';
+import { TABLE_SLATE_TO_SELECTION_SET } from '../utils/weakMaps';
 
 const Table = ({ attributes, children, blockId, element, HTMLAttributes }: PluginElementRenderProps) => {
   const editor = useYooptaEditor();
@@ -10,7 +10,7 @@ const Table = ({ attributes, children, blockId, element, HTMLAttributes }: Plugi
   const blockData = useBlockData(blockId);
   const isReadOnly = editor.readOnly;
 
-  const isSelecting = EDITOR_TO_SELECTION_SET.get(slate);
+  const isSelecting = TABLE_SLATE_TO_SELECTION_SET.get(slate);
 
   return (
     <div className="yoopta-table-block">

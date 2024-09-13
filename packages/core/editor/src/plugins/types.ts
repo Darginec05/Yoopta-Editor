@@ -52,15 +52,6 @@ export type PluginElement<T> = {
   rootPlugin?: string;
 };
 
-// export type PluginElement<T> = {
-//   render: (props: PluginElementRenderProps & { element: { props: T } }) => JSX.Element;
-//   props?: T;
-//   options?: PluginElementOptions;
-//   asRoot?: boolean;
-//   children?: string[];
-//   rootPlugin?: string;
-// };
-
 export type PluginElementsMap<TKeys extends string = string, TProps = PluginDefaultProps> = {
   [key in TKeys]: PluginElement<TProps>;
 };
@@ -81,7 +72,23 @@ export type PluginEventHandlerOptions = {
 
 export type ElementPropsMap = Record<string, Record<string, unknown>>;
 
-export type PluginCommands = Record<string, (...args: any[]) => void>;
+type DefaultCommandKeys<PluginName extends string> =
+  | `build${Capitalize<PluginName>}Elements`
+  | `insert${Capitalize<PluginName>}`
+  | `delete${Capitalize<PluginName>}`;
+
+type DefaultCommands<PluginName extends string, TGenericOptions = any> = {
+  [K in DefaultCommandKeys<PluginName>]: K extends `build${Capitalize<PluginName>}Elements`
+    ? (editor: YooEditor, options?: TGenericOptions) => SlateElement
+    : K extends `insert${Capitalize<PluginName>}`
+    ? (editor: YooEditor, options?: TGenericOptions) => void
+    : (editor: YooEditor, blockId: string) => void;
+};
+export type PluginCommands<
+  PluginName extends string = string,
+  TOptions = Record<string, unknown>,
+  TCommands = Record<string, unknown>,
+> = DefaultCommands<PluginName, TOptions> & TCommands;
 
 export type PluginEvents = {
   onBeforeCreate?: (editor: YooEditor, blockId: string) => SlateElement;
@@ -90,19 +97,20 @@ export type PluginEvents = {
 } & EventHandlers;
 
 export type Plugin<
+  PluginName extends string,
   TElementMap extends Record<string, SlateElement>,
-  TOptions = Record<string, unknown>,
+  TPluginOptions = Record<string, unknown>,
   TCommands extends PluginCommands = {},
 > = {
-  type: string;
+  type: PluginName;
   customEditor?: (props: PluginCustomEditorRenderProps) => JSX.Element;
   extensions?: (slate: SlateEditor, editor: YooEditor, blockId: string) => SlateEditor;
-  commands?: TCommands;
+  commands?: PluginCommands<PluginName>;
   elements: {
     [K in keyof TElementMap]: PluginElement<TElementMap[K]['props']>;
   };
   events?: PluginEvents;
-  options?: PluginOptions<TOptions>;
+  options?: PluginOptions<TPluginOptions>;
   parsers?: Partial<Record<PluginParserTypes, PluginParsers>>;
 };
 

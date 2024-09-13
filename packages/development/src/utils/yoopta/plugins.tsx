@@ -56,7 +56,9 @@ export const YOOPTA_PLUGINS = [
   Paragraph.extend({
     events: {
       onBeforeCreate: (editor) => {
-        return [{ id: generateId(), type: 'paragraph', value: [{ type: 'text', value: 'Hello World' }] }];
+        console.log('Paragraph onBeforeCreate', editor.commands);
+
+        return editor.commands.buildParagraphElements(editor, { text: 'Hello world' });
       },
       onDestroy: (editor, id) => {
         console.log('Paragraph onDestroy', editor, id);
