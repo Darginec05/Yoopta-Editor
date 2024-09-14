@@ -1,4 +1,5 @@
 import { generateId, YooptaPlugin } from '@yoopta/editor';
+import { FileCommands } from '../commands';
 import { FileElementMap, FilePluginOptions } from '../types';
 import { FileRender } from '../ui/File';
 
@@ -22,6 +23,7 @@ const File = new YooptaPlugin<FileElementMap, FilePluginOptions>({
       },
     },
   },
+  commands: FileCommands,
   options: {
     display: {
       title: 'File',

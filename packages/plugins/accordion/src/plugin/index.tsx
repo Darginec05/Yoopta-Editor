@@ -1,19 +1,12 @@
-import {
-  Blocks,
-  Elements,
-  YooptaPlugin,
-  SlateEditor,
-  generateId,
-  buildBlockElementsStructure,
-  SlateElement,
-} from '@yoopta/editor';
-import { AccordionElementKeys, AccordionElementMap, AccordionListItemProps } from '../types';
+import { Blocks, Elements, YooptaPlugin, buildBlockElementsStructure } from '@yoopta/editor';
+import { AccordionElementMap } from '../types';
 import { AccordionList } from '../renders/AccordionList';
 import { AccordionListItem } from '../renders/AccordionListItem';
 import { AccordionItemHeading } from '../renders/AccordionItemHeading';
 import { AccordionItemContent } from '../renders/AccordionItemContent';
 import { Transforms } from 'slate';
 import { ListCollapse } from 'lucide-react';
+import { AccordionCommands } from '../commands';
 
 const ACCORDION_ELEMENTS = {
   AccordionList: 'accordion-list',
@@ -42,6 +35,7 @@ const Accordion = new YooptaPlugin<AccordionElementMap>({
       render: AccordionItemContent,
     },
   },
+  commands: AccordionCommands,
   events: {
     onKeyDown(editor, slate, { hotkeys, currentBlock }) {
       return (event) => {
@@ -116,7 +110,7 @@ const Accordion = new YooptaPlugin<AccordionElementMap>({
               {
                 type: ACCORDION_ELEMENTS.AccordionListItem,
                 props: {
-                  isExpanded: !listItem?.props.isExpanded,
+                  isExpanded: !listItem?.props?.isExpanded,
                 },
               },
               { path: listItemPath },

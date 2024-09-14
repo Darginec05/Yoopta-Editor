@@ -113,6 +113,8 @@ const YooptaEditor = ({
     return { editor, version: 0 };
   });
 
+  console.log('children', editorState.editor.children);
+
   return (
     <NoSSR>
       <YooptaContextProvider editorState={editorState}>

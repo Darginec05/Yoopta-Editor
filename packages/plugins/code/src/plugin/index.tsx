@@ -1,4 +1,5 @@
 import { generateId, YooptaPlugin } from '@yoopta/editor';
+import { CodeCommands } from '../commands';
 import { CodeElementMap, CodeElementProps, CodePluginBlockOptions, CodePluginElements } from '../types';
 import { CodeEditor } from '../ui/Code';
 
@@ -30,6 +31,7 @@ const Code = new YooptaPlugin<CodeElementMap, CodePluginBlockOptions>({
     },
     shortcuts: ['```', 'code', 'js'],
   },
+  commands: CodeCommands,
   parsers: {
     html: {
       deserialize: {

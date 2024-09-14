@@ -37,9 +37,6 @@ const Table = new YooptaPlugin<TableElementMap, TableOptions>({
   },
   events: {
     onKeyDown,
-    onBeforeCreate: (editor) => {
-      return TableCommands.buildTableElements(editor, { columns: 5 });
-    },
     onBlur: (editor, slate) => () => {
       TABLE_SLATE_TO_SELECTION_SET.delete(slate);
     },

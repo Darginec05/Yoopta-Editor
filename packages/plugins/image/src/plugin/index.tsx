@@ -1,4 +1,5 @@
 import { generateId, SlateElement, YooptaPlugin } from '@yoopta/editor';
+import { ImageCommands } from '../commands';
 import { ImageElementMap, ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';
 import { ImageRender } from '../ui/Image';
 
@@ -25,6 +26,7 @@ const Image = new YooptaPlugin<ImageElementMap, ImagePluginOptions>({
       },
     },
   },
+  commands: ImageCommands,
   options: {
     display: {
       title: 'Image',

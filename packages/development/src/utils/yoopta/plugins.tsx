@@ -8,28 +8,26 @@ import Link from '@yoopta/link';
 import Video, { VideoElementProps } from '@yoopta/video';
 import File from '@yoopta/file';
 import Embed from '@yoopta/embed';
-import AccordionPlugin from '@yoopta/accordion';
+import Accordion, { AccordionCommands } from '@yoopta/accordion';
 import Code from '@yoopta/code';
 import Table, { TableCommands } from '@yoopta/table';
 
 import { uploadToCloudinary } from '../cloudinary';
-import { generateId } from '@yoopta/editor';
 
 export const YOOPTA_PLUGINS = [
   Table.extend({
     events: {
       onBeforeCreate: (editor) => {
-        return TableCommands.buildTableElements(editor, { columns: 5, rows: 12, headerRow: false });
-      },
-      onCreate: (editor, id) => {
-        console.log('Table onCreate', editor, id);
-      },
-      onDestroy(editor, blockId) {
-        console.log('Table onDestroy', editor, blockId);
+        return editor.commands.buildTableElements({ columns: 5, rows: 12, headerRow: false });
       },
     },
   }),
-  AccordionPlugin.extend({
+  Accordion.extend({
+    events: {
+      onBeforeCreate: (editor) => {
+        return editor.commands.buildAccordionElements({ items: 3 });
+      },
+    },
     elementProps: {
       'accordion-list-item': (props) => {
         return {

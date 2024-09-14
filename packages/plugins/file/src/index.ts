@@ -8,5 +8,7 @@ declare module 'slate' {
   }
 }
 
+export { FileCommands } from './commands';
+
 export default File;
 export { FileElement, FileElementProps, FileUploadResponse };

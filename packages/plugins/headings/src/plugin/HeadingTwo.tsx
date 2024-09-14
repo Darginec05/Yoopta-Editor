@@ -1,4 +1,5 @@
 import { PluginElementRenderProps, YooptaPlugin } from '@yoopta/editor';
+import { HeadingTwoCommands } from '../commands';
 
 const HeadingTwoRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
   const { element, HTMLAttributes = {}, attributes, children } = props;
@@ -25,6 +26,7 @@ const HeadingTwo = new YooptaPlugin({
       },
     },
   },
+  commands: HeadingTwoCommands,
   options: {
     display: {
       title: 'Heading 2',

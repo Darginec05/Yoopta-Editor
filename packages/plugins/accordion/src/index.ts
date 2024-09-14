@@ -18,5 +18,7 @@ declare module 'slate' {
   }
 }
 
+export { AccordionCommands } from './commands';
+
 export default Accordion;
 export { AccordionItemElement, AccordionListItemProps };

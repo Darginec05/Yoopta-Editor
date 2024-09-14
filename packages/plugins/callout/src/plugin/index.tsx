@@ -1,5 +1,6 @@
 import { generateId, YooptaPlugin } from '@yoopta/editor';
 import { CSSProperties } from 'react';
+import { CalloutCommands } from '../commands';
 import { CalloutElementMap, CalloutTheme } from '../types';
 import { CalloutRender } from '../ui/Callout';
 import { CALLOUT_THEME_STYLES } from '../utils';
@@ -14,6 +15,7 @@ const Callout = new YooptaPlugin<CalloutElementMap>({
       },
     },
   },
+  commands: CalloutCommands,
   options: {
     display: {
       title: 'Callout',
