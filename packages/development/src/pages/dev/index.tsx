@@ -35,7 +35,7 @@ const BasicExample = () => {
           type: 'heading-two',
           children: [
             {
-              text: 'Windowing ',
+              text: '',
             },
           ],
           props: {
@@ -251,33 +251,8 @@ const BasicExample = () => {
     });
   }, [editor]);
 
-  console.log(value);
-
   return (
     <>
-      <button
-        onClick={() => {
-          const slate = Blocks.getSlate(editor, { at: [0] });
-          if (!slate || !slate.selection) return;
-
-          editor.commands;
-
-          editor.commands.insertLink({
-            focus: true,
-            slate,
-            props: {
-              title: 'Link title',
-              url: 'https://www.google.com',
-              rel: 'noreferrer noopener',
-              target: '_blank',
-            },
-          });
-        }}
-        type="button"
-      >
-        Insert link
-      </button>
-
       <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={selectionRef}>
         <YooptaEditor
           editor={editor}
