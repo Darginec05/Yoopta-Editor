@@ -1,12 +1,4 @@
-import {
-  Blocks,
-  buildBlockData,
-  Elements,
-  generateId,
-  PluginCommands,
-  YooEditor,
-  YooptaBlockPath,
-} from '@yoopta/editor';
+import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
 import { CalloutElement, CalloutElementProps, CalloutPluginElementKeys, CalloutTheme } from '../types';
 
 type CalloutElementOptions = {

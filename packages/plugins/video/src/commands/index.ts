@@ -2,7 +2,7 @@ import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaBlockPat
 import { VideoElement, VideoElementProps } from '../types';
 
 type VideoElementOptions = {
-  props?: VideoElementProps;
+  props?: Omit<VideoElementProps, 'nodeType'>;
 };
 
 type InsertVideoOptions = VideoElementOptions & {
@@ -19,7 +19,8 @@ export type VideoCommands = {
 
 export const VideoCommands: VideoCommands = {
   buildVideoElements: (editor: YooEditor, options = {}) => {
-    return { id: generateId(), type: 'video', children: [{ text: '', props: options?.props }] };
+    const videoProps = options?.props ? { ...options.props, nodeType: 'void' } : { nodeType: 'void' };
+    return { id: generateId(), type: 'video', children: [{ text: '', props: videoProps }] };
   },
   insertVideo: (editor: YooEditor, options = {}) => {
     const { at, focus, props } = options;

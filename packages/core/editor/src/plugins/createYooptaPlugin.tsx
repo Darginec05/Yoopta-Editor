@@ -5,7 +5,7 @@ export type ExtendPluginRender<TKeys extends string> = {
   [x in TKeys]: (props: PluginElementRenderProps) => JSX.Element;
 };
 
-type ExtractProps<T> = T extends SlateElement<any, infer P> ? P : never;
+type ExtractProps<T> = T extends SlateElement<string, infer P> ? P : never;
 
 export type ExtendPlugin<TElementMap extends Record<string, SlateElement>, TOptions> = {
   renders?: {
@@ -18,17 +18,13 @@ export type ExtendPlugin<TElementMap extends Record<string, SlateElement>, TOpti
   events?: Partial<PluginEvents>;
 };
 
-export class YooptaPlugin<
-  PluginName extends string,
-  TElementMap extends Record<string, SlateElement>,
-  TOptions = Record<string, unknown>,
-> {
-  private readonly plugin: Plugin<PluginName, TElementMap, TOptions>;
-  constructor(plugin: Plugin<PluginName, TElementMap, TOptions>) {
+export class YooptaPlugin<TElementMap extends Record<string, SlateElement>, TOptions = Record<string, unknown>> {
+  private readonly plugin: Plugin<TElementMap, TOptions>;
+  constructor(plugin: Plugin<TElementMap, TOptions>) {
     this.plugin = plugin;
   }
 
-  get getPlugin(): Plugin<PluginName, TElementMap, TOptions> {
+  get getPlugin(): Plugin<TElementMap, TOptions> {
     return this.plugin;
   }
 
@@ -37,7 +33,7 @@ export class YooptaPlugin<
   //   return true
   // }
 
-  extend(extendPlugin: ExtendPlugin<TElementMap, TOptions>): YooptaPlugin<PluginName, TElementMap, TOptions> {
+  extend(extendPlugin: ExtendPlugin<TElementMap, TOptions>): YooptaPlugin<TElementMap, TOptions> {
     const { renders, options, elementProps, events } = extendPlugin;
 
     const extendedOptions = { ...this.plugin.options, ...options };
@@ -84,7 +80,7 @@ export class YooptaPlugin<
       });
     }
 
-    return new YooptaPlugin<PluginName, TElementMap, TOptions>({
+    return new YooptaPlugin<TElementMap, TOptions>({
       ...this.plugin,
       elements: elements,
       options: extendedOptions as PluginOptions<TOptions>,

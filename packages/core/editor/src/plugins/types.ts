@@ -72,40 +72,17 @@ export type PluginEventHandlerOptions = {
 
 export type ElementPropsMap = Record<string, Record<string, unknown>>;
 
-type DefaultCommandKeys<PluginName extends string> =
-  | `build${Capitalize<PluginName>}Elements`
-  | `insert${Capitalize<PluginName>}`
-  | `delete${Capitalize<PluginName>}`;
-
-type DefaultCommands<PluginName extends string, TGenericOptions = any> = {
-  [K in DefaultCommandKeys<PluginName>]: K extends `build${Capitalize<PluginName>}Elements`
-    ? (editor: YooEditor, options?: TGenericOptions) => SlateElement
-    : K extends `insert${Capitalize<PluginName>}`
-    ? (editor: YooEditor, options?: TGenericOptions) => void
-    : (editor: YooEditor, blockId: string) => void;
-};
-export type PluginCommands<
-  PluginName extends string = string,
-  TOptions = Record<string, unknown>,
-  TCommands = Record<string, unknown>,
-> = DefaultCommands<PluginName, TOptions> & TCommands;
-
 export type PluginEvents = {
   onBeforeCreate?: (editor: YooEditor, blockId: string) => SlateElement;
   onCreate?: (editor: YooEditor, blockId: string) => void;
   onDestroy?: (editor: YooEditor, blockId: string) => void;
 } & EventHandlers;
 
-export type Plugin<
-  PluginName extends string,
-  TElementMap extends Record<string, SlateElement>,
-  TPluginOptions = Record<string, unknown>,
-  TCommands extends PluginCommands = {},
-> = {
-  type: PluginName;
+export type Plugin<TElementMap extends Record<string, SlateElement>, TPluginOptions = Record<string, unknown>> = {
+  type: string;
   customEditor?: (props: PluginCustomEditorRenderProps) => JSX.Element;
   extensions?: (slate: SlateEditor, editor: YooEditor, blockId: string) => SlateEditor;
-  commands?: PluginCommands<PluginName>;
+  commands?: Record<string, (editor: YooEditor, ...args: any[]) => any>;
   elements: {
     [K in keyof TElementMap]: PluginElement<TElementMap[K]['props']>;
   };

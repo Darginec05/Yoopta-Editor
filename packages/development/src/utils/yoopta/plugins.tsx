@@ -18,14 +18,16 @@ export const YOOPTA_PLUGINS = [
   Table.extend({
     events: {
       onBeforeCreate: (editor) => {
-        return editor.commands.buildTableElements({ columns: 5, rows: 12, headerRow: false });
+        return editor.commands.buildTableElements({ columns: 2, rows: 2, headerRow: true });
       },
+      onCreate: (editor, id) => {},
+      onDestroy: (editor, id) => {},
     },
   }),
   Accordion.extend({
     events: {
       onBeforeCreate: (editor) => {
-        return editor.commands.buildAccordionElements({ items: 3 });
+        return AccordionCommands.buildAccordionElements(editor, { items: 2, props: { isExpanded: true } });
       },
     },
     elementProps: {
@@ -38,6 +40,11 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   File.extend({
+    events: {
+      onBeforeCreate: (editor) => {
+        return editor.commands.buildFileElements({ text: 'Hello world' });
+      },
+    },
     options: {
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file, 'auto');
@@ -56,7 +63,7 @@ export const YOOPTA_PLUGINS = [
       onBeforeCreate: (editor) => {
         console.log('Paragraph onBeforeCreate', editor.commands);
 
-        return editor.commands.buildParagraphElements(editor, { text: 'Hello world' });
+        return editor.commands.buildParagraphElements({ text: 'Hello world' });
       },
       onDestroy: (editor, id) => {
         console.log('Paragraph onDestroy', editor, id);

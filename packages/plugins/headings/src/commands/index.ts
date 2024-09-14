@@ -51,7 +51,7 @@ export type HeadingThreeCommands = {
 };
 
 export const HeadingThreeCommands: HeadingThreeCommands = {
-  buildHeadingThreeElements: (editor, options?) => {
+  buildHeadingThreeElements: (editor, options) => {
     return { id: generateId(), type: 'heading-three', children: [{ text: options?.text || '' }] };
   },
   insertHeadingThree: (editor, options = {}) => {

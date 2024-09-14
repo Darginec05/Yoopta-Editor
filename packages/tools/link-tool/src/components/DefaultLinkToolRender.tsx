@@ -1,17 +1,14 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { LinkToolRenderProps, Link } from '../types';
 import ChevronUp from '../icons/chevronup.svg';
-
-const DEFAULT_LINK_VALUE: Link = {
-  url: '',
-  title: '',
-  target: '_self',
-  rel: 'noreferrer',
-};
+import { useYooptaEditor } from '@yoopta/editor';
 
 const DefaultLinkToolRender = (props: LinkToolRenderProps) => {
   const { withLink = true, withTitle = true } = props;
-  const [link, setLink] = useState(props?.link || DEFAULT_LINK_VALUE);
+  const editor = useYooptaEditor();
+  const defaultLinkProps = editor.plugins?.LinkPlugin?.elements?.link?.props;
+
+  const [link, setLink] = useState(props?.link || defaultLinkProps);
   const [isAdditionalPropsOpen, setAdditionPropsOpen] = useState(false);
 
   const onChange = (e: ChangeEvent) => {
@@ -20,7 +17,15 @@ const DefaultLinkToolRender = (props: LinkToolRenderProps) => {
   };
 
   useEffect(() => {
-    if (props.link) setLink(props.link);
+    const hasUrl = !!props.link.url;
+    if (hasUrl) setLink(props.link);
+    if (!hasUrl && defaultLinkProps) {
+      setLink({
+        ...props.link,
+        rel: defaultLinkProps.rel || props.link.rel || '',
+        target: defaultLinkProps.target || props.link.target || '_self',
+      });
+    }
   }, [props.link]);
 
   const onSave = () => {
@@ -44,7 +49,7 @@ const DefaultLinkToolRender = (props: LinkToolRenderProps) => {
             type="text"
             className="yoopta-link-tool-input"
             name="title"
-            value={link.title}
+            value={link.title || ''}
             onChange={onChange}
             placeholder="Edit link title"
             autoComplete="off"
@@ -61,7 +66,7 @@ const DefaultLinkToolRender = (props: LinkToolRenderProps) => {
             type="text"
             className="yoopta-link-tool-input"
             name="url"
-            value={link.url}
+            value={link.url || ''}
             onChange={onChange}
             placeholder="Edit link URL"
             autoComplete="off"

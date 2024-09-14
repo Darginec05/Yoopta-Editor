@@ -1,4 +1,4 @@
-import { Blocks, buildBlockData, generateId, PluginCommands, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, buildBlockData, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
 import { BlockquoteElement } from '../types';
 
 type BlockquoteElementOptions = {

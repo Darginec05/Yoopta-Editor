@@ -1,5 +1,6 @@
 import { buildBlockData, generateId, YooptaBlockData, YooptaPlugin } from '@yoopta/editor';
 import { Element, Transforms } from 'slate';
+import { BulletedListCommands } from '../commands';
 import { BulletedListRender } from '../elements/BulletedList';
 import { onKeyDown } from '../events/onKeyDown';
 import { ListElementMap } from '../types';
@@ -21,6 +22,7 @@ const BulletedList = new YooptaPlugin<Pick<ListElementMap, 'bulleted-list'>>({
   events: {
     onKeyDown,
   },
+  commands: BulletedListCommands,
   parsers: {
     html: {
       deserialize: {

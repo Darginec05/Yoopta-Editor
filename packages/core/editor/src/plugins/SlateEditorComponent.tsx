@@ -49,7 +49,6 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
   const editor = useYooptaEditor();
   const block = useBlockData(id);
   let initialValue = useRef(block.value).current;
-
   const ELEMENTS_MAP = useMemo(() => getMappedElements(elements), [elements]);
   const MARKS_MAP = useMemo(() => getMappedMarks(marks), [marks]);
 

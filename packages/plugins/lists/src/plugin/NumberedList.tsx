@@ -1,4 +1,5 @@
 import { YooptaPlugin, buildBlockData, YooptaBlockData, generateId } from '@yoopta/editor';
+import { NumberedListCommands } from '../commands';
 import { NumberedListRender } from '../elements/NumberedList';
 import { onKeyDown } from '../events/onKeyDown';
 import { ListElementMap, ListElementProps } from '../types';
@@ -23,6 +24,7 @@ const NumberedList = new YooptaPlugin<Pick<ListElementMap, 'numbered-list'>>({
   events: {
     onKeyDown,
   },
+  commands: NumberedListCommands,
   parsers: {
     html: {
       deserialize: {

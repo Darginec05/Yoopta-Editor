@@ -1,10 +1,20 @@
-import YooptaEditor, { createYooptaEditor, YooEditor, YooptaBlockData, YooptaContentValue } from '@yoopta/editor';
+import { AccordionCommands } from '@yoopta/accordion';
+import YooptaEditor, {
+  Blocks,
+  createYooptaEditor,
+  YooEditor,
+  YooptaBlockData,
+  YooptaContentValue,
+} from '@yoopta/editor';
+import { LinkCommands } from '@yoopta/link';
 import { TableCommands } from '@yoopta/table';
+import { ParagraphCommands } from '@yoopta/paragraph';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { MARKS } from '../../utils/yoopta/marks';
 import { YOOPTA_PLUGINS } from '../../utils/yoopta/plugins';
 import { TOOLS } from '../../utils/yoopta/tools';
+import { ImageCommands } from '@yoopta/image';
 
 export type YooptaChildrenValue = Record<string, YooptaBlockData>;
 
@@ -241,10 +251,31 @@ const BasicExample = () => {
     });
   }, [editor]);
 
+  console.log(value);
+
   return (
     <>
-      <button onClick={() => editor.commands?.insertTable({ columnWidth: 350, at: 1 })} type="button">
-        Insert table
+      <button
+        onClick={() => {
+          const slate = Blocks.getSlate(editor, { at: [0] });
+          if (!slate || !slate.selection) return;
+
+          editor.commands;
+
+          editor.commands.insertLink({
+            focus: true,
+            slate,
+            props: {
+              title: 'Link title',
+              url: 'https://www.google.com',
+              rel: 'noreferrer noopener',
+              target: '_blank',
+            },
+          });
+        }}
+        type="button"
+      >
+        Insert link
       </button>
 
       <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={selectionRef}>

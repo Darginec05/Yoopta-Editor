@@ -12,6 +12,7 @@ import { toggleBlock } from './toggleBlock';
 import { insertBlocks } from './insertBlocks';
 import { createBlock } from './createBlock';
 import { getBlock } from './getBlock';
+import { getSlate } from './getSlate';
 
 export const Blocks = {
   insertBlock,
@@ -28,6 +29,7 @@ export const Blocks = {
   createBlock,
   deleteBlocks,
   getBlock,
+  getSlate,
   // [TODO]
   // updateBlocks
 };

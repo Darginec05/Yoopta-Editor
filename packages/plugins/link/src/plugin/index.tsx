@@ -1,4 +1,5 @@
 import { generateId, YooptaPlugin } from '@yoopta/editor';
+import { LinkCommands } from '../commands';
 import { LinkElementMap, LinkElementProps } from '../types';
 import { LinkRender } from '../ui/LinkRender';
 
@@ -22,6 +23,7 @@ const Link = new YooptaPlugin<LinkElementMap>({
       description: 'Create link',
     },
   },
+  commands: LinkCommands,
   parsers: {
     html: {
       serialize: (element, text) => {

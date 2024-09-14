@@ -1,4 +1,5 @@
 import { buildBlockData, generateId, YooptaBlockData, YooptaPlugin } from '@yoopta/editor';
+import { TodoListCommands } from '../commands';
 import { TodoListRender } from '../elements/TodoList';
 import { onKeyDown } from '../events/onKeyDown';
 import { ListElementMap } from '../types';
@@ -23,6 +24,7 @@ const TodoList = new YooptaPlugin<Pick<ListElementMap, 'todo-list'>>({
   events: {
     onKeyDown,
   },
+  commands: TodoListCommands,
   parsers: {
     html: {
       deserialize: {

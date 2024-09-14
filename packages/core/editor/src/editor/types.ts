@@ -1,5 +1,5 @@
 import { Descendant, Path, Point } from 'slate';
-import { Plugin, PluginElementsMap, PluginOptions, PluginElementProps, PluginCommands } from '../plugins/types';
+import { Plugin, PluginElementsMap, PluginOptions, PluginElementProps } from '../plugins/types';
 import { EditorBlurOptions } from './core/blur';
 import { BlockSelectedOptions } from './selection/setBlockSelected';
 import { SetSelectionOptions } from './selection/setSelection';
@@ -72,9 +72,7 @@ export type YooptaFormats = Record<string, TextFormat>;
 
 export type YooEditorEvents = 'change' | 'focus' | 'blur' | 'block:copy';
 
-// type ExtractCommands<T> = T extends Plugin<any, any, infer C> ? C : never;
-// type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void ? I : never;
-// type MergeCommands<T extends readonly Plugin<any, any, any>[]> = UnionToIntersection<ExtractCommands<T[number]>>;
+export type BaseCommands = Record<string, (...args: any[]) => any>;
 
 // [TODO] - Fix generic and default types
 export type YooEditor = {
@@ -107,7 +105,7 @@ export type YooEditor = {
   formats: YooptaFormats;
   shortcuts: Record<string, YooptaBlock>;
   plugins: Record<string, Plugin<Record<string, SlateElement>, unknown>>;
-  commands: PluginCommands;
+  commands: Record<string, (...args: any[]) => any>;
 
   // events handlers
   on: (event: YooEditorEvents, fn: (payload: any) => void) => void;

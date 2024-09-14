@@ -1,4 +1,5 @@
 import { generateId, YooptaPlugin } from '@yoopta/editor';
+import { VideoCommands } from '../commands';
 import { VideoElementMap, VideoPluginOptions } from '../types';
 import { VideoRender } from '../ui/Video';
 
@@ -43,6 +44,7 @@ const Video = new YooptaPlugin<VideoElementMap, VideoPluginOptions>({
       description: 'Upload from device, embed from Youtube, Vimeo',
     },
   },
+  commands: VideoCommands,
   parsers: {
     html: {
       deserialize: {

@@ -141,7 +141,10 @@ export function buildPlugins(
   return pluginsMap;
 }
 
-export function buildCommands(editor: YooEditor, plugins: Plugin<Record<string, SlateElement>>[]) {
+export function buildCommands(
+  editor: YooEditor,
+  plugins: Plugin<Record<string, SlateElement>>[],
+): Record<string, (...args: any[]) => any> {
   const commands = {};
 
   plugins.forEach((plugin) => {

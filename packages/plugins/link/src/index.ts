@@ -8,6 +8,8 @@ declare module 'slate' {
   }
 }
 
+export { LinkCommands } from './commands';
+
 export { LinkElement, LinkElementProps };
 
 export default Link;

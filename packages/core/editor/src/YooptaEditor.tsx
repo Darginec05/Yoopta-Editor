@@ -3,7 +3,7 @@ import { YooptaContextProvider } from './contexts/YooptaContext/YooptaContext';
 import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { Editor } from './components/Editor/Editor';
 import { CSSProperties, useMemo, useState } from 'react';
-import { SlateElement, YooEditor, YooptaBlockData, YooptaContentValue } from './editor/types';
+import { BaseCommands, SlateElement, YooEditor, YooptaBlockData, YooptaContentValue } from './editor/types';
 import { Plugin } from './plugins/types';
 import NoSSR from './components/NoSsr/NoSsr';
 import { Tools, ToolsProvider } from './contexts/YooptaContext/ToolsContext';
@@ -112,8 +112,6 @@ const YooptaEditor = ({
 
     return { editor, version: 0 };
   });
-
-  console.log('children', editorState.editor.children);
 
   return (
     <NoSSR>

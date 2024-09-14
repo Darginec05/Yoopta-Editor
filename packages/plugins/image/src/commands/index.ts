@@ -2,7 +2,7 @@ import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaBlockPat
 import { ImageElement, ImageElementProps } from '../types';
 
 type ImageElementOptions = {
-  props?: ImageElementProps;
+  props?: Omit<ImageElementProps, 'nodeType'>;
 };
 
 type InsertImageOptions = ImageElementOptions & {
@@ -19,7 +19,8 @@ export type ImageCommands = {
 
 export const ImageCommands: ImageCommands = {
   buildImageElements: (editor: YooEditor, options = {}) => {
-    return { id: generateId(), type: 'image', children: [{ text: '', props: options?.props }] };
+    const imageProps = options?.props ? { ...options.props, nodeType: 'void' } : { nodeType: 'void' };
+    return { id: generateId(), type: 'image', children: [{ text: '', props: imageProps }] };
   },
   insertImage: (editor: YooEditor, options = {}) => {
     const { at, focus, props } = options;

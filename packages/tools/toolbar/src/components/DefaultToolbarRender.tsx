@@ -159,7 +159,9 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
   }, [editor.selection, editor.children, modals.link]);
 
   const onUpdateLink = (link: LinkValues) => {
-    const slate = findSlateBySelectionPath(editor);
+    if (!editor.selection) return;
+
+    const slate = Blocks.getSlate(editor, { at: editor.selection });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
@@ -180,30 +182,18 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
       } else {
         const defaultLinkProps: Record<string, unknown> | undefined = editor.plugins?.LinkPlugin?.elements?.link?.props;
 
-        const linkNode = {
-          type: 'link',
-          children: [{ text: link.title }],
+        editor.commands.insertLink?.({
+          slate,
+          focus: true,
+          blockId: blockData?.id,
           props: {
             ...link,
             target: defaultLinkProps?.target || link.target || '_self',
             rel: defaultLinkProps?.rel || link.rel || 'noopener noreferrer',
             nodeType: 'inline',
           },
-        } as SlateElement;
-
-        Transforms.wrapNodes(slate, linkNode, { split: true, at: slate.selection });
-        Transforms.setNodes(
-          slate,
-          { text: link.title },
-          {
-            at: slate.selection,
-            mode: 'lowest',
-            match: (n) => !Editor.isEditor(n) && Element.isElement(n) && (n as SlateElement).type === 'link',
-          },
-        );
-
-        Editor.insertText(slate, link.title || link.url, { at: slate.selection });
-        Transforms.collapse(slate, { edge: 'end' });
+          text: link.title,
+        });
       }
 
       editor.applyChanges();
@@ -224,17 +214,24 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
   };
 
   const onDeleteLink = () => {
-    const slate = findSlateBySelectionPath(editor);
-    if (!slate || !slate.selection) return;
-    const linkNodeEntry = getLinkEntry(slate);
-    if (linkNodeEntry) {
-      Transforms.unwrapNodes(slate, {
-        match: (n) => !Editor.isEditor(n) && Element.isElement(n) && (n as SlateElement).type === 'link',
-      });
-    }
-    onChangeModal('link', false);
-    setLinkValues(DEFAULT_LINK_VALUE);
-    toggleHoldToolbar?.(false);
+    console.log('onDeleteLink', editor.commands);
+    if (!editor.selection) return;
+    const slate = Blocks.getSlate(editor, { at: editor.selection });
+    if (!slate) return;
+
+    editor.commands.deleteLink?.({ slate });
+
+    // const slate = findSlateBySelectionPath(editor);
+    // if (!slate || !slate.selection) return;
+    // const linkNodeEntry = getLinkEntry(slate);
+    // if (linkNodeEntry) {
+    //   Transforms.unwrapNodes(slate, {
+    //     match: (n) => !Editor.isEditor(n) && Element.isElement(n) && (n as SlateElement).type === 'link',
+    //   });
+    // }
+    // onChangeModal('link', false);
+    // setLinkValues(DEFAULT_LINK_VALUE);
+    // toggleHoldToolbar?.(false);
   };
 
   const onClickLinkOverlay = (e: MouseEvent) => {

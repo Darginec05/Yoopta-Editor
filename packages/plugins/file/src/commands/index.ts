@@ -2,7 +2,7 @@ import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaBlockPat
 import { FileElement, FileElementProps } from '../types';
 
 type FileElementOptions = {
-  props?: FileElementProps;
+  props?: Omit<FileElementProps, 'nodeType'>;
 };
 
 type InsertFileOptions = FileElementOptions & {
@@ -19,7 +19,8 @@ export type FileCommands = {
 
 export const FileCommands: FileCommands = {
   buildFileElements: (editor: YooEditor, options = {}) => {
-    return { id: generateId(), type: 'file', children: [{ text: '', props: options?.props }] };
+    const fileProps = options?.props ? { ...options.props, nodeType: 'void' } : { nodeType: 'void' };
+    return { id: generateId(), type: 'file', children: [{ text: '', props: fileProps }] };
   },
   insertFile: (editor: YooEditor, options = {}) => {
     const { at, focus, props } = options;

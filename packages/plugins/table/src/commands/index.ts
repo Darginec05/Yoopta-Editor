@@ -1,13 +1,4 @@
-import {
-  Blocks,
-  buildBlockData,
-  Elements,
-  generateId,
-  PluginCommands,
-  SlateElement,
-  YooEditor,
-  YooptaBlockPath,
-} from '@yoopta/editor';
+import { Blocks, buildBlockData, Elements, generateId, SlateElement, YooEditor, YooptaBlockPath } from '@yoopta/editor';
 import { Editor, Element, Path, Span, Transforms } from 'slate';
 import { InsertTableOptions, TableCellElement, TableElement, TableOptions, TableRowElement } from '../types';
 
@@ -45,7 +36,7 @@ export type TableCommands = {
   toggleHeaderColumn: (editor: YooEditor, blockId: string) => void;
 };
 
-export const TableCommands: PluginCommands<'Table'> = {
+export const TableCommands: TableCommands = {
   buildTableElements: (editor: YooEditor, options?: InsertOptions) => {
     const tablePluginOptions = editor.plugins.Table.options as TableOptions;
 

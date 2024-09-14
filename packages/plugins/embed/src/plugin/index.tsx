@@ -1,4 +1,5 @@
 import { generateId, YooptaPlugin } from '@yoopta/editor';
+import { EmbedCommands } from '../commands';
 import {
   EmbedElementMap,
   EmbedElementProps,
@@ -32,6 +33,7 @@ const Embed = new YooptaPlugin<EmbedElementMap, EmbedPluginOptions>({
     },
     maxSizes: { maxWidth: 650, maxHeight: 550 },
   },
+  commands: EmbedCommands,
   parsers: {
     html: {
       deserialize: {

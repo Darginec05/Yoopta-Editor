@@ -4,7 +4,7 @@ import { ParagraphCommands } from '../commands';
 import { ParagraphElement, ParagraphElementMap } from '../types';
 import { ParagraphRender } from '../ui/Paragraph';
 
-const Paragraph = new YooptaPlugin<'Paragraph', ParagraphElementMap>({
+const Paragraph = new YooptaPlugin<ParagraphElementMap>({
   type: 'Paragraph',
   elements: {
     paragraph: {
