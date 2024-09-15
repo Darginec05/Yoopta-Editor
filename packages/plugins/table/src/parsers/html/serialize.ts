@@ -50,6 +50,9 @@ function serializeTextNodes(nodes: any[]): string {
         if (node.underline) {
           text = `<u>${text}</u>`;
         }
+        if (node.code) {
+          text = `<code>${text}</code>`;
+        }
 
         return text;
       }
