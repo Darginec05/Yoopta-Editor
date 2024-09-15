@@ -29,26 +29,6 @@ export function isRootElementVoid(elems: PluginElementsMap<string, unknown> | un
   return rootElement?.props?.nodeType === 'void';
 }
 
-function recursivelyBuildElementsFromStructure(blockElements, structure: any): SlateElement {
-  console.log('recursivelyBuildElementsFromStructure', { structure, blockElements });
-  // if (structure.children && structure.children.length > 0) {
-  const children = structure.children
-    ? structure.children.map((child: any) => {
-        return recursivelyBuildElementsFromStructure(blockElements, child);
-      })
-    : [{ text: '' }];
-  // }
-
-  const element: SlateElement = {
-    id: generateId(),
-    type: structure.type,
-    props: blockElements[structure.type].props,
-    children,
-  };
-
-  return element;
-}
-
 export type GetBlockElementNodeOptions = {
   at?: Path;
   elementType?: string;

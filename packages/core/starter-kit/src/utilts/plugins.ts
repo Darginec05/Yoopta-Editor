@@ -9,6 +9,7 @@ import File from '@yoopta/file';
 import Accordion from '@yoopta/accordion';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
+import Table from '@yoopta/table';
 import Code from '@yoopta/code';
 import { type MediaUploadsFn } from '../components/StarterKit/StarterKit';
 
@@ -31,6 +32,7 @@ export const getPlugins = ({ media }: PluginParams) => {
     Code,
     Link,
     Embed,
+    Table,
     Image.extend({
       options: {
         async onUpload(file) {

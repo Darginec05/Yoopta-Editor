@@ -32,6 +32,7 @@
     "@yoopta/paragraph": "latest",
     "@yoopta/toolbar": "latest",
     "@yoopta/video": "latest",
+    "@yoopta/table": "latest",
     "slate": "^0.102.0",
     "slate-react": "^0.102.0"
   },

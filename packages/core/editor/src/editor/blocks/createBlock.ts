@@ -37,8 +37,6 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
   const pluginEvents = plugin.events || {};
   const { onBeforeCreate, onCreate } = pluginEvents;
 
-  console.log('pluginEvents', pluginEvents);
-
   const elements =
     typeof onBeforeCreate === 'function'
       ? onBeforeCreate(editor, blockData.id)
