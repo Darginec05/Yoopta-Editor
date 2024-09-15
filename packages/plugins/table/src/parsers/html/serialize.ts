@@ -1,12 +1,13 @@
 import { SlateElement, YooEditor, YooptaBlockData } from '@yoopta/editor';
 import { TableCellElement } from '../../types';
 
-export function serializeTable(element: SlateElement, text: string, blockMetaData?: YooptaBlockData['meta']) {
+export function serializeTable(element: SlateElement, text: string, blockMeta?: YooptaBlockData['meta']) {
   const columns = (element.children[0] as SlateElement).children as TableCellElement[];
+  const { align = 'left', depth = 0 } = blockMeta || {};
 
-  const serialized = `<table data-header-row="${element.props?.headerRow}" data-header-column="${
-    element.props?.headerColumn
-  }">
+  const serialized = `<table style="margin-left: ${depth}px; text-align: ${align}" data-meta-align="${align}" data-meta-depth="${depth}" data-header-row="${
+    element.props?.headerRow
+  }" data-header-column="${element.props?.headerColumn}">
         <colgroup>
         ${columns
           .map((td) => {

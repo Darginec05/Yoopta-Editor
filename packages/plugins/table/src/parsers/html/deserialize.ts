@@ -42,11 +42,12 @@ export function deserializeTable(el: HTMLElement, editor: YooEditor) {
           },
         };
 
-        if (th?.hasAttribute('data-width')) {
+        if (th instanceof HTMLElement && th?.hasAttribute('data-width')) {
           cellElement.props.width = parseInt((th as HTMLElement).getAttribute('data-width') || '200', 10);
         }
 
         let textNodes = deserializeTextNodes(th.childNodes);
+        // @ts-ignore [FIXME] - Fix this
         cellElement.children = textNodes;
         rowElement.children.push(cellElement);
       }
@@ -85,11 +86,12 @@ export function deserializeTable(el: HTMLElement, editor: YooEditor) {
         }
 
         if (td.nodeName === 'TD' || td.nodeName === 'TH') {
-          if (td?.hasAttribute('data-width')) {
+          if (td instanceof HTMLElement && td?.hasAttribute('data-width')) {
             cellElement.props.width = parseInt((td as HTMLElement).getAttribute('data-width') || '200', 10);
           }
 
           let textNodes = deserializeTextNodes(td.childNodes);
+          // @ts-ignore [FIXME] - Fix this
           cellElement.children = textNodes;
           rowElement.children.push(cellElement);
         }
