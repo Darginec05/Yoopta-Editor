@@ -4,6 +4,7 @@ import { TableElement, TableRowElement } from '../../types';
 
 export function deserializeTable(el: HTMLElement, editor: YooEditor) {
   const tbody = el.querySelector('tbody');
+  const thead = el.querySelector('thead');
 
   const tableElement: TableElement = {
     id: generateId(),
@@ -15,51 +16,93 @@ export function deserializeTable(el: HTMLElement, editor: YooEditor) {
     },
   };
 
-  if (!tbody) return;
+  if (!tbody && !thead) return;
 
-  tbody.childNodes.forEach((tr) => {
+  const theadRow = thead?.querySelector('tr');
+  if (theadRow) {
+    tableElement.props!.headerRow = true;
+  }
+
+  if (theadRow) {
     const rowElement: TableRowElement = {
       id: generateId(),
       type: 'table-row',
       children: [],
     };
 
-    tr.childNodes.forEach((td) => {
-      const cellElement = {
-        id: generateId(),
-        type: 'table-data-cell',
-        children: [{ text: '' }],
-        props: {
-          asHeader: false,
-          width: 200,
-        },
-      };
+    Array.from(theadRow.childNodes).forEach((th) => {
+      if (th.nodeName === 'TH') {
+        const cellElement = {
+          id: generateId(),
+          type: 'table-data-cell',
+          children: [{ text: '' }],
+          props: {
+            asHeader: true,
+            width: 200,
+          },
+        };
 
-      if (td.nodeName === 'TH') {
-        cellElement.props.asHeader = true;
-      }
-
-      if (td.nodeName === 'TD') {
-        cellElement.props.asHeader = false;
-      }
-
-      if (td.nodeName === 'TD' || td.nodeName === 'TH') {
-        if (td?.hasAttribute('data-width')) {
-          cellElement.props.width = parseInt((td as HTMLElement).getAttribute('data-width') || '200', 10);
+        if (th?.hasAttribute('data-width')) {
+          cellElement.props.width = parseInt((th as HTMLElement).getAttribute('data-width') || '200', 10);
         }
 
-        let textNodes = deserializeTextNodes(td.childNodes);
+        let textNodes = deserializeTextNodes(th.childNodes);
         cellElement.children = textNodes;
         rowElement.children.push(cellElement);
       }
     });
 
     tableElement.children.push(rowElement);
+  }
+
+  tbody?.childNodes.forEach((tr) => {
+    const trChildNodes = Array.from(tr.childNodes).filter((node) => node.nodeName === 'TD' || node.nodeName === 'TH');
+
+    if (trChildNodes.length > 0) {
+      const rowElement: TableRowElement = {
+        id: generateId(),
+        type: 'table-row',
+        children: [],
+      };
+
+      trChildNodes.forEach((td) => {
+        const cellElement = {
+          id: generateId(),
+          type: 'table-data-cell',
+          children: [{ text: '' }],
+          props: {
+            asHeader: false,
+            width: 200,
+          },
+        };
+
+        if (td.nodeName === 'TH') {
+          cellElement.props.asHeader = true;
+        }
+
+        if (td.nodeName === 'TD') {
+          cellElement.props.asHeader = false;
+        }
+
+        if (td.nodeName === 'TD' || td.nodeName === 'TH') {
+          if (td?.hasAttribute('data-width')) {
+            cellElement.props.width = parseInt((td as HTMLElement).getAttribute('data-width') || '200', 10);
+          }
+
+          let textNodes = deserializeTextNodes(td.childNodes);
+          cellElement.children = textNodes;
+          rowElement.children.push(cellElement);
+        }
+      });
+
+      tableElement.children.push(rowElement);
+    }
   });
 
   return tableElement;
 }
 
+// MOVE to common utils in @yoopta/editor
 function deserializeTextNodes(nodes: NodeListOf<ChildNode>): Descendant[] {
   const deserializedNodes: Descendant[] = [];
 
@@ -123,6 +166,7 @@ function deserializeTextNodes(nodes: NodeListOf<ChildNode>): Descendant[] {
     }
   });
 
+  // @ts-ignore [FIXME] - Fix this
   if (deserializedNodes.length === 0 && !deserializedNodes[0]?.text) {
     deserializedNodes.push({ text: '' });
   }

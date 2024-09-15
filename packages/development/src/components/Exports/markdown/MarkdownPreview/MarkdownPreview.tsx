@@ -13,6 +13,7 @@ import { vscodeDark } from '@uiw/codemirror-theme-vscode';
 
 import NextLink from 'next/link';
 import { YOOPTA_PLUGINS } from '../../../../utils/yoopta/plugins';
+import { MARKS } from '../../../../utils/yoopta/marks';
 
 const LANGUAGES_MAP = {
   markdown: {

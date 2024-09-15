@@ -15,13 +15,7 @@ import Table, { TableCommands } from '@yoopta/table';
 import { uploadToCloudinary } from '../cloudinary';
 
 export const YOOPTA_PLUGINS = [
-  Table.extend({
-    events: {
-      onBeforeCreate: (editor) => {
-        return editor.commands.buildTableElements({ columns: 2, rows: 2, headerRow: true });
-      },
-    },
-  }),
+  Table,
   Accordion.extend({
     events: {
       onBeforeCreate: (editor) => {

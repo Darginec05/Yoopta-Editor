@@ -28,8 +28,6 @@ export const AccordionCommands: AccordionCommands = {
     // take props from block.elements
     const { props = { isExpanded: false }, items = 1 } = options;
 
-    console.log('buildAccordionElements', props, items);
-
     const accordionList: AccordionListElement = { id: generateId(), type: 'accordion-list', children: [] };
 
     for (let i = 0; i < items; i++) {

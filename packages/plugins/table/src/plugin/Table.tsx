@@ -4,13 +4,13 @@ import { TableDataCell } from '../elements/TableDataCell';
 import { TableRow } from '../elements/TableRow';
 import { TableElementMap } from '../types';
 import { TableCommands } from '../commands';
-import { TableIcon } from 'lucide-react';
 
 import { withTable } from '../extenstions/withTable';
 import { onKeyDown } from '../events/onKeyDown';
 import { TABLE_SLATE_TO_SELECTION_SET } from '../utils/weakMaps';
 import { deserializeTable } from '../parsers/html/deserialize';
 import { serializeTable } from '../parsers/html/serialize';
+import { serializeMarkown } from '../parsers/markdown/serialize';
 
 const Table = new YooptaPlugin<TableElementMap>({
   type: 'Table',
@@ -41,6 +41,9 @@ const Table = new YooptaPlugin<TableElementMap>({
     onBlur: (editor, slate) => () => {
       TABLE_SLATE_TO_SELECTION_SET.delete(slate);
     },
+    onBeforeCreate(editor, blockId) {
+      return TableCommands.buildTableElements(editor, { rows: 3, columns: 3 });
+    },
   },
   parsers: {
     html: {
@@ -50,14 +53,17 @@ const Table = new YooptaPlugin<TableElementMap>({
       },
       serialize: serializeTable,
     },
+    markdown: {
+      serialize: serializeMarkown,
+    },
   },
   extensions: withTable,
   options: {
     display: {
       title: 'Table',
       description: 'Add simple table',
-      icon: TableIcon,
     },
+    shortcuts: ['table', '||'],
   },
   commands: TableCommands,
 });

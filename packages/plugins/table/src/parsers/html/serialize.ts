@@ -32,6 +32,7 @@ export function serializeTable(element: SlateElement, text: string, blockMetaDat
   return serialized;
 }
 
+// MOVE to common utils in @yoopta/editor
 function serializeTextNodes(nodes: any[]): string {
   return nodes
     .map((node) => {
