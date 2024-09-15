@@ -20,8 +20,6 @@ export const YOOPTA_PLUGINS = [
       onBeforeCreate: (editor) => {
         return editor.commands.buildTableElements({ columns: 2, rows: 2, headerRow: true });
       },
-      onCreate: (editor, id) => {},
-      onDestroy: (editor, id) => {},
     },
   }),
   Accordion.extend({
@@ -59,19 +57,6 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Paragraph.extend({
-    events: {
-      onBeforeCreate: (editor) => {
-        console.log('Paragraph onBeforeCreate', editor.commands);
-
-        return editor.commands.buildParagraphElements({ text: 'Hello world' });
-      },
-      onDestroy: (editor, id) => {
-        console.log('Paragraph onDestroy', editor, id);
-      },
-      onCreate: (editor, id) => {
-        console.log('Paragraph onCreate', editor, id);
-      },
-    },
     options: {
       HTMLAttributes: {
         className: 'paragraph-element-extended',
@@ -237,4 +222,4 @@ export const YOOPTA_PLUGINS = [
       }),
     },
   }),
-] as const;
+];

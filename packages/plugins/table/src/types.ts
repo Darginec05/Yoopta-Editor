@@ -29,5 +29,3 @@ export type InsertTableOptions = {
   headerColumn?: boolean;
   headerRow?: boolean;
 };
-
-export type TableOptions = PluginOptions<InsertTableOptions>;

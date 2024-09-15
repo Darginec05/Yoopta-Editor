@@ -2,16 +2,17 @@ import { YooptaPlugin } from '@yoopta/editor';
 import { Table as TableRender } from '../elements/Table';
 import { TableDataCell } from '../elements/TableDataCell';
 import { TableRow } from '../elements/TableRow';
-import { TableElementMap, TableOptions } from '../types';
+import { TableElementMap } from '../types';
 import { TableCommands } from '../commands';
 import { TableIcon } from 'lucide-react';
 
 import { withTable } from '../extenstions/withTable';
 import { onKeyDown } from '../events/onKeyDown';
 import { TABLE_SLATE_TO_SELECTION_SET } from '../utils/weakMaps';
+import { deserializeTable } from '../parsers/html/deserialize';
+import { serializeTable } from '../parsers/html/serialize';
 
-// [TODO] - exports TableElementMap [in every plugin]
-const Table = new YooptaPlugin<TableElementMap, TableOptions>({
+const Table = new YooptaPlugin<TableElementMap>({
   type: 'Table',
   elements: {
     table: {
@@ -41,13 +42,17 @@ const Table = new YooptaPlugin<TableElementMap, TableOptions>({
       TABLE_SLATE_TO_SELECTION_SET.delete(slate);
     },
   },
+  parsers: {
+    html: {
+      deserialize: {
+        nodeNames: ['TABLE'],
+        parse: deserializeTable,
+      },
+      serialize: serializeTable,
+    },
+  },
   extensions: withTable,
   options: {
-    columnWidth: 200,
-    rows: 3,
-    columns: 3,
-    headerRow: true,
-    headerColumn: true,
     display: {
       title: 'Table',
       description: 'Add simple table',
