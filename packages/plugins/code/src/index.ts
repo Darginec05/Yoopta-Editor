@@ -8,5 +8,7 @@ declare module 'slate' {
   }
 }
 
+export { CodeCommands } from './commands';
+
 export default Code;
 export { CodeElement, CodeElementProps };

@@ -8,15 +8,20 @@ import Link from '@yoopta/link';
 import Video, { VideoElementProps } from '@yoopta/video';
 import File from '@yoopta/file';
 import Embed from '@yoopta/embed';
-import AccordionPlugin from '@yoopta/accordion';
+import Accordion, { AccordionCommands } from '@yoopta/accordion';
 import Code from '@yoopta/code';
+import Table, { TableCommands } from '@yoopta/table';
 
-import NextLink from 'next/link';
 import { uploadToCloudinary } from '../cloudinary';
-import { PluginElementRenderProps } from '@yoopta/editor';
 
 export const YOOPTA_PLUGINS = [
-  AccordionPlugin.extend({
+  Table,
+  Accordion.extend({
+    events: {
+      onBeforeCreate: (editor) => {
+        return AccordionCommands.buildAccordionElements(editor, { items: 2, props: { isExpanded: true } });
+      },
+    },
     elementProps: {
       'accordion-list-item': (props) => {
         return {
@@ -27,6 +32,11 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   File.extend({
+    events: {
+      onBeforeCreate: (editor) => {
+        return editor.commands.buildFileElements({ text: 'Hello world' });
+      },
+    },
     options: {
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file, 'auto');
@@ -48,6 +58,14 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Image.extend({
+    events: {
+      onDestroy: (editor, id) => {
+        console.log('Image onDestroy', editor, id);
+      },
+      onCreate: (editor, id) => {
+        console.log('Image onCreate', editor, id);
+      },
+    },
     elementProps: {
       image: (props: ImageElementProps) => ({
         ...props,
@@ -79,6 +97,14 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Headings.HeadingOne.extend({
+    events: {
+      onCreate: (editor, id) => {
+        console.log('HeadingOne onCreate', editor, id);
+      },
+      onDestroy: (editor, id) => {
+        console.log('HeadingOne onDestroy', editor, id);
+      },
+    },
     options: {
       HTMLAttributes: {
         className: 'heading-one-element-extended',

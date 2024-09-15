@@ -159,52 +159,25 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
   }, [editor.selection, editor.children, modals.link]);
 
   const onUpdateLink = (link: LinkValues) => {
-    const slate = findSlateBySelectionPath(editor);
+    if (!editor.selection) return;
+
+    const slate = Blocks.getSlate(editor, { at: editor.selection });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
       if (!slate.selection) return;
 
-      const linkNodeEntry = getLinkEntry(slate);
-
-      if (linkNodeEntry) {
-        const [linkNode] = linkNodeEntry as NodeEntry<SlateElement>;
-        const updatedNode = { props: { ...linkNode?.props, ...link } };
-
-        Transforms.setNodes<SlateElement>(slate, updatedNode, {
-          match: (n) => Element.isElement(n) && (n as SlateElement).type === 'link',
-        });
-
-        Editor.insertText(slate, link.title || link.url, { at: slate.selection });
-        Transforms.collapse(slate, { edge: 'end' });
-      } else {
-        const defaultLinkProps: Record<string, unknown> | undefined = editor.plugins?.LinkPlugin?.elements?.link?.props;
-
-        const linkNode = {
-          type: 'link',
-          children: [{ text: link.title }],
-          props: {
-            ...link,
-            target: defaultLinkProps?.target || link.target || '_self',
-            rel: defaultLinkProps?.rel || link.rel || 'noopener noreferrer',
-            nodeType: 'inline',
-          },
-        } as SlateElement;
-
-        Transforms.wrapNodes(slate, linkNode, { split: true, at: slate.selection });
-        Transforms.setNodes(
-          slate,
-          { text: link.title },
-          {
-            at: slate.selection,
-            mode: 'lowest',
-            match: (n) => !Editor.isEditor(n) && Element.isElement(n) && (n as SlateElement).type === 'link',
-          },
-        );
-
-        Editor.insertText(slate, link.title || link.url, { at: slate.selection });
-        Transforms.collapse(slate, { edge: 'end' });
-      }
+      const defaultLinkProps: Record<string, unknown> | undefined = editor.plugins?.LinkPlugin?.elements?.link?.props;
+      editor.commands.insertLink?.({
+        slate,
+        blockId: blockData?.id,
+        props: {
+          ...link,
+          target: defaultLinkProps?.target || link.target || '_self',
+          rel: defaultLinkProps?.rel || link.rel || 'noopener noreferrer',
+          nodeType: 'inline',
+        },
+      });
 
       editor.applyChanges();
       editor.emit('change', editor.children);
@@ -212,26 +185,16 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
       onChangeModal('link', false);
       setLinkValues(DEFAULT_LINK_VALUE);
       toggleHoldToolbar?.(false);
-
-      // if (lastSelection.current) {
-      //   try {
-      //     Transforms.select(slate, lastSelection.current);
-      //     Transforms.setSelection(slate, lastSelection.current);
-      //     lastSelection.current = null;
-      //   } catch (error) {}
-      // }
     });
   };
 
   const onDeleteLink = () => {
-    const slate = findSlateBySelectionPath(editor);
-    if (!slate || !slate.selection) return;
-    const linkNodeEntry = getLinkEntry(slate);
-    if (linkNodeEntry) {
-      Transforms.unwrapNodes(slate, {
-        match: (n) => !Editor.isEditor(n) && Element.isElement(n) && (n as SlateElement).type === 'link',
-      });
-    }
+    if (!editor.selection) return;
+    const slate = Blocks.getSlate(editor, { at: editor.selection });
+    if (!slate) return;
+
+    editor.commands.deleteLink?.({ slate });
+
     onChangeModal('link', false);
     setLinkValues(DEFAULT_LINK_VALUE);
     toggleHoldToolbar?.(false);

@@ -1,26 +1,27 @@
 import { HTMLAttributes, ReactElement, ReactNode } from 'react';
-import { Descendant, Editor, Path } from 'slate';
 import { RenderElementProps as RenderSlateElementProps, RenderLeafProps } from 'slate-react';
 import { SlateEditor, SlateElement, YooEditor, YooptaBlockBaseMeta, YooptaBlockData } from '../editor/types';
-import { YooptaMark } from '../marks';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS_TYPE } from '../utils/hotkeys';
 
-export type RenderPluginProps<TKeys extends string, TProps, TOptions> = {
-  id: string;
-  elements: Plugin<TKeys, TProps, TOptions>['elements'];
-  marks?: YooptaMark<unknown>[];
-};
+export enum NodeType {
+  Block = 'block',
+  Inline = 'inline',
+  Void = 'void',
+  InlineVoid = 'inlineVoid',
+}
 
-export type PluginOptions<T> = {
-  display?: {
-    title?: string;
-    description?: string;
-    icon?: string | ReactNode | ReactElement;
-  };
-  shortcuts?: string[];
-  HTMLAttributes?: HTMLAttributes<HTMLElement>;
-} & T;
+export type PluginOptions<T> = Partial<
+  {
+    display?: {
+      title?: string;
+      description?: string;
+      icon?: string | ReactNode | ReactElement;
+    };
+    shortcuts?: string[];
+    HTMLAttributes?: HTMLAttributes<HTMLElement>;
+  } & T
+>;
 
 export type PluginElementOptions = {
   draggable?: boolean;
@@ -69,12 +70,24 @@ export type PluginEventHandlerOptions = {
   currentBlock: YooptaBlockData;
 };
 
-export type Plugin<TKeys extends string = string, TProps = Descendant, TOptions = Record<string, unknown>> = {
+export type ElementPropsMap = Record<string, Record<string, unknown>>;
+
+export type PluginEvents = {
+  onBeforeCreate?: (editor: YooEditor, blockId: string) => SlateElement;
+  onCreate?: (editor: YooEditor, blockId: string) => void;
+  onDestroy?: (editor: YooEditor, blockId: string) => void;
+} & EventHandlers;
+
+export type Plugin<TElementMap extends Record<string, SlateElement>, TPluginOptions = Record<string, unknown>> = {
   type: string;
   customEditor?: (props: PluginCustomEditorRenderProps) => JSX.Element;
-  elements: PluginElementsMap<TKeys, TProps>;
-  events?: EventHandlers;
-  options?: PluginOptions<TOptions>;
+  extensions?: (slate: SlateEditor, editor: YooEditor, blockId: string) => SlateEditor;
+  commands?: Record<string, (editor: YooEditor, ...args: any[]) => any>;
+  elements: {
+    [K in keyof TElementMap]: PluginElement<TElementMap[K]['props']>;
+  };
+  events?: PluginEvents;
+  options?: PluginOptions<TPluginOptions>;
   parsers?: Partial<Record<PluginParserTypes, PluginParsers>>;
 };
 

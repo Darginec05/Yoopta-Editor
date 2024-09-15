@@ -13,3 +13,9 @@ export type TodoListElement = SlateElement<'todo-list', TodoListElementProps>;
 export type TodoListElementProps = {
   checked: boolean;
 };
+
+export type ListElementMap = {
+  'bulleted-list': BulletedListElement;
+  'numbered-list': NumberedListElement;
+  'todo-list': TodoListElement;
+};

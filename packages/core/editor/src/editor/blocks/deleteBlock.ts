@@ -22,13 +22,19 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
       if (block) {
         delete editor.children[block.id];
         delete editor.blockEditorsMap[block.id];
+
+        const plugin = editor.plugins[block.type];
+        const pluginEvents = plugin.events || {};
+        const { onDestroy } = pluginEvents;
+
+        onDestroy?.(editor, block.id);
       }
     });
 
     // Reorder blocks
-    const pluginKeys = Object.keys(editor.children);
+    const blockDataKeys = Object.keys(editor.children);
 
-    pluginKeys.forEach((id, index) => {
+    blockDataKeys.forEach((id, index) => {
       editor.children[id].meta.order = index;
     });
 
@@ -60,18 +66,26 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
   editor.children = createDraft(editor.children);
 
   const [position] = at;
-  const pluginKeys = Object.keys(editor.children);
+  const blockDataKeys = Object.keys(editor.children);
 
-  const pluginToDeleteId = pluginKeys.find((id) => editor.children[id].meta.order === position);
+  const blockIdToDelete = blockDataKeys.find((id) => editor.children[id].meta.order === position);
 
-  pluginKeys.forEach((blockId) => {
-    const plugin = editor.children[blockId];
-    if (plugin.meta.order > position) plugin.meta.order -= 1;
+  blockDataKeys.forEach((blockId) => {
+    const blockData = editor.children[blockId];
+    if (blockData.meta.order > position) blockData.meta.order -= 1;
   });
 
-  if (pluginToDeleteId) {
-    delete editor.children[pluginToDeleteId];
-    delete editor.blockEditorsMap[pluginToDeleteId];
+  if (blockIdToDelete) {
+    const block = editor.children[blockIdToDelete];
+    const plugin = editor.plugins[block.type];
+
+    delete editor.children[blockIdToDelete];
+    delete editor.blockEditorsMap[blockIdToDelete];
+
+    const pluginEvents = plugin.events || {};
+    const { onDestroy } = pluginEvents;
+
+    onDestroy?.(editor, blockIdToDelete);
   }
 
   editor.children = finishDraft(editor.children);

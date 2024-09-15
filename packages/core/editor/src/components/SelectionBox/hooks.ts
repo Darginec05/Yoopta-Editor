@@ -62,13 +62,6 @@ export const useRectangeSelectionBox = ({ editor, root }: RectangeSelectionProps
 
     if (isInsideEditor) return;
 
-    // const slate = findSlateBySelectionPath(editor);
-    // if (slate) {
-    // ReactEditor.blur(slate);
-    // ReactEditor.deselect(slate);
-    // Transforms.deselect(slate);
-    // }
-
     setState({
       origin: [event.pageX, event.pageY - window.pageYOffset],
       coords: [event.pageX, event.pageY - window.pageYOffset],

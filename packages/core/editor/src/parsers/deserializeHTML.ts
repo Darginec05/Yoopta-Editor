@@ -149,7 +149,6 @@ export function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames
   if (plugin) {
     if (Array.isArray(plugin)) {
       const blocks = plugin.map((p) => buildBlock(editor, p, el as HTMLElement, children)).filter(Boolean);
-      console.log('blocks', blocks);
 
       return blocks;
     }

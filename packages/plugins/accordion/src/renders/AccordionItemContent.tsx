@@ -1,5 +1,4 @@
 import { Elements, PluginElementRenderProps, useYooptaEditor } from '@yoopta/editor';
-import { Path } from 'slate';
 
 export const AccordionItemContent = ({ extendRender, ...props }: PluginElementRenderProps) => {
   const { attributes, children, blockId, element } = props;

@@ -1,8 +1,10 @@
 import { YooptaPlugin } from '@yoopta/editor';
 import { Element, Transforms } from 'slate';
+import { ParagraphCommands } from '../commands';
+import { ParagraphElement, ParagraphElementMap } from '../types';
 import { ParagraphRender } from '../ui/Paragraph';
 
-const Paragraph = new YooptaPlugin({
+const Paragraph = new YooptaPlugin<ParagraphElementMap>({
   type: 'Paragraph',
   elements: {
     paragraph: {
@@ -32,6 +34,7 @@ const Paragraph = new YooptaPlugin({
       },
     },
   },
+  commands: ParagraphCommands,
 });
 
 export { Paragraph };

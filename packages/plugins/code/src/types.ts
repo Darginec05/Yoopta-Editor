@@ -14,3 +14,7 @@ export type CodePluginBlockOptions = {
 };
 
 export type CodeElement = SlateElement<'code', CodeElementProps>;
+
+export type CodeElementMap = {
+  code: CodeElement;
+};

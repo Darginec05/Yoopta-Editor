@@ -8,5 +8,7 @@ declare module 'slate' {
   }
 }
 
+export { VideoCommands } from './commands';
+
 export default Video;
 export { VideoElement, VideoElementProps, VideoUploadResponse };

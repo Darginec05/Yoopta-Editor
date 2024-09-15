@@ -8,5 +8,7 @@ declare module 'slate' {
   }
 }
 
+export { ImageCommands } from './commands';
+
 export default Image;
 export { ImageElement, ImageElementProps, ImageUploadResponse };

@@ -1,7 +1,9 @@
 import { useYooptaTools } from '../../contexts/YooptaContext/ToolsContext';
 import { useFloating, offset, flip, inline, shift, useTransitionStyles, autoUpdate } from '@floating-ui/react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { buildActionMenuRenderProps } from '../../UI/BlockOptions/utils';
+import { YooptaBlockData } from '../../editor/types';
+import { Transform } from '@dnd-kit/utilities';
 
 export const useActionMenuToolRefs = ({ editor }) => {
   const tools = useYooptaTools();
@@ -46,4 +48,25 @@ export const useActionMenuToolRefs = ({ editor }) => {
     onCloseActionMenu,
     ActionMenu,
   };
+};
+
+export const useBlockStyles = (
+  block: YooptaBlockData,
+  transform: Transform | null,
+  transition: string | undefined,
+  isDragging: boolean,
+  isOver: boolean,
+) => {
+  return useMemo(
+    () => ({
+      container: {
+        marginLeft: `${block.meta.depth * 20}px`,
+        transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : 'none',
+        transition,
+        opacity: isDragging ? 0.7 : 1,
+      },
+      content: isOver && !isDragging ? { borderBottom: '2px solid #007aff' } : undefined,
+    }),
+    [block.meta.depth, transform, transition, isDragging, isOver],
+  );
 };

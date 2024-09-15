@@ -1,5 +1,6 @@
 import { Elements, generateId, YooptaPlugin } from '@yoopta/editor';
 import { Element, Transforms } from 'slate';
+import { BlockquoteCommands } from '../commands';
 import { BlockquoteRender } from '../ui/Blockquote';
 
 const Blockquote = new YooptaPlugin({
@@ -16,6 +17,7 @@ const Blockquote = new YooptaPlugin({
     },
     shortcuts: ['>'],
   },
+  commands: BlockquoteCommands,
   parsers: {
     html: {
       deserialize: {

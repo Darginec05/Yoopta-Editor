@@ -1,41 +1,41 @@
+import React, { useCallback, useMemo } from 'react';
 import { useYooptaEditor } from '../../contexts/YooptaContext/YooptaContext';
 import { useSortable } from '@dnd-kit/sortable';
-import { CSSProperties, useState } from 'react';
 import { BlockActions } from './BlockActions';
+import { YooptaBlockData } from '../../editor/types';
+import { useBlockStyles } from './hooks';
 
-const Block = ({ children, block, blockId }) => {
+type BlockProps = {
+  children: React.ReactNode;
+  block: YooptaBlockData;
+  blockId: string;
+};
+
+const Block = ({ children, block, blockId }: BlockProps) => {
   const editor = useYooptaEditor();
+  const [activeBlockId, setActiveBlockId] = React.useState<string | null>(null);
 
-  const [activeBlockId, setActiveBlockId] = useState<string | null>(null);
   const { attributes, listeners, setNodeRef, setActivatorNodeRef, transform, transition, isOver, isDragging } =
     useSortable({ id: blockId, disabled: editor.readOnly });
+  const styles = useBlockStyles(block, transform, transition, isDragging, isOver);
 
   const align = block.meta.align || 'left';
   const className = `yoopta-block yoopta-align-${align}`;
 
-  const style: CSSProperties = {
-    // [TODO] = handle max depth
-    marginLeft: `${block.meta.depth * 20}px`,
-    transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : 'none',
-    transition,
-    opacity: isDragging ? 0.7 : 1,
-  };
-
   const isSelected = editor.selectedBlocks?.includes(block.meta.order);
   const isHovered = activeBlockId === blockId;
 
-  const onChangeActiveBlock = (id: string) => setActiveBlockId(id);
-
-  const handleMouseEnter = () => {
+  const handleMouseEnter = useCallback(() => {
     if (editor.readOnly) return;
     setActiveBlockId(blockId);
-  };
-  const handleMouseLeave = () => {
+  }, [editor.readOnly, blockId]);
+
+  const handleMouseLeave = useCallback(() => {
     if (editor.readOnly) return;
     setActiveBlockId(null);
-  };
+  }, [editor.readOnly]);
 
-  const contentStyles = { borderBottom: isOver && !isDragging ? '2px solid #007aff' : 'none' };
+  const dragHandleProps = useMemo(() => ({ setActivatorNodeRef, attributes, listeners }), [block]);
 
   return (
     <div
@@ -43,7 +43,7 @@ const Block = ({ children, block, blockId }) => {
       className={className}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      style={style}
+      style={styles.container}
       data-hovered-block={isHovered}
       data-yoopta-block
       data-yoopta-block-id={blockId}
@@ -53,17 +53,12 @@ const Block = ({ children, block, blockId }) => {
         <BlockActions
           block={block}
           editor={editor}
-          dragHandleProps={{ setActivatorNodeRef, attributes, listeners }}
+          dragHandleProps={dragHandleProps}
           showActions={isHovered}
-          onChangeActiveBlock={onChangeActiveBlock}
+          onChangeActiveBlock={setActiveBlockId}
         />
       )}
-      <div
-        // [TODO] - check in which direction is dragging
-        style={contentStyles}
-      >
-        {children}
-      </div>
+      <div style={styles.content}>{children}</div>
       {isSelected && !editor.readOnly && <div className="yoopta-selection-block" />}
     </div>
   );
