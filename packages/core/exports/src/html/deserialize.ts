@@ -80,6 +80,7 @@ function buildBlock(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElement
   if (plugin.parse) {
     nodeElementOrBlocks = plugin.parse(el as HTMLElement, editor);
 
+    // @ts-ignore [FIXME] - fix types
     const isInline = Element.isElement(nodeElementOrBlocks) && nodeElementOrBlocks.props?.nodeType === 'inline';
     if (isInline) return nodeElementOrBlocks;
   }
@@ -93,12 +94,13 @@ function buildBlock(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElement
   let rootNode: SlateElement<string, any> | YooptaBlockData[] = {
     id: generateId(),
     type: rootElementType,
-    children: isVoid && !block.hasCustomEditor ? [{ text: '' }] : children.map(mapNodeChildren),
+    children: isVoid && !block.hasCustomEditor ? [{ text: '' }] : children.map(mapNodeChildren).flat(),
     props: { nodeType: 'block', ...rootElement.props },
   };
 
   if (nodeElementOrBlocks) {
     if (Element.isElement(nodeElementOrBlocks)) {
+      // @ts-ignore [FIXME] - fix types
       rootNode = nodeElementOrBlocks;
     } else if (Array.isArray(nodeElementOrBlocks)) {
       const blocks = nodeElementOrBlocks;
@@ -106,8 +108,8 @@ function buildBlock(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElement
     }
   }
 
-  if (rootNode.children.length === 0) {
-    rootNode.children = [{ text: '' }];
+  if ((rootNode as SlateElement).children.length === 0) {
+    (rootNode as SlateElement).children = [{ text: '' }];
   }
 
   if (!nodeElementOrBlocks && plugin.parse) return;
@@ -118,7 +120,7 @@ function buildBlock(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElement
   const blockData = buildBlockData({
     id: generateId(),
     type: plugin.type,
-    value: [rootNode],
+    value: [rootNode as SlateElement],
     meta: {
       order: 0,
       depth,
@@ -129,38 +131,45 @@ function buildBlock(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElement
   return blockData;
 }
 
-export function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames, el: HTMLElement | ChildNode) {
+function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames, el: HTMLElement | ChildNode) {
   if (el.nodeType === 3) {
     const text = el.textContent?.replace(/[\t\n\r\f\v]+/g, ' ');
-    return text;
+    return { text };
   } else if (el.nodeType !== 1) {
     return null;
   } else if (el.nodeName === 'BR') {
-    return '\n';
+    return { text: '\n' };
   }
 
-  const parent = el;
-
+  const parent = el as HTMLElement;
   let children = Array.from(parent.childNodes)
     .map((node) => deserialize(editor, pluginsMap, node))
-    .flat();
+    .flat()
+    .filter(Boolean);
 
-  if (MARKS_NODE_NAME_MATCHERS_MAP[el.nodeName]) {
-    const mark = MARKS_NODE_NAME_MATCHERS_MAP[el.nodeName];
+  if (MARKS_NODE_NAME_MATCHERS_MAP[parent.nodeName]) {
+    const mark = MARKS_NODE_NAME_MATCHERS_MAP[parent.nodeName];
     const markType = mark.type;
-    const text = el.textContent?.replace(/[\t\n\r\f\v]+/g, ' ');
-    return { [markType]: true, text };
+
+    return children.map((child) => {
+      if (typeof child === 'string') {
+        return { [markType]: true, text: child };
+      } else if (child.text) {
+        return { ...child, [markType]: true };
+      }
+      return child;
+    });
   }
 
-  const plugin = pluginsMap[el.nodeName];
+  const plugin = pluginsMap[parent.nodeName];
 
   if (plugin) {
     if (Array.isArray(plugin)) {
-      const blocks = plugin.map((p) => buildBlock(editor, p, el as HTMLElement, children)).filter(Boolean);
+      const blocks = plugin.map((p) => buildBlock(editor, p, parent, children)).filter(Boolean);
       return blocks;
     }
 
-    return buildBlock(editor, plugin, el as HTMLElement, children);
+    return buildBlock(editor, plugin, parent, children);
   }
 
   return children;
@@ -176,7 +185,7 @@ function mapNodeChildren(child) {
   }
 
   if (Array.isArray(child)) {
-    return { text: child[0] };
+    return child.map(mapNodeChildren).flat();
   }
 
   if (child?.text) {
@@ -185,13 +194,7 @@ function mapNodeChildren(child) {
 
   if (isYooptaBlock(child)) {
     const block = child as YooptaBlockData;
-    let text = '';
-
-    block.value[0].children.forEach((child) => {
-      text += `${child.text}`;
-    });
-
-    return { text };
+    return (block.value[0] as SlateElement).children.map(mapNodeChildren).flat();
   }
 
   return { text: '' };
@@ -200,6 +203,8 @@ function mapNodeChildren(child) {
 export function deserializeHTML(editor: YooEditor, htmlString: string): YooptaContentValue {
   const parsedHtml = new DOMParser().parseFromString(htmlString, 'text/html');
   const value: YooptaContentValue = {};
+
+  console.log('parsedHtml.body', parsedHtml.body);
 
   const PLUGINS_NODE_NAME_MATCHERS_MAP = getMappedPluginByNodeNames(editor);
   const blocks = deserialize(editor, PLUGINS_NODE_NAME_MATCHERS_MAP, parsedHtml.body).filter(

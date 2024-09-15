@@ -35,6 +35,7 @@ const TableColumnOptions = ({ editor, blockId, element, onClose, ...props }: Pro
     let path = Elements.getElementPath(editor, blockId, element);
     if (!path) return;
 
+    // @ts-ignore [FIXME] - fix types
     TableCommands.deleteTableColumn(editor, blockId, { path });
     onClose();
   };
@@ -43,6 +44,7 @@ const TableColumnOptions = ({ editor, blockId, element, onClose, ...props }: Pro
     const slate = editor.blockEditorsMap[blockId];
     const tdElementEntry = Elements.getElementEntry(editor, blockId, {
       type: 'table-data-cell',
+      // @ts-ignore [FIXME] - fix types
       path: slate.selection,
     });
 
@@ -66,6 +68,7 @@ const TableColumnOptions = ({ editor, blockId, element, onClose, ...props }: Pro
 
     const tdElementEntry = Elements.getElementEntry(editor, blockId, {
       type: 'table-data-cell',
+      // @ts-ignore [FIXME] - fix types
       path: slate.selection,
     });
 
