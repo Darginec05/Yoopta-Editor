@@ -85,7 +85,7 @@ function buildBlock(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElement
   let rootNode: SlateElement<string, any> | YooptaBlockData[] = {
     id: generateId(),
     type: rootElementType,
-    children: isVoid && !block.hasCustomEditor ? [{ text: '' }] : children.map(mapNodeChildren),
+    children: isVoid && !block.hasCustomEditor ? [{ text: '' }] : children.map(mapNodeChildren).flat(),
     props: { nodeType: 'block', ...rootElement.props },
   };
 
@@ -175,7 +175,7 @@ function mapNodeChildren(child) {
   }
 
   if (Array.isArray(child)) {
-    return child.map(mapNodeChildren);
+    return child.map(mapNodeChildren).flat();
   }
 
   if (child?.text) {
@@ -184,7 +184,7 @@ function mapNodeChildren(child) {
 
   if (isYooptaBlock(child)) {
     const block = child as YooptaBlockData;
-    return (block.value[0] as SlateElement).children.map(mapNodeChildren);
+    return (block.value[0] as SlateElement).children.map(mapNodeChildren).flat();
   }
 
   return { text: '' };
