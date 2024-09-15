@@ -43,8 +43,6 @@ export function deserializeTable(el: HTMLElement, editor: YooEditor) {
         cellElement.props.asHeader = false;
       }
 
-      console.log('td element', td);
-
       if (td.nodeName === 'TD' || td.nodeName === 'TH') {
         if (td?.hasAttribute('data-width')) {
           cellElement.props.width = parseInt((td as HTMLElement).getAttribute('data-width') || '200', 10);
@@ -58,8 +56,6 @@ export function deserializeTable(el: HTMLElement, editor: YooEditor) {
 
     tableElement.children.push(rowElement);
   });
-
-  console.log('tableElement', tableElement);
 
   return tableElement;
 }

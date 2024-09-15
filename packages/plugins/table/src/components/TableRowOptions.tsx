@@ -22,31 +22,11 @@ export type Props = {
 
 const TableRowOptions = ({ editor, blockId, onClose, tdElement, ...props }: Props) => {
   const insertRowBefore = () => {
-    const slate = editor.blockEditorsMap[blockId];
-    console.log('insertRowBefore', slate.selection);
-
-    // const tdPath = Elements.getElementPath(editor, blockId, tdElement);
-    // const trElement = Elements.getElement(editor, blockId, { type: 'table-row', path: tdPath });
-    // if (!trElement) return;
-
-    // let path = Elements.getElementPath(editor, blockId, trElement);
-
     TableCommands.insertTableRow(editor, blockId, { insertMode: 'before', select: true });
     onClose();
   };
 
   const insertRowAfter = () => {
-    const slate = editor.blockEditorsMap[blockId];
-    console.log('insertRowAfter', slate.selection);
-
-    // const tdPath = Elements.getElementPath(editor, blockId, tdElement);
-    // const trElement = Elements.getElement(editor, blockId, { type: 'table-row', path: tdPath });
-    // if (!trElement) return;
-
-    // let path = Elements.getElementPath(editor, blockId, trElement);
-    // let nextPath;
-    // if (path) nextPath = Path.next(path);
-
     TableCommands.insertTableRow(editor, blockId, { insertMode: 'after', select: true });
     onClose();
   };
@@ -57,6 +37,7 @@ const TableRowOptions = ({ editor, blockId, onClose, tdElement, ...props }: Prop
     if (!trElement) return;
 
     let path = Elements.getElementPath(editor, blockId, trElement);
+    // @ts-ignore [FIXME] - Fix this
     TableCommands.deleteTableRow(editor, blockId, { path });
     onClose();
   };

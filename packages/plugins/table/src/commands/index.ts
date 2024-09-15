@@ -1,6 +1,6 @@
 import { Blocks, buildBlockData, Elements, generateId, SlateElement, YooEditor, YooptaBlockPath } from '@yoopta/editor';
 import { Editor, Element, Path, Span, Transforms } from 'slate';
-import { InsertTableOptions, TableCellElement, TableElement, TableOptions, TableRowElement } from '../types';
+import { InsertTableOptions, TableCellElement, TableElement, TableRowElement } from '../types';
 
 type Options = {
   path?: Location | Span;
@@ -38,15 +38,7 @@ export type TableCommands = {
 
 export const TableCommands: TableCommands = {
   buildTableElements: (editor: YooEditor, options?: InsertOptions) => {
-    const tablePluginOptions = editor.plugins.Table.options as TableOptions;
-
-    const {
-      rows = (tablePluginOptions.rows || 3) as number,
-      columns = (tablePluginOptions.columns || 3) as number,
-      columnWidth = (tablePluginOptions.columnWidth || 200) as number,
-      headerColumn = tablePluginOptions.headerColumn,
-      headerRow = tablePluginOptions.headerRow,
-    } = options || {};
+    const { rows = 3, columns = 3, columnWidth = 200, headerColumn = false, headerRow = false } = options || {};
 
     const table: TableElement = {
       id: generateId(),
@@ -92,13 +84,14 @@ export const TableCommands: TableCommands = {
     editor.deleteBlock({ blockId });
   },
   insertTableRow: (editor: YooEditor, blockId: string, options?: Options) => {
-    const slate = editor.blockEditorsMap[blockId];
+    const slate = Blocks.getSlate(editor, { id: blockId });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
       const { insertMode = 'after', path = slate.selection, select = true } = options || {};
 
       const currentRowElementEntryByPath = Elements.getElementEntry(editor, blockId, {
+        // @ts-ignore [FIXME] - Fix this
         path,
         type: 'table-row',
       });
@@ -130,13 +123,14 @@ export const TableCommands: TableCommands = {
     });
   },
   deleteTableRow: (editor: YooEditor, blockId: string, options?: DeleteOptions) => {
-    const slate = editor.blockEditorsMap[blockId];
+    const slate = Blocks.getSlate(editor, { id: blockId });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
       const { path = slate.selection } = options || {};
 
       const currentRowElementEntryByPath = Elements.getElementEntry(editor, blockId, {
+        // @ts-ignore [FIXME] - Fix this
         path,
         type: 'table-row',
       });
@@ -161,7 +155,7 @@ export const TableCommands: TableCommands = {
     });
   },
   moveTableRow: (editor: YooEditor, blockId: string, { from, to }: MoveTableOptions) => {
-    const slate = editor.blockEditorsMap[blockId];
+    const slate = Blocks.getSlate(editor, { id: blockId });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
@@ -173,7 +167,7 @@ export const TableCommands: TableCommands = {
     });
   },
   moveTableColumn: (editor: YooEditor, blockId: string, { from, to }: MoveTableOptions) => {
-    const slate = editor.blockEditorsMap[blockId];
+    const slate = Blocks.getSlate(editor, { id: blockId });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
@@ -193,13 +187,14 @@ export const TableCommands: TableCommands = {
     });
   },
   insertTableColumn: (editor: YooEditor, blockId: string, options?: Options) => {
-    const slate = editor.blockEditorsMap[blockId];
+    const slate = Blocks.getSlate(editor, { id: blockId });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
       const { insertMode = 'after', path = slate.selection, select = true } = options || {};
 
       const dataCellElementEntryByPath = Elements.getElementEntry(editor, blockId, {
+        // @ts-ignore [FIXME] - Fix this
         path,
         type: 'table-data-cell',
       });
@@ -233,7 +228,7 @@ export const TableCommands: TableCommands = {
     });
   },
   deleteTableColumn: (editor: YooEditor, blockId: string, options?: DeleteOptions) => {
-    const slate = editor.blockEditorsMap[blockId];
+    const slate = Blocks.getSlate(editor, { id: blockId });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
@@ -249,6 +244,7 @@ export const TableCommands: TableCommands = {
       if (rows[0][0].children.length <= 1) return;
 
       const dataCellElementEntryByPath = Elements.getElementEntry(editor, blockId, {
+        // @ts-ignore [FIXME] - Fix this
         path,
         type: 'table-data-cell',
       });
@@ -271,7 +267,7 @@ export const TableCommands: TableCommands = {
     });
   },
   updateColumnWidth: (editor: YooEditor, blockId: string, columnIndex: number, width: number) => {
-    const slate = editor.blockEditorsMap[blockId];
+    const slate = Blocks.getSlate(editor, { id: blockId });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
@@ -296,7 +292,7 @@ export const TableCommands: TableCommands = {
     });
   },
   toggleHeaderRow: (editor: YooEditor, blockId: string) => {
-    const slate = editor.blockEditorsMap[blockId];
+    const slate = Blocks.getSlate(editor, { id: blockId });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
@@ -331,7 +327,7 @@ export const TableCommands: TableCommands = {
     });
   },
   toggleHeaderColumn: (editor: YooEditor, blockId: string) => {
-    const slate = editor.blockEditorsMap[blockId];
+    const slate = Blocks.getSlate(editor, { id: blockId });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
