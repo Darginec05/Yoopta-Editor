@@ -1,4 +1,4 @@
-import { generateId, YooptaPlugin } from '@yoopta/editor';
+import { deserializeTextNodes, generateId, serializeTextNodes, YooptaPlugin } from '@yoopta/editor';
 import { CSSProperties } from 'react';
 import { CalloutCommands } from '../commands';
 import { CalloutElementMap, CalloutTheme } from '../types';
@@ -27,14 +27,14 @@ const Callout = new YooptaPlugin<CalloutElementMap>({
     html: {
       deserialize: {
         nodeNames: ['DL'],
-        parse(el) {
+        parse(el, editor) {
           if (el.nodeName === 'DL' || el.nodeName === 'DIV') {
             const theme = el.getAttribute('data-theme') as CalloutTheme;
 
             return {
               id: generateId(),
               type: 'callout',
-              children: [{ text: el.textContent || '' }],
+              children: deserializeTextNodes(editor, el.childNodes),
               props: {
                 theme,
               },
@@ -50,7 +50,9 @@ const Callout = new YooptaPlugin<CalloutElementMap>({
           element.props?.theme || 'default'
         }" data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}; padding: .5rem .5rem .5rem 1rem; margin-top: .5rem; border-radius: .375rem; color: ${
           theme.color
-        }; border-left: ${theme.borderLeft || 0}; background-color: ${theme.backgroundColor}">${text}</dl>`;
+        }; border-left: ${theme.borderLeft || 0}; background-color: ${theme.backgroundColor}">${serializeTextNodes(
+          element.children,
+        )}</dl>`;
       },
     },
     markdown: {

@@ -1,4 +1,4 @@
-import { generateId, YooEditor } from '@yoopta/editor';
+import { deserializeTextNodes, generateId, YooEditor } from '@yoopta/editor';
 import { Descendant } from 'slate';
 import { TableElement, TableRowElement } from '../../types';
 
@@ -46,7 +46,7 @@ export function deserializeTable(el: HTMLElement, editor: YooEditor) {
           cellElement.props.width = parseInt((th as HTMLElement).getAttribute('data-width') || '200', 10);
         }
 
-        let textNodes = deserializeTextNodes(th.childNodes);
+        let textNodes = deserializeTextNodes(editor, th.childNodes);
         // @ts-ignore [FIXME] - Fix this
         cellElement.children = textNodes;
         rowElement.children.push(cellElement);
@@ -90,7 +90,7 @@ export function deserializeTable(el: HTMLElement, editor: YooEditor) {
             cellElement.props.width = parseInt((td as HTMLElement).getAttribute('data-width') || '200', 10);
           }
 
-          let textNodes = deserializeTextNodes(td.childNodes);
+          let textNodes = deserializeTextNodes(editor, td.childNodes);
           // @ts-ignore [FIXME] - Fix this
           cellElement.children = textNodes;
           rowElement.children.push(cellElement);
@@ -102,76 +102,4 @@ export function deserializeTable(el: HTMLElement, editor: YooEditor) {
   });
 
   return tableElement;
-}
-
-// MOVE to common utils in @yoopta/editor
-function deserializeTextNodes(nodes: NodeListOf<ChildNode>): Descendant[] {
-  const deserializedNodes: Descendant[] = [];
-
-  nodes.forEach((node) => {
-    if (node.nodeType === Node.TEXT_NODE) {
-      deserializedNodes.push({
-        text: node.textContent || '',
-      });
-    }
-
-    if (node.nodeType === Node.ELEMENT_NODE) {
-      const element = node as HTMLElement;
-
-      if (element.nodeName === 'B') {
-        deserializedNodes.push({
-          bold: true,
-          ...deserializeTextNodes(element.childNodes)[0],
-        });
-      }
-
-      if (element.nodeName === 'I') {
-        deserializedNodes.push({
-          italic: true,
-          ...deserializeTextNodes(element.childNodes)[0],
-        });
-      }
-
-      if (element.nodeName === 'S') {
-        deserializedNodes.push({
-          strike: true,
-          ...deserializeTextNodes(element.childNodes)[0],
-        });
-      }
-
-      if (element.nodeName === 'U') {
-        deserializedNodes.push({
-          underline: true,
-          ...deserializeTextNodes(element.childNodes)[0],
-        });
-      }
-
-      if (element.nodeName === 'CODE') {
-        deserializedNodes.push({
-          code: true,
-          ...deserializeTextNodes(element.childNodes)[0],
-        });
-      }
-
-      if (element.nodeName === 'A') {
-        deserializedNodes.push({
-          id: generateId(),
-          type: 'link',
-          props: {
-            url: element.getAttribute('href') || '',
-            target: element.getAttribute('target') || '',
-            rel: element.getAttribute('rel') || '',
-          },
-          children: deserializeTextNodes(element.childNodes),
-        });
-      }
-    }
-  });
-
-  // @ts-ignore [FIXME] - Fix this
-  if (deserializedNodes.length === 0 && !deserializedNodes[0]?.text) {
-    deserializedNodes.push({ text: '' });
-  }
-
-  return deserializedNodes;
 }

@@ -1,4 +1,11 @@
-import { buildBlockData, generateId, YooptaBlockData, YooptaPlugin } from '@yoopta/editor';
+import {
+  buildBlockData,
+  deserializeTextNodes,
+  generateId,
+  serializeTextNodes,
+  YooptaBlockData,
+  YooptaPlugin,
+} from '@yoopta/editor';
 import { Element, Transforms } from 'slate';
 import { BulletedListCommands } from '../commands';
 import { BulletedListRender } from '../elements/BulletedList';
@@ -27,7 +34,7 @@ const BulletedList = new YooptaPlugin<Pick<ListElementMap, 'bulleted-list'>>({
     html: {
       deserialize: {
         nodeNames: ['UL'],
-        parse(el) {
+        parse(el, editor) {
           if (el.nodeName === 'UL') {
             const listItems = el.querySelectorAll('li');
 
@@ -51,7 +58,7 @@ const BulletedList = new YooptaPlugin<Pick<ListElementMap, 'bulleted-list'>>({
                     {
                       id: generateId(),
                       type: 'bulleted-list',
-                      children: [{ text: textContent }],
+                      children: deserializeTextNodes(editor, listItem.childNodes),
                       props: { nodeType: 'block' },
                     },
                   ],
@@ -66,7 +73,9 @@ const BulletedList = new YooptaPlugin<Pick<ListElementMap, 'bulleted-list'>>({
       serialize: (element, text, blockMeta) => {
         const { align = 'left', depth = 0 } = blockMeta || {};
 
-        return `<ul data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}"><li>${text}</li></ul>`;
+        return `<ul data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}"><li>${serializeTextNodes(
+          element.children,
+        )}</li></ul>`;
       },
     },
     markdown: {

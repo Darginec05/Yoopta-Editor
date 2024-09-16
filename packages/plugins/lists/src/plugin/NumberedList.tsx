@@ -1,8 +1,15 @@
-import { YooptaPlugin, buildBlockData, YooptaBlockData, generateId } from '@yoopta/editor';
+import {
+  YooptaPlugin,
+  buildBlockData,
+  YooptaBlockData,
+  generateId,
+  deserializeTextNodes,
+  serializeTextNodes,
+} from '@yoopta/editor';
 import { NumberedListCommands } from '../commands';
 import { NumberedListRender } from '../elements/NumberedList';
 import { onKeyDown } from '../events/onKeyDown';
-import { ListElementMap, ListElementProps } from '../types';
+import { ListElementMap } from '../types';
 
 const NumberedList = new YooptaPlugin<Pick<ListElementMap, 'numbered-list'>>({
   type: 'NumberedList',
@@ -29,7 +36,7 @@ const NumberedList = new YooptaPlugin<Pick<ListElementMap, 'numbered-list'>>({
     html: {
       deserialize: {
         nodeNames: ['OL'],
-        parse(el) {
+        parse(el, editor) {
           if (el.nodeName === 'OL') {
             const listItems = el.querySelectorAll('li');
 
@@ -44,8 +51,6 @@ const NumberedList = new YooptaPlugin<Pick<ListElementMap, 'numbered-list'>>({
                 return !isTodoListItem;
               })
               .map((listItem, i) => {
-                const textContent = listItem.textContent || '';
-
                 return buildBlockData({
                   id: generateId(),
                   type: 'NumberedList',
@@ -53,13 +58,14 @@ const NumberedList = new YooptaPlugin<Pick<ListElementMap, 'numbered-list'>>({
                     {
                       id: generateId(),
                       type: 'numbered-list',
-                      children: [{ text: textContent }],
+                      children: deserializeTextNodes(editor, listItem.childNodes),
                       props: { nodeType: 'block' },
                     },
                   ],
                   meta: { order: 0, depth, align },
                 });
               });
+
             if (numberedListBlocks.length > 0) return numberedListBlocks;
           }
         },
@@ -67,7 +73,9 @@ const NumberedList = new YooptaPlugin<Pick<ListElementMap, 'numbered-list'>>({
       serialize: (element, text, blockMeta) => {
         const { align = 'left', depth = 0 } = blockMeta || {};
 
-        return `<ol data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}"><li>${text}</li></ol>`;
+        return `<ol data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}"><li>${serializeTextNodes(
+          element.children,
+        )}</li></ol>`;
       },
     },
     markdown: {

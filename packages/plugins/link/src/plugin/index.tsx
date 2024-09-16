@@ -1,4 +1,4 @@
-import { generateId, YooptaPlugin } from '@yoopta/editor';
+import { deserializeTextNodes, generateId, serializeTextNodes, YooptaPlugin } from '@yoopta/editor';
 import { LinkCommands } from '../commands';
 import { LinkElementMap, LinkElementProps } from '../types';
 import { LinkRender } from '../ui/LinkRender';
@@ -28,7 +28,7 @@ const Link = new YooptaPlugin<LinkElementMap>({
     html: {
       serialize: (element, text) => {
         const { url, target, rel, title } = element.props;
-        return `<a href="${url}" target="${target}" rel="${rel}">${title || text}</a>`;
+        return `<a href="${url}" target="${target}" rel="${rel}">${serializeTextNodes(element.children)}</a>`;
       },
       deserialize: {
         nodeNames: ['A'],
@@ -54,7 +54,7 @@ const Link = new YooptaPlugin<LinkElementMap>({
               id: generateId(),
               type: 'link',
               props,
-              children: [{ text: title }],
+              children: deserializeTextNodes(editor, el.childNodes),
             };
           }
         },

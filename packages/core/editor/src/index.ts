@@ -20,6 +20,8 @@ export { getRootBlockElementType, getRootBlockElement } from './utils/blockEleme
 export { findPluginBlockBySelectionPath } from './utils/findPluginBlockBySelectionPath';
 export { findSlateBySelectionPath } from './utils/findSlateBySelectionPath';
 export { findPluginBlockByType } from './utils/findPluginBlockByType';
+export { deserializeTextNodes } from './parsers/deserializeTextNodes';
+export { serializeTextNodes } from './parsers/serializeTextNodes';
 
 export { createYooptaEditor } from './editor';
 export { createYooptaMark, YooptaMarkParams, YooptaMark } from './marks';

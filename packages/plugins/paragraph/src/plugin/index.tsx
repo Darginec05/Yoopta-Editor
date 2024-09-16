@@ -1,4 +1,4 @@
-import { YooptaPlugin } from '@yoopta/editor';
+import { serializeTextNodes, YooptaPlugin } from '@yoopta/editor';
 import { Element, Transforms } from 'slate';
 import { ParagraphCommands } from '../commands';
 import { ParagraphElement, ParagraphElementMap } from '../types';
@@ -25,7 +25,9 @@ const Paragraph = new YooptaPlugin<ParagraphElementMap>({
       },
       serialize: (element, text, blockMeta) => {
         const { align = 'left', depth = 0 } = blockMeta || {};
-        return `<p data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}">${text}</p>`;
+        return `<p data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}">${serializeTextNodes(
+          element.children,
+        )}</p>`;
       },
     },
     markdown: {

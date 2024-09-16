@@ -1,4 +1,4 @@
-import { SlateElement, YooEditor, YooptaBlockData } from '@yoopta/editor';
+import { serializeTextNodes, SlateElement, YooEditor, YooptaBlockData } from '@yoopta/editor';
 import { TableCellElement } from '../../types';
 
 export function serializeTable(element: SlateElement, text: string, blockMeta?: YooptaBlockData['meta']) {
@@ -31,42 +31,4 @@ export function serializeTable(element: SlateElement, text: string, blockMeta?: 
           .join('')}</tbody></table>`;
 
   return serialized;
-}
-
-// MOVE to common utils in @yoopta/editor
-function serializeTextNodes(nodes: any[]): string {
-  return nodes
-    .map((node) => {
-      if ('text' in node) {
-        let text = node.text;
-
-        if (node.bold) {
-          text = `<b>${text}</b>`;
-        }
-        if (node.italic) {
-          text = `<i>${text}</i>`;
-        }
-        if (node.strike) {
-          text = `<s>${text}</s>`;
-        }
-        if (node.underline) {
-          text = `<u>${text}</u>`;
-        }
-        if (node.code) {
-          text = `<code>${text}</code>`;
-        }
-
-        return text;
-      }
-
-      if (node.type === 'link') {
-        const { url, target, rel } = node.props;
-        const children = serializeTextNodes(node.children);
-
-        return `<a href="${url}" target="${target}" rel="${rel}">${children}</a>`;
-      }
-
-      return '';
-    })
-    .join('');
 }

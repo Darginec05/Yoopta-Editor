@@ -63,7 +63,7 @@ const Table = new YooptaPlugin<TableElementMap>({
       title: 'Table',
       description: 'Add simple table',
     },
-    shortcuts: ['table', '||'],
+    shortcuts: ['table', '||', '3x3'],
   },
   commands: TableCommands,
 });
