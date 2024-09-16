@@ -363,11 +363,19 @@ export async function getStaticProps() {
     return data;
   }
 
-  const repoData = await fetchRepoData({ owner: 'Darginec05', repo: 'Yoopta-Editor' });
+  try {
+    const repoData = await fetchRepoData({ owner: 'Darginec05', repo: 'Yoopta-Editor' });
 
-  return {
-    props: {
-      repoData,
-    },
-  };
+    return {
+      props: {
+        repoData,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        repoData: null,
+      },
+    };
+  }
 }
