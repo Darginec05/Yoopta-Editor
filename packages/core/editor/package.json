@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/editor",
-  "version": "4.7.1-rc.0",
+  "version": "4.7.1-rc.1",
   "license": "MIT",
   "private": false,
   "main": "dist/index.js",
@@ -67,5 +67,5 @@
     "url": "https://github.com/Darginec05/Yoopta-Editor/issues"
   },
   "homepage": "https://github.com/Darginec05/Yoopta-Editor#readme",
-  "gitHead": "600e0cf267a0ce7df074ddc7db1114d67c4185d1"
+  "gitHead": "63bfe2afb5f9d7b3a8c49584d0ac8bdc5b2dcf1f"
 }
