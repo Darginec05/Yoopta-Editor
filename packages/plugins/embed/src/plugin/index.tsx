@@ -21,7 +21,7 @@ const Embed = new YooptaPlugin<EmbedElementMap, EmbedPluginOptions>({
     embed: {
       render: EmbedRender,
       props: {
-        sizes: { width: 650, height: 400 },
+        sizes: { width: 650, height: 500 },
         nodeType: 'void',
       },
     },
@@ -31,7 +31,7 @@ const Embed = new YooptaPlugin<EmbedElementMap, EmbedPluginOptions>({
       title: 'Embed',
       description: 'For embed videos, google maps and more',
     },
-    maxSizes: { maxWidth: 650, maxHeight: 550 },
+    shortcuts: ['instagram', 'twitter', 'youtube', 'vimeo', 'dailymotion', 'figma'],
   },
   commands: EmbedCommands,
   parsers: {

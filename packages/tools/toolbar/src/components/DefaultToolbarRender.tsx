@@ -328,7 +328,6 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
             onClick={() => onToggleMark('strike')}
           >
             <StrikethroughIcon width={20} height={20} />
-            {/* <span className="yoo-toolbar-w-[20px] yoo-toolbar-h-[20px] yoo-toolbar-line-through">S</span> */}
           </Toolbar.ToggleItem>
         )}
         {editor.formats.code && (
@@ -374,9 +373,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
               ref={highlightPickerRefs.setReference}
               onClick={() => onChangeModal('highlight', !modals.highlight)}
             >
-              <span className="yoo-toolbar-text-lg yoo-toolbar-px-1 yoo-toolbar-font-serif yoo-toolbar-text-col">
-                A
-              </span>
+              <span className="yoopta-toolbar-color-text">A</span>
               {modals.highlight ? <ChevronUpIcon width={10} /> : <ChevronDownIcon width={10} />}
             </Toolbar.ToggleItem>
           </>

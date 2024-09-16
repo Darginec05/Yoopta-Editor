@@ -1,6 +1,7 @@
 import { RenderElementProps } from 'slate-react';
 import { DailyMotion } from '../providers/DailyMotion';
 import { Figma } from '../providers/Figma';
+import Instagram from '../providers/Instagram';
 import Twitter from '../providers/Twitter';
 import { Vimeo } from '../providers/Vimeo';
 import { YouTube } from '../providers/Youtube';
@@ -18,6 +19,7 @@ const PROVIDERS = {
   dailymotion: DailyMotion,
   figma: Figma,
   twitter: Twitter,
+  instagram: Instagram,
 };
 
 const EmbedComponent = ({ width, height, provider, blockId, attributes, children }: EmbedComponentProps) => {
