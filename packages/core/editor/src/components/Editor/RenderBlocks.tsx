@@ -68,6 +68,7 @@ const RenderBlocks = ({ editor, marks, placeholder }: Props) => {
 
   return (
     <DndContext
+      id="yoopta-dnd-context"
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragStart={handleDragStart}
