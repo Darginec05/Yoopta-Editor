@@ -20,3 +20,7 @@
 .yoopta-toolbar-separator {
   @apply yoo-toolbar-bg-[#dbd8e0] yoo-toolbar-mx-[6px] yoo-toolbar-my-0 yoo-toolbar-w-[1px]
 }
+
+.yoopta-toolbar-color-text {
+  @apply yoo-toolbar-text-lg yoo-toolbar-px-1 yoo-toolbar-font-serif
+}

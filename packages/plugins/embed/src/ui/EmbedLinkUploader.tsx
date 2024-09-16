@@ -47,7 +47,7 @@ const EmbedLinkUploader = ({ blockId, onClose }) => {
         disabled={isEmpty}
         onClick={embed}
       >
-        Embed embed
+        Embed link
       </button>
     </div>
   );
