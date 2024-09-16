@@ -3,9 +3,8 @@ import { YooptaContextProvider } from './contexts/YooptaContext/YooptaContext';
 import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { Editor } from './components/Editor/Editor';
 import { CSSProperties, useMemo, useState } from 'react';
-import { BaseCommands, SlateElement, YooEditor, YooptaBlockData, YooptaContentValue } from './editor/types';
+import { SlateElement, YooEditor, YooptaBlockData, YooptaContentValue } from './editor/types';
 import { Plugin } from './plugins/types';
-import NoSSR from './components/NoSsr/NoSsr';
 import { Tools, ToolsProvider } from './contexts/YooptaContext/ToolsContext';
 import {
   buildBlocks,
@@ -114,23 +113,21 @@ const YooptaEditor = ({
   });
 
   return (
-    <NoSSR>
-      <YooptaContextProvider editorState={editorState}>
-        <ToolsProvider tools={tools}>
-          <Editor
-            placeholder={placeholder}
-            marks={marks}
-            autoFocus={autoFocus}
-            className={className}
-            selectionBoxRoot={selectionBoxRoot}
-            width={width}
-            style={style}
-          >
-            {children}
-          </Editor>
-        </ToolsProvider>
-      </YooptaContextProvider>
-    </NoSSR>
+    <YooptaContextProvider editorState={editorState}>
+      <ToolsProvider tools={tools}>
+        <Editor
+          placeholder={placeholder}
+          marks={marks}
+          autoFocus={autoFocus}
+          className={className}
+          selectionBoxRoot={selectionBoxRoot}
+          width={width}
+          style={style}
+        >
+          {children}
+        </Editor>
+      </ToolsProvider>
+    </YooptaContextProvider>
   );
 };
 
