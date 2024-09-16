@@ -207,9 +207,9 @@ export function deserializeHTML(editor: YooEditor, htmlString: string): YooptaCo
   console.log('parsedHtml.body', parsedHtml.body);
 
   const PLUGINS_NODE_NAME_MATCHERS_MAP = getMappedPluginByNodeNames(editor);
-  const blocks = deserialize(editor, PLUGINS_NODE_NAME_MATCHERS_MAP, parsedHtml.body).filter(
-    isYooptaBlock,
-  ) as YooptaBlockData[];
+  const blocks = deserialize(editor, PLUGINS_NODE_NAME_MATCHERS_MAP, parsedHtml.body)
+    .flat()
+    .filter(isYooptaBlock) as YooptaBlockData[];
 
   blocks.forEach((block, i) => {
     const blockData = block;
