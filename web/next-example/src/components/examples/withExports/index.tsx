@@ -13,6 +13,7 @@ import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import Code from '@yoopta/code';
+import Table from '@yoopta/table';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
@@ -25,6 +26,7 @@ import { MarkdownPreview } from '@/components/parsers/markdown/MarkdownPreview/M
 
 const plugins = [
   Paragraph,
+  Table,
   Accordion,
   HeadingOne,
   HeadingTwo,
