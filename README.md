@@ -54,6 +54,7 @@ All of this is customizable, extensible, and easy to set up!
   - [**@yoopta/paragraph**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/paragraph/README.md)
   - [**@yoopta/accordion**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/accordion/README.md)
   - [**@yoopta/blockquote**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/blockquote/README.md)
+  - [**@yoopta/table**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/table/README.md)
   - [**@yoopta/code**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/code/README.md)
   - [**@yoopta/embed**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/embed/README.md)
   - [**@yoopta/image**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/image/README.md)
@@ -149,6 +150,7 @@ Here is list of available plugins
 
 - @yoopta/paragraph
 - @yoopta/blockquote
+- @yoopta/table
 - @yoopta/accordion
 - @yoopta/code
 - @yoopta/embed
