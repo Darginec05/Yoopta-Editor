@@ -1,4 +1,4 @@
-// Move to @yoopta/utils or @yoopta/editor/utils
+// [TODO] - Move to @yoopta/utils or @yoopta/editor/utils
 // helpers for serializing text nodes when you use custom parsers in your plugins
 export function serializeTextNodes(nodes: any[]): string {
   return nodes

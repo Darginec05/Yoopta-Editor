@@ -1,4 +1,3 @@
-import { AccordionCommands } from '@yoopta/accordion';
 import YooptaEditor, {
   Blocks,
   createYooptaEditor,
@@ -6,15 +5,11 @@ import YooptaEditor, {
   YooptaBlockData,
   YooptaContentValue,
 } from '@yoopta/editor';
-import { LinkCommands } from '@yoopta/link';
-import { TableCommands } from '@yoopta/table';
-import { ParagraphCommands } from '@yoopta/paragraph';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { MARKS } from '../../utils/yoopta/marks';
 import { YOOPTA_PLUGINS } from '../../utils/yoopta/plugins';
 import { TOOLS } from '../../utils/yoopta/tools';
-import { ImageCommands } from '@yoopta/image';
 
 export type YooptaChildrenValue = Record<string, YooptaBlockData>;
 
