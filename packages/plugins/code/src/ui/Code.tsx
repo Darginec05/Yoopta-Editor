@@ -69,7 +69,7 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
         <CodeMirror
           value={code}
           height="auto"
-          extensions={[LANGUAGES_MAP[language]?.extension || LANGUAGES_MAP.javascript]}
+          extensions={[LANGUAGES_MAP[language]?.extension || LANGUAGES_MAP.javascript.extension]}
           onChange={onChange}
           width="100%"
           theme={THEMES_MAP[theme] || THEMES_MAP.VSCode}
