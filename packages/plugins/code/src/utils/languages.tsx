@@ -14,6 +14,9 @@ import { java } from '@codemirror/lang-java';
 import { html } from '@codemirror/lang-html';
 import { cpp } from '@codemirror/lang-cpp';
 
+import { StreamLanguage } from '@codemirror/language';
+import { shell } from '@codemirror/legacy-modes/mode/shell';
+
 const LANGUAGES_MAP = {
   javascript: {
     type: 'javascript',
@@ -89,6 +92,16 @@ const LANGUAGES_MAP = {
     type: 'cpp',
     name: 'C++',
     extension: cpp(),
+  },
+  bash: {
+    type: 'bash',
+    name: 'Bash',
+    extension: StreamLanguage.define(shell),
+  },
+  shell: {
+    type: 'shell',
+    name: 'Shell',
+    extension: StreamLanguage.define(shell),
   },
 };
 
