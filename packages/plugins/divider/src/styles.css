@@ -5,6 +5,7 @@
   transition: opacity 0.15s ease-in-out;
   right: 3px;
   top: 3px;
+  color: #000;
 }
 
 .yoopta-divider:hover .yoopta-divider-options {
@@ -37,7 +38,6 @@
   @apply yoopta-divider-line;
   border-bottom-style: dashed;
 }
-
 
 .yoopta-divider-dotted {
   @apply yoopta-divider-line;
