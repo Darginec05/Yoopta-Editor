@@ -35,6 +35,7 @@ const HOTKEYS_MAP = {
   cmdShiftRight: 'mod+shift+right',
   cmdShiftLeft: 'mod+shift+left',
   cmdShiftDelete: 'mod+shift+backspace',
+  cmdShiftD: 'mod+shift+d',
   cmdAltDelete: 'mod+alt+backspace',
 };
 
@@ -123,6 +124,7 @@ export const HOTKEYS = {
   isCmdShiftLeft: create('cmdShiftLeft'),
   isCmdShiftDelete: create('cmdShiftDelete'),
   isCmdAltDelete: create('cmdAltDelete'),
+  isCmdShiftD: create('cmdShiftD'),
 };
 
 export type HOTKEYS_TYPE = {
