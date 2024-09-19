@@ -1,4 +1,4 @@
-import { Elements, generateId, YooptaPlugin } from '@yoopta/editor';
+import { Elements, generateId, serializeTextNodesIntoMarkdown, YooptaPlugin } from '@yoopta/editor';
 import { Element, Transforms } from 'slate';
 import { BlockquoteCommands } from '../commands';
 import { BlockquoteRender } from '../ui/Blockquote';
@@ -30,7 +30,7 @@ const Blockquote = new YooptaPlugin({
     },
     markdown: {
       serialize: (element, text) => {
-        return `> ${text}`;
+        return `> ${serializeTextNodesIntoMarkdown(element.children)}`;
       },
     },
   },

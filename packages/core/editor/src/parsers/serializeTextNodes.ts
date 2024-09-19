@@ -36,3 +36,42 @@ export function serializeTextNodes(nodes: any[]): string {
     })
     .join('');
 }
+
+// [TODO] - Move to @yoopta/utils or @yoopta/editor/utils
+// helpers for serializing text nodes into markdown style when you use custom parsers in your plugins
+export function serializeTextNodesIntoMarkdown(nodes: any[]): string {
+  return nodes
+    .map((node) => {
+      if ('text' in node) {
+        let text = node.text;
+
+        if (node.bold) {
+          text = `**${text}**`;
+        }
+        if (node.italic) {
+          text = `*${text}*`;
+        }
+        if (node.strike) {
+          text = `~~${text}~~`;
+        }
+        if (node.underline) {
+          text = `<u>${text}</u>`;
+        }
+        if (node.code) {
+          text = `\`${text}\``;
+        }
+
+        return text;
+      }
+
+      if (node.type === 'link') {
+        const { url, target, rel } = node.props;
+        const children = serializeTextNodesIntoMarkdown(node.children);
+
+        return `[${children}](${url})`;
+      }
+
+      return '';
+    })
+    .join('');
+}

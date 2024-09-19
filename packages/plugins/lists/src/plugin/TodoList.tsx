@@ -3,6 +3,7 @@ import {
   deserializeTextNodes,
   generateId,
   serializeTextNodes,
+  serializeTextNodesIntoMarkdown,
   YooptaBlockData,
   YooptaPlugin,
 } from '@yoopta/editor';
@@ -83,7 +84,7 @@ const TodoList = new YooptaPlugin<Pick<ListElementMap, 'todo-list'>>({
     },
     markdown: {
       serialize: (element, text) => {
-        return `- ${element.props.checked ? '[x]' : '[ ]'} ${text}`;
+        return `- ${element.props.checked ? '[x]' : '[ ]'} ${serializeTextNodesIntoMarkdown(element.children)}`;
       },
     },
   },

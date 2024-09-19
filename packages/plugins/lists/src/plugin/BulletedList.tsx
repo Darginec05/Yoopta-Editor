@@ -3,10 +3,10 @@ import {
   deserializeTextNodes,
   generateId,
   serializeTextNodes,
+  serializeTextNodesIntoMarkdown,
   YooptaBlockData,
   YooptaPlugin,
 } from '@yoopta/editor';
-import { Element, Transforms } from 'slate';
 import { BulletedListCommands } from '../commands';
 import { BulletedListRender } from '../elements/BulletedList';
 import { onKeyDown } from '../events/onKeyDown';
@@ -49,8 +49,6 @@ const BulletedList = new YooptaPlugin<Pick<ListElementMap, 'bulleted-list'>>({
                 return !isTodoListItem;
               })
               .map((listItem) => {
-                const textContent = listItem.textContent || '';
-
                 return buildBlockData({
                   id: generateId(),
                   type: 'BulletedList',
@@ -80,7 +78,7 @@ const BulletedList = new YooptaPlugin<Pick<ListElementMap, 'bulleted-list'>>({
     },
     markdown: {
       serialize: (element, text) => {
-        return `- ${text}`;
+        return `- ${serializeTextNodesIntoMarkdown(element.children)}`;
       },
     },
   },
