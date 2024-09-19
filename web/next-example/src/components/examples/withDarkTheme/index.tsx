@@ -13,6 +13,7 @@ import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/ma
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import Code from '@yoopta/code';
 import Table from '@yoopta/table';
+import Divider from '@yoopta/divider';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
@@ -29,6 +30,7 @@ import { SunMoon } from 'lucide-react';
 const plugins = [
   Paragraph,
   Table,
+  Divider,
   HeadingOne,
   HeadingTwo,
   HeadingThree,
