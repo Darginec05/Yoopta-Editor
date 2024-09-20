@@ -1,4 +1,4 @@
-import { generateId, serializeTextNodes, YooptaPlugin } from '@yoopta/editor';
+import { generateId, YooptaPlugin } from '@yoopta/editor';
 import { DividerCommands } from '../commands';
 import { onKeyDown } from '../events/onKeyDown';
 import { DividerElementMap } from '../types';
@@ -45,7 +45,7 @@ const Divider = new YooptaPlugin<DividerElementMap>({
       },
       serialize: (element, text, blockMeta) => {
         const { theme = 'solid', color = '#EFEFEE' } = element.props || {};
-        return `<hr data-meta-theme="${theme}" data-meta-color="${color}" />`;
+        return `<hr data-meta-theme="${theme}" data-meta-color="${color}" style="background-color: #8383e0; height: 1.2px" />`;
       },
     },
     markdown: {
@@ -53,22 +53,6 @@ const Divider = new YooptaPlugin<DividerElementMap>({
         return '---\n';
       },
     },
-    // html: {
-    //   deserialize: {
-    //     nodeNames: ['P'],
-    //   },
-    //   serialize: (element, text, blockMeta) => {
-    //     const { align = 'left', depth = 0 } = blockMeta || {};
-    //     return `<p data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}">${serializeTextNodes(
-    //       element.children,
-    //     )}</p>`;
-    //   },
-    // },
-    // markdown: {
-    //   serialize: (element, text) => {
-    //     return `${text}\n`;
-    //   },
-    // },
   },
   commands: DividerCommands,
   events: {

@@ -1,4 +1,4 @@
-import { Blocks, buildBlockData, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
 import { DividerElement, DividerElementProps } from '../types';
 
 type DividerInsertOptions = DividerElementProps & {
@@ -10,6 +10,7 @@ export type DividerCommands = {
   buildDividerElements: (editor: YooEditor, options?: Partial<DividerElementProps>) => DividerElement;
   insertDivider: (editor: YooEditor, options?: Partial<DividerInsertOptions>) => void;
   deleteDivider: (editor: YooEditor, blockId: string) => void;
+  updateDivider: (editor: YooEditor, blockId: string, props: Partial<DividerElementProps>) => void;
 };
 
 export const DividerCommands: DividerCommands = {
@@ -29,5 +30,13 @@ export const DividerCommands: DividerCommands = {
   },
   deleteDivider: (editor, blockId) => {
     Blocks.deleteBlock(editor, { blockId });
+  },
+  updateDivider: (editor: YooEditor, blockId: string, props) => {
+    Elements.updateElement(editor, blockId, {
+      type: 'divider',
+      props: {
+        ...props,
+      },
+    });
   },
 };
