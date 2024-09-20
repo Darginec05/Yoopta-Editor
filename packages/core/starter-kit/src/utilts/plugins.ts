@@ -11,6 +11,7 @@ import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import Table from '@yoopta/table';
 import Code from '@yoopta/code';
+import Divider from '@yoopta/divider';
 import { type MediaUploadsFn } from '../components/StarterKit/StarterKit';
 
 type PluginParams = {
@@ -33,6 +34,7 @@ export const getPlugins = ({ media }: PluginParams) => {
     Link,
     Embed,
     Table,
+    Divider,
     Image.extend({
       options: {
         async onUpload(file) {
