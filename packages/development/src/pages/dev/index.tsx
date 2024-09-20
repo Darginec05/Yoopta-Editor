@@ -238,6 +238,51 @@ const BasicExample = () => {
         depth: 0,
       },
     },
+    '50ef3ff2-9c5f-4fe8-bc73-22e4710b567a': {
+      id: '50ef3ff2-9c5f-4fe8-bc73-22e4710b567a',
+      value: [
+        {
+          id: '4c0222d7-f8fe-4dd0-84e7-3260dc1bd191',
+          type: 'divider',
+          props: {
+            nodeType: 'void',
+            theme: 'gradient',
+          },
+          children: [
+            {
+              text: '',
+            },
+          ],
+        },
+      ],
+      type: 'Divider',
+      meta: {
+        order: 3,
+        depth: 0,
+      },
+    },
+    '316b68a9-df3b-4468-b977-a5b578880675': {
+      id: '316b68a9-df3b-4468-b977-a5b578880675',
+      value: [
+        {
+          id: '8481fc29-95de-422a-998e-4ee997ea1657',
+          type: 'paragraph',
+          children: [
+            {
+              text: '',
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'Paragraph',
+      meta: {
+        order: 4,
+        depth: 0,
+      },
+    },
   });
 
   useEffect(() => {
@@ -245,6 +290,8 @@ const BasicExample = () => {
       setValue(value);
     });
   }, [editor]);
+
+  console.log(value);
 
   return (
     <>

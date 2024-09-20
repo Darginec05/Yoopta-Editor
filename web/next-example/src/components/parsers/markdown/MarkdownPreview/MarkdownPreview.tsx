@@ -16,6 +16,7 @@ import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/ma
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import Table from '@yoopta/table';
 import Code from '@yoopta/code';
+import Divider from '@yoopta/divider';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
@@ -62,6 +63,7 @@ const plugins = [
   Accordion,
   HeadingOne,
   HeadingTwo,
+  Divider,
   HeadingThree,
   Blockquote,
   Callout,

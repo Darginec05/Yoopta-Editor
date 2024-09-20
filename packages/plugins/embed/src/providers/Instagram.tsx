@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 
 type InstagramProps = {
@@ -21,23 +21,6 @@ const Instagram: React.FC<InstagramProps> = ({ provider, width, height, attribut
     freezeOnceVisible: true,
     rootMargin: '50%',
   });
-
-  useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      if (event.origin !== 'https://www.instagram.com') return;
-
-      if (event.data.type === 'MEASURE' && event.data.details) {
-        // setIframeHeight(event.data.details.height);
-        console.log(event.data.details.height);
-      }
-    };
-
-    window.addEventListener('message', handleMessage);
-
-    return () => {
-      window.removeEventListener('message', handleMessage);
-    };
-  }, []);
 
   return (
     <div className="yoo-embed-w-full yoo-embed-h-full" {...attributes}>

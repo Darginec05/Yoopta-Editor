@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/exports",
-  "version": "4.7.1-rc.3",
+  "version": "4.7.1-rc.4",
   "description": "Serialize/deserialize exports in different formats for Yoopta-Editor",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
@@ -36,5 +36,5 @@
   "dependencies": {
     "marked": "^13.0.0"
   },
-  "gitHead": "63bfe2afb5f9d7b3a8c49584d0ac8bdc5b2dcf1f"
+  "gitHead": "12d8460dfe0ead89ee1d6f3f2f1fc68239e93d4c"
 }

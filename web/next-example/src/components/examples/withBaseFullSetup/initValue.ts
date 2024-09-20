@@ -48,7 +48,7 @@ export const WITH_BASIC_INIT_VALUE = {
     id: '7e3ef31f-a72d-467d-b17e-e09d2b0f9475',
     type: 'HeadingTwo',
     meta: {
-      order: 3,
+      order: 4,
       depth: 0,
     },
     value: [
@@ -84,7 +84,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 4,
+      order: 5,
       depth: 0,
     },
   },
@@ -106,7 +106,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 10,
+      order: 11,
       depth: 0,
     },
   },
@@ -128,7 +128,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 13,
+      order: 14,
       depth: 0,
     },
   },
@@ -150,7 +150,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 7,
+      order: 8,
       depth: 0,
     },
   },
@@ -172,7 +172,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 14,
+      order: 15,
       depth: 0,
     },
   },
@@ -194,7 +194,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 15,
+      order: 16,
       depth: 0,
     },
   },
@@ -216,7 +216,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 22,
+      order: 23,
       depth: 0,
     },
   },
@@ -242,7 +242,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 23,
+      order: 24,
       depth: 0,
     },
   },
@@ -264,7 +264,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 11,
+      order: 12,
       depth: 0,
     },
   },
@@ -289,7 +289,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 26,
+      order: 27,
       depth: 0,
     },
   },
@@ -311,7 +311,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 27,
+      order: 28,
       depth: 0,
     },
   },
@@ -333,7 +333,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 8,
+      order: 9,
       depth: 0,
     },
   },
@@ -355,7 +355,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 21,
+      order: 22,
       depth: 0,
     },
   },
@@ -377,29 +377,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 24,
-      depth: 0,
-    },
-  },
-  'aa9b295f-492f-4e54-9b98-7ec51887c752': {
-    id: 'aa9b295f-492f-4e54-9b98-7ec51887c752',
-    value: [
-      {
-        id: '1f5093d5-b20b-44bf-af2c-5c63d293758e',
-        type: 'paragraph',
-        children: [
-          {
-            text: '',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'Paragraph',
-    meta: {
-      order: 28,
+      order: 25,
       depth: 0,
     },
   },
@@ -421,7 +399,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 9,
+      order: 10,
       depth: 0,
     },
   },
@@ -443,7 +421,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 16,
+      order: 17,
       depth: 0,
     },
   },
@@ -465,7 +443,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 20,
+      order: 21,
       depth: 0,
     },
   },
@@ -487,7 +465,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 25,
+      order: 26,
       depth: 0,
     },
   },
@@ -543,7 +521,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Image',
     meta: {
-      order: 40,
+      order: 41,
       depth: 0,
     },
   },
@@ -581,7 +559,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'HeadingThree',
     meta: {
-      order: 39,
+      order: 40,
       depth: 0,
     },
   },
@@ -603,7 +581,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 19,
+      order: 20,
       depth: 1,
     },
   },
@@ -625,7 +603,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 17,
+      order: 18,
       depth: 0,
     },
   },
@@ -647,7 +625,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 5,
+      order: 6,
       depth: 0,
     },
   },
@@ -677,7 +655,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Image',
     meta: {
-      order: 42,
+      order: 43,
       depth: 0,
     },
   },
@@ -685,7 +663,7 @@ export const WITH_BASIC_INIT_VALUE = {
     id: '7d3f395b-656d-46af-924c-b88b9974f631',
     type: 'HeadingThree',
     meta: {
-      order: 41,
+      order: 42,
       depth: 0,
     },
     value: [
@@ -738,7 +716,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 12,
+      order: 13,
       depth: 0,
     },
   },
@@ -760,7 +738,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 18,
+      order: 19,
       depth: 0,
     },
   },
@@ -782,7 +760,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 43,
+      order: 44,
       depth: 0,
     },
   },
@@ -790,7 +768,7 @@ export const WITH_BASIC_INIT_VALUE = {
     id: '697aa54b-aea0-4a88-82e5-ec5a6f2c5791',
     type: 'HeadingThree',
     meta: {
-      order: 52,
+      order: 53,
       depth: 0,
       align: 'center',
     },
@@ -827,7 +805,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'HeadingTwo',
     meta: {
-      order: 29,
+      order: 30,
       depth: 0,
     },
   },
@@ -849,7 +827,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 30,
+      order: 31,
       depth: 0,
     },
   },
@@ -871,7 +849,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 31,
+      order: 32,
       depth: 0,
     },
   },
@@ -893,7 +871,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 32,
+      order: 33,
       depth: 0,
     },
   },
@@ -915,7 +893,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 33,
+      order: 34,
       depth: 0,
     },
   },
@@ -937,7 +915,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 34,
+      order: 35,
       depth: 0,
     },
   },
@@ -973,7 +951,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 35,
+      order: 36,
       depth: 0,
     },
   },
@@ -995,7 +973,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 36,
+      order: 37,
       depth: 0,
     },
   },
@@ -1017,7 +995,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 37,
+      order: 38,
       depth: 0,
     },
   },
@@ -1039,7 +1017,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 45,
+      order: 46,
       depth: 0,
     },
   },
@@ -1061,7 +1039,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 46,
+      order: 47,
       depth: 0,
     },
   },
@@ -1083,7 +1061,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 49,
+      order: 50,
       depth: 0,
     },
   },
@@ -1105,7 +1083,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'HeadingTwo',
     meta: {
-      order: 44,
+      order: 45,
       depth: 0,
     },
   },
@@ -1127,7 +1105,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 47,
+      order: 48,
       depth: 0,
     },
   },
@@ -1149,7 +1127,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 38,
+      order: 39,
       depth: 0,
     },
   },
@@ -1171,7 +1149,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 50,
+      order: 51,
       depth: 0,
     },
   },
@@ -1193,7 +1171,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 48,
+      order: 49,
       depth: 0,
     },
   },
@@ -1217,7 +1195,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Code',
     meta: {
-      order: 6,
+      order: 7,
       depth: 1,
     },
   },
@@ -1464,30 +1442,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Accordion',
     meta: {
-      order: 53,
-      depth: 0,
-      align: 'center',
-    },
-  },
-  'af160b51-1a96-4bf8-bded-8f5e1c789cb5': {
-    id: 'af160b51-1a96-4bf8-bded-8f5e1c789cb5',
-    value: [
-      {
-        id: '95240a3f-3703-4fa8-9ad9-b66de052007f',
-        type: 'paragraph',
-        children: [
-          {
-            text: '---',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'Paragraph',
-    meta: {
-      order: 51,
+      order: 54,
       depth: 0,
       align: 'center',
     },
@@ -1510,9 +1465,82 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 54,
+      order: 55,
       depth: 0,
       align: 'center',
+    },
+  },
+  '8300449a-20f5-4845-9b3f-8bb7e6b2879c': {
+    id: '8300449a-20f5-4845-9b3f-8bb7e6b2879c',
+    value: [
+      {
+        id: '08915c8d-47a8-4785-8c26-16e09459b433',
+        type: 'divider',
+        props: {
+          nodeType: 'void',
+          theme: 'gradient',
+          color: '#007aff',
+        },
+        children: [
+          {
+            text: '',
+          },
+        ],
+      },
+    ],
+    type: 'Divider',
+    meta: {
+      order: 52,
+      depth: 0,
+      align: 'center',
+    },
+  },
+  '86a454cf-da6a-4669-88ca-365385091e7a': {
+    id: '86a454cf-da6a-4669-88ca-365385091e7a',
+    value: [
+      {
+        id: 'd7045f51-1fd9-4c63-9d87-2a573d4a2e7d',
+        type: 'divider',
+        props: {
+          nodeType: 'void',
+          theme: 'gradient',
+          color: '#007aff',
+        },
+        children: [
+          {
+            text: '',
+          },
+        ],
+      },
+    ],
+    type: 'Divider',
+    meta: {
+      order: 3,
+      depth: 0,
+    },
+  },
+  '09408bb0-1065-4b40-b39d-51eb07a1aa6c': {
+    id: '09408bb0-1065-4b40-b39d-51eb07a1aa6c',
+    value: [
+      {
+        id: 'a3e8fc1c-8826-4548-83ed-8dfa5ccfc03b',
+        type: 'divider',
+        props: {
+          nodeType: 'void',
+          theme: 'gradient',
+          color: '#007aff',
+        },
+        children: [
+          {
+            text: '',
+          },
+        ],
+      },
+    ],
+    type: 'Divider',
+    meta: {
+      order: 29,
+      depth: 0,
     },
   },
 };

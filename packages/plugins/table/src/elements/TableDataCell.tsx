@@ -60,7 +60,6 @@ const TableDataCell = ({ attributes, children, element, blockId }: PluginElement
   const style = {
     maxWidth: elementWidth,
     minWidth: elementWidth,
-    backgroundColor: selected ? '#37352f14' : undefined,
   };
 
   const className = isDataCellAsHeader
@@ -68,7 +67,14 @@ const TableDataCell = ({ attributes, children, element, blockId }: PluginElement
     : 'yoopta-table-data-cell';
 
   return (
-    <Node scope={isDataCellAsHeader ? 'col' : undefined} style={style} colSpan={1} rowSpan={1} className={className}>
+    <Node
+      scope={isDataCellAsHeader ? 'col' : undefined}
+      data-cell-selected={selected}
+      style={style}
+      colSpan={1}
+      rowSpan={1}
+      className={className}
+    >
       <div className="yoopta-table-data-cell-content" {...attributes}>
         {children}
       </div>

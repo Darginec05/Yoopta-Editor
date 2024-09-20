@@ -10,12 +10,21 @@ import File from '@yoopta/file';
 import Embed from '@yoopta/embed';
 import Accordion, { AccordionCommands } from '@yoopta/accordion';
 import Code from '@yoopta/code';
-import Table, { TableCommands } from '@yoopta/table';
+import Table from '@yoopta/table';
+import Divider from '@yoopta/divider';
 
 import { uploadToCloudinary } from '../cloudinary';
 
 export const YOOPTA_PLUGINS = [
   Table,
+  Divider.extend({
+    elementProps: {
+      divider: (props) => ({
+        ...props,
+        color: '#8383e0',
+      }),
+    },
+  }),
   Accordion.extend({
     events: {
       onBeforeCreate: (editor) => {

@@ -5,6 +5,7 @@ import {
   generateId,
   deserializeTextNodes,
   serializeTextNodes,
+  serializeTextNodesIntoMarkdown,
 } from '@yoopta/editor';
 import { NumberedListCommands } from '../commands';
 import { NumberedListRender } from '../elements/NumberedList';
@@ -80,7 +81,7 @@ const NumberedList = new YooptaPlugin<Pick<ListElementMap, 'numbered-list'>>({
     },
     markdown: {
       serialize: (element, text) => {
-        return `- ${text}`;
+        return `- ${serializeTextNodesIntoMarkdown(element.children)}`;
       },
     },
   },

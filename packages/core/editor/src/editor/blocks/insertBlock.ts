@@ -65,11 +65,11 @@ export function insertBlock(
   editor.children[newPluginBlock.id] = newPluginBlock;
   const currentBlockId = currentBlock?.id;
 
-  onCreate?.(editor, newPluginBlock.id);
-
   editor.children = finishDraft(editor.children);
   editor.applyChanges();
   editor.emit('change', editor.children);
+
+  onCreate?.(editor, newPluginBlock.id);
 
   if (focus) {
     editor.focusBlock(insertBefore && currentBlockId ? currentBlockId : newPluginBlock.id);

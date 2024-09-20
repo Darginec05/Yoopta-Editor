@@ -4157,9 +4157,7 @@
     slate-react "^0.102.0"
 
 "@yoopta/table@*":
-  version "4.7.1-rc.1"
-  resolved "https://registry.yarnpkg.com/@yoopta/table/-/table-4.7.1-rc.1.tgz#1d9a6cc501c2e84dc12643c9b4de10140d517009"
-  integrity sha512-48ynyZqX5ElzIx8sIJUoucf2EvcXile0iq7x4x4SUuIgmCrBZYrWmFIcb58pjdwXuaHuI7u2N6nDAzyqNTKooQ==
+  version "4.7.1-rc.3"
   dependencies:
     "@floating-ui/react" "^0.26.22"
     lucide-react "^0.436.0"
