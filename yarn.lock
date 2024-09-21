@@ -3969,7 +3969,7 @@
     copy-to-clipboard "^3.3.3"
 
 "@yoopta/divider@*":
-  version "4.7.1-rc.6"
+  version "4.7.1-rc.7"
 
 "@yoopta/divider@latest":
   version "4.7.1-rc.6"
@@ -4165,7 +4165,7 @@
     slate-react "^0.102.0"
 
 "@yoopta/table@*":
-  version "4.7.1-rc.6"
+  version "4.7.1-rc.7"
   dependencies:
     "@floating-ui/react" "^0.26.22"
     lucide-react "^0.436.0"
