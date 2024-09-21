@@ -3968,6 +3968,14 @@
     codemirror "^6.0.1"
     copy-to-clipboard "^3.3.3"
 
+"@yoopta/divider@*":
+  version "4.7.1-rc.6"
+
+"@yoopta/divider@latest":
+  version "4.7.1-rc.6"
+  resolved "https://registry.yarnpkg.com/@yoopta/divider/-/divider-4.7.1-rc.6.tgz#82fc73d24bd3dacdb5c84d37235fe402ccc9ea71"
+  integrity sha512-cMW4rxOsTlx09b47nSWGjuJOOeBAIu/TUcAMkoQWkp2a9Mx8VoWmn1IqlTsqqkKEsiNKao+s1J+L57ZtNtYoyw==
+
 "@yoopta/editor@*":
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/@yoopta/editor/-/editor-4.7.0.tgz#2ea19bb3c1239511f95d558642a51263b55c738d"
@@ -4157,7 +4165,7 @@
     slate-react "^0.102.0"
 
 "@yoopta/table@*":
-  version "4.7.1-rc.3"
+  version "4.7.1-rc.6"
   dependencies:
     "@floating-ui/react" "^0.26.22"
     lucide-react "^0.436.0"
