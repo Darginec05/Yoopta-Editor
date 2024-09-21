@@ -22,15 +22,15 @@ const BasicExample = () => {
   const selectionRef = useRef<HTMLDivElement>(null);
   const [readOnly, setReadOnly] = useState(false);
   const [value, setValue] = useState<YooptaContentValue>({
-    'e252f92a-8631-4dce-8e89-911946bf1ed0': {
-      id: 'e252f92a-8631-4dce-8e89-911946bf1ed0',
+    '6a2c52a9-4a03-4efa-9d6d-103b9c79db3d': {
+      id: '6a2c52a9-4a03-4efa-9d6d-103b9c79db3d',
       value: [
         {
-          id: '91f580b7-72e3-46a9-9aff-32bc5589d9cf',
-          type: 'heading-two',
+          id: 'bb656a10-18af-46bf-a348-ca12305dc63c',
+          type: 'heading-one',
           children: [
             {
-              text: '',
+              text: 'Pointer events',
             },
           ],
           props: {
@@ -38,43 +38,46 @@ const BasicExample = () => {
           },
         },
       ],
-      type: 'HeadingTwo',
+      type: 'HeadingOne',
       meta: {
         order: 0,
         depth: 0,
       },
     },
-    'f240e5a5-bd7f-42c3-9508-becbf7dd4df9': {
-      id: 'f240e5a5-bd7f-42c3-9508-becbf7dd4df9',
+    '3453a066-3444-49ec-a120-7be484a36b6b': {
+      id: '3453a066-3444-49ec-a120-7be484a36b6b',
       value: [
         {
-          id: '5c53dd6d-3166-4b28-99ac-4784fedecf2e',
+          id: '73197539-b53c-4eb7-9ff2-012308490017',
           type: 'paragraph',
           children: [
             {
-              text: 'If you want to keep your solution lightweight and don’t want to use any libraries, you can also implement your own lazy loading of DOM elements by using an',
+              text: "Much of today's web content assumes the user's pointing device will be a mouse. However, since many devices support other types of pointing input devices, such as pen/stylus and touch surfaces, extensions to the existing pointing device event models are needed.",
             },
             {
               text: ' ',
             },
             {
-              id: 'b719bd05-14ae-4d3d-86ff-153bdb57e5b7',
+              id: 'c028b465-590f-49ed-a1ad-60eee1b866e2',
               type: 'link',
               props: {
-                url: 'https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API',
+                url: 'https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#pointer_event',
                 target: '_blank',
-                rel: 'noreferrer noopener',
-                title: 'Intersection Observer API',
+                rel: 'noopener noreferrer',
+                title: 'Pointer events',
                 nodeType: 'inline',
               },
               children: [
                 {
-                  text: 'Intersection Observer API',
+                  text: 'Pointer events',
                 },
               ],
             },
             {
-              text: '. ',
+              text: ' ',
+            },
+            {
+              text: 'address that need.',
             },
           ],
           props: {
@@ -88,188 +91,166 @@ const BasicExample = () => {
         depth: 0,
       },
     },
-    'cb5476cd-4253-4939-90a5-ef41d6b1caa9': {
-      id: 'cb5476cd-4253-4939-90a5-ef41d6b1caa9',
+    '20d9e71f-99eb-47ae-87cd-c2f2c6d42317': {
+      id: '20d9e71f-99eb-47ae-87cd-c2f2c6d42317',
       value: [
         {
-          id: '7f1b41e8-43d1-4736-adea-8268406cd97a',
-          type: 'table',
-          props: {
-            headerRow: true,
-            headerColumn: false,
-          },
+          id: '2509534d-8bd7-4fac-9901-26f5810293bb',
+          type: 'paragraph',
           children: [
             {
-              id: 'f7202cf4-2078-40b3-9062-3c28fa611948',
-              type: 'table-row',
-              children: [
-                {
-                  id: '146c8fe5-a8ae-4289-b8e4-da3589e4efbb',
-                  type: 'table-data-cell',
-                  children: [
-                    {
-                      text: 'Really first cell',
-                    },
-                  ],
-                  props: {
-                    nodeType: 'block',
-                    asHeader: true,
-                    width: 200,
-                  },
-                },
-                {
-                  id: '6d65ec0f-1973-48ae-9dc1-06ed14c87ad4',
-                  type: 'table-data-cell',
-                  children: [
-                    {
-                      text: '',
-                    },
-                  ],
-                  props: {
-                    asHeader: true,
-                    width: 323,
-                  },
-                },
-                {
-                  id: '40bac655-82c3-40ed-b4b8-a5a59b11591d',
-                  type: 'table-data-cell',
-                  children: [
-                    {
-                      text: '',
-                    },
-                  ],
-                  props: {
-                    asHeader: true,
-                  },
-                },
-              ],
-              props: {
-                nodeType: 'block',
-              },
-            },
-            {
-              id: '4197971e-2c59-492a-a825-09888fd31597',
-              type: 'table-row',
-              children: [
-                {
-                  id: '01665f2a-28f0-4b4f-a53c-46db6d9944bf',
-                  type: 'table-data-cell',
-                  children: [
-                    {
-                      text: '',
-                    },
-                  ],
-                },
-                {
-                  id: '288f5856-a7ed-4909-b59a-dc03ce7a0eeb',
-                  type: 'table-data-cell',
-                  children: [
-                    {
-                      text: '',
-                    },
-                  ],
-                  props: {
-                    width: 323,
-                  },
-                },
-                {
-                  id: 'f28f8e38-19e8-4f50-9006-c45e4ba1a52c',
-                  type: 'table-data-cell',
-                  children: [
-                    {
-                      text: '',
-                    },
-                  ],
-                },
-              ],
-              props: {
-                nodeType: 'block',
-              },
-            },
-            {
-              id: 'bb8644a7-bc9b-4d0d-aa0e-0f8df1d0bf38',
-              type: 'table-row',
-              children: [
-                {
-                  id: '3d73e70e-f109-4606-afb4-df45973c0cff',
-                  type: 'table-data-cell',
-                  children: [
-                    {
-                      text: '',
-                    },
-                  ],
-                },
-                {
-                  id: '87a746c6-78e9-437c-821b-61533e86523d',
-                  type: 'table-data-cell',
-                  children: [
-                    {
-                      text: '',
-                    },
-                  ],
-                  props: {
-                    width: 323,
-                  },
-                },
-                {
-                  id: 'c417ce2a-fd6f-4f0d-a7ae-cb53573c765c',
-                  type: 'table-data-cell',
-                  children: [
-                    {
-                      text: 'Last data',
-                    },
-                    {
-                      text: ' cell',
-                      bold: true,
-                    },
-                  ],
-                },
-              ],
-              props: {
-                nodeType: 'block',
-              },
+              text: 'Pointer events are DOM events that are fired for a pointing device. They are designed to create a single DOM event model to handle pointing input devices such as a mouse, pen/stylus or touch (such as one or more fingers).',
             },
           ],
+          props: {
+            nodeType: 'block',
+          },
         },
       ],
-      type: 'Table',
+      type: 'Paragraph',
       meta: {
         order: 2,
         depth: 0,
       },
     },
-    '50ef3ff2-9c5f-4fe8-bc73-22e4710b567a': {
-      id: '50ef3ff2-9c5f-4fe8-bc73-22e4710b567a',
+    '6458a134-9370-4ab7-a022-3d8efa91008e': {
+      id: '6458a134-9370-4ab7-a022-3d8efa91008e',
       value: [
         {
-          id: '4c0222d7-f8fe-4dd0-84e7-3260dc1bd191',
-          type: 'divider',
-          props: {
-            nodeType: 'void',
-            theme: 'gradient',
-          },
+          id: '8ca6f705-cb9b-4bb2-84ad-9dee0c831cbf',
+          type: 'paragraph',
           children: [
             {
-              text: '',
+              text: 'The',
+            },
+            {
+              text: ' ',
+            },
+            {
+              id: '3444c61d-9bf5-499a-bee4-d0a8912db7fe',
+              type: 'link',
+              props: {
+                url: 'https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#pointer',
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                title: 'pointer',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: 'pointer',
+                },
+              ],
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: "is a hardware-agnostic device that can target a specific set of screen coordinates. Having a single event model for pointers can simplify creating websites and applications and provide a good user experience regardless of the user's hardware. However, for scenarios when device-specific handling is desired, pointer events defines a",
+            },
+            {
+              text: ' ',
+            },
+            {
+              id: '8e2d241f-6f4f-4634-aa28-3b47b228e6a6',
+              type: 'link',
+              props: {
+                url: 'https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/pointerType',
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                title: 'pointerType',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  code: true,
+                  text: 'pointerType',
+                },
+              ],
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: 'property to inspect the device type which produced the event.',
             },
           ],
+          props: {
+            nodeType: 'block',
+          },
         },
       ],
-      type: 'Divider',
+      type: 'Paragraph',
       meta: {
         order: 3,
         depth: 0,
       },
     },
-    '316b68a9-df3b-4468-b977-a5b578880675': {
-      id: '316b68a9-df3b-4468-b977-a5b578880675',
+    'd8c6108f-1740-4327-b7c1-99ab2285deea': {
+      id: 'd8c6108f-1740-4327-b7c1-99ab2285deea',
       value: [
         {
-          id: '8481fc29-95de-422a-998e-4ee997ea1657',
+          id: 'e2443223-16b7-492e-bb9e-01e580765063',
           type: 'paragraph',
           children: [
             {
-              text: '',
+              text: 'The events needed to handle generic pointer input are analogous to',
+            },
+            {
+              text: ' ',
+            },
+            {
+              id: '642ab145-4a38-4884-ae92-9c9725967f0a',
+              type: 'link',
+              props: {
+                url: 'https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent',
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                title: 'mouse events',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: 'mouse events',
+                },
+              ],
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: '(',
+            },
+            {
+              text: 'mousedown',
+              code: true,
+            },
+            {
+              text: '/',
+            },
+            {
+              text: 'pointerdown',
+              code: true,
+            },
+            {
+              text: ',',
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: 'mousemove',
+              code: true,
+            },
+            {
+              text: '/',
+            },
+            {
+              text: 'pointermove',
+              code: true,
+            },
+            {
+              text: ', etc.). Consequently, pointer event types are intentionally similar to mouse event types.',
             },
           ],
           props: {
@@ -280,6 +261,349 @@ const BasicExample = () => {
       type: 'Paragraph',
       meta: {
         order: 4,
+        depth: 0,
+      },
+    },
+    'd079a16a-b874-4d5e-bd8e-aa89dcbd1bb1': {
+      id: 'd079a16a-b874-4d5e-bd8e-aa89dcbd1bb1',
+      value: [
+        {
+          id: 'bf87973f-c8c3-4f8e-841d-bd1ffeb69da7',
+          type: 'paragraph',
+          children: [
+            {
+              text: 'Additionally, a pointer event contains the usual properties present in mouse events (client coordinates, target element, button states, etc.) in addition to new properties for other forms of input: pressure, contact geometry, tilt, etc. In fact, the',
+            },
+            {
+              text: ' ',
+            },
+            {
+              id: '0c1fb0fb-a317-4aa0-8d09-bee2d224c32b',
+              type: 'link',
+              props: {
+                url: 'https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent',
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                title: 'PointerEvent',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  code: true,
+                  text: 'PointerEvent',
+                },
+              ],
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: 'interface inherits all of the',
+            },
+            {
+              text: ' ',
+            },
+            {
+              id: '99b64f9b-ba11-41cd-a683-7396b86f2722',
+              type: 'link',
+              props: {
+                url: 'https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent',
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                title: 'MouseEvent',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  code: true,
+                  text: 'MouseEvent',
+                },
+              ],
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: 'properties, thus facilitating the migration of content from mouse events to pointer events.',
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'Paragraph',
+      meta: {
+        order: 5,
+        depth: 0,
+      },
+    },
+    'c16c42d0-a230-444b-b513-0853d7c1339d': {
+      id: 'c16c42d0-a230-444b-b513-0853d7c1339d',
+      value: [
+        {
+          id: '9f920a57-3230-46a2-9ca5-56403535c86d',
+          type: 'heading-two',
+          children: [
+            {
+              id: '6b410c05-db94-490d-8dc1-b16aa20e54f2',
+              type: 'link',
+              props: {
+                url: 'https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#terminology',
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                title: 'Terminology',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: 'Terminology',
+                },
+              ],
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'HeadingTwo',
+      meta: {
+        order: 6,
+        depth: 0,
+      },
+    },
+    '6030afa8-e38b-49fa-b0ac-bf40216e6af7': {
+      id: '6030afa8-e38b-49fa-b0ac-bf40216e6af7',
+      value: [
+        {
+          id: 'fd01676a-e726-464e-a41e-e17cbfddc8ff',
+          type: 'heading-three',
+          children: [
+            {
+              id: '5813f8a3-cb8f-467b-9aa0-08af57194100',
+              type: 'link',
+              props: {
+                url: 'https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#active_buttons_state',
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                title: 'active buttons state',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: 'active buttons state',
+                },
+              ],
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'HeadingThree',
+      meta: {
+        order: 7,
+        depth: 0,
+      },
+    },
+    'adc44202-731b-477c-8fc9-802cb5b72b5f': {
+      id: 'adc44202-731b-477c-8fc9-802cb5b72b5f',
+      value: [
+        {
+          id: '85b35922-af93-4ae0-bc52-6c2fa4067a30',
+          type: 'paragraph',
+          children: [
+            {
+              text: 'The condition when a',
+            },
+            {
+              text: ' ',
+            },
+            {
+              id: 'd7e78fe7-748d-44e3-9d1e-47374392db8e',
+              type: 'link',
+              props: {
+                url: 'https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#pointer',
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                title: 'pointer',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: 'pointer',
+                },
+              ],
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: 'has a non-zero value for the',
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: 'buttons',
+              code: true,
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: 'property. For example, in the case of a pen, when the pen has physical contact with the digitizer, or at least one button is pressed while hovering.',
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'Paragraph',
+      meta: {
+        order: 8,
+        depth: 0,
+      },
+    },
+    'aba54ab4-eec5-461e-ae7a-cc9c8de7a8f7': {
+      id: 'aba54ab4-eec5-461e-ae7a-cc9c8de7a8f7',
+      value: [
+        {
+          id: '24456bec-f92d-453d-92f0-f030258044e7',
+          type: 'heading-three',
+          children: [
+            {
+              id: 'b20d5b19-2e3f-4966-b388-f7df82b66d05',
+              type: 'link',
+              props: {
+                url: 'https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#active_pointer',
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                title: 'active pointer',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: 'active pointer',
+                },
+              ],
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'HeadingThree',
+      meta: {
+        order: 9,
+        depth: 0,
+      },
+    },
+    'c89f332a-822b-442f-85f5-bc82ed1c3364': {
+      id: 'c89f332a-822b-442f-85f5-bc82ed1c3364',
+      value: [
+        {
+          id: '4875bf2d-10f0-4d3b-ab81-65d85132492d',
+          type: 'paragraph',
+          children: [
+            {
+              text: 'Any',
+            },
+            {
+              text: ' ',
+            },
+            {
+              id: 'f8d9d8f9-ece2-487d-b9aa-2efdc17e3ee3',
+              type: 'link',
+              props: {
+                url: 'https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#pointer',
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                title: 'pointer',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: 'pointer',
+                },
+              ],
+            },
+            {
+              text: ' ',
+            },
+            {
+              text: 'input device that can produce events. A pointer is considered active if it can still produce further events. For example, a pen that is a down state is considered active because it can produce additional events when the pen is lifted or moved.',
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'Paragraph',
+      meta: {
+        order: 10,
+        depth: 0,
+      },
+    },
+    'fd8266cb-75e1-4c59-8945-0fa3f52b1452': {
+      id: 'fd8266cb-75e1-4c59-8945-0fa3f52b1452',
+      value: [
+        {
+          id: '5bc3d616-61b9-4ced-b9c2-b50da5b2807a',
+          type: 'heading-three',
+          children: [
+            {
+              id: 'cceafd78-1ce4-4888-9d38-9b70e4430387',
+              type: 'link',
+              props: {
+                url: 'https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#digitizer',
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                title: 'digitizer',
+                nodeType: 'inline',
+              },
+              children: [
+                {
+                  text: 'digitizer',
+                },
+              ],
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'HeadingThree',
+      meta: {
+        order: 11,
+        depth: 0,
+      },
+    },
+    '1f392f03-1f96-4959-885f-2ea70311bf6b': {
+      id: '1f392f03-1f96-4959-885f-2ea70311bf6b',
+      value: [
+        {
+          id: '95179a55-5f7d-4fdf-834f-ea0f2a9f9885',
+          type: 'paragraph',
+          children: [
+            {
+              text: 'A sensing device with a surface that can detect contact. Most commonly, the sensing device is a touch-enabled screen that can sense input from an input device such as a pen, stylus, or finger. Some sensing devices can detect the close proximity of the input device, and the state is expressed as a hover following the mouse.',
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'Paragraph',
+      meta: {
+        order: 12,
         depth: 0,
       },
     },

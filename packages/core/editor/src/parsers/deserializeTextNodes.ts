@@ -17,7 +17,8 @@ export function deserializeTextNodes(editor: YooEditor, nodes: NodeListOf<ChildN
     if (node.nodeType === Node.ELEMENT_NODE) {
       const element = node as HTMLElement;
 
-      if (element.nodeName === 'P') {
+      // [TODO] - Hmmmm
+      if (element.nodeName === 'P' || element.nodeName === 'SPAN' || element.nodeName === 'DIV') {
         deserializedNodes.push({
           ...deserializeTextNodes(editor, element.childNodes)[0],
         });
