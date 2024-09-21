@@ -46,7 +46,6 @@ export const useSlateEditor = (
     });
 
     slateEditor.insertText = (text) => {
-      console.log('insertText', text);
       if (Array.isArray(editor.selectedBlocks)) {
         editor.setBlockSelected(null);
       }
