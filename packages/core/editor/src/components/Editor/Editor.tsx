@@ -1,4 +1,4 @@
-import { ClipboardEvent, CSSProperties, ReactNode, useEffect, useRef } from 'react';
+import { ClipboardEvent, CSSProperties, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { useYooptaEditor, useYooptaReadOnly } from '../../contexts/YooptaContext/YooptaContext';
 import { RenderBlocks } from './RenderBlocks';
 import { YooptaMark } from '../../marks';
@@ -9,10 +9,11 @@ import { HOTKEYS } from '../../utils/hotkeys';
 import { Editor as SlateEditor, Element, Path, Range, Transforms } from 'slate';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { ReactEditor } from 'slate-react';
-import { YooptaBlockPath, YooptaContentValue } from '../../editor/types';
+import { YooEditor, YooptaBlockPath, YooptaContentValue } from '../../editor/types';
 import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
 import { Blocks } from '../../editor/blocks';
+import { useMultiSelection } from './selection';
 
 type Props = {
   marks?: YooptaMark<any>[];
@@ -56,6 +57,7 @@ const Editor = ({
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
   const selectionBox = useRectangeSelectionBox({ editor, root: selectionBoxRoot });
+  const multiSelection = useMultiSelection(editor);
 
   let state = useRef<State>(DEFAULT_STATE).current;
 
@@ -106,14 +108,6 @@ const Editor = ({
     }
   };
 
-  const resetSelectedBlocks = () => {
-    if (isReadOnly) return;
-
-    if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
-      editor.setBlockSelected(null);
-    }
-  };
-
   const resetSelectionState = () => {
     state.indexToSelect = null;
     state.startedIndexToSelect = null;
@@ -123,9 +117,9 @@ const Editor = ({
   const onMouseDown = (event: React.MouseEvent) => {
     if (isReadOnly) return;
 
+    multiSelection.onMouseDown(event);
     resetSelectionState();
     handleEmptyZoneClick(event);
-    resetSelectedBlocks();
   };
 
   const onBlur = (event: React.FocusEvent) => {
@@ -133,7 +127,10 @@ const Editor = ({
     if (isInsideEditor || isReadOnly) return;
 
     resetSelectionState();
-    resetSelectedBlocks();
+
+    if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
+      editor.setBlockSelected(null);
+    }
   };
 
   const onKeyDown = (event) => {

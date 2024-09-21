@@ -122,18 +122,6 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
     [eventHandlers.onKeyUp, editor.readOnly],
   );
 
-  const onMouseDown = useCallback(
-    (event: React.MouseEvent) => {
-      if (editor.readOnly) return;
-
-      if (editor.selection?.[0] !== block.meta.order) {
-        editor.setSelection([block.meta.order]);
-      }
-      eventHandlers?.onMouseDown?.(event);
-    },
-    [eventHandlers.onMouseDown, editor.readOnly, editor.selection?.[0], block.meta.order],
-  );
-
   const onBlur = useCallback(
     (event: React.FocusEvent) => {
       if (editor.readOnly) return;
@@ -223,7 +211,6 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
       onKeyDown={onKeyDown}
       onKeyUp={onKeyUp}
       onFocus={onFocus}
-      onMouseDown={onMouseDown}
       onBlur={onBlur}
       customEditor={customEditor}
       readOnly={editor.readOnly}
@@ -244,7 +231,6 @@ type SlateEditorInstanceProps = {
   onKeyDown: (event: React.KeyboardEvent) => void;
   onKeyUp: (event: React.KeyboardEvent) => void;
   onFocus: (event: React.FocusEvent) => void;
-  onMouseDown: (event: React.MouseEvent) => void;
   onBlur: (event: React.FocusEvent) => void;
   onPaste: (event: React.ClipboardEvent) => void;
   customEditor?: (props: PluginCustomEditorRenderProps) => JSX.Element;
@@ -264,7 +250,6 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     onKeyDown,
     onKeyUp,
     onFocus,
-    onMouseDown,
     onBlur,
     onPaste,
     customEditor,
@@ -287,7 +272,6 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
           onKeyDown={onKeyDown}
           onKeyUp={onKeyUp}
           onFocus={onFocus}
-          onMouseDown={onMouseDown}
           decorate={decorate}
           // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
           onBlur={onBlur}

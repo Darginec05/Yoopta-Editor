@@ -1,14 +1,13 @@
 import { useMemo } from 'react';
-import { Element, Node, Transforms } from 'slate';
+import { Element, Node, Operation, Range, Transforms } from 'slate';
 import { buildBlockData } from '../components/Editor/utils';
-import { useYooptaEditor } from '../contexts/YooptaContext/YooptaContext';
-import { SlateEditor, SlateElement, YooEditor, YooptaBlockData } from '../editor/types';
+import { SlateEditor, YooEditor, YooptaBlockData } from '../editor/types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { getRootBlockElementType } from '../utils/blockElements';
 import { generateId } from '../utils/generateId';
 import { HOTKEYS } from '../utils/hotkeys';
 import { withInlines } from './extenstions/withInlines';
-import { Plugin, PluginEventHandlerOptions, PluginEvents } from './types';
+import { PluginEventHandlerOptions, PluginEvents } from './types';
 
 export const useSlateEditor = (
   id: string,
@@ -20,7 +19,7 @@ export const useSlateEditor = (
   return useMemo(() => {
     let slateEditor = editor.blockEditorsMap[id];
 
-    const { normalizeNode } = slateEditor;
+    const { normalizeNode, insertText, apply } = slateEditor;
     const elementTypes = Object.keys(elements);
 
     elementTypes.forEach((elementType) => {
@@ -41,11 +40,29 @@ export const useSlateEditor = (
       if (isInline || isInlineVoid) {
         slateEditor.isInline = (element) => element.type === elementType;
 
-        // [TODO] - as test
-        // [TODO] - should extend all slate editors for every block
+        // [TODO] - Move it to Link plugin extension
         slateEditor = withInlines(editor, slateEditor);
       }
     });
+
+    slateEditor.insertText = (text) => {
+      console.log('insertText', text);
+      if (Array.isArray(editor.selectedBlocks)) {
+        editor.setBlockSelected(null);
+      }
+
+      insertText(text);
+    };
+
+    slateEditor.apply = (op) => {
+      if (Operation.isSelectionOperation(op)) {
+        if (Array.isArray(editor.selectedBlocks) && slateEditor.selection && Range.isExpanded(slateEditor.selection)) {
+          editor.setBlockSelected(null);
+        }
+      }
+
+      apply(op);
+    };
 
     // This normalization is needed to validate the elements structure
     slateEditor.normalizeNode = (entry) => {
