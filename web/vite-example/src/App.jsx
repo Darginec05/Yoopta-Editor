@@ -12,10 +12,12 @@ import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import Code from '@yoopta/code';
+import Table from '@yoopta/table';
+import Accordion, { AccordionCommands } from '@yoopta/accordion';
+import Divider from '@yoopta/divider';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
-// import { DividerPlugin } from './customPlugins/Divider';
 
 import { uploadToCloudinary } from './utils/cloudinary';
 import { useMemo, useRef } from 'react';
@@ -36,6 +38,15 @@ const plugins = [
     },
   }),
   Code,
+  Table,
+  Accordion.extend({
+    events: {
+      onBeforeCreate: (editor) => {
+        return AccordionCommands.buildAccordionElements(editor, { items: 2 });
+      },
+    },
+  }),
+  Divider,
   Paragraph,
   HeadingOne,
   HeadingTwo,
@@ -109,6 +120,7 @@ function App() {
         tools={TOOLS}
         marks={MARKS}
         selectionBoxRoot={selectionRef}
+        width="100%"
         autoFocus
       />
     </div>
