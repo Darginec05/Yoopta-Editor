@@ -1,13 +1,4 @@
-import {
-  Blocks,
-  buildBlockData,
-  Elements,
-  generateId,
-  SlateEditor,
-  SlateElement,
-  YooEditor,
-  YooptaBlockPath,
-} from '@yoopta/editor';
+import { generateId, SlateEditor, YooEditor } from '@yoopta/editor';
 import { Editor, Element, Location, Span, Transforms } from 'slate';
 import { LinkElement, LinkElementProps } from '../types';
 
@@ -44,12 +35,10 @@ export const LinkCommands: LinkCommands = {
   insertLink: (editor, options) => {
     let { props, slate } = options || {};
 
-    console.log('slate.selection', slate.selection);
     if (!slate || !slate.selection) return;
 
     const textInSelection = Editor.string(slate, slate.selection);
 
-    console.log('textInSelection', textInSelection);
     const linkProps = {
       ...props,
       title: props.title || textInSelection || props.url || '',
@@ -95,19 +84,21 @@ export const LinkCommands: LinkCommands = {
     Transforms.collapse(slate, { edge: 'end' });
   },
   deleteLink: (editor, options) => {
-    const { slate } = options;
-    if (!slate || !slate.selection) return;
+    try {
+      const { slate } = options;
+      if (!slate || !slate.selection) return;
 
-    const [linkNodeEntry] = Editor.nodes(slate, {
-      at: slate.selection,
-      match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'link',
-    });
-
-    if (linkNodeEntry) {
-      Transforms.unwrapNodes(slate, {
-        match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'link',
+      const [linkNodeEntry] = Editor.nodes(slate, {
         at: slate.selection,
+        match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'link',
       });
-    }
+
+      if (linkNodeEntry) {
+        Transforms.unwrapNodes(slate, {
+          match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'link',
+          at: slate.selection,
+        });
+      }
+    } catch (error) {}
   },
 };

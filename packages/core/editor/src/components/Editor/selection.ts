@@ -15,6 +15,7 @@ export function useMultiSelection(editor: YooEditor) {
 
     if (path) {
       const slate = Blocks.getSlate(editor, { at: path });
+      if (!slate) return;
 
       Editor.withoutNormalizing(slate, () => {
         Transforms.select(slate, [0]);

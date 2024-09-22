@@ -20,14 +20,14 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
     fromPaths.forEach((path) => {
       const block = findPluginBlockBySelectionPath(editor, { at: [path] });
       if (block) {
-        delete editor.children[block.id];
-        delete editor.blockEditorsMap[block.id];
-
         const plugin = editor.plugins[block.type];
         const pluginEvents = plugin.events || {};
         const { onDestroy } = pluginEvents;
 
         onDestroy?.(editor, block.id);
+
+        delete editor.children[block.id];
+        delete editor.blockEditorsMap[block.id];
       }
     });
 
@@ -79,13 +79,13 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
     const block = editor.children[blockIdToDelete];
     const plugin = editor.plugins[block.type];
 
-    delete editor.children[blockIdToDelete];
-    delete editor.blockEditorsMap[blockIdToDelete];
-
     const pluginEvents = plugin.events || {};
     const { onDestroy } = pluginEvents;
 
     onDestroy?.(editor, blockIdToDelete);
+
+    delete editor.children[blockIdToDelete];
+    delete editor.blockEditorsMap[blockIdToDelete];
   }
 
   editor.children = finishDraft(editor.children);

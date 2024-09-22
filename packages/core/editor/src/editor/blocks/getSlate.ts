@@ -18,7 +18,10 @@ export function getSlate(editor: YooEditor, options: GetSlateOptions): SlateEdit
     });
 
   const slate = editor.blockEditorsMap[blockId || ''];
-  if (!slate) {
+  const blockData = editor.children[blockId || ''] as YooptaBlockData;
+  const blockEntity = editor.blocks[blockData?.type || ''];
+
+  if (!blockEntity?.hasCustomEditor && !slate) {
     throw new Error(`Slate not found with params: ${JSON.stringify(options)}`);
   }
 

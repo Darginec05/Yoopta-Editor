@@ -44,13 +44,18 @@ export const RoadmapList = () => {
           title="Plugin Marketplace"
           description="A one-stop-shop for plugins where developers can share and monetize their own plugins, and users can easily enhance their editor's capabilities."
         />
-        {/* <Card
-              title="Community Building Initiatives"
-              description="From webinars and workshops to meetups—expanding our community support to foster collaboration and learning among users and developers."
-            /> */}
+
         <Card
           title="Open-Source Email Builder"
           description="Plans are underway to develop an open-source email builder that will provide developers and designers with the tools to create responsive, professionally designed emails easily, enhancing how email campaigns are built and managed."
+        />
+        <Card
+          title="Simplify the building of custom plugins"
+          description='We plan to introduce a "plugin builder" tool that will simplify the process of creating custom plugins, enabling developers to build and share their own plugins with ease.'
+        />
+        <Card
+          title="Themes"
+          description="We plan to introduce a variety of themes to the editor, allowing users to customize the look and feel of the editor to suit their preferences and needs."
         />
       </div>
       {/* card list using grid */}

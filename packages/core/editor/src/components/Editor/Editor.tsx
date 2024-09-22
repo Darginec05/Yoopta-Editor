@@ -1,4 +1,4 @@
-import { ClipboardEvent, CSSProperties, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { ClipboardEvent, CSSProperties, ReactNode, useEffect, useRef } from 'react';
 import { useYooptaEditor, useYooptaReadOnly } from '../../contexts/YooptaContext/YooptaContext';
 import { RenderBlocks } from './RenderBlocks';
 import { YooptaMark } from '../../marks';
@@ -9,7 +9,7 @@ import { HOTKEYS } from '../../utils/hotkeys';
 import { Editor as SlateEditor, Element, Path, Range, Transforms } from 'slate';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { ReactEditor } from 'slate-react';
-import { YooEditor, YooptaBlockPath, YooptaContentValue } from '../../editor/types';
+import { YooptaBlockPath, YooptaContentValue } from '../../editor/types';
 import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
 import { Blocks } from '../../editor/blocks';

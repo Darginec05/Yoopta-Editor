@@ -4,61 +4,78 @@ type Feature = {
   icon: string;
   src: string;
 };
-
 const features: Feature[] = [
   {
-    title: 'Feature 1',
-    description: 'Feature 1 description',
+    title: 'Easy to use',
+    description: 'Save your time and focus on other business logic',
     icon: 'Icon 1',
     src: 'Image 1',
   },
   {
-    title: 'Feature 2',
-    description: 'Feature 2 description',
+    title: 'Block-based',
+    description: 'Organize content into modular, reusable blocks for flexible editing',
     icon: 'Icon 2',
     src: 'Image 2',
   },
   {
-    title: 'Feature 3',
-    description: 'Feature 3 description',
+    title: 'Drag and drop',
+    description: 'Intuitively rearrange content with simple drag and drop functionality',
     icon: 'Icon 3',
     src: 'Image 3',
   },
   {
-    title: 'Feature 4',
-    description: 'Feature 4 description',
+    title: 'Mobile-friendly',
+    description: 'Seamless editing experience across all devices and screen sizes',
     icon: 'Icon 4',
     src: 'Image 4',
   },
   {
-    title: 'Feature 4',
-    description: 'Feature 4 description',
-    icon: 'Icon 4',
-    src: 'Image 4',
+    title: 'Everything customizable',
+    description: 'Tailor every aspect of the editor to fit your specific needs',
+    icon: 'Icon 5',
+    src: 'Image 5',
   },
   {
-    title: 'Feature 4',
-    description: 'Feature 4 description',
-    icon: 'Icon 4',
-    src: 'Image 4',
+    title: 'Extendable',
+    description: 'Easily add new features and functionalities to meet evolving requirements',
+    icon: 'Icon 6',
+    src: 'Image 6',
   },
   {
-    title: 'Feature 4',
-    description: 'Feature 4 description',
-    icon: 'Icon 4',
-    src: 'Image 4',
+    title: 'Powerful plugins',
+    description: 'Enhance functionality with a wide range of pre-built and custom plugins',
+    icon: 'Icon 7',
+    src: 'Image 7',
   },
   {
-    title: 'Feature 4',
-    description: 'Feature 4 description',
-    icon: 'Icon 4',
-    src: 'Image 4',
+    title: 'Commands API',
+    description: 'Streamline complex operations with an intuitive command interface',
+    icon: 'Icon 8',
+    src: 'Image 8',
   },
   {
-    title: 'Feature 4',
-    description: 'Feature 4 description',
-    icon: 'Icon 4',
-    src: 'Image 4',
+    title: 'Large documents',
+    description: 'Efficiently handle and edit extensive content without performance issues',
+    icon: 'Icon 9',
+    src: 'Image 9',
+  },
+  {
+    title: 'Exports/Imports in different formats',
+    description: 'Seamlessly convert content between HTML, JSON, Markdown, and Plain text',
+    icon: 'Icon 10',
+    src: 'Image 10',
+  },
+  {
+    title: 'Create your custom plugins',
+    description: 'Develop bespoke functionalities to address unique editing requirements',
+    icon: 'Icon 11',
+    src: 'Image 11',
+  },
+  {
+    title: 'Plans',
+    description: 'Yes, our plans are also a feature, because we have a lot of them',
+    icon: 'Icon 12',
+    src: 'Image 12',
   },
 ];
 
@@ -69,7 +86,7 @@ export const FeatureList = () => {
         <h2 className="text-center font-heading mt-12 scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0">
           Why Yoopta-Editor?
         </h2>
-        <p className="mt-0 text-center text-muted-foreground md:w-[700px] text-[#dae2ed] mx-auto">asdsadasd</p>
+        {/* <p className="mt-0 text-center text-muted-foreground md:w-[700px] text-[#dae2ed] mx-auto">asdsadasd</p> */}
       </div>
       <div className="grid max-w-full grid-cols-1 gap-4 md:max-w-screen-md md:grid-cols-2 xl:max-w-none xl:grid-cols-3 xl:p-0">
         {features.map((feature) => (
@@ -103,7 +120,7 @@ export const FeatureListItem = ({ feature }: FeatureListItemProps) => {
           <svg
             stroke="currentColor"
             fill="currentColor"
-            stroke-width="0"
+            strokeWidth="0"
             viewBox="0 0 24 24"
             className="rounded-md"
             height="24"

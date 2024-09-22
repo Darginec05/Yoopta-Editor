@@ -14,6 +14,7 @@ import Table from '@yoopta/table';
 import Divider from '@yoopta/divider';
 
 import { uploadToCloudinary } from '../cloudinary';
+import { Elements } from '@yoopta/editor';
 
 export const YOOPTA_PLUGINS = [
   Table,
@@ -69,10 +70,8 @@ export const YOOPTA_PLUGINS = [
   Image.extend({
     events: {
       onDestroy: (editor, id) => {
-        console.log('Image onDestroy', editor, id);
-      },
-      onCreate: (editor, id) => {
-        console.log('Image onCreate', editor, id);
+        const imageElement = Elements.getElement(editor, id, { type: 'image' });
+        console.log('Image imageElement', imageElement);
       },
     },
     elementProps: {
