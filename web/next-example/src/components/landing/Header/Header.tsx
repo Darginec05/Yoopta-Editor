@@ -35,7 +35,7 @@ export const Header = () => {
           </nav>
         </div>
         <MobileNavigation />
-        <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+        <div className="flex flex-1 items-center justify-end">
           <div className="flex items-center text-nowrap mt-0 w-full justify-end md:w-auto md:justify-start">
             <NextLink
               href="https://yoodocs.space/yoopta-editor/yoopta/introduction-rsK_1fODIL"

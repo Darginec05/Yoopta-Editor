@@ -2,12 +2,12 @@ import { PlusIcon, ExternalLinkIcon } from 'lucide-react';
 import { Head } from '@/components/Head/Head';
 import { ProductHuntButton } from '@/components/landing/ProductHuntButton/ProductHuntButton';
 import { GithubButton } from '@/components/landing/GithubButton/GithubButton';
-import { Card } from '@/components/landing/Card/Card';
 import { Header } from '@/components/landing/Header/Header';
 import { fetchRepoContributors, fetchRepoData, fetchRepoSponsors, request } from '@/api/request';
 import { GithubContributors } from '@/components/landing/GithubContributors/GithubContributors';
 import { Contributor, Repository } from '@/components/landing/types';
 import { RoadmapList } from '@/components/landing/RoadmapList/RoadmapList';
+import { FeatureList } from '@/components/landing/FeatureList/FeatureList';
 
 type Props = {
   repoData: Repository;
@@ -57,14 +57,15 @@ export default function Home({ repoData, sponsors, contributors }: Props) {
             Play with demo's <ExternalLinkIcon size={16} className="ml-2" />
           </button>
         </div>
-        <div className="mt-4">
+        <div className="mt-4 pb-4 border-b">
           <video className="w-full h-auto" autoPlay loop muted playsInline controls>
             <source src="/yoopta/Yoopta_Intro.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
+        <FeatureList />
         <RoadmapList />
-        <div className="mt-6">
+        <div className="mt-6 pb-4 border-b">
           <h2 className="text-center font-heading mt-12 scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0">
             Sponsorship 💖
           </h2>

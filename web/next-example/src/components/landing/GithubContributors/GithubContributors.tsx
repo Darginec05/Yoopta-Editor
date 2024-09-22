@@ -9,9 +9,11 @@ export const GithubContributors = ({ contributors }: Props) => {
   if (!contributors) return null;
 
   return (
-    <div className="flex max-w-screen-md flex-col gap-4 lg:max-w-screen-lg">
+    <div className="mt-6 pb-4 border-b flex max-w-screen-md flex-col gap-4 lg:max-w-screen-lg">
       <div>
-        <h2 className="text-center font-bold tracking-[-0.01em] mt-4 text-lg">Contributors</h2>
+        <h2 className="text-center font-heading mt-12 scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0">
+          Contributors
+        </h2>
       </div>
       <div className="flex flex-wrap items-center justify-center gap-3">
         {contributors.map((contributor) => (
