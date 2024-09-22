@@ -2,7 +2,7 @@ import { Card } from '../Card/Card';
 
 export const RoadmapList = () => {
   return (
-    <div className="mt-6 pb-4 border-b">
+    <div className="mt-6 pb-4">
       <h2 className="text-center font-heading mt-12 scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0">
         Roadmap 👨‍💻
       </h2>

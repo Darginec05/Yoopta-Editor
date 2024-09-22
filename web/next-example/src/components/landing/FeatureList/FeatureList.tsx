@@ -1,87 +1,95 @@
+import {
+  CheckCircleIcon,
+  LucideIcon,
+  PackageIcon,
+  LayoutIcon,
+  SmartphoneIcon,
+  SettingsIcon,
+  PuzzleIcon,
+  PlugIcon,
+  TerminalIcon,
+  FileTextIcon,
+  ImportIcon,
+  CodeIcon,
+  LightbulbIcon,
+} from 'lucide-react';
+
 type Feature = {
   title: string;
   description: string;
-  icon: string;
-  src: string;
+  icon: LucideIcon;
+  // src?: string;
 };
+
 const features: Feature[] = [
   {
     title: 'Easy to use',
-    description: 'Save your time and focus on other business logic',
-    icon: 'Icon 1',
-    src: 'Image 1',
+    description: 'Save your time by using this editor. Focus on other business tasks.',
+    icon: CheckCircleIcon,
+  },
+  {
+    title: 'Ready to use out of the box',
+    description:
+      'The editor is ready to use right after installation. It includes all necessary features for content creation by default.',
+    icon: PackageIcon,
   },
   {
     title: 'Block-based',
-    description: 'Organize content into modular, reusable blocks for flexible editing',
-    icon: 'Icon 2',
-    src: 'Image 2',
-  },
-  {
-    title: 'Drag and drop',
-    description: 'Intuitively rearrange content with simple drag and drop functionality',
-    icon: 'Icon 3',
-    src: 'Image 3',
+    description:
+      'The block-based editor allows you to create content using multiple blocks, making it more flexible and powerful.',
+    icon: LayoutIcon,
   },
   {
     title: 'Mobile-friendly',
-    description: 'Seamless editing experience across all devices and screen sizes',
-    icon: 'Icon 4',
-    src: 'Image 4',
+    description: 'Good mobile support allows you to edit content anytime and anywhere.',
+    icon: SmartphoneIcon,
   },
   {
     title: 'Everything customizable',
-    description: 'Tailor every aspect of the editor to fit your specific needs',
-    icon: 'Icon 5',
-    src: 'Image 5',
+    description:
+      'Despite having built-in functionality, you can customize the editor for your needs. Want to add your own styles, theme or behaviour? No problem!',
+    icon: SettingsIcon,
   },
   {
     title: 'Extendable',
-    description: 'Easily add new features and functionalities to meet evolving requirements',
-    icon: 'Icon 6',
-    src: 'Image 6',
+    description: 'Everything in the editor can be extended and enhanced using plugins and API.',
+    icon: PuzzleIcon,
   },
   {
     title: 'Powerful plugins',
-    description: 'Enhance functionality with a wide range of pre-built and custom plugins',
-    icon: 'Icon 7',
-    src: 'Image 7',
+    description: 'The editor comes with many built-in plugins to help you create any type of content.',
+    icon: PlugIcon,
   },
   {
     title: 'Commands API',
-    description: 'Streamline complex operations with an intuitive command interface',
-    icon: 'Icon 8',
-    src: 'Image 8',
+    description: 'Use commands to control the editor externally.',
+    icon: TerminalIcon,
   },
   {
     title: 'Large documents',
-    description: 'Efficiently handle and edit extensive content without performance issues',
-    icon: 'Icon 9',
-    src: 'Image 9',
+    description: 'Edit documents of any size without worrying about performance.',
+    icon: FileTextIcon,
   },
   {
-    title: 'Exports/Imports in different formats',
-    description: 'Seamlessly convert content between HTML, JSON, Markdown, and Plain text',
-    icon: 'Icon 10',
-    src: 'Image 10',
+    title: 'Exports/Imports',
+    description: 'Export and import content in various formats such as HTML, Markdown, Text, and others.',
+    icon: ImportIcon,
   },
   {
     title: 'Create your custom plugins',
-    description: 'Develop bespoke functionalities to address unique editing requirements',
-    icon: 'Icon 11',
-    src: 'Image 11',
+    description: 'Create your own plugins to extend the editor’s functionality to suit your needs.',
+    icon: CodeIcon,
   },
   {
     title: 'Plans',
-    description: 'Yes, our plans are also a feature, because we have a lot of them',
-    icon: 'Icon 12',
-    src: 'Image 12',
+    description: 'Yes, our plans for this editor are also a feature. We have ideas to make it exceptional.',
+    icon: LightbulbIcon,
   },
 ];
 
 export const FeatureList = () => {
   return (
-    <div className="mt-6 pb-4 border-b flex max-w-full flex-col items-center gap-6 px-0 md:max-w-screen-md xl:max-w-none">
+    <div className="mt-6 pb-4 flex max-w-full flex-col items-center gap-6 px-0 md:max-w-screen-md xl:max-w-none">
       <div className="flex max-w-full flex-col items-center text-center md:max-w-screen-md">
         <h2 className="text-center font-heading mt-12 scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0">
           Why Yoopta-Editor?
@@ -102,33 +110,13 @@ type FeatureListItemProps = {
 };
 
 export const FeatureListItem = ({ feature }: FeatureListItemProps) => {
+  const Icon = feature.icon;
+
   return (
     <div className="card relative flex w-[360px] max-w-full flex-col justify-between gap-1 overflow-hidden rounded-lg border border-gray-200 dark:border-gray-800 dark:bg-black row-span-2">
-      <div className="thumbnail aspect-video w-full overflow-hidden">
-        <img
-          alt="Works out of the box"
-          loading="lazy"
-          width="434"
-          height="317"
-          decoding="async"
-          className="block w-full dark:hidden"
-          src={feature.src}
-        />
-      </div>
       <div className="flex flex-col gap-6 p-8">
-        <div className="feature-icon h-fit w-fit rounded-lg p-1">
-          <svg
-            stroke="currentColor"
-            fill="currentColor"
-            strokeWidth="0"
-            viewBox="0 0 24 24"
-            className="rounded-md"
-            height="24"
-            width="24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M9.95401 2.2106C11.2876 1.93144 12.6807 1.92263 14.0449 2.20785C14.2219 3.3674 14.9048 4.43892 15.9997 5.07103C17.0945 5.70313 18.364 5.75884 19.4566 5.3323C20.3858 6.37118 21.0747 7.58203 21.4997 8.87652C20.5852 9.60958 19.9997 10.736 19.9997 11.9992C19.9997 13.2632 20.5859 14.3902 21.5013 15.1232C21.29 15.7636 21.0104 16.3922 20.6599 16.9992C20.3094 17.6063 19.9049 18.1627 19.4559 18.6659C18.3634 18.2396 17.0943 18.2955 15.9997 18.9274C14.9057 19.559 14.223 20.6294 14.0453 21.7879C12.7118 22.067 11.3187 22.0758 9.95443 21.7906C9.77748 20.6311 9.09451 19.5595 7.99967 18.9274C6.90484 18.2953 5.63539 18.2396 4.54272 18.6662C3.61357 17.6273 2.92466 16.4164 2.49964 15.1219C3.41412 14.3889 3.99968 13.2624 3.99968 11.9992C3.99968 10.7353 3.41344 9.60827 2.49805 8.87524C2.70933 8.23482 2.98894 7.60629 3.33942 6.99923C3.68991 6.39217 4.09443 5.83576 4.54341 5.33257C5.63593 5.75881 6.90507 5.703 7.99967 5.07103C9.09364 4.43942 9.7764 3.3691 9.95401 2.2106ZM11.9997 14.9992C13.6565 14.9992 14.9997 13.6561 14.9997 11.9992C14.9997 10.3424 13.6565 8.99923 11.9997 8.99923C10.3428 8.99923 8.99967 10.3424 8.99967 11.9992C8.99967 13.6561 10.3428 14.9992 11.9997 14.9992Z"></path>
-          </svg>
+        <div className="h-fit w-fit rounded-lg p-1">
+          <Icon className="rounded-md" />
         </div>
         <div className="flex flex-col gap-1">
           <div className="flex flex-row items-center justify-between gap-2">

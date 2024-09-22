@@ -8,6 +8,7 @@ import { GithubContributors } from '@/components/landing/GithubContributors/Gith
 import { Contributor, Repository } from '@/components/landing/types';
 import { RoadmapList } from '@/components/landing/RoadmapList/RoadmapList';
 import { FeatureList } from '@/components/landing/FeatureList/FeatureList';
+import { Divider } from '@/components/landing/Divider/Divider';
 
 type Props = {
   repoData: Repository;
@@ -20,7 +21,7 @@ export default function Home({ repoData, sponsors, contributors }: Props) {
     <div
       className="w-full h-auto min-h-[100vh] text-white animate-gradient"
       style={{
-        background: 'radial-gradient(circle at 24.1% 68.8%, rgb(50, 50, 50) 0%, #050507 99.4%)',
+        background: 'radial-gradient(circle at 24.1% 68.8%, #1e232d 0%, #050507 99.4%)',
         animation: ' gradient 15s ease infinite',
         backgroundSize: '400% 400%',
       }}
@@ -57,15 +58,19 @@ export default function Home({ repoData, sponsors, contributors }: Props) {
             Play with demo's <ExternalLinkIcon size={16} className="ml-2" />
           </button>
         </div>
-        <div className="mt-4 pb-4 border-b">
+
+        <div className="mt-4 pb-4">
           <video className="w-full h-auto" autoPlay loop muted playsInline controls>
             <source src="/yoopta/Yoopta_Intro.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
+        <Divider />
         <FeatureList />
+        <Divider />
         <RoadmapList />
-        <div className="mt-6 pb-4 border-b">
+        <Divider />
+        <div className="mt-6 pb-4">
           <h2 className="text-center font-heading mt-12 scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0">
             Sponsorship 💖
           </h2>
@@ -154,8 +159,9 @@ export default function Home({ repoData, sponsors, contributors }: Props) {
             </div>
           </div>
         </div>
-
+        <Divider />
         <GithubContributors contributors={contributors} />
+        <Divider />
         <footer className="border-t mt-8">
           <div className="mt-2 pb-6">
             <p className="text-center text-muted-foreground">

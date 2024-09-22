@@ -7,7 +7,7 @@ export const Header = () => {
     <header
       className="z-10 supports-backdrop-blur:bg-background/60 fixed top-0 z-2 w-full border-b border-[hsl(var(--border))] backdrop-blur"
       style={{
-        background: 'radial-gradient(circle at 24.1% 68.8%, rgb(50, 50, 50) 0%, #050507 99.4%)',
+        background: 'radial-gradient(circle at 24.1% 68.8%, #1e232d 0%, #050507 99.4%)',
         animation: ' gradient 15s ease infinite',
         backgroundSize: '400% 400%',
       }}
