@@ -1,6 +1,7 @@
 import { createDraft, finishDraft } from 'immer';
 import { YooEditor, YooptaBlockData } from '../types';
 
+// [TODO] - optimize updateBlock
 export function updateBlock<TElementKeys extends string, TProps>(
   editor: YooEditor,
   blockId: string,

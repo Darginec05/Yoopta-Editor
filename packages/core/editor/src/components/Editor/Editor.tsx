@@ -13,6 +13,7 @@ import { YooptaBlockPath, YooptaContentValue } from '../../editor/types';
 import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
 import { Blocks } from '../../editor/blocks';
+import { useMultiSelection } from './selection';
 
 type Props = {
   marks?: YooptaMark<any>[];
@@ -56,6 +57,7 @@ const Editor = ({
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
   const selectionBox = useRectangeSelectionBox({ editor, root: selectionBoxRoot });
+  const multiSelection = useMultiSelection(editor);
 
   let state = useRef<State>(DEFAULT_STATE).current;
 
@@ -106,14 +108,6 @@ const Editor = ({
     }
   };
 
-  const resetSelectedBlocks = () => {
-    if (isReadOnly) return;
-
-    if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
-      editor.setBlockSelected(null);
-    }
-  };
-
   const resetSelectionState = () => {
     state.indexToSelect = null;
     state.startedIndexToSelect = null;
@@ -123,30 +117,9 @@ const Editor = ({
   const onMouseDown = (event: React.MouseEvent) => {
     if (isReadOnly) return;
 
-    // if (event.shiftKey) {
-    //   const currentSelectionIndex = editor.selection;
-    //   if (!currentSelectionIndex) return;
-
-    //   const targetBlock = (event.target as HTMLElement).closest('div[data-yoopta-block]');
-    //   const targetBlockId = targetBlock?.getAttribute('data-yoopta-block-id') || '';
-    //   const targetBlockIndex = editor.children[targetBlockId]?.meta.order;
-    //   if (typeof targetBlockIndex !== 'number') return;
-
-    //   const indexesBetween = Array.from({ length: Math.abs(targetBlockIndex - currentSelectionIndex[0]) }).map(
-    //     (_, index) =>
-    //       targetBlockIndex > currentSelectionIndex[0]
-    //         ? currentSelectionIndex[0] + index + 1
-    //         : currentSelectionIndex[0] - index - 1,
-    //   );
-
-    //   editor.blur();
-    //   editor.setBlockSelected([currentSelectionIndex[0], ...indexesBetween], { only: true });
-    //   return;
-    // }
-
+    multiSelection.onMouseDown(event);
     resetSelectionState();
     handleEmptyZoneClick(event);
-    resetSelectedBlocks();
   };
 
   const onBlur = (event: React.FocusEvent) => {
@@ -154,7 +127,10 @@ const Editor = ({
     if (isInsideEditor || isReadOnly) return;
 
     resetSelectionState();
-    resetSelectedBlocks();
+
+    if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
+      editor.setBlockSelected(null);
+    }
   };
 
   const onKeyDown = (event) => {

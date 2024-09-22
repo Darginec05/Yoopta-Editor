@@ -22,9 +22,6 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
   if (!slate || !slate.selection) return;
 
   const selectedBlock = editor.blocks[type];
-  const elements = buildBlockElementsStructure(editor, type);
-
-  if (options?.deleteText) Transforms.delete(slate, { at: [0, 0] });
 
   const blockData = buildBlockData({
     id: generateId(),
@@ -35,6 +32,17 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
       align: fromBlock.meta.align,
     },
   });
+
+  const plugin = editor.plugins[type];
+  const pluginEvents = plugin.events || {};
+  const { onBeforeCreate, onCreate } = pluginEvents;
+
+  const elements =
+    typeof onBeforeCreate === 'function'
+      ? onBeforeCreate(editor, blockData.id)
+      : buildBlockElementsStructure(editor, type);
+
+  if (options?.deleteText) Transforms.delete(slate, { at: [0, 0] });
 
   const newSlate = buildSlateEditor(editor);
   newSlate.children = [elements];
@@ -51,6 +59,8 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
   editor.children = finishDraft(editor.children);
   editor.applyChanges();
   editor.emit('change', editor.children);
+
+  onCreate?.(editor, blockData.id);
 
   if (options?.focus) {
     editor.focusBlock(blockId, { slate: newSlate, waitExecution: true });

@@ -1,5 +1,6 @@
 import { generateId, YooptaPlugin } from '@yoopta/editor';
-import { FileElementProps, FilePluginElements, FilePluginOptions } from '../types';
+import { FileCommands } from '../commands';
+import { FileElementMap, FilePluginOptions } from '../types';
 import { FileRender } from '../ui/File';
 
 const ALIGNS_TO_JUSTIFY = {
@@ -8,7 +9,7 @@ const ALIGNS_TO_JUSTIFY = {
   right: 'flex-end',
 };
 
-const File = new YooptaPlugin<FilePluginElements, FileElementProps, FilePluginOptions>({
+const File = new YooptaPlugin<FileElementMap, FilePluginOptions>({
   type: 'File',
   elements: {
     file: {
@@ -22,6 +23,7 @@ const File = new YooptaPlugin<FilePluginElements, FileElementProps, FilePluginOp
       },
     },
   },
+  commands: FileCommands,
   options: {
     display: {
       title: 'File',

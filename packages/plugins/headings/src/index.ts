@@ -16,5 +16,7 @@ const Headings = {
   HeadingThree,
 };
 
+export { HeadingOneCommands, HeadingTwoCommands, HeadingThreeCommands } from './commands';
+
 export default Headings;
 export { HeadingOne, HeadingTwo, HeadingThree, HeadingOneElement, HeadingTwoElement, HeadingThreeElement };

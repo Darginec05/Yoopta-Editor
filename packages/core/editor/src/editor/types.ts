@@ -72,8 +72,10 @@ export type YooptaFormats = Record<string, TextFormat>;
 
 export type YooEditorEvents = 'change' | 'focus' | 'blur' | 'block:copy';
 
+export type BaseCommands = Record<string, (...args: any[]) => any>;
+
 // [TODO] - Fix generic and default types
-export type YooEditor<TNodes = any> = {
+export type YooEditor = {
   id: string;
   readOnly: boolean;
   isEmpty: () => boolean;
@@ -94,7 +96,7 @@ export type YooEditor<TNodes = any> = {
   selection: YooptaBlockPath | null;
   selectedBlocks: number[] | null;
   children: YooptaContentValue;
-  getEditorValue: () => TNodes;
+  getEditorValue: () => YooptaContentValue;
   setEditorValue: (value: YooptaContentValue) => void;
   setSelection: (path: YooptaBlockPath | null, options?: SetSelectionOptions) => void;
   setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
@@ -102,7 +104,8 @@ export type YooEditor<TNodes = any> = {
   blocks: YooptaBlocks;
   formats: YooptaFormats;
   shortcuts: Record<string, YooptaBlock>;
-  plugins: Record<string, Plugin<string, unknown>>;
+  plugins: Record<string, Plugin<Record<string, SlateElement>, unknown>>;
+  commands: Record<string, (...args: any[]) => any>;
 
   // events handlers
   on: (event: YooEditorEvents, fn: (payload: any) => void) => void;

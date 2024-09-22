@@ -20,15 +20,21 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
     fromPaths.forEach((path) => {
       const block = findPluginBlockBySelectionPath(editor, { at: [path] });
       if (block) {
+        const plugin = editor.plugins[block.type];
+        const pluginEvents = plugin.events || {};
+        const { onDestroy } = pluginEvents;
+
+        onDestroy?.(editor, block.id);
+
         delete editor.children[block.id];
         delete editor.blockEditorsMap[block.id];
       }
     });
 
     // Reorder blocks
-    const pluginKeys = Object.keys(editor.children);
+    const blockDataKeys = Object.keys(editor.children);
 
-    pluginKeys.forEach((id, index) => {
+    blockDataKeys.forEach((id, index) => {
       editor.children[id].meta.order = index;
     });
 
@@ -60,18 +66,26 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {})
   editor.children = createDraft(editor.children);
 
   const [position] = at;
-  const pluginKeys = Object.keys(editor.children);
+  const blockDataKeys = Object.keys(editor.children);
 
-  const pluginToDeleteId = pluginKeys.find((id) => editor.children[id].meta.order === position);
+  const blockIdToDelete = blockDataKeys.find((id) => editor.children[id].meta.order === position);
 
-  pluginKeys.forEach((blockId) => {
-    const plugin = editor.children[blockId];
-    if (plugin.meta.order > position) plugin.meta.order -= 1;
+  blockDataKeys.forEach((blockId) => {
+    const blockData = editor.children[blockId];
+    if (blockData.meta.order > position) blockData.meta.order -= 1;
   });
 
-  if (pluginToDeleteId) {
-    delete editor.children[pluginToDeleteId];
-    delete editor.blockEditorsMap[pluginToDeleteId];
+  if (blockIdToDelete) {
+    const block = editor.children[blockIdToDelete];
+    const plugin = editor.plugins[block.type];
+
+    const pluginEvents = plugin.events || {};
+    const { onDestroy } = pluginEvents;
+
+    onDestroy?.(editor, blockIdToDelete);
+
+    delete editor.children[blockIdToDelete];
+    delete editor.blockEditorsMap[blockIdToDelete];
   }
 
   editor.children = finishDraft(editor.children);

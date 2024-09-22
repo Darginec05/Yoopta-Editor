@@ -8,5 +8,7 @@ declare module 'slate' {
   }
 }
 
+export { CalloutCommands } from './commands';
+
 export default Callout;
 export { CalloutElement, CalloutElementProps };

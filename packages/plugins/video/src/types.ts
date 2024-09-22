@@ -44,3 +44,7 @@ export type VideoPluginOptions = {
     maxHeight?: number;
   };
 };
+
+export type VideoElementMap = {
+  video: VideoElement;
+};

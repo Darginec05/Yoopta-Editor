@@ -1,5 +1,12 @@
 import { generateId, YooptaPlugin } from '@yoopta/editor';
-import { EmbedElementProps, EmbedPluginElements, EmbedPluginOptions, EmbedProviderTypes } from '../types';
+import { EmbedCommands } from '../commands';
+import {
+  EmbedElementMap,
+  EmbedElementProps,
+  EmbedPluginElements,
+  EmbedPluginOptions,
+  EmbedProviderTypes,
+} from '../types';
 import { EmbedRender } from '../ui/Embed';
 
 const ALIGNS_TO_JUSTIFY = {
@@ -8,13 +15,13 @@ const ALIGNS_TO_JUSTIFY = {
   right: 'flex-end',
 };
 
-const Embed = new YooptaPlugin<EmbedPluginElements, EmbedElementProps, EmbedPluginOptions>({
+const Embed = new YooptaPlugin<EmbedElementMap, EmbedPluginOptions>({
   type: 'Embed',
   elements: {
     embed: {
       render: EmbedRender,
       props: {
-        sizes: { width: 650, height: 400 },
+        sizes: { width: 650, height: 500 },
         nodeType: 'void',
       },
     },
@@ -24,8 +31,9 @@ const Embed = new YooptaPlugin<EmbedPluginElements, EmbedElementProps, EmbedPlug
       title: 'Embed',
       description: 'For embed videos, google maps and more',
     },
-    maxSizes: { maxWidth: 650, maxHeight: 550 },
+    shortcuts: ['instagram', 'twitter', 'youtube', 'vimeo', 'dailymotion', 'figma'],
   },
+  commands: EmbedCommands,
   parsers: {
     html: {
       deserialize: {

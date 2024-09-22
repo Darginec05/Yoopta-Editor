@@ -1,9 +1,18 @@
-import { buildBlockData, generateId, YooptaBlockData, YooptaPlugin } from '@yoopta/editor';
+import {
+  buildBlockData,
+  deserializeTextNodes,
+  generateId,
+  serializeTextNodes,
+  serializeTextNodesIntoMarkdown,
+  YooptaBlockData,
+  YooptaPlugin,
+} from '@yoopta/editor';
+import { TodoListCommands } from '../commands';
 import { TodoListRender } from '../elements/TodoList';
 import { onKeyDown } from '../events/onKeyDown';
-import { TodoListElementProps, TodoListPluginKeys } from '../types';
+import { ListElementMap } from '../types';
 
-const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
+const TodoList = new YooptaPlugin<Pick<ListElementMap, 'todo-list'>>({
   type: 'TodoList',
   elements: {
     'todo-list': {
@@ -23,13 +32,12 @@ const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
   events: {
     onKeyDown,
   },
+  commands: TodoListCommands,
   parsers: {
     html: {
       deserialize: {
-        // add ignore or continue statement
         nodeNames: ['OL', 'UL'],
-        // nodeNames: [],
-        parse(el) {
+        parse(el, editor) {
           if (el.nodeName === 'OL' || el.nodeName === 'UL') {
             const listItems = el.querySelectorAll('li');
 
@@ -46,7 +54,6 @@ const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
               .map((listItem) => {
                 const textContent = listItem.textContent || '';
                 const checked = /\[\s*x\s*\]/i.test(textContent);
-                const clearedContent = textContent.replace(/\[\s*\S?\s*\]/, '').trim();
 
                 return buildBlockData({
                   id: generateId(),
@@ -55,7 +62,7 @@ const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
                     {
                       id: generateId(),
                       type: 'todo-list',
-                      children: [{ text: clearedContent }],
+                      children: deserializeTextNodes(editor, listItem.childNodes),
                       props: { nodeType: 'block', checked: checked },
                     },
                   ],
@@ -72,12 +79,12 @@ const TodoList = new YooptaPlugin<TodoListPluginKeys, TodoListElementProps>({
 
         return `<ul data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}"><li>[${
           element.props.checked ? 'x' : ' '
-        }] ${text}</li></ul>`;
+        }] ${serializeTextNodes(element.children)}</li></ul>`;
       },
     },
     markdown: {
       serialize: (element, text) => {
-        return `- ${element.props.checked ? '[x]' : '[ ]'} ${text}`;
+        return `- ${element.props.checked ? '[x]' : '[ ]'} ${serializeTextNodesIntoMarkdown(element.children)}`;
       },
     },
   },

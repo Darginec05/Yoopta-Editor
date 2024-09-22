@@ -1,5 +1,6 @@
 import { generateId, SlateElement, YooptaPlugin } from '@yoopta/editor';
-import { ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';
+import { ImageCommands } from '../commands';
+import { ImageElementMap, ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';
 import { ImageRender } from '../ui/Image';
 
 const ALIGNS_TO_JUSTIFY = {
@@ -9,7 +10,7 @@ const ALIGNS_TO_JUSTIFY = {
 };
 
 // [TODO] - caption element??,
-const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePluginOptions>({
+const Image = new YooptaPlugin<ImageElementMap, ImagePluginOptions>({
   type: 'Image',
   elements: {
     image: {
@@ -25,6 +26,7 @@ const Image = new YooptaPlugin<ImagePluginElements, ImageElementProps, ImagePlug
       },
     },
   },
+  commands: ImageCommands,
   options: {
     display: {
       title: 'Image',

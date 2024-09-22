@@ -14,6 +14,8 @@ import Accordion from '@yoopta/accordion';
 import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
+import Table from '@yoopta/table';
+import Divider from '@yoopta/divider';
 import Code from '@yoopta/code';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 
@@ -45,11 +47,13 @@ const codeMirrorSetup: BasicSetupOptions = {
 
 const plugins = [
   Paragraph,
+  Table,
   Accordion,
   HeadingOne,
   HeadingTwo,
   HeadingThree,
   Blockquote,
+  Divider,
   Callout,
   NumberedList,
   BulletedList,

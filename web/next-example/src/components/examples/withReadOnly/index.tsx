@@ -12,6 +12,8 @@ import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import Code from '@yoopta/code';
+import Table from '@yoopta/table';
+import Divider from '@yoopta/divider';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
@@ -22,6 +24,8 @@ import { INITIAL_VALUE } from './initValue';
 
 const plugins = [
   Paragraph,
+  Table,
+  Divider,
   HeadingOne,
   HeadingTwo,
   HeadingThree,

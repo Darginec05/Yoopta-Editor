@@ -8,15 +8,30 @@ import Link from '@yoopta/link';
 import Video, { VideoElementProps } from '@yoopta/video';
 import File from '@yoopta/file';
 import Embed from '@yoopta/embed';
-import AccordionPlugin from '@yoopta/accordion';
+import Accordion, { AccordionCommands } from '@yoopta/accordion';
 import Code from '@yoopta/code';
+import Table from '@yoopta/table';
+import Divider from '@yoopta/divider';
 
-import NextLink from 'next/link';
 import { uploadToCloudinary } from '../cloudinary';
-import { PluginElementRenderProps } from '@yoopta/editor';
+import { Elements } from '@yoopta/editor';
 
 export const YOOPTA_PLUGINS = [
-  AccordionPlugin.extend({
+  Table,
+  Divider.extend({
+    elementProps: {
+      divider: (props) => ({
+        ...props,
+        color: '#8383e0',
+      }),
+    },
+  }),
+  Accordion.extend({
+    events: {
+      onBeforeCreate: (editor) => {
+        return AccordionCommands.buildAccordionElements(editor, { items: 2, props: { isExpanded: true } });
+      },
+    },
     elementProps: {
       'accordion-list-item': (props) => {
         return {
@@ -27,6 +42,11 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   File.extend({
+    events: {
+      onBeforeCreate: (editor) => {
+        return editor.commands.buildFileElements({ text: 'Hello world' });
+      },
+    },
     options: {
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file, 'auto');
@@ -48,6 +68,12 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Image.extend({
+    events: {
+      onDestroy: (editor, id) => {
+        const imageElement = Elements.getElement(editor, id, { type: 'image' });
+        console.log('Image imageElement', imageElement);
+      },
+    },
     elementProps: {
       image: (props: ImageElementProps) => ({
         ...props,
@@ -79,6 +105,14 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Headings.HeadingOne.extend({
+    events: {
+      onCreate: (editor, id) => {
+        console.log('HeadingOne onCreate', editor, id);
+      },
+      onDestroy: (editor, id) => {
+        console.log('HeadingOne onDestroy', editor, id);
+      },
+    },
     options: {
       HTMLAttributes: {
         className: 'heading-one-element-extended',

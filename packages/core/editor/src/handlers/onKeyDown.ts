@@ -189,26 +189,22 @@ export function onKeyDown(editor: YooEditor) {
       return;
     }
 
+    // [TODO] - default behavior for complex plugins
     if (HOTKEYS.isArrowUp(event)) {
       if (event.isDefaultPrevented()) return;
-
       // If element with any paths has all paths at 0
       const isAllPathsInStart = new Set(slate.selection.anchor.path).size === 1;
-
       if (isAllPathsInStart) {
         const prevPath: YooptaBlockPath | null = editor.selection ? [editor.selection[0] - 1] : null;
         const prevSlate = findSlateBySelectionPath(editor, { at: prevPath });
         const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevPath });
-
         if (prevSlate && prevBlock) {
           const [, prevLastPath] = Editor.last(prevSlate, [0]);
           const prevLastNodeTextLength = Editor.string(prevSlate, prevLastPath).length;
-
           const selection: Point = {
             path: prevLastPath,
             offset: prevLastNodeTextLength,
           };
-
           event.preventDefault();
           editor.focusBlock(prevBlock.id, {
             focusAt: selection,
@@ -220,21 +216,18 @@ export function onKeyDown(editor: YooEditor) {
       }
     }
 
+    // [TODO] - default behavior for complex plugins
     if (HOTKEYS.isArrowDown(event)) {
       if (event.isDefaultPrevented()) return;
-
       const parentPath = Path.parent(slate.selection.anchor.path);
       const isEnd = Editor.isEnd(slate, slate.selection.anchor, parentPath);
-
       if (isEnd) {
         const nextPath: YooptaBlockPath | null = editor.selection ? [editor.selection[0] + 1] : null;
         const nextSlate = findSlateBySelectionPath(editor, { at: nextPath });
         const nextBlock = findPluginBlockBySelectionPath(editor, { at: nextPath });
-
         if (nextSlate && nextBlock) {
           // [TODO] - should parent path, but for next slate
           const selection: Point = getNextNodePoint(nextSlate, parentPath);
-
           event.preventDefault();
           editor.focusBlock(nextBlock.id, { focusAt: selection, waitExecution: false });
           return;

@@ -16,3 +16,7 @@ export type FilePluginOptions = {
   onUpload?: (file: File) => Promise<FileUploadResponse>;
   accept?: string;
 };
+
+export type FileElementMap = {
+  file: FileElement;
+};

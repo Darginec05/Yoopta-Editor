@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { ICONS_SRC } from './utils/iconsMap';
 import s from './ActionNotionMenuExample.module.scss';
 
-const VOID_PLUGINS = ['Video', 'Image', 'File', 'Embed'];
+const VOID_PLUGINS = ['Video', 'Image', 'File', 'Embed', 'Divider'];
 
 const ActionNotionMenuExample = (props: ActionMenuRenderProps) => {
   const { empty, getItemProps, actions, getRootProps, view } = props;

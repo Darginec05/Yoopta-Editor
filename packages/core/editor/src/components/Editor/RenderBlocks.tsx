@@ -57,6 +57,7 @@ const RenderBlocks = ({ editor, marks, placeholder }: Props) => {
           events={plugin.events}
           elements={plugin.elements}
           options={plugin.options}
+          extensions={plugin.extensions}
           placeholder={placeholder}
         />
       </Block>,
@@ -67,6 +68,7 @@ const RenderBlocks = ({ editor, marks, placeholder }: Props) => {
 
   return (
     <DndContext
+      id="yoopta-dnd-context"
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragStart={handleDragStart}

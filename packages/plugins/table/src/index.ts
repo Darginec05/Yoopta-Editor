@@ -8,4 +8,6 @@ declare module 'slate' {
   }
 }
 
+export { TableCommands } from './commands';
+
 export default Table;

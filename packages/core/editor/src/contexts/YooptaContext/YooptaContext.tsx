@@ -1,5 +1,5 @@
 import { createContext, useContext, useRef } from 'react';
-import { YooEditor, YooptaBlockPath } from '../../editor/types';
+import { YooEditor, YooptaBlockPath, YooptaContentValue } from '../../editor/types';
 import { PluginOptions } from '../../plugins/types';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 
@@ -30,7 +30,7 @@ const DEFAULT_HANDLERS: YooptaEditorContext = {
     setSelection: () => undefined,
     applyChanges: () => undefined,
 
-    getEditorValue: () => undefined,
+    getEditorValue: () => ({}),
     setEditorValue: () => undefined,
 
     blocks: {},
@@ -42,6 +42,7 @@ const DEFAULT_HANDLERS: YooptaEditorContext = {
     isEmpty: () => false,
     blockEditorsMap: {},
     children: {},
+    commands: {},
 
     emit: () => undefined,
     on: () => undefined,

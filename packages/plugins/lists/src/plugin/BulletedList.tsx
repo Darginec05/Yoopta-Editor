@@ -1,10 +1,18 @@
-import { buildBlockData, generateId, YooptaBlockData, YooptaPlugin } from '@yoopta/editor';
-import { Element, Transforms } from 'slate';
+import {
+  buildBlockData,
+  deserializeTextNodes,
+  generateId,
+  serializeTextNodes,
+  serializeTextNodesIntoMarkdown,
+  YooptaBlockData,
+  YooptaPlugin,
+} from '@yoopta/editor';
+import { BulletedListCommands } from '../commands';
 import { BulletedListRender } from '../elements/BulletedList';
 import { onKeyDown } from '../events/onKeyDown';
-import { BulletedListElement, BulletedListPluginKeys } from '../types';
+import { ListElementMap } from '../types';
 
-const BulletedList = new YooptaPlugin<BulletedListPluginKeys, BulletedListElement>({
+const BulletedList = new YooptaPlugin<Pick<ListElementMap, 'bulleted-list'>>({
   type: 'BulletedList',
   elements: {
     'bulleted-list': {
@@ -21,11 +29,12 @@ const BulletedList = new YooptaPlugin<BulletedListPluginKeys, BulletedListElemen
   events: {
     onKeyDown,
   },
+  commands: BulletedListCommands,
   parsers: {
     html: {
       deserialize: {
         nodeNames: ['UL'],
-        parse(el) {
+        parse(el, editor) {
           if (el.nodeName === 'UL') {
             const listItems = el.querySelectorAll('li');
 
@@ -40,8 +49,6 @@ const BulletedList = new YooptaPlugin<BulletedListPluginKeys, BulletedListElemen
                 return !isTodoListItem;
               })
               .map((listItem) => {
-                const textContent = listItem.textContent || '';
-
                 return buildBlockData({
                   id: generateId(),
                   type: 'BulletedList',
@@ -49,7 +56,7 @@ const BulletedList = new YooptaPlugin<BulletedListPluginKeys, BulletedListElemen
                     {
                       id: generateId(),
                       type: 'bulleted-list',
-                      children: [{ text: textContent }],
+                      children: deserializeTextNodes(editor, listItem.childNodes),
                       props: { nodeType: 'block' },
                     },
                   ],
@@ -64,12 +71,14 @@ const BulletedList = new YooptaPlugin<BulletedListPluginKeys, BulletedListElemen
       serialize: (element, text, blockMeta) => {
         const { align = 'left', depth = 0 } = blockMeta || {};
 
-        return `<ul data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}"><li>${text}</li></ul>`;
+        return `<ul data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}"><li>${serializeTextNodes(
+          element.children,
+        )}</li></ul>`;
       },
     },
     markdown: {
       serialize: (element, text) => {
-        return `- ${text}`;
+        return `- ${serializeTextNodesIntoMarkdown(element.children)}`;
       },
     },
   },

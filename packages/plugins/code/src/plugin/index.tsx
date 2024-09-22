@@ -1,5 +1,6 @@
 import { generateId, YooptaPlugin } from '@yoopta/editor';
-import { CodeElementProps, CodePluginBlockOptions, CodePluginElements } from '../types';
+import { CodeCommands } from '../commands';
+import { CodeElementMap, CodeElementProps, CodePluginBlockOptions, CodePluginElements } from '../types';
 import { CodeEditor } from '../ui/Code';
 
 const ALIGNS_TO_JUSTIFY = {
@@ -8,7 +9,7 @@ const ALIGNS_TO_JUSTIFY = {
   right: 'flex-end',
 };
 
-const Code = new YooptaPlugin<CodePluginElements, CodeElementProps, CodePluginBlockOptions>({
+const Code = new YooptaPlugin<CodeElementMap, CodePluginBlockOptions>({
   type: 'Code',
   customEditor: CodeEditor,
   elements: {
@@ -30,6 +31,7 @@ const Code = new YooptaPlugin<CodePluginElements, CodeElementProps, CodePluginBl
     },
     shortcuts: ['```', 'code', 'js'],
   },
+  commands: CodeCommands,
   parsers: {
     html: {
       deserialize: {

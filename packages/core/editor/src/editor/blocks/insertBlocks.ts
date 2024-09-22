@@ -4,7 +4,7 @@ import { ReactEditor } from 'slate-react';
 import { buildSlateEditor } from '../../utils/buildSlate';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
-import { YooEditor, YooptaEditorTransformOptions, YooptaBlockData, YooptaBlockPath } from '../types';
+import { YooEditor, YooptaEditorTransformOptions, YooptaBlockData } from '../types';
 
 export function insertBlocks(editor: YooEditor, blocks: YooptaBlockData[], options: YooptaEditorTransformOptions = {}) {
   editor.children = createDraft(editor.children);

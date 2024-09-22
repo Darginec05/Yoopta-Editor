@@ -6,7 +6,15 @@ export type EmbedSizes = {
   height: number | 'auto';
 };
 
-export type EmbedProviderTypes = 'youtube' | 'vimeo' | 'dailymotion' | 'twitter' | 'figma' | string | null;
+export type EmbedProviderTypes =
+  | 'youtube'
+  | 'vimeo'
+  | 'dailymotion'
+  | 'twitter'
+  | 'figma'
+  | 'instagram'
+  | string
+  | null;
 export type EmbedProvider = {
   type: EmbedProviderTypes;
   id: string;
@@ -23,8 +31,8 @@ export type EmbedElement = SlateElement<'embed', EmbedElementProps>;
 
 export type EmbedPluginOptions = {
   maxSizes?: {
-    maxWidth?: number;
-    maxHeight?: number;
+    maxWidth?: number | 'auto';
+    maxHeight?: number | 'auto';
   };
 };
 
@@ -34,3 +42,7 @@ export type ProviderRenderProps = {
   width: number;
   height: number;
 } & Pick<RenderElementProps, 'attributes' | 'children'>;
+
+export type EmbedElementMap = {
+  embed: EmbedElement;
+};

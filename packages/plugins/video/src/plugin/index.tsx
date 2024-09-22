@@ -1,5 +1,6 @@
 import { generateId, YooptaPlugin } from '@yoopta/editor';
-import { VideoElementProps, VideoPluginElements, VideoPluginOptions } from '../types';
+import { VideoCommands } from '../commands';
+import { VideoElementMap, VideoPluginOptions } from '../types';
 import { VideoRender } from '../ui/Video';
 
 const ALIGNS_TO_JUSTIFY = {
@@ -8,7 +9,7 @@ const ALIGNS_TO_JUSTIFY = {
   right: 'flex-end',
 };
 
-const Video = new YooptaPlugin<VideoPluginElements, VideoElementProps, VideoPluginOptions>({
+const Video = new YooptaPlugin<VideoElementMap, VideoPluginOptions>({
   type: 'Video',
   elements: {
     // [TODO] - caption element??,
@@ -43,6 +44,7 @@ const Video = new YooptaPlugin<VideoPluginElements, VideoElementProps, VideoPlug
       description: 'Upload from device, embed from Youtube, Vimeo',
     },
   },
+  commands: VideoCommands,
   parsers: {
     html: {
       deserialize: {

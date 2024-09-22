@@ -33,3 +33,7 @@ export type ImagePluginOptions = {
     maxHeight?: number;
   };
 };
+
+export type ImageElementMap = {
+  image: ImageElement;
+};

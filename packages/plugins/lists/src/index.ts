@@ -14,6 +14,8 @@ const NumberedList = LISTS.NumberedList;
 const BulletedList = LISTS.BulletedList;
 const TodoList = LISTS.TodoList;
 
+export { TodoListCommands, BulletedListCommands, NumberedListCommands } from './commands';
+
 export {
   NumberedListElement,
   BulletedListElement,

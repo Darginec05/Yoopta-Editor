@@ -6,11 +6,20 @@ import { generateId } from '../../utils/generateId';
 import { YooEditor, YooptaEditorTransformOptions, YooptaBlockData } from '../types';
 
 // make blockData optional
-export function insertBlock(editor: YooEditor, blockData: YooptaBlockData, options: YooptaEditorTransformOptions = {}) {
+export function insertBlock(
+  editor: YooEditor,
+  blockData: YooptaBlockData,
+  options: Partial<YooptaEditorTransformOptions> = {},
+) {
   editor.children = createDraft(editor.children);
   const { at = null, focus = false, slate = null } = options;
 
   const currentBlock = findPluginBlockBySelectionPath(editor);
+
+  const plugin = editor.plugins[blockData.type];
+  const pluginEvents = plugin.events || {};
+  const { onCreate } = pluginEvents;
+
   const nextBlockPath = at;
   const newPluginBlock = {
     id: generateId(),
@@ -59,6 +68,8 @@ export function insertBlock(editor: YooEditor, blockData: YooptaBlockData, optio
   editor.children = finishDraft(editor.children);
   editor.applyChanges();
   editor.emit('change', editor.children);
+
+  onCreate?.(editor, newPluginBlock.id);
 
   if (focus) {
     editor.focusBlock(insertBefore && currentBlockId ? currentBlockId : newPluginBlock.id);

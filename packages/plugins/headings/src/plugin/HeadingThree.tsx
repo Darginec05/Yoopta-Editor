@@ -1,4 +1,5 @@
-import { PluginElementRenderProps, YooptaPlugin } from '@yoopta/editor';
+import { PluginElementRenderProps, serializeTextNodesIntoMarkdown, YooptaPlugin } from '@yoopta/editor';
+import { HeadingThreeCommands } from '../commands';
 
 const HeadingThreeRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
   const { element, HTMLAttributes = {}, attributes, children } = props;
@@ -31,6 +32,7 @@ const HeadingThree = new YooptaPlugin({
       },
     },
   },
+  commands: HeadingThreeCommands,
   options: {
     display: {
       title: 'Heading 3',
@@ -51,7 +53,7 @@ const HeadingThree = new YooptaPlugin({
     },
     markdown: {
       serialize: (element, text) => {
-        return `### ${text}\n`;
+        return `### ${serializeTextNodesIntoMarkdown(element.children)}\n`;
       },
     },
   },

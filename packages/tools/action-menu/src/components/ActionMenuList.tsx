@@ -235,7 +235,10 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
       const block = findPluginBlockBySelectionPath(editor, { at: editor.selection });
       if (!block) return;
 
-      const slateEditorRef = editor.refElement?.querySelector(`#yoopta-slate-editor-${block.id}`) as HTMLElement;
+      const slateEditorRef = editor.refElement?.querySelector(
+        `[data-yoopta-block-id="${block.id}"] [data-slate-editor="true"]`,
+      ) as HTMLElement;
+
       if (!slateEditorRef) return;
 
       slateEditorRef.addEventListener('keydown', handleActionMenuKeyDown);
