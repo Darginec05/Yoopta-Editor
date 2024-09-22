@@ -44,9 +44,12 @@ export const LinkCommands: LinkCommands = {
   insertLink: (editor, options) => {
     let { props, slate } = options || {};
 
+    console.log('slate.selection', slate.selection);
     if (!slate || !slate.selection) return;
 
     const textInSelection = Editor.string(slate, slate.selection);
+
+    console.log('textInSelection', textInSelection);
     const linkProps = {
       ...props,
       title: props.title || textInSelection || props.url || '',

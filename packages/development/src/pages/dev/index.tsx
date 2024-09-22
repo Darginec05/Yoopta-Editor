@@ -10,6 +10,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { MARKS } from '../../utils/yoopta/marks';
 import { YOOPTA_PLUGINS } from '../../utils/yoopta/plugins';
 import { TOOLS } from '../../utils/yoopta/tools';
+import { LinkCommands } from '@yoopta/link';
 
 export type YooptaChildrenValue = Record<string, YooptaBlockData>;
 
