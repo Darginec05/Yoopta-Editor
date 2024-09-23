@@ -11,6 +11,7 @@ import { MARKS } from '../../utils/yoopta/marks';
 import { YOOPTA_PLUGINS } from '../../utils/yoopta/plugins';
 import { TOOLS } from '../../utils/yoopta/tools';
 import { LinkCommands } from '@yoopta/link';
+import { FixedToolbar } from '../../components/FixedToolbar/FixedToolbar';
 
 export type YooptaChildrenValue = Record<string, YooptaBlockData>;
 
@@ -191,6 +192,7 @@ const BasicExample = () => {
   return (
     <>
       <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={selectionRef}>
+        <FixedToolbar editor={editor} />
         <YooptaEditor
           editor={editor}
           plugins={YOOPTA_PLUGINS}

@@ -1,8 +1,14 @@
 import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
-import { EmbedElement, EmbedElementProps } from '../types';
+import { EmbedElement, EmbedElementProps, EmbedProvider, EmbedSizes } from '../types';
+import { getProvider, ProviderGetters } from '../utils/providers';
 
 type EmbedElementOptions = {
-  props?: Omit<EmbedElementProps, 'nodeType'>;
+  props?: {
+    sizes?: EmbedSizes;
+    provider?: {
+      url: string;
+    };
+  };
 };
 
 type InsertEmbedOptions = EmbedElementOptions & {
@@ -19,7 +25,23 @@ export type EmbedCommands = {
 
 export const EmbedCommands: EmbedCommands = {
   buildEmbedElements: (editor: YooEditor, options = {}) => {
-    const embedProps = options?.props ? { ...options.props, nodeType: 'void' } : { nodeType: 'void' };
+    const embedProps = { ...options.props, nodeType: 'void' };
+
+    if (embedProps.provider?.url) {
+      const value = embedProps.provider.url;
+
+      const providerType = getProvider(value);
+      const embedId = providerType ? ProviderGetters[providerType]?.(value) : null;
+      const provider: EmbedProvider = { type: providerType, id: embedId, url: value };
+
+      if (!providerType || !embedId) {
+        provider.id = value;
+      }
+
+      // @ts-ignore - [TODO] Fix types
+      embedProps.provider = provider;
+    }
+
     return { id: generateId(), type: 'embed', children: [{ text: '' }], props: embedProps as EmbedElementProps };
   },
   insertEmbed: (editor: YooEditor, options = {}) => {

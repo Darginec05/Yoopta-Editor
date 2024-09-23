@@ -19,7 +19,7 @@ export type FileCommands = {
 
 export const FileCommands: FileCommands = {
   buildFileElements: (editor: YooEditor, options = {}) => {
-    const fileProps = options?.props ? { ...options.props, nodeType: 'void' } : { nodeType: 'void' };
+    const fileProps = { ...options.props, nodeType: 'void' };
     return { id: generateId(), type: 'file', children: [{ text: '' }], props: fileProps as FileElementProps };
   },
   insertFile: (editor: YooEditor, options = {}) => {
