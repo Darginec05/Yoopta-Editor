@@ -7,7 +7,7 @@ type LinkElementOptions = {
 };
 
 type LinkInsertOptions = LinkElementOptions & {
-  selection: Location | undefined;
+  selection?: Location | undefined;
   slate: SlateEditor;
 };
 

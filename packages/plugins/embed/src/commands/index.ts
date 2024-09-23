@@ -20,7 +20,7 @@ export type EmbedCommands = {
 export const EmbedCommands: EmbedCommands = {
   buildEmbedElements: (editor: YooEditor, options = {}) => {
     const embedProps = options?.props ? { ...options.props, nodeType: 'void' } : { nodeType: 'void' };
-    return { id: generateId(), type: 'embed', children: [{ text: '', props: embedProps }] };
+    return { id: generateId(), type: 'embed', children: [{ text: '' }], props: embedProps as EmbedElementProps };
   },
   insertEmbed: (editor: YooEditor, options = {}) => {
     const { at, focus, props } = options;

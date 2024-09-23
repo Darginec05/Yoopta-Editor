@@ -16,12 +16,14 @@ import withSavingToDatabase from '@/components/examples/withSavingToDatabase';
 import withEditorControl from '@/components/examples/withEditorControl';
 import withLargeDocuments from '@/components/examples/withLargeDocuments';
 import withChatSlack from '@/components/examples/withChatSlack';
-// import withCraftExample from '@/components/examples/withCraftExample';
 import withCustomStyles from '@/components/examples/withCustomStyles';
-// import withEditorFocusBlur from '@/components/examples/withEditorFocusBlur';
 import withCustomRenders from '@/components/examples/withCustomRenders';
 import withMultiPageEditors from '@/components/examples/withMultiPageEditors';
 import withCustomElementProps from '@/components/examples/withCustomElementProps';
+import withCommandsAPI from '@/components/examples/withCommandsAPI';
+import withPluginEvents from '@/components/examples/withPluginEvents';
+// import withCraftExample from '@/components/examples/withCraftExample';
+// import withEditorFocusBlur from '@/components/examples/withEditorFocusBlur';
 // import withStarterKit from '@/components/examples/withStarterKit';
 
 import { Head } from '@/components/Head/Head';
@@ -37,15 +39,15 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withCustomToolbar,
   withNotionActionMenu,
   withExports,
+  withCommandsAPI,
+  withPluginEvents,
   withCustomRenders,
   withCustomElementProps,
   withExtendedPlugin,
-  // withStarterKit,
   withDarkTheme,
   withMediaAndVoids,
   withReadOnly,
   withEditorControl,
-  // withCustomHTMLAttributes,
   withCustomMark,
   withCustomPlugin,
   withSavingToDatabase,
@@ -53,6 +55,8 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withLargeDocuments,
   withMultiPageEditors,
   withChatSlack,
+  // withStarterKit,
+  // withCustomHTMLAttributes,
   // withEditorFocusBlur,
   // withCraftExample,
   // withOffline,
@@ -150,6 +154,18 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
   },
   withStarterKit: {
     title: 'Using Starter Kit with full setup',
+    description: '',
+  },
+  withCommandsAPI: {
+    title: 'Editor Commands API (new)',
+    description: '',
+  },
+  withPluginEvents: {
+    title: 'Plugin Events (new)',
+    description: '',
+  },
+  withSlateExtensions: {
+    title: 'Customize plugin elements behaviour (new)',
     description: '',
   },
 };

@@ -20,7 +20,7 @@ export type VideoCommands = {
 export const VideoCommands: VideoCommands = {
   buildVideoElements: (editor: YooEditor, options = {}) => {
     const videoProps = options?.props ? { ...options.props, nodeType: 'void' } : { nodeType: 'void' };
-    return { id: generateId(), type: 'video', children: [{ text: '', props: videoProps }] };
+    return { id: generateId(), type: 'video', children: [{ text: '' }], props: videoProps as VideoElementProps };
   },
   insertVideo: (editor: YooEditor, options = {}) => {
     const { at, focus, props } = options;

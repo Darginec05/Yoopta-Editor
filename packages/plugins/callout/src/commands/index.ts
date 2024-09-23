@@ -3,10 +3,10 @@ import { CalloutElement, CalloutElementProps, CalloutPluginElementKeys, CalloutT
 
 type CalloutElementOptions = {
   text?: string;
+  props?: Omit<CalloutElementProps, 'nodeType'>;
 };
 
-type InsertCalloutOptions = {
-  text?: string;
+type InsertCalloutOptions = CalloutElementOptions & {
   at?: YooptaBlockPath;
   focus?: boolean;
 };
@@ -20,12 +20,12 @@ export type CalloutCommands = {
 
 export const CalloutCommands: CalloutCommands = {
   buildCalloutElements: (editor, options = {}) => {
-    return { id: generateId(), type: 'callout', children: [{ text: options?.text || '' }] };
+    return { id: generateId(), type: 'callout', children: [{ text: options?.text || '' }], props: options.props };
   },
   insertCallout: (editor, options = {}) => {
-    const { at, focus, text } = options;
+    const { at, focus, text, props } = options;
 
-    const callout = CalloutCommands.buildCalloutElements(editor, { text });
+    const callout = CalloutCommands.buildCalloutElements(editor, { text, props });
     Blocks.insertBlock(editor, buildBlockData({ value: [callout], type: 'Callout' }), { at, focus });
   },
   deleteCallout: (editor, blockId) => {
