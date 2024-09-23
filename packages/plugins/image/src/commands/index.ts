@@ -19,7 +19,7 @@ export type ImageCommands = {
 
 export const ImageCommands: ImageCommands = {
   buildImageElements: (editor: YooEditor, options = {}) => {
-    const imageProps = options?.props ? { ...options.props, nodeType: 'void' } : { nodeType: 'void' };
+    const imageProps = { ...options.props, nodeType: 'void' };
     return { id: generateId(), type: 'image', children: [{ text: '' }], props: imageProps as ImageElementProps };
   },
   insertImage: (editor: YooEditor, options = {}) => {

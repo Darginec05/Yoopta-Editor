@@ -1,5 +1,3 @@
-import YooptaEditor, { createYooptaEditor, Elements, Blocks, useYooptaEditor, YooEditor } from '@yoopta/editor';
-
 import Paragraph, { ParagraphCommands } from '@yoopta/paragraph';
 import Blockquote, { BlockquoteCommands } from '@yoopta/blockquote';
 import Embed, { EmbedCommands } from '@yoopta/embed';
@@ -15,126 +13,13 @@ import { HeadingOne, HeadingOneCommands, HeadingThree, HeadingTwo } from '@yoopt
 import Code from '@yoopta/code';
 import Table, { TableCommands } from '@yoopta/table';
 import Divider, { DividerCommands } from '@yoopta/divider';
-import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
-import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
-import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
-
-import { uploadToCloudinary } from '@/utils/cloudinary';
-import { useEffect, useMemo, useRef } from 'react';
-import { WITH_BASIC_COMMANDS_API_VALUE } from './initValue';
-
-const plugins = [
-  Paragraph,
-  Table,
-  Divider,
-  Accordion,
-  HeadingOne,
-  HeadingTwo,
-  HeadingThree,
-  Blockquote,
-  Callout,
-  NumberedList,
-  BulletedList,
-  TodoList,
-  Code,
-  Link,
-  Embed,
-  Image.extend({
-    options: {
-      async onUpload(file) {
-        const data = await uploadToCloudinary(file, 'image');
-
-        return {
-          src: data.secure_url,
-          alt: 'cloudinary',
-          sizes: {
-            width: data.width,
-            height: data.height,
-          },
-        };
-      },
-    },
-  }),
-  Video.extend({
-    options: {
-      onUpload: async (file) => {
-        const data = await uploadToCloudinary(file, 'video');
-        return {
-          src: data.secure_url,
-          alt: 'cloudinary',
-          sizes: {
-            width: data.width,
-            height: data.height,
-          },
-        };
-      },
-      onUploadPoster: async (file) => {
-        const image = await uploadToCloudinary(file, 'image');
-        return image.secure_url;
-      },
-    },
-  }),
-  File.extend({
-    options: {
-      onUpload: async (file) => {
-        const response = await uploadToCloudinary(file, 'auto');
-        return { src: response.secure_url, format: response.format, name: response.name, size: response.bytes };
-      },
-    },
-  }),
-];
-
-const TOOLS = {
-  ActionMenu: {
-    render: DefaultActionMenuRender,
-    tool: ActionMenuList,
-  },
-  Toolbar: {
-    render: DefaultToolbarRender,
-    tool: Toolbar,
-  },
-  LinkTool: {
-    render: DefaultLinkToolRender,
-    tool: LinkTool,
-  },
-};
-
-const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
-
-function WithCommandsAPI() {
-  const editor = useMemo(() => createYooptaEditor(), []);
-  const selectionRef = useRef(null);
-
-  useEffect(() => {
-    editor.on('change', (value) => {
-      console.log('value', value);
-    });
-  }, []);
-
-  return (
-    <div
-      className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex flex-col items-center justify-center"
-      ref={selectionRef}
-    >
-      <FixedToolbar editor={editor} />
-      <YooptaEditor
-        editor={editor}
-        plugins={plugins}
-        tools={TOOLS}
-        marks={MARKS}
-        selectionBoxRoot={selectionRef}
-        value={WITH_BASIC_COMMANDS_API_VALUE}
-        autoFocus
-      />
-    </div>
-  );
-}
+import { Blocks, YooEditor } from '@yoopta/editor';
 
 type Props = {
   editor: YooEditor;
 };
 
-const FixedToolbar = ({ editor }: Props) => {
+export const FixedToolbar = ({ editor }: Props) => {
   return (
     <div className="bg-white z-50">
       <div className="flex justify-center mb-2">
@@ -154,6 +39,17 @@ const FixedToolbar = ({ editor }: Props) => {
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
           Insert Image
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            EmbedCommands.insertEmbed(editor, {
+              at: [1],
+            });
+          }}
+          className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
+        >
+          Insert Embed
         </button>
         <button
           type="button"
@@ -184,22 +80,6 @@ const FixedToolbar = ({ editor }: Props) => {
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
           Update Divider
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            EmbedCommands.insertEmbed(editor, {
-              at: [1],
-              props: {
-                provider: {
-                  url: 'https://youtu.be/TzRm01Gm_0k?si=wnGyvg2kel7zCiVq',
-                },
-              },
-            });
-          }}
-          className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
-        >
-          Insert Embed
         </button>
       </div>
       <div className="flex justify-center">
@@ -264,5 +144,3 @@ const FixedToolbar = ({ editor }: Props) => {
     </div>
   );
 };
-
-export default WithCommandsAPI;
