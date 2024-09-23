@@ -140,6 +140,7 @@ const BlockActions = ({ block, editor, dragHandleProps, onChangeActiveBlock, sho
         {...attributes}
         {...listeners}
         onClick={onSelectBlock}
+        onMouseDown={(e) => e.stopPropagation()}
       >
         <DragIcon />
       </button>

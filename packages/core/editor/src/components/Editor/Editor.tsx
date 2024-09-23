@@ -57,7 +57,7 @@ const Editor = ({
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
   const selectionBox = useRectangeSelectionBox({ editor, root: selectionBoxRoot });
-  const multiSelection = useMultiSelection(editor);
+  const multiSelection = useMultiSelection({ editor });
 
   let state = useRef<State>(DEFAULT_STATE).current;
 

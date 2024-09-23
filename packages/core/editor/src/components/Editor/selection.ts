@@ -4,7 +4,11 @@ import { ReactEditor } from 'slate-react';
 import { Blocks } from '../../editor/blocks';
 import { YooEditor, YooptaBlockPath } from '../../editor/types';
 
-export function useMultiSelection(editor: YooEditor) {
+type MultiSelectionOptions = {
+  editor: YooEditor;
+};
+
+export function useMultiSelection({ editor }: MultiSelectionOptions) {
   const isMultiSelectingStarted = useRef(false);
   const isMultiSelectingInProgress = useRef(false);
   const startBlockPathRef = useRef<number | null>(null);
