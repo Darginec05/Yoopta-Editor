@@ -1,5 +1,6 @@
 import { YooptaPlugin, PluginElementRenderProps, serializeTextNodesIntoMarkdown } from '@yoopta/editor';
 import { HeadingOneCommands } from '../commands';
+import { HeadingOneElement } from '../types';
 
 const HeadingOneRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
   const { element, HTMLAttributes = {}, attributes, children } = props;
@@ -16,7 +17,7 @@ const HeadingOneRender = ({ extendRender, ...props }: PluginElementRenderProps) 
 
 HeadingOneRender.displayName = 'HeadingOne';
 
-const HeadingOne = new YooptaPlugin({
+const HeadingOne = new YooptaPlugin<Record<'heading-one', HeadingOneElement>>({
   type: 'HeadingOne',
   elements: {
     'heading-one': {
