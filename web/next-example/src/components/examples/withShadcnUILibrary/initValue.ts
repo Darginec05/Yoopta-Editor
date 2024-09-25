@@ -584,7 +584,7 @@ export const initValue = {
                 type: 'accordion-list-item-heading',
                 children: [
                   {
-                    text: 'Is it legal?',
+                    text: 'What the best football club?',
                   },
                 ],
                 props: {
@@ -596,7 +596,7 @@ export const initValue = {
                 type: 'accordion-list-item-content',
                 children: [
                   {
-                    text: 'Yes. It adheres to the WAI-ARIA design pattern.',
+                    text: 'Chelsea FC is the best football club in the world',
                   },
                 ],
                 props: {

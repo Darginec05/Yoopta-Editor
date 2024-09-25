@@ -28,17 +28,14 @@ import { TypographyH2 } from '@/components/libraries/shadcn/TypographyH2';
 import { TypographyH3 } from '@/components/libraries/shadcn/TypographyH3';
 import { TypographyBlockquote } from '@/components/libraries/shadcn/TypographyBlockquote';
 import { TypographyLink } from '@/components/libraries/shadcn/TypographyLink';
-import {
-  AccordionItem as AccordionItemShadcn,
-  Accordion as AccordionShadcn,
-  AccordionContent as AccordionContentShadcn,
-} from '@/components/ui/accordion';
+
 import {
   AccordionList,
   AccordionListItem,
   AccordionListItemContent,
   AccordionListItemHeading,
 } from '@/components/libraries/shadcn/Accordion';
+import { TableRow, Table as TableShadcn, TableDataCell } from '@/components/libraries/shadcn/Table';
 
 const plugins = [
   Paragraph.extend({
@@ -81,7 +78,13 @@ const plugins = [
       'accordion-list-item-heading': AccordionListItemHeading,
     },
   }),
-  Table,
+  Table.extend({
+    renders: {
+      table: TableShadcn,
+      'table-row': TableRow,
+      'table-data-cell': TableDataCell,
+    },
+  }),
   NumberedList,
   BulletedList,
   TodoList,
