@@ -3,7 +3,7 @@ import { TableBlockOptions } from '../components/TableBlockOptions';
 import { TableElement } from '../types';
 import { TABLE_SLATE_TO_SELECTION_SET } from '../utils/weakMaps';
 
-const Table = ({ attributes, children, blockId, element, HTMLAttributes }: PluginElementRenderProps) => {
+const Table = ({ attributes, children, blockId, element, HTMLAttributes, extendRender }: PluginElementRenderProps) => {
   const editor = useYooptaEditor();
   const slate = editor.blockEditorsMap[blockId];
   const blockData = useBlockData(blockId);
@@ -11,9 +11,16 @@ const Table = ({ attributes, children, blockId, element, HTMLAttributes }: Plugi
 
   const isSelecting = TABLE_SLATE_TO_SELECTION_SET.get(slate);
 
+  if (extendRender) {
+    // @ts-ignore [FIXME] - add generic type for extendRender props
+    return extendRender({ attributes, children, blockId, element, HTMLAttributes, isSelecting });
+  }
+
+  const { className, ...htmlAttrs } = HTMLAttributes || {};
+
   return (
-    <div className="yoopta-table-block">
-      <table {...HTMLAttributes} className={`yoopta-table ${!!isSelecting ? 'yoopta-table-selecting' : ''}`}>
+    <div className={`yoopta-table-block ${className}`}>
+      <table {...htmlAttrs} className={`yoopta-table ${!!isSelecting ? ' yoopta-table-selecting' : ''}`}>
         <tbody {...attributes}>{children}</tbody>
       </table>
       {!isReadOnly && <TableBlockOptions block={blockData} editor={editor} table={element as TableElement} />}

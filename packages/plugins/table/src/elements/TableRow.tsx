@@ -1,8 +1,22 @@
 import { PluginElementRenderProps, useYooptaEditor } from '@yoopta/editor';
 
-const TableRow = ({ attributes, children, element }: PluginElementRenderProps) => {
+const TableRow = ({
+  attributes,
+  children,
+  element,
+  blockId,
+  HTMLAttributes,
+  extendRender,
+}: PluginElementRenderProps) => {
+  if (extendRender) {
+    // @ts-ignore [FIXME] - add generic type for extendRender props
+    return extendRender({ attributes, children, blockId, element, HTMLAttributes });
+  }
+
+  const { className, ...htmlAttrs } = HTMLAttributes || {};
+
   return (
-    <tr className="yoopta-table-row" data-element-id={element.id} {...attributes}>
+    <tr {...htmlAttrs} className={`yoopta-table-row ${className}`} data-element-id={element.id} {...attributes}>
       {children}
     </tr>
   );

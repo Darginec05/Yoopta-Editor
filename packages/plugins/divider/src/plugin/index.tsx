@@ -2,7 +2,7 @@ import { generateId, YooptaPlugin } from '@yoopta/editor';
 import { DividerCommands } from '../commands';
 import { onKeyDown } from '../events/onKeyDown';
 import { DividerElementMap } from '../types';
-import { DividerRender } from '../ui/Divider';
+import { DividerRender } from '../elements/Divider';
 
 const Divider = new YooptaPlugin<DividerElementMap>({
   type: 'Divider',

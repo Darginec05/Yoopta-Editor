@@ -1,4 +1,4 @@
-import { PluginOptions, SlateElement } from '@yoopta/editor';
+import { SlateElement } from '@yoopta/editor';
 
 export type TablePluginElementKeys = 'table' | 'table-row' | 'table-data-cell';
 
