@@ -55,7 +55,10 @@ const TableRowDragButton = ({ editor, blockId, tdElement }: TableRowProps) => {
         className="yoopta-table-row-button"
         style={isTableRowActionsOpen ? { opacity: 1 } : undefined}
       >
-        <DragIcon className="w-[14px] h-[14px] block flex-shrink-0" style={{ transform: 'rotate(0deg)' }} />
+        <DragIcon
+          className="yoo-table-w-[14px] yoo-table-h-[14px] yoo-table-block yoo-table-flex-shrink-0"
+          style={{ transform: 'rotate(0deg)' }}
+        />
       </button>
     </>
   );

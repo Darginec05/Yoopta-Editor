@@ -6,6 +6,7 @@ const ResizeHandle = ({ onResize, tdWidth, columnIndex }) => {
   const startX = useRef(0);
 
   useEffect(() => {
+    console.log('resize handle mounted', document.querySelectorAll('.yoopta-table'));
     const tableEl = document.querySelector('.yoopta-table') as HTMLElement;
     if (!tableEl) return;
 

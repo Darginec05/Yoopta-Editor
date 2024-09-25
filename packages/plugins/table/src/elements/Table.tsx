@@ -1,5 +1,4 @@
 import { PluginElementRenderProps, useBlockData, useYooptaEditor } from '@yoopta/editor';
-import { useMemo } from 'react';
 import { TableBlockOptions } from '../components/TableBlockOptions';
 import { TableElement } from '../types';
 import { TABLE_SLATE_TO_SELECTION_SET } from '../utils/weakMaps';
