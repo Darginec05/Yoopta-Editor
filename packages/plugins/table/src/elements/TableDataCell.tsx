@@ -8,7 +8,14 @@ import { TableCommands } from '../commands';
 import { TableCellElement, TableElement, TableElementProps } from '../types';
 import { TABLE_SLATE_TO_SELECTION_SET } from '../utils/weakMaps';
 
-const TableDataCell = ({ attributes, children, element, blockId }: PluginElementRenderProps) => {
+const TableDataCell = ({
+  attributes,
+  children,
+  element,
+  blockId,
+  HTMLAttributes,
+  extendRender,
+}: PluginElementRenderProps) => {
   const editor = useYooptaEditor();
   const slate = editor.blockEditorsMap[blockId];
 
@@ -62,9 +69,27 @@ const TableDataCell = ({ attributes, children, element, blockId }: PluginElement
     minWidth: elementWidth,
   };
 
+  const { className: extendedClassName, ...htmlAttrs } = HTMLAttributes || {};
+
   const className = isDataCellAsHeader
-    ? 'yoopta-table-data-cell yoopta-table-data-cell-head'
-    : 'yoopta-table-data-cell';
+    ? `yoopta-table-data-cell yoopta-table-data-cell-head ${extendedClassName}`
+    : `yoopta-table-data-cell ${extendedClassName}`;
+
+  if (extendRender) {
+    return extendRender({
+      attributes,
+      children,
+      blockId,
+      element,
+      HTMLAttributes,
+      // @ts-ignore [FIXME] - add generic type for extendRender props
+      isDataCellAsHeader,
+      onResize,
+      width: elementWidth,
+      height: elementWidth,
+      selected,
+    });
+  }
 
   return (
     <Node
@@ -73,6 +98,7 @@ const TableDataCell = ({ attributes, children, element, blockId }: PluginElement
       style={style}
       colSpan={1}
       rowSpan={1}
+      {...htmlAttrs}
       className={className}
     >
       <div className="yoopta-table-data-cell-content" {...attributes}>

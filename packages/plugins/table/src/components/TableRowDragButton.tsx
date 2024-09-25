@@ -1,5 +1,5 @@
 import { Elements, SlateElement, YooEditor } from '@yoopta/editor';
-import { useFloating, inline, flip, shift, offset } from '@floating-ui/react';
+import { useFloating, inline, flip, shift, offset, autoUpdate } from '@floating-ui/react';
 import { useState } from 'react';
 import { TableRowOptions } from './TableRowOptions';
 import DragIcon from '../icons/drag.svg';
@@ -19,6 +19,7 @@ const TableRowDragButton = ({ editor, blockId, tdElement }: TableRowProps) => {
     open: isTableRowActionsOpen,
     onOpenChange: setIsTableRowActionsOpen,
     middleware: [inline(), flip(), shift(), offset(10)],
+    whileElementsMounted: autoUpdate,
   });
 
   const onClick = () => {
@@ -55,7 +56,10 @@ const TableRowDragButton = ({ editor, blockId, tdElement }: TableRowProps) => {
         className="yoopta-table-row-button"
         style={isTableRowActionsOpen ? { opacity: 1 } : undefined}
       >
-        <DragIcon className="w-[14px] h-[14px] block flex-shrink-0" style={{ transform: 'rotate(0deg)' }} />
+        <DragIcon
+          className="yoo-table-w-[14px] yoo-table-h-[14px] yoo-table-block yoo-table-flex-shrink-0"
+          style={{ transform: 'rotate(0deg)' }}
+        />
       </button>
     </>
   );

@@ -30,21 +30,33 @@ const TableBlockOptions = ({ editor, block, table }: Props) => {
       <BlockOptionsSeparator />
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>
-          <button type="button" className="yoopta-block-options-button justify-between" onClick={onSwitchHeaderRow}>
-            <span className="flex">
-              <Sheet width={16} height={16} className="w-4 h-4 mr-2" />
+          <button
+            type="button"
+            className="yoopta-block-options-button yoo-table-justify-between"
+            onClick={onSwitchHeaderRow}
+          >
+            <span className="yoo-table-flex">
+              <Sheet width={16} height={16} className="yoo-table-w-4 yoo-table-h-4 yoo-table-mr-2" />
               Header row
             </span>
-            {isHeaderRowEnabled && <CheckIcon width={16} height={16} className="w-4 h-4" />}
+            {isHeaderRowEnabled && <CheckIcon width={16} height={16} className="yoo-table-w-4 yoo-table-h-4" />}
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
-          <button type="button" className="yoopta-block-options-button justify-between" onClick={onSwitchHeaderColumn}>
-            <span className="flex">
-              <TableProperties width={16} height={16} className="w-4 h-4 mr-2 rotate-180" />
+          <button
+            type="button"
+            className="yoopta-block-options-button yoo-table-justify-between"
+            onClick={onSwitchHeaderColumn}
+          >
+            <span className="yoo-table-flex">
+              <TableProperties
+                width={16}
+                height={16}
+                className="yoo-table-w-4 yoo-table-h-4 yoo-table-mr-2 yoo-table-rotate-180"
+              />
               Header column
             </span>
-            {isHeaderColumnEnabled && <CheckIcon width={16} height={16} className="w-4 h-4" />}
+            {isHeaderColumnEnabled && <CheckIcon width={16} height={16} className="yoo-table-w-4 yoo-table-h-4" />}
           </button>
         </BlockOptionsMenuItem>
       </BlockOptionsMenuGroup>

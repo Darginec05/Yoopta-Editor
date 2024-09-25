@@ -17,7 +17,49 @@ import { uploadToCloudinary } from '../cloudinary';
 import { Elements } from '@yoopta/editor';
 
 export const YOOPTA_PLUGINS = [
-  Table,
+  Table.extend({
+    renders: {
+      table: (props) => {
+        return (
+          <div className="my-6 w-full overflow-y-auto">
+            <table className="w-full">
+              <tbody {...props.attributes}>{props.children}</tbody>
+            </table>
+          </div>
+        );
+      },
+      'table-row': (props) => {
+        return (
+          <tr {...props.attributes} className="m-0 !border-t p-0 even:bg-[#f4f4f5]">
+            {props.children}
+          </tr>
+        );
+      },
+      'table-data-cell': (props) => {
+        const Node = props.isDataCellAsHeader ? 'th' : 'td';
+        const style = {
+          maxWidth: props.width,
+          minWidth: props.height,
+          backgroundColor: props.selected ? '#f0f0f0' : 'transparent',
+        };
+
+        return (
+          <Node
+            {...props.attributes}
+            style={style}
+            className="!border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"
+          >
+            {props.children}
+          </Node>
+        );
+      },
+    },
+    options: {
+      HTMLAttributes: {
+        className: 'table-element-extended',
+      },
+    },
+  }),
   Divider.extend({
     elementProps: {
       divider: (props) => ({
