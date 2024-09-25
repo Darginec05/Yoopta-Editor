@@ -32,53 +32,71 @@ const DividerBlockOptions = ({ editor, block, props: dividerProps }: Props) => {
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="yoopta-block-options-button justify-between"
+            className="yoopta-block-options-button yoo-divider-justify-between"
             onClick={() => onChangeTheme('solid')}
           >
-            <span className="flex">
-              <SolidIcon width={16} height={16} className="w-4 h-4 mr-2" />
+            <span className="yoo-divider-flex">
+              <SolidIcon width={16} height={16} className="yoo-divider-w-4 yoo-divider-h-4 yoo-divider-mr-2" />
               Line
             </span>
-            {isActiveTheme('solid') && <CheckmarkIcon width={16} height={16} color="#000" className="w-4 h-4" />}
+            {isActiveTheme('solid') && (
+              <CheckmarkIcon width={16} height={16} color="#000" className="yoo-divider-w-4 yoo-divider-h-4" />
+            )}
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="yoopta-block-options-button justify-between"
+            className="yoopta-block-options-button yoo-divider-justify-between"
             onClick={() => onChangeTheme('dashed')}
           >
-            <span className="flex">
-              <DashedIcon width={16} height={16} color={'tranparent'} className="w-4 h-4 mr-2" />
+            <span className="yoo-divider-flex">
+              <DashedIcon
+                width={16}
+                height={16}
+                color={'tranparent'}
+                className="yoo-divider-w-4 yoo-divider-h-4 yoo-divider-mr-2"
+              />
               Dashed
             </span>
-            {isActiveTheme('dashed') && <CheckmarkIcon width={16} height={16} color="#000" className="w-4 h-4" />}
+            {isActiveTheme('dashed') && (
+              <CheckmarkIcon width={16} height={16} color="#000" className="yoo-divider-w-4 yoo-divider-h-4" />
+            )}
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="yoopta-block-options-button justify-between"
+            className="yoopta-block-options-button yoo-divider-justify-between"
             onClick={() => onChangeTheme('dotted')}
           >
-            <span className="flex">
-              <DotsIcon width={16} height={16} className="w-4 h-4 mr-2" />
+            <span className="yoo-divider-flex">
+              <DotsIcon width={16} height={16} className="yoo-divider-w-4 yoo-divider-h-4 yoo-divider-mr-2" />
               Dots
             </span>
-            {isActiveTheme('dotted') && <CheckmarkIcon width={16} height={16} color="#000" className="w-4 h-4" />}
+            {isActiveTheme('dotted') && (
+              <CheckmarkIcon width={16} height={16} color="#000" className="yoo-divider-w-4 yoo-divider-h-4" />
+            )}
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <button
             type="button"
-            className="yoopta-block-options-button justify-between"
+            className="yoopta-block-options-button yoo-divider-justify-between"
             onClick={() => onChangeTheme('gradient')}
           >
-            <span className="flex">
-              <SolidIcon width={14} height={16} className="w-4 h-4 mr-2" color={dividerProps?.color || '#EFEFEE'} />
+            <span className="yoo-divider-flex">
+              <SolidIcon
+                width={14}
+                height={16}
+                className="yoo-divider-w-4 yoo-divider-h-4 yoo-divider-mr-2"
+                color={dividerProps?.color || '#EFEFEE'}
+              />
               Gradient
             </span>
-            {isActiveTheme('gradient') && <CheckmarkIcon width={16} height={16} color="#000" className="w-4 h-4" />}
+            {isActiveTheme('gradient') && (
+              <CheckmarkIcon width={16} height={16} color="#000" className="yoo-divider-w-4 yoo-divider-h-4" />
+            )}
           </button>
         </BlockOptionsMenuItem>
       </BlockOptionsMenuGroup>
