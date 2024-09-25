@@ -22,6 +22,7 @@ import withMultiPageEditors from '@/components/examples/withMultiPageEditors';
 import withCustomElementProps from '@/components/examples/withCustomElementProps';
 import withCommandsAPI from '@/components/examples/withCommandsAPI';
 import withPluginEvents from '@/components/examples/withPluginEvents';
+import withShadcnUILibrary from '@/components/examples/withShadcnUILibrary';
 // import withCraftExample from '@/components/examples/withCraftExample';
 // import withEditorFocusBlur from '@/components/examples/withEditorFocusBlur';
 // import withStarterKit from '@/components/examples/withStarterKit';
@@ -41,9 +42,11 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withExports,
   withCommandsAPI,
   withPluginEvents,
+  withShadcnUILibrary,
   withCustomRenders,
   withCustomElementProps,
   withExtendedPlugin,
+  withChatSlack,
   withDarkTheme,
   withMediaAndVoids,
   withReadOnly,
@@ -54,7 +57,6 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withCustomStyles,
   withLargeDocuments,
   withMultiPageEditors,
-  withChatSlack,
   // withStarterKit,
   // withCustomHTMLAttributes,
   // withEditorFocusBlur,
@@ -126,6 +128,10 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
   },
   withChatSlack: {
     title: 'Chat Slack',
+    description: '',
+  },
+  withShadcnUILibrary: {
+    title: 'UI Libraries (shadcn/ui)',
     description: '',
   },
   // withCraftExample: {

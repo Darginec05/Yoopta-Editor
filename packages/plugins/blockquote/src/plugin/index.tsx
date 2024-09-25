@@ -1,9 +1,9 @@
-import { Elements, generateId, serializeTextNodesIntoMarkdown, YooptaPlugin } from '@yoopta/editor';
-import { Element, Transforms } from 'slate';
+import { serializeTextNodesIntoMarkdown, YooptaPlugin } from '@yoopta/editor';
 import { BlockquoteCommands } from '../commands';
+import { BlockquoteElement } from '../types';
 import { BlockquoteRender } from '../ui/Blockquote';
 
-const Blockquote = new YooptaPlugin({
+const Blockquote = new YooptaPlugin<Record<'blockquote', BlockquoteElement>>({
   type: 'Blockquote',
   elements: {
     blockquote: {

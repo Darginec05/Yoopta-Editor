@@ -1,5 +1,6 @@
 import { PluginElementRenderProps, serializeTextNodesIntoMarkdown, YooptaPlugin } from '@yoopta/editor';
 import { HeadingThreeCommands } from '../commands';
+import { HeadingThreeElement } from '../types';
 
 const HeadingThreeRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
   const { element, HTMLAttributes = {}, attributes, children } = props;
@@ -22,7 +23,7 @@ const HeadingThreeRender = ({ extendRender, ...props }: PluginElementRenderProps
 
 HeadingThreeRender.displayName = 'HeadingThree';
 
-const HeadingThree = new YooptaPlugin({
+const HeadingThree = new YooptaPlugin<Record<'heading-three', HeadingThreeElement>>({
   type: 'HeadingThree',
   elements: {
     'heading-three': {
