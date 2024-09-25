@@ -6,7 +6,7 @@ const ResizeHandle = ({ onResize, tdWidth, columnIndex }) => {
   const startX = useRef(0);
 
   useEffect(() => {
-    console.log('resize handle mounted', document.querySelectorAll('.yoopta-table'));
+    // [TODO] - Get by table id
     const tableEl = document.querySelector('.yoopta-table') as HTMLElement;
     if (!tableEl) return;
 
@@ -52,8 +52,8 @@ const ResizeHandle = ({ onResize, tdWidth, columnIndex }) => {
   }, [columnIndex, tdWidth]);
 
   return (
-    <div ref={resizeRef} className="resize-handle" contentEditable={false}>
-      <div className="resize-handle-inner" contentEditable={false} />
+    <div ref={resizeRef} className="yoopta-table-resize-handle" contentEditable={false}>
+      <div className="yoopta-table-resize-handle-inner" contentEditable={false} />
     </div>
   );
 };

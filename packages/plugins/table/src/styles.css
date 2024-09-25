@@ -79,14 +79,14 @@
   @apply yoo-table-w-4 yoo-table-h-4 yoo-table-mr-2;
 }
 
-.resize-handle {
+.yoopta-table-resize-handle {
   @apply yoo-table-select-none yoo-table-absolute yoo-table-right-0 yoo-table-w-0 yoo-table-top-0 yoo-table-flex-grow-0 yoo-table-h-full yoo-table-z-[1];
 }
 
-.resize-handle-inner {
+.yoopta-table-resize-handle-inner {
   @apply yoo-table-select-none yoo-table-absolute yoo-table-w-[3px] yoo-table--ml-[1px] yoo-table--mt-[1px] yoo-table-h-[calc(100%+2px)] yoo-table-transition-[background] yoo-table-duration-[150ms] yoo-table-delay-[50ms] yoo-table-bg-[#2383e200] yoo-table-cursor-col-resize;
 }
 
-.resize-handle-inner:hover {
+.yoopta-table-resize-handle-inner:hover {
   background-color: #74b6db;
 }

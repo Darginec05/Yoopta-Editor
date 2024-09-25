@@ -179,6 +179,74 @@ const BasicExample = () => {
         depth: 0,
       },
     },
+    '8a6657cd-0b67-406b-bc92-6aa57c634e77': {
+      id: '8a6657cd-0b67-406b-bc92-6aa57c634e77',
+      value: [
+        {
+          id: 'c645702d-0904-42a2-8d49-47970e5eb19a',
+          type: 'heading-three',
+          props: {
+            nodeType: 'block',
+          },
+          children: [
+            {
+              text: 'Divider',
+            },
+          ],
+        },
+      ],
+      type: 'HeadingThree',
+      meta: {
+        order: 1,
+        depth: 0,
+      },
+    },
+    'ad9b16cf-4f91-4018-8eb4-7cd1e2e452f6': {
+      id: 'ad9b16cf-4f91-4018-8eb4-7cd1e2e452f6',
+      value: [
+        {
+          id: '87f2e25d-9ee6-475a-bf54-f4fa501c52a4',
+          type: 'divider',
+          props: {
+            nodeType: 'void',
+            theme: 'solid',
+            color: '#8383e0',
+          },
+          children: [
+            {
+              text: '',
+            },
+          ],
+        },
+      ],
+      type: 'Divider',
+      meta: {
+        order: 2,
+        depth: 0,
+      },
+    },
+    '744d35d3-606f-4f71-b9bb-127f66b192f4': {
+      id: '744d35d3-606f-4f71-b9bb-127f66b192f4',
+      value: [
+        {
+          id: '1349cd94-1aa9-41e6-855c-45a1489ee23f',
+          type: 'paragraph',
+          children: [
+            {
+              text: '',
+            },
+          ],
+          props: {
+            nodeType: 'block',
+          },
+        },
+      ],
+      type: 'Paragraph',
+      meta: {
+        order: 3,
+        depth: 0,
+      },
+    },
   });
 
   useEffect(() => {
