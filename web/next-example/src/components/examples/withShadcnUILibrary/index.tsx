@@ -37,7 +37,7 @@ import {
 } from '@/components/libraries/shadcn/Accordion';
 import { TableRow, Table as TableShadcn, TableDataCell } from '@/components/libraries/shadcn/Table';
 
-const plugins = [
+const getPlugins = () => [
   Paragraph.extend({
     renders: {
       paragraph: TypographyP,
@@ -170,6 +170,8 @@ function WithShadcnUILibrary() {
       console.log('value', value);
     });
   }, []);
+
+  const plugins = useMemo(() => getPlugins(), []);
 
   return (
     <div
