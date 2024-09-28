@@ -1,5 +1,6 @@
 import { createContext, useContext, useRef } from 'react';
-import { YooEditor, YooptaBlockPath, YooptaContentValue } from '../../editor/types';
+import { createYooptaEditor } from '../../editor';
+import { YooEditor, YooptaBlockPath } from '../../editor/types';
 import { PluginOptions } from '../../plugins/types';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 
@@ -8,57 +9,7 @@ export type YooptaEditorContext = {
 };
 
 const DEFAULT_HANDLERS: YooptaEditorContext = {
-  editor: {
-    id: '',
-
-    getBlock: () => null,
-    insertBlock: () => undefined,
-    insertBlocks: () => undefined,
-    updateBlock: () => undefined,
-    moveBlock: () => undefined,
-    splitBlock: () => undefined,
-    deleteBlock: () => undefined,
-    deleteBlocks: () => undefined,
-    toggleBlock: () => undefined,
-    focusBlock: () => undefined,
-    decreaseBlockDepth: () => undefined,
-    increaseBlockDepth: () => undefined,
-    duplicateBlock: () => undefined,
-
-    setBlockSelected: () => undefined,
-    selectedBlocks: [],
-    setSelection: () => undefined,
-    applyChanges: () => undefined,
-
-    getEditorValue: () => ({}),
-    setEditorValue: () => undefined,
-
-    blocks: {},
-    shortcuts: {},
-    plugins: {},
-    formats: {},
-    selection: null,
-    readOnly: false,
-    isEmpty: () => false,
-    blockEditorsMap: {},
-    children: {},
-    commands: {},
-
-    emit: () => undefined,
-    on: () => undefined,
-    off: () => undefined,
-    once: () => undefined,
-
-    blur: () => undefined,
-    isFocused: () => false,
-    focus: () => undefined,
-
-    getHTML: () => '',
-    getMarkdown: () => '',
-    getPlainText: () => '',
-
-    refElement: null,
-  },
+  editor: createYooptaEditor(),
 };
 
 export const YooptaContext = createContext<YooptaEditorContext>(DEFAULT_HANDLERS);

@@ -1,9 +1,17 @@
 import { createDraft, finishDraft } from 'immer';
-import { Editor, Element, Path, Text, Transforms } from 'slate';
-import { buildSlateEditor } from '../../utils/buildSlate';
+import { createEditor, Editor, Element, Path, Text, Transforms } from 'slate';
+import { withHistory } from 'slate-history';
+import { withReact } from 'slate-react';
+import { withShortcuts } from '../../extensions/shortcuts';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../../utils/generateId';
-import { YooEditor, YooptaBlockData, YooptaEditorTransformOptions } from '../types';
+import { SlateEditor, YooEditor, YooptaBlockData, YooptaEditorTransformOptions } from '../types';
+
+// [TODO] - circle dependency
+function buildSlateEditor(editor: YooEditor): SlateEditor {
+  const slate = withShortcuts(editor, withHistory(withReact(createEditor())));
+  return slate;
+}
 
 // [TODO] - handle cases for lists and nested inline elements
 export function splitBlock(editor: YooEditor, options: YooptaEditorTransformOptions = {}) {
@@ -57,7 +65,7 @@ export function splitBlock(editor: YooEditor, options: YooptaEditorTransformOpti
     editor.children[newBlock.id] = newBlock;
 
     editor.children = finishDraft(editor.children);
-    editor.applyChanges();
+    // editor.applyChanges();
     editor.emit('change', editor.children);
 
     if (focus) {

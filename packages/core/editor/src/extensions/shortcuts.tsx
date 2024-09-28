@@ -1,6 +1,5 @@
 import { Element, NodeEntry, Text } from 'slate';
 import { Editor, Range, Transforms } from 'slate';
-import { Blocks } from '../editor/blocks';
 import { SlateEditor, SlateElement, YooEditor } from '../editor/types';
 
 export const withShortcuts = (editor: YooEditor, slate: SlateEditor) => {
@@ -38,7 +37,7 @@ export const withShortcuts = (editor: YooEditor, slate: SlateEditor) => {
       if (hasMatchedBlock && !matchedBlock.isActive()) {
         Transforms.select(slate, range);
         Transforms.delete(slate);
-        Blocks.createBlock(editor, matchedBlock.type, { deleteText: false, focus: true });
+        editor.createBlock(matchedBlock.type, { deleteText: false, focus: true });
         return;
       }
     }

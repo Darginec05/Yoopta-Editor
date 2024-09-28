@@ -2,7 +2,7 @@ import EventEmitter from 'eventemitter3';
 import { YooptaContextProvider } from './contexts/YooptaContext/YooptaContext';
 import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { Editor } from './components/Editor/Editor';
-import { CSSProperties, useMemo, useState } from 'react';
+import { CSSProperties, useCallback, useEffect, useMemo, useState } from 'react';
 import { SlateElement, YooEditor, YooptaBlockData, YooptaContentValue } from './editor/types';
 import { Plugin } from './plugins/types';
 import { Tools, ToolsProvider } from './contexts/YooptaContext/ToolsContext';
@@ -18,6 +18,7 @@ import { YooptaPlugin } from './plugins';
 import { YooptaMark } from './marks';
 import { FakeSelectionMark } from './marks/FakeSelectionMark';
 import { generateId } from './utils/generateId';
+import { YooptaOperation } from './editor/blocks/applyTransforms';
 
 type Props = {
   id?: string;
@@ -25,6 +26,7 @@ type Props = {
   plugins: Readonly<YooptaPlugin<Record<string, SlateElement>>[]>;
   marks?: YooptaMark<any>[];
   value?: YooptaContentValue;
+  onChange?: (value: YooptaContentValue) => void;
   autoFocus?: boolean;
   className?: string;
   selectionBoxRoot?: HTMLElement | React.MutableRefObject<HTMLElement | null> | false;
@@ -69,11 +71,8 @@ const YooptaEditor = ({
   readOnly,
   width,
   style,
+  onChange,
 }: Props) => {
-  const applyChanges = () => {
-    setEditorState((prev) => ({ ...prev, version: prev.version + 1 }));
-  };
-
   const marks = useMemo(() => {
     if (marksProps) return [FakeSelectionMark, ...marksProps];
     return [FakeSelectionMark];
@@ -85,7 +84,8 @@ const YooptaEditor = ({
 
   const [editorState, setEditorState] = useState<{ editor: YooEditor; version: number }>(() => {
     if (!editor.id) editor.id = id || generateId();
-    editor.applyChanges = applyChanges;
+    // remove applyChanges method from editor
+    editor.applyChanges = () => {};
     editor.readOnly = readOnly || false;
     if (marks) editor.formats = buildMarks(editor, marks);
     editor.blocks = buildBlocks(editor, plugins);
@@ -111,6 +111,22 @@ const YooptaEditor = ({
 
     return { editor, version: 0 };
   });
+
+  const onContextChange = useCallback((options?: { operation?: YooptaOperation }) => {
+    setEditorState((prevState) => ({
+      editor: prevState.editor,
+      version: prevState.version + 1,
+    }));
+
+    onChange?.(editor.children);
+  }, []);
+
+  useEffect(() => {
+    editor.on('change', onContextChange);
+    return () => {
+      editor.off('change', onContextChange);
+    };
+  }, [editor, onContextChange]);
 
   return (
     <YooptaContextProvider editorState={editorState}>

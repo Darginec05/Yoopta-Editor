@@ -27,7 +27,7 @@ export function deleteElement(editor: YooEditor, blockId: string, element: Delet
       match: (n) => Element.isElement(n) && n.type === element.type,
     });
 
-    editor.applyChanges();
+    // editor.applyChanges();
     editor.emit('change', editor.children);
   });
 }

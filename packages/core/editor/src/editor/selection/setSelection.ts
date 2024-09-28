@@ -8,5 +8,4 @@ export function setSelection(editor: YooEditor, path: YooptaBlockPath | null, op
   const { applyChanges = true } = options;
 
   editor.selection = path;
-  if (applyChanges) editor.applyChanges();
 }

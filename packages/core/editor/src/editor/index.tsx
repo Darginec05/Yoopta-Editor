@@ -11,19 +11,19 @@ import { getEditorValue } from './core/getEditorValue';
 import { setEditorValue } from './core/setEditorValue';
 import { setBlockSelected } from './selection/setBlockSelected';
 import { duplicateBlock } from './blocks/duplicateBlock';
-import { insertBlocks } from './blocks/insertBlocks';
 import { updateBlock } from './blocks/updateBlock';
 import { toggleBlock } from './blocks/toggleBlock';
 import { blur } from './core/blur';
 import { focus } from './core/focus';
 import { isFocused } from './core/isFocused';
-import { deleteBlocks } from './blocks/deleteBlocks';
 import { getBlock } from './blocks/getBlock';
 import { getHTML } from '../parsers/getHTML';
 import { getMarkdown } from '../parsers/getMarkdown';
 import { getPlainText } from '../parsers/getPlainText';
 import { isEmpty } from './core/isEmpty';
-import { Plugin } from '../plugins/types';
+import { applyTransforms } from './blocks/applyTransforms';
+import { batchOperations } from './core/batchOperations';
+import { createBlock } from './blocks/createBlock';
 
 export function createYooptaEditor(): YooEditor {
   const editor: YooEditor = {
@@ -36,9 +36,8 @@ export function createYooptaEditor(): YooEditor {
     getEditorValue: () => getEditorValue(editor),
     setEditorValue: (...args) => setEditorValue(editor, ...args),
     applyChanges: () => {},
+    createBlock: (...args) => createBlock(editor, ...args),
     insertBlock: (...args) => insertBlock(editor, ...args),
-    insertBlocks: (...args) => insertBlocks(editor, ...args),
-    deleteBlocks: (...args) => deleteBlocks(editor, ...args),
     deleteBlock: (...args) => deleteBlock(editor, ...args),
     duplicateBlock: (...args) => duplicateBlock(editor, ...args),
     toggleBlock: (...args) => toggleBlock(editor, ...args),
@@ -57,6 +56,9 @@ export function createYooptaEditor(): YooEditor {
     shortcuts: {},
     plugins: {},
     commands: {},
+
+    applyTransforms: (operations) => applyTransforms(editor, operations),
+    batchOperations: (callback) => batchOperations(editor, callback),
 
     on: (event, callback) => {},
     off: (event, callback) => {},

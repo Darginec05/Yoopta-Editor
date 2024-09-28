@@ -1,19 +1,23 @@
-import { createDraft, finishDraft } from 'immer';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
-import { YooEditor, YooptaEditorTransformOptions } from '../types';
+import { YooEditor } from '../types';
+import { YooptaOperation } from './applyTransforms';
+import { BlockDepthOptions } from './increaseBlockDepth';
 
-export function decreaseBlockDepth(editor: YooEditor, options: YooptaEditorTransformOptions = {}) {
-  const { at = editor.selection, blockId = '' } = options;
+export function decreaseBlockDepth(editor: YooEditor, options: BlockDepthOptions = {}) {
+  const { at = editor.selection, blockId } = options;
 
-  if (!blockId && !at) return;
-  editor.children = createDraft(editor.children);
-
-  const block = editor.children[blockId] || findPluginBlockBySelectionPath(editor);
+  const block = blockId ? editor.children[blockId] : findPluginBlockBySelectionPath(editor, { at });
   if (!block) return;
 
-  block.meta.depth = block.meta.depth === 0 ? 0 : block.meta.depth - 1;
+  const newDepth = Math.max(0, block.meta.depth - 1);
 
-  editor.children = finishDraft(editor.children);
-  editor.applyChanges();
-  editor.emit('change', editor.children);
+  const operation: YooptaOperation = {
+    type: 'update_block',
+    id: block.id,
+    properties: {
+      meta: { ...block.meta, depth: newDepth },
+    },
+  };
+
+  editor.applyTransforms([operation]);
 }

@@ -1,6 +1,6 @@
 import { YooEditor } from '../types';
 
 export function getEditorValue(editor: YooEditor) {
-  editor.applyChanges();
+  // editor.applyChanges();
   return editor.children;
 }

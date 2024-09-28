@@ -57,7 +57,6 @@ export function createBlock(editor: YooEditor, type: string, options?: CreateBlo
   const blockId = blockData.id;
 
   editor.children = finishDraft(editor.children);
-  editor.applyChanges();
   editor.emit('change', editor.children);
 
   onCreate?.(editor, blockData.id);

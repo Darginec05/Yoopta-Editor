@@ -1,46 +1,39 @@
-import { createDraft, finishDraft } from 'immer';
 import { YooEditor, YooptaBlockData } from '../types';
+import { YooptaOperation } from './applyTransforms';
 
-// [TODO] - optimize updateBlock
-export function updateBlock<TElementKeys extends string, TProps>(
-  editor: YooEditor,
-  blockId: string,
-  data: Partial<YooptaBlockData>,
-) {
-  editor.children = createDraft(editor.children);
-  let shouldApply = false;
-
+export function updateBlock(editor: YooEditor, blockId: string, data: Partial<YooptaBlockData>) {
   const block = editor.children[blockId];
 
   if (!block) {
+    console.warn(`Block with id ${blockId} does not exist.`);
     return;
   }
 
-  if (data.id) {
-    block.id = data.id;
-    shouldApply = true;
+  const updateOperation: YooptaOperation = {
+    type: 'update_block',
+    id: blockId,
+    properties: {},
+  };
+
+  // Проверяем и добавляем только измененные свойства
+  if (data.id && data.id !== block.id) {
+    updateOperation.properties.id = data.id;
   }
 
-  if (data.type) {
-    block.type = data.type;
-    shouldApply = true;
+  if (data.type && data.type !== block.type) {
+    updateOperation.properties.type = data.type;
   }
 
   if (data.meta) {
-    block.meta = data.meta;
-    shouldApply = true;
+    updateOperation.properties.meta = { ...block.meta, ...data.meta };
   }
 
   if (data.value) {
-    block.value = data.value;
+    updateOperation.properties.value = data.value;
   }
 
-  editor.children = finishDraft(editor.children);
-
-  // [TODO] - optimize applyChanges while updating slate value
-  if (shouldApply) {
-    editor.applyChanges();
+  // Применяем операцию только если есть изменения
+  if (Object.keys(updateOperation.properties).length > 0) {
+    editor.applyTransforms([updateOperation]);
   }
-
-  editor.emit('change', editor.children);
 }

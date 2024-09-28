@@ -179,7 +179,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
         },
       });
 
-      editor.applyChanges();
+      // editor.applyChanges();
       editor.emit('change', editor.children);
 
       onChangeModal('link', false);

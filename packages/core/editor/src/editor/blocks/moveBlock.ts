@@ -28,6 +28,6 @@ export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: Yo
 
   editor.setSelection([updatedPosition]);
   editor.children = finishDraft(editor.children);
-  editor.applyChanges();
+  // editor.applyChanges();
   editor.emit('change', editor.children);
 }
