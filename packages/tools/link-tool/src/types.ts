@@ -35,9 +35,6 @@ export type LinkToolTranslationProps = {
   /** Placeholder text for the rel attribute input */
   relPlaceholder?: string;
 
-  /** Placeholder text for the edit input section */
-  editPlaceholder?: string;
-
   /** Label for the button that updates an existing link */
   updateLabel?: string;
 
