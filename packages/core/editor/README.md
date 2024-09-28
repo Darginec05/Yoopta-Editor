@@ -83,11 +83,9 @@ export type YooEditor<TNodes> = {
   isEmpty: () => boolean;
   readOnly: boolean;
   insertBlock: (data: YooptaBlockData, options?: YooptaEditorTransformOptions) => void;
-  insertBlocks: (blocks: YooptaBlockData[], options?: YooptaEditorTransformOptions) => void;
   splitBlock: (options?: YooptaEditorTransformOptions) => void;
   updateBlock: (id: string, data: Partial<YooptaBlockData>) => void;
   deleteBlock: (options?: DeleteBlockOptions) => void;
-  deleteBlocks: (options?: DeleteBlocksOptions) => void;
   duplicateBlock: (options?: DuplicateBlockOptions) => void;
   toggleBlock: (toBlockType: string, options?: ToggleBlockOptions) => void;
   increaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;

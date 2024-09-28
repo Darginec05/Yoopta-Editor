@@ -60,7 +60,7 @@ export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options?:
     newSlate.children = slate.children;
 
     delete editor.children[fromBlock.id];
-    delete editor.blockEditorsMap[fromBlock.id];
+    // delete editor.blockEditorsMap[fromBlock.id];
 
     editor.blockEditorsMap[block.id] = newSlate;
     editor.children[block.id] = block;
@@ -68,7 +68,7 @@ export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options?:
     block.value = newSlate.children;
 
     editor.children = finishDraft(editor.children);
-    editor.applyChanges();
+    // editor.applyChanges();
     editor.emit('change', editor.children);
 
     if (options?.focus) {

@@ -1,12 +1,12 @@
 import React, { memo, useCallback, useMemo, useRef } from 'react';
-import { DefaultElement, Editable, RenderElementProps, Slate } from 'slate-react';
+import { DefaultElement, Editable, ReactEditor, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useBlockData } from '../contexts/YooptaContext/YooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../marks';
 
 import { ExtendedLeafProps, PluginCustomEditorRenderProps, Plugin, PluginEvents } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
-import { Editor, NodeEntry, Range } from 'slate';
+import { Editor, NodeEntry, Path, Range } from 'slate';
 import { TextLeaf } from '../components/TextLeaf/TextLeaf';
 
 import { IS_FOCUSED_EDITOR } from '../utils/weakMaps';
@@ -57,6 +57,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
 
   const onChange = useCallback(
     (value) => {
+      console.log('SlateEditorComponent onChange', value);
       editor.updateBlock(id, { value });
     },
     [id, editor],
@@ -161,9 +162,40 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
         const blocks = deserializeHTML(editor, parsedHTML.body);
 
         // If no blocks from HTML, then paste as plain text using default behavior from Slate
-        if (blocks.length > 0) {
+        if (blocks.length > 0 && Array.isArray(editor.selection)) {
           event.preventDefault();
-          editor.insertBlocks(blocks, { at: editor.selection, focus: true });
+
+          let shouldInsertAfterSelection = false;
+          let shouldDeleteCurrentBlock = false;
+
+          if (slate && slate.selection) {
+            const parentPath = Path.parent(slate.selection.anchor.path);
+            const text = Editor.string(slate, parentPath).trim();
+            const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
+            shouldDeleteCurrentBlock = text === '' && isStart;
+            shouldInsertAfterSelection = !isStart || text.length > 0;
+
+            ReactEditor.blur(slate);
+          }
+
+          const insertPathIndex = editor.selection[0];
+
+          // [TEST]
+          editor.batchOperations(() => {
+            const newPaths: number[] = [];
+            blocks.forEach((block, idx) => {
+              let insertBlockPath = shouldInsertAfterSelection ? insertPathIndex + idx + 1 : insertPathIndex + idx;
+              newPaths.push(insertBlockPath);
+              editor.insertBlock(block, { at: [insertBlockPath], focus: false });
+            });
+
+            if (shouldDeleteCurrentBlock) {
+              editor.deleteBlock({ at: [insertPathIndex] });
+            }
+
+            editor.setBlockSelected(newPaths);
+          });
+
           return;
         }
       }
@@ -261,7 +293,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     }
 
     return (
-      <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onChange={onChange}>
+      <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onValueChange={onChange}>
         <Editable
           key={`editable-${id}`}
           renderElement={renderElement}

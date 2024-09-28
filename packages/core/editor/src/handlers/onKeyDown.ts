@@ -2,6 +2,7 @@ import { isKeyHotkey } from 'is-hotkey';
 import { Editor, Path, Point, Range, Text, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { buildBlockData } from '../components/Editor/utils';
+import { Blocks } from '../editor/blocks';
 import { SlateEditor, YooEditor, YooptaBlockPath } from '../editor/types';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../utils/findSlateBySelectionPath';
@@ -71,9 +72,25 @@ export function onKeyDown(editor: YooEditor) {
         return;
       }
 
+      const currentBlock = Blocks.getBlock(editor, { at: editor.selection });
       const defaultBlock = buildBlockData({ id: generateId() });
+
+      const string = Editor.string(slate, slate.selection.anchor.path);
+      const insertBefore = isStart && string.length > 0;
       const nextPath: YooptaBlockPath = editor.selection ? [editor.selection[0] + 1] : [0];
-      editor.insertBlock(defaultBlock, { at: nextPath, slate, focus: true });
+
+      // [TEST]
+      editor.insertBlock(defaultBlock, {
+        at: insertBefore ? editor.selection : nextPath,
+        slate,
+        focus: !insertBefore,
+      });
+
+      // [TEST]
+      if (insertBefore && currentBlock) {
+        editor.focusBlock(currentBlock.id);
+      }
+
       return;
     }
 
@@ -124,7 +141,7 @@ export function onKeyDown(editor: YooEditor) {
             return editor.deleteBlock({
               at: [prevBlockPathIndex],
               focus: true,
-              focusAt,
+              // focusAt,
             });
           }
 
@@ -141,7 +158,7 @@ export function onKeyDown(editor: YooEditor) {
           return editor.deleteBlock({
             at: editor.selection,
             focus: true,
-            focusAt,
+            // focusAt,
           });
         }
       }

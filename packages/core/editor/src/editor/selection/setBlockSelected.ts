@@ -28,5 +28,5 @@ export function setBlockSelected(editor: YooEditor, paths: number[] | null, opti
     }
   }
 
-  editor.applyChanges();
+  // editor.applyChanges();
 }

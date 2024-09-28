@@ -171,15 +171,25 @@ const Editor = ({
         });
 
         if (HOTKEYS.isCut(event)) {
-          const isAllBlocksSelected = editor.selectedBlocks.length === Object.keys(editor.children).length;
+          // [TEST]
+          editor.batchOperations(() => {
+            if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
+              const isAllBlocksSelected = editor.selectedBlocks.length === Object.keys(editor.children).length;
 
-          editor.deleteBlocks({ paths: editor.selectedBlocks, focus: false });
-          editor.setBlockSelected(null);
-          resetSelectionState();
+              editor.selectedBlocks.forEach((index) => {
+                const blockId = Blocks.getBlock(editor, { at: [index] })?.id;
+                console.log('isAllBlocksSelected blockId', blockId);
+                if (blockId) editor.deleteBlock({ blockId });
+              });
 
-          if (isAllBlocksSelected) {
-            editor.insertBlock(buildBlockData({ id: generateId() }), { at: [0], focus: true });
-          }
+              editor.setBlockSelected(null);
+              resetSelectionState();
+
+              if (isAllBlocksSelected) {
+                editor.insertBlock(buildBlockData({ id: generateId() }), { at: [0], focus: true });
+              }
+            }
+          });
         }
         return;
       }
@@ -193,19 +203,35 @@ const Editor = ({
 
       if (isAllBlocksSelected) {
         event.preventDefault();
-        editor.deleteBlocks({ deleteAll: true });
-        editor.setBlockSelected(null);
-        resetSelectionState();
+
+        // [TEST]
+        editor.batchOperations(() => {
+          const allBlocks = Object.keys(editor.children);
+          allBlocks.forEach((blockId) => {
+            editor.deleteBlock({ blockId });
+          });
+
+          editor.setBlockSelected(null);
+          resetSelectionState();
+        });
+
         return;
       }
 
-      if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks?.length > 0) {
-        event.preventDefault();
-        editor.deleteBlocks({ paths: editor.selectedBlocks, focus: false });
-        editor.setBlockSelected(null);
-        resetSelectionState();
-        return;
-      }
+      // [TEST]
+      editor.batchOperations(() => {
+        if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks?.length > 0) {
+          event.preventDefault();
+          editor.selectedBlocks.forEach((index) => {
+            editor.deleteBlock({ at: [index] });
+          });
+
+          editor.setBlockSelected(null);
+          resetSelectionState();
+        }
+      });
+
+      return;
     }
 
     // [TODO] - handle sharing cursor between blocks
@@ -334,10 +360,11 @@ const Editor = ({
       if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
         event.preventDefault();
 
-        // [TODO] - maybe we need to add support for passing blockIds?
-        selectedBlocks.forEach((index) => {
-          const block = Blocks.getBlock(editor, { at: [index] });
-          editor.increaseBlockDepth({ blockId: block?.id });
+        editor.batchOperations(() => {
+          selectedBlocks.forEach((index) => {
+            const block = Blocks.getBlock(editor, { at: [index] });
+            editor.increaseBlockDepth({ blockId: block?.id });
+          });
         });
       }
       return;
@@ -348,10 +375,11 @@ const Editor = ({
       if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
         event.preventDefault();
 
-        // [TODO] - maybe we need to add support for passing blockIds?
-        selectedBlocks.forEach((index) => {
-          const block = Blocks.getBlock(editor, { at: [index] });
-          editor.decreaseBlockDepth({ blockId: block?.id });
+        editor.batchOperations(() => {
+          selectedBlocks.forEach((index) => {
+            const block = Blocks.getBlock(editor, { at: [index] });
+            editor.decreaseBlockDepth({ blockId: block?.id });
+          });
         });
       }
       return;

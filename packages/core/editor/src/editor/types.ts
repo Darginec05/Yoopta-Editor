@@ -8,10 +8,10 @@ import { DeleteBlockOptions } from './blocks/deleteBlock';
 import { DuplicateBlockOptions } from './blocks/duplicateBlock';
 import { FocusBlockOptions } from './blocks/focusBlock';
 import { ToggleBlockOptions } from './blocks/toggleBlock';
-import { DeleteBlocksOptions } from './blocks/deleteBlocks';
 import { GetBlockOptions } from './blocks/getBlock';
 import { ReactEditor } from 'slate-react';
 import { HistoryEditor } from 'slate-history';
+import { YooptaOperation } from './blocks/applyTransforms';
 
 export type YooptaBlockPath = [number];
 
@@ -79,12 +79,11 @@ export type YooEditor = {
   id: string;
   readOnly: boolean;
   isEmpty: () => boolean;
-  insertBlock: (data: YooptaBlockData, options?: YooptaEditorTransformOptions) => void;
-  insertBlocks: (blocks: YooptaBlockData[], options?: YooptaEditorTransformOptions) => void;
+  createBlock: (type: string, options?: CreateBlockOptions) => void;
+  insertBlock: (data: YooptaBlockData, options?: YooptaEditorTransformOptions) => string;
   splitBlock: (options?: YooptaEditorTransformOptions) => void;
   updateBlock: (id: string, data: Partial<YooptaBlockData>) => void;
   deleteBlock: (options?: DeleteBlockOptions) => void;
-  deleteBlocks: (options?: DeleteBlocksOptions) => void;
   duplicateBlock: (options?: DuplicateBlockOptions) => void;
   toggleBlock: (toBlockType: string, options?: ToggleBlockOptions) => void;
   increaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
@@ -106,6 +105,9 @@ export type YooEditor = {
   shortcuts: Record<string, YooptaBlock>;
   plugins: Record<string, Plugin<Record<string, SlateElement>, unknown>>;
   commands: Record<string, (...args: any[]) => any>;
+
+  applyTransforms: (operations: YooptaOperation[]) => void;
+  batchOperations: (fn: () => void) => void;
 
   // events handlers
   on: (event: YooEditorEvents, fn: (payload: any) => void) => void;

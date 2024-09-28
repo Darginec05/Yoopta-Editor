@@ -1,7 +1,7 @@
 import { YooEditor, YooptaBlockPath } from '../types';
 
 export type GetBlockOptions = {
-  at?: YooptaBlockPath;
+  at?: YooptaBlockPath | null;
   id?: string;
 };
 
