@@ -16,7 +16,7 @@ The `LinkTool` allows you to customize the labels and tooltips to match the lang
 
 #### Example Configuration with Translations
 
-Below is an example that disables the "Additional Props" section and sets custom Spanish labels for the "Add" and "Delete" buttons:
+Below is an example that sets custom Spanish labels for the "Add" and "Delete" buttons:
 
 ```typescript
 export const TOOLS: Tools = {
