@@ -207,9 +207,7 @@ const Editor = ({
         // [TEST]
         editor.batchOperations(() => {
           const allBlocks = Object.keys(editor.children);
-          allBlocks.forEach((blockId) => {
-            editor.deleteBlock({ blockId });
-          });
+          allBlocks.forEach((blockId) => editor.deleteBlock({ blockId }));
 
           editor.setBlockSelected(null);
           resetSelectionState();
@@ -222,9 +220,7 @@ const Editor = ({
       editor.batchOperations(() => {
         if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks?.length > 0) {
           event.preventDefault();
-          editor.selectedBlocks.forEach((index) => {
-            editor.deleteBlock({ at: [index] });
-          });
+          editor.selectedBlocks.forEach((index) => editor.deleteBlock({ at: [index] }));
 
           editor.setBlockSelected(null);
           resetSelectionState();

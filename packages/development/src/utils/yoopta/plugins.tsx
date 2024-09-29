@@ -10,7 +10,7 @@ import File from '@yoopta/file';
 import Embed from '@yoopta/embed';
 import Accordion, { AccordionCommands } from '@yoopta/accordion';
 import Code from '@yoopta/code';
-import Table from '@yoopta/table';
+import Table, { TableCommands } from '@yoopta/table';
 import Divider from '@yoopta/divider';
 
 import { uploadToCloudinary } from '../cloudinary';
@@ -18,6 +18,11 @@ import { Elements } from '@yoopta/editor';
 
 export const YOOPTA_PLUGINS = [
   Table.extend({
+    events: {
+      onBeforeCreate: (editor) => {
+        return TableCommands.buildTableElements(editor, { rows: 3, columns: 3 });
+      },
+    },
     renders: {
       table: (props) => {
         return (

@@ -80,7 +80,7 @@ export function onKeyDown(editor: YooEditor) {
       const nextPath: YooptaBlockPath = editor.selection ? [editor.selection[0] + 1] : [0];
 
       // [TEST]
-      editor.insertBlock(defaultBlock, {
+      editor.insertBlock(defaultBlock.type, {
         at: insertBefore ? editor.selection : nextPath,
         slate,
         focus: !insertBefore,

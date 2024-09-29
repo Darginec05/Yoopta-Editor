@@ -2,7 +2,6 @@ import { SlateElement, YooEditor, YooptaBlockData } from '../editor/types';
 import { Plugin, PluginElementsMap } from '../plugins/types';
 import { YooptaMark } from '../marks';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
-import { createBlock } from '../editor/blocks/createBlock';
 import { getValue } from '../editor/textFormats/getValue';
 import { isActive } from '../editor/textFormats/isActive';
 import { toggle } from '../editor/textFormats/toggle';
@@ -65,7 +64,6 @@ export function buildBlocks(editor, plugins: Plugin<Record<string, SlateElement>
 
         // block actions
         toggle: (options?: ToggleBlockOptions) => toggleBlock(editor, plugin.type, options),
-        create: (options) => createBlock(editor, plugin.type, options),
         update: <TKeys extends string, TProps>(id: string, data: Partial<Pick<YooptaBlockData, 'meta' | 'value'>>) => {
           updateBlock(editor, id, data);
         },

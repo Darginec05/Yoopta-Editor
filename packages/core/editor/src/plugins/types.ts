@@ -73,7 +73,7 @@ export type PluginEventHandlerOptions = {
 export type ElementPropsMap = Record<string, Record<string, unknown>>;
 
 export type PluginEvents = {
-  onBeforeCreate?: (editor: YooEditor, blockId: string) => SlateElement;
+  onBeforeCreate?: (editor: YooEditor) => SlateElement;
   onCreate?: (editor: YooEditor, blockId: string) => void;
   onDestroy?: (editor: YooEditor, blockId: string) => void;
 } & EventHandlers;

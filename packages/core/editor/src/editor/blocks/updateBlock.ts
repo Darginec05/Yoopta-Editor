@@ -1,5 +1,5 @@
 import { YooEditor, YooptaBlockData } from '../types';
-import { YooptaOperation } from './applyTransforms';
+import { YooptaOperation } from '../core/applyTransforms';
 
 export function updateBlock(editor: YooEditor, blockId: string, data: Partial<YooptaBlockData>) {
   const block = editor.children[blockId];
@@ -15,7 +15,6 @@ export function updateBlock(editor: YooEditor, blockId: string, data: Partial<Yo
     properties: {},
   };
 
-  // Проверяем и добавляем только измененные свойства
   if (data.id && data.id !== block.id) {
     updateOperation.properties.id = data.id;
   }
@@ -32,7 +31,6 @@ export function updateBlock(editor: YooEditor, blockId: string, data: Partial<Yo
     updateOperation.properties.value = data.value;
   }
 
-  // Применяем операцию только если есть изменения
   if (Object.keys(updateOperation.properties).length > 0) {
     editor.applyTransforms([updateOperation]);
   }

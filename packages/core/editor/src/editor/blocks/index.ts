@@ -8,7 +8,6 @@ import { decreaseBlockDepth } from './decreaseBlockDepth';
 import { duplicateBlock } from './duplicateBlock';
 import { updateBlock } from './updateBlock';
 import { toggleBlock } from './toggleBlock';
-import { createBlock } from './createBlock';
 import { getBlock } from './getBlock';
 import { getSlate } from './getSlate';
 
@@ -23,10 +22,6 @@ export const Blocks = {
   duplicateBlock,
   updateBlock,
   toggleBlock,
-  // insertBlocks,
-  createBlock,
   getBlock,
   getSlate,
-  // [TODO]
-  // updateBlocks
 };

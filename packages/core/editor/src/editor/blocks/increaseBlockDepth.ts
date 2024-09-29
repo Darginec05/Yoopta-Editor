@@ -1,6 +1,6 @@
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { YooEditor, YooptaBlockPath } from '../types';
-import { YooptaOperation } from './applyTransforms';
+import { YooptaOperation } from '../core/applyTransforms';
 
 export type BlockDepthOptions = {
   blockId?: string;

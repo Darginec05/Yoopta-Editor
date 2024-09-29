@@ -1,11 +1,11 @@
 import { createDraft, finishDraft } from 'immer';
-import { createEditor, Editor, Element, Path, Text, Transforms } from 'slate';
+import { createEditor, Editor, Element, Path, Transforms } from 'slate';
 import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
 import { withShortcuts } from '../../extensions/shortcuts';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../../utils/generateId';
-import { SlateEditor, YooEditor, YooptaBlockData, YooptaEditorTransformOptions } from '../types';
+import { SlateEditor, YooEditor, YooptaBlockData } from '../types';
 
 // [TODO] - circle dependency
 function buildSlateEditor(editor: YooEditor): SlateEditor {
@@ -13,8 +13,13 @@ function buildSlateEditor(editor: YooEditor): SlateEditor {
   return slate;
 }
 
+export type SplitBlockOptions = {
+  focus?: boolean;
+  slate?: SlateEditor;
+};
+
 // [TODO] - handle cases for lists and nested inline elements
-export function splitBlock(editor: YooEditor, options: YooptaEditorTransformOptions = {}) {
+export function splitBlock(editor: YooEditor, options: SplitBlockOptions = {}) {
   const { slate, focus = true } = options;
 
   const currentBlock = findPluginBlockBySelectionPath(editor);
