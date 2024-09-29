@@ -18,7 +18,7 @@ import { YooptaPlugin } from './plugins';
 import { YooptaMark } from './marks';
 import { FakeSelectionMark } from './marks/FakeSelectionMark';
 import { generateId } from './utils/generateId';
-import { YooptaOperation } from './editor/blocks/applyTransforms';
+import { YooptaOperation } from './editor/core/applyTransforms';
 
 type Props = {
   id?: string;
@@ -56,6 +56,11 @@ function validateInitialValue(value: any): boolean {
   return true;
 }
 
+type EditorState = {
+  editor: YooEditor;
+  version: number;
+};
+
 const YooptaEditor = ({
   id,
   editor,
@@ -82,7 +87,7 @@ const YooptaEditor = ({
     return pluginsProps.map((plugin) => plugin.getPlugin as Plugin<Record<string, SlateElement>>);
   }, [pluginsProps]);
 
-  const [editorState, setEditorState] = useState<{ editor: YooEditor; version: number }>(() => {
+  const [editorState, setEditorState] = useState<EditorState>(() => {
     if (!editor.id) editor.id = id || generateId();
     // remove applyChanges method from editor
     editor.applyChanges = () => {};
@@ -112,7 +117,7 @@ const YooptaEditor = ({
     return { editor, version: 0 };
   });
 
-  const onContextChange = useCallback((options?: { operation?: YooptaOperation }) => {
+  const onValueChange = useCallback((options?: { operation?: YooptaOperation }) => {
     setEditorState((prevState) => ({
       editor: prevState.editor,
       version: prevState.version + 1,
@@ -122,11 +127,11 @@ const YooptaEditor = ({
   }, []);
 
   useEffect(() => {
-    editor.on('change', onContextChange);
+    editor.on('change', onValueChange);
     return () => {
-      editor.off('change', onContextChange);
+      editor.off('change', onValueChange);
     };
-  }, [editor, onContextChange]);
+  }, [editor, onValueChange]);
 
   return (
     <YooptaContextProvider editorState={editorState}>

@@ -3,7 +3,6 @@ import { Plugin, PluginElementsMap, PluginOptions, PluginElementProps } from '..
 import { EditorBlurOptions } from './core/blur';
 import { BlockSelectedOptions } from './selection/setBlockSelected';
 import { SetSelectionOptions } from './selection/setSelection';
-import { CreateBlockOptions } from './blocks/createBlock';
 import { DeleteBlockOptions } from './blocks/deleteBlock';
 import { DuplicateBlockOptions } from './blocks/duplicateBlock';
 import { FocusBlockOptions } from './blocks/focusBlock';
@@ -11,7 +10,10 @@ import { ToggleBlockOptions } from './blocks/toggleBlock';
 import { GetBlockOptions } from './blocks/getBlock';
 import { ReactEditor } from 'slate-react';
 import { HistoryEditor } from 'slate-history';
-import { YooptaOperation } from './blocks/applyTransforms';
+import { YooptaOperation } from './core/applyTransforms';
+import { InsertBlockOptions } from './blocks/insertBlock';
+import { BlockDepthOptions } from './blocks/increaseBlockDepth';
+import { SplitBlockOptions } from './blocks/splitBlock';
 
 export type YooptaBlockPath = [number];
 
@@ -35,14 +37,6 @@ export type SlateEditor = ReactEditor & HistoryEditor;
 // add 'end' | 'start'
 export type FocusAt = Path | Point;
 
-export type YooptaEditorTransformOptions = {
-  at?: YooptaBlockPath | null;
-  focus?: boolean;
-  focusAt?: FocusAt;
-  slate?: SlateEditor;
-  blockId?: string;
-};
-
 export type YooptaPluginsEditorMap = Record<string, SlateEditor>;
 
 // Marks
@@ -61,7 +55,6 @@ export type YooptaBlock = {
   elements: PluginElementsMap<string>;
   hasCustomEditor?: boolean;
   isActive: () => boolean;
-  create: (options?: CreateBlockOptions) => void;
   toggle: (options?: ToggleBlockOptions) => void;
   update: (id: string, data: Partial<YooptaBlockData>) => void;
   delete: (options: DeleteBlockOptions) => void;
@@ -79,15 +72,14 @@ export type YooEditor = {
   id: string;
   readOnly: boolean;
   isEmpty: () => boolean;
-  createBlock: (type: string, options?: CreateBlockOptions) => void;
-  insertBlock: (data: YooptaBlockData, options?: YooptaEditorTransformOptions) => string;
-  splitBlock: (options?: YooptaEditorTransformOptions) => void;
+  insertBlock: (type: string, options?: InsertBlockOptions) => string;
+  splitBlock: (options?: SplitBlockOptions) => void;
   updateBlock: (id: string, data: Partial<YooptaBlockData>) => void;
   deleteBlock: (options?: DeleteBlockOptions) => void;
-  duplicateBlock: (options?: DuplicateBlockOptions) => void;
+  duplicateBlock: (options: DuplicateBlockOptions) => void;
   toggleBlock: (toBlockType: string, options?: ToggleBlockOptions) => void;
-  increaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
-  decreaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
+  increaseBlockDepth: (options?: BlockDepthOptions) => void;
+  decreaseBlockDepth: (options?: BlockDepthOptions) => void;
   applyChanges: () => void;
   moveBlock: (blockId: string, to: YooptaBlockPath) => void;
   focusBlock: (id: string, options?: FocusBlockOptions) => void;

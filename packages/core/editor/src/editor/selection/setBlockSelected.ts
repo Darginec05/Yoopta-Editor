@@ -13,6 +13,8 @@ export function setBlockSelected(editor: YooEditor, paths: number[] | null, opti
   const { only = false, allSelected = false } = options;
   const selectedBlocks = editor.selectedBlocks || [];
 
+  console.log('paths', paths);
+
   if (paths === null) {
     editor.selectedBlocks = null;
   } else {

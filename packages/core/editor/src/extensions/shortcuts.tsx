@@ -37,7 +37,8 @@ export const withShortcuts = (editor: YooEditor, slate: SlateEditor) => {
       if (hasMatchedBlock && !matchedBlock.isActive()) {
         Transforms.select(slate, range);
         Transforms.delete(slate);
-        editor.createBlock(matchedBlock.type, { deleteText: false, focus: true });
+        // [TEST]
+        editor.toggleBlock(matchedBlock.type, { deleteText: false, focus: true });
         return;
       }
     }

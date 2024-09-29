@@ -21,9 +21,8 @@ import { getHTML } from '../parsers/getHTML';
 import { getMarkdown } from '../parsers/getMarkdown';
 import { getPlainText } from '../parsers/getPlainText';
 import { isEmpty } from './core/isEmpty';
-import { applyTransforms } from './blocks/applyTransforms';
+import { applyTransforms } from './core/applyTransforms';
 import { batchOperations } from './core/batchOperations';
-import { createBlock } from './blocks/createBlock';
 
 export function createYooptaEditor(): YooEditor {
   const editor: YooEditor = {
@@ -36,7 +35,6 @@ export function createYooptaEditor(): YooEditor {
     getEditorValue: () => getEditorValue(editor),
     setEditorValue: (...args) => setEditorValue(editor, ...args),
     applyChanges: () => {},
-    createBlock: (...args) => createBlock(editor, ...args),
     insertBlock: (...args) => insertBlock(editor, ...args),
     deleteBlock: (...args) => deleteBlock(editor, ...args),
     duplicateBlock: (...args) => duplicateBlock(editor, ...args),

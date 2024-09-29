@@ -1,7 +1,7 @@
-import { buildSlateNodeElement } from '../../utils/blockElements';
+import { buildBlockElementsStructure } from '../../utils/blockElements';
 import { generateId } from '../../utils/generateId';
-import { YooEditor, YooptaBlockData, SlateElement, YooptaBlockPath } from '../types';
-import { YooptaOperation } from './applyTransforms';
+import { YooEditor, YooptaBlockData, YooptaBlockPath } from '../types';
+import { YooptaOperation } from '../core/applyTransforms';
 
 // // make blockData optional
 // export function insertBlock(
@@ -75,24 +75,30 @@ import { YooptaOperation } from './applyTransforms';
 // }
 
 export type InsertBlockOptions = {
-  at?: YooptaBlockPath;
+  at?: YooptaBlockPath | null;
   focus?: boolean;
+  blockData?: Omit<Partial<YooptaBlockData>, 'type'>;
 };
 
 // [TEST]
-export function insertBlock(editor: YooEditor, blockData: Partial<YooptaBlockData>, options: InsertBlockOptions = {}) {
-  const { at, focus = false } = options;
+// [TEST] TEST EVENTS
+export function insertBlock(editor: YooEditor, type: string, options: InsertBlockOptions = {}) {
+  const { at = editor.selection, focus = false, blockData } = options;
 
-  console.log('insertBlock blockData', blockData);
-  console.log('insertBlock options', options);
+  const plugin = editor.plugins[type];
+  const { onBeforeCreate, onCreate } = plugin.events || {};
+
+  let slateStructure;
+  if (blockData && Array.isArray(blockData?.value)) slateStructure = blockData.value[0];
+  else slateStructure = onBeforeCreate?.(editor) || buildBlockElementsStructure(editor, type);
 
   const newBlock: YooptaBlockData = {
-    id: blockData.id || generateId(),
-    type: blockData.type || 'Paragraph',
-    value: (blockData.value || buildSlateNodeElement('paragraph')) as SlateElement[],
+    id: blockData?.id || generateId(),
+    type: type,
+    value: [slateStructure],
     meta: {
-      align: blockData.meta?.align || 'left',
-      depth: blockData.meta?.depth || 0,
+      align: blockData?.meta?.align || 'left',
+      depth: blockData?.meta?.depth || 0,
       order: at && typeof at?.[0] ? at[0] : Object.keys(editor.children).length,
     },
   };
@@ -118,6 +124,7 @@ export function insertBlock(editor: YooEditor, blockData: Partial<YooptaBlockDat
   });
 
   editor.applyTransforms(operations);
+  onCreate?.(editor, newBlock.id);
 
   if (focus) {
     editor.focusBlock(newBlock.id);

@@ -82,15 +82,14 @@ export type YooEditor<TNodes> = {
   // [NOTE] - Empty editor means the next: If the Editor has one block with the default type "Paragraph", and this block does not contain text content
   isEmpty: () => boolean;
   readOnly: boolean;
-  insertBlock: (data: YooptaBlockData, options?: YooptaEditorTransformOptions) => void;
-  splitBlock: (options?: YooptaEditorTransformOptions) => void;
+  insertBlock: (data: YooptaBlockData, options?: InsertBlockOptions) => void;
+  splitBlock: (options?: SplitBlockOptions) => void;
   updateBlock: (id: string, data: Partial<YooptaBlockData>) => void;
   deleteBlock: (options?: DeleteBlockOptions) => void;
-  duplicateBlock: (options?: DuplicateBlockOptions) => void;
+  duplicateBlock: (options: DuplicateBlockOptions) => void;
   toggleBlock: (toBlockType: string, options?: ToggleBlockOptions) => void;
-  increaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
-  decreaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
-  applyChanges: () => void;
+  increaseBlockDepth: (options?: BlockDepthOptions) => void;
+  decreaseBlockDepth: (options?: BlockDepthOptions) => void;
   moveBlock: (blockId: string, to: YooptaBlockPath) => void;
   focusBlock: (id: string, options?: FocusBlockOptions) => void;
   getBlock: (options: GetBlockOptions) => YooptaBlockData | null;

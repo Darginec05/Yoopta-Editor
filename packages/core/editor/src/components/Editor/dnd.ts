@@ -20,6 +20,7 @@ export const useYooptaDragDrop = ({ editor }: { editor: YooEditor }) => {
 
     if (active && over && active.id !== over.id) {
       const newPluginPosition = editor.children[over.id].meta.order;
+      // [TEST]
       editor.moveBlock(active.id as string, [newPluginPosition]);
     }
   }, []);

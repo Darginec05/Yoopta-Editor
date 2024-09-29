@@ -1,11 +1,12 @@
 import { createDraft, finishDraft } from 'immer';
 import { buildSlateEditor } from '../../utils/buildSlate';
-import { YooEditor, YooptaBlockData, YooptaBlockPath } from '../types';
+import { SlateEditor, YooEditor, YooptaBlockData, YooptaBlockPath } from '../types';
 
 type InsertBlockOperation = {
   type: 'insert_block';
   path: YooptaBlockPath;
   block: YooptaBlockData;
+  slate?: SlateEditor;
 };
 
 type UpdateBlockOperation = {
@@ -32,12 +33,11 @@ export type YooptaOperation =
 function applyOperation(editor: YooEditor, op: YooptaOperation): void {
   switch (op.type) {
     case 'insert_block':
-      const { path, block } = op;
+      const { path, block, slate } = op;
 
       // [TODO] - Remove this from methods
       // editor.blockEditorsMap.set(block, newSlateEditor);
-      const newSlateEditor = buildSlateEditor(editor);
-      editor.blockEditorsMap[block.id] = newSlateEditor;
+      editor.blockEditorsMap[block.id] = slate || buildSlateEditor(editor);
       editor.children[block.id] = block;
       break;
     case 'update_block':

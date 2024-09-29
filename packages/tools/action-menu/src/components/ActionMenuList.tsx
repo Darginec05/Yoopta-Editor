@@ -222,7 +222,7 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
         const type = selected?.dataset.actionMenuItemType;
         if (!type) return;
 
-        editor.blocks[type].create({ deleteText: true, focus: true });
+        editor.toggleBlock(type, { deleteText: true, focus: true });
         return onClose();
       }
     };

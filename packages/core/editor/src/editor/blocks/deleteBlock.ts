@@ -1,5 +1,5 @@
 import { YooEditor, YooptaBlockPath } from '../types';
-import { YooptaOperation } from './applyTransforms';
+import { YooptaOperation } from '../core/applyTransforms';
 
 // export type DeleteBlockOptions = YooptaEditorTransformOptions & {
 //   deleteAll?: boolean;
@@ -102,7 +102,7 @@ type DeleteBlockByIdOptions = {
 };
 
 type DeleteBlockByPathOptions = {
-  at: YooptaBlockPath;
+  at: YooptaBlockPath | null;
   blockId?: never;
 };
 

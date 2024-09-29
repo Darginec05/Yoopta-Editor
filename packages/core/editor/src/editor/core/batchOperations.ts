@@ -1,4 +1,4 @@
-import { YooptaOperation } from '../blocks/applyTransforms';
+import { YooptaOperation } from './applyTransforms';
 import { YooEditor } from '../types';
 
 export function batchOperations(editor: YooEditor, callback: () => void) {

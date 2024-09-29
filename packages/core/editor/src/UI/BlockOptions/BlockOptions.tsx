@@ -70,8 +70,7 @@ const BlockOptions = ({ isOpen, onClose, refs, style, actions = DEFAULT_ACTIONS,
   const isVoidElement = rootElement?.props?.nodeType === 'void';
 
   const onDelete = () => {
-    const selection = editor.selection;
-    editor.deleteBlock({ at: selection });
+    editor.deleteBlock({ at: editor.selection });
     editor.setBlockSelected(null);
     editor.setSelection(null);
 
@@ -79,7 +78,10 @@ const BlockOptions = ({ isOpen, onClose, refs, style, actions = DEFAULT_ACTIONS,
   };
 
   const onDuplicate = () => {
-    editor.duplicateBlock({ at: editor.selection, focus: true });
+    // [TEST]
+    if (!editor.selection) return;
+
+    editor.duplicateBlock({ original: { path: editor.selection }, focus: true });
     editor.setBlockSelected(null);
 
     onClose();

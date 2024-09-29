@@ -13,7 +13,7 @@ import { HeadingOne, HeadingOneCommands, HeadingThree, HeadingTwo } from '@yoopt
 import Code from '@yoopta/code';
 import Table, { TableCommands } from '@yoopta/table';
 import Divider, { DividerCommands } from '@yoopta/divider';
-import { Blocks, YooEditor } from '@yoopta/editor';
+import { Blocks, Elements, YooEditor } from '@yoopta/editor';
 
 type Props = {
   editor: YooEditor;
@@ -39,6 +39,31 @@ export const FixedToolbar = ({ editor }: Props) => {
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
           Insert Image
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            editor.toggleBlock('Blockquote', { at: [2], focus: true });
+          }}
+          className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
+        >
+          Toggle into Blockquote
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            editor.insertBlock('Callout', { at: [1], focus: true });
+          }}
+          className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
+        >
+          Insert Callout
+        </button>
+        <button
+          type="button"
+          onClick={() => editor.duplicateBlock({ at: [5], original: { path: [0] } })}
+          className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
+        >
+          Duplicate block
         </button>
         <button
           type="button"

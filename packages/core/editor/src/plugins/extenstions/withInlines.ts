@@ -64,6 +64,8 @@ export const withInlines = (editor: YooEditor, slate: SlateEditor) => {
   // slate.isInline = (element) => ['link', 'mention'].includes(element.type) || isInline(element);
 
   slate.insertText = (text) => {
+    console.log('insertText', text);
+    console.log('insertText isUrl(text)', isUrl(text));
     if (text && isUrl(text)) {
       addLink(editor, slate, text);
     } else {
@@ -73,7 +75,8 @@ export const withInlines = (editor: YooEditor, slate: SlateEditor) => {
 
   slate.insertData = (data) => {
     const text = data.getData('text/plain');
-
+    console.log('insertData', text);
+    console.log('insertData isUrl(text)', isUrl(text));
     if (text && isUrl(text)) {
       addLink(editor, slate, text);
     } else {
