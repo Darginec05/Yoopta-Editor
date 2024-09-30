@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for taking the time to fill out this feature report! You can also join our Telegram community [here](https://t.me/YooptaEditor) 🦄
+        Thank you for taking the time to fill out this feature report! You can also join our Discord community [here](https://discord.gg/Dt8rhSTjsn) 🦄
   - type: checkboxes
     id: duplicates
     attributes:

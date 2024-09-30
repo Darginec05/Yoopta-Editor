@@ -306,7 +306,7 @@ Okay, let's go!
 
 ## Give us ⭐️ star
 
-If you find Yoopta-Editor useful and valuable for your projects, I kindly ask you to show your support by giving us a ⭐️ star on GitHub. Your appreciation means a lot to us and helps us grow and continue improving the editor for the community. 💙💙💙
+If you find Yoopta-Editor useful and valuable for your projects, I kindly ask you to show your support by giving to this repo ⭐️ star on GitHub. Your appreciation means a lot to me and helps me grow and continue improving the editor for the community. 💙
 
 ## Roadmap
 
@@ -320,15 +320,23 @@ If you find Yoopta-Editor useful and valuable for your projects, I kindly ask yo
 - Rethink the approach for just rendering to increase SEO performance
 - Continue improving the project. [We are listening to you and your requests](https://github.com/Darginec05/Yoopta-Editor/discussions/new/choose) 💙
 
-## License
-
-Yoopta-Editor is released under the [MIT License](https://github.com/Darginec05/Yopta-Editor/blob/master/LICENSE). Feel free to use and modify it for your projects.
-
 ## Support
 
-If you have any questions or need assistance raise an issue in the GitHub repository. I will be happy to help you.
+Hey there! If you find this project useful or it helps you in your work, consider supporting it to ensure continuous improvements and development. Your donations help keep the project alive and allow me to invest more time and resources into maintaining and enhancing it.
 
-Let's create powerful and engaging editing experiences together with Yoopta-Editor!
+### How to Support
+
+You can support the project by:
+
+- ⭐ Star this repository to show your appreciation.
+- 🗣 Share the project with your friends, colleagues, and on social media.
+- 💸 Make a donation to help fund development efforts.
+
+### Donation Options
+
+- [Github Sponsors](https://github.com/sponsors/Darginec05)
+
+Any contribution, big or small, is highly appreciated and helps me maintain the project and add exciting new features. Thank you for your support! 🙏
 
 ## Project structure
 
@@ -348,14 +356,18 @@ If you're ready to support Yoopta-Editor, here's how you can do it:
 - If you've spotted a bug or thinking of a feature [raise an issue](https://github.com/Darginec05/Yoopta-Editor/issues/new/choose)
 - If you want to collaborate on the project, find an issue you like to work on and suggest your changes. Checkout [contributing guidelines](./CONTRIBUTING.md).
 - If you want to discuss your idea feel free to create a [discussion](https://github.com/Darginec05/Yoopta-Editor/discussions/new/choose)
-- Or join our [Telegram Community](https://t.me/YooptaEditor) and get in touch with us
+- Or join our [Discord Community](https://discord.gg/Dt8rhSTjsn) and get in touch with us
 
 <a href="https://github.com/Darginec05/Yoopta-Editor/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Darginec05/Yoopta-Editor" />
 </a>
 
+## License
+
+Yoopta-Editor is released under the [MIT License](https://github.com/Darginec05/Yopta-Editor/blob/master/LICENSE). Feel free to use and modify it for your projects.
+
 ## Contacts
 
-- [Telegram Community](https://t.me/YooptaEditor)
+- [Discord Community](https://discord.gg/Dt8rhSTjsn)
 - [Twitter](https://twitter.com/LebovskiYoo)
 - [Github](https://github.com/Darginec05)
