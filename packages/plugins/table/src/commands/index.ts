@@ -78,7 +78,8 @@ export const TableCommands: TableCommands = {
   },
   insertTable: (editor: YooEditor, options?: InsertOptions) => {
     const table = TableCommands.buildTableElements(editor, options);
-    Blocks.insertBlock(editor, buildBlockData({ value: [table], type: 'Table' }), options);
+    const block = buildBlockData({ value: [table], type: 'Table' });
+    Blocks.insertBlock(editor, block.type, options);
   },
   deleteTable: (editor: YooEditor, blockId: string) => {
     editor.deleteBlock({ blockId });

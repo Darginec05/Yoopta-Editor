@@ -63,6 +63,9 @@ export const YOOPTA_PLUGINS = [
       HTMLAttributes: {
         className: 'table-element-extended',
       },
+      display: {
+        title: 'Table with Shadcn',
+      },
     },
   }),
   Divider.extend({

@@ -189,7 +189,9 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
             blocks.forEach((block, idx) => {
               let insertBlockPath = shouldInsertAfterSelection ? insertPathIndex + idx + 1 : insertPathIndex + idx;
               newPaths.push(insertBlockPath);
-              editor.insertBlock(block, { at: [insertBlockPath], focus: false });
+
+              const { type, ...blockData } = block;
+              editor.insertBlock(block.type, { at: [insertBlockPath], focus: false, blockData });
             });
 
             if (shouldDeleteCurrentBlock) {

@@ -104,7 +104,7 @@ const Editor = ({
       }
 
       const nextPath = lastPath + 1;
-      editor.insertBlock(defaultBlock, { at: [nextPath], focus: true });
+      editor.insertBlock(defaultBlock.type, { at: [nextPath], focus: true });
     }
   };
 
@@ -186,7 +186,8 @@ const Editor = ({
               resetSelectionState();
 
               if (isAllBlocksSelected) {
-                editor.insertBlock(buildBlockData({ id: generateId() }), { at: [0], focus: true });
+                const defaultBlock = buildBlockData({ id: generateId() });
+                editor.insertBlock(defaultBlock.type, { at: [0], focus: true });
               }
             }
           });

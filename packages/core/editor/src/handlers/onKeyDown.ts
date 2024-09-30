@@ -82,7 +82,6 @@ export function onKeyDown(editor: YooEditor) {
       // [TEST]
       editor.insertBlock(defaultBlock.type, {
         at: insertBefore ? editor.selection : nextPath,
-        slate,
         focus: !insertBefore,
       });
 
@@ -117,6 +116,7 @@ export function onKeyDown(editor: YooEditor) {
 
         // If current block is empty just delete block
         if (text.trim().length === 0) {
+          // [TEST]
           return editor.deleteBlock({ at: editor.selection, focus: true, focusAt });
         }
         // If current block is not empty merge text nodes with previous block
