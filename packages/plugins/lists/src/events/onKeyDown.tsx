@@ -65,7 +65,7 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, defa
             const currentOrder = block.meta.order;
 
             editor.deleteBlock({ blockId: block.id });
-            editor.insertBlock(defaultBlock, { at: [currentOrder], focus: true });
+            editor.insertBlock(defaultBlock.type, { at: [currentOrder], focus: true, blockData: defaultBlock });
             return;
           }
 
@@ -85,7 +85,7 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, defa
             ],
           });
 
-          editor.insertBlock(prevListBlock, { at: [block.meta.order], focus: false });
+          editor.insertBlock(prevListBlock.type, { at: [block.meta.order], focus: false, blockData: prevListBlock });
           return;
         }
 
@@ -105,7 +105,7 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, defa
           ],
         });
 
-        editor.insertBlock(nextListBlock, { at: [block.meta.order + 1], focus: true });
+        editor.insertBlock(nextListBlock.type, { at: [block.meta.order + 1], focus: true, blockData: nextListBlock });
         return;
       }
     });

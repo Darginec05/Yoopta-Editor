@@ -26,7 +26,8 @@ export const DividerCommands: DividerCommands = {
     const { at, focus } = options;
 
     const dividerElement = DividerCommands.buildDividerElements(editor);
-    Blocks.insertBlock(editor, buildBlockData({ value: [dividerElement], type: 'Divider' }), { at, focus });
+    const block = buildBlockData({ value: [dividerElement], type: 'Divider' });
+    Blocks.insertBlock(editor, block.type, { at, focus, blockData: block });
   },
   deleteDivider: (editor, blockId) => {
     Blocks.deleteBlock(editor, { blockId });

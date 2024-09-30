@@ -1,7 +1,6 @@
 import { isKeyHotkey } from 'is-hotkey';
 import { Editor, Path, Point, Range, Text, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
-import { buildBlockData } from '../components/Editor/utils';
 import { Blocks } from '../editor/blocks';
 import { SlateEditor, YooEditor, YooptaBlockPath } from '../editor/types';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
@@ -73,7 +72,7 @@ export function onKeyDown(editor: YooEditor) {
       }
 
       const currentBlock = Blocks.getBlock(editor, { at: editor.selection });
-      const defaultBlock = buildBlockData({ id: generateId() });
+      const defaultBlock = Blocks.buildBlockData({ id: generateId() });
 
       const string = Editor.string(slate, slate.selection.anchor.path);
       const insertBefore = isStart && string.length > 0;

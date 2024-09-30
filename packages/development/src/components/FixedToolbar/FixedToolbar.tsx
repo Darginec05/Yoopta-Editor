@@ -7,7 +7,7 @@ import Callout, { CalloutCommands } from '@yoopta/callout';
 import Video from '@yoopta/video';
 import File from '@yoopta/file';
 import Accordion, { AccordionCommands } from '@yoopta/accordion';
-import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
+import { NumberedList, BulletedList, TodoList, TodoListCommands } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingOneCommands, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import Code from '@yoopta/code';
@@ -52,7 +52,25 @@ export const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            editor.insertBlock('Callout', { at: [1], focus: true });
+            const calloutElement = CalloutCommands.buildCalloutElements(editor, {
+              text: 'Heading with text',
+              props: { theme: 'warning' },
+            });
+
+            CalloutCommands.insertCallout(editor, { at: [1], focus: true, props: { theme: 'error' }, text: 'Callout' });
+
+            TodoListCommands.insertTodoList(editor, {
+              at: [1],
+              focus: true,
+              props: { checked: true },
+              text: 'Todo list',
+            });
+
+            // editor.insertBlock('Callout', {
+            //   at: [1],
+            //   focus: true,
+            //   blockData: { value: [calloutElement] },
+            // });
           }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >

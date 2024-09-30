@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { Element, Node, Operation, Range, Transforms } from 'slate';
 import { buildBlockData } from '../components/Editor/utils';
+import { Blocks } from '../editor/blocks';
 import { SlateEditor, YooEditor, YooptaBlockData } from '../editor/types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { getRootBlockElementType } from '../utils/blockElements';
@@ -118,7 +119,7 @@ export const useEventHandlers = (
     const eventHandlersOptions: PluginEventHandlerOptions = {
       hotkeys: HOTKEYS,
       currentBlock: block,
-      defaultBlock: buildBlockData({ id: generateId() }),
+      defaultBlock: Blocks.buildBlockData({ id: generateId() }),
     };
     const eventHandlersMap = {};
 
