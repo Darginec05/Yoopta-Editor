@@ -1,4 +1,4 @@
-import { Blocks, buildBlockData, Elements, generateId, SlateElement, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, Elements, generateId, SlateElement, YooEditor, YooptaBlockPath } from '@yoopta/editor';
 import { Editor, Element, Path, Span, Transforms } from 'slate';
 import { InsertTableOptions, TableCellElement, TableElement, TableRowElement } from '../types';
 
@@ -78,8 +78,8 @@ export const TableCommands: TableCommands = {
   },
   insertTable: (editor: YooEditor, options?: InsertOptions) => {
     const table = TableCommands.buildTableElements(editor, options);
-    const block = buildBlockData({ value: [table], type: 'Table' });
-    Blocks.insertBlock(editor, block.type, options);
+    const block = Blocks.buildBlockData({ value: [table], type: 'Table' });
+    Blocks.insertBlock(editor, block.type, { ...options, blockData: block });
   },
   deleteTable: (editor: YooEditor, blockId: string) => {
     editor.deleteBlock({ blockId });

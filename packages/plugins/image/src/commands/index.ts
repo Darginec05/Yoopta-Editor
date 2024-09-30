@@ -25,9 +25,12 @@ export const ImageCommands: ImageCommands = {
   insertImage: (editor: YooEditor, options = {}) => {
     const { at, focus, props } = options;
     const image = ImageCommands.buildImageElements(editor, { props });
-    Blocks.insertBlock(editor, buildBlockData({ value: [image], type: 'Image', meta: { align: 'center', depth: 0 } }), {
+    const block = Blocks.buildBlockData({ value: [image], type: 'Image', meta: { align: 'center', depth: 0 } });
+
+    Blocks.insertBlock(editor, block.type, {
       focus,
       at,
+      blockData: block,
     });
   },
   deleteImage: (editor: YooEditor, blockId) => {

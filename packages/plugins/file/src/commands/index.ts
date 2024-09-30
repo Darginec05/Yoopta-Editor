@@ -25,7 +25,8 @@ export const FileCommands: FileCommands = {
   insertFile: (editor: YooEditor, options = {}) => {
     const { at, focus, props } = options;
     const file = FileCommands.buildFileElements(editor, { props });
-    Blocks.insertBlock(editor, buildBlockData({ value: [file], type: 'File' }), { focus, at });
+    const block = buildBlockData({ value: [file], type: 'File' });
+    Blocks.insertBlock(editor, block.type, { focus, at, blockData: block });
   },
   deleteFile: (editor: YooEditor, blockId) => {
     Blocks.deleteBlock(editor, { blockId });

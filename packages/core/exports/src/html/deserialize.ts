@@ -8,6 +8,7 @@ import {
   generateId,
   YooptaContentValue,
   PluginDeserializeParser,
+  Blocks,
 } from '@yoopta/editor';
 
 export function isYooptaBlock(block: any): boolean {
@@ -117,7 +118,7 @@ function buildBlock(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElement
   const align = el.getAttribute('data-meta-align') as YooptaBlockData['meta']['align'];
   const depth = parseInt(el.getAttribute('data-meta-depth') || '0', 10);
 
-  const blockData = buildBlockData({
+  const blockData = Blocks.buildBlockData({
     id: generateId(),
     type: plugin.type,
     value: [rootNode as SlateElement],

@@ -21,7 +21,8 @@ export const BulletedListCommands: BulletedListCommands = {
   insertBulletedList: (editor, options = {}) => {
     const { at, focus, text } = options;
     const bulletList = BulletedListCommands.buildBulletedListElements(editor, { text });
-    Blocks.insertBlock(editor, buildBlockData({ value: [bulletList], type: 'BulletedList' }), { at, focus });
+    const block = Blocks.buildBlockData({ value: [bulletList], type: 'BulletedList' });
+    Blocks.insertBlock(editor, block.type, { at, focus, blockData: block });
   },
   deleteBulletedList: (editor, blockId) => {
     Blocks.deleteBlock(editor, { blockId });
@@ -42,7 +43,8 @@ export const NumberedListCommands: NumberedListCommands = {
   insertNumberedList: (editor, options = {}) => {
     const { at, focus, text } = options;
     const numberdedList = NumberedListCommands.buildNumberedListElements(editor, { text });
-    Blocks.insertBlock(editor, buildBlockData({ value: [numberdedList], type: 'NumberedList' }), { at, focus });
+    const block = Blocks.buildBlockData({ value: [numberdedList], type: 'NumberedList' });
+    Blocks.insertBlock(editor, block.type, { at, focus, blockData: block });
   },
   deleteNumberedList: (editor, blockId) => {
     Blocks.deleteBlock(editor, { blockId });
@@ -59,12 +61,20 @@ export type TodoListCommands = {
 
 export const TodoListCommands: TodoListCommands = {
   buildTodoListElements: (editor, options) => {
-    return { id: generateId(), type: 'todo-list', children: [{ text: options?.text || '' }] };
+    return {
+      id: generateId(),
+      type: 'todo-list',
+      children: [{ text: options?.text || '' }],
+      props: options?.props || { checked: false },
+    };
   },
   insertTodoList: (editor, options = {}) => {
     const { at, focus, text, props } = options;
     const todoList = TodoListCommands.buildTodoListElements(editor, { text, props });
-    Blocks.insertBlock(editor, buildBlockData({ value: [todoList], type: 'TodoList' }), { at, focus });
+    const block = Blocks.buildBlockData({ value: [todoList], type: 'TodoList' });
+    console.log('block', block);
+    console.log('todoList', todoList);
+    Blocks.insertBlock(editor, block.type, { at, focus, blockData: block });
   },
   deleteTodoList: (editor, blockId) => {
     Blocks.deleteBlock(editor, { blockId });

@@ -25,7 +25,8 @@ export const VideoCommands: VideoCommands = {
   insertVideo: (editor: YooEditor, options = {}) => {
     const { at, focus, props } = options;
     const video = VideoCommands.buildVideoElements(editor, { props });
-    Blocks.insertBlock(editor, buildBlockData({ value: [video], type: 'Video' }), { focus, at });
+    const block = Blocks.buildBlockData({ value: [video], type: 'Video' });
+    Blocks.insertBlock(editor, block.type, { focus, at, blockData: block });
   },
   deleteVideo: (editor: YooEditor, blockId) => {
     Blocks.deleteBlock(editor, { blockId });

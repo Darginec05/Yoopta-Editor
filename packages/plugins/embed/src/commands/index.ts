@@ -47,7 +47,8 @@ export const EmbedCommands: EmbedCommands = {
   insertEmbed: (editor: YooEditor, options = {}) => {
     const { at, focus, props } = options;
     const embed = EmbedCommands.buildEmbedElements(editor, { props });
-    Blocks.insertBlock(editor, buildBlockData({ value: [embed], type: 'Embed' }), { focus, at });
+    const block = buildBlockData({ value: [embed], type: 'Embed' });
+    Blocks.insertBlock(editor, block.type, { focus, at, blockData: block });
   },
   deleteEmbed: (editor: YooEditor, blockId) => {
     Blocks.deleteBlock(editor, { blockId });

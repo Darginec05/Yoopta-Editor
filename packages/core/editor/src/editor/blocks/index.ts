@@ -10,6 +10,7 @@ import { updateBlock } from './updateBlock';
 import { toggleBlock } from './toggleBlock';
 import { getBlock } from './getBlock';
 import { getSlate } from './getSlate';
+import { buildDefaultChildren, buildBlockData } from './buildBlockData';
 
 export const Blocks = {
   insertBlock,
@@ -24,4 +25,6 @@ export const Blocks = {
   toggleBlock,
   getBlock,
   getSlate,
+  buildDefaultChildren,
+  buildBlockData,
 };
