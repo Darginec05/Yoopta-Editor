@@ -76,7 +76,7 @@ const BlockActions = ({ block, editor, dragHandleProps, onChangeActiveBlock, sho
       const nextPath: YooptaBlockPath = [block.meta.order + 1];
 
       editor.setSelection([block.meta.order]);
-      editor.insertBlock(defaultBlock, { at: nextPath, focus: true });
+      editor.insertBlock(defaultBlock.type, { at: nextPath, focus: true });
 
       if (hasActionMenu) {
         setTimeout(() => {
