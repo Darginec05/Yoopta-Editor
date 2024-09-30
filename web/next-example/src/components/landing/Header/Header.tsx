@@ -69,7 +69,7 @@ export const Header = () => {
               <StarIcon size={15} className="ml-2" fill="#faca15" color="#faca15" />
             </NextLink>
             <NextLink
-              href="https://t.ly/8u0T9"
+              href="https://discord.com/invite/Dt8rhSTjsn"
               target="_blank"
               rel="noopener noreferrer"
               className="md:mr-0 mr-0 flex items-center"
