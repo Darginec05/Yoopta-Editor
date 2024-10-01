@@ -3,7 +3,7 @@ import { YooptaContextProvider } from './contexts/YooptaContext/YooptaContext';
 import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { Editor } from './components/Editor/Editor';
 import { CSSProperties, useCallback, useEffect, useMemo, useState } from 'react';
-import { SlateElement, YooEditor, YooptaBlockData, YooptaContentValue } from './editor/types';
+import { SlateElement, YooEditor, YooptaBlockData, YooptaBlockPath, YooptaContentValue } from './editor/types';
 import { Plugin } from './plugins/types';
 import { Tools, ToolsProvider } from './contexts/YooptaContext/ToolsContext';
 import {
@@ -89,8 +89,6 @@ const YooptaEditor = ({
 
   const [editorState, setEditorState] = useState<EditorState>(() => {
     if (!editor.id) editor.id = id || generateId();
-    // remove applyChanges method from editor
-    editor.applyChanges = () => {};
     editor.readOnly = readOnly || false;
     if (marks) editor.formats = buildMarks(editor, marks);
     editor.blocks = buildBlocks(editor, plugins);
@@ -117,6 +115,12 @@ const YooptaEditor = ({
     return { editor, version: 0 };
   });
 
+  const [selectionPath, setSelectionPath] = useState<YooptaBlockPath | null>(null);
+
+  const onSelectonPathChange = useCallback((path: YooptaBlockPath) => {
+    setSelectionPath(path);
+  }, []);
+
   const onValueChange = useCallback((options?: { operation?: YooptaOperation }) => {
     setEditorState((prevState) => ({
       editor: prevState.editor,
@@ -128,8 +132,11 @@ const YooptaEditor = ({
 
   useEffect(() => {
     editor.on('change', onValueChange);
+    editor.on('selection-change', onSelectonPathChange);
+
     return () => {
       editor.off('change', onValueChange);
+      editor.off('selection-change', onSelectonPathChange);
     };
   }, [editor, onValueChange]);
 

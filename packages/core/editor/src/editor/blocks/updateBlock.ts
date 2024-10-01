@@ -1,7 +1,8 @@
 import { YooEditor, YooptaBlockData } from '../types';
 import { YooptaOperation } from '../core/applyTransforms';
 
-export function updateBlock(editor: YooEditor, blockId: string, data: Partial<YooptaBlockData>) {
+// Maybe add source pararmeter to this function?
+export function updateBlock(editor: YooEditor, blockId: string, data: Partial<YooptaBlockData>, source?: string): void {
   const block = editor.children[blockId];
 
   if (!block) {

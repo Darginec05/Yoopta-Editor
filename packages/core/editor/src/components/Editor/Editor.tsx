@@ -14,6 +14,8 @@ import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
 import { Blocks } from '../../editor/blocks';
 import { useMultiSelection } from './selection';
+import { getPreviousPath } from '../../editor/paths/getPreviousPath';
+import { Paths } from '../../editor/paths';
 
 type Props = {
   marks?: YooptaMark<any>[];
@@ -66,12 +68,14 @@ const Editor = ({
     editor.focus();
   }, [autoFocus, isReadOnly]);
 
+  console.log('editor.selection', editor.selection);
+
   useEffect(() => {
     if (isReadOnly) return;
 
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [editor.selectedBlocks, isReadOnly]);
+  }, [editor.selection, isReadOnly]);
 
   const handleEmptyZoneClick = (e: React.MouseEvent) => {
     const editorEl = editor.refElement;
@@ -128,8 +132,10 @@ const Editor = ({
 
     resetSelectionState();
 
-    if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
-      editor.setBlockSelected(null);
+    const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+    if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
+      // editor.setBlockSelected(null);
+      editor.setSelection([null]);
     }
   };
 
@@ -137,7 +143,8 @@ const Editor = ({
     if (isReadOnly) return;
 
     if (HOTKEYS.isSelect(event)) {
-      const isAllBlocksSelected = editor.selectedBlocks?.length === Object.keys(editor.children).length;
+      const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+      const isAllBlocksSelected = selectedBlocks?.length === Object.keys(editor.children).length;
 
       if (isAllBlocksSelected) {
         event.preventDefault();
@@ -145,14 +152,16 @@ const Editor = ({
       }
 
       if (state.selectionStarted) {
-        event.preventDefault();
-        editor.setBlockSelected([], { allSelected: true });
+        const allBlockIndexes = Object.keys(editor.children).map((k, i) => i);
+        event.preventDefault([null, allBlockIndexes]);
+        // editor.setBlockSelected([], { allSelected: true });
         return;
       }
     }
 
     if (HOTKEYS.isCopy(event) || HOTKEYS.isCut(event)) {
-      if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
+      const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+      if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
         event.preventDefault();
 
         const htmlString = editor.getHTML(editor.getEditorValue());
@@ -173,16 +182,19 @@ const Editor = ({
         if (HOTKEYS.isCut(event)) {
           // [TEST]
           editor.batchOperations(() => {
-            if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
-              const isAllBlocksSelected = editor.selectedBlocks.length === Object.keys(editor.children).length;
+            const selectedBlocks = Paths.getSelectedPaths(editor.selection);
 
-              editor.selectedBlocks.forEach((index) => {
+            if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
+              const isAllBlocksSelected = selectedBlocks.length === Object.keys(editor.children).length;
+
+              selectedBlocks.forEach((index) => {
                 const blockId = Blocks.getBlock(editor, { at: [index] })?.id;
                 console.log('isAllBlocksSelected blockId', blockId);
                 if (blockId) editor.deleteBlock({ blockId });
               });
 
-              editor.setBlockSelected(null);
+              // editor.setBlockSelected(null);
+              editor.setSelection([null]);
               resetSelectionState();
 
               if (isAllBlocksSelected) {
@@ -198,9 +210,8 @@ const Editor = ({
 
     if (HOTKEYS.isBackspace(event)) {
       event.stopPropagation();
-
-      const isAllBlocksSelected =
-        Array.isArray(editor.selectedBlocks) && editor.selectedBlocks?.length === Object.keys(editor.children).length;
+      const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+      const isAllBlocksSelected = selectedBlocks?.length === Object.keys(editor.children).length;
 
       if (isAllBlocksSelected) {
         event.preventDefault();
@@ -210,7 +221,8 @@ const Editor = ({
           const allBlocks = Object.keys(editor.children);
           allBlocks.forEach((blockId) => editor.deleteBlock({ blockId }));
 
-          editor.setBlockSelected(null);
+          // editor.setBlockSelected(null);
+          editor.setSelection([null]);
           resetSelectionState();
         });
 
@@ -219,11 +231,14 @@ const Editor = ({
 
       // [TEST]
       editor.batchOperations(() => {
-        if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks?.length > 0) {
-          event.preventDefault();
-          editor.selectedBlocks.forEach((index) => editor.deleteBlock({ at: [index] }));
+        const selectedBlocks = Paths.getSelectedPaths(editor.selection);
 
-          editor.setBlockSelected(null);
+        if (Array.isArray(selectedBlocks) && selectedBlocks?.length > 0) {
+          event.preventDefault();
+          selectedBlocks.forEach((index) => editor.deleteBlock({ at: [index] }));
+
+          // editor.setBlockSelected(null);
+          editor.setSelection([null]);
           resetSelectionState();
         }
       });
@@ -242,20 +257,25 @@ const Editor = ({
 
         // jump to next index if started selection from this index
         if (currentIndex === state.startedIndexToSelect) {
-          editor.setBlockSelected([nextTopIndex]);
+          // editor.setBlockSelected([nextTopIndex]);
+          editor.setSelection([nextTopIndex]);
           state.indexToSelect = nextTopIndex;
           return;
         }
 
         if (nextTopIndex < state.startedIndexToSelect) {
-          editor.setBlockSelected([nextTopIndex]);
+          // editor.setBlockSelected([nextTopIndex]);
+          editor.setSelection([nextTopIndex]);
           state.indexToSelect = nextTopIndex;
           return;
         }
 
-        if (editor.selectedBlocks?.includes(currentIndex) && currentIndex !== state.startedIndexToSelect) {
-          const filteredIndexes = editor.selectedBlocks.filter((index) => index !== currentIndex);
-          editor.setBlockSelected(filteredIndexes, { only: true });
+        const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+
+        if (selectedBlocks?.includes(currentIndex) && currentIndex !== state.startedIndexToSelect) {
+          const filteredIndexes = selectedBlocks.filter((index) => index !== currentIndex);
+          // editor.setBlockSelected(filteredIndexes, { only: true });
+          editor.setSelection([nextTopIndex, filteredIndexes]);
           state.indexToSelect = nextTopIndex;
           return;
         }
@@ -273,7 +293,9 @@ const Editor = ({
       const isStart = SlateEditor.isStart(slate, slate.selection.focus, parentPath);
 
       if (Range.isExpanded(slate.selection) && isStart) {
-        const prevPath: YooptaBlockPath = editor.selection ? [editor.selection[0] - 1] : [0];
+        const prevPath = getPreviousPath(editor.selection);
+        if (!prevPath) return;
+
         const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevPath });
 
         if (block && prevBlock) {
@@ -283,8 +305,8 @@ const Editor = ({
           ReactEditor.deselect(slate);
           Transforms.deselect(slate);
 
-          editor.setSelection(null);
-          editor.setBlockSelected([block?.meta.order, block.meta.order - 1]);
+          editor.setSelection([null]);
+          // editor.setBlockSelected([block?.meta.order, block.meta.order - 1]);
 
           state.startedIndexToSelect = block.meta.order;
           state.indexToSelect = block.meta.order - 1;
@@ -302,20 +324,24 @@ const Editor = ({
 
         // jump to next index if started selection from this index
         if (currentIndex === state.startedIndexToSelect) {
-          editor.setBlockSelected([nextIndex]);
+          // editor.setBlockSelected([nextIndex]);
+          editor.setSelection([nextIndex]);
           state.indexToSelect = nextIndex;
           return;
         }
 
         if (nextIndex > state.startedIndexToSelect) {
-          editor.setBlockSelected([nextIndex]);
+          // editor.setBlockSelected([nextIndex]);
+          editor.setSelection([nextIndex]);
           state.indexToSelect = nextIndex;
           return;
         }
 
-        if (editor.selectedBlocks?.includes(currentIndex) && currentIndex !== state.startedIndexToSelect) {
-          const filteredIndexes = editor.selectedBlocks.filter((index) => index !== currentIndex);
-          editor.setBlockSelected(filteredIndexes, { only: true });
+        const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+        if (selectedBlocks?.includes(currentIndex) && currentIndex !== state.startedIndexToSelect) {
+          const filteredIndexes = selectedBlocks.filter((index) => index !== currentIndex);
+          // editor.setBlockSelected(filteredIndexes, { only: true });
+          editor.setSelection([nextIndex, filteredIndexes]);
           state.indexToSelect = nextIndex;
           return;
         }
@@ -332,7 +358,7 @@ const Editor = ({
       const isEnd = SlateEditor.isEnd(slate, slate.selection.focus, parentPath);
 
       if (Range.isExpanded(slate.selection) && isEnd) {
-        const nextPath: YooptaBlockPath = editor.selection ? [editor.selection[0] + 1] : [0];
+        const nextPath = Paths.getNextPath(editor.selection);
         const nextBlock = findPluginBlockBySelectionPath(editor, { at: nextPath });
 
         if (block && nextBlock) {
@@ -342,8 +368,8 @@ const Editor = ({
           ReactEditor.deselect(slate);
           Transforms.deselect(slate);
 
-          editor.setSelection(null);
-          editor.setBlockSelected([block?.meta.order, block?.meta.order + 1]);
+          editor.setSelection([null]);
+          // editor.setBlockSelected([block?.meta.order, block?.meta.order + 1]);
 
           state.startedIndexToSelect = block.meta.order;
           state.indexToSelect = block.meta.order + 1;
@@ -353,7 +379,7 @@ const Editor = ({
     }
 
     if (HOTKEYS.isTab(event)) {
-      const selectedBlocks = editor.selectedBlocks;
+      const selectedBlocks = Paths.getSelectedPaths(editor.selection);
       if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
         event.preventDefault();
 
@@ -368,7 +394,7 @@ const Editor = ({
     }
 
     if (HOTKEYS.isShiftTab(event)) {
-      const selectedBlocks = editor.selectedBlocks;
+      const selectedBlocks = Paths.getSelectedPaths(editor.selection);
       if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
         event.preventDefault();
 

@@ -15,7 +15,7 @@ import { InsertBlockOptions } from './blocks/insertBlock';
 import { BlockDepthOptions } from './blocks/increaseBlockDepth';
 import { SplitBlockOptions } from './blocks/splitBlock';
 
-export type YooptaBlockPath = [number];
+// export type YooptaBlockPath = [number];
 
 export type YooptaBlockData<T = Descendant | SlateElement> = {
   id: string;
@@ -63,9 +63,11 @@ export type YooptaBlock = {
 export type YooptaBlocks = Record<string, YooptaBlock>;
 export type YooptaFormats = Record<string, TextFormat>;
 
-export type YooEditorEvents = 'change' | 'focus' | 'blur' | 'block:copy';
+export type YooEditorEvents = 'change' | 'focus' | 'blur' | 'block:copy' | 'selection-change';
 
 export type BaseCommands = Record<string, (...args: any[]) => any>;
+
+export type YooptaBlockPath = [number | null, number[]?];
 
 // [TODO] - Fix generic and default types
 export type YooEditor = {
@@ -80,17 +82,16 @@ export type YooEditor = {
   toggleBlock: (toBlockType: string, options?: ToggleBlockOptions) => void;
   increaseBlockDepth: (options?: BlockDepthOptions) => void;
   decreaseBlockDepth: (options?: BlockDepthOptions) => void;
-  applyChanges: () => void;
   moveBlock: (blockId: string, to: YooptaBlockPath) => void;
   focusBlock: (id: string, options?: FocusBlockOptions) => void;
   getBlock: (options: GetBlockOptions) => YooptaBlockData | null;
-  selection: YooptaBlockPath | null;
-  selectedBlocks: number[] | null;
+  selection: YooptaBlockPath;
+  setSelection: (path: YooptaBlockPath) => void;
+  // selectedBlocks: number[] | null;
+  // setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
   children: YooptaContentValue;
   getEditorValue: () => YooptaContentValue;
   setEditorValue: (value: YooptaContentValue) => void;
-  setSelection: (path: YooptaBlockPath | null, options?: SetSelectionOptions) => void;
-  setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
   blockEditorsMap: YooptaPluginsEditorMap;
   blocks: YooptaBlocks;
   formats: YooptaFormats;
