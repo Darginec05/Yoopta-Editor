@@ -2,6 +2,7 @@ import { isKeyHotkey } from 'is-hotkey';
 import { Editor, Path, Point, Range, Text, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { Blocks } from '../editor/blocks';
+import { Paths } from '../editor/paths';
 import { SlateEditor, YooEditor, YooptaBlockPath } from '../editor/types';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../utils/findSlateBySelectionPath';
@@ -76,7 +77,7 @@ export function onKeyDown(editor: YooEditor) {
 
       const string = Editor.string(slate, slate.selection.anchor.path);
       const insertBefore = isStart && string.length > 0;
-      const nextPath: YooptaBlockPath = editor.selection ? [editor.selection[0] + 1] : [0];
+      const nextPath = Paths.getNextPath(editor.selection);
 
       // [TEST]
       editor.insertBlock(defaultBlock.type, {
@@ -102,9 +103,9 @@ export function onKeyDown(editor: YooEditor) {
       if (isStart) {
         event.preventDefault();
         const text = Editor.string(slate, parentPath);
-        const prevBlockPathIndex = editor.selection ? editor.selection[0] - 1 : 0;
-        const prevSlate = findSlateBySelectionPath(editor, { at: [prevBlockPathIndex] });
-        const prevBlock = findPluginBlockBySelectionPath(editor, { at: [prevBlockPathIndex] });
+        const prevBlockPath = Paths.getPreviousPath(editor.selection);
+        const prevSlate = findSlateBySelectionPath(editor, { at: prevBlockPath });
+        const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevBlockPath });
         const prevBlockEntity = editor.blocks[prevBlock?.type || ''];
         let focusAt;
 
@@ -124,8 +125,8 @@ export function onKeyDown(editor: YooEditor) {
             return Transforms.delete(slate, { at: slate.selection });
           }
 
-          const prevBlockPathIndex = editor.selection ? editor.selection[0] - 1 : 0;
-          const prevBlock = findPluginBlockBySelectionPath(editor, { at: [prevBlockPathIndex] });
+          const prevBlockPath = Paths.getPreviousPath(editor.selection);
+          const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevBlockPath });
           const prevBlockEntity = editor.blocks[prevBlock?.type || ''];
 
           // [TODO] - if prev block has custom editor (not slate) we need jump to prevprev block
@@ -138,7 +139,7 @@ export function onKeyDown(editor: YooEditor) {
           // If previous block values is empty just delete block without merging
           if (prevSlateText.length === 0) {
             return editor.deleteBlock({
-              at: [prevBlockPathIndex],
+              at: prevBlockPath,
               focus: true,
               // focusAt,
             });
@@ -184,7 +185,9 @@ export function onKeyDown(editor: YooEditor) {
         ReactEditor.deselect(slate);
         Transforms.deselect(slate);
 
-        editor.setBlockSelected([], { allSelected: true });
+        const allBlockPaths = Array.from({ length: Object.keys(editor.children).length }, (_, i) => i);
+        editor.setSelection([null, allBlockPaths]);
+        // editor.setBlockSelected([], { allSelected: true });
         return;
       }
     }
@@ -211,7 +214,7 @@ export function onKeyDown(editor: YooEditor) {
       // If element with any paths has all paths at 0
       const isAllPathsInStart = new Set(slate.selection.anchor.path).size === 1;
       if (isAllPathsInStart) {
-        const prevPath: YooptaBlockPath | null = editor.selection ? [editor.selection[0] - 1] : null;
+        const prevPath: YooptaBlockPath | null = Paths.getPreviousPath(editor.selection);
         const prevSlate = findSlateBySelectionPath(editor, { at: prevPath });
         const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevPath });
         if (prevSlate && prevBlock) {
@@ -238,7 +241,7 @@ export function onKeyDown(editor: YooEditor) {
       const parentPath = Path.parent(slate.selection.anchor.path);
       const isEnd = Editor.isEnd(slate, slate.selection.anchor, parentPath);
       if (isEnd) {
-        const nextPath: YooptaBlockPath | null = editor.selection ? [editor.selection[0] + 1] : null;
+        const nextPath: YooptaBlockPath | null = Paths.getNextPath(editor.selection);
         const nextSlate = findSlateBySelectionPath(editor, { at: nextPath });
         const nextBlock = findPluginBlockBySelectionPath(editor, { at: nextPath });
         if (nextSlate && nextBlock) {

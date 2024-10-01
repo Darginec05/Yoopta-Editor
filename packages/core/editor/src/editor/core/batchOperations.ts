@@ -12,7 +12,6 @@ export function batchOperations(editor: YooEditor, callback: () => void) {
   callback();
 
   editor.applyTransforms = originalApplyTransforms;
-  console.log('batchOperations operations', operations);
 
   if (operations.length > 0) {
     editor.applyTransforms(operations);
