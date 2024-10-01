@@ -121,7 +121,7 @@ const YooptaEditor = ({
     setSelectionPath(path);
   }, []);
 
-  const onValueChange = useCallback((options?: { operation?: YooptaOperation }) => {
+  const onValueChange = useCallback(() => {
     setEditorState((prevState) => ({
       editor: prevState.editor,
       version: prevState.version + 1,

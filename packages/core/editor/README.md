@@ -93,13 +93,13 @@ export type YooEditor<TNodes> = {
   moveBlock: (blockId: string, to: YooptaBlockPath) => void;
   focusBlock: (id: string, options?: FocusBlockOptions) => void;
   getBlock: (options: GetBlockOptions) => YooptaBlockData | null;
-  selection: YooptaBlockPath | null;
+  // selection: YooptaBlockPath | null;
   selectedBlocks: number[] | null;
   children: Record<string, YooptaBlockData>;
   getEditorValue: () => TNodes;
   setEditorValue: (value: YooptaContentValue) => void;
   setSelection: (path: YooptaBlockPath | null, options?: SetSelectionOptions) => void;
-  setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
+  // setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
   blockEditorsMap: YooptaPluginsEditorMap;
   blocks: YooptaBlocks;
   formats: YooptaFormats;

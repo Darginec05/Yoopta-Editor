@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Paths } from '../../editor/paths';
 import { YooEditor } from '../../editor/types';
 import { RectangeSelectionProps, RectangeSelectionState } from './SelectionBox';
 
@@ -49,14 +50,10 @@ export const useRectangeSelectionBox = ({ editor, root }: RectangeSelectionProps
     if (editor.readOnly || root === false) return;
 
     const isInsideEditor = editor.refElement?.contains(event.target as Node);
+    const selectedBlocks = Paths.getSelectedPaths(editor.selection);
 
-    if (
-      !isInsideEditor &&
-      !state.selection &&
-      Array.isArray(editor.selectedBlocks) &&
-      editor.selectedBlocks.length > 0
-    ) {
-      editor.setBlockSelected(null);
+    if (!isInsideEditor && !state.selection && Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
+      editor.setSelection([null]);
       return onClose();
     }
 
@@ -82,7 +79,7 @@ export const useRectangeSelectionBox = ({ editor, root }: RectangeSelectionProps
       event.pageY - window.pageYOffset,
     ]);
 
-    editor.setBlockSelected(blocksUnderSelection, { only: true });
+    editor.setSelection([null, blocksUnderSelection]);
   };
 
   const onMouseUp = () => {
@@ -123,7 +120,7 @@ export const useRectangeSelectionBox = ({ editor, root }: RectangeSelectionProps
       elementMouseEl.removeEventListener('mousemove', onMouseMove);
       elementMouseEl.removeEventListener('mouseup', onMouseUp);
     };
-  }, [editor.selectedBlocks, state, root, editor.readOnly]);
+  }, [editor.selection, state, root, editor.readOnly]);
 
   const onClose = () => {
     setState({

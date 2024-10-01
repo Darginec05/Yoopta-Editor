@@ -182,6 +182,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
           }
 
           const insertPathIndex = editor.selection[0];
+          if (!insertPathIndex) return;
 
           // [TEST]
           editor.batchOperations(() => {
@@ -198,7 +199,8 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
               editor.deleteBlock({ at: [insertPathIndex] });
             }
 
-            editor.setBlockSelected(newPaths);
+            // [TEST]
+            editor.setSelection([null, newPaths]);
           });
 
           return;
