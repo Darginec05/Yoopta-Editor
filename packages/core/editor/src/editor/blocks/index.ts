@@ -28,3 +28,5 @@ export const Blocks = {
   buildDefaultChildren,
   buildBlockData,
 };
+
+export type Blocks = typeof Blocks;

@@ -298,7 +298,13 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     }
 
     return (
-      <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onValueChange={onChange}>
+      <Slate
+        key={`slate-${id}`}
+        editor={slate}
+        initialValue={initialValue}
+        onValueChange={onChange}
+        onSelectionChange={console.log}
+      >
         <Editable
           key={`editable-${id}`}
           renderElement={renderElement}

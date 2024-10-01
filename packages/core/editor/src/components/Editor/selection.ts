@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { Editor, Range, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { Blocks } from '../../editor/blocks';
+import { Paths } from '../../editor/paths';
 import { YooEditor, YooptaBlockPath } from '../../editor/types';
 
 type MultiSelectionOptions = {
@@ -35,47 +36,56 @@ export function useMultiSelection({ editor }: MultiSelectionOptions) {
   const onShiftKeyDown = (blockOrder: number) => {
     blurSlateSelection();
 
-    const currentSelectionIndex = editor.selection![0];
+    console.log('Paths.getPath(editor.selection)', Paths.getPath(editor.selection));
+    console.log('blockOrder', blockOrder);
+    const currentSelectionIndex = Paths.getPath(editor.selection)?.[0] || 0;
     const indexesBetween = Array.from({ length: Math.abs(blockOrder - currentSelectionIndex) }).map((_, index) =>
       blockOrder > currentSelectionIndex ? currentSelectionIndex + index + 1 : currentSelectionIndex - index - 1,
     );
 
-    editor.setBlockSelected([...indexesBetween, currentSelectionIndex], { only: true });
-    editor.setSelection([blockOrder]);
+    console.log('indexesBetween', [...indexesBetween, currentSelectionIndex]);
+
+    // editor.setBlockSelected(, { only: true });
+    editor.setSelection([blockOrder, [...indexesBetween, currentSelectionIndex]]);
   };
 
   const onMouseDown = (e: React.MouseEvent) => {
     if (editor.readOnly) return;
 
-    if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0 && !e.shiftKey && !e.altKey) {
-      editor.setBlockSelected(null);
-    }
-
-    const target = e.target as HTMLElement;
-    const blockElement = target.closest('[data-yoopta-block]');
-
-    if (blockElement && e.button === 0) {
-      const blockId = blockElement.getAttribute('data-yoopta-block-id') || '';
-      const blockOrder = editor.children[blockId]?.meta.order;
-
-      if (typeof blockOrder === 'number') {
-        isMultiSelectingStarted.current = true;
-        startBlockPathRef.current = blockOrder;
-        currentBlockPathRef.current = blockOrder;
-
-        if (e.shiftKey && Array.isArray(editor.selection) && blockOrder !== editor.selection?.[0]) {
-          onShiftKeyDown(blockOrder);
-          return;
-        }
-
-        if (blockOrder !== editor.selection?.[0]) {
-          editor.setSelection([blockOrder]);
-        }
-
-        editor.refElement?.addEventListener('mousemove', onMouseMove);
-        editor.refElement?.addEventListener('mouseup', onMouseUp);
+    editor.batchOperations(() => {
+      const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+      // [TEST]
+      if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0 && !e.shiftKey && !e.altKey) {
+        editor.setSelection([null]);
       }
-    }
+
+      const target = e.target as HTMLElement;
+      const blockElement = target.closest('[data-yoopta-block]');
+
+      if (blockElement && e.button === 0) {
+        const blockId = blockElement.getAttribute('data-yoopta-block-id') || '';
+        const blockOrder = editor.children[blockId]?.meta.order;
+
+        if (typeof blockOrder === 'number') {
+          isMultiSelectingStarted.current = true;
+          startBlockPathRef.current = blockOrder;
+          currentBlockPathRef.current = blockOrder;
+
+          if (e.shiftKey && Array.isArray(editor.selection) && blockOrder !== editor.selection?.[0]) {
+            onShiftKeyDown(blockOrder);
+            return;
+          }
+
+          if (blockOrder !== editor.selection?.[0]) {
+            console.log('blockOrder', blockOrder);
+            editor.setSelection([blockOrder]);
+          }
+
+          editor.refElement?.addEventListener('mousemove', onMouseMove);
+          editor.refElement?.addEventListener('mouseup', onMouseUp);
+        }
+      }
+    });
   };
 
   const onMouseMove = (e: MouseEvent) => {
@@ -85,33 +95,35 @@ export function useMultiSelection({ editor }: MultiSelectionOptions) {
     const blockElement = target?.closest('[data-yoopta-block]');
 
     if (blockElement) {
-      const blockId = blockElement.getAttribute('data-yoopta-block-id') || '';
-      const blockOrder = editor.children[blockId]?.meta.order;
+      editor.batchOperations(() => {
+        const blockId = blockElement.getAttribute('data-yoopta-block-id') || '';
+        const blockOrder = editor.children[blockId]?.meta.order;
 
-      // When multi-selecting is started and the mouse is moving over the start block
-      if (
-        isMultiSelectingInProgress.current &&
-        typeof blockOrder === 'number' &&
-        blockOrder === startBlockPathRef.current
-      ) {
-        currentBlockPathRef.current = blockOrder;
-        editor.setBlockSelected([blockOrder], { only: true });
-        return;
-      }
+        // When multi-selecting is started and the mouse is moving over the start block
+        if (
+          isMultiSelectingInProgress.current &&
+          typeof blockOrder === 'number' &&
+          blockOrder === startBlockPathRef.current
+        ) {
+          currentBlockPathRef.current = blockOrder;
+          editor.setSelection([blockOrder, [blockOrder]]);
+          return;
+        }
 
-      // Multi-selecting started between blocks
-      if (typeof blockOrder === 'number' && blockOrder !== currentBlockPathRef.current) {
-        currentBlockPathRef.current = blockOrder;
-        isMultiSelectingInProgress.current = true;
+        // Multi-selecting started between blocks
+        if (typeof blockOrder === 'number' && blockOrder !== currentBlockPathRef.current) {
+          currentBlockPathRef.current = blockOrder;
+          isMultiSelectingInProgress.current = true;
 
-        const start = Math.min(startBlockPathRef.current!, blockOrder);
-        const end = Math.max(startBlockPathRef.current!, blockOrder);
+          const start = Math.min(startBlockPathRef.current!, blockOrder);
+          const end = Math.max(startBlockPathRef.current!, blockOrder);
 
-        blurSlateSelection();
+          blurSlateSelection();
 
-        const selectedBlocks = Array.from({ length: end - start + 1 }, (_, i) => start + i);
-        editor.setBlockSelected(selectedBlocks);
-      }
+          const selectedBlocks = Array.from({ length: end - start + 1 }, (_, i) => start + i);
+          editor.setSelection([blockOrder, selectedBlocks]);
+        }
+      });
     }
   };
 

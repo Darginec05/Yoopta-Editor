@@ -26,8 +26,7 @@ export const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            ImageCommands.insertImage(editor, {
-              at: [1],
+            const imageElements = ImageCommands.buildImageElements(editor, {
               props: {
                 src: 'https://res.cloudinary.com/ench-app/image/upload/v1713028758/Cheems_doge_fx8yvq.jpg',
                 alt: 'Insert image',
@@ -35,6 +34,9 @@ export const FixedToolbar = ({ editor }: Props) => {
                 bgColor: '#f3f4f6',
               },
             });
+
+            const block = Blocks.buildBlockData({ value: [imageElements], type: 'Image' });
+            editor.insertBlock('Image', { blockData: block, at: [1], focus: true });
           }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
@@ -43,7 +45,7 @@ export const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            editor.toggleBlock('Blockquote', { at: [2], focus: true });
+            editor.toggleBlock('Blockquote', { at: editor.selection || [2], focus: true });
           }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
@@ -78,7 +80,7 @@ export const FixedToolbar = ({ editor }: Props) => {
         </button>
         <button
           type="button"
-          onClick={() => editor.duplicateBlock({ at: [5], original: { path: [0] } })}
+          onClick={() => editor.duplicateBlock({ at: [5], original: { path: editor.selection || [0] } })}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
           Duplicate block

@@ -1,4 +1,4 @@
-import { createDraft, finishDraft } from 'immer';
+import { createDraft, finishDraft, isDraft } from 'immer';
 import { buildSlateEditor } from '../../utils/buildSlate';
 import { SlateEditor, YooEditor, YooptaBlockData, YooptaBlockPath } from '../types';
 
@@ -20,6 +20,11 @@ type DeleteBlockOperation = {
   id: string;
 };
 
+type SetSelectionBlockOperation = {
+  type: 'set_selection_block';
+  path: YooptaBlockPath;
+};
+
 type NormalizePathsBlockOperation = {
   type: 'normalize_block_paths';
 };
@@ -28,7 +33,8 @@ export type YooptaOperation =
   | InsertBlockOperation
   | UpdateBlockOperation
   | DeleteBlockOperation
-  | NormalizePathsBlockOperation;
+  | NormalizePathsBlockOperation
+  | SetSelectionBlockOperation;
 
 function applyOperation(editor: YooEditor, op: YooptaOperation): void {
   switch (op.type) {
@@ -59,12 +65,24 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
       blocks.sort((a, b) => a.meta.order - b.meta.order);
       blocks.forEach((block, index) => (block.meta.order = index));
       break;
+
+    case 'set_selection_block':
+      if (!Array.isArray(op.path[1])) {
+        op.path[1] = [];
+      }
+
+      editor.selection = op.path;
+      break;
   }
+}
+
+function isSelectionOperation(op: YooptaOperation): op is SetSelectionBlockOperation {
+  return op.type === 'set_selection_block';
 }
 
 export function applyTransforms(editor: YooEditor, ops: YooptaOperation[]) {
   editor.children = createDraft(editor.children);
-
+  editor.selection = createDraft(editor.selection);
   console.log('applyTransforms ops', ops);
 
   for (const op of ops) {
@@ -75,8 +93,13 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[]) {
   applyOperation(editor, { type: 'normalize_block_paths' });
 
   editor.children = finishDraft(editor.children);
-  editor.emit('change', editor.children);
 
+  if (isDraft(editor.selection)) {
+    editor.selection = finishDraft(editor.selection);
+  }
+
+  editor.emit('change', editor.children);
+  editor.emit('selection-change', editor.selection);
   assertValidPaths(editor);
 }
 

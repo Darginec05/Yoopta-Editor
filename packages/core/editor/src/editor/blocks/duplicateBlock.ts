@@ -86,7 +86,7 @@ export function duplicateBlock(editor: YooEditor, options: DuplicateBlockOptions
 
   let originalBlock: YooptaBlockData | null = blockId
     ? editor.children[blockId]
-    : findPluginBlockBySelectionPath(editor, { at: path });
+    : findPluginBlockBySelectionPath(editor, { at: path! });
 
   if (!originalBlock) {
     throw new Error('Block not found');
@@ -109,7 +109,6 @@ export function duplicateBlock(editor: YooEditor, options: DuplicateBlockOptions
 
   const duplicatedBlock = deepClone(originalBlock);
   duplicatedBlock.id = generateId();
-  // duplicatedBlock.meta.order = originalBlock.meta.order + 1;
   // [TEST]
   duplicatedBlock.meta.order = Array.isArray(at) && typeof at[0] === 'number' ? at : originalBlock.meta.order + 1;
 
@@ -120,9 +119,6 @@ export function duplicateBlock(editor: YooEditor, options: DuplicateBlockOptions
   });
 
   editor.applyTransforms(operations);
-
-  const slate = buildSlateEditor(editor);
-  editor.blockEditorsMap[duplicatedBlock.id] = slate;
 
   if (focus) {
     editor.focusBlock(duplicatedBlock.id, { waitExecution: true });
