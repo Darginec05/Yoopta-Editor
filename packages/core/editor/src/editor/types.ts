@@ -1,7 +1,6 @@
 import { Descendant, Path, Point } from 'slate';
 import { Plugin, PluginElementsMap, PluginOptions, PluginElementProps } from '../plugins/types';
 import { EditorBlurOptions } from './core/blur';
-import { BlockSelectedOptions } from './selection/setBlockSelected';
 import { SetSelectionOptions } from './selection/setSelection';
 import { DeleteBlockOptions } from './blocks/deleteBlock';
 import { DuplicateBlockOptions } from './blocks/duplicateBlock';
@@ -86,9 +85,7 @@ export type YooEditor = {
   focusBlock: (id: string, options?: FocusBlockOptions) => void;
   getBlock: (options: GetBlockOptions) => YooptaBlockData | null;
   selection: YooptaBlockPath;
-  setSelection: (path: YooptaBlockPath) => void;
-  // selectedBlocks: number[] | null;
-  // setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
+  setSelection: (path: SetSelectionOptions) => void;
   children: YooptaContentValue;
   getEditorValue: () => YooptaContentValue;
   setEditorValue: (value: YooptaContentValue) => void;

@@ -36,8 +36,7 @@ const DividerRender = ({ extendRender, ...props }: PluginElementRenderProps) => 
   };
 
   const onClick = (event: React.MouseEvent) => {
-    editor.setSelection([blockData.meta.order]);
-    editor.setBlockSelected([blockData.meta.order]);
+    editor.setSelection([blockData.meta.order, [blockData.meta.order]]);
   };
 
   return (

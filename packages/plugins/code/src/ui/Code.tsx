@@ -54,7 +54,7 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
       e.preventDefault();
       const currentBlockPath = block.meta.order;
       const defaultBlock = buildBlockData();
-      editor.insertBlock(defaultBlock, { at: [currentBlockPath + 1], focus: true });
+      editor.insertBlock(defaultBlock.type, { at: [currentBlockPath + 1], focus: true, blockData: defaultBlock });
       return;
     }
   };

@@ -1,4 +1,5 @@
 import { BaseText, Descendant } from 'slate';
+import { Paths } from '../editor/paths';
 import { SlateElement, YooEditor, YooptaContentValue } from '../editor/types';
 import { getPluginByInlineElement } from '../utils/blockElements';
 
@@ -41,9 +42,10 @@ function serializeChildren(children, plugins) {
 
 export function getHTML(editor: YooEditor, content: YooptaContentValue): string {
   const blocks = Object.values(content)
-    .filter((item) => {
-      if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
-        return editor.selectedBlocks?.includes(item.meta.order);
+    .filter((block) => {
+      const selectedPaths = Paths.getSelectedPaths(editor.selection);
+      if (Array.isArray(selectedPaths) && selectedPaths.length > 0) {
+        return selectedPaths?.includes(block.meta.order);
       }
 
       return true;
