@@ -47,7 +47,7 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
     placement: 'bottom-start',
     open: isMenuOpen,
     onOpenChange: setIsMenuOpen,
-    middleware: [inline(), flip(), shift(), offset(10)],
+    middleware: [flip(), shift(), offset(10)],
     whileElementsMounted: autoUpdate,
   });
 
