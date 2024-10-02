@@ -156,8 +156,6 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
       const data = event.clipboardData;
       const html = data.getData('text/html');
 
-      console.log('onPaste', html);
-
       const parsedHTML = new DOMParser().parseFromString(html, 'text/html');
       console.log('parsedHTML', parsedHTML);
 

@@ -9,7 +9,6 @@ import { increaseBlockDepth } from './blocks/increaseBlockDepth';
 import { decreaseBlockDepth } from './blocks/decreaseBlockDepth';
 import { getEditorValue } from './core/getEditorValue';
 import { setEditorValue } from './core/setEditorValue';
-import { setBlockSelected } from './selection/setBlockSelected';
 import { duplicateBlock } from './blocks/duplicateBlock';
 import { updateBlock } from './blocks/updateBlock';
 import { toggleBlock } from './blocks/toggleBlock';

@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { Element, Node, Operation, Range, Transforms } from 'slate';
 import { buildBlockData } from '../components/Editor/utils';
 import { Blocks } from '../editor/blocks';
+import { Paths } from '../editor/paths';
 import { SlateEditor, YooEditor, YooptaBlockData } from '../editor/types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { getRootBlockElementType } from '../utils/blockElements';
@@ -47,8 +48,11 @@ export const useSlateEditor = (
     });
 
     slateEditor.insertText = (text) => {
-      if (Array.isArray(editor.selectedBlocks)) {
-        editor.setBlockSelected(null);
+      const selectedPaths = Paths.getSelectedPaths(editor.selection);
+      const path = Paths.getPath(editor.selection);
+      console.log('selectedPaths', selectedPaths);
+      if (Array.isArray(selectedPaths)) {
+        editor.setSelection([path, []]);
       }
 
       insertText(text);
@@ -56,8 +60,11 @@ export const useSlateEditor = (
 
     slateEditor.apply = (op) => {
       if (Operation.isSelectionOperation(op)) {
-        if (Array.isArray(editor.selectedBlocks) && slateEditor.selection && Range.isExpanded(slateEditor.selection)) {
-          editor.setBlockSelected(null);
+        const selectedPaths = Paths.getSelectedPaths(editor.selection);
+        const path = Paths.getPath(editor.selection);
+
+        if (Array.isArray(selectedPaths) && slateEditor.selection && Range.isExpanded(slateEditor.selection)) {
+          editor.setSelection([path, []]);
         }
       }
 
