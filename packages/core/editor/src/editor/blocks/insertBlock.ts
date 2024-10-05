@@ -99,7 +99,7 @@ export function insertBlock(editor: YooEditor, type: string, options: InsertBloc
     meta: {
       align: blockData?.meta?.align || 'left',
       depth: blockData?.meta?.depth || 0,
-      order: at && typeof at?.[0] ? at[0] : Object.keys(editor.children).length,
+      order: at && typeof at?.[0] === 'number' ? at[0] : Object.keys(editor.children).length,
     },
   };
 
@@ -114,11 +114,10 @@ export function insertBlock(editor: YooEditor, type: string, options: InsertBloc
   Object.values(editor.children).forEach((block) => {
     if (block.meta.order >= newBlock.meta.order && block.id !== newBlock.id) {
       operations.push({
-        type: 'update_block',
+        type: 'set_block_meta',
         id: block.id,
-        properties: {
-          meta: { ...block.meta, order: block.meta.order + 1 },
-        },
+        properties: { order: block.meta.order + 1 },
+        prevProperties: { order: block.meta.order },
       });
     }
   });

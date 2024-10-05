@@ -12,11 +12,10 @@ export function decreaseBlockDepth(editor: YooEditor, options: BlockDepthOptions
   const newDepth = Math.max(0, block.meta.depth - 1);
 
   const operation: YooptaOperation = {
-    type: 'update_block',
+    type: 'set_block_meta',
     id: block.id,
-    properties: {
-      meta: { ...block.meta, depth: newDepth },
-    },
+    properties: { depth: newDepth },
+    prevProperties: { depth: block.meta.depth },
   };
 
   editor.applyTransforms([operation]);

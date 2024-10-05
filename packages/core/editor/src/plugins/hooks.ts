@@ -50,7 +50,6 @@ export const useSlateEditor = (
     slateEditor.insertText = (text) => {
       const selectedPaths = Paths.getSelectedPaths(editor.selection);
       const path = Paths.getPath(editor.selection);
-      console.log('selectedPaths', selectedPaths);
       if (Array.isArray(selectedPaths)) {
         editor.setSelection([path, []]);
       }

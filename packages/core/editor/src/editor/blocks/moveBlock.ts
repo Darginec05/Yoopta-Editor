@@ -62,24 +62,29 @@ export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: Yo
 
     if (newOrder !== item.meta.order) {
       operations.push({
-        type: 'update_block',
+        type: 'set_block_meta',
         id: item.id,
+        prevProperties: {
+          ...item.meta,
+        },
         properties: {
-          meta: { ...item.meta, order: newOrder },
+          ...item.meta,
+          order: newOrder,
         },
       });
     }
   });
 
   operations.push({
-    type: 'update_block',
+    type: 'set_block_meta',
     id: draggedBlockId,
+    prevProperties: {
+      ...draggedBlock.meta,
+    },
     properties: {
-      meta: {
-        ...draggedBlock.meta,
-        order: updatedPosition,
-        depth: blockInNewPosition.meta.depth,
-      },
+      ...draggedBlock.meta,
+      order: updatedPosition!,
+      depth: blockInNewPosition.meta.depth,
     },
   });
 

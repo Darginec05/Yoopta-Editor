@@ -9,7 +9,7 @@ import { ToggleBlockOptions } from './blocks/toggleBlock';
 import { GetBlockOptions } from './blocks/getBlock';
 import { ReactEditor } from 'slate-react';
 import { HistoryEditor } from 'slate-history';
-import { YooptaOperation } from './core/applyTransforms';
+import { ApplyTransformsOptions, YooptaOperation } from './core/applyTransforms';
 import { InsertBlockOptions } from './blocks/insertBlock';
 import { BlockDepthOptions } from './blocks/increaseBlockDepth';
 import { SplitBlockOptions } from './blocks/splitBlock';
@@ -96,8 +96,17 @@ export type YooEditor = {
   plugins: Record<string, Plugin<Record<string, SlateElement>, unknown>>;
   commands: Record<string, (...args: any[]) => any>;
 
-  applyTransforms: (operations: YooptaOperation[]) => void;
+  applyTransforms: (operations: YooptaOperation[], options?: ApplyTransformsOptions) => void;
   batchOperations: (fn: () => void) => void;
+  redo: () => void;
+  undo: () => void;
+  history: Record<
+    'undos' | 'redos',
+    {
+      operations: YooptaOperation[];
+      path: YooptaBlockPath;
+    }[]
+  >;
 
   // events handlers
   on: (event: YooEditorEvents, fn: (payload: any) => void) => void;

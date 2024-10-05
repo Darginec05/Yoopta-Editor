@@ -83,6 +83,7 @@ export function duplicateBlock(editor: YooEditor, options: DuplicateBlockOptions
   }
 
   const { blockId, path } = original;
+  console.log('duplicateBlock', blockId, path);
 
   let originalBlock: YooptaBlockData | null = blockId
     ? editor.children[blockId]
@@ -97,12 +98,20 @@ export function duplicateBlock(editor: YooEditor, options: DuplicateBlockOptions
   // Обновляем порядок для всех последующих блоков
   Object.values(editor.children).forEach((block) => {
     if (block.meta.order > originalBlock!.meta.order) {
+      // operations.push({
+      //   type: 'set_block',
+      //   prevProperties: { meta: { ...block.meta, order: block.meta.order } },
+      //   id: block.id,
+      //   properties: {
+      //     meta: { ...block.meta, order: block.meta.order + 1 },
+      //   },
+      // });
+
       operations.push({
-        type: 'update_block',
+        type: 'set_block_meta',
         id: block.id,
-        properties: {
-          meta: { ...block.meta, order: block.meta.order + 1 },
-        },
+        properties: { order: block.meta.order + 1 },
+        prevProperties: { order: block.meta.order },
       });
     }
   });

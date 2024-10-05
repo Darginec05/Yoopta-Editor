@@ -135,7 +135,7 @@ export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options: 
   newSlate.children = [toBlockSlateStructure];
 
   const operations: YooptaOperation[] = [
-    { type: 'delete_block', id: fromBlock.id },
+    { type: 'delete_block', block: fromBlock, path: [fromBlock.meta.order] },
     { type: 'insert_block', path: [fromBlock.meta.order], block: newBlock, slate: newSlate },
   ];
 

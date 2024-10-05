@@ -57,10 +57,9 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
 
   const onChange = useCallback(
     (value) => {
-      console.log('SlateEditorComponent onChange', value);
       editor.updateBlock(id, { value });
     },
-    [id, editor],
+    [id],
   );
 
   const renderElement = useCallback(
@@ -150,7 +149,6 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
   const onPaste = useCallback(
     (event: React.ClipboardEvent) => {
       if (editor.readOnly) return;
-
       eventHandlers?.onPaste?.(event);
 
       const data = event.clipboardData;
@@ -298,13 +296,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     }
 
     return (
-      <Slate
-        key={`slate-${id}`}
-        editor={slate}
-        initialValue={initialValue}
-        onValueChange={onChange}
-        onSelectionChange={console.log}
-      >
+      <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onValueChange={onChange}>
         <Editable
           key={`editable-${id}`}
           renderElement={renderElement}

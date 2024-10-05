@@ -68,8 +68,6 @@ const Editor = ({
     editor.focus();
   }, [autoFocus, isReadOnly]);
 
-  console.log('editor.selection', editor.selection);
-
   useEffect(() => {
     if (isReadOnly) return;
 
@@ -142,6 +140,18 @@ const Editor = ({
   const onKeyDown = (event) => {
     if (isReadOnly) return;
 
+    if (HOTKEYS.isRedo(event)) {
+      event.preventDefault();
+      editor.redo();
+      return;
+    }
+
+    if (HOTKEYS.isUndo(event)) {
+      event.preventDefault();
+      editor.undo();
+      return;
+    }
+
     if (HOTKEYS.isSelect(event)) {
       const selectedBlocks = Paths.getSelectedPaths(editor.selection);
       const isAllBlocksSelected = selectedBlocks?.length === Object.keys(editor.children).length;
@@ -189,7 +199,6 @@ const Editor = ({
 
               selectedBlocks.forEach((index) => {
                 const blockId = Blocks.getBlock(editor, { at: [index] })?.id;
-                console.log('isAllBlocksSelected blockId', blockId);
                 if (blockId) editor.deleteBlock({ blockId });
               });
 
