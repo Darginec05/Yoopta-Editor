@@ -65,7 +65,7 @@ const HeadingOne = new YooptaPlugin<Record<'heading-one', HeadingOneElement>>({
         return `<table>
         <tbody>
           <tr>
-            <td style="padding: 10px 0;">
+            <td>
               <h1 data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}">
                 ${serializeTextNodes(element.children)}
               </h1>
