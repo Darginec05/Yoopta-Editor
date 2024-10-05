@@ -43,9 +43,9 @@ const Paragraph = new YooptaPlugin<ParagraphElementMap>({
         <tbody>
           <tr>
             <td style="padding: 10px 0;">
-              <p data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}">${serializeTextNodes(
-          element.children,
-        )}</p>
+              <p data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}">
+                ${serializeTextNodes(element.children)}
+              </p>
             </td>
           </tr>
         </tbody>
