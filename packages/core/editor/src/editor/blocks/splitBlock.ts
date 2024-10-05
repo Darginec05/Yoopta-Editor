@@ -1,11 +1,11 @@
-import { createDraft, finishDraft } from 'immer';
 import { Editor, Element, Path, Transforms } from 'slate';
 import { buildSlateEditor } from '../../utils/buildSlate';
+import { deepClone } from '../../utils/deepClone';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { generateId } from '../../utils/generateId';
 import { YooptaOperation } from '../core/applyTransforms';
-import { SlateEditor, YooEditor, YooptaBlockData } from '../types';
+import { SlateEditor, SlateElement, YooEditor, YooptaBlockData } from '../types';
 
 // export type SplitBlockOptions = {
 //   focus?: boolean;
@@ -33,7 +33,7 @@ import { SlateEditor, YooEditor, YooptaBlockData } from '../types';
 
 //     const nextParentPathIndex = parentPath[0] + 1;
 //     // [TODO] - or deep clone?
-//     const nextBlockChildren = slate.children.slice()[nextParentPathIndex];
+//     const nextBlockSlateValue = slate.children.slice()[nextParentPathIndex];
 
 //     Transforms.removeNodes(slate, {
 //       at: [nextParentPathIndex],
@@ -41,7 +41,7 @@ import { SlateEditor, YooEditor, YooptaBlockData } from '../types';
 //       mode: 'highest',
 //     });
 
-//     const newBlock: YooptaBlockData = {
+//     const nextNewBlock: YooptaBlockData = {
 //       id: generateId(),
 //       type: currentBlock.type,
 //       meta: {
@@ -50,18 +50,18 @@ import { SlateEditor, YooEditor, YooptaBlockData } from '../types';
 //         align: currentBlock.meta.align,
 //       },
 //       // [TODO] - check for mark text formats
-//       value: [nextBlockChildren],
+//       value: [nextBlockSlateValue],
 //     };
 
 //     Object.values(editor.children).forEach((plugin) => {
-//       if (plugin.meta.order >= newBlock.meta.order) {
+//       if (plugin.meta.order >= nextNewBlock.meta.order) {
 //         plugin.meta.order += 1;
 //       }
 //     });
 
 //     const newSlateEditor = buildSlateEditor(editor);
-//     editor.blockEditorsMap[newBlock.id] = newSlateEditor;
-//     editor.children[newBlock.id] = newBlock;
+//     editor.blockEditorsMap[nextNewBlock.id] = newSlateEditor;
+//     editor.children[nextNewBlock.id] = nextNewBlock;
 
 //     editor.children = finishDraft(editor.children);
 //     // editor.applyChanges();
@@ -69,7 +69,7 @@ import { SlateEditor, YooEditor, YooptaBlockData } from '../types';
 
 //     if (focus) {
 //       // [TODO] - check focus for split block function
-//       editor.focusBlock(newBlock.id, { slate: newSlateEditor });
+//       editor.focusBlock(nextNewBlock.id, { slate: newSlateEditor });
 //     }
 //   });
 // }
@@ -83,8 +83,10 @@ export function splitBlock(editor: YooEditor, options: SplitBlockOptions = {}) {
   const { focus = true } = options;
 
   const currentBlock = findPluginBlockBySelectionPath(editor);
+  const originalBlock = deepClone(currentBlock);
   const slate = options.slate || findSlateBySelectionPath(editor);
   if (!slate || !currentBlock) return;
+  const originalSlateChildren = deepClone(slate.children);
 
   Editor.withoutNormalizing(slate, () => {
     if (!slate.selection) return;
@@ -100,7 +102,7 @@ export function splitBlock(editor: YooEditor, options: SplitBlockOptions = {}) {
     });
 
     const nextParentPathIndex = parentPath[0] + 1;
-    const nextBlockChildren = slate.children[nextParentPathIndex];
+    const nextBlockSlateValue = slate.children[nextParentPathIndex] as SlateElement;
 
     Transforms.removeNodes(slate, {
       at: [nextParentPathIndex],
@@ -108,7 +110,7 @@ export function splitBlock(editor: YooEditor, options: SplitBlockOptions = {}) {
       mode: 'highest',
     });
 
-    const newBlock: YooptaBlockData = {
+    const nextNewBlock: YooptaBlockData = {
       id: generateId(),
       type: currentBlock.type,
       meta: {
@@ -116,26 +118,27 @@ export function splitBlock(editor: YooEditor, options: SplitBlockOptions = {}) {
         depth: currentBlock.meta.depth,
         align: currentBlock.meta.align,
       },
-      value: [nextBlockChildren],
+      value: [],
     };
 
     const newSlate = buildSlateEditor(editor);
+    newSlate.children = [nextBlockSlateValue];
+    nextNewBlock.value = newSlate.children;
 
     operations.push({
-      type: 'insert_block',
-      path: [newBlock.meta.order],
-      block: newBlock,
+      type: 'split_block',
+      prevProperties: { ...originalBlock, value: originalSlateChildren },
+      properties: { ...nextNewBlock, value: newSlate.children },
       slate: newSlate,
     });
 
     Object.values(editor.children).forEach((block) => {
-      if (block.meta.order >= newBlock.meta.order && block.id !== newBlock.id) {
+      if (block.meta.order >= nextNewBlock.meta.order && block.id !== nextNewBlock.id) {
         operations.push({
-          type: 'update_block',
+          type: 'set_block_meta',
           id: block.id,
-          properties: {
-            meta: { ...block.meta, order: block.meta.order + 1 },
-          },
+          prevProperties: { ...block.meta, order: block.meta.order },
+          properties: { ...block.meta, order: block.meta.order + 1 },
         });
       }
     });
@@ -143,7 +146,7 @@ export function splitBlock(editor: YooEditor, options: SplitBlockOptions = {}) {
     editor.applyTransforms(operations);
 
     if (focus) {
-      editor.focusBlock(newBlock.id, { slate: newSlate });
+      editor.focusBlock(nextNewBlock.id, { slate: newSlate });
     }
   });
 }

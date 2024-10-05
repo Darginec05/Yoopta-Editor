@@ -13,12 +13,13 @@ export function increaseBlockDepth(editor: YooEditor, options: BlockDepthOptions
   const block = blockId ? editor.children[blockId] : findPluginBlockBySelectionPath(editor, { at });
   if (!block) return;
 
+  const newDepth = block.meta.depth + 1;
+
   const operation: YooptaOperation = {
-    type: 'update_block',
+    type: 'set_block_meta',
     id: block.id,
-    properties: {
-      meta: { ...block.meta, depth: block.meta.depth + 1 },
-    },
+    properties: { depth: newDepth },
+    prevProperties: { depth: block.meta.depth },
   };
 
   editor.applyTransforms([operation]);

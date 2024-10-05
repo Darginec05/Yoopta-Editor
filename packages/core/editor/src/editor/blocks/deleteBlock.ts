@@ -1,5 +1,6 @@
 import { YooEditor, YooptaBlockPath } from '../types';
 import { YooptaOperation } from '../core/applyTransforms';
+import { Paths } from '../paths';
 
 // export type DeleteBlockOptions = YooptaEditorTransformOptions & {
 //   deleteAll?: boolean;
@@ -118,8 +119,6 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions) {
   }
 
   const block = editor.getBlock({ id: blockId, at });
-  console.log('deleteBlock block', block);
-  console.log('deleteBlock options', options);
 
   if (!block) {
     throw new Error(`Block not found`);
@@ -130,17 +129,17 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions) {
 
   operations.push({
     type: 'delete_block',
-    id: block.id,
+    block: blockToDelete,
+    path: editor.selection,
   });
 
   Object.values(editor.children).forEach((block) => {
     if (block.meta.order > blockToDelete.meta.order) {
       operations.push({
-        type: 'update_block',
+        type: 'set_block_meta',
         id: block.id,
-        properties: {
-          meta: { ...block.meta, order: block.meta.order - 1 },
-        },
+        properties: { order: block.meta.order - 1 },
+        prevProperties: { order: block.meta.order },
       });
     }
   });
@@ -148,8 +147,8 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions) {
   editor.applyTransforms(operations);
 
   if (focus) {
-    const prevBlockPathIndex = editor.selection ? editor.selection[0] - 1 : 0;
-    const prevBlock = editor.getBlock({ at: [prevBlockPathIndex] });
+    const prevBlockPath = Paths.getPreviousPath(editor.selection);
+    const prevBlock = editor.getBlock({ at: prevBlockPath });
 
     if (prevBlock) {
       editor.focusBlock(prevBlock.id);

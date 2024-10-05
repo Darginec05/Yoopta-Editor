@@ -1,4 +1,12 @@
-import YooptaEditor, { createYooptaEditor, YooEditor, YooptaBlockData, YooptaContentValue } from '@yoopta/editor';
+import YooptaEditor, {
+  Blocks,
+  createYooptaEditor,
+  YooEditor,
+  YooptaBlockData,
+  YooptaBlockPath,
+  YooptaContentValue,
+  YooptaOperation,
+} from '@yoopta/editor';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { MARKS } from '../../utils/yoopta/marks';
@@ -6,6 +14,7 @@ import { YOOPTA_PLUGINS } from '../../utils/yoopta/plugins';
 import { TOOLS } from '../../utils/yoopta/tools';
 import { FixedToolbar } from '../../components/FixedToolbar/FixedToolbar';
 import { SlackChat } from '../../components/Chats/SlackChat/SlackChat';
+import { Operation, Path } from 'slate';
 
 export type YooptaChildrenValue = Record<string, YooptaBlockData>;
 
@@ -13,8 +22,206 @@ const EDITOR_STYLE = {
   width: 750,
 };
 
+type HistoryStack = {
+  operations: YooptaOperation[];
+  path: YooptaBlockPath;
+};
+
+type HistoryStackName = 'undos' | 'redos';
+function inverseOperation(op: YooptaOperation): YooptaOperation {
+  switch (op.type) {
+    case 'insert_block':
+      return {
+        type: 'delete_block',
+        path: op.path,
+        block: op.block,
+      };
+
+    case 'delete_block':
+      return {
+        type: 'insert_block',
+        path: op.path,
+        block: op.block,
+      };
+
+    case 'set_block_meta': {
+      return {
+        type: 'set_block_meta',
+        id: op.id,
+        properties: op.prevProperties,
+        prevProperties: op.properties,
+      };
+    }
+
+    case 'split_block':
+      return {
+        type: 'merge_block',
+        sourceProperties: op.properties,
+        targetProperties: op.prevProperties,
+        mergedProperties: op.prevProperties,
+      };
+
+    case 'merge_block':
+      return {
+        type: 'split_block',
+        properties: op.sourceProperties,
+        prevProperties: op.targetProperties,
+        slate: undefined,
+      };
+
+    default:
+      return op;
+  }
+}
+const MAX_HISTORY_LENGTH = 100;
+
+const shouldMerge = (op: Operation, prev: Operation | undefined): boolean => {
+  if (
+    prev &&
+    op.type === 'insert_text' &&
+    prev.type === 'insert_text' &&
+    op.offset === prev.offset + prev.text.length &&
+    Path.equals(op.path, prev.path)
+  ) {
+    return true;
+  }
+
+  if (
+    prev &&
+    op.type === 'remove_text' &&
+    prev.type === 'remove_text' &&
+    op.offset + op.text.length === prev.offset &&
+    Path.equals(op.path, prev.path)
+  ) {
+    return true;
+  }
+
+  return false;
+};
+
+/**
+ * Check whether an operation needs to be saved to the history.
+ */
+
+const shouldSave = (op: Operation, prev: Operation | undefined): boolean => {
+  if (op.type === 'set_selection') {
+    return false;
+  }
+
+  return true;
+};
+
+export const withHistory = (editor: YooEditor) => {
+  const history: Record<HistoryStackName, HistoryStack[]> = {
+    undos: [],
+    redos: [],
+  };
+
+  const { applyTransforms } = editor;
+
+  editor.history = history;
+
+  editor.undo = () => {
+    const batch = history.undos.pop();
+
+    if (batch) {
+      const inverseOps = batch.operations.map(inverseOperation).reverse();
+      inverseOps.push({ type: 'set_selection_block', path: batch.path });
+      applyTransforms(inverseOps);
+      history.redos.push(batch);
+    }
+  };
+
+  editor.redo = () => {
+    const batch = history.redos.pop();
+
+    console.log('redo FIRED', batch?.operations);
+    console.log('redo batch.path', batch?.path);
+    if (batch) {
+      batch.operations.push({ type: 'set_selection_block', path: batch.path });
+      applyTransforms(batch.operations);
+      history.undos.push(batch);
+    }
+  };
+
+  editor.applyTransforms = (operations: YooptaOperation[], options) => {
+    const batch = {
+      operations: operations.filter((op) => op.type !== 'set_selection_block'),
+      path: editor.selection,
+    };
+
+    // try {
+    //   console.log('applyTransforms editor.selection', editor.selection);
+    //   const slate = Blocks.getSlate(editor, { at: editor.selection });
+    //   const { apply } = slate;
+
+    //   slate.apply = (op) => {
+    //     console.log('slate.apply', op);
+    //     const { operations } = slate;
+    //     const { undos } = history;
+    //     const lastBatch = undos[undos.length - 1];
+    //     const lastOp = operations[operations.length - 1];
+    //     let save = false;
+    //     let merge = false;
+
+    //     console.log('applyTransforms slate lastBatch', lastBatch);
+
+    //     if (save == null) {
+    //       save = shouldSave(op, lastOp);
+    //     }
+
+    //     if (save) {
+    //       if (merge == null) {
+    //         if (lastBatch == null) {
+    //           merge = false;
+    //         } else if (operations.length !== 0) {
+    //           merge = true;
+    //         } else {
+    //           merge = shouldMerge(op, lastOp);
+    //         }
+    //       }
+
+    //       if (lastBatch && merge) {
+    //         console.log('lastBatch && merge', op);
+    //         lastBatch.operations.push(op);
+    //       } else {
+    //         const batch = {
+    //           operations: [op],
+    //           selectionBefore: slate.selection,
+    //         };
+
+    //         console.log('applyTransforms slate batch', batch);
+
+    //       }
+
+    //       // while (undos.length > 100) {
+    //       //   undos.shift();
+    //       // }
+
+    //       // history.redos = [];
+    //     }
+
+    //     apply(op);
+    //   };
+    // } catch (error) {}
+
+    if (batch.operations.length > 0) {
+      history.undos.push(batch);
+      history.redos = [];
+    }
+
+    if (history.undos.length > MAX_HISTORY_LENGTH) {
+      history.undos.shift();
+    }
+
+    applyTransforms(operations, options);
+  };
+
+  return editor;
+};
+
 const BasicExample = () => {
-  const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
+  const editor: YooEditor = useMemo(() => withHistory(createYooptaEditor()), []);
   const selectionRef = useRef<HTMLDivElement>(null);
   const [readOnly, setReadOnly] = useState(false);
   const [value, setValue] = useState<YooptaContentValue>({
@@ -89,7 +296,7 @@ const BasicExample = () => {
       type: 'Paragraph',
       meta: {
         order: 0,
-        depth: 0,
+        depth: 1,
       },
     },
     'ba2dd37b-902f-416d-8430-4febffc12096': {
@@ -124,7 +331,7 @@ const BasicExample = () => {
       type: 'HeadingTwo',
       meta: {
         order: 1,
-        depth: 0,
+        depth: 1,
       },
     },
     '7812be65-c7a4-4a14-ad7d-de2bf6713a11': {
@@ -348,7 +555,7 @@ const BasicExample = () => {
   });
 
   const onChange = (value: YooptaContentValue) => {
-    console.log('onChange FIRED', value);
+    // console.log('onChange FIRED', value);
     setValue(value);
   };
 

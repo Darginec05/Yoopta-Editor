@@ -1,96 +1,159 @@
-import { createDraft, finishDraft, isDraft } from 'immer';
+import { createDraft, finishDraft, isDraft, produce } from 'immer';
 import { buildSlateEditor } from '../../utils/buildSlate';
-import { SlateEditor, YooEditor, YooptaBlockData, YooptaBlockPath } from '../types';
+import { SlateEditor, SlateElement, YooEditor, YooptaBlockData, YooptaBlockPath, YooptaContentValue } from '../types';
 
-type InsertBlockOperation = {
+export type InsertBlockOperation = {
   type: 'insert_block';
   path: YooptaBlockPath;
   block: YooptaBlockData;
   slate?: SlateEditor;
 };
 
-type UpdateBlockOperation = {
-  type: 'update_block';
+export type SetBlockValueOperation = {
+  type: 'set_block_value';
   id: string;
-  properties: Partial<YooptaBlockData>;
+  value: SlateElement[];
 };
 
-type DeleteBlockOperation = {
+export type SetBlockMetaOperation = {
+  type: 'set_block_meta';
+  id: string;
+  properties: Partial<YooptaBlockData['meta']>;
+  prevProperties: Partial<YooptaBlockData['meta']>;
+};
+
+export type SplitBlockOperation = {
+  type: 'split_block';
+  properties: YooptaBlockData;
+  prevProperties: YooptaBlockData;
+  slate?: SlateEditor;
+};
+
+export type MergeBlockOperation = {
+  type: 'merge_block';
+  sourceProperties: YooptaBlockData;
+  targetProperties: YooptaBlockData;
+  mergedProperties: YooptaBlockData;
+  slate?: SlateEditor;
+};
+
+export type DeleteBlockOperation = {
   type: 'delete_block';
-  id: string;
+  path: YooptaBlockPath;
+  block: YooptaBlockData;
 };
 
-type SetSelectionBlockOperation = {
+export type SetSelectionBlockOperation = {
   type: 'set_selection_block';
   path: YooptaBlockPath;
 };
 
-type NormalizePathsBlockOperation = {
+export type NormalizePathsBlockOperation = {
   type: 'normalize_block_paths';
 };
 
 export type YooptaOperation =
   | InsertBlockOperation
-  | UpdateBlockOperation
   | DeleteBlockOperation
   | NormalizePathsBlockOperation
-  | SetSelectionBlockOperation;
+  | SetSelectionBlockOperation
+  | SplitBlockOperation
+  | SetBlockValueOperation
+  | SetBlockMetaOperation
+  | MergeBlockOperation;
 
 function applyOperation(editor: YooEditor, op: YooptaOperation): void {
   switch (op.type) {
-    case 'insert_block':
+    case 'insert_block': {
       const { path, block, slate } = op;
 
-      // [TODO] - Remove this from methods
-      // editor.blockEditorsMap.set(block, newSlateEditor);
       editor.blockEditorsMap[block.id] = slate || buildSlateEditor(editor);
       editor.children[block.id] = block;
       break;
-    case 'update_block':
-      const { id, properties } = op;
+    }
+    // case 'set_block':
+    //   const { id, properties, prevProperties } = op;
 
-      // console.log('update_block id', id);
-      // console.log('update_block editor.children', editor.children);
-      editor.children[id] = { ...editor.children[id], ...properties };
+    //   // editor.children[id] = { ...editor.children[id], ...prevProperties };
+    //   editor.children[id] = { ...editor.children[id], ...properties };
+    //   break;
+
+    case 'set_block_value': {
+      const { id, value } = op;
+      if (Array.isArray(value)) editor.children[id].value = value;
       break;
+    }
 
-    case 'delete_block':
-      // editor.blockEditorsMap.delete(editor.children[op.id]);
-      delete editor.blockEditorsMap[op.id];
-      delete editor.children[op.id];
+    case 'set_block_meta': {
+      const { id, prevProperties, properties } = op;
+      // produce(editor.children[id], (draft) => {
+      //   draft.meta = { ...draft.meta, ...prevProperties };
+      // })
+      editor.children[id].meta = { ...editor.children[id].meta, ...properties };
       break;
+    }
 
-    case 'normalize_block_paths':
+    case 'delete_block': {
+      delete editor.blockEditorsMap[op.block.id];
+      delete editor.children[op.block.id];
+      break;
+    }
+
+    case 'split_block': {
+      const { slate, prevProperties, properties } = op;
+      editor.children[properties.id] = properties;
+      editor.blockEditorsMap[properties.id] = slate || buildSlateEditor(editor);
+      break;
+    }
+
+    case 'merge_block': {
+      const { sourceProperties, targetProperties, mergedProperties, slate } = op;
+      delete editor.blockEditorsMap[sourceProperties.id];
+      delete editor.children[sourceProperties.id];
+      editor.children[targetProperties.id] = mergedProperties;
+      editor.blockEditorsMap[targetProperties.id] = slate || buildSlateEditor(editor);
+
+      break;
+    }
+
+    case 'normalize_block_paths': {
       const blocks = Object.values(editor.children);
       blocks.sort((a, b) => a.meta.order - b.meta.order);
-      blocks.forEach((block, index) => (block.meta.order = index));
+      blocks.forEach((block, index) => {
+        produce(block, (draft) => {
+          draft.meta.order = index;
+        });
+      });
       break;
+    }
 
-    case 'set_selection_block':
-      if (!Array.isArray(op.path[1])) {
-        op.path[1] = [];
-      }
-
+    case 'set_selection_block': {
+      if (!Array.isArray(op.path[1])) op.path[1] = [];
       editor.selection = op.path;
       break;
+    }
   }
 }
 
-function isSelectionOperation(op: YooptaOperation): op is SetSelectionBlockOperation {
-  return op.type === 'set_selection_block';
-}
+export type ApplyTransformsOptions = {
+  normalizePaths?: boolean;
+};
 
-export function applyTransforms(editor: YooEditor, ops: YooptaOperation[]) {
+export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], options?: ApplyTransformsOptions): void {
   editor.children = createDraft(editor.children);
   editor.selection = createDraft(editor.selection);
-  console.log('applyTransforms ops', ops);
 
-  for (const op of ops) {
-    applyOperation(editor, op);
+  const { normalizePaths = true } = options || {};
+
+  const operations = [...ops];
+
+  if (normalizePaths) {
+    operations.push({ type: 'normalize_block_paths' });
   }
 
-  // [TEST]
-  applyOperation(editor, { type: 'normalize_block_paths' });
+  for (const operation of operations) {
+    applyOperation(editor, operation);
+  }
 
   editor.children = finishDraft(editor.children);
 

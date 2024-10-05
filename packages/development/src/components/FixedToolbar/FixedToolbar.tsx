@@ -13,7 +13,7 @@ import { HeadingOne, HeadingOneCommands, HeadingThree, HeadingTwo } from '@yoopt
 import Code from '@yoopta/code';
 import Table, { TableCommands } from '@yoopta/table';
 import Divider, { DividerCommands } from '@yoopta/divider';
-import { Blocks, Elements, YooEditor } from '@yoopta/editor';
+import { Blocks, Elements, YooEditor, Paths, YooptaBlockPath } from '@yoopta/editor';
 
 type Props = {
   editor: YooEditor;
@@ -45,7 +45,9 @@ export const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            editor.toggleBlock('Blockquote', { at: editor.selection || [2], focus: true });
+            const at: YooptaBlockPath = Paths.isEmptyPath(editor.selection) ? [2] : editor.selection;
+            console.log('toggleBlock at', at);
+            editor.toggleBlock('Blockquote', { at: at, focus: true });
           }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
@@ -80,7 +82,10 @@ export const FixedToolbar = ({ editor }: Props) => {
         </button>
         <button
           type="button"
-          onClick={() => editor.duplicateBlock({ at: [5], original: { path: editor.selection || [0] } })}
+          onClick={() => {
+            const originalPath: YooptaBlockPath = Paths.isEmptyPath(editor.selection) ? [0] : editor.selection;
+            editor.duplicateBlock({ at: [0], original: { path: originalPath } });
+          }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
           Duplicate block

@@ -36,8 +36,6 @@ export function useMultiSelection({ editor }: MultiSelectionOptions) {
   const onShiftKeyDown = (blockOrder: number) => {
     blurSlateSelection();
 
-    console.log('Paths.getPath(editor.selection)', Paths.getPath(editor.selection));
-    console.log('blockOrder', blockOrder);
     const currentSelectionIndex = Paths.getPath(editor.selection)?.[0] || 0;
     const indexesBetween = Array.from({ length: Math.abs(blockOrder - currentSelectionIndex) }).map((_, index) =>
       blockOrder > currentSelectionIndex ? currentSelectionIndex + index + 1 : currentSelectionIndex - index - 1,
@@ -77,7 +75,6 @@ export function useMultiSelection({ editor }: MultiSelectionOptions) {
           }
 
           if (blockOrder !== editor.selection?.[0]) {
-            console.log('blockOrder', blockOrder);
             editor.setSelection([blockOrder]);
           }
 

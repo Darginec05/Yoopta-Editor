@@ -1,8 +1,13 @@
-import { YooEditor, YooptaBlockData } from '../types';
+import { SlateElement, YooEditor, YooptaBlockData } from '../types';
 import { YooptaOperation } from '../core/applyTransforms';
 
 // Maybe add source pararmeter to this function?
-export function updateBlock(editor: YooEditor, blockId: string, data: Partial<YooptaBlockData>, source?: string): void {
+export function updateBlock(
+  editor: YooEditor,
+  blockId: string,
+  newData: Omit<Partial<YooptaBlockData>, 'id' | 'type'>,
+  source?: string,
+): void {
   const block = editor.children[blockId];
 
   if (!block) {
@@ -10,29 +15,39 @@ export function updateBlock(editor: YooEditor, blockId: string, data: Partial<Yo
     return;
   }
 
-  const updateOperation: YooptaOperation = {
-    type: 'update_block',
+  const updateBlockMetaOperation: YooptaOperation = {
+    type: 'set_block_meta',
     id: blockId,
     properties: {},
+    prevProperties: {},
   };
 
-  if (data.id && data.id !== block.id) {
-    updateOperation.properties.id = data.id;
+  const updateBlockValueOperation: YooptaOperation = {
+    type: 'set_block_value',
+    id: blockId,
+    value: [],
+  };
+
+  if (newData.meta) {
+    updateBlockMetaOperation.prevProperties = block.meta;
+    updateBlockMetaOperation.properties = { ...block.meta, ...newData.meta };
   }
 
-  if (data.type && data.type !== block.type) {
-    updateOperation.properties.type = data.type;
+  if (newData.value) {
+    updateBlockValueOperation.value = newData.value as SlateElement[];
   }
 
-  if (data.meta) {
-    updateOperation.properties.meta = { ...block.meta, ...data.meta };
+  const operations: YooptaOperation[] = [];
+
+  if (Object.keys(updateBlockMetaOperation.properties).length) {
+    operations.push(updateBlockMetaOperation);
   }
 
-  if (data.value) {
-    updateOperation.properties.value = data.value;
+  if (updateBlockValueOperation.value.length) {
+    operations.push(updateBlockValueOperation);
   }
 
-  if (Object.keys(updateOperation.properties).length > 0) {
-    editor.applyTransforms([updateOperation]);
+  if (operations.length > 0) {
+    editor.applyTransforms(operations, { normalizePaths: false });
   }
 }

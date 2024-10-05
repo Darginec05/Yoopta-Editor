@@ -10,6 +10,7 @@ import { updateBlock } from './updateBlock';
 import { toggleBlock } from './toggleBlock';
 import { getBlock } from './getBlock';
 import { getSlate } from './getSlate';
+import { mergeBlock } from './mergeBlock';
 import { buildDefaultChildren, buildBlockData } from './buildBlockData';
 
 export const Blocks = {
@@ -27,6 +28,7 @@ export const Blocks = {
   getSlate,
   buildDefaultChildren,
   buildBlockData,
+  mergeBlock,
 };
 
 export type Blocks = typeof Blocks;

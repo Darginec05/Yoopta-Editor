@@ -49,6 +49,16 @@ export {
 
 export { Elements } from './editor/elements';
 export { Blocks } from './editor/blocks';
+export { Paths } from './editor/paths';
+export {
+  InsertBlockOperation,
+  DeleteBlockOperation,
+  SetSelectionBlockOperation,
+  NormalizePathsBlockOperation,
+  YooptaOperation,
+  SetBlockMetaOperation,
+  SetBlockValueOperation,
+} from './editor/core/applyTransforms';
 
 import './styles.css';
 export default YooptaEditor;
