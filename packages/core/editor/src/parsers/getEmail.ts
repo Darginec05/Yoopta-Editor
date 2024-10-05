@@ -60,13 +60,23 @@ export function getEmail(editor: YooEditor, content: YooptaContentValue): string
     return '';
   });
 
-  return `<table id="yoopta-clipboard" data-editor-id="${editor.id}">
-    <tbody>
-      <tr>
-        <td>
+  return `
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+      <html dir="ltr" lang="en">
+
+        <head>
+          <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+          <meta name="x-apple-disable-message-reformatting" />
+
+          <!-- support Outlook -->
+          <style type="text/css">
+            .ExternalClass {width: 100%;}
+          </style>
+        </head>
+
+        <body style="margin:0;padding: 0;" id="yoopta-clipboard" data-editor-id="${editor.id}">
           ${email.join('')}
-        </td>
-      </tr>
-    </tbody>
-  </table>`;
+        </body>
+      </html>
+  `;
 }
