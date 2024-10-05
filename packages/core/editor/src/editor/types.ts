@@ -122,6 +122,7 @@ export type YooEditor = {
   getHTML: (content: YooptaContentValue) => string;
   getMarkdown: (content: YooptaContentValue) => string;
   getPlainText: (content: YooptaContentValue) => string;
+  getEmail: (content: YooptaContentValue) => string;
 
   // ref to editor element
   refElement: HTMLElement | null;

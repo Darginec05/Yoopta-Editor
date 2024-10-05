@@ -35,6 +35,21 @@ const Paragraph = new YooptaPlugin<ParagraphElementMap>({
         return `${serializeTextNodesIntoMarkdown(element.children)}\n`;
       },
     },
+    email: {
+      serialize: (element, text) => {
+        return `<table>
+        <tbody>
+          <tr>
+            <td style="padding: 10px 0;">
+            <p>
+              ${serializeTextNodes(element.children)}
+            </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>`;
+      },
+    },
   },
   commands: ParagraphCommands,
 });

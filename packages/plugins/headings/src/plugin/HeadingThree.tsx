@@ -1,4 +1,9 @@
-import { PluginElementRenderProps, serializeTextNodesIntoMarkdown, YooptaPlugin } from '@yoopta/editor';
+import {
+  PluginElementRenderProps,
+  serializeTextNodes,
+  serializeTextNodesIntoMarkdown,
+  YooptaPlugin,
+} from '@yoopta/editor';
 import { HeadingThreeCommands } from '../commands';
 import { HeadingThreeElement } from '../types';
 
@@ -55,6 +60,21 @@ const HeadingThree = new YooptaPlugin<Record<'heading-three', HeadingThreeElemen
     markdown: {
       serialize: (element, text) => {
         return `### ${serializeTextNodesIntoMarkdown(element.children)}\n`;
+      },
+    },
+    email: {
+      serialize: (element, text) => {
+        return `<table>
+        <tbody>
+          <tr>
+            <td style="padding: 10px 0;">
+            <h3>
+              ${serializeTextNodes(element.children)}
+            </h3>
+            </td>
+          </tr>
+        </tbody>
+      </table>`;
       },
     },
   },
