@@ -3,7 +3,7 @@
   "version": "2.0.1",
   "description": "Chat GPT Assistant tool for Yoopta Editor",
   "author": "Darginec05 <devopsbanda@gmail.com>",
-  "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
+  "homepage": "https://github.com/Darginec05/Yoopta-Editor#readme",
   "license": "MIT",
   "private": true,
   "main": "dist/index.js",
@@ -23,13 +23,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Darginec05/Editor-Yoopta.git"
+    "url": "git+https://github.com/Darginec05/Yoopta-Editor.git"
   },
   "scripts": {
     "test": "node ./__tests__/yoopta-blockquote.test.js"
   },
   "bugs": {
-    "url": "https://github.com/Darginec05/Editor-Yoopta/issues"
+    "url": "https://github.com/Darginec05/Yoopta-Editor/issues"
   },
   "dependencies": {
     "ai": "^2.1.3",
