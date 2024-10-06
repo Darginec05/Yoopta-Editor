@@ -3,17 +3,19 @@ import { Head } from '@/components/Head/Head';
 import { ProductHuntButton } from '@/components/landing/ProductHuntButton/ProductHuntButton';
 import { GithubButton } from '@/components/landing/GithubButton/GithubButton';
 import { Header } from '@/components/landing/Header/Header';
-import { fetchRepoContributors, fetchRepoData, fetchRepoSponsors, request } from '@/api/request';
+import { fetchRepoContributors, fetchRepoData, fetchRepoSponsors, request, Sponsors } from '@/api/request';
 import { GithubContributors } from '@/components/landing/GithubContributors/GithubContributors';
 import { Contributor, Repository } from '@/components/landing/types';
 import { RoadmapList } from '@/components/landing/RoadmapList/RoadmapList';
 import { FeatureList } from '@/components/landing/FeatureList/FeatureList';
 import { Divider } from '@/components/landing/Divider/Divider';
+import { GithubSponsorButton } from '@/components/landing/GithubSponsorButton/GithubSponsorButton';
+import { GithubSponsors } from '@/components/landing/GithubSponsors/GithubSponsors';
 
 type Props = {
   repoData: Repository;
   contributors: Contributor[];
-  sponsors: any;
+  sponsors: Sponsors;
 };
 
 export default function Home({ repoData, sponsors, contributors }: Props) {
@@ -39,8 +41,9 @@ export default function Home({ repoData, sponsors, contributors }: Props) {
         </a>
         <h1 className="text-center scroll-m-20 text-4xl font-bold tracking-tight">Meet Yoopta-Editor 🚀</h1>
         <div className="flex items-center mt-4 flex-col md:flex-row">
-          <ProductHuntButton />
+          {/* <ProductHuntButton /> */}
           {repoData && <GithubButton repo={repoData} />}
+          <GithubSponsorButton />
         </div>
         <p className="font-space-grotesk text-lg leading-snug md:text-xl mt-6 md:w-[680px] text-[#FFFFFFB2] text-center">
           Open-source rich-text editor that's truly{' '}
@@ -88,76 +91,7 @@ export default function Home({ repoData, sponsors, contributors }: Props) {
               alt="Bring my ideas to world"
             />
           </div>
-          <div>
-            <h4 className="text-center mt-4 text-lg font-semibold">Current sponsors 💖</h4>
-            <div className="w-full flex-wrap flex justify-center py-2">
-              <a
-                href="https://tapflow.co/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center w-18 h-18 rounded-full shadow-lg m-2"
-              >
-                <img
-                  src="https://framerusercontent.com/images/3deWAtwBX6tWvPegfQE2tNf0T0.png"
-                  alt="Tapflow logo"
-                  className="w-14 h-14 rounded-full"
-                />
-              </a>
-              <a
-                href="https://yoodocs.space/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center w-18 h-18 bg-white rounded-full shadow-lg m-2"
-              >
-                <img src="/yoopta/yoopta-logo.png" alt="Yoopta logo" className="w-14 h-14 rounded-full" />
-              </a>
-              <a
-                href="https://github.com/chrassendk"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center w-18 h-18 bg-white rounded-full shadow-lg m-2"
-              >
-                <img
-                  src="https://avatars.githubusercontent.com/u/10469954?s=60&v=4"
-                  alt="yoopta logo"
-                  className="w-14 h-14 rounded-full"
-                />
-              </a>
-              <a
-                href="https://github.com/mrfullset"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center w-18 h-18 bg-white rounded-full shadow-lg m-2"
-              >
-                <img
-                  src="https://avatars.githubusercontent.com/u/98813378?s=60&v=4"
-                  alt="yoopta logo"
-                  className="w-14 h-14 rounded-full"
-                />
-              </a>
-              <a
-                href="https://github.com/bluewave-labs"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center w-18 h-18 bg-white rounded-full shadow-lg m-2"
-              >
-                <img
-                  src="https://avatars.githubusercontent.com/u/165089105?s=200&v=4"
-                  alt="yoopta logo"
-                  className="w-14 h-14 rounded-full"
-                />
-              </a>
-              <a
-                href="https://github.com/sponsors/Darginec05"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Become sponsor"
-                className="flex items-center justify-center w-18 h-18 bg-[#181c21] rounded-full shadow-lg m-2"
-              >
-                <PlusIcon size={30} color="#1f6feb" className="w-14 h-14 rounded-full animate-pulse" />
-              </a>
-            </div>
-          </div>
+          <GithubSponsors sponsors={sponsors} />
         </div>
         <Divider />
         <GithubContributors contributors={contributors} />
