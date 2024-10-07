@@ -125,43 +125,7 @@ export function onKeyDown(editor: YooEditor) {
             return Transforms.delete(slate, { at: slate.selection });
           }
 
-          Blocks.mergeBlock(editor, { focus: true });
-
-          // const prevBlockPath = Paths.getPreviousPath(editor.selection);
-          // const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevBlockPath });
-          // const prevBlockEntity = editor.blocks[prevBlock?.type || ''];
-
-          // // [TODO] - if prev block has custom editor (not slate) we need jump to prevprev block
-          // if (prevBlockEntity && prevBlockEntity.hasCustomEditor) return;
-
-          // // If we try to delete first block do nothing
-          // if (!prevSlate) return;
-
-          // const prevSlateText = Editor.string(prevSlate, [0, 0]);
-          // // If previous block values is empty just delete block without merging
-          // if (prevSlateText.length === 0) {
-          //   return editor.deleteBlock({
-          //     at: prevBlockPath,
-          //     focus: true,
-          //     // focusAt,
-          //   });
-          // }
-
-          // const childNodeEntries = Array.from(
-          //   Editor.nodes(slate, {
-          //     at: [0],
-          //     match: (n) => !Editor.isEditor(n) && (Text.isText(n) || Editor.isInline(slate, n)),
-          //     mode: 'highest',
-          //   }),
-          // );
-
-          // const childNodes = childNodeEntries.map(([node]) => node);
-          // Transforms.insertNodes(prevSlate, childNodes, { at: Editor.end(prevSlate, []) });
-          // return editor.deleteBlock({
-          //   at: editor.selection,
-          //   focus: true,
-          //   // focusAt,
-          // });
+          editor.mergeBlock({ focus: true });
         }
       }
       return;

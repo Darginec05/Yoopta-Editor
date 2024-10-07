@@ -22,6 +22,7 @@ import { getPlainText } from '../parsers/getPlainText';
 import { isEmpty } from './core/isEmpty';
 import { applyTransforms } from './core/applyTransforms';
 import { batchOperations } from './core/batchOperations';
+import { mergeBlock } from './blocks/mergeBlock';
 
 export function createYooptaEditor(): YooEditor {
   const editor: YooEditor = {
@@ -44,6 +45,7 @@ export function createYooptaEditor(): YooEditor {
     getBlock: (...args) => getBlock(editor, ...args),
     updateBlock: (...args) => updateBlock(editor, ...args),
     splitBlock: (...args) => splitBlock(editor, ...args),
+    mergeBlock: (...args) => mergeBlock(editor, ...args),
     setSelection: (...args) => setSelection(editor, ...args),
     // setBlockSelected: (...args) => setBlockSelected(editor, ...args),
     blockEditorsMap: {},
@@ -70,6 +72,14 @@ export function createYooptaEditor(): YooEditor {
     getPlainText: (content: YooptaContentValue) => getPlainText(editor, content),
 
     refElement: null,
+
+    history: {
+      undos: [],
+      redos: [],
+    },
+
+    redo: () => {},
+    undo: () => {},
   };
 
   return editor;

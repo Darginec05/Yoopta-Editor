@@ -124,9 +124,10 @@ export const withHistory = (editor: YooEditor) => {
   editor.undo = () => {
     const batch = history.undos.pop();
 
+    console.log('undo FIRED', batch?.operations);
+
     if (batch) {
       const inverseOps = batch.operations.map(inverseOperation).reverse();
-      inverseOps.push({ type: 'set_selection_block', path: batch.path });
       applyTransforms(inverseOps);
       history.redos.push(batch);
     }
@@ -138,7 +139,6 @@ export const withHistory = (editor: YooEditor) => {
     console.log('redo FIRED', batch?.operations);
     console.log('redo batch.path', batch?.path);
     if (batch) {
-      batch.operations.push({ type: 'set_selection_block', path: batch.path });
       applyTransforms(batch.operations);
       history.undos.push(batch);
     }
@@ -146,9 +146,11 @@ export const withHistory = (editor: YooEditor) => {
 
   editor.applyTransforms = (operations: YooptaOperation[], options) => {
     const batch = {
-      operations: operations.filter((op) => op.type !== 'set_selection_block'),
+      operations: operations.filter((op) => op.type !== 'set_selection_block' && op.type !== 'set_block_value'),
       path: editor.selection,
     };
+
+    console.log('Hisptry batch.operations', batch.operations);
 
     // try {
     //   console.log('applyTransforms editor.selection', editor.selection);

@@ -1,6 +1,6 @@
 import { createDraft, finishDraft, isDraft, produce } from 'immer';
 import { buildSlateEditor } from '../../utils/buildSlate';
-import { SlateEditor, SlateElement, YooEditor, YooptaBlockData, YooptaBlockPath, YooptaContentValue } from '../types';
+import { SlateEditor, SlateElement, YooEditor, YooptaBlockData, YooptaBlockPath } from '../types';
 
 export type InsertBlockOperation = {
   type: 'insert_block';
@@ -65,18 +65,11 @@ export type YooptaOperation =
 function applyOperation(editor: YooEditor, op: YooptaOperation): void {
   switch (op.type) {
     case 'insert_block': {
-      const { path, block, slate } = op;
-
-      editor.blockEditorsMap[block.id] = slate || buildSlateEditor(editor);
-      editor.children[block.id] = block;
+      const { path, slate } = op;
+      editor.blockEditorsMap[op.block.id] = slate || buildSlateEditor(editor);
+      editor.children[op.block.id] = op.block;
       break;
     }
-    // case 'set_block':
-    //   const { id, properties, prevProperties } = op;
-
-    //   // editor.children[id] = { ...editor.children[id], ...prevProperties };
-    //   editor.children[id] = { ...editor.children[id], ...properties };
-    //   break;
 
     case 'set_block_value': {
       const { id, value } = op;
@@ -86,10 +79,24 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
 
     case 'set_block_meta': {
       const { id, prevProperties, properties } = op;
-      // produce(editor.children[id], (draft) => {
-      //   draft.meta = { ...draft.meta, ...prevProperties };
-      // })
-      editor.children[id].meta = { ...editor.children[id].meta, ...properties };
+
+      const block = editor.children[id];
+      if (!block) break;
+
+      if (!isDraft(block.meta)) {
+        produce(block, (draft) => {
+          draft.meta = { ...draft.meta, ...properties };
+        });
+
+        break;
+      }
+
+      Object.keys(properties).forEach((key) => {
+        if (properties[key]) {
+          block.meta[key] = properties[key];
+        }
+      });
+
       break;
     }
 
@@ -108,11 +115,17 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
 
     case 'merge_block': {
       const { sourceProperties, targetProperties, mergedProperties, slate } = op;
+
       delete editor.blockEditorsMap[sourceProperties.id];
       delete editor.children[sourceProperties.id];
       editor.children[targetProperties.id] = mergedProperties;
       editor.blockEditorsMap[targetProperties.id] = slate || buildSlateEditor(editor);
+      break;
+    }
 
+    case 'set_selection_block': {
+      if (!Array.isArray(op.path[1])) op.path[1] = [];
+      editor.selection = op.path;
       break;
     }
 
@@ -120,16 +133,15 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
       const blocks = Object.values(editor.children);
       blocks.sort((a, b) => a.meta.order - b.meta.order);
       blocks.forEach((block, index) => {
-        produce(block, (draft) => {
-          draft.meta.order = index;
-        });
+        if (!isDraft(block.meta)) {
+          produce(block, (draft) => {
+            draft.meta = { ...draft.meta, order: index };
+          });
+        } else {
+          block.meta.order = index;
+        }
       });
-      break;
-    }
 
-    case 'set_selection_block': {
-      if (!Array.isArray(op.path[1])) op.path[1] = [];
-      editor.selection = op.path;
       break;
     }
   }
@@ -150,6 +162,8 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
   if (normalizePaths) {
     operations.push({ type: 'normalize_block_paths' });
   }
+
+  console.log('applyTransforms operations', operations);
 
   for (const operation of operations) {
     applyOperation(editor, operation);
