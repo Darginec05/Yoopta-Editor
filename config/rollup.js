@@ -89,6 +89,7 @@ export function createRollupConfig({ pkg, tailwindConfig }) {
         globals: { react: 'React' },
         file: `./${pkg.module}`,
         exports: 'named',
+        inlineDynamicImports: true,
       },
       // {
       //   file: `./${pkg.main}`,

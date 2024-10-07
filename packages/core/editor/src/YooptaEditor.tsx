@@ -20,7 +20,7 @@ import { FakeSelectionMark } from './marks/FakeSelectionMark';
 import { generateId } from './utils/generateId';
 import { YooptaOperation } from './editor/core/applyTransforms';
 
-type Props = {
+export type YooptaEditorProps = {
   id?: string;
   editor: YooEditor;
   plugins: Readonly<YooptaPlugin<Record<string, SlateElement>>[]>;
