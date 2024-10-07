@@ -61,18 +61,18 @@ const Editor = ({
   const selectionBox = useRectangeSelectionBox({ editor, root: selectionBoxRoot });
   const multiSelection = useMultiSelection({ editor });
 
-  useEffect(() => {
-    console.log(
-      'orders',
-      Object.keys(editor.children)
-        .map((k) => editor.children[k].meta.order)
-        .sort((a, b) => a - b),
-    );
-    setTimeout(() => {
-      console.log('document.activeElement', document.activeElement);
-      console.log('editor.selection', editor.selection);
-    }, 100);
-  }, [editor.selection]);
+  // useEffect(() => {
+  //   console.log(
+  //     'orders',
+  //     Object.keys(editor.children)
+  //       .map((k) => editor.children[k].meta.order)
+  //       .sort((a, b) => a - b),
+  //   );
+  //   setTimeout(() => {
+  //     console.log('document.activeElement', document.activeElement);
+  //     console.log('editor.selection', editor.selection);
+  //   }, 100);
+  // }, [editor.selection]);
 
   let state = useRef<State>(DEFAULT_STATE).current;
 

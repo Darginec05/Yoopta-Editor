@@ -18,7 +18,6 @@ import { YooptaPlugin } from './plugins';
 import { YooptaMark } from './marks';
 import { FakeSelectionMark } from './marks/FakeSelectionMark';
 import { generateId } from './utils/generateId';
-import { YooptaOperation } from './editor/core/applyTransforms';
 
 export type YooptaEditorProps = {
   id?: string;
@@ -77,7 +76,7 @@ const YooptaEditor = ({
   width,
   style,
   onChange,
-}: Props) => {
+}: YooptaEditorProps) => {
   const marks = useMemo(() => {
     if (marksProps) return [FakeSelectionMark, ...marksProps];
     return [FakeSelectionMark];
