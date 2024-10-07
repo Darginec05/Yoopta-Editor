@@ -13,6 +13,7 @@ import { ApplyTransformsOptions, YooptaOperation } from './core/applyTransforms'
 import { InsertBlockOptions } from './blocks/insertBlock';
 import { BlockDepthOptions } from './blocks/increaseBlockDepth';
 import { SplitBlockOptions } from './blocks/splitBlock';
+import { MergeBlockOptions } from './blocks/mergeBlock';
 
 // export type YooptaBlockPath = [number];
 
@@ -54,9 +55,6 @@ export type YooptaBlock = {
   elements: PluginElementsMap<string>;
   hasCustomEditor?: boolean;
   isActive: () => boolean;
-  toggle: (options?: ToggleBlockOptions) => void;
-  update: (id: string, data: Partial<YooptaBlockData>) => void;
-  delete: (options: DeleteBlockOptions) => void;
 };
 
 export type YooptaBlocks = Record<string, YooptaBlock>;
@@ -74,7 +72,6 @@ export type YooEditor = {
   readOnly: boolean;
   isEmpty: () => boolean;
   insertBlock: (type: string, options?: InsertBlockOptions) => string;
-  splitBlock: (options?: SplitBlockOptions) => void;
   updateBlock: (id: string, data: Partial<YooptaBlockData>) => void;
   deleteBlock: (options: DeleteBlockOptions) => void;
   duplicateBlock: (options: DuplicateBlockOptions) => void;
@@ -83,6 +80,8 @@ export type YooEditor = {
   decreaseBlockDepth: (options?: BlockDepthOptions) => void;
   moveBlock: (blockId: string, to: YooptaBlockPath) => void;
   focusBlock: (id: string, options?: FocusBlockOptions) => void;
+  mergeBlock: (options?: MergeBlockOptions) => void;
+  splitBlock: (options?: SplitBlockOptions) => void;
   getBlock: (options: GetBlockOptions) => YooptaBlockData | null;
   selection: YooptaBlockPath;
   setSelection: (path: SetSelectionOptions) => void;

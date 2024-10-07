@@ -178,7 +178,8 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
           }
 
           const insertPathIndex = editor.selection[0];
-          if (!insertPathIndex) return;
+          console.log('insertPathIndex', insertPathIndex);
+          if (insertPathIndex === null) return;
 
           // [TEST]
           editor.batchOperations(() => {

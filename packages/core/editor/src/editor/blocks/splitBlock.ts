@@ -16,8 +16,8 @@ import { SlateEditor, SlateElement, YooEditor, YooptaBlockData } from '../types'
 // export function splitBlock(editor: YooEditor, options: SplitBlockOptions = {}) {
 //   const { slate, focus = true } = options;
 
-//   const currentBlock = findPluginBlockBySelectionPath(editor);
-//   if (!slate || !slate.selection || !currentBlock) return;
+//   const blockToSplit = findPluginBlockBySelectionPath(editor);
+//   if (!slate || !slate.selection || !blockToSplit) return;
 
 //   Editor.withoutNormalizing(slate, () => {
 //     editor.children = createDraft(editor.children);
@@ -43,11 +43,11 @@ import { SlateEditor, SlateElement, YooEditor, YooptaBlockData } from '../types'
 
 //     const nextNewBlock: YooptaBlockData = {
 //       id: generateId(),
-//       type: currentBlock.type,
+//       type: blockToSplit.type,
 //       meta: {
-//         order: currentBlock.meta.order + 1,
-//         depth: currentBlock.meta.depth,
-//         align: currentBlock.meta.align,
+//         order: blockToSplit.meta.order + 1,
+//         depth: blockToSplit.meta.depth,
+//         align: blockToSplit.meta.align,
 //       },
 //       // [TODO] - check for mark text formats
 //       value: [nextBlockSlateValue],
@@ -82,10 +82,9 @@ export type SplitBlockOptions = {
 export function splitBlock(editor: YooEditor, options: SplitBlockOptions = {}) {
   const { focus = true } = options;
 
-  const currentBlock = findPluginBlockBySelectionPath(editor);
-  const originalBlock = deepClone(currentBlock);
+  const blockToSplit = findPluginBlockBySelectionPath(editor);
   const slate = options.slate || findSlateBySelectionPath(editor);
-  if (!slate || !currentBlock) return;
+  if (!slate || !blockToSplit) return;
   const originalSlateChildren = deepClone(slate.children);
 
   Editor.withoutNormalizing(slate, () => {
@@ -112,11 +111,11 @@ export function splitBlock(editor: YooEditor, options: SplitBlockOptions = {}) {
 
     const nextNewBlock: YooptaBlockData = {
       id: generateId(),
-      type: currentBlock.type,
+      type: blockToSplit.type,
       meta: {
-        order: currentBlock.meta.order + 1,
-        depth: currentBlock.meta.depth,
-        align: currentBlock.meta.align,
+        order: blockToSplit.meta.order + 1,
+        depth: blockToSplit.meta.depth,
+        align: blockToSplit.meta.align,
       },
       value: [],
     };
@@ -127,11 +126,12 @@ export function splitBlock(editor: YooEditor, options: SplitBlockOptions = {}) {
 
     operations.push({
       type: 'split_block',
-      prevProperties: { ...originalBlock, value: originalSlateChildren },
-      properties: { ...nextNewBlock, value: newSlate.children },
+      prevProperties: blockToSplit,
+      properties: nextNewBlock,
       slate: newSlate,
     });
 
+    // Update order for all blocks with order >= nextNewBlock.meta.order
     Object.values(editor.children).forEach((block) => {
       if (block.meta.order >= nextNewBlock.meta.order && block.id !== nextNewBlock.id) {
         operations.push({

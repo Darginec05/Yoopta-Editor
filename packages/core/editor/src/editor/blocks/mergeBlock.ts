@@ -20,25 +20,25 @@ export function mergeBlock(editor: YooEditor, options: MergeBlockOptions = {}) {
   const slate = findSlateBySelectionPath(editor, { at: editor.selection });
 
   const prevBlockPath = Paths.getPreviousPath(editor.selection);
-  const prevSlate = findSlateBySelectionPath(editor, { at: prevBlockPath });
-  const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevBlockPath });
-  const prevBlockEntity = editor.blocks[prevBlock?.type || ''];
+  const slateToMerge = findSlateBySelectionPath(editor, { at: prevBlockPath });
+  const blockToMerge = findPluginBlockBySelectionPath(editor, { at: prevBlockPath });
+  const blockEntityToMerge = editor.blocks[blockToMerge?.type || ''];
 
-  if (!slate || !slate.selection || !currentBlock || !prevSlate || !prevBlock) return;
+  if (!slate || !slate.selection || !currentBlock || !slateToMerge || !blockToMerge) return;
 
-  const prevBlockElementRoot = Elements.getElement(editor, prevBlock.id);
+  const prevBlockElementRoot = Elements.getElement(editor, blockToMerge.id);
 
   // [TODO] - if prev block has custom editor (not slate) or root element is void we need jump to prev prev block
   if (
-    prevBlockEntity &&
-    prevBlockEntity.hasCustomEditor &&
+    blockEntityToMerge &&
+    blockEntityToMerge.hasCustomEditor &&
     prevBlockElementRoot &&
     prevBlockElementRoot.props.nodeType === 'void'
   ) {
     return;
   }
 
-  const prevSlateText = Editor.string(prevSlate, [0, 0]);
+  const prevSlateText = Editor.string(slateToMerge, [0, 0]);
   // If previous block values is empty just delete block without merging
   if (prevSlateText.length === 0) {
     console.log('FiRED mergeBlock');
@@ -62,30 +62,39 @@ export function mergeBlock(editor: YooEditor, options: MergeBlockOptions = {}) {
     );
 
     const childNodes = childNodeEntries.map(([node]) => node);
-    Transforms.insertNodes(prevSlate, childNodes, { at: Editor.end(prevSlate, []) });
+    Transforms.insertNodes(slateToMerge, childNodes, { at: Editor.end(slateToMerge, []) });
+
+    const mergedBlock = {
+      ...blockToMerge,
+      value: slateToMerge.children,
+    };
+
+    console.log('currentBlock', currentBlock);
+    console.log('mergedBlock', mergedBlock);
 
     operations.push({
       type: 'merge_block',
       sourceProperties: currentBlock,
-      targetProperties: prevBlock,
-      mergedProperties: {
-        ...prevBlock,
-        value: prevSlate.children,
-      },
-      // slate: prevSlate,
+      targetProperties: blockToMerge,
+      mergedProperties: mergedBlock,
     });
 
-    // console.log('mergeBlock prevSlate', prevSlate);
-
-    // editor.deleteBlock({
-    //   at: editor.selection,
-    //   focus: true,
-    // });
+    // decrement orders of all blocks after the merged block
+    Object.values(editor.children).forEach((block) => {
+      if (block.meta.order > blockToMerge.meta.order) {
+        operations.push({
+          type: 'set_block_meta',
+          id: block.id,
+          prevProperties: { ...block.meta, order: block.meta.order },
+          properties: { ...block.meta, order: block.meta.order - 1 },
+        });
+      }
+    });
 
     editor.applyTransforms(operations);
 
-    if (focus && prevBlock) {
-      editor.focusBlock(prevBlock.id, { slate: prevSlate });
+    if (focus && blockToMerge) {
+      editor.focusBlock(blockToMerge.id, { slate: slateToMerge });
     }
   });
 }
