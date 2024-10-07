@@ -54,6 +54,7 @@ const ExtendedBlockActions = ({ id, className, style, onClick, children }: Props
       )}
       <button
         type="button"
+        contentEditable={false}
         ref={blockOptionRefs.setReference}
         id={id}
         className={`yoopta-button yoopta-extended-block-actions ${className || ''}`}

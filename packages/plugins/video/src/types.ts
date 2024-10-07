@@ -33,13 +33,18 @@ export type VideoElementProps = {
 export type VideoPluginElements = 'video';
 export type VideoElement = SlateElement<'video', VideoElementProps>;
 
-export type OnUploadResponse = Omit<VideoElementProps, 'srcSet'>;
+export type VideoUploadResponse = Omit<VideoElementProps, 'srcSet'>;
 
 export type VideoPluginOptions = {
-  onUpload: (file: File) => Promise<OnUploadResponse>;
+  onUpload: (file: File) => Promise<VideoUploadResponse>;
+  onUploadPoster?: (file: File) => Promise<string>;
   accept?: string;
   maxSizes?: {
     maxWidth?: number;
     maxHeight?: number;
   };
+};
+
+export type VideoElementMap = {
+  video: VideoElement;
 };

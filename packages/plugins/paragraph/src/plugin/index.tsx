@@ -1,7 +1,10 @@
-import { YooptaPlugin } from '@yoopta/editor';
+import { serializeTextNodes, serializeTextNodesIntoMarkdown, YooptaPlugin } from '@yoopta/editor';
+import { Element, Transforms } from 'slate';
+import { ParagraphCommands } from '../commands';
+import { ParagraphElement, ParagraphElementMap } from '../types';
 import { ParagraphRender } from '../ui/Paragraph';
 
-const Paragraph = new YooptaPlugin({
+const Paragraph = new YooptaPlugin<ParagraphElementMap>({
   type: 'Paragraph',
   elements: {
     paragraph: {
@@ -20,16 +23,20 @@ const Paragraph = new YooptaPlugin({
       deserialize: {
         nodeNames: ['P'],
       },
-      serialize: (element, text) => {
-        return `<p>${text}</p>`;
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+        return `<p data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}">${serializeTextNodes(
+          element.children,
+        )}</p>`;
       },
     },
     markdown: {
       serialize: (element, text) => {
-        return `${text}\n`;
+        return `${serializeTextNodesIntoMarkdown(element.children)}\n`;
       },
     },
   },
+  commands: ParagraphCommands,
 });
 
 export { Paragraph };

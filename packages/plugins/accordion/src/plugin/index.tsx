@@ -1,11 +1,12 @@
-import { Blocks, Elements, YooptaPlugin } from '@yoopta/editor';
-import { AccordionElementKeys, AccordionListItemProps } from '../types';
+import { Blocks, Elements, YooptaPlugin, buildBlockElementsStructure } from '@yoopta/editor';
+import { AccordionElementMap } from '../types';
 import { AccordionList } from '../renders/AccordionList';
 import { AccordionListItem } from '../renders/AccordionListItem';
 import { AccordionItemHeading } from '../renders/AccordionItemHeading';
 import { AccordionItemContent } from '../renders/AccordionItemContent';
 import { Transforms } from 'slate';
 import { ListCollapse } from 'lucide-react';
+import { AccordionCommands } from '../commands';
 
 const ACCORDION_ELEMENTS = {
   AccordionList: 'accordion-list',
@@ -14,7 +15,7 @@ const ACCORDION_ELEMENTS = {
   AccordionListItemContent: 'accordion-list-item-content',
 };
 
-const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>({
+const Accordion = new YooptaPlugin<AccordionElementMap>({
   type: 'Accordion',
   elements: {
     'accordion-list': {
@@ -34,6 +35,7 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
       render: AccordionItemContent,
     },
   },
+  commands: AccordionCommands,
   events: {
     onKeyDown(editor, slate, { hotkeys, currentBlock }) {
       return (event) => {
@@ -108,7 +110,7 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
               {
                 type: ACCORDION_ELEMENTS.AccordionListItem,
                 props: {
-                  isExpanded: !listItem?.props.isExpanded,
+                  isExpanded: !listItem?.props?.isExpanded,
                 },
               },
               { path: listItemPath },
@@ -135,14 +137,41 @@ const Accordion = new YooptaPlugin<AccordionElementKeys, AccordionListItemProps>
     },
     shortcuts: ['accordion'],
   },
-  // parsers: {
-  //   html: {
-  //     serialize: (element) => {
-  //       console.log('accordion element', element);
-  //       return '';
-  //     },
-  //   },
-  // },
+  parsers: {
+    html: {
+      deserialize: {
+        nodeNames: ['DETAILS'],
+        parse: (el, editor) => {
+          if (el.nodeName === 'DETAILS') {
+            const summary = el.querySelector('summary');
+            const p = el.querySelector('p');
+            const elementsStructure = buildBlockElementsStructure(editor, 'Accordion', {
+              [ACCORDION_ELEMENTS.AccordionListItemHeading]: summary?.textContent || '',
+              [ACCORDION_ELEMENTS.AccordionListItemContent]: p?.textContent || '',
+            });
+
+            return elementsStructure;
+          }
+        },
+      },
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+
+        return `<div>${element.children
+          .map((listItem) => {
+            return `<details data-meta-align="${align}" data-meta-depth="${depth}">${listItem.children
+              .map((item) => {
+                if (item.type === 'accordion-list-item-heading') {
+                  return `<summary>${item.children.map((item) => item.text).join('')}</summary>`;
+                }
+                return `<p>${item.children.map((item) => item.text).join('')}</p>`;
+              })
+              .join('')}</details>`;
+          })
+          .join('')}</div>`;
+      },
+    },
+  },
 });
 
 export { Accordion };

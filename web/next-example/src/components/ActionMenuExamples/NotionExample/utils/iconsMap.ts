@@ -10,8 +10,10 @@ import bulletedList from '../icons/bulletedList.png';
 import numberedList from '../icons/numberedList.png';
 import todoList from '../icons/todoList.png';
 import embed from '../icons/embed.png';
+import table from '../icons/table.png';
+import divider from '../icons/divider.png';
 
-export const ICONS_SRC = {
+export const ICONS_SRC: Record<string, string> = {
   Paragraph: text.src,
   Blockquote: blockquote.src,
   Callout: callout.src,
@@ -26,4 +28,6 @@ export const ICONS_SRC = {
   NumberedList: numberedList.src,
   TodoList: todoList.src,
   Embed: embed.src,
+  Table: table.src,
+  Divider: divider.src,
 };

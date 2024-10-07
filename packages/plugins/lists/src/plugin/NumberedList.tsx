@@ -1,9 +1,18 @@
-import { YooptaPlugin, buildBlockData, YooptaBlockData, generateId } from '@yoopta/editor';
+import {
+  YooptaPlugin,
+  YooptaBlockData,
+  generateId,
+  deserializeTextNodes,
+  serializeTextNodes,
+  serializeTextNodesIntoMarkdown,
+  Blocks,
+} from '@yoopta/editor';
+import { NumberedListCommands } from '../commands';
 import { NumberedListRender } from '../elements/NumberedList';
 import { onKeyDown } from '../events/onKeyDown';
-import { ListElementProps } from '../types';
+import { ListElementMap } from '../types';
 
-const NumberedList = new YooptaPlugin<'numbered-list', ListElementProps>({
+const NumberedList = new YooptaPlugin<Pick<ListElementMap, 'numbered-list'>>({
   type: 'NumberedList',
   elements: {
     'numbered-list': {
@@ -23,13 +32,17 @@ const NumberedList = new YooptaPlugin<'numbered-list', ListElementProps>({
   events: {
     onKeyDown,
   },
+  commands: NumberedListCommands,
   parsers: {
     html: {
       deserialize: {
         nodeNames: ['OL'],
-        parse(el) {
+        parse(el, editor) {
           if (el.nodeName === 'OL') {
             const listItems = el.querySelectorAll('li');
+
+            const align = (el.getAttribute('data-meta-align') || 'left') as YooptaBlockData['meta']['align'];
+            const depth = parseInt(el.getAttribute('data-meta-depth') || '0', 10);
 
             const numberedListBlocks: YooptaBlockData[] = Array.from(listItems)
               .filter((listItem) => {
@@ -39,33 +52,36 @@ const NumberedList = new YooptaPlugin<'numbered-list', ListElementProps>({
                 return !isTodoListItem;
               })
               .map((listItem, i) => {
-                const textContent = listItem.textContent || '';
-
-                return buildBlockData({
+                return Blocks.buildBlockData({
                   id: generateId(),
                   type: 'NumberedList',
                   value: [
                     {
                       id: generateId(),
                       type: 'numbered-list',
-                      children: [{ text: textContent }],
+                      children: deserializeTextNodes(editor, listItem.childNodes),
                       props: { nodeType: 'block' },
                     },
                   ],
-                  meta: { order: 0, depth: 0 },
+                  meta: { order: 0, depth, align },
                 });
               });
-            if (numberedListBlocks.length > 1) return numberedListBlocks;
+
+            if (numberedListBlocks.length > 0) return numberedListBlocks;
           }
         },
       },
-      serialize: (element, text) => {
-        return `<ol><li>${text}</li></ol>`;
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+
+        return `<ol data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}"><li>${serializeTextNodes(
+          element.children,
+        )}</li></ol>`;
       },
     },
     markdown: {
       serialize: (element, text) => {
-        return `- ${text}`;
+        return `- ${serializeTextNodesIntoMarkdown(element.children)}`;
       },
     },
   },

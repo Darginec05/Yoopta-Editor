@@ -54,7 +54,7 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
       e.preventDefault();
       const currentBlockPath = block.meta.order;
       const defaultBlock = buildBlockData();
-      editor.insertBlock(defaultBlock, { at: [currentBlockPath + 1], focus: true });
+      editor.insertBlock(defaultBlock.type, { at: [currentBlockPath + 1], focus: true, blockData: defaultBlock });
       return;
     }
   };
@@ -69,7 +69,7 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
         <CodeMirror
           value={code}
           height="auto"
-          extensions={[LANGUAGES_MAP[language]?.extension || LANGUAGES_MAP.javascript]}
+          extensions={[LANGUAGES_MAP[language]?.extension || LANGUAGES_MAP.javascript.extension]}
           onChange={onChange}
           width="100%"
           theme={THEMES_MAP[theme] || THEMES_MAP.VSCode}

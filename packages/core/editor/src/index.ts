@@ -20,11 +20,22 @@ export { getRootBlockElementType, getRootBlockElement } from './utils/blockEleme
 export { findPluginBlockBySelectionPath } from './utils/findPluginBlockBySelectionPath';
 export { findSlateBySelectionPath } from './utils/findSlateBySelectionPath';
 export { findPluginBlockByType } from './utils/findPluginBlockByType';
+export { deserializeTextNodes } from './parsers/deserializeTextNodes';
+export { serializeTextNodes, serializeTextNodesIntoMarkdown } from './parsers/serializeTextNodes';
 
 export { createYooptaEditor } from './editor';
 export { createYooptaMark, YooptaMarkParams, YooptaMark } from './marks';
-export { YooEditor, SlateElement, YooptaBlockData, YooptaBlock, YooptaContentValue } from './editor/types';
+export {
+  YooEditor,
+  SlateElement,
+  YooptaBlockData,
+  YooptaBlock,
+  YooptaContentValue,
+  SlateEditor,
+  YooptaBlockPath,
+} from './editor/types';
 export { buildBlockData, buildBlockElement } from './components/Editor/utils';
+export { buildBlockElementsStructure } from './utils/blockElements';
 
 export {
   PluginElementRenderProps,
@@ -33,10 +44,21 @@ export {
   PluginDeserializeParser,
   PluginserializeParser,
   YooptaMarkProps,
+  PluginOptions,
 } from './plugins/types';
 
 export { Elements } from './editor/elements';
 export { Blocks } from './editor/blocks';
+export { Paths } from './editor/paths';
+export {
+  InsertBlockOperation,
+  DeleteBlockOperation,
+  SetSelectionBlockOperation,
+  NormalizePathsBlockOperation,
+  YooptaOperation,
+  SetBlockMetaOperation,
+  SetBlockValueOperation,
+} from './editor/core/applyTransforms';
 
 import './styles.css';
 export default YooptaEditor;

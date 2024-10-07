@@ -1,10 +1,10 @@
+import { useEffect, useRef, useState } from 'react';
 import { Elements, useYooptaEditor } from '@yoopta/editor';
-import { useEffect, useRef } from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 import { EmbedElementProps, EmbedPluginElements, ProviderRenderProps } from '../types';
 
-function Twitter({ provider, blockId, attributes, children }: ProviderRenderProps) {
-  const twitterRootRef = useRef(null);
+function Twitter({ provider, blockId, attributes, children, height, width }: ProviderRenderProps) {
+  const twitterRootRef = useRef<HTMLDivElement>(null);
   const editor = useYooptaEditor();
 
   const { isIntersecting: isInViewport } = useIntersectionObserver(twitterRootRef, {
@@ -19,40 +19,48 @@ function Twitter({ provider, blockId, attributes, children }: ProviderRenderProp
 
     const script = document.createElement('script');
     script.src = 'https://platform.twitter.com/widgets.js';
-    (twitterRootRef.current as unknown as HTMLDivElement)?.appendChild(script);
+    script.async = true;
+    document.body.appendChild(script);
 
-    script.onload = () => {
+    const renderTweet = () => {
       if ((window as any).twttr) {
-        (window as any).twttr.widgets.createTweet(provider.id, document.getElementById(elementId), {
-          align: 'center',
-          conversation: 'none',
-          dnt: true,
-          theme: 'dark',
-          height: 500,
-          width: 550,
-        });
-
-        Elements.updateElement<EmbedPluginElements, EmbedElementProps>(editor, blockId, {
-          type: 'embed',
-          props: {
-            sizes: {
-              width: 'auto',
-              height: 'auto',
-            },
-          },
-        });
+        (window as any).twttr.widgets
+          .createTweet(provider.id, document.getElementById(elementId), {
+            align: 'center',
+            conversation: 'none',
+            dnt: true,
+            theme: 'light',
+          })
+          .then((el) => {
+            if (el) {
+              Elements.updateElement<EmbedPluginElements, EmbedElementProps>(editor, blockId, {
+                type: 'embed',
+                props: {
+                  sizes: {
+                    height: el.offsetHeight + 16,
+                    width: el.offsetWidth,
+                  },
+                },
+              });
+            }
+          });
       }
     };
-  }, [provider.id, isInViewport]);
 
-  const onRef = (node) => {
-    twitterRootRef.current = node;
-    attributes.ref(node);
-  };
+    if ((window as any).twttr) {
+      renderTweet();
+    } else {
+      script.onload = renderTweet;
+    }
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, [provider.id, isInViewport, blockId, editor]);
 
   return (
-    <div className="yoo-embed-w-full yoo-embed-h-full" {...attributes} ref={onRef}>
-      <div id={elementId} />
+    <div className="yoo-embed-w-full" {...attributes}>
+      <div id={elementId} ref={twitterRootRef} />
       {children}
     </div>
   );

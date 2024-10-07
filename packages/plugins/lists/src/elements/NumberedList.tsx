@@ -45,6 +45,7 @@ const NumberedListRender = ({ extendRender, ...props }: PluginElementRenderProps
   const alignClass = `yoopta-align-${currentAlign}`;
 
   if (extendRender) {
+    // @ts-ignore [FIXME] - add generic type for extendRender props
     return extendRender({ ...props, count });
   }
 

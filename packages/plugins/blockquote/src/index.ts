@@ -8,5 +8,7 @@ declare module 'slate' {
   }
 }
 
+export { BlockquoteCommands } from './commands';
+
 export default Blockquote;
 export { BlockquoteElement };

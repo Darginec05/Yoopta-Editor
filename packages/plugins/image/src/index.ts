@@ -1,5 +1,5 @@
 import { Image } from './plugin';
-import { ImageElement } from './types';
+import { ImageElement, ImageElementProps, ImageUploadResponse } from './types';
 import './styles.css';
 
 declare module 'slate' {
@@ -8,5 +8,7 @@ declare module 'slate' {
   }
 }
 
+export { ImageCommands } from './commands';
+
 export default Image;
-export { ImageElement };
+export { ImageElement, ImageElementProps, ImageUploadResponse };

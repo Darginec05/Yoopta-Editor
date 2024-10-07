@@ -1,54 +1,102 @@
 import Blockquote from '@yoopta/blockquote';
 import Paragraph from '@yoopta/paragraph';
 import Headings from '@yoopta/headings';
-import Image from '@yoopta/image';
-import Callout from '@yoopta/callout';
-import Lists from '@yoopta/lists';
+import Image, { ImageElementProps } from '@yoopta/image';
+import Callout, { CalloutElement } from '@yoopta/callout';
+import Lists, { TodoListElement } from '@yoopta/lists';
 import Link from '@yoopta/link';
-import Video from '@yoopta/video';
+import Video, { VideoElementProps } from '@yoopta/video';
 import File from '@yoopta/file';
 import Embed from '@yoopta/embed';
-import AccordionPlugin from '@yoopta/accordion';
+import Accordion, { AccordionCommands } from '@yoopta/accordion';
 import Code from '@yoopta/code';
+import Table, { TableCommands } from '@yoopta/table';
+import Divider from '@yoopta/divider';
 
-import NextLink from 'next/link';
 import { uploadToCloudinary } from '../cloudinary';
-import { Elements, useYooptaEditor } from '@yoopta/editor';
-import { YooptaWithNextImage } from '../../components/Extends/Image/Image';
-import { Checkbox } from '../../components/Extends/Checkbox/Checkbox';
+import { Elements } from '@yoopta/editor';
 
 export const YOOPTA_PLUGINS = [
-  AccordionPlugin.extend({
+  Table.extend({
+    events: {
+      onBeforeCreate: (editor) => {
+        return TableCommands.buildTableElements(editor, { rows: 3, columns: 3 });
+      },
+    },
     renders: {
-      'accordion-list': ({ attributes, children }) => {
+      table: (props) => {
         return (
-          <ul {...attributes} className="accordion-list-element-extended">
-            {children}
-          </ul>
+          <div className="my-6 w-full overflow-y-auto">
+            <table className="w-full">
+              <tbody {...props.attributes}>{props.children}</tbody>
+            </table>
+          </div>
         );
       },
-      'accordion-list-item': ({ attributes, children, element, blockId }) => {
+      'table-row': (props) => {
         return (
-          <li {...attributes} className="accordion-list-item-element-extended">
-            {children}
-          </li>
+          <tr {...props.attributes} className="m-0 !border-t p-0 even:bg-[#f4f4f5]">
+            {props.children}
+          </tr>
         );
+      },
+      'table-data-cell': (props) => {
+        const Node = props.isDataCellAsHeader ? 'th' : 'td';
+        const style = {
+          maxWidth: props.width,
+          minWidth: props.height,
+          backgroundColor: props.selected ? '#f0f0f0' : 'transparent',
+        };
+
+        return (
+          <Node
+            {...props.attributes}
+            style={style}
+            className="!border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right"
+          >
+            {props.children}
+          </Node>
+        );
+      },
+    },
+    options: {
+      HTMLAttributes: {
+        className: 'table-element-extended',
+      },
+      display: {
+        title: 'Table with Shadcn',
+      },
+    },
+  }),
+  Divider.extend({
+    elementProps: {
+      divider: (props) => ({
+        ...props,
+        color: '#8383e0',
+      }),
+    },
+  }),
+  Accordion.extend({
+    events: {
+      onBeforeCreate: (editor) => {
+        return AccordionCommands.buildAccordionElements(editor, { items: 2, props: { isExpanded: true } });
+      },
+    },
+    elementProps: {
+      'accordion-list-item': (props) => {
+        return {
+          ...props,
+          isExpanded: true,
+        };
       },
     },
   }),
   File.extend({
-    // renders: {
-    //   file: ({ attributes, children, element }) => {
-    //     return (
-    //       <div {...attributes} contentEditable={false}>
-    //         <a className="file-element-extended text-[red]" href={element.props.src} download>
-    //           {element.props.name} ({element.props.size}) {element.props.format}
-    //         </a>
-    //         {children}
-    //       </div>
-    //     );
-    //   },
-    // },
+    events: {
+      onBeforeCreate: (editor) => {
+        return editor.commands.buildFileElements({ text: 'Hello world' });
+      },
+    },
     options: {
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file, 'auto');
@@ -70,9 +118,23 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Image.extend({
-    // renders: {
-    //   image: YooptaWithNextImage,
-    // },
+    events: {
+      onDestroy: (editor, id) => {
+        const imageElement = Elements.getElement(editor, id, { type: 'image' });
+        console.log('Image imageElement', imageElement);
+      },
+    },
+    elementProps: {
+      image: (props: ImageElementProps) => ({
+        ...props,
+        alt: 'cloudinary',
+        sizes: {
+          width: 500,
+          height: 500,
+        },
+        fit: 'contain',
+      }),
+    },
     options: {
       maxSizes: { maxHeight: 750, maxWidth: 750 },
       HTMLAttributes: {
@@ -80,12 +142,10 @@ export const YOOPTA_PLUGINS = [
       },
 
       onUpload: async (file: File) => {
-        const data = await uploadToCloudinary(file);
+        const data = await uploadToCloudinary(file, 'image');
 
         return {
           src: data.secure_url,
-          alt: 'cloudinary',
-          fit: 'fill',
           sizes: {
             width: data.width,
             height: data.height,
@@ -95,6 +155,14 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Headings.HeadingOne.extend({
+    events: {
+      onCreate: (editor, id) => {
+        console.log('HeadingOne onCreate', editor, id);
+      },
+      onDestroy: (editor, id) => {
+        console.log('HeadingOne onDestroy', editor, id);
+      },
+    },
     options: {
       HTMLAttributes: {
         className: 'heading-one-element-extended',
@@ -120,6 +188,12 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Callout.extend({
+    elementProps: {
+      callout: (props: CalloutElement['props']) => ({
+        ...props,
+        theme: 'info',
+      }),
+    },
     options: {
       HTMLAttributes: {
         className: 'callout-element-extended',
@@ -134,18 +208,40 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Lists.NumberedList,
-  Lists.TodoList,
+  Lists.TodoList.extend({
+    elementProps: {
+      'todo-list': (props: TodoListElement['props']) => ({
+        ...props,
+        checked: true,
+      }),
+    },
+  }),
   Embed,
   Video.extend({
+    elementProps: {
+      video: (props: VideoElementProps) => ({
+        ...props,
+        fit: 'contain',
+        settings: {
+          controls: true,
+          loop: true,
+          muted: true,
+          playsInline: true,
+        },
+      }),
+    },
     options: {
       HTMLAttributes: {
         className: 'video-element-extended',
+      },
+      onUploadPoster: async (file: File) => {
+        const data = await uploadToCloudinary(file, 'image');
+        return data.secure_url;
       },
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file, 'video');
         return {
           src: data.secure_url,
-          alt: 'cloudinary',
           fit: 'cover',
           sizes: {
             width: data.width,
@@ -156,34 +252,12 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Link.extend({
-    renders: {
-      link: ({ attributes, children, element }) => {
-        if (element.props.target === '_blank') {
-          return (
-            <a
-              {...attributes}
-              className="link-element-extended text-blue-500 hover:underline"
-              href={element.props.url}
-              target={element.props.target}
-              rel={element.props.rel}
-            >
-              {children}
-            </a>
-          );
-        }
-
-        return (
-          <NextLink
-            {...attributes}
-            data-key={element.id}
-            className="link-element-extended text-blue-500 hover:underline cursor-pointer"
-            href={element.props.url}
-            data-next-link
-          >
-            {children}
-          </NextLink>
-        );
-      },
+    elementProps: {
+      link: (props) => ({
+        ...props,
+        target: '_blank',
+        rel: 'noopener noreferrer',
+      }),
     },
     options: {
       HTMLAttributes: {
@@ -191,5 +265,13 @@ export const YOOPTA_PLUGINS = [
       },
     },
   }),
-  Code,
+  Code.extend({
+    elementProps: {
+      code: (props) => ({
+        ...props,
+        language: 'javascript',
+        theme: 'GithubDark',
+      }),
+    },
+  }),
 ];

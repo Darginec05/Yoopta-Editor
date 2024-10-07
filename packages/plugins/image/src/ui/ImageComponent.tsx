@@ -52,11 +52,16 @@ const ImageComponent = ({
   }
 
   return (
-    <div className="yoo-image-w-full" data-layout={layout} {...attributes}>
+    <div className="yoo-image-w-full yoo-image-relative" data-layout={layout} {...attributes}>
       {src && (
         <img src={src} width={width} height={height} alt={alt || ''} decoding="async" loading="lazy" style={style} />
       )}
       {children}
+      {alt && (
+        <div className="yoopta-image-alt" title={alt}>
+          <div className="yoopta-image-alt-text">ALT</div>
+        </div>
+      )}
     </div>
   );
 };

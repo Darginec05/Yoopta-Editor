@@ -12,6 +12,8 @@ import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import Code from '@yoopta/code';
+import Table from '@yoopta/table';
+import Divider from '@yoopta/divider';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
@@ -25,6 +27,8 @@ import { WITH_EDITOR_CONTROL_INIT_VALUE } from './initValue';
 
 const plugins = [
   Paragraph,
+  Table,
+  Divider,
   HeadingOne,
   HeadingTwo,
   HeadingThree,
@@ -65,13 +69,17 @@ const plugins = [
           },
         };
       },
+      onUploadPoster: async (file) => {
+        const image = await uploadToCloudinary(file, 'image');
+        return image.secure_url;
+      },
     },
   }),
   File.extend({
     options: {
       onUpload: async (file) => {
         const response = await uploadToCloudinary(file, 'auto');
-        return { src: response.url };
+        return { src: response.secure_url, format: response.format, name: response.name, size: response.bytes };
       },
     },
   }),
@@ -138,7 +146,7 @@ function WithEditorInstanceExample() {
         <button
           type="button"
           className="bg-[#007aff] text-[14px] text-nowrap my-2 mr-0 md:mr-4 text-[#fff] px-4 py-2 rounded-md"
-          onClick={() => editor.setBlockSelected([0, 1, 2, 3])}
+          onClick={() => editor.setBlockSelected([null, [0, 1, 2, 3]])}
         >
           Select first four blocks
         </button>

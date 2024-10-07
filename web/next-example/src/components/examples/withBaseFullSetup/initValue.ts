@@ -1,4 +1,4 @@
-export const WITH_BASIC_INIT_VALUE = {
+export const WITH_BASIC_INIT_VALUE: any = {
   '9d98408d-b990-4ffc-a1d7-387084291b00': {
     id: '9d98408d-b990-4ffc-a1d7-387084291b00',
     value: [
@@ -48,7 +48,7 @@ export const WITH_BASIC_INIT_VALUE = {
     id: '7e3ef31f-a72d-467d-b17e-e09d2b0f9475',
     type: 'HeadingTwo',
     meta: {
-      order: 7,
+      order: 4,
       depth: 0,
     },
     value: [
@@ -84,7 +84,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 8,
+      order: 5,
       depth: 0,
     },
   },
@@ -106,7 +106,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 14,
+      order: 11,
       depth: 0,
     },
   },
@@ -128,7 +128,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 17,
+      order: 14,
       depth: 0,
     },
   },
@@ -150,7 +150,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 11,
+      order: 8,
       depth: 0,
     },
   },
@@ -172,7 +172,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 18,
+      order: 15,
       depth: 0,
     },
   },
@@ -194,7 +194,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 19,
+      order: 16,
       depth: 0,
     },
   },
@@ -216,7 +216,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 26,
+      order: 24,
       depth: 0,
     },
   },
@@ -242,7 +242,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 27,
+      order: 25,
       depth: 0,
     },
   },
@@ -264,7 +264,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 15,
+      order: 12,
       depth: 0,
     },
   },
@@ -289,7 +289,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 30,
+      order: 29,
       depth: 0,
     },
   },
@@ -311,7 +311,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 31,
+      order: 30,
       depth: 0,
     },
   },
@@ -333,7 +333,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 12,
+      order: 9,
       depth: 0,
     },
   },
@@ -355,7 +355,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 25,
+      order: 23,
       depth: 0,
     },
   },
@@ -377,29 +377,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 28,
-      depth: 0,
-    },
-  },
-  'aa9b295f-492f-4e54-9b98-7ec51887c752': {
-    id: 'aa9b295f-492f-4e54-9b98-7ec51887c752',
-    value: [
-      {
-        id: '1f5093d5-b20b-44bf-af2c-5c63d293758e',
-        type: 'paragraph',
-        children: [
-          {
-            text: '',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'Paragraph',
-    meta: {
-      order: 32,
+      order: 26,
       depth: 0,
     },
   },
@@ -421,7 +399,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 13,
+      order: 10,
       depth: 0,
     },
   },
@@ -443,7 +421,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 20,
+      order: 17,
       depth: 0,
     },
   },
@@ -465,7 +443,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 24,
+      order: 21,
       depth: 0,
     },
   },
@@ -487,7 +465,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 29,
+      order: 28,
       depth: 0,
     },
   },
@@ -495,7 +473,7 @@ export const WITH_BASIC_INIT_VALUE = {
     id: '6184a767-f56e-4856-bed4-82f970b5fce8',
     type: 'Blockquote',
     meta: {
-      order: 6,
+      order: 2,
       depth: 0,
     },
     value: [
@@ -543,7 +521,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Image',
     meta: {
-      order: 44,
+      order: 43,
       depth: 0,
     },
   },
@@ -581,7 +559,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'HeadingThree',
     meta: {
-      order: 43,
+      order: 42,
       depth: 0,
     },
   },
@@ -603,7 +581,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 23,
+      order: 20,
       depth: 1,
     },
   },
@@ -625,7 +603,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 21,
+      order: 18,
       depth: 0,
     },
   },
@@ -647,7 +625,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 9,
+      order: 6,
       depth: 0,
     },
   },
@@ -677,7 +655,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Image',
     meta: {
-      order: 46,
+      order: 45,
       depth: 0,
     },
   },
@@ -685,7 +663,7 @@ export const WITH_BASIC_INIT_VALUE = {
     id: '7d3f395b-656d-46af-924c-b88b9974f631',
     type: 'HeadingThree',
     meta: {
-      order: 45,
+      order: 44,
       depth: 0,
     },
     value: [
@@ -738,7 +716,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 16,
+      order: 13,
       depth: 0,
     },
   },
@@ -760,7 +738,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 22,
+      order: 19,
       depth: 0,
     },
   },
@@ -782,7 +760,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 47,
+      order: 46,
       depth: 0,
     },
   },
@@ -790,7 +768,7 @@ export const WITH_BASIC_INIT_VALUE = {
     id: '697aa54b-aea0-4a88-82e5-ec5a6f2c5791',
     type: 'HeadingThree',
     meta: {
-      order: 3,
+      order: 54,
       depth: 0,
       align: 'center',
     },
@@ -827,7 +805,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'HeadingTwo',
     meta: {
-      order: 33,
+      order: 32,
       depth: 0,
     },
   },
@@ -849,7 +827,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 34,
+      order: 33,
       depth: 0,
     },
   },
@@ -871,7 +849,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 35,
+      order: 34,
       depth: 0,
     },
   },
@@ -893,7 +871,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 36,
+      order: 35,
       depth: 0,
     },
   },
@@ -915,7 +893,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 37,
+      order: 36,
       depth: 0,
     },
   },
@@ -937,7 +915,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 38,
+      order: 37,
       depth: 0,
     },
   },
@@ -973,7 +951,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 39,
+      order: 38,
       depth: 0,
     },
   },
@@ -995,7 +973,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 40,
+      order: 39,
       depth: 0,
     },
   },
@@ -1017,7 +995,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 41,
+      order: 40,
       depth: 0,
     },
   },
@@ -1039,51 +1017,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 49,
-      depth: 0,
-    },
-  },
-  '3fd638ae-fb2f-433d-976a-f2d5f82f2822': {
-    id: '3fd638ae-fb2f-433d-976a-f2d5f82f2822',
-    value: [
-      {
-        id: 'c659d066-5f50-4583-afd8-3b09b2fcbd87',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Selection between blocks',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 50,
-      depth: 0,
-    },
-  },
-  'd62df7dd-8560-445b-8374-fcd5299029d3': {
-    id: 'd62df7dd-8560-445b-8374-fcd5299029d3',
-    value: [
-      {
-        id: 'e8510c43-606c-430d-ac81-87f29cacf65e',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Copy/paste with selected blocks',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 51,
+      order: 48,
       depth: 0,
     },
   },
@@ -1105,7 +1039,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 54,
+      order: 51,
       depth: 0,
     },
   },
@@ -1127,7 +1061,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'HeadingTwo',
     meta: {
-      order: 48,
+      order: 47,
       depth: 0,
     },
   },
@@ -1149,29 +1083,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 52,
-      depth: 0,
-    },
-  },
-  'c5fc9364-93ab-4e48-83bb-f5d5a8fb3c23': {
-    id: 'c5fc9364-93ab-4e48-83bb-f5d5a8fb3c23',
-    value: [
-      {
-        id: '18fc43c2-efb8-4b18-936a-a41e4acb304c',
-        type: 'paragraph',
-        children: [
-          {
-            text: '',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'Paragraph',
-    meta: {
-      order: 42,
+      order: 49,
       depth: 0,
     },
   },
@@ -1193,7 +1105,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 55,
+      order: 52,
       depth: 0,
     },
   },
@@ -1215,7 +1127,7 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'BulletedList',
     meta: {
-      order: 53,
+      order: 50,
       depth: 0,
     },
   },
@@ -1239,31 +1151,8 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Code',
     meta: {
-      order: 10,
+      order: 7,
       depth: 1,
-    },
-  },
-  'ffb4470c-d951-4ed2-b446-c1a07650c550': {
-    id: 'ffb4470c-d951-4ed2-b446-c1a07650c550',
-    value: [
-      {
-        id: '7dee490c-3f3a-419b-b5d4-7915650cdb3c',
-        type: 'paragraph',
-        children: [
-          {
-            text: '---',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'Paragraph',
-    meta: {
-      order: 5,
-      depth: 0,
-      align: 'center',
     },
   },
   '62bcd227-f42c-426d-8b3a-9bff70b5308d': {
@@ -1509,20 +1398,115 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Accordion',
     meta: {
-      order: 4,
+      order: 55,
       depth: 0,
       align: 'center',
     },
   },
-  '39f639c6-219f-4cb7-a817-cb9f4d6ea07c': {
-    id: '39f639c6-219f-4cb7-a817-cb9f4d6ea07c',
+  '8300449a-20f5-4845-9b3f-8bb7e6b2879c': {
+    id: '8300449a-20f5-4845-9b3f-8bb7e6b2879c',
     value: [
       {
-        id: '022419d3-449c-4bfd-b4fb-e87060083aea',
+        id: '08915c8d-47a8-4785-8c26-16e09459b433',
+        type: 'divider',
+        props: {
+          nodeType: 'void',
+          theme: 'gradient',
+          color: '#007aff',
+        },
+        children: [
+          {
+            text: '',
+          },
+        ],
+      },
+    ],
+    type: 'Divider',
+    meta: {
+      order: 53,
+      depth: 0,
+      align: 'center',
+    },
+  },
+  '86a454cf-da6a-4669-88ca-365385091e7a': {
+    id: '86a454cf-da6a-4669-88ca-365385091e7a',
+    value: [
+      {
+        id: 'd7045f51-1fd9-4c63-9d87-2a573d4a2e7d',
+        type: 'divider',
+        props: {
+          nodeType: 'void',
+          theme: 'gradient',
+          color: '#007aff',
+        },
+        children: [
+          {
+            text: '',
+          },
+        ],
+      },
+    ],
+    type: 'Divider',
+    meta: {
+      order: 3,
+      depth: 0,
+    },
+  },
+  '09408bb0-1065-4b40-b39d-51eb07a1aa6c': {
+    id: '09408bb0-1065-4b40-b39d-51eb07a1aa6c',
+    value: [
+      {
+        id: 'a3e8fc1c-8826-4548-83ed-8dfa5ccfc03b',
+        type: 'divider',
+        props: {
+          nodeType: 'void',
+          theme: 'gradient',
+          color: '#007aff',
+        },
+        children: [
+          {
+            text: '',
+          },
+        ],
+      },
+    ],
+    type: 'Divider',
+    meta: {
+      order: 31,
+      depth: 0,
+    },
+  },
+  '4b62b80a-a70b-4f02-b141-3066e639deee': {
+    id: '4b62b80a-a70b-4f02-b141-3066e639deee',
+    value: [
+      {
+        id: '2c0cf900-7129-408f-8e5d-154bb9045240',
+        type: 'bulleted-list',
+        children: [
+          {
+            text: 'Commands API for every plugin',
+          },
+        ],
+        props: {
+          nodeType: 'block',
+        },
+      },
+    ],
+    type: 'BulletedList',
+    meta: {
+      order: 22,
+      depth: 0,
+    },
+  },
+  '6d8c898c-bf25-4254-9272-58e4075af26c': {
+    id: '6d8c898c-bf25-4254-9272-58e4075af26c',
+    value: [
+      {
+        id: 'f101af22-4526-41a2-b033-4091a828a71e',
         type: 'paragraph',
         children: [
           {
-            text: '---',
+            text: '',
           },
         ],
         props: {
@@ -1532,9 +1516,312 @@ export const WITH_BASIC_INIT_VALUE = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 2,
+      order: 41,
       depth: 0,
-      align: 'center',
+    },
+  },
+  'e379f203-6d78-4818-b86c-b180410fd1f9': {
+    id: 'e379f203-6d78-4818-b86c-b180410fd1f9',
+    value: [
+      {
+        id: 'd6315d37-e0cb-4bba-b7d9-1da1b0a010d0',
+        type: 'table',
+        children: [
+          {
+            id: '1949ea3b-4506-4b0b-9eea-6d7ba4e97e2a',
+            type: 'table-row',
+            children: [
+              {
+                id: '1ad8ad16-1f03-4969-959d-0b623ec26e89',
+                type: 'table-data-cell',
+                children: [
+                  {
+                    text: 'Operation',
+                  },
+                ],
+                props: {
+                  width: 339,
+                  asHeader: true,
+                },
+              },
+              {
+                id: 'f388ff2d-83e9-4f91-8b22-a3b70ea2f64c',
+                type: 'table-data-cell',
+                children: [
+                  {
+                    text: 'Hotkey',
+                  },
+                ],
+                props: {
+                  width: 323,
+                  asHeader: true,
+                },
+              },
+            ],
+          },
+          {
+            id: 'da77eedc-8a58-4de3-b02f-587ab800950a',
+            type: 'table-row',
+            children: [
+              {
+                id: '79a32671-a924-44bd-909b-46e8d2b80de6',
+                type: 'table-data-cell',
+                children: [
+                  {
+                    text: 'Insert row after',
+                  },
+                ],
+                props: {
+                  width: 339,
+                  asHeader: false,
+                },
+              },
+              {
+                id: '96b9d861-66c8-4ddf-8110-80b4867c59c0',
+                type: 'table-data-cell',
+                children: [
+                  {
+                    text: 'shift+enter',
+                    bold: true,
+                  },
+                ],
+                props: {
+                  width: 323,
+                  asHeader: false,
+                },
+              },
+            ],
+          },
+          {
+            id: '6993bb99-cbf8-4432-917e-7498dcdab4b7',
+            type: 'table-row',
+            children: [
+              {
+                id: 'b0046c4f-e66a-4984-92b1-4781aa79d09a',
+                type: 'table-data-cell',
+                children: [
+                  {
+                    text: 'Insert row before',
+                  },
+                ],
+                props: {
+                  width: 339,
+                  asHeader: false,
+                },
+              },
+              {
+                id: '6cf9d09e-b385-4dba-ba4e-42cb6f8e548e',
+                type: 'table-data-cell',
+                children: [
+                  {
+                    text: 'cmd+shift+enter',
+                    bold: true,
+                  },
+                ],
+                props: {
+                  width: 323,
+                  asHeader: false,
+                },
+              },
+            ],
+          },
+          {
+            id: '1a2548d6-11c3-47f5-b715-230f5372b2c6',
+            type: 'table-row',
+            children: [
+              {
+                id: 'fdde9b8c-e44e-4bd5-856e-6a91ad5c8683',
+                type: 'table-data-cell',
+                children: [
+                  {
+                    text: 'Delete row',
+                  },
+                ],
+                props: {
+                  asHeader: false,
+                },
+              },
+              {
+                id: '4c6c56d2-185a-453c-a1bd-ba9071ca2ad9',
+                type: 'table-data-cell',
+                children: [
+                  {
+                    text: 'cmd+shift+delete',
+                    bold: true,
+                  },
+                ],
+              },
+            ],
+            props: {
+              nodeType: 'block',
+            },
+          },
+          {
+            id: '41c0642f-ed13-4c17-8229-afb3e6c859e3',
+            type: 'table-row',
+            children: [
+              {
+                id: '54244253-1168-4ec1-a8d6-80912c61ae54',
+                type: 'table-data-cell',
+                children: [
+                  {
+                    text: 'Insert column to right',
+                  },
+                ],
+                props: {
+                  asHeader: false,
+                },
+              },
+              {
+                id: '5b04af6e-30a9-4f78-9e4c-40798eaf3fb8',
+                type: 'table-data-cell',
+                children: [
+                  {
+                    text: 'cmd+shift+→',
+                    bold: true,
+                  },
+                ],
+              },
+            ],
+            props: {
+              nodeType: 'block',
+            },
+          },
+          {
+            id: '3ac6863f-ba4d-408e-bff9-43a792d0d3da',
+            type: 'table-row',
+            children: [
+              {
+                id: '8d38d6cf-afea-4e2e-9740-5efafb13e1fe',
+                type: 'table-data-cell',
+                children: [
+                  {
+                    text: 'Insert column to left',
+                  },
+                ],
+                props: {
+                  asHeader: false,
+                },
+              },
+              {
+                id: '787beec3-fc68-4ab3-b373-c5358fa5e434',
+                type: 'table-data-cell',
+                children: [
+                  {
+                    text: 'cmd+shift+←',
+                    bold: true,
+                  },
+                ],
+              },
+            ],
+            props: {
+              nodeType: 'block',
+            },
+          },
+          {
+            id: '7624d393-b700-4c36-8ffa-b58e82264dba',
+            type: 'table-row',
+            children: [
+              {
+                id: 'b6c09200-685d-4d99-bcb9-02f0f0fc2b91',
+                type: 'table-data-cell',
+                children: [
+                  {
+                    text: 'Delete column',
+                  },
+                ],
+                props: {
+                  asHeader: false,
+                },
+              },
+              {
+                id: 'bf89a572-9a58-4504-b681-df1e4340d31c',
+                type: 'table-data-cell',
+                children: [
+                  {
+                    text: 'cmd+alt+delete',
+                    bold: true,
+                  },
+                ],
+              },
+            ],
+            props: {
+              nodeType: 'block',
+            },
+          },
+          {
+            id: 'cbedfbd3-96e6-4cbe-81fb-b232e800c659',
+            type: 'table-row',
+            children: [
+              {
+                id: 'c3b0aa23-edab-4f8e-bb36-5ddee5cfa262',
+                type: 'table-data-cell',
+                children: [
+                  {
+                    text: 'Toggle header for first row',
+                  },
+                ],
+                props: {
+                  asHeader: false,
+                },
+              },
+              {
+                id: '0f501a7f-67c4-4d2e-b373-8f776bb5412e',
+                type: 'table-data-cell',
+                children: [
+                  {
+                    text: 'cmd+shift+H',
+                    bold: true,
+                  },
+                ],
+              },
+            ],
+            props: {
+              nodeType: 'block',
+            },
+          },
+          {
+            id: 'ea2108c1-217c-46f5-8421-dfa809913c6a',
+            type: 'table-row',
+            children: [
+              {
+                id: 'cf72fc7d-81ef-47d3-a76a-d132b6ab35b7',
+                type: 'table-data-cell',
+                children: [
+                  {
+                    text: 'Toggle header for first column',
+                  },
+                ],
+                props: {
+                  asHeader: false,
+                },
+              },
+              {
+                id: 'e93904cb-9cf9-410e-9ccc-d2379edf0ff6',
+                type: 'table-data-cell',
+                children: [
+                  {
+                    text: 'cmd+shift+V',
+                    bold: true,
+                  },
+                ],
+              },
+            ],
+            props: {
+              nodeType: 'block',
+            },
+          },
+        ],
+        props: {
+          headerColumn: false,
+          headerRow: true,
+        },
+      },
+    ],
+    type: 'Table',
+    meta: {
+      order: 27,
+      depth: 3,
     },
   },
 };

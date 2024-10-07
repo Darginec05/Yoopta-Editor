@@ -22,7 +22,6 @@ const FileUploader = ({ accept = '', onClose, blockId, onSetLoading }: Props) =>
     try {
       // [TODO] - abort controller?
       const response = await options?.onUpload(file);
-      const format = response.format || file.name.split('.').pop() || null;
 
       Elements.updateElement<FilePluginElements, FileElementProps>(editor, blockId, {
         type: 'file',
@@ -30,7 +29,7 @@ const FileUploader = ({ accept = '', onClose, blockId, onSetLoading }: Props) =>
           src: response.src,
           name: response.name || file.name,
           size: response.size || file.size,
-          format: format,
+          format: response.format,
         },
       });
     } catch (error) {

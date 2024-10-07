@@ -1,12 +1,7 @@
 import { YooEditor, YooptaBlockPath } from '../types';
 
-export type SetSelectionOptions = {
-  applyChanges?: boolean;
-};
+export type SetSelectionOptions = YooptaBlockPath;
 
-export function setSelection(editor: YooEditor, path: YooptaBlockPath | null, options: SetSelectionOptions = {}) {
-  const { applyChanges = true } = options;
-
-  editor.selection = path;
-  if (applyChanges) editor.applyChanges();
+export function setSelection(editor: YooEditor, path: SetSelectionOptions) {
+  editor.applyTransforms([{ type: 'set_selection_block', path }]);
 }

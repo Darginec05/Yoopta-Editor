@@ -1,5 +1,5 @@
 import { FloatingPortal } from '@floating-ui/react';
-import { MutableRefObject, ReactNode, useEffect, useState } from 'react';
+import { MutableRefObject, ReactNode, useEffect, useRef, useState } from 'react';
 import { useYooptaEditor } from '../../contexts/YooptaContext/YooptaContext';
 
 type Props = {
@@ -9,19 +9,33 @@ type Props = {
 
 const Portal = (props: Props) => {
   const [isMounted, setIsMounted] = useState(false);
+  const rootEl = useRef<HTMLElement | null>(null);
   const editor = useYooptaEditor();
 
   useEffect(() => {
     setIsMounted(true);
+    const editorEl = editor.refElement;
+
+    if (!editorEl) return;
+
+    const overlays = editorEl.querySelector('.yoopta-overlays');
+    if (!overlays) {
+      rootEl.current = document.createElement('div');
+      rootEl.current.className = 'yoopta-overlays';
+      editorEl.appendChild(rootEl.current);
+    }
+
+    return () => {
+      if (rootEl.current) {
+        rootEl.current.remove();
+      }
+    };
   }, []);
 
   if (!isMounted) return null;
 
   return (
-    <FloatingPortal
-      id={`${props.id}-${editor.id}`}
-      root={document.querySelector(`[data-yoopta-editor-id="${editor.id}"]`) as HTMLElement}
-    >
+    <FloatingPortal id={`${props.id}-${editor.id}`} root={rootEl.current || editor.refElement}>
       {props.children}
     </FloatingPortal>
   );

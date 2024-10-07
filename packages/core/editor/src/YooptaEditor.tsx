@@ -2,15 +2,15 @@ import EventEmitter from 'eventemitter3';
 import { YooptaContextProvider } from './contexts/YooptaContext/YooptaContext';
 import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { Editor } from './components/Editor/Editor';
-import { CSSProperties, useMemo, useState } from 'react';
-import { YooEditor, YooptaBlockData, YooptaContentValue } from './editor/types';
+import { CSSProperties, useCallback, useEffect, useMemo, useState } from 'react';
+import { SlateElement, YooEditor, YooptaBlockData, YooptaBlockPath, YooptaContentValue } from './editor/types';
 import { Plugin } from './plugins/types';
-import NoSSR from './components/NoSsr/NoSsr';
 import { Tools, ToolsProvider } from './contexts/YooptaContext/ToolsContext';
 import {
   buildBlocks,
   buildBlockShortcuts,
   buildBlockSlateEditors,
+  buildCommands,
   buildMarks,
   buildPlugins,
 } from './utils/editorBuilders';
@@ -18,13 +18,15 @@ import { YooptaPlugin } from './plugins';
 import { YooptaMark } from './marks';
 import { FakeSelectionMark } from './marks/FakeSelectionMark';
 import { generateId } from './utils/generateId';
+import { YooptaOperation } from './editor/core/applyTransforms';
 
 export type YooptaEditorProps = {
   id?: string;
   editor: YooEditor;
-  plugins: YooptaPlugin[];
+  plugins: Readonly<YooptaPlugin<Record<string, SlateElement>>[]>;
   marks?: YooptaMark<any>[];
   value?: YooptaContentValue;
+  onChange?: (value: YooptaContentValue) => void;
   autoFocus?: boolean;
   className?: string;
   selectionBoxRoot?: HTMLElement | React.MutableRefObject<HTMLElement | null> | false;
@@ -54,16 +56,9 @@ function validateInitialValue(value: any): boolean {
   return true;
 }
 
-const isLegacyVersionInUse = (value: any): boolean => {
-  if (Array.isArray(value) && value.length > 0) {
-    return value.some((node) => {
-      if (node.id || node.nodeType || node.type || node.children) {
-        return true;
-      }
-    });
-  }
-
-  return false;
+type EditorState = {
+  editor: YooEditor;
+  version: number;
 };
 
 const YooptaEditor = ({
@@ -81,23 +76,19 @@ const YooptaEditor = ({
   readOnly,
   width,
   style,
-}: YooptaEditorProps) => {
-  const applyChanges = () => {
-    setEditorState((prev) => ({ ...prev, version: prev.version + 1 }));
-  };
-
+  onChange,
+}: Props) => {
   const marks = useMemo(() => {
     if (marksProps) return [FakeSelectionMark, ...marksProps];
     return [FakeSelectionMark];
   }, [marksProps]);
 
   const plugins = useMemo(() => {
-    return pluginsProps.map((plugin) => plugin.getPlugin as Plugin<string, any, any>);
+    return pluginsProps.map((plugin) => plugin.getPlugin as Plugin<Record<string, SlateElement>>);
   }, [pluginsProps]);
 
-  const [editorState, setEditorState] = useState<{ editor: YooEditor<any>; version: number }>(() => {
+  const [editorState, setEditorState] = useState<EditorState>(() => {
     if (!editor.id) editor.id = id || generateId();
-    editor.applyChanges = applyChanges;
     editor.readOnly = readOnly || false;
     if (marks) editor.formats = buildMarks(editor, marks);
     editor.blocks = buildBlocks(editor, plugins);
@@ -114,6 +105,7 @@ const YooptaEditor = ({
     editor.blockEditorsMap = buildBlockSlateEditors(editor);
     editor.shortcuts = buildBlockShortcuts(editor);
     editor.plugins = buildPlugins(plugins);
+    editor.commands = buildCommands(editor, plugins);
 
     editor.on = Events.on;
     editor.once = Events.once;
@@ -123,50 +115,47 @@ const YooptaEditor = ({
     return { editor, version: 0 };
   });
 
-  if (isLegacyVersionInUse(value)) {
-    console.error('Legacy version of Yoopta-Editor in use');
+  const [selectionPath, setSelectionPath] = useState<YooptaBlockPath | null>(null);
 
-    return (
-      <div>
-        <h1>Legacy version of the Yoopta-Editor is used</h1>
-        <p>It looks like you are using a legacy version of the editor.</p>
-        <p>
-          The structure of value has changed in new <b>@v4</b> version
-        </p>
-        <p>
-          {/* [TODO] - add link to migration guide */}
-          Please, check the migration guide to update your editor to the new <b>@v4</b> version.
-          <a href="" />
-        </p>
-        <p>
-          If you have specific case please{' '}
-          <a href="https://github.com/Darginec05/Yoopta-Editor/issues" target="_blank" rel="noopener noreferrer">
-            open the issue
-          </a>{' '}
-          and we will solve your problem with migration
-        </p>
-      </div>
-    );
-  }
+  const onSelectonPathChange = useCallback((path: YooptaBlockPath) => {
+    setSelectionPath(path);
+  }, []);
+
+  const onValueChange = useCallback(() => {
+    setEditorState((prevState) => ({
+      editor: prevState.editor,
+      version: prevState.version + 1,
+    }));
+
+    onChange?.(editor.children);
+  }, []);
+
+  useEffect(() => {
+    editor.on('change', onValueChange);
+    editor.on('selection-change', onSelectonPathChange);
+
+    return () => {
+      editor.off('change', onValueChange);
+      editor.off('selection-change', onSelectonPathChange);
+    };
+  }, [editor, onValueChange]);
 
   return (
-    <NoSSR>
-      <YooptaContextProvider editorState={editorState}>
-        <ToolsProvider tools={tools}>
-          <Editor
-            placeholder={placeholder}
-            marks={marks}
-            autoFocus={autoFocus}
-            className={className}
-            selectionBoxRoot={selectionBoxRoot}
-            width={width}
-            style={style}
-          >
-            {children}
-          </Editor>
-        </ToolsProvider>
-      </YooptaContextProvider>
-    </NoSSR>
+    <YooptaContextProvider editorState={editorState}>
+      <ToolsProvider tools={tools}>
+        <Editor
+          placeholder={placeholder}
+          marks={marks}
+          autoFocus={autoFocus}
+          className={className}
+          selectionBoxRoot={selectionBoxRoot}
+          width={width}
+          style={style}
+        >
+          {children}
+        </Editor>
+      </ToolsProvider>
+    </YooptaContextProvider>
   );
 };
 

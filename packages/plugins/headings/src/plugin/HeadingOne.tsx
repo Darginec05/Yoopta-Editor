@@ -1,4 +1,6 @@
-import { YooptaPlugin, PluginElementRenderProps } from '@yoopta/editor';
+import { YooptaPlugin, PluginElementRenderProps, serializeTextNodesIntoMarkdown } from '@yoopta/editor';
+import { HeadingOneCommands } from '../commands';
+import { HeadingOneElement } from '../types';
 
 const HeadingOneRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
   const { element, HTMLAttributes = {}, attributes, children } = props;
@@ -15,7 +17,7 @@ const HeadingOneRender = ({ extendRender, ...props }: PluginElementRenderProps) 
 
 HeadingOneRender.displayName = 'HeadingOne';
 
-const HeadingOne = new YooptaPlugin({
+const HeadingOne = new YooptaPlugin<Record<'heading-one', HeadingOneElement>>({
   type: 'HeadingOne',
   elements: {
     'heading-one': {
@@ -25,6 +27,7 @@ const HeadingOne = new YooptaPlugin({
       },
     },
   },
+  commands: HeadingOneCommands,
   options: {
     display: {
       title: 'Heading 1',
@@ -37,13 +40,15 @@ const HeadingOne = new YooptaPlugin({
       deserialize: {
         nodeNames: ['H1'],
       },
-      serialize: (element, text) => {
-        return `<h1>${text}</h1>`;
+      serialize: (element, text, blockMeta) => {
+        const { depth = 0, align = 'left' } = blockMeta || {};
+
+        return `<h1 data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}">${text}</h1>`;
       },
     },
     markdown: {
       serialize: (element, text) => {
-        return `# ${text}\n`;
+        return `# ${serializeTextNodesIntoMarkdown(element.children)}\n`;
       },
     },
   },

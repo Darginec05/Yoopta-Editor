@@ -1,4 +1,4 @@
-import { ClipboardEvent, CSSProperties, ReactNode, useEffect, useRef } from 'react';
+import { ClipboardEvent, CSSProperties, ReactNode, useEffect, useLayoutEffect, useRef } from 'react';
 import { useYooptaEditor, useYooptaReadOnly } from '../../contexts/YooptaContext/YooptaContext';
 import { RenderBlocks } from './RenderBlocks';
 import { YooptaMark } from '../../marks';
@@ -9,11 +9,13 @@ import { HOTKEYS } from '../../utils/hotkeys';
 import { Editor as SlateEditor, Element, Path, Range, Transforms } from 'slate';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { ReactEditor } from 'slate-react';
-import { YooptaBlockPath } from '../../editor/types';
+import { YooptaBlockPath, YooptaContentValue } from '../../editor/types';
 import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
-import { serializeHTML } from '../../parsers/serializeHTML';
 import { Blocks } from '../../editor/blocks';
+import { useMultiSelection } from './selection';
+import { getPreviousPath } from '../../editor/paths/getPreviousPath';
+import { Paths } from '../../editor/paths';
 
 type Props = {
   marks?: YooptaMark<any>[];
@@ -56,8 +58,21 @@ const Editor = ({
 }: Props) => {
   const editor = useYooptaEditor();
   const isReadOnly = useYooptaReadOnly();
-  const yooptaEditorRef = useRef<HTMLDivElement>(null);
-  const selectionBox = useRectangeSelectionBox({ editor, yooptaEditorRef, root: selectionBoxRoot });
+  const selectionBox = useRectangeSelectionBox({ editor, root: selectionBoxRoot });
+  const multiSelection = useMultiSelection({ editor });
+
+  useEffect(() => {
+    console.log(
+      'orders',
+      Object.keys(editor.children)
+        .map((k) => editor.children[k].meta.order)
+        .sort((a, b) => a - b),
+    );
+    setTimeout(() => {
+      console.log('document.activeElement', document.activeElement);
+      console.log('editor.selection', editor.selection);
+    }, 100);
+  }, [editor.selection]);
 
   let state = useRef<State>(DEFAULT_STATE).current;
 
@@ -71,14 +86,14 @@ const Editor = ({
 
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [editor.selectedBlocks, isReadOnly]);
+  }, [editor.selection, isReadOnly]);
 
   const handleEmptyZoneClick = (e: React.MouseEvent) => {
-    const editorRef = yooptaEditorRef.current;
-    if (!editorRef) return;
+    const editorEl = editor.refElement;
+    if (!editorEl) return;
 
-    const { bottom } = editorRef.getBoundingClientRect();
-    const paddingBottom = parseInt(getComputedStyle(editorRef).paddingBottom, 10);
+    const { bottom } = editorEl.getBoundingClientRect();
+    const paddingBottom = parseInt(getComputedStyle(editorEl).paddingBottom, 10);
     const paddingBottomAreaTop = bottom - paddingBottom;
     const defaultBlock = buildBlockData({ id: generateId() });
 
@@ -104,15 +119,7 @@ const Editor = ({
       }
 
       const nextPath = lastPath + 1;
-      editor.insertBlock(defaultBlock, { at: [nextPath], focus: true });
-    }
-  };
-
-  const resetSelectedBlocks = () => {
-    if (isReadOnly) return;
-
-    if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
-      editor.setBlockSelected(null);
+      editor.insertBlock(defaultBlock.type, { at: [nextPath], focus: true });
     }
   };
 
@@ -125,47 +132,42 @@ const Editor = ({
   const onMouseDown = (event: React.MouseEvent) => {
     if (isReadOnly) return;
 
-    // if (event.shiftKey) {
-    //   const currentSelectionIndex = editor.selection;
-    //   if (!currentSelectionIndex) return;
-
-    //   const targetBlock = (event.target as HTMLElement).closest('div[data-yoopta-block]');
-    //   const targetBlockId = targetBlock?.getAttribute('data-yoopta-block-id') || '';
-    //   const targetBlockIndex = editor.children[targetBlockId]?.meta.order;
-    //   if (typeof targetBlockIndex !== 'number') return;
-
-    //   const indexesBetween = Array.from({ length: Math.abs(targetBlockIndex - currentSelectionIndex[0]) }).map(
-    //     (_, index) =>
-    //       targetBlockIndex > currentSelectionIndex[0]
-    //         ? currentSelectionIndex[0] + index + 1
-    //         : currentSelectionIndex[0] - index - 1,
-    //   );
-
-    //   editor.blur();
-    //   editor.setBlockSelected([currentSelectionIndex[0], ...indexesBetween], { only: true });
-    //   return;
-    // }
-
+    multiSelection.onMouseDown(event);
     resetSelectionState();
     handleEmptyZoneClick(event);
-    resetSelectedBlocks();
   };
 
   const onBlur = (event: React.FocusEvent) => {
-    const isInsideEditor = yooptaEditorRef.current?.contains(event.relatedTarget as Node);
+    const isInsideEditor = editor.refElement?.contains(event.relatedTarget as Node);
     if (isInsideEditor || isReadOnly) return;
 
-    editor.blur();
-
     resetSelectionState();
-    resetSelectedBlocks();
+
+    const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+    if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
+      // editor.setBlockSelected(null);
+      editor.setSelection([null]);
+    }
   };
 
   const onKeyDown = (event) => {
     if (isReadOnly) return;
 
+    if (HOTKEYS.isRedo(event)) {
+      event.preventDefault();
+      editor.redo();
+      return;
+    }
+
+    if (HOTKEYS.isUndo(event)) {
+      event.preventDefault();
+      editor.undo();
+      return;
+    }
+
     if (HOTKEYS.isSelect(event)) {
-      const isAllBlocksSelected = editor.selectedBlocks?.length === Object.keys(editor.children).length;
+      const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+      const isAllBlocksSelected = selectedBlocks?.length === Object.keys(editor.children).length;
 
       if (isAllBlocksSelected) {
         event.preventDefault();
@@ -173,36 +175,56 @@ const Editor = ({
       }
 
       if (state.selectionStarted) {
-        event.preventDefault();
-        editor.setBlockSelected([], { allSelected: true });
+        const allBlockIndexes = Object.keys(editor.children).map((k, i) => i);
+        event.preventDefault([null, allBlockIndexes]);
+        // editor.setBlockSelected([], { allSelected: true });
         return;
       }
     }
 
     if (HOTKEYS.isCopy(event) || HOTKEYS.isCut(event)) {
-      if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
+      const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+      if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
         event.preventDefault();
 
-        const htmlString = serializeHTML(editor, editor.getEditorValue());
-        const blob = new Blob([htmlString], { type: 'text/html' });
+        const htmlString = editor.getHTML(editor.getEditorValue());
+        const textString = editor.getPlainText(editor.getEditorValue());
+        const htmlBlob = new Blob([htmlString], { type: 'text/html' });
+        const textBlob = new Blob([textString], { type: 'text/plain' });
 
-        const item = new ClipboardItem({ 'text/html': blob });
+        const clipboardItem = new ClipboardItem({
+          'text/html': htmlBlob,
+          'text/plain': textBlob,
+        });
 
-        navigator.clipboard.write([item]).then(() => {
+        navigator.clipboard.write([clipboardItem]).then(() => {
           const html = new DOMParser().parseFromString(htmlString, 'text/html');
           console.log('HTML copied\n', html.body);
         });
 
         if (HOTKEYS.isCut(event)) {
-          const isAllBlocksSelected = editor.selectedBlocks.length === Object.keys(editor.children).length;
+          // [TEST]
+          editor.batchOperations(() => {
+            const selectedBlocks = Paths.getSelectedPaths(editor.selection);
 
-          editor.deleteBlocks({ paths: editor.selectedBlocks, focus: false });
-          editor.setBlockSelected(null);
-          resetSelectionState();
+            if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
+              const isAllBlocksSelected = selectedBlocks.length === Object.keys(editor.children).length;
 
-          if (isAllBlocksSelected) {
-            editor.insertBlock(buildBlockData({ id: generateId() }), { at: [0], focus: true });
-          }
+              selectedBlocks.forEach((index) => {
+                const blockId = Blocks.getBlock(editor, { at: [index] })?.id;
+                if (blockId) editor.deleteBlock({ blockId });
+              });
+
+              // editor.setBlockSelected(null);
+              editor.setSelection([null]);
+              resetSelectionState();
+
+              if (isAllBlocksSelected) {
+                const defaultBlock = buildBlockData({ id: generateId() });
+                editor.insertBlock(defaultBlock.type, { at: [0], focus: true });
+              }
+            }
+          });
         }
         return;
       }
@@ -210,25 +232,40 @@ const Editor = ({
 
     if (HOTKEYS.isBackspace(event)) {
       event.stopPropagation();
-
-      const isAllBlocksSelected =
-        Array.isArray(editor.selectedBlocks) && editor.selectedBlocks?.length === Object.keys(editor.children).length;
+      const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+      const isAllBlocksSelected = selectedBlocks?.length === Object.keys(editor.children).length;
 
       if (isAllBlocksSelected) {
         event.preventDefault();
-        editor.deleteBlocks({ deleteAll: true });
-        editor.setBlockSelected(null);
-        resetSelectionState();
+
+        // [TEST]
+        editor.batchOperations(() => {
+          const allBlocks = Object.keys(editor.children);
+          allBlocks.forEach((blockId) => editor.deleteBlock({ blockId }));
+
+          // editor.setBlockSelected(null);
+          editor.setSelection([null]);
+          resetSelectionState();
+        });
+
         return;
       }
 
-      if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks?.length > 0) {
-        event.preventDefault();
-        editor.deleteBlocks({ paths: editor.selectedBlocks, focus: false });
-        editor.setBlockSelected(null);
-        resetSelectionState();
-        return;
-      }
+      // [TEST]
+      editor.batchOperations(() => {
+        const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+
+        if (Array.isArray(selectedBlocks) && selectedBlocks?.length > 0) {
+          event.preventDefault();
+          selectedBlocks.forEach((index) => editor.deleteBlock({ at: [index] }));
+
+          // editor.setBlockSelected(null);
+          editor.setSelection([null]);
+          resetSelectionState();
+        }
+      });
+
+      return;
     }
 
     // [TODO] - handle sharing cursor between blocks
@@ -242,20 +279,25 @@ const Editor = ({
 
         // jump to next index if started selection from this index
         if (currentIndex === state.startedIndexToSelect) {
-          editor.setBlockSelected([nextTopIndex]);
+          // editor.setBlockSelected([nextTopIndex]);
+          editor.setSelection([nextTopIndex]);
           state.indexToSelect = nextTopIndex;
           return;
         }
 
         if (nextTopIndex < state.startedIndexToSelect) {
-          editor.setBlockSelected([nextTopIndex]);
+          // editor.setBlockSelected([nextTopIndex]);
+          editor.setSelection([nextTopIndex]);
           state.indexToSelect = nextTopIndex;
           return;
         }
 
-        if (editor.selectedBlocks?.includes(currentIndex) && currentIndex !== state.startedIndexToSelect) {
-          const filteredIndexes = editor.selectedBlocks.filter((index) => index !== currentIndex);
-          editor.setBlockSelected(filteredIndexes, { only: true });
+        const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+
+        if (selectedBlocks?.includes(currentIndex) && currentIndex !== state.startedIndexToSelect) {
+          const filteredIndexes = selectedBlocks.filter((index) => index !== currentIndex);
+          // editor.setBlockSelected(filteredIndexes, { only: true });
+          editor.setSelection([nextTopIndex, filteredIndexes]);
           state.indexToSelect = nextTopIndex;
           return;
         }
@@ -273,7 +315,9 @@ const Editor = ({
       const isStart = SlateEditor.isStart(slate, slate.selection.focus, parentPath);
 
       if (Range.isExpanded(slate.selection) && isStart) {
-        const prevPath: YooptaBlockPath = editor.selection ? [editor.selection[0] - 1] : [0];
+        const prevPath = getPreviousPath(editor.selection);
+        if (!prevPath) return;
+
         const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevPath });
 
         if (block && prevBlock) {
@@ -283,8 +327,8 @@ const Editor = ({
           ReactEditor.deselect(slate);
           Transforms.deselect(slate);
 
-          editor.setSelection(null);
-          editor.setBlockSelected([block?.meta.order, block.meta.order - 1]);
+          editor.setSelection([null]);
+          // editor.setBlockSelected([block?.meta.order, block.meta.order - 1]);
 
           state.startedIndexToSelect = block.meta.order;
           state.indexToSelect = block.meta.order - 1;
@@ -302,20 +346,24 @@ const Editor = ({
 
         // jump to next index if started selection from this index
         if (currentIndex === state.startedIndexToSelect) {
-          editor.setBlockSelected([nextIndex]);
+          // editor.setBlockSelected([nextIndex]);
+          editor.setSelection([nextIndex]);
           state.indexToSelect = nextIndex;
           return;
         }
 
         if (nextIndex > state.startedIndexToSelect) {
-          editor.setBlockSelected([nextIndex]);
+          // editor.setBlockSelected([nextIndex]);
+          editor.setSelection([nextIndex]);
           state.indexToSelect = nextIndex;
           return;
         }
 
-        if (editor.selectedBlocks?.includes(currentIndex) && currentIndex !== state.startedIndexToSelect) {
-          const filteredIndexes = editor.selectedBlocks.filter((index) => index !== currentIndex);
-          editor.setBlockSelected(filteredIndexes, { only: true });
+        const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+        if (selectedBlocks?.includes(currentIndex) && currentIndex !== state.startedIndexToSelect) {
+          const filteredIndexes = selectedBlocks.filter((index) => index !== currentIndex);
+          // editor.setBlockSelected(filteredIndexes, { only: true });
+          editor.setSelection([nextIndex, filteredIndexes]);
           state.indexToSelect = nextIndex;
           return;
         }
@@ -332,7 +380,7 @@ const Editor = ({
       const isEnd = SlateEditor.isEnd(slate, slate.selection.focus, parentPath);
 
       if (Range.isExpanded(slate.selection) && isEnd) {
-        const nextPath: YooptaBlockPath = editor.selection ? [editor.selection[0] + 1] : [0];
+        const nextPath = Paths.getNextPath(editor.selection);
         const nextBlock = findPluginBlockBySelectionPath(editor, { at: nextPath });
 
         if (block && nextBlock) {
@@ -342,8 +390,8 @@ const Editor = ({
           ReactEditor.deselect(slate);
           Transforms.deselect(slate);
 
-          editor.setSelection(null);
-          editor.setBlockSelected([block?.meta.order, block?.meta.order + 1]);
+          editor.setSelection([null]);
+          // editor.setBlockSelected([block?.meta.order, block?.meta.order + 1]);
 
           state.startedIndexToSelect = block.meta.order;
           state.indexToSelect = block.meta.order + 1;
@@ -353,30 +401,63 @@ const Editor = ({
     }
 
     if (HOTKEYS.isTab(event)) {
-      const selectedBlocks = editor.selectedBlocks;
+      const selectedBlocks = Paths.getSelectedPaths(editor.selection);
       if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
         event.preventDefault();
 
-        // [TODO] - maybe we need to add support for passing blockIds?
-        selectedBlocks.forEach((index) => {
-          const block = Blocks.getBlock(editor, { at: [index] });
-          editor.increaseBlockDepth({ blockId: block?.id });
+        editor.batchOperations(() => {
+          selectedBlocks.forEach((index) => {
+            const block = Blocks.getBlock(editor, { at: [index] });
+            editor.increaseBlockDepth({ blockId: block?.id });
+          });
         });
       }
       return;
     }
 
     if (HOTKEYS.isShiftTab(event)) {
-      const selectedBlocks = editor.selectedBlocks;
+      const selectedBlocks = Paths.getSelectedPaths(editor.selection);
       if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
         event.preventDefault();
 
-        // [TODO] - maybe we need to add support for passing blockIds?
-        selectedBlocks.forEach((index) => {
-          const block = Blocks.getBlock(editor, { at: [index] });
-          editor.decreaseBlockDepth({ blockId: block?.id });
+        editor.batchOperations(() => {
+          selectedBlocks.forEach((index) => {
+            const block = Blocks.getBlock(editor, { at: [index] });
+            editor.decreaseBlockDepth({ blockId: block?.id });
+          });
         });
       }
+      return;
+    }
+  };
+
+  // This event handler will be fired only in read-only mode
+  const onCopy = (e: ClipboardEvent) => {
+    if (!isReadOnly) return;
+    const clipboardData: Pick<DataTransfer, 'getData' | 'setData'> = e.clipboardData;
+
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      if (range.collapsed) return;
+
+      const clonedContent = range.cloneContents();
+      const blocksEl = clonedContent.querySelectorAll('[data-yoopta-block-id]');
+
+      if (!blocksEl.length) return;
+
+      const content: YooptaContentValue = Array.from(blocksEl).reduce((acc, blockEl) => {
+        const blockId = blockEl.getAttribute('data-yoopta-block-id') || '';
+        const block = editor.children[blockId];
+        if (block) acc[blockId] = block;
+        return acc;
+      }, {});
+
+      const htmlString = editor.getHTML(content);
+      const textString = editor.getPlainText(content);
+
+      clipboardData.setData('text/html', htmlString);
+      clipboardData.setData('text/plain', textString);
       return;
     }
   };
@@ -390,13 +471,13 @@ const Editor = ({
 
   return (
     <div
-      data-yoopta-editor-id={editor.id}
-      data-testid="yoopta-editor"
+      ref={(ref) => (editor.refElement = ref)}
       className={className ? `yoopta-editor ${className}` : 'yoopta-editor'}
       style={editorStyles}
-      ref={yooptaEditorRef}
       onMouseDown={onMouseDown}
       onBlur={onBlur}
+      onCopy={onCopy}
+      onCut={onCopy}
     >
       <RenderBlocks editor={editor} marks={marks} placeholder={placeholder} />
       {selectionBoxRoot !== false && (

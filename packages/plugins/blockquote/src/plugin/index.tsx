@@ -1,7 +1,9 @@
-import { YooptaPlugin } from '@yoopta/editor';
+import { serializeTextNodesIntoMarkdown, YooptaPlugin } from '@yoopta/editor';
+import { BlockquoteCommands } from '../commands';
+import { BlockquoteElement } from '../types';
 import { BlockquoteRender } from '../ui/Blockquote';
 
-const Blockquote = new YooptaPlugin({
+const Blockquote = new YooptaPlugin<Record<'blockquote', BlockquoteElement>>({
   type: 'Blockquote',
   elements: {
     blockquote: {
@@ -15,18 +17,20 @@ const Blockquote = new YooptaPlugin({
     },
     shortcuts: ['>'],
   },
+  commands: BlockquoteCommands,
   parsers: {
     html: {
       deserialize: {
         nodeNames: ['BLOCKQUOTE'],
       },
-      serialize: (element, text) => {
-        return `<blockquote style="border-left: 3px solid; color: #292929; padding: 2px 14px; margin-top: 8px;">${text}</blockquote>`;
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+        return `<blockquote data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}; border-left: 3px solid; color: #292929; padding: 2px 14px; margin-top: 8px;">${text}</blockquote>`;
       },
     },
     markdown: {
       serialize: (element, text) => {
-        return `> ${text}`;
+        return `> ${serializeTextNodesIntoMarkdown(element.children)}`;
       },
     },
   },

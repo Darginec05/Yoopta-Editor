@@ -1,4 +1,6 @@
-import { PluginElementRenderProps, YooptaPlugin } from '@yoopta/editor';
+import { PluginElementRenderProps, serializeTextNodesIntoMarkdown, YooptaPlugin } from '@yoopta/editor';
+import { HeadingTwoCommands } from '../commands';
+import { HeadingTwoElement } from '../types';
 
 const HeadingTwoRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
   const { element, HTMLAttributes = {}, attributes, children } = props;
@@ -15,7 +17,7 @@ const HeadingTwoRender = ({ extendRender, ...props }: PluginElementRenderProps) 
 
 HeadingTwoRender.displayName = 'HeadingTwo';
 
-const HeadingTwo = new YooptaPlugin({
+const HeadingTwo = new YooptaPlugin<Record<'heading-two', HeadingTwoElement>>({
   type: 'HeadingTwo',
   elements: {
     'heading-two': {
@@ -25,6 +27,7 @@ const HeadingTwo = new YooptaPlugin({
       },
     },
   },
+  commands: HeadingTwoCommands,
   options: {
     display: {
       title: 'Heading 2',
@@ -37,13 +40,15 @@ const HeadingTwo = new YooptaPlugin({
       deserialize: {
         nodeNames: ['H2'],
       },
-      serialize: (element, text) => {
-        return `<h2>${text}</h2>`;
+      serialize: (element, text, blockMeta) => {
+        const { depth = 0, align = 'left' } = blockMeta || {};
+
+        return `<h2 data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}">${text}</h2>`;
       },
     },
     markdown: {
       serialize: (element, text) => {
-        return `## ${text}\n`;
+        return `## ${serializeTextNodesIntoMarkdown(element.children)}\n`;
       },
     },
   },

@@ -24,6 +24,12 @@ export const getDailymotionId = (url: string) => {
   return null;
 };
 
+export function getInstagramId(url: string) {
+  const regex = /(?:https?:\/\/)?(?:www\.)?instagram\.com(?:\/p\/|\/reel\/|\/tv\/)([^\/?#&]+).*$/;
+  const match = url.match(regex);
+  return match ? match[1] : null;
+}
+
 export function getProvider(url: string): EmbedProviderTypes | null {
   if (url.includes('youtube.com') || url.includes('youtu.be')) {
     return 'youtube';
@@ -35,6 +41,8 @@ export function getProvider(url: string): EmbedProviderTypes | null {
     return 'twitter';
   } else if (url.includes('figma')) {
     return 'figma';
+  } else if (url.includes('instagram.com')) {
+    return 'instagram';
   } else {
     return null;
   }
@@ -64,4 +72,5 @@ export const ProviderGetters = {
   dailymotion: getDailymotionId,
   twitter: getTwitterEmbedId,
   figma: getFigmaUrl,
+  instagram: getInstagramId,
 };

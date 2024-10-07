@@ -1,14 +1,27 @@
 import { generateId, YooptaPlugin } from '@yoopta/editor';
-import { EmbedElementProps, EmbedPluginElements, EmbedPluginOptions, EmbedProviderTypes } from '../types';
+import { EmbedCommands } from '../commands';
+import {
+  EmbedElementMap,
+  EmbedElementProps,
+  EmbedPluginElements,
+  EmbedPluginOptions,
+  EmbedProviderTypes,
+} from '../types';
 import { EmbedRender } from '../ui/Embed';
 
-const Embed = new YooptaPlugin<EmbedPluginElements, EmbedElementProps, EmbedPluginOptions>({
+const ALIGNS_TO_JUSTIFY = {
+  left: 'flex-start',
+  center: 'center',
+  right: 'flex-end',
+};
+
+const Embed = new YooptaPlugin<EmbedElementMap, EmbedPluginOptions>({
   type: 'Embed',
   elements: {
     embed: {
       render: EmbedRender,
       props: {
-        sizes: { width: 650, height: 400 },
+        sizes: { width: 650, height: 500 },
         nodeType: 'void',
       },
     },
@@ -18,8 +31,9 @@ const Embed = new YooptaPlugin<EmbedPluginElements, EmbedElementProps, EmbedPlug
       title: 'Embed',
       description: 'For embed videos, google maps and more',
     },
-    maxSizes: { maxWidth: 650, maxHeight: 550 },
+    shortcuts: ['instagram', 'twitter', 'youtube', 'vimeo', 'dailymotion', 'figma'],
   },
+  commands: EmbedCommands,
   parsers: {
     html: {
       deserialize: {
@@ -47,7 +61,10 @@ const Embed = new YooptaPlugin<EmbedPluginElements, EmbedElementProps, EmbedPlug
           }
         },
       },
-      serialize: (element, text) => {
+      serialize: (element, text, blockMeta) => {
+        const { align = 'center', depth = 0 } = blockMeta || {};
+        const justify = ALIGNS_TO_JUSTIFY[align] || 'center';
+
         const URL_BUILDERS = {
           youtube: (id: string) => `https://www.youtube.com/embed/${id}`,
           vimeo: (id: string) => `https://player.vimeo.com/embed/${id}`,
@@ -61,8 +78,8 @@ const Embed = new YooptaPlugin<EmbedPluginElements, EmbedElementProps, EmbedPlug
           url = URL_BUILDERS[element.props.provider.type](element.props.provider.id);
         }
 
-        return `<div style="display: flex; width: 100%; justify-content: center">
-        <iframe src="${url}" width="${element.props.sizes.width}" height="${element.props.sizes.height}"  /> </div>`;
+        return `<div style="margin-left: ${depth}px; display: flex; width: 100%; justify-content: ${justify}">
+        <iframe data-meta-align="${align}" data-meta-depth="${depth}" src="${url}" width="${element.props.sizes.width}" height="${element.props.sizes.height}"></iframe> </div>`;
       },
     },
     markdown: {

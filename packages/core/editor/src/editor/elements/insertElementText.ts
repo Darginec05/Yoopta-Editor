@@ -44,7 +44,7 @@ export function insertElementText<TElementKeys extends string, TElementProps>(
     }
 
     Transforms.insertText(slate, text, { at: path });
-    editor.applyChanges();
+    // editor.applyChanges();
     editor.emit('change', editor.children);
 
     if (focus) {

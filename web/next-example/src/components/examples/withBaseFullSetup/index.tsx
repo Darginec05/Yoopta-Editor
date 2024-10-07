@@ -13,16 +13,27 @@ import { NumberedList, BulletedList, TodoList } from '@yoopta/lists';
 import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import Code from '@yoopta/code';
+import Table from '@yoopta/table';
+import Divider, { DividerCommands } from '@yoopta/divider';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { WITH_BASIC_INIT_VALUE } from './initValue';
 
 const plugins = [
   Paragraph,
+  Table,
+  Divider.extend({
+    elementProps: {
+      divider: (props) => ({
+        ...props,
+        color: '#007aff',
+      }),
+    },
+  }),
   Accordion,
   HeadingOne,
   HeadingTwo,
@@ -64,13 +75,17 @@ const plugins = [
           },
         };
       },
+      onUploadPoster: async (file) => {
+        const image = await uploadToCloudinary(file, 'image');
+        return image.secure_url;
+      },
     },
   }),
   File.extend({
     options: {
       onUpload: async (file) => {
         const response = await uploadToCloudinary(file, 'auto');
-        return { src: response.url };
+        return { src: response.secure_url, format: response.format, name: response.name, size: response.bytes };
       },
     },
   }),

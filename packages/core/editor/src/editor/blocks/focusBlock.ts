@@ -1,12 +1,14 @@
 import { Editor, Path, Point, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { IS_FOCUSED_EDITOR } from '../../utils/weakMaps';
-import { FocusAt, SlateEditor, YooEditor, YooptaEditorTransformOptions } from '../types';
+import { FocusAt, SlateEditor, YooEditor } from '../types';
 
-export type FocusBlockOptions = Pick<YooptaEditorTransformOptions, 'focusAt' | 'slate'> & {
+export type FocusBlockOptions = {
   waitExecution?: boolean;
   waitExecutionMs?: number;
   shouldUpdateBlockSelection?: boolean;
+  focusAt?: FocusAt;
+  slate?: SlateEditor;
 };
 
 function getSelectionPath(slate: SlateEditor, focusAt?: FocusAt): FocusAt {

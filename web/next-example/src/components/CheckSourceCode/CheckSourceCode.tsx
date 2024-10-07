@@ -1,10 +1,11 @@
 import { ExternalLinkIcon, StarIcon } from 'lucide-react';
 
 type Props = {
-  example: string;
+  example?: string;
+  directLink?: string;
 };
 
-const CheckSourceCode = ({ example }: Props) => {
+const CheckSourceCode = ({ example, directLink }: Props) => {
   return (
     <div className="fixed md:top-2 md:right-2  top-[14.5px] right-[18px] flex z-50">
       <button
@@ -19,7 +20,8 @@ const CheckSourceCode = ({ example }: Props) => {
       <button
         onClick={() =>
           window.open(
-            `https://github.com/Darginec05/Yoopta-Editor/blob/master/web/next-example/src/components/examples/${example}/index.tsx`,
+            directLink ||
+              `https://github.com/Darginec05/Yoopta-Editor/blob/master/web/next-example/src/components/examples/${example}/index.tsx`,
             '_blank',
           )
         }

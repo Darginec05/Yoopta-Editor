@@ -1,8 +1,15 @@
 import { generateId, YooptaPlugin } from '@yoopta/editor';
-import { FileElementProps, FilePluginElements, FilePluginOptions } from '../types';
+import { FileCommands } from '../commands';
+import { FileElementMap, FilePluginOptions } from '../types';
 import { FileRender } from '../ui/File';
 
-const File = new YooptaPlugin<FilePluginElements, FileElementProps, FilePluginOptions>({
+const ALIGNS_TO_JUSTIFY = {
+  left: 'flex-start',
+  center: 'center',
+  right: 'flex-end',
+};
+
+const File = new YooptaPlugin<FileElementMap, FilePluginOptions>({
   type: 'File',
   elements: {
     file: {
@@ -16,6 +23,7 @@ const File = new YooptaPlugin<FilePluginElements, FileElementProps, FilePluginOp
       },
     },
   },
+  commands: FileCommands,
   options: {
     display: {
       title: 'File',
@@ -26,8 +34,13 @@ const File = new YooptaPlugin<FilePluginElements, FileElementProps, FilePluginOp
   },
   parsers: {
     html: {
-      serialize: (element, text) => {
-        return `<div><a href="${element.props.src}" data-size="${element.props.size}" download="${
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+        const justify = ALIGNS_TO_JUSTIFY[align] || 'left';
+
+        return `<div style="margin-left: ${depth}px; display: flex; width: 100%; justify-content: ${justify}"><a data-meta-align="${align}" data-meta-depth="${depth}" href="${
+          element.props.src
+        }" data-size="${element.props.size}" download="${
           element.props.name
         }" target="_blank" rel="noopener noreferrer">${
           element.props.format ? `${element.props.name}.${element.props.format}` : `${element.props.name}`

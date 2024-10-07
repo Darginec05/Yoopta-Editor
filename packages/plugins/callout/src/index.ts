@@ -1,5 +1,5 @@
 import { Callout } from './plugin';
-import { CalloutElement } from './types';
+import { CalloutElement, CalloutElementProps } from './types';
 import './styles.css';
 
 declare module 'slate' {
@@ -8,5 +8,7 @@ declare module 'slate' {
   }
 }
 
+export { CalloutCommands } from './commands';
+
 export default Callout;
-export { CalloutElement };
+export { CalloutElement, CalloutElementProps };

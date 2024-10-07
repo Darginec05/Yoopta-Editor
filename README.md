@@ -1,6 +1,7 @@
-<a href="https://www.producthunt.com/products/yoopta-edtior?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-yoopta&#0045;edtior" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=453627&theme=light" alt="Yoopta&#0032;Edtior - Open&#0045;source&#0032;WYSIWYG&#0032;editor&#0032;setting&#0032;a&#0032;new&#0032;standard | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+<a href="https://www.producthunt.com/posts/yoopta-editor?embed=true&utm_source=badge-top-post-badge&utm_medium=badge&utm_souce=badge-yoopta&#0045;editor" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/top-post-badge.svg?post_id=453627&theme=light&period=daily" alt="Yoopta&#0045;Editor - Open&#0045;source&#0032;text&#0045;editor | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 
-[![RepoRater](https://repo-rater.eddiehub.io/api/badge?owner=Darginec05&name=Yoopta-Editor)](https://repo-rater.eddiehub.io/rate?owner=Darginec05&name=Yoopta-Editor)
+<!-- [![RepoRater](https://repo-rater.eddiehub.io/api/badge?owner=Darginec05&name=Yoopta-Editor)](https://repo-rater.eddiehub.io/rate?owner=Darginec05&name=Yoopta-Editor) -->
+
 ![npm](https://img.shields.io/npm/v/@yoopta/editor)
 ![downloads](https://img.shields.io/npm/dm/@yoopta/editor)
 [![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/Darginec05)
@@ -46,21 +47,24 @@ All of this is customizable, extensible, and easy to set up!
 
   - [**@yoopta/editor**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/core/editor/README.md)
   - [**@yoopta/exports**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/core/exports/README.md)
+  - [**@yoopta/starter-kit**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/core/starter-kit/README.md)
 
 - Plugins
 
   - [**@yoopta/paragraph**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/paragraph/README.md)
+  - [**@yoopta/blockquote**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/blockquote/README.md)
   - [**@yoopta/accordion**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/accordion/README.md)
-  - **@yoopta/blockquote**
-  - **@yoopta/code**
-  - **@yoopta/embed**
-  - **@yoopta/image**
-  - **@yoopta/link**
-  - **@yoopta/file**
-  - **@yoopta/callout**
-  - **@yoopta/video**
+  - [**@yoopta/divider**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/divider/README.md)
+  - [**@yoopta/table**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/table/README.md)
+  - [**@yoopta/code**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/code/README.md)
+  - [**@yoopta/embed**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/embed/README.md)
+  - [**@yoopta/image**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/image/README.md)
+  - [**@yoopta/link**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/link/README.md)
+  - [**@yoopta/file**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/file/README.md)
+  - [**@yoopta/callout**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/callout/README.md)
+  - [**@yoopta/video**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/video/README.md)
   - [**@yoopta/lists**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/lists/README.md)
-  - **@yoopta/headings**
+  - [**@yoopta/headings**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/plugins/headings/README.md)
 
 - Tools
 
@@ -147,6 +151,8 @@ Here is list of available plugins
 
 - @yoopta/paragraph
 - @yoopta/blockquote
+- @yoopta/table
+- @yoopta/divider
 - @yoopta/accordion
 - @yoopta/code
 - @yoopta/embed
@@ -213,7 +219,7 @@ const TOOLS = {
     render: DefaultToolbarRender,
   },
   ActionMenu: {
-    tool: Toolbar,
+    tool: ActionMenu,
     render: DefaultActionMenuRender,
   },
   LinkTool: {
@@ -286,21 +292,21 @@ Find below useful examples of utilising the Yoopta-Editor in your projects. Thes
 
 Okay, let's go!
 
-- [With basic example](https://yoopta-editor.vercel.app/examples/withBaseFullSetup)
-- [With custom toolbar (Notion and Medium example)](https://yoopta-editor.vercel.app/examples/withCustomToolbar)
-- [With Notion Action Menu](https://yoopta-editor.vercel.app/examples/withNotionActionMenu)
-- [With dark theme](https://yoopta-editor.vercel.app/examples/withDarkTheme)
-- [With media plugins](https://yoopta-editor.vercel.app/examples/withMedia)
-- [With extended plugins](https://yoopta-editor.vercel.app/examples/withExtendedPlugin)
-- [With readonly](https://yoopta-editor.vercel.app/examples/withReadOnly)
-- [With custom HTML attributes](https://yoopta-editor.vercel.app/examples/withCustomHTMLAttributes)
-- [With custom mark](https://yoopta-editor.vercel.app/examples/withCustomMark)
-- [With chat slack](https://yoopta-editor.vercel.app/examples/withChatSlack)
+- [With basic example](https://yoopta.dev/examples/withBaseFullSetup)
+- [With custom toolbar (Notion and Medium example)](https://yoopta.dev/examples/withCustomToolbar)
+- [With Notion Action Menu](https://yoopta.dev/examples/withNotionActionMenu)
+- [With dark theme](https://yoopta.dev/examples/withDarkTheme)
+- [With media plugins](https://yoopta.dev/examples/withMedia)
+- [With extended plugins](https://yoopta.dev/examples/withExtendedPlugin)
+- [With readonly](https://yoopta.dev/examples/withReadOnly)
+- [With custom HTML attributes](https://yoopta.dev/examples/withCustomHTMLAttributes)
+- [With custom mark](https://yoopta.dev/examples/withCustomMark)
+- [With chat slack](https://yoopta.dev/examples/withChatSlack)
 - ...and check other examples in the sidebar list
 
 ## Give us ⭐️ star
 
-If you find Yoopta-Editor useful and valuable for your projects, I kindly ask you to show your support by giving us a ⭐️ star on GitHub. Your appreciation means a lot to us and helps us grow and continue improving the editor for the community. 💙💙💙
+If you find Yoopta-Editor useful and valuable for your projects, I kindly ask you to show your support by giving to this repo ⭐️ star on GitHub. Your appreciation means a lot to me and helps me grow and continue improving the editor for the community. 💙
 
 ## Roadmap
 
@@ -314,15 +320,23 @@ If you find Yoopta-Editor useful and valuable for your projects, I kindly ask yo
 - Rethink the approach for just rendering to increase SEO performance
 - Continue improving the project. [We are listening to you and your requests](https://github.com/Darginec05/Yoopta-Editor/discussions/new/choose) 💙
 
-## License
-
-Yoopta-Editor is released under the [MIT License](https://github.com/Darginec05/Yopta-Editor/blob/master/LICENSE). Feel free to use and modify it for your projects.
-
 ## Support
 
-If you have any questions or need assistance raise an issue in the GitHub repository. I will be happy to help you.
+Hey there! If you find this project useful or it helps you in your work, consider supporting it to ensure continuous improvements and development. Your donations help keep the project alive and allow me to invest more time and resources into maintaining and enhancing it.
 
-Let's create powerful and engaging editing experiences together with Yoopta-Editor!
+### How to Support
+
+You can support the project by:
+
+- ⭐ Star this repository to show your appreciation.
+- 🗣 Share the project with your friends, colleagues, and on social media.
+- 💸 Make a donation to help fund development efforts.
+
+### Donation Options
+
+- [Github Sponsors](https://github.com/sponsors/Darginec05)
+
+Any contribution, big or small, is highly appreciated and helps me maintain the project and add exciting new features. Thank you for your support! 🙏
 
 ## Project structure
 
@@ -342,14 +356,18 @@ If you're ready to support Yoopta-Editor, here's how you can do it:
 - If you've spotted a bug or thinking of a feature [raise an issue](https://github.com/Darginec05/Yoopta-Editor/issues/new/choose)
 - If you want to collaborate on the project, find an issue you like to work on and suggest your changes. Checkout [contributing guidelines](./CONTRIBUTING.md).
 - If you want to discuss your idea feel free to create a [discussion](https://github.com/Darginec05/Yoopta-Editor/discussions/new/choose)
-- Or join our [Telegram Community](https://t.me/YooptaEditor) and get in touch with us
+- Or join our [Discord Community](https://discord.gg/Dt8rhSTjsn) and get in touch with us
 
 <a href="https://github.com/Darginec05/Yoopta-Editor/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=Darginec05/Yoopta-Editor" />
 </a>
 
+## License
+
+Yoopta-Editor is released under the [MIT License](https://github.com/Darginec05/Yopta-Editor/blob/master/LICENSE). Feel free to use and modify it for your projects.
+
 ## Contacts
 
-- [Telegram Community](https://t.me/YooptaEditor)
+- [Discord Community](https://discord.gg/Dt8rhSTjsn)
 - [Twitter](https://twitter.com/LebovskiYoo)
 - [Github](https://github.com/Darginec05)

@@ -81,22 +81,24 @@ export const AccordionItemHeading = ({ extendRender, ...props }: PluginElementRe
         {!isReadOnly && (
           <>
             <button
+              type="button"
               contentEditable={false}
               onClick={onDeleteAccordionItem}
-              className="yoo-accordion-opacity-0 group-hover:yoo-accordion-opacity-100 yoo-accordion-transition-opacity"
+              className="yoopta-button yoo-accordion-opacity-0 group-hover:yoo-accordion-opacity-100 yoo-accordion-transition-opacity"
             >
               <TrashIcon strokeWidth={1} size={16} color="#000" />
             </button>
             <button
+              type="button"
               contentEditable={false}
               onClick={onAddAccordionItem}
-              className="yoo-accordion-mr-2 yoo-accordion-opacity-0 group-hover:yoo-accordion-opacity-100 yoo-accordion-transition-opacity"
+              className="yoopta-button yoo-accordion-mr-2 yoo-accordion-opacity-0 group-hover:yoo-accordion-opacity-100 yoo-accordion-transition-opacity"
             >
               <Plus strokeWidth={1} size={20} color="#000" />
             </button>
           </>
         )}
-        <button contentEditable={false} onClick={onToggleExpand}>
+        <button type="button" contentEditable={false} onClick={onToggleExpand} className="yoopta-button">
           <ChevronUp
             strokeWidth={1}
             size={20}

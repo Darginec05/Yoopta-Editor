@@ -40,7 +40,7 @@ export function buildActionMenuRenderProps({ editor, view, onClose }: Params) {
     'data-action-menu-item-type': type,
     'aria-selected': false,
     onClick: () => {
-      editor.blocks[type].toggle({ focus: true });
+      editor.toggleBlock(type, { focus: true });
       onClose();
     },
   });

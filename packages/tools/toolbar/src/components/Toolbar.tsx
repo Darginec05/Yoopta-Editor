@@ -36,7 +36,6 @@ const Toolbar = ({ render }: ToolbarToolProps) => {
     const text = domRange.toString().trim();
 
     const pluginWithCustomEditor = document.querySelectorAll('[data-custom-editor]');
-    const yooptaEditorEl = document.querySelector(`[data-yoopta-editor-id="${editor.id}"]`);
     const ancestor = domRange?.commonAncestorContainer;
 
     let isInsideCustomEditor = false;
@@ -47,7 +46,7 @@ const Toolbar = ({ render }: ToolbarToolProps) => {
       }
     }
 
-    if (!yooptaEditorEl?.contains(ancestor) || isInsideCustomEditor) {
+    if (!editor.refElement?.contains(ancestor) || isInsideCustomEditor) {
       return setIsToolbarOpen(false);
     }
 
@@ -66,7 +65,7 @@ const Toolbar = ({ render }: ToolbarToolProps) => {
   useEffect(() => {
     window.document.addEventListener('selectionchange', onSelectionChange);
     return () => window.document.removeEventListener('selectionchange', onSelectionChange);
-  }, [editor.selectedBlocks, hold, editor.children]);
+  }, [editor.selection, hold, editor.children]);
 
   if (!isMounted) return null;
 

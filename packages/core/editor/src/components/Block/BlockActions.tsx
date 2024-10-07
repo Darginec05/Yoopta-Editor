@@ -13,6 +13,7 @@ import { getRootBlockElement } from '../../utils/blockElements';
 import { useActionMenuToolRefs } from './hooks';
 import { Overlay } from '../../UI/Overlay/Overlay';
 import { Portal } from '../../UI/Portal/Portal';
+import { Blocks } from '../../editor/blocks';
 
 type ActionsProps = {
   block: YooptaBlockData;
@@ -72,11 +73,11 @@ const BlockActions = ({ block, editor, dragHandleProps, onChangeActiveBlock, sho
       actionMenuRefs.setReference(blockEl);
       onChangeActionMenuOpen(true);
     } else {
-      const defaultBlock = buildBlockData({ id: generateId() });
+      const defaultBlock = Blocks.buildBlockData({ id: generateId() });
       const nextPath: YooptaBlockPath = [block.meta.order + 1];
 
       editor.setSelection([block.meta.order]);
-      editor.insertBlock(defaultBlock, { at: nextPath, focus: true });
+      editor.insertBlock(defaultBlock.type, { at: nextPath, focus: true });
 
       if (hasActionMenu) {
         setTimeout(() => {
@@ -105,8 +106,8 @@ const BlockActions = ({ block, editor, dragHandleProps, onChangeActiveBlock, sho
         Transforms.deselect(slate);
       }
 
-      editor.setBlockSelected([block.meta.order], { only: true });
-      editor.setSelection([block.meta.order]);
+      // editor.setBlockSelected([block.meta.order], { only: true });
+      editor.setSelection([block.meta.order, [block.meta.order]]);
 
       setIsBlockOptionsOpen(true);
     }, 10);
@@ -140,6 +141,7 @@ const BlockActions = ({ block, editor, dragHandleProps, onChangeActiveBlock, sho
         {...attributes}
         {...listeners}
         onClick={onSelectBlock}
+        onMouseDown={(e) => e.stopPropagation()}
       >
         <DragIcon />
       </button>

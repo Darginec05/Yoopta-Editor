@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/link",
-  "version": "4.6.4",
+  "version": "4.8.3",
   "description": "Link plugin for Yoopta Editor",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
@@ -36,5 +36,6 @@
   },
   "dependencies": {
     "lucide-react": "^0.379.0"
-  }
+  },
+  "gitHead": "12d8460dfe0ead89ee1d6f3f2f1fc68239e93d4c"
 }

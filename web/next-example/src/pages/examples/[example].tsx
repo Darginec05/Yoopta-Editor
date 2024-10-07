@@ -16,11 +16,16 @@ import withSavingToDatabase from '@/components/examples/withSavingToDatabase';
 import withEditorControl from '@/components/examples/withEditorControl';
 import withLargeDocuments from '@/components/examples/withLargeDocuments';
 import withChatSlack from '@/components/examples/withChatSlack';
-// import withCraftExample from '@/components/examples/withCraftExample';
 import withCustomStyles from '@/components/examples/withCustomStyles';
-import withEditorFocusBlur from '@/components/examples/withEditorFocusBlur';
 import withCustomRenders from '@/components/examples/withCustomRenders';
-// import withMultiPageEditors from '@/components/examples/withMultiPageEditors';
+import withMultiPageEditors from '@/components/examples/withMultiPageEditors';
+import withCustomElementProps from '@/components/examples/withCustomElementProps';
+import withCommandsAPI from '@/components/examples/withCommandsAPI';
+import withPluginEvents from '@/components/examples/withPluginEvents';
+import withShadcnUILibrary from '@/components/examples/withShadcnUILibrary';
+// import withCraftExample from '@/components/examples/withCraftExample';
+// import withEditorFocusBlur from '@/components/examples/withEditorFocusBlur';
+// import withStarterKit from '@/components/examples/withStarterKit';
 
 import { Head } from '@/components/Head/Head';
 import { useRouter } from 'next/router';
@@ -35,21 +40,26 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withCustomToolbar,
   withNotionActionMenu,
   withExports,
+  withCommandsAPI,
+  withPluginEvents,
+  withShadcnUILibrary,
   withCustomRenders,
+  withCustomElementProps,
+  withExtendedPlugin,
+  withMultiPageEditors,
+  withChatSlack,
   withDarkTheme,
   withMediaAndVoids,
-  withExtendedPlugin,
   withReadOnly,
   withEditorControl,
-  // withCustomHTMLAttributes,
   withCustomMark,
   withCustomPlugin,
   withSavingToDatabase,
   withCustomStyles,
   withLargeDocuments,
-  withChatSlack,
-  withEditorFocusBlur,
-  // withMultiPageEditors,
+  // withStarterKit,
+  // withCustomHTMLAttributes,
+  // withEditorFocusBlur,
   // withCraftExample,
   // withOffline,
   // withCustomComponent,
@@ -120,6 +130,10 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
     title: 'Chat Slack',
     description: '',
   },
+  withShadcnUILibrary: {
+    title: 'UI Libraries (shadcn/ui)',
+    description: '',
+  },
   // withCraftExample: {
   //   title: 'Craft Example',
   //   description: '',
@@ -128,10 +142,10 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
     title: 'Migration Guide from v2 to v4',
     description: '',
   },
-  withEditorFocusBlur: {
-    title: 'Example with focus/blur',
-    description: '',
-  },
+  // withEditorFocusBlur: {
+  //   title: 'Example with focus/blur',
+  //   description: '',
+  // },
   withExports: {
     title: 'HTML/Markdown exports',
     description: '',
@@ -140,9 +154,29 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
     title: 'Custom Renders (next/image, next/link, etc.)',
     description: '',
   },
+  withCustomElementProps: {
+    title: 'Override element props',
+    description: '',
+  },
+  withStarterKit: {
+    title: 'Using Starter Kit with full setup',
+    description: '',
+  },
+  withCommandsAPI: {
+    title: 'Editor Commands API (new)',
+    description: '',
+  },
+  withPluginEvents: {
+    title: 'Plugin Events (new)',
+    description: '',
+  },
+  withSlateExtensions: {
+    title: 'Customize plugin elements behaviour (new)',
+    description: '',
+  },
 };
 
-const ExampleComponent = () => {
+const ExampleComponentPage = () => {
   const router = useRouter();
 
   const ExampleComponent = EXAMPLES[(router.query.example as string) || 'withBaseFullSetup'];
@@ -165,4 +199,4 @@ const ExampleComponent = () => {
   );
 };
 
-export default ExampleComponent;
+export default ExampleComponentPage;

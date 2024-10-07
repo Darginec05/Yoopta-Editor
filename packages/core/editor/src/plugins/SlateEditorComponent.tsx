@@ -1,28 +1,25 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { memo, useCallback, useMemo, useRef } from 'react';
 import { DefaultElement, Editable, ReactEditor, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useBlockData } from '../contexts/YooptaContext/YooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../marks';
 
-import { ExtendedLeafProps, PluginCustomEditorRenderProps, PluginEventHandlerOptions, Plugin } from './types';
+import { ExtendedLeafProps, PluginCustomEditorRenderProps, Plugin, PluginEvents } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
-import { HOTKEYS } from '../utils/hotkeys';
-import { Editor, NodeEntry, Range } from 'slate';
+import { Editor, NodeEntry, Path, Range } from 'slate';
 import { TextLeaf } from '../components/TextLeaf/TextLeaf';
 
-import { generateId } from '../utils/generateId';
-import { buildBlockData } from '../components/Editor/utils';
-
-// [TODO] - test
-import { withInlines } from './extenstions/withInlines';
 import { IS_FOCUSED_EDITOR } from '../utils/weakMaps';
 import { deserializeHTML } from '../parsers/deserializeHTML';
+import { useEventHandlers, useSlateEditor } from './hooks';
+import { SlateElement } from '../editor/types';
 
-type Props<TKeys extends string, TProps, TOptions> = Plugin<TKeys, TProps, TOptions> & {
+type Props<TElementMap extends Record<string, SlateElement>, TOptions> = Plugin<TElementMap, TOptions> & {
   id: string;
   marks?: YooptaMark<any>[];
-  options: Plugin<TKeys, TProps, TOptions>['options'];
+  options: Plugin<TElementMap, TOptions>['options'];
   placeholder?: string;
+  events?: PluginEvents;
 };
 
 const getMappedElements = (elements) => {
@@ -39,76 +36,31 @@ const getMappedMarks = (marks?: YooptaMark<any>[]) => {
   return mappedMarks;
 };
 
-const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
+const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, TOptions>({
   id,
   customEditor,
   elements,
   marks,
   events,
   options,
+  extensions: withExtensions,
   placeholder = `Type '/' for commands`,
-}: Props<TKeys, TProps, TOptions>) => {
+}: Props<TElementMap, TOptions>) => {
   const editor = useYooptaEditor();
   const block = useBlockData(id);
-  const initialValue = useRef(block.value).current;
-
+  let initialValue = useRef(block.value).current;
   const ELEMENTS_MAP = useMemo(() => getMappedElements(elements), [elements]);
   const MARKS_MAP = useMemo(() => getMappedMarks(marks), [marks]);
 
-  const slate = useMemo(() => {
-    let slateEditor = editor.blockEditorsMap[id];
-    const elementTypes = Object.keys(elements);
+  const slate = useSlateEditor(id, editor, block, elements, withExtensions);
+  const eventHandlers = useEventHandlers(events, editor, block, slate);
 
-    elementTypes.forEach((elementType) => {
-      const nodeType = elements[elementType].props?.nodeType;
-
-      const isInline = nodeType === 'inline';
-      const isVoid = nodeType === 'void';
-      const isInlineVoid = nodeType === 'inlineVoid';
-
-      if (isInlineVoid) {
-        slateEditor.markableVoid = (element) => element.type === elementType;
-      }
-
-      if (isVoid || isInlineVoid) {
-        slateEditor.isVoid = (element) => element.type === elementType;
-      }
-
-      if (isInline || isInlineVoid) {
-        slateEditor.isInline = (element) => element.type === elementType;
-
-        // [TODO] - as test
-        // [TODO] - should extend all slate editors for every block
-        slateEditor = withInlines(slateEditor);
-      }
-    });
-
-    return slateEditor;
-  }, [elements]);
-
-  const eventHandlers = useMemo<EditorEventHandlers>(() => {
-    if (!events || editor.readOnly) return {};
-
-    const eventHandlersOptions: PluginEventHandlerOptions = {
-      hotkeys: HOTKEYS,
-      currentBlock: block,
-      defaultBlock: buildBlockData({ id: generateId() }),
-    };
-    const eventHandlersMap = {};
-
-    Object.keys(events).forEach((eventType) => {
-      eventHandlersMap[eventType] = function handler(event) {
-        if (events[eventType]) {
-          const handler = events[eventType](editor, slate, eventHandlersOptions);
-          handler(event);
-        }
-      };
-    });
-
-    return eventHandlersMap;
-  }, [events, editor, block]);
-
-  const onChange = useCallback((value) => editor.updateBlock(id, { value }), [id]);
+  const onChange = useCallback(
+    (value) => {
+      editor.updateBlock(id, { value });
+    },
+    [id],
+  );
 
   const renderElement = useCallback(
     (elementProps: RenderElementProps) => {
@@ -116,24 +68,10 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       const { attributes, ...props } = elementProps;
       attributes['data-element-type'] = props.element.type;
 
-      let path;
-
-      try {
-        path = ReactEditor.findPath(slate, elementProps.element);
-      } catch (error) {
-        path = [];
-      }
-
       if (!ElementComponent) return <DefaultElement {...props} attributes={attributes} />;
 
       return (
-        <ElementComponent
-          {...props}
-          path={path}
-          attributes={attributes}
-          blockId={id}
-          HTMLAttributes={options?.HTMLAttributes}
-        />
+        <ElementComponent {...props} attributes={attributes} blockId={id} HTMLAttributes={options?.HTMLAttributes} />
       );
     },
     [elements, slate.children],
@@ -184,18 +122,6 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
     [eventHandlers.onKeyUp, editor.readOnly],
   );
 
-  const onMouseDown = useCallback(
-    (event: React.MouseEvent) => {
-      if (editor.readOnly) return;
-
-      if (editor.selection?.[0] !== block.meta.order) {
-        editor.setSelection([block.meta.order]);
-      }
-      eventHandlers?.onMouseDown?.(event);
-    },
-    [eventHandlers.onMouseDown, editor.readOnly, editor.selection?.[0], block.meta.order],
-  );
-
   const onBlur = useCallback(
     (event: React.FocusEvent) => {
       if (editor.readOnly) return;
@@ -223,18 +149,56 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
   const onPaste = useCallback(
     (event: React.ClipboardEvent) => {
       if (editor.readOnly) return;
-
       eventHandlers?.onPaste?.(event);
 
       const data = event.clipboardData;
       const html = data.getData('text/html');
+
       const parsedHTML = new DOMParser().parseFromString(html, 'text/html');
+      console.log('parsedHTML', parsedHTML);
 
       if (parsedHTML.body.childNodes.length > 0) {
         const blocks = deserializeHTML(editor, parsedHTML.body);
 
-        if (blocks.length > 0) {
-          editor.insertBlocks(blocks, { at: editor.selection, focus: true });
+        // If no blocks from HTML, then paste as plain text using default behavior from Slate
+        if (blocks.length > 0 && Array.isArray(editor.selection)) {
+          event.preventDefault();
+
+          let shouldInsertAfterSelection = false;
+          let shouldDeleteCurrentBlock = false;
+
+          if (slate && slate.selection) {
+            const parentPath = Path.parent(slate.selection.anchor.path);
+            const text = Editor.string(slate, parentPath).trim();
+            const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
+            shouldDeleteCurrentBlock = text === '' && isStart;
+            shouldInsertAfterSelection = !isStart || text.length > 0;
+
+            ReactEditor.blur(slate);
+          }
+
+          const insertPathIndex = editor.selection[0];
+          if (!insertPathIndex) return;
+
+          // [TEST]
+          editor.batchOperations(() => {
+            const newPaths: number[] = [];
+            blocks.forEach((block, idx) => {
+              let insertBlockPath = shouldInsertAfterSelection ? insertPathIndex + idx + 1 : insertPathIndex + idx;
+              newPaths.push(insertBlockPath);
+
+              const { type, ...blockData } = block;
+              editor.insertBlock(block.type, { at: [insertBlockPath], focus: false, blockData });
+            });
+
+            if (shouldDeleteCurrentBlock) {
+              editor.deleteBlock({ at: [insertPathIndex] });
+            }
+
+            // [TEST]
+            editor.setSelection([null, newPaths]);
+          });
+
           return;
         }
       }
@@ -282,7 +246,6 @@ const SlateEditorComponent = <TKeys extends string, TProps, TOptions>({
       onKeyDown={onKeyDown}
       onKeyUp={onKeyUp}
       onFocus={onFocus}
-      onMouseDown={onMouseDown}
       onBlur={onBlur}
       customEditor={customEditor}
       readOnly={editor.readOnly}
@@ -303,7 +266,6 @@ type SlateEditorInstanceProps = {
   onKeyDown: (event: React.KeyboardEvent) => void;
   onKeyUp: (event: React.KeyboardEvent) => void;
   onFocus: (event: React.FocusEvent) => void;
-  onMouseDown: (event: React.MouseEvent) => void;
   onBlur: (event: React.FocusEvent) => void;
   onPaste: (event: React.ClipboardEvent) => void;
   customEditor?: (props: PluginCustomEditorRenderProps) => JSX.Element;
@@ -323,7 +285,6 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     onKeyDown,
     onKeyUp,
     onFocus,
-    onMouseDown,
     onBlur,
     onPaste,
     customEditor,
@@ -335,10 +296,9 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     }
 
     return (
-      <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onChange={onChange}>
+      <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onValueChange={onChange}>
         <Editable
           key={`editable-${id}`}
-          id={`yoopta-slate-editor-${id}`}
           renderElement={renderElement}
           renderLeaf={renderLeaf}
           className="yoopta-slate"
@@ -347,7 +307,6 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
           onKeyDown={onKeyDown}
           onKeyUp={onKeyUp}
           onFocus={onFocus}
-          onMouseDown={onMouseDown}
           decorate={decorate}
           // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
           onBlur={onBlur}

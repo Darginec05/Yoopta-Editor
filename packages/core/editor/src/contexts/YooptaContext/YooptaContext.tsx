@@ -1,4 +1,5 @@
 import { createContext, useContext, useRef } from 'react';
+import { createYooptaEditor } from '../../editor';
 import { YooEditor, YooptaBlockPath } from '../../editor/types';
 import { PluginOptions } from '../../plugins/types';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
@@ -8,49 +9,7 @@ export type YooptaEditorContext = {
 };
 
 const DEFAULT_HANDLERS: YooptaEditorContext = {
-  editor: {
-    id: '',
-
-    getBlock: () => null,
-    insertBlock: () => undefined,
-    insertBlocks: () => undefined,
-    updateBlock: () => undefined,
-    moveBlock: () => undefined,
-    splitBlock: () => undefined,
-    deleteBlock: () => undefined,
-    deleteBlocks: () => undefined,
-    toggleBlock: () => undefined,
-    focusBlock: () => undefined,
-    decreaseBlockDepth: () => undefined,
-    increaseBlockDepth: () => undefined,
-    duplicateBlock: () => undefined,
-
-    setBlockSelected: () => undefined,
-    selectedBlocks: [],
-    setSelection: () => undefined,
-    applyChanges: () => undefined,
-
-    getEditorValue: () => undefined,
-    setEditorValue: () => undefined,
-
-    blocks: {},
-    shortcuts: {},
-    plugins: {},
-    formats: {},
-    selection: null,
-    readOnly: false,
-    blockEditorsMap: {},
-    children: {},
-
-    emit: () => undefined,
-    on: () => undefined,
-    off: () => undefined,
-    once: () => undefined,
-
-    blur: () => undefined,
-    isFocused: () => false,
-    focus: () => undefined,
-  },
+  editor: createYooptaEditor(),
 };
 
 export const YooptaContext = createContext<YooptaEditorContext>(DEFAULT_HANDLERS);
@@ -81,8 +40,8 @@ const useYooptaEditor = (): YooEditor => {
 const useBlockData = (blockId: string) => useYooptaEditor().children[blockId];
 const useYooptaFocused = () => useYooptaEditor().isFocused();
 const useYooptaReadOnly = () => useYooptaEditor().readOnly;
-const useYooptaPluginOptions = <TOptions,>(blockType: string): PluginOptions<TOptions> =>
-  useYooptaEditor().plugins[blockType]?.options as PluginOptions<TOptions>;
+const useYooptaPluginOptions = <TOptions,>(pluginType: string): PluginOptions<TOptions> =>
+  useYooptaEditor().plugins[pluginType]?.options as PluginOptions<TOptions>;
 
 type UseBlockSelectedProps = { blockId: string; path?: YooptaBlockPath } | { path: YooptaBlockPath; blockId?: string };
 const useBlockSelected = ({ blockId, path }: UseBlockSelectedProps) => {

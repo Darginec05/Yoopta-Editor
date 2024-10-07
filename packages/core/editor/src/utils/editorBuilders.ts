@@ -1,20 +1,16 @@
-import { withReact } from 'slate-react';
-import { withHistory } from 'slate-history';
-import { createEditor, Editor } from 'slate';
-import { YooEditor, YooptaBlockData } from '../editor/types';
-import { Plugin, PluginElement, PluginElementsMap } from '../plugins/types';
+import { SlateElement, YooEditor, YooptaBlockData } from '../editor/types';
+import { Plugin, PluginElementsMap } from '../plugins/types';
 import { YooptaMark } from '../marks';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
-import { createBlock } from '../editor/blocks/createBlock';
 import { getValue } from '../editor/textFormats/getValue';
 import { isActive } from '../editor/textFormats/isActive';
 import { toggle } from '../editor/textFormats/toggle';
 import { update } from '../editor/textFormats/update';
-import { withShortcuts } from '../extensions/shortcuts';
 import { getRootBlockElement } from './blockElements';
 import { updateBlock } from '../editor/blocks/updateBlock';
 import { toggleBlock, ToggleBlockOptions } from '../editor/blocks/toggleBlock';
 import { deleteBlock, DeleteBlockOptions } from '../editor/blocks/deleteBlock';
+import { buildSlateEditor } from './buildSlate';
 
 export function buildMarks(editor, marks: YooptaMark<any>[]) {
   const formats: YooEditor['formats'] = {};
@@ -34,7 +30,7 @@ export function buildMarks(editor, marks: YooptaMark<any>[]) {
   return formats;
 }
 
-export function buildBlocks(editor, plugins: Plugin<string, PluginElement<unknown>>[]) {
+export function buildBlocks(editor, plugins: Plugin<Record<string, SlateElement>>[]) {
   const blocks: YooEditor['blocks'] = {};
 
   plugins.forEach((plugin) => {
@@ -68,7 +64,6 @@ export function buildBlocks(editor, plugins: Plugin<string, PluginElement<unknow
 
         // block actions
         toggle: (options?: ToggleBlockOptions) => toggleBlock(editor, plugin.type, options),
-        create: (options) => createBlock(editor, plugin.type, options),
         update: <TKeys extends string, TProps>(id: string, data: Partial<Pick<YooptaBlockData, 'meta' | 'value'>>) => {
           updateBlock(editor, id, data);
         },
@@ -93,11 +88,6 @@ export function buildBlockSlateEditors(editor: YooEditor) {
   return blockEditorsMap;
 }
 
-export function buildSlateEditor(editor: YooEditor): Editor {
-  const slate = withShortcuts(editor, withHistory(withReact(createEditor())));
-  return slate;
-}
-
 export function buildBlockShortcuts(editor: YooEditor) {
   const shortcuts = {};
 
@@ -118,8 +108,8 @@ export function buildBlockShortcuts(editor: YooEditor) {
 // const DEFAULT_PLUGIN_OPTIONS: PluginOptions = {};
 
 export function buildPlugins(
-  plugins: Plugin<string, PluginElement<unknown>>[],
-): Record<string, Plugin<string, unknown>> {
+  plugins: Plugin<Record<string, SlateElement>>[],
+): Record<string, Plugin<Record<string, SlateElement>>> {
   const pluginsMap = {};
   const inlineTopLevelPlugins: PluginElementsMap<string, any> = {};
 
@@ -147,4 +137,23 @@ export function buildPlugins(
   });
 
   return pluginsMap;
+}
+
+export function buildCommands(
+  editor: YooEditor,
+  plugins: Plugin<Record<string, SlateElement>>[],
+): Record<string, (...args: any[]) => any> {
+  const commands = {};
+
+  plugins.forEach((plugin) => {
+    if (plugin.commands) {
+      Object.keys(plugin.commands).forEach((command) => {
+        if (plugin.commands?.[command]) {
+          commands[command] = (...args) => plugin.commands?.[command](editor, ...args);
+        }
+      });
+    }
+  });
+
+  return commands;
 }

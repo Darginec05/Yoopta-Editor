@@ -1,28 +1,40 @@
-import { Descendant } from 'slate';
-import { PluginElementRenderProps, Plugin, PluginOptions } from './types';
+import { SlateElement } from '../editor/types';
+import { PluginElementRenderProps, Plugin, PluginOptions, PluginEvents } from './types';
 
 export type ExtendPluginRender<TKeys extends string> = {
   [x in TKeys]: (props: PluginElementRenderProps) => JSX.Element;
 };
 
-export type ExtendPlugin<TKeys extends string, TOptions> = {
-  renders?: Partial<ExtendPluginRender<TKeys>>;
+type ExtractProps<T> = T extends SlateElement<string, infer P> ? P : never;
+
+export type ExtendPlugin<TElementMap extends Record<string, SlateElement>, TOptions> = {
+  renders?: {
+    [K in keyof TElementMap]?: (props: PluginElementRenderProps) => JSX.Element;
+  };
   options?: Partial<PluginOptions<TOptions>>;
+  elementProps?: {
+    [K in keyof TElementMap]?: (props: ExtractProps<TElementMap[K]>) => ExtractProps<TElementMap[K]>;
+  };
+  events?: Partial<PluginEvents>;
 };
 
-export class YooptaPlugin<TKeys extends string = string, TProps = Descendant, TOptions = Record<string, unknown>> {
-  private readonly plugin: Plugin<TKeys, TProps, TOptions>;
-
-  constructor(plugin: Plugin<TKeys, TProps, TOptions>) {
+export class YooptaPlugin<TElementMap extends Record<string, SlateElement>, TOptions = Record<string, unknown>> {
+  private readonly plugin: Plugin<TElementMap, TOptions>;
+  constructor(plugin: Plugin<TElementMap, TOptions>) {
     this.plugin = plugin;
   }
 
-  get getPlugin() {
+  get getPlugin(): Plugin<TElementMap, TOptions> {
     return this.plugin;
   }
 
-  extend(extendPlugin: ExtendPlugin<TKeys, TOptions>): YooptaPlugin<TKeys, TProps, TOptions> {
-    const { renders, options } = extendPlugin;
+  // [TODO] - add validation
+  // validatePlugin(): boolean {
+  //   return true
+  // }
+
+  extend(extendPlugin: ExtendPlugin<TElementMap, TOptions>): YooptaPlugin<TElementMap, TOptions> {
+    const { renders, options, elementProps, events } = extendPlugin;
 
     const extendedOptions = { ...this.plugin.options, ...options };
     const elements = { ...this.plugin.elements };
@@ -43,7 +55,32 @@ export class YooptaPlugin<TKeys extends string = string, TProps = Descendant, TO
       });
     }
 
-    return new YooptaPlugin<TKeys, TProps, TOptions>({
+    if (elementProps) {
+      Object.keys(elementProps).forEach((elementType) => {
+        const element = elements[elementType];
+
+        if (element) {
+          const defaultPropsFn = elementProps[elementType];
+          const updatedElementProps = element.props;
+          if (defaultPropsFn && updatedElementProps) {
+            element.props = defaultPropsFn(updatedElementProps);
+          }
+        }
+      });
+    }
+
+    if (events) {
+      Object.keys(events).forEach((event) => {
+        const eventHandler = events[event];
+
+        if (eventHandler) {
+          if (!this.plugin.events) this.plugin.events = {};
+          this.plugin.events[event] = eventHandler;
+        }
+      });
+    }
+
+    return new YooptaPlugin<TElementMap, TOptions>({
       ...this.plugin,
       elements: elements,
       options: extendedOptions as PluginOptions<TOptions>,

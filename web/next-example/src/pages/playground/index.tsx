@@ -64,13 +64,17 @@ const plugins = [
           },
         };
       },
+      onUploadPoster: async (file) => {
+        const image = await uploadToCloudinary(file, 'image');
+        return image.secure_url;
+      },
     },
   }),
   File.extend({
     options: {
       onUpload: async (file) => {
         const response = await uploadToCloudinary(file, 'auto');
-        return { src: response.url };
+        return { src: response.secure_url, format: response.format, name: response.name, size: response.bytes };
       },
     },
   }),

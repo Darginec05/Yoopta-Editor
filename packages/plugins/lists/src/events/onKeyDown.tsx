@@ -6,13 +6,14 @@ import {
   buildBlockData,
   buildBlockElement,
   Elements,
+  SlateEditor,
 } from '@yoopta/editor';
 import { Editor, Element, Path } from 'slate';
 import { BulletedListElement, NumberedListElement, TodoListElement } from '../types';
 
 type ListNode = NumberedListElement | BulletedListElement | TodoListElement;
 
-export function onKeyDown(editor: YooEditor, slate: Editor, { hotkeys, defaultBlock }: PluginEventHandlerOptions) {
+export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, defaultBlock }: PluginEventHandlerOptions) {
   return (event) => {
     Editor.withoutNormalizing(slate, () => {
       const block = findPluginBlockBySelectionPath(editor);
@@ -64,7 +65,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor, { hotkeys, defaultBl
             const currentOrder = block.meta.order;
 
             editor.deleteBlock({ blockId: block.id });
-            editor.insertBlock(defaultBlock, { at: [currentOrder], focus: true });
+            editor.insertBlock(defaultBlock.type, { at: [currentOrder], focus: true, blockData: defaultBlock });
             return;
           }
 
@@ -84,7 +85,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor, { hotkeys, defaultBl
             ],
           });
 
-          editor.insertBlock(prevListBlock, { at: [block.meta.order], focus: false });
+          editor.insertBlock(prevListBlock.type, { at: [block.meta.order], focus: false, blockData: prevListBlock });
           return;
         }
 
@@ -104,7 +105,7 @@ export function onKeyDown(editor: YooEditor, slate: Editor, { hotkeys, defaultBl
           ],
         });
 
-        editor.insertBlock(nextListBlock, { at: [block.meta.order + 1], focus: true });
+        editor.insertBlock(nextListBlock.type, { at: [block.meta.order + 1], focus: true, blockData: nextListBlock });
         return;
       }
     });

@@ -1,6 +1,7 @@
 import { Element } from 'slate';
 import { buildBlockData } from '../components/Editor/utils';
-import { SlateElement, YooEditor, YooptaBlockData } from '../editor/types';
+import { Blocks } from '../editor/blocks';
+import { SlateElement, YooEditor, YooptaBlockBaseMeta, YooptaBlockData } from '../editor/types';
 import { PluginDeserializeParser } from '../plugins/types';
 import { getRootBlockElementType } from '../utils/blockElements';
 import { generateId } from '../utils/generateId';
@@ -15,6 +16,8 @@ const MARKS_NODE_NAME_MATCHERS_MAP = {
   CODE: { type: 'code' },
   EM: { type: 'italic' },
 };
+
+const VALID_TEXT_ALIGNS = ['left', 'center', 'right', undefined];
 
 type PluginsMapByNode = {
   type: string;
@@ -64,11 +67,11 @@ function getMappedPluginByNodeNames(editor: YooEditor): PluginsMapByNodeNames {
   return PLUGINS_NODE_NAME_MATCHERS_MAP;
 }
 
-function buildBlocks(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElement, children: any[]) {
+function buildBlock(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElement, children: any[]) {
   let nodeElementOrBlocks;
 
   if (plugin.parse) {
-    nodeElementOrBlocks = plugin.parse(el as HTMLElement);
+    nodeElementOrBlocks = plugin.parse(el as HTMLElement, editor);
 
     const isInline = Element.isElement(nodeElementOrBlocks) && nodeElementOrBlocks.props?.nodeType === 'inline';
     if (isInline) return nodeElementOrBlocks;
@@ -83,7 +86,7 @@ function buildBlocks(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElemen
   let rootNode: SlateElement<string, any> | YooptaBlockData[] = {
     id: generateId(),
     type: rootElementType,
-    children: isVoid && !block.hasCustomEditor ? [{ text: '' }] : children.map(mapNodeChildren),
+    children: isVoid && !block.hasCustomEditor ? [{ text: '' }] : children.map(mapNodeChildren).flat(),
     props: { nodeType: 'block', ...rootElement.props },
   };
 
@@ -100,50 +103,64 @@ function buildBlocks(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElemen
     rootNode.children = [{ text: '' }];
   }
 
-  const blockData = buildBlockData({
+  if (!nodeElementOrBlocks && plugin.parse) return;
+
+  const align = el.getAttribute('data-meta-align') as YooptaBlockBaseMeta['align'];
+  const depth = parseInt(el.getAttribute('data-meta-depth') || '0', 10);
+
+  const blockData = Blocks.buildBlockData({
     id: generateId(),
     type: plugin.type,
     value: [rootNode],
     meta: {
       order: 0,
-      depth: 0,
+      depth: depth,
+      align: VALID_TEXT_ALIGNS.includes(align) ? align : undefined,
     },
   });
 
   return blockData;
 }
 
-export function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames, el: HTMLElement | ChildNode) {
+function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames, el: HTMLElement | ChildNode) {
   if (el.nodeType === 3) {
     const text = el.textContent?.replace(/[\t\n\r\f\v]+/g, ' ');
-    return text;
+    return { text };
   } else if (el.nodeType !== 1) {
     return null;
   } else if (el.nodeName === 'BR') {
-    return '\n';
+    return { text: '\n' };
   }
 
-  const parent = el;
-
+  const parent = el as HTMLElement;
   let children = Array.from(parent.childNodes)
     .map((node) => deserialize(editor, pluginsMap, node))
-    .flat();
+    .flat()
+    .filter(Boolean);
 
-  if (MARKS_NODE_NAME_MATCHERS_MAP[el.nodeName]) {
-    const mark = MARKS_NODE_NAME_MATCHERS_MAP[el.nodeName];
+  if (MARKS_NODE_NAME_MATCHERS_MAP[parent.nodeName]) {
+    const mark = MARKS_NODE_NAME_MATCHERS_MAP[parent.nodeName];
     const markType = mark.type;
-    const text = el.textContent?.replace(/[\t\n\r\f\v]+/g, ' ');
-    return { [markType]: true, text };
+
+    return children.map((child) => {
+      if (typeof child === 'string') {
+        return { [markType]: true, text: child };
+      } else if (child.text) {
+        return { ...child, [markType]: true };
+      }
+      return child;
+    });
   }
 
-  const plugin = pluginsMap[el.nodeName];
+  const plugin = pluginsMap[parent.nodeName];
 
   if (plugin) {
     if (Array.isArray(plugin)) {
-      return plugin.map((p) => buildBlocks(editor, p, el as HTMLElement, children));
+      const blocks = plugin.map((p) => buildBlock(editor, p, parent, children)).filter(Boolean);
+      return blocks;
     }
 
-    return buildBlocks(editor, plugin, el as HTMLElement, children);
+    return buildBlock(editor, plugin, parent, children);
   }
 
   return children;
@@ -159,22 +176,16 @@ function mapNodeChildren(child) {
   }
 
   if (Array.isArray(child)) {
-    return { text: child[0] };
+    return child.map(mapNodeChildren).flat();
   }
 
-  if (child.text) {
+  if (child?.text) {
     return child;
   }
 
   if (isYooptaBlock(child)) {
     const block = child as YooptaBlockData;
-    let text = '';
-
-    block.value[0].children.forEach((child) => {
-      text += `${child.text}`;
-    });
-
-    return { text };
+    return (block.value[0] as SlateElement).children.map(mapNodeChildren).flat();
   }
 
   return { text: '' };
@@ -184,9 +195,10 @@ export function deserializeHTML(editor: YooEditor, html: HTMLElement) {
   console.log('pasted html', html);
 
   const PLUGINS_NODE_NAME_MATCHERS_MAP = getMappedPluginByNodeNames(editor);
-  console.log('PLUGINS_NODE_NAME_MATCHERS_MAP', PLUGINS_NODE_NAME_MATCHERS_MAP);
 
-  const blocks = deserialize(editor, PLUGINS_NODE_NAME_MATCHERS_MAP, html).filter(isYooptaBlock) as YooptaBlockData[];
+  const blocks = deserialize(editor, PLUGINS_NODE_NAME_MATCHERS_MAP, html)
+    .flat()
+    .filter(isYooptaBlock) as YooptaBlockData[];
 
   return blocks;
 }

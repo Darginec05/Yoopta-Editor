@@ -32,15 +32,18 @@ const BlockOptionsSeparator = ({ className = '' }: BlockOptionsSeparatorProps) =
   <div className={`yoopta-block-options-separator ${className}`} />
 );
 
-type BlockOptionsProps = {
+export type BlockOptionsProps = {
   isOpen: boolean;
   onClose: () => void;
   refs: any;
   style: CSSProperties;
   children?: React.ReactNode;
+  actions?: ['delete', 'duplicate', 'turnInto', 'copy'] | null;
 };
 
-const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsProps) => {
+const DEFAULT_ACTIONS: BlockOptionsProps['actions'] = ['delete', 'duplicate', 'turnInto', 'copy'];
+
+const BlockOptions = ({ isOpen, onClose, refs, style, actions = DEFAULT_ACTIONS, children }: BlockOptionsProps) => {
   const editor = useYooptaEditor();
   const tools = useYooptaTools();
   const [isActionMenuOpen, setIsActionMenuOpen] = useState(false);
@@ -67,17 +70,19 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
   const isVoidElement = rootElement?.props?.nodeType === 'void';
 
   const onDelete = () => {
-    const selection = editor.selection;
-    editor.deleteBlock({ at: selection });
-    editor.setBlockSelected(null);
-    editor.setSelection(null);
+    editor.deleteBlock({ at: editor.selection });
+    // editor.setBlockSelected(null);
+    editor.setSelection([null]);
 
     onClose();
   };
 
   const onDuplicate = () => {
-    editor.duplicateBlock({ at: editor.selection, focus: true });
-    editor.setBlockSelected(null);
+    // [TEST]
+    if (!editor.selection) return;
+
+    editor.duplicateBlock({ original: { path: editor.selection }, focus: true });
+    // editor.setBlockSelected([null]);
 
     onClose();
   };
@@ -106,50 +111,52 @@ const BlockOptions = ({ isOpen, onClose, refs, style, children }: BlockOptionsPr
     // [TODO] - take care about SSR
     <Portal id="yoo-block-options-portal">
       <Overlay lockScroll className="yoo-editor-z-[100]" onClick={onClose}>
-        <div style={style} ref={refs.setFloating}>
+        <div style={style} ref={refs.setFloating} contentEditable={false}>
           <BlockOptionsMenuContent>
-            <BlockOptionsMenuGroup>
-              <BlockOptionsMenuItem>
-                <button type="button" className="yoopta-block-options-button" onClick={onDelete}>
-                  <TrashIcon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
-                  Delete
-                </button>
-              </BlockOptionsMenuItem>
-              <BlockOptionsMenuItem>
-                <button type="button" className="yoopta-block-options-button" onClick={onDuplicate}>
-                  <CopyIcon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
-                  Duplicate
-                </button>
-              </BlockOptionsMenuItem>
-              {!!ActionMenu && !isVoidElement && !editor.blocks[currentBlock?.type || '']?.hasCustomEditor && (
+            {actions !== null && (
+              <BlockOptionsMenuGroup>
                 <BlockOptionsMenuItem>
-                  {isActionMenuMounted && (
-                    <Portal id="yoo-block-options-portal">
-                      <Overlay lockScroll className="yoo-editor-z-[100]" onClick={() => setIsActionMenuOpen(false)}>
-                        <div style={actionMenuStyles} ref={actionMenuRefs.setFloating}>
-                          <ActionMenu {...actionMenuRenderProps} />
-                        </div>
-                      </Overlay>
-                    </Portal>
-                  )}
-                  <button
-                    type="button"
-                    className="yoopta-block-options-button"
-                    ref={actionMenuRefs.setReference}
-                    onClick={() => setIsActionMenuOpen((open) => !open)}
-                  >
-                    <TurnIcon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
-                    Turn into
+                  <button type="button" className="yoopta-block-options-button" onClick={onDelete}>
+                    <TrashIcon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
+                    Delete
                   </button>
                 </BlockOptionsMenuItem>
-              )}
-              <BlockOptionsMenuItem>
-                <button type="button" className="yoopta-block-options-button" onClick={onCopy}>
-                  <Link2Icon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
-                  Copy link to block
-                </button>
-              </BlockOptionsMenuItem>
-            </BlockOptionsMenuGroup>
+                <BlockOptionsMenuItem>
+                  <button type="button" className="yoopta-block-options-button" onClick={onDuplicate}>
+                    <CopyIcon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
+                    Duplicate
+                  </button>
+                </BlockOptionsMenuItem>
+                {!!ActionMenu && !isVoidElement && !editor.blocks[currentBlock?.type || '']?.hasCustomEditor && (
+                  <BlockOptionsMenuItem>
+                    {isActionMenuMounted && (
+                      <Portal id="yoo-block-options-portal">
+                        <Overlay lockScroll className="yoo-editor-z-[100]" onClick={() => setIsActionMenuOpen(false)}>
+                          <div style={actionMenuStyles} ref={actionMenuRefs.setFloating}>
+                            <ActionMenu {...actionMenuRenderProps} />
+                          </div>
+                        </Overlay>
+                      </Portal>
+                    )}
+                    <button
+                      type="button"
+                      className="yoopta-block-options-button"
+                      ref={actionMenuRefs.setReference}
+                      onClick={() => setIsActionMenuOpen((open) => !open)}
+                    >
+                      <TurnIcon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
+                      Turn into
+                    </button>
+                  </BlockOptionsMenuItem>
+                )}
+                <BlockOptionsMenuItem>
+                  <button type="button" className="yoopta-block-options-button" onClick={onCopy}>
+                    <Link2Icon className="yoo-editor-w-4 yoo-editor-h-4 yoo-editor-mr-2" />
+                    Copy link to block
+                  </button>
+                </BlockOptionsMenuItem>
+              </BlockOptionsMenuGroup>
+            )}
             {children}
           </BlockOptionsMenuContent>
         </div>

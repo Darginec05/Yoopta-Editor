@@ -1,8 +1,9 @@
-import { generateId, YooptaPlugin } from '@yoopta/editor';
-import { LinkElementProps, LinkPluginElementKeys } from '../types';
+import { deserializeTextNodes, generateId, serializeTextNodes, YooptaPlugin } from '@yoopta/editor';
+import { LinkCommands } from '../commands';
+import { LinkElementMap, LinkElementProps } from '../types';
 import { LinkRender } from '../ui/LinkRender';
 
-const Link = new YooptaPlugin<LinkPluginElementKeys, LinkElementProps>({
+const Link = new YooptaPlugin<LinkElementMap>({
   type: 'LinkPlugin',
   elements: {
     link: {
@@ -22,19 +23,24 @@ const Link = new YooptaPlugin<LinkPluginElementKeys, LinkElementProps>({
       description: 'Create link',
     },
   },
+  commands: LinkCommands,
   parsers: {
     html: {
       serialize: (element, text) => {
         const { url, target, rel, title } = element.props;
-        return `<a href="${url}" target="${target}" rel="${rel}">${title || text}</a>`;
+        return `<a href="${url}" target="${target}" rel="${rel}">${serializeTextNodes(element.children)}</a>`;
       },
       deserialize: {
         nodeNames: ['A'],
-        parse: (el) => {
+        parse: (el, editor) => {
           if (el.nodeName === 'A') {
             const href = el.getAttribute('href') || '';
-            const target = el.getAttribute('target') || '';
-            const rel = el.getAttribute('rel') || '';
+
+            const defaultLinkProps = editor.plugins.LinkPlugin.elements.link.props as LinkElementProps;
+
+            // [TODO] Add target
+            const target = el.getAttribute('target') || defaultLinkProps.target;
+            const rel = el.getAttribute('rel') || defaultLinkProps.rel;
             const title = el.textContent || '';
             const props: LinkElementProps = {
               url: href,
@@ -48,7 +54,7 @@ const Link = new YooptaPlugin<LinkPluginElementKeys, LinkElementProps>({
               id: generateId(),
               type: 'link',
               props,
-              children: [{ text: title }],
+              children: deserializeTextNodes(editor, el.childNodes),
             };
           }
         },

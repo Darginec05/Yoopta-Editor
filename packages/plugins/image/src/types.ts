@@ -17,7 +17,7 @@ export type ImageElementProps = {
 export type ImagePluginElements = 'image';
 export type ImageElement = SlateElement<'image', ImageElementProps>;
 
-export type OnUploadResponse = Omit<ImageElementProps, 'srcSet'>;
+export type ImageUploadResponse = Omit<ImageElementProps, 'srcSet'>;
 
 export type ImageOptimizationFields = {
   deviceSizes?: number[];
@@ -25,11 +25,15 @@ export type ImageOptimizationFields = {
 };
 
 export type ImagePluginOptions = {
-  onUpload: (file: File) => Promise<OnUploadResponse>;
+  onUpload: (file: File) => Promise<ImageUploadResponse>;
   accept?: string;
   optimizations?: ImageOptimizationFields;
   maxSizes?: {
     maxWidth?: number;
     maxHeight?: number;
   };
+};
+
+export type ImageElementMap = {
+  image: ImageElement;
 };

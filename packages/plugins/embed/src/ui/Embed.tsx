@@ -44,7 +44,7 @@ const EmbedRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
       minWidth: 300,
       size: { width: sizes.width, height: sizes.height },
       maxWidth: pluginOptions?.maxSizes?.maxWidth || 800,
-      maxHeight: pluginOptions?.maxSizes?.maxHeight || 720,
+      maxHeight: pluginOptions?.maxSizes?.maxHeight || 900,
       lockAspectRatio: true,
       resizeRatio: 2,
       enable: {

@@ -23,7 +23,7 @@ const SelectContent = ({ children }) => {
   const editor = useYooptaEditor();
 
   return (
-    <SelectPrimitive.Portal container={document.querySelector(`[data-yoopta-editor-id="${editor.id}"]`) as HTMLElement}>
+    <SelectPrimitive.Portal container={editor.refElement}>
       <SelectPrimitive.Content
         className="yoo-code-relative yoo-code-z-[120] yoo-code-max-h-96 yoo-code-min-w-[8rem] yoo-code-overflow-hidden yoo-code-rounded-md yoo-code-border-solid yoo-code-border-[#e3e3e3] yoo-code-bg-[#ffffff] yoo-code-text-popover-foreground yoo-code-shadow-md data-[state=open]:yoo-code-animate-in data-[state=closed]:yoo-code-animate-out data-[state=closed]:yoo-code-fade-out-0 data-[state=open]:yoo-code-fade-in-0 data-[state=closed]:yoo-code-zoom-out-95 data-[state=open]:yoo-code-zoom-in-95 data-[side=bottom]:yoo-code-slide-in-from-top-2 data-[side=left]:yoo-code-slide-in-from-right-2 data-[side=right]:yoo-code-slide-in-from-left-2 data-[side=top]:yoo-code-slide-in-from-bottom-2 data-[side=bottom]:yoo-code-translate-y-1 data-[side=left]:-yoo-code-translate-x-1 data-[side=right]:yoo-code-translate-x-1 data-[side=top]:-yoo-code-translate-y-1"
         position="popper"
@@ -41,16 +41,17 @@ const SelectContent = ({ children }) => {
   );
 };
 
-const SelectItem = ({ value, children }) => {
+const SelectItem = ({ value, children, onChange }) => {
   return (
-    <SelectPrimitive.Item
-      value={value}
-      className="yoo-code-relative yoo-code-flex yoo-code-w-full yoo-code-cursor-pointer yoo-code-select-none yoo-code-items-center yoo-code-rounded-sm yoo-code-py-1.5 yoo-code-pl-2 yoo-code-pr-2 yoo-code-text-sm yoo-code-outline-none focus:yoo-code-bg-[#eeeeee] focus:yoo-code-text-accent-foreground data-[disabled]:yoo-code-pointer-events-none data-[disabled]:yoo-code-opacity-50"
+    <button
+      type="button"
+      className="yoopta-button yoo-code-relative yoo-code-flex yoo-code-w-full yoo-code-cursor-pointer yoo-code-select-none yoo-code-items-center yoo-code-rounded-sm yoo-code-py-1.5 yoo-code-pl-2 yoo-code-pr-2 yoo-code-text-sm yoo-code-outline-none focus:yoo-code-bg-[#eeeeee] focus:yoo-code-text-accent-foreground data-[disabled]:yoo-code-pointer-events-none data-[disabled]:yoo-code-opacity-50"
+      onClick={(e) => onChange(value)}
     >
       <span className="yoo-code-capitalize yoo-code-flex yoo-code-justify-between yoo-code-items-center yoo-code-w-full">
         {children}
       </span>
-    </SelectPrimitive.Item>
+    </button>
   );
 };
 
@@ -64,17 +65,14 @@ type SelectProps = {
 
 const Select = ({ options, onChange, value, children, className }: SelectProps) => {
   return (
-    <SelectRoot onValueChange={onChange} value={value}>
-      {children || (
-        <SelectTrigger className={className}>
-          <SelectValue placeholder="Theme" />
-        </SelectTrigger>
-      )}
+    <SelectRoot value={value}>
+      {children}
       <SelectContent>
         {options.map((option) => {
           const isCurrent = option.value === value;
+
           return (
-            <SelectItem key={option.value} value={option.value}>
+            <SelectItem key={option.value} value={option.value} onChange={onChange}>
               {option.label}
               {isCurrent && <CheckmarkIcon />}
             </SelectItem>

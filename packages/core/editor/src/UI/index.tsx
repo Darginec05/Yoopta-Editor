@@ -3,6 +3,8 @@ import { ExtendedBlockActions } from './ExtendedBlockActions/ExtendedBlockAction
 import { Portal } from './Portal/Portal';
 import { Overlay } from './Overlay/Overlay';
 
+export { type BlockOptionsProps } from './BlockOptions/BlockOptions';
+
 export const UI = {
   ...BlockOptionsUI,
   ExtendedBlockActions,

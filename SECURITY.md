@@ -12,6 +12,6 @@ We release patches for security vulnerabilities under the following versions.
 ## Reporting a Vulnerability
 
 Please report (suspected) security vulnerabilities to
-**[security channel](https://t.me/YooptaEditor/180)**. You will receive a response from
+**[security channel](https://discord.gg/Dt8rhSTjsn)**. You will receive a response from
 us within 48 hours. If the issue is confirmed, we will release a patch as soon
 as possible, usually within a few days.

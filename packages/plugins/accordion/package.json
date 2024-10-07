@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/accordion",
-  "version": "4.6.4",
+  "version": "4.8.3",
   "description": "Accordion plugin for Yoopta Editor",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
@@ -37,5 +37,5 @@
   "bugs": {
     "url": "https://github.com/Darginec05/Editor-Yoopta/issues"
   },
-  "gitHead": "29e4ae316ec75bb43d3822d028abcb0c34256ec5"
+  "gitHead": "12d8460dfe0ead89ee1d6f3f2f1fc68239e93d4c"
 }

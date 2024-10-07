@@ -12,9 +12,7 @@ const filterBy = (item, text: string) => {
 export const useChatActions = ({ actions: baseActions }: Props) => {
   const [actions, setActions] = useState<Action[] | null>(baseActions);
 
-  const handleAction = (action: Action) => {
-    console.log('action cliecked', action);
-  };
+  const handleAction = (action: Action) => {};
 
   const updateActions = (inputValue: string) => {
     setActions((prevActions) => {

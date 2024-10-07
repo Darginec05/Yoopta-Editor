@@ -1,7 +1,7 @@
 import { YooEditor, YooptaBlockData, SlateElement, YooptaContentValue } from '@yoopta/editor';
 
 export function getPluginByInlineElement(plugins: YooEditor['plugins'], elementType: string) {
-  const plugin = Object.values(plugins).find((plugin) => plugin.type === plugin.elements?.[elementType].rootPlugin);
+  const plugin = Object.values(plugins).find((plugin) => plugin.type === plugin.elements?.[elementType]?.rootPlugin);
   return plugin;
 }
 
@@ -48,7 +48,7 @@ export function serialize(editor: YooEditor, blocksData: YooptaBlockData[]) {
     const plugin = editor.plugins[blockData.type];
 
     if (plugin && plugin.parsers?.html?.serialize) {
-      const content = serializeChildren(blockData.value[0].children, editor.plugins);
+      const content = serializeChildren((blockData.value[0] as SlateElement).children, editor.plugins);
       const text = plugin.parsers.html.serialize(blockData.value[0] as SlateElement, content);
       return `${text}\n`;
     }
