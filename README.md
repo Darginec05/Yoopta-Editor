@@ -10,6 +10,8 @@
 
 ![](/docs/public/yoopta_intro.gif)
 
+![Alt](https://repobeats.axiom.co/api/embed/0d5703e649e2ba6be41450de891f466ce6935ff0.svg "Repobeats analytics image")
+
 ## Introduction
 
 Yoopta-Editor is a free, open-source rich-text editor built for React apps. It’s packed with features that let you build an editor as powerful and user-friendly as Notion, Craft, Coda, Medium etc.
