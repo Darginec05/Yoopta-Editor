@@ -56,6 +56,7 @@ const DEFAULT_HANDLERS: YooptaEditorContext = {
     getHTML: () => '',
     getMarkdown: () => '',
     getPlainText: () => '',
+    getEmail: () => '',
 
     refElement: null,
   },

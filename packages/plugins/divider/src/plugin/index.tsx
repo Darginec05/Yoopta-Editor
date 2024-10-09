@@ -53,6 +53,21 @@ const Divider = new YooptaPlugin<DividerElementMap>({
         return '---\n';
       },
     },
+    email: {
+      serialize: (element, text, blockMeta) => {
+        const { theme = 'solid', color = '#EFEFEE' } = element.props || {};
+        return `
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <hr data-meta-theme="${theme}" data-meta-color="${color}" style="background-color: #8383e0; height: 1.2px" />
+              </td>
+            </tr>
+          </tbody>
+        </table>`;
+      },
+    },
   },
   commands: DividerCommands,
   events: {

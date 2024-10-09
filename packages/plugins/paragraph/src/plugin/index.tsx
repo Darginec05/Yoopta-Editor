@@ -35,6 +35,23 @@ const Paragraph = new YooptaPlugin<ParagraphElementMap>({
         return `${serializeTextNodesIntoMarkdown(element.children)}\n`;
       },
     },
+    email: {
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+
+        return `<table>
+        <tbody>
+          <tr>
+            <td>
+              <p data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}">
+                ${serializeTextNodes(element.children)}
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>`;
+      },
+    },
   },
   commands: ParagraphCommands,
 });

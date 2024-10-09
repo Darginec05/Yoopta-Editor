@@ -83,6 +83,30 @@ const File = new YooptaPlugin<FileElementMap, FilePluginOptions>({
         return `[${element.props.name}](${element.props.src})`;
       },
     },
+    email: {
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+        const justify = ALIGNS_TO_JUSTIFY[align] || 'left';
+
+        return `
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <div style="margin-left: ${depth}px; display: flex; width: 100%; justify-content: ${justify}"><a data-meta-align="${align}" data-meta-depth="${depth}" href="${
+          element.props.src
+        }" data-size="${element.props.size}" download="${
+          element.props.name
+        }" target="_blank" rel="noopener noreferrer">${
+          element.props.format ? `${element.props.name}.${element.props.format}` : `${element.props.name}`
+        }</a></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>            
+        `;
+      },
+    },
   },
 });
 
