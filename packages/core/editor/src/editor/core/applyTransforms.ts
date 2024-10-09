@@ -18,8 +18,8 @@ export type SetBlockValueOperation = {
 export type SetBlockMetaOperation = {
   type: 'set_block_meta';
   id: string;
-  properties: Partial<YooptaBlockData['meta']>;
-  prevProperties: Partial<YooptaBlockData['meta']>;
+  properties: Omit<Partial<YooptaBlockData['meta']>, 'order'>;
+  prevProperties: Omit<Partial<YooptaBlockData['meta']>, 'order'>;
 };
 
 export type SplitBlockOperation = {
@@ -68,12 +68,54 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
       const { path, slate } = op;
       editor.blockEditorsMap[op.block.id] = slate || buildSlateEditor(editor);
       editor.children[op.block.id] = op.block;
+
+      Object.values(editor.children).forEach((existingBlock) => {
+        if (existingBlock.meta.order >= op.block.meta.order && existingBlock.id !== op.block.id) {
+          if (isDraft(existingBlock)) {
+            existingBlock.meta.order++;
+          } else {
+            produce(existingBlock, (draft) => {
+              draft.meta.order++;
+            });
+          }
+        }
+      });
+      break;
+    }
+
+    case 'delete_block': {
+      delete editor.blockEditorsMap[op.block.id];
+      delete editor.children[op.block.id];
+
+      // [TODO]
+      console.log('delete_block editor.children', Object.keys(editor.children).length);
+
+      Object.values(editor.children).forEach((existingBlock) => {
+        if (existingBlock.meta.order > op.block.meta.order) {
+          if (isDraft(existingBlock)) {
+            existingBlock.meta.order--;
+          } else {
+            produce(existingBlock, (draft) => {
+              draft.meta.order--;
+            });
+          }
+        }
+      });
+
       break;
     }
 
     case 'set_block_value': {
       const { id, value } = op;
-      if (Array.isArray(value)) editor.children[id].value = value;
+      if (Array.isArray(value)) {
+        if (isDraft(editor.children[id])) {
+          editor.children[id].value = value;
+        } else {
+          produce(editor.children[id], (draft) => {
+            draft.value = value;
+          });
+        }
+      }
       break;
     }
 
@@ -83,26 +125,16 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
       const block = editor.children[id];
       if (!block) break;
 
-      if (!isDraft(block.meta)) {
+      if (isDraft(block)) {
+        Object.keys(properties).forEach((key) => {
+          block.meta[key] = properties[key];
+        });
+      } else {
         produce(block, (draft) => {
           draft.meta = { ...draft.meta, ...properties };
         });
-
-        break;
       }
 
-      Object.keys(properties).forEach((key) => {
-        if (properties[key]) {
-          block.meta[key] = properties[key];
-        }
-      });
-
-      break;
-    }
-
-    case 'delete_block': {
-      delete editor.blockEditorsMap[op.block.id];
-      delete editor.children[op.block.id];
       break;
     }
 
@@ -110,6 +142,18 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
       const { slate, prevProperties, properties } = op;
       editor.children[properties.id] = properties;
       editor.blockEditorsMap[properties.id] = slate || buildSlateEditor(editor);
+
+      Object.values(editor.children).forEach((block) => {
+        if (block.meta.order >= properties.meta.order && block.id !== properties.id) {
+          if (isDraft(block)) {
+            block.meta.order++;
+          } else {
+            produce(block, (draft) => {
+              draft.meta.order++;
+            });
+          }
+        }
+      });
       break;
     }
 
@@ -120,6 +164,18 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
       delete editor.children[sourceProperties.id];
       editor.children[targetProperties.id] = mergedProperties;
       editor.blockEditorsMap[targetProperties.id] = slate || buildSlateEditor(editor);
+
+      Object.values(editor.children).forEach((block) => {
+        if (block.meta.order > sourceProperties.meta.order) {
+          if (isDraft(block)) {
+            block.meta.order--;
+          } else {
+            produce(block, (draft) => {
+              draft.meta.order--;
+            });
+          }
+        }
+      });
       break;
     }
 
@@ -177,6 +233,14 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
 
   editor.emit('change', editor.children);
   editor.emit('selection-change', editor.selection);
+
+  // console.log(
+  //   'orders',
+  //   Object.keys(editor.children)
+  //     .map((k) => [k, editor.children[k].meta.order])
+  //     .sort((a, b) => a[1] - b[1]),
+  // );
+
   assertValidPaths(editor);
 }
 

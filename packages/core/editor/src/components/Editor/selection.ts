@@ -23,6 +23,7 @@ export function useMultiSelection({ editor }: MultiSelectionOptions) {
       if (!slate) return;
 
       Editor.withoutNormalizing(slate, () => {
+        // [TEST]
         Transforms.select(slate, [0]);
 
         if (slate.selection && Range.isExpanded(slate.selection)) {

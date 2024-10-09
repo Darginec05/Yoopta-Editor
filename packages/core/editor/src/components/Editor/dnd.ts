@@ -26,6 +26,7 @@ export const useYooptaDragDrop = ({ editor }: { editor: YooEditor }) => {
   }, []);
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
+    console.log('handleDragStart', event);
     editor.setSelection([null]);
   }, []);
 

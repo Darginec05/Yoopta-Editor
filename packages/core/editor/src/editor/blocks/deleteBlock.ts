@@ -1,6 +1,8 @@
 import { YooEditor, YooptaBlockPath } from '../types';
 import { YooptaOperation } from '../core/applyTransforms';
 import { Paths } from '../paths';
+import { getLastNodePoint } from '../../utils/getLastNodePoint';
+import { getSlate } from './getSlate';
 
 // export type DeleteBlockOptions = YooptaEditorTransformOptions & {
 //   deleteAll?: boolean;
@@ -133,16 +135,16 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions) {
     path: editor.selection,
   });
 
-  Object.values(editor.children).forEach((block) => {
-    if (block.meta.order > blockToDelete.meta.order) {
-      operations.push({
-        type: 'set_block_meta',
-        id: block.id,
-        properties: { order: block.meta.order - 1 },
-        prevProperties: { order: block.meta.order },
-      });
-    }
-  });
+  // Object.values(editor.children).forEach((block) => {
+  //   if (block.meta.order > blockToDelete.meta.order) {
+  //     operations.push({
+  //       type: 'set_block_meta',
+  //       id: block.id,
+  //       properties: { order: block.meta.order - 1 },
+  //       prevProperties: { order: block.meta.order },
+  //     });
+  //   }
+  // });
 
   editor.applyTransforms(operations);
 

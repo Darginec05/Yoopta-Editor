@@ -50,7 +50,8 @@ export const useSlateEditor = (
     slateEditor.insertText = (text) => {
       const selectedPaths = Paths.getSelectedPaths(editor.selection);
       const path = Paths.getPath(editor.selection);
-      if (Array.isArray(selectedPaths)) {
+      if (Array.isArray(selectedPaths) && selectedPaths.length > 0) {
+        console.log('slateEditor.insertText', selectedPaths);
         editor.setSelection([path, []]);
       }
 
@@ -63,6 +64,8 @@ export const useSlateEditor = (
         const path = Paths.getPath(editor.selection);
 
         if (Array.isArray(selectedPaths) && slateEditor.selection && Range.isExpanded(slateEditor.selection)) {
+          console.log('slateEditor.apply', selectedPaths);
+
           editor.setSelection([path, []]);
         }
       }

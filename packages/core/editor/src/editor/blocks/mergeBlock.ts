@@ -1,7 +1,8 @@
-import { Editor, Element, Path, Text, Transforms } from 'slate';
+import { Editor, Text, Transforms } from 'slate';
 import { deepClone } from '../../utils/deepClone';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
+import { getLastNodePoint } from '../../utils/getLastNodePoint';
 import { YooptaOperation } from '../core/applyTransforms';
 import { Elements } from '../elements';
 import { Paths } from '../paths';
@@ -16,15 +17,15 @@ export function mergeBlock(editor: YooEditor, options: MergeBlockOptions = {}) {
   const { focus = true } = options;
 
   const currentBlock = findPluginBlockBySelectionPath(editor);
-  const originalBlock = deepClone(currentBlock);
-  const slate = findSlateBySelectionPath(editor, { at: editor.selection });
+  const slateToRemove = findSlateBySelectionPath(editor, { at: editor.selection });
 
   const prevBlockPath = Paths.getPreviousPath(editor.selection);
-  const slateToMerge = findSlateBySelectionPath(editor, { at: prevBlockPath });
+  const slateToMerged = findSlateBySelectionPath(editor, { at: prevBlockPath });
   const blockToMerge = findPluginBlockBySelectionPath(editor, { at: prevBlockPath });
   const blockEntityToMerge = editor.blocks[blockToMerge?.type || ''];
 
-  if (!slate || !slate.selection || !currentBlock || !slateToMerge || !blockToMerge) return;
+  if (!slateToRemove || !slateToRemove.selection || !currentBlock || !slateToMerged || !blockToMerge) return;
+  const prevSlate = deepClone(slateToMerged);
 
   const prevBlockElementRoot = Elements.getElement(editor, blockToMerge.id);
 
@@ -38,7 +39,7 @@ export function mergeBlock(editor: YooEditor, options: MergeBlockOptions = {}) {
     return;
   }
 
-  const prevSlateText = Editor.string(slateToMerge, [0, 0]);
+  const prevSlateText = Editor.string(slateToMerged, [0, 0]);
   // If previous block values is empty just delete block without merging
   if (prevSlateText.length === 0) {
     console.log('FiRED mergeBlock');
@@ -48,29 +49,26 @@ export function mergeBlock(editor: YooEditor, options: MergeBlockOptions = {}) {
     });
   }
 
-  Editor.withoutNormalizing(slate, () => {
-    if (!slate.selection) return;
+  Editor.withoutNormalizing(slateToRemove, () => {
+    if (!slateToRemove.selection) return;
 
     const operations: YooptaOperation[] = [];
 
     const childNodeEntries = Array.from(
-      Editor.nodes(slate, {
+      Editor.nodes(slateToRemove, {
         at: [0],
-        match: (n) => !Editor.isEditor(n) && (Text.isText(n) || Editor.isInline(slate, n)),
+        match: (n) => !Editor.isEditor(n) && (Text.isText(n) || Editor.isInline(slateToRemove, n)),
         mode: 'highest',
       }),
     );
 
     const childNodes = childNodeEntries.map(([node]) => node);
-    Transforms.insertNodes(slateToMerge, childNodes, { at: Editor.end(slateToMerge, []) });
+    Transforms.insertNodes(slateToMerged, childNodes, { at: Editor.end(slateToMerged, []) });
 
     const mergedBlock = {
       ...blockToMerge,
-      value: slateToMerge.children,
+      value: slateToMerged.children,
     };
-
-    console.log('currentBlock', currentBlock);
-    console.log('mergedBlock', mergedBlock);
 
     operations.push({
       type: 'merge_block',
@@ -79,22 +77,12 @@ export function mergeBlock(editor: YooEditor, options: MergeBlockOptions = {}) {
       mergedProperties: mergedBlock,
     });
 
-    // decrement orders of all blocks after the merged block
-    Object.values(editor.children).forEach((block) => {
-      if (block.meta.order > blockToMerge.meta.order) {
-        operations.push({
-          type: 'set_block_meta',
-          id: block.id,
-          prevProperties: { ...block.meta, order: block.meta.order },
-          properties: { ...block.meta, order: block.meta.order - 1 },
-        });
-      }
-    });
-
     editor.applyTransforms(operations);
 
     if (focus && blockToMerge) {
-      editor.focusBlock(blockToMerge.id, { slate: slateToMerge });
+      const lastPoint = getLastNodePoint(prevSlate);
+      console.log('mergeBlock lastPoint', lastPoint);
+      // editor.focusBlock(blockToMerge.id, { slate: prevSlate, focusAt: lastPoint });
     }
   });
 }
