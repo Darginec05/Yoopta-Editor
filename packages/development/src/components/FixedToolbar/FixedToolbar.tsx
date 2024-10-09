@@ -56,18 +56,25 @@ export const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            const calloutElement = CalloutCommands.buildCalloutElements(editor, {
-              text: 'Heading with text',
-              props: { theme: 'warning' },
-            });
+            editor.batchOperations(() => {
+              const calloutElement = CalloutCommands.buildCalloutElements(editor, {
+                text: 'Heading with text',
+                props: { theme: 'warning' },
+              });
 
-            CalloutCommands.insertCallout(editor, { at: [1], focus: true, props: { theme: 'error' }, text: 'Callout' });
+              CalloutCommands.insertCallout(editor, {
+                at: [1],
+                focus: true,
+                props: { theme: 'error' },
+                text: 'Callout',
+              });
 
-            TodoListCommands.insertTodoList(editor, {
-              at: [1],
-              focus: true,
-              props: { checked: true },
-              text: 'Todo list',
+              TodoListCommands.insertTodoList(editor, {
+                at: [1],
+                focus: true,
+                props: { checked: true },
+                text: 'Todo list',
+              });
             });
 
             // editor.insertBlock('Callout', {

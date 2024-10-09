@@ -7,25 +7,8 @@ import { SlateEditor, YooEditor, YooptaBlockPath } from '../editor/types';
 import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
 import { findSlateBySelectionPath } from '../utils/findSlateBySelectionPath';
 import { generateId } from '../utils/generateId';
+import { getLastNodePoint } from '../utils/getLastNodePoint';
 import { HOTKEYS } from '../utils/hotkeys';
-
-/** */
-function getLastNodePoint(slate: SlateEditor, path: Path): Point {
-  try {
-    const [, lastNodePath] = Editor.last(slate, path);
-    const lastNodeTextLength = Editor.string(slate, lastNodePath).length;
-
-    return {
-      path: lastNodePath,
-      offset: lastNodeTextLength,
-    };
-  } catch (error) {
-    return {
-      path: [0, 0],
-      offset: 0,
-    };
-  }
-}
 
 function getNextNodePoint(slate: SlateEditor, path: Path): Point {
   try {
@@ -79,16 +62,18 @@ export function onKeyDown(editor: YooEditor) {
       const insertBefore = isStart && string.length > 0;
       const nextPath = Paths.getNextPath(editor.selection);
 
-      // [TEST]
-      editor.insertBlock(defaultBlock.type, {
-        at: insertBefore ? editor.selection : nextPath,
-        focus: !insertBefore,
-      });
+      editor.batchOperations(() => {
+        // [TEST]
+        editor.insertBlock(defaultBlock.type, {
+          at: insertBefore ? editor.selection : nextPath,
+          focus: !insertBefore,
+        });
 
-      // [TEST]
-      if (insertBefore && currentBlock) {
-        editor.focusBlock(currentBlock.id);
-      }
+        // [TEST]
+        if (insertBefore && currentBlock) {
+          editor.focusBlock(currentBlock.id);
+        }
+      });
 
       return;
     }
@@ -106,18 +91,19 @@ export function onKeyDown(editor: YooEditor) {
         const prevBlockPath = Paths.getPreviousPath(editor.selection);
         const prevSlate = findSlateBySelectionPath(editor, { at: prevBlockPath });
         const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevBlockPath });
-        const prevBlockEntity = editor.blocks[prevBlock?.type || ''];
-        let focusAt;
 
-        if (prevSlate && !prevBlockEntity.hasCustomEditor) {
-          // [TODO] - should be parent path, but for prev slate
-          focusAt = getLastNodePoint(prevSlate, parentPath);
+        let lastNodePoint;
+
+        if (prevSlate) {
+          lastNodePoint = getLastNodePoint(prevSlate);
         }
 
         // If current block is empty just delete block
         if (text.trim().length === 0) {
           // [TEST]
-          return editor.deleteBlock({ at: editor.selection, focus: true, focusAt });
+          editor.deleteBlock({ at: editor.selection, focus: true });
+          editor.focusBlock(prevBlock?.id || '');
+          return;
         }
         // If current block is not empty merge text nodes with previous block
         else {
@@ -125,7 +111,9 @@ export function onKeyDown(editor: YooEditor) {
             return Transforms.delete(slate, { at: slate.selection });
           }
 
-          editor.mergeBlock({ focus: true });
+          // [TEST]
+          editor.mergeBlock({ focus: false });
+          // editor.focusBlock(prevBlock?.id || '', { focusAt: lastNodePoint });
         }
       }
       return;

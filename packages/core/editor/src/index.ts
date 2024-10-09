@@ -36,6 +36,7 @@ export {
 } from './editor/types';
 export { buildBlockData, buildBlockElement } from './components/Editor/utils';
 export { buildBlockElementsStructure } from './utils/blockElements';
+export { buildSlateEditor } from './utils/buildSlate';
 
 export {
   PluginElementRenderProps,

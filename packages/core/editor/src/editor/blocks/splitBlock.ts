@@ -131,17 +131,7 @@ export function splitBlock(editor: YooEditor, options: SplitBlockOptions = {}) {
       slate: newSlate,
     });
 
-    // Update order for all blocks with order >= nextNewBlock.meta.order
-    Object.values(editor.children).forEach((block) => {
-      if (block.meta.order >= nextNewBlock.meta.order && block.id !== nextNewBlock.id) {
-        operations.push({
-          type: 'set_block_meta',
-          id: block.id,
-          prevProperties: { ...block.meta, order: block.meta.order },
-          properties: { ...block.meta, order: block.meta.order + 1 },
-        });
-      }
-    });
+    // add events from plugins
 
     editor.applyTransforms(operations);
 

@@ -155,20 +155,9 @@ export const YOOPTA_PLUGINS = [
     },
   }),
   Headings.HeadingOne.extend({
-    events: {
-      onCreate: (editor, id) => {
-        console.log('HeadingOne onCreate', editor, id);
-      },
-      onDestroy: (editor, id) => {
-        console.log('HeadingOne onDestroy', editor, id);
-      },
-    },
     options: {
       HTMLAttributes: {
         className: 'heading-one-element-extended',
-        style: {
-          color: 'red !important',
-        },
       },
     },
   }),
