@@ -1,15 +1,18 @@
 import { useMemo } from 'react';
-import { Element, Node, Operation, Range, Transforms } from 'slate';
+import { Editor, Element, Node, Operation, Path, Range, Transforms } from 'slate';
 import { buildBlockData } from '../components/Editor/utils';
 import { Blocks } from '../editor/blocks';
 import { Paths } from '../editor/paths';
-import { SlateEditor, YooEditor, YooptaBlockData } from '../editor/types';
+import { SlateEditor, YooEditor, YooptaBlockData, YooptaBlockPath } from '../editor/types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { getRootBlockElementType } from '../utils/blockElements';
 import { generateId } from '../utils/generateId';
 import { HOTKEYS } from '../utils/hotkeys';
 import { withInlines } from './extenstions/withInlines';
 import { PluginEventHandlerOptions, PluginEvents } from './types';
+import { SetSlateOperation, YooptaOperation } from '../editor/core/applyTransforms';
+import { finishDraft, isDraft } from 'immer';
+import { HistoryEditor } from './slatehistory';
 
 export const useSlateEditor = (
   id: string,
@@ -19,9 +22,11 @@ export const useSlateEditor = (
   withExtensions: any,
 ) => {
   return useMemo(() => {
-    let slateEditor = editor.blockEditorsMap[id];
+    console.log('useSlateEditor', id, editor, block, elements, withExtensions);
 
-    const { normalizeNode, insertText, apply } = slateEditor;
+    let slate = editor.blockEditorsMap[id];
+
+    const { normalizeNode, insertText, apply } = slate;
     const elementTypes = Object.keys(elements);
 
     elementTypes.forEach((elementType) => {
@@ -32,49 +37,34 @@ export const useSlateEditor = (
       const isInlineVoid = nodeType === 'inlineVoid';
 
       if (isInlineVoid) {
-        slateEditor.markableVoid = (element) => element.type === elementType;
+        slate.markableVoid = (element) => element.type === elementType;
       }
 
       if (isVoid || isInlineVoid) {
-        slateEditor.isVoid = (element) => element.type === elementType;
+        slate.isVoid = (element) => element.type === elementType;
       }
 
       if (isInline || isInlineVoid) {
-        slateEditor.isInline = (element) => element.type === elementType;
+        slate.isInline = (element) => element.type === elementType;
 
         // [TODO] - Move it to Link plugin extension
-        slateEditor = withInlines(editor, slateEditor);
+        slate = withInlines(editor, slate);
       }
     });
 
-    slateEditor.insertText = (text) => {
+    slate.insertText = (text) => {
       const selectedPaths = Paths.getSelectedPaths(editor.selection);
       const path = Paths.getPath(editor.selection);
       if (Array.isArray(selectedPaths) && selectedPaths.length > 0) {
-        console.log('slateEditor.insertText', selectedPaths);
+        console.log('slate.insertText', selectedPaths);
         editor.setSelection([path, []]);
       }
 
       insertText(text);
     };
 
-    slateEditor.apply = (op) => {
-      if (Operation.isSelectionOperation(op)) {
-        const selectedPaths = Paths.getSelectedPaths(editor.selection);
-        const path = Paths.getPath(editor.selection);
-
-        if (Array.isArray(selectedPaths) && slateEditor.selection && Range.isExpanded(slateEditor.selection)) {
-          console.log('slateEditor.apply', selectedPaths);
-
-          editor.setSelection([path, []]);
-        }
-      }
-
-      apply(op);
-    };
-
     // This normalization is needed to validate the elements structure
-    slateEditor.normalizeNode = (entry) => {
+    slate.normalizeNode = (entry) => {
       const [node, path] = entry;
       const blockElements = editor.blocks[block.type].elements;
 
@@ -90,14 +80,14 @@ export const useSlateEditor = (
         const rootElementType = getRootBlockElementType(blockElements);
 
         if (!elementTypes.includes(type)) {
-          Transforms.setNodes(slateEditor, { type: rootElementType, props: { ...node.props } }, { at: path });
+          Transforms.setNodes(slate, { type: rootElementType, props: { ...node.props } }, { at: path });
           return;
         }
 
         if (node.type === rootElementType) {
-          for (const [child, childPath] of Node.children(slateEditor, path)) {
-            if (Element.isElement(child) && !slateEditor.isInline(child)) {
-              Transforms.unwrapNodes(slateEditor, { at: childPath });
+          for (const [child, childPath] of Node.children(slate, path)) {
+            if (Element.isElement(child) && !slate.isInline(child)) {
+              Transforms.unwrapNodes(slate, { at: childPath });
               return;
             }
           }
@@ -108,11 +98,168 @@ export const useSlateEditor = (
     };
 
     if (withExtensions) {
-      slateEditor = withExtensions(slateEditor, editor, id);
+      slate = withExtensions(slate, editor, id);
     }
 
-    return slateEditor;
-  }, [elements, id, withExtensions]);
+    slate.history = { undos: [], redos: [] };
+
+    slate.redo = () => {
+      const { history } = slate;
+      const { redos } = history;
+
+      if (redos.length > 0) {
+        const batch = redos[redos.length - 1];
+
+        if (batch.selectionBefore) {
+          Transforms.setSelection(slate, batch.selectionBefore);
+        }
+
+        HistoryEditor.withoutSaving(slate as HistoryEditor, () => {
+          Editor.withoutNormalizing(slate, () => {
+            for (const op of batch.operations) {
+              slate.apply(op);
+            }
+          });
+        });
+
+        history.redos.pop();
+        slate.writeHistory('undos', batch);
+      }
+    };
+
+    slate.undo = () => {
+      const { history } = slate;
+      const { undos } = history;
+
+      if (undos.length > 0) {
+        const batch = undos[undos.length - 1];
+
+        HistoryEditor.withoutSaving(slate as HistoryEditor, () => {
+          Editor.withoutNormalizing(slate, () => {
+            const inverseOps = batch.operations.map(Operation.inverse).reverse();
+
+            for (const op of inverseOps) {
+              slate.apply(op);
+            }
+            if (batch.selectionBefore) {
+              Transforms.setSelection(slate, batch.selectionBefore);
+            }
+          });
+        });
+
+        slate.writeHistory('redos', batch);
+        history.undos.pop();
+      }
+    };
+
+    slate.apply = (op) => {
+      console.log('apply', op);
+
+      if (Operation.isSelectionOperation(op)) {
+        const selectedPaths = Paths.getSelectedPaths(editor.selection);
+        const path = Paths.getPath(editor.selection);
+
+        if (Array.isArray(selectedPaths) && slate.selection && Range.isExpanded(slate.selection)) {
+          editor.setSelection([path, []]);
+        }
+      }
+
+      // const lastEditorBatch = editor.history.undos[editor.history.undos.length - 1];
+      // // console.log('lastEditorBatch', lastEditorBatch);
+
+      // const lastOperation = editor.history.undos[editor.history.undos.length - 1];
+      // const isLastOperationSetSlate = lastOperation?.operations[0]?.type === 'set_slate';
+
+      // // if (isLastOperationSetSlate) {
+      // const lastBatch = lastOperation?.operations?.[0] as SetSlateOperation;
+      // const slateOperations = lastBatch?.properties?.operations || [];
+      // const lastSlateOp = slateOperations?.[slateOperations?.length - 1];
+
+      // let save = shouldSave(op, lastSlateOp);
+      // let merge = shouldMerge(op, lastSlateOp);
+
+      // if (!lastSlateOp) {
+      //   merge = false;
+      // }
+
+      // console.log('save', save);
+      // console.log('merge', merge);
+
+      // if (save) {
+      //   if (merge) {
+      //     slateOperations.push(op);
+      //   } else {
+      //     editor.history.undos.push({
+      //       operations: [
+      //         {
+      //           type: 'set_slate',
+      //           properties: {
+      //             operations: [op],
+      //             selectionBefore: slate.selection,
+      //           },
+      //           slate,
+      //         },
+      //       ],
+      //       path: [0],
+      //     });
+      //   }
+      // }
+
+      // console.log('slateOperations', slateOperations);
+      // console.log('editor.history.undos', editor.history.undos);
+
+      const { operations, history } = slate;
+      const { undos } = history;
+      const lastBatch = undos[undos.length - 1];
+      const lastOp = lastBatch && lastBatch.operations[lastBatch.operations.length - 1];
+      let save = HistoryEditor.isSaving(slate as HistoryEditor);
+      let merge = HistoryEditor.isMerging(slate as HistoryEditor);
+
+      if (save == null) {
+        save = shouldSave(op, lastOp);
+      }
+
+      if (save) {
+        if (merge == null) {
+          if (lastBatch == null) {
+            merge = false;
+          } else if (operations.length !== 0) {
+            merge = true;
+          } else {
+            merge = shouldMerge(op, lastOp);
+          }
+        }
+
+        console.log('merge', merge);
+        console.log('save', save);
+
+        if (lastBatch && merge) {
+          lastBatch.operations.push(op);
+        } else {
+          const batch = {
+            operations: [op],
+            selectionBefore: slate.selection,
+          };
+          slate.writeHistory('undos', batch);
+        }
+
+        while (undos.length > 100) {
+          undos.shift();
+        }
+
+        history.redos = [];
+      }
+
+      apply(op);
+    };
+
+    slate.writeHistory = (stack: 'undos' | 'redos', batch: any) => {
+      slate.history[stack].push(batch);
+      console.log('writeHistory', slate.history.undos);
+    };
+
+    return slate;
+  }, []);
 };
 
 export const useEventHandlers = (
@@ -143,4 +290,39 @@ export const useEventHandlers = (
 
     return eventHandlersMap;
   }, [events, editor, block]);
+};
+
+const shouldSave = (op: Operation, prev: Operation | undefined): boolean => {
+  if (op.type === 'set_selection') {
+    return false;
+  }
+
+  return true;
+};
+
+const shouldMerge = (op: Operation, prev: Operation | undefined): boolean => {
+  console.log('op.type', op.type);
+  console.log('prev.type', prev?.type);
+
+  if (
+    prev &&
+    op.type === 'insert_text' &&
+    prev.type === 'insert_text' &&
+    op.offset === prev.offset + prev.text.length &&
+    Path.equals(op.path, prev.path)
+  ) {
+    return true;
+  }
+
+  if (
+    prev &&
+    op.type === 'remove_text' &&
+    prev.type === 'remove_text' &&
+    op.offset + op.text.length === prev.offset &&
+    Path.equals(op.path, prev.path)
+  ) {
+    return true;
+  }
+
+  return false;
 };
