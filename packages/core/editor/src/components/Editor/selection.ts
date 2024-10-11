@@ -22,6 +22,8 @@ export function useMultiSelection({ editor }: MultiSelectionOptions) {
       const slate = Blocks.getSlate(editor, { at: path });
       if (!slate) return;
 
+      console.log('blurSlateSelection slate', slate);
+
       Editor.withoutNormalizing(slate, () => {
         // [TEST]
         Transforms.select(slate, [0]);

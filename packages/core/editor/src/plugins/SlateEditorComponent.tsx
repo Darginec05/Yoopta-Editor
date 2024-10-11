@@ -57,7 +57,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
 
   const onChange = useCallback(
     (value) => {
-      editor.updateBlock(id, { value });
+      // editor.updateBlock(id, { value });
     },
     [id],
   );

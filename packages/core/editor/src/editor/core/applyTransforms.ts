@@ -1,6 +1,16 @@
 import { createDraft, finishDraft, isDraft, produce } from 'immer';
 import { buildSlateEditor } from '../../utils/buildSlate';
 import { SlateEditor, SlateElement, YooEditor, YooptaBlockData, YooptaBlockPath } from '../types';
+import { Editor, Operation, Range, Transforms } from 'slate';
+
+export type SetSlateOperation = {
+  type: 'set_slate';
+  slate: SlateEditor;
+  properties: {
+    operations: Operation[];
+    selectionBefore: Range | null;
+  };
+};
 
 export type InsertBlockOperation = {
   type: 'insert_block';
@@ -60,10 +70,27 @@ export type YooptaOperation =
   | SplitBlockOperation
   | SetBlockValueOperation
   | SetBlockMetaOperation
-  | MergeBlockOperation;
+  | MergeBlockOperation
+  | SetSlateOperation;
 
 function applyOperation(editor: YooEditor, op: YooptaOperation): void {
   switch (op.type) {
+    case 'set_slate': {
+      const { properties, slate } = op;
+      if (slate) {
+        const { operations, selectionBefore } = properties;
+        Editor.withoutNormalizing(slate, () => {
+          for (const slateOp of operations) {
+            slate.apply(slateOp);
+          }
+        });
+        if (selectionBefore) {
+          Transforms.select(slate, selectionBefore);
+        }
+      }
+      break;
+    }
+
     case 'insert_block': {
       const { path, slate } = op;
       editor.blockEditorsMap[op.block.id] = slate || buildSlateEditor(editor);

@@ -3,6 +3,8 @@ import YooptaEditor, {
   buildSlateEditor,
   createYooptaEditor,
   generateId,
+  SetSlateOperation,
+  SlateEditor,
   SlateElement,
   YooEditor,
   YooptaBlockData,
@@ -16,7 +18,6 @@ import { MARKS } from '../../utils/yoopta/marks';
 import { YOOPTA_PLUGINS } from '../../utils/yoopta/plugins';
 import { TOOLS } from '../../utils/yoopta/tools';
 import { FixedToolbar } from '../../components/FixedToolbar/FixedToolbar';
-import { SlackChat } from '../../components/Chats/SlackChat/SlackChat';
 import { Operation, Path } from 'slate';
 
 export type YooptaChildrenValue = Record<string, YooptaBlockData>;
@@ -81,42 +82,6 @@ function inverseOperation(editor: YooEditor, op: YooptaOperation): YooptaOperati
 }
 const MAX_HISTORY_LENGTH = 100;
 
-const shouldMerge = (op: Operation, prev: Operation | undefined): boolean => {
-  if (
-    prev &&
-    op.type === 'insert_text' &&
-    prev.type === 'insert_text' &&
-    op.offset === prev.offset + prev.text.length &&
-    Path.equals(op.path, prev.path)
-  ) {
-    return true;
-  }
-
-  if (
-    prev &&
-    op.type === 'remove_text' &&
-    prev.type === 'remove_text' &&
-    op.offset + op.text.length === prev.offset &&
-    Path.equals(op.path, prev.path)
-  ) {
-    return true;
-  }
-
-  return false;
-};
-
-/**
- * Check whether an operation needs to be saved to the history.
- */
-
-const shouldSave = (op: Operation, prev: Operation | undefined): boolean => {
-  if (op.type === 'set_selection') {
-    return false;
-  }
-
-  return true;
-};
-
 export const withHistory = (editor: YooEditor) => {
   const history: Record<HistoryStackName, HistoryStack[]> = {
     undos: [],
@@ -124,15 +89,36 @@ export const withHistory = (editor: YooEditor) => {
   };
 
   const { applyTransforms } = editor;
-
   editor.history = history;
-
   editor.undo = () => {
-    const batch = history.undos.pop();
+    // const batch = history.undos.pop();
 
+    // if (batch) {
+    //   const inverseOps = batch.operations.map((op) => inverseOperation(editor, op)).reverse();
+    //   applyTransforms(inverseOps.flat());
+    //   history.redos.push(batch);
+    // }
+
+    const batch = history.undos.pop();
     if (batch) {
-      const inverseOps = batch.operations.map((op) => inverseOperation(editor, op)).reverse();
-      applyTransforms(inverseOps.flat());
+      console.log('history.undos', history.undos);
+
+      const inverseOps = batch.operations
+        .flatMap((op) => {
+          if (op.type === 'set_slate') {
+            return {
+              ...op,
+              properties: {
+                operations: op.properties.operations.map(Operation.inverse).reverse(),
+                selectionBefore: op.properties.selectionBefore,
+              },
+            };
+          }
+          return inverseOperation(editor, op);
+        })
+        .reverse();
+
+      applyTransforms(inverseOps);
       history.redos.push(batch);
     }
   };
@@ -152,58 +138,8 @@ export const withHistory = (editor: YooEditor) => {
       path: editor.selection,
     };
 
-    // try {
-    //   console.log('applyTransforms editor.selection', editor.selection);
-    //   const slate = Blocks.getSlate(editor, { at: editor.selection });
-    //   const { apply } = slate;
-
-    //   // -------
-    //   slate.apply = (op) => {
-    //     console.log('slate.apply', op);
-    //     const { operations } = slate;
-    //     console.log('slate.operations', operations);
-    //     const { undos } = history;
-    //     const lastBatch = undos[undos.length - 1];
-    //     const lastOp = operations[operations.length - 1];
-    //     let save = false;
-    //     let merge = false;
-
-    //     if (save == null) {
-    //       save = shouldSave(op, lastOp);
-    //     }
-
-    //     if (save) {
-    //       if (merge == null) {
-    //         if (lastBatch == null) {
-    //           merge = false;
-    //         } else if (operations.length !== 0) {
-    //           merge = true;
-    //         } else {
-    //           merge = shouldMerge(op, lastOp);
-    //         }
-    //       }
-
-    //       if (lastBatch && merge) {
-    //         console.log('lastBatch && merge', op);
-    //         lastBatch.operations.push(op);
-    //       } else {
-    //         const batch = {
-    //           operations: [op],
-    //           selectionBefore: slate.selection,
-    //         };
-
-    //         console.log('applyTransforms slate batch', batch);
-    //       }
-    //     }
-
-    //     apply(op);
-    //   };
-    // } catch (error) {}
-    // // -------
-
     if (batch.operations.length > 0) {
       history.undos.push(batch);
-      console.log('applyTransforms history.undos', history.undos);
       history.redos = [];
     }
 

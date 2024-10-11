@@ -59,6 +59,7 @@ export {
   YooptaOperation,
   SetBlockMetaOperation,
   SetBlockValueOperation,
+  SetSlateOperation,
 } from './editor/core/applyTransforms';
 
 import './styles.css';
