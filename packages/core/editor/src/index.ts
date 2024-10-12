@@ -21,6 +21,7 @@ export { findPluginBlockBySelectionPath } from './utils/findPluginBlockBySelecti
 export { findSlateBySelectionPath } from './utils/findSlateBySelectionPath';
 export { findPluginBlockByType } from './utils/findPluginBlockByType';
 export { deserializeTextNodes } from './parsers/deserializeTextNodes';
+export { deserializeListNodes } from './parsers/deserializeListNodes';
 export { serializeTextNodes, serializeTextNodesIntoMarkdown } from './parsers/serializeTextNodes';
 
 export { createYooptaEditor } from './editor';
