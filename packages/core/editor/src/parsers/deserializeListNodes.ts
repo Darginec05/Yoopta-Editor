@@ -32,8 +32,9 @@ export function deserializeListNodes(editor: YooEditor, listElement: ListElement
                 const nestedListNodes = deserializeListNodes(editor, nestedList);
                 listItemChildren.push({
                     id: generateId(),
+                    type: 'list-item',
                     children: nestedListNodes,
-                } as SlateElement);
+                });
             }
 
             deserializedNodes.push({
@@ -41,7 +42,7 @@ export function deserializeListNodes(editor: YooEditor, listElement: ListElement
                 type: listElement.nodeName === 'UL' ? 'bulleted-list' : 'ordered-list',
                 children: listItemChildren,
                 props: { nodeType: 'block' }
-            } as SlateElement);
+            });
         });
     }
 
