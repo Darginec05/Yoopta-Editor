@@ -204,8 +204,6 @@ export function deserializeHTML(editor: YooEditor, htmlString: string): YooptaCo
   const parsedHtml = new DOMParser().parseFromString(htmlString, 'text/html');
   const value: YooptaContentValue = {};
 
-  console.log('parsedHtml.body', parsedHtml.body);
-
   const PLUGINS_NODE_NAME_MATCHERS_MAP = getMappedPluginByNodeNames(editor);
   const blocks = deserialize(editor, PLUGINS_NODE_NAME_MATCHERS_MAP, parsedHtml.body)
     .flat()
