@@ -6,6 +6,7 @@ import { Editor, Operation, Range, Transforms } from 'slate';
 export type SetSlateOperation = {
   type: 'set_slate';
   slate: SlateEditor;
+  blockId: string;
   properties: {
     operations: Operation[];
     selectionBefore: Range | null;
@@ -76,9 +77,14 @@ export type YooptaOperation =
 function applyOperation(editor: YooEditor, op: YooptaOperation): void {
   switch (op.type) {
     case 'set_slate': {
-      const { properties, slate } = op;
+      const { properties, blockId } = op;
+
+      const slate = editor.blockEditorsMap[blockId];
+
       if (slate) {
         const { operations, selectionBefore } = properties;
+        // console.log('OPERATIONS => set_slate', operations);
+        // console.log('OPERATIONS => slate.history', slate.history);
         Editor.withoutNormalizing(slate, () => {
           for (const slateOp of operations) {
             slate.apply(slateOp);
@@ -115,7 +121,7 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
       delete editor.children[op.block.id];
 
       // [TODO]
-      console.log('delete_block editor.children', Object.keys(editor.children).length);
+      // console.log('delete_block editor.children', Object.keys(editor.children).length);
 
       Object.values(editor.children).forEach((existingBlock) => {
         if (existingBlock.meta.order > op.block.meta.order) {
@@ -246,7 +252,7 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
     operations.push({ type: 'normalize_block_paths' });
   }
 
-  console.log('applyTransforms operations', operations);
+  // console.log('applyTransforms operations', operations);
 
   for (const operation of operations) {
     applyOperation(editor, operation);

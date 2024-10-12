@@ -74,7 +74,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
         <ElementComponent {...props} attributes={attributes} blockId={id} HTMLAttributes={options?.HTMLAttributes} />
       );
     },
-    [elements, slate.children],
+    [elements],
   );
 
   const renderLeaf = useCallback(
@@ -311,7 +311,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
           onFocus={onFocus}
           decorate={decorate}
           // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
-          onBlur={onBlur}
+          // onBlur={onBlur}
           readOnly={readOnly}
           onPaste={onPaste}
         />

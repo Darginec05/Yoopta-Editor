@@ -43,6 +43,14 @@ export function onKeyDown(editor: YooEditor) {
       return;
     }
 
+    if (HOTKEYS.isUndo(event)) {
+      event.preventDefault();
+    }
+
+    if (HOTKEYS.isRedo(event)) {
+      event.preventDefault();
+    }
+
     if (HOTKEYS.isEnter(event)) {
       if (event.isDefaultPrevented()) return;
       event.preventDefault();
