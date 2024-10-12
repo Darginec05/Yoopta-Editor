@@ -114,7 +114,6 @@ export const HistoryEditor = {
 
   withoutSaving(slate: HistoryEditor, fn: () => void): void {
     const prev = HistoryEditor.isSaving(slate);
-    console.log('withoutSaving prev ', prev);
     SAVING.set(slate, false);
     fn();
     SAVING.set(slate, prev);

@@ -1,156 +1,16 @@
-import YooptaEditor, {
-  Blocks,
-  buildSlateEditor,
-  createYooptaEditor,
-  generateId,
-  SetSlateOperation,
-  SlateEditor,
-  SlateElement,
-  YooEditor,
-  YooptaBlockData,
-  YooptaBlockPath,
-  YooptaContentValue,
-  YooptaOperation,
-} from '@yoopta/editor';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import YooptaEditor, { createYooptaEditor, YooEditor, YooptaBlockData, YooptaContentValue } from '@yoopta/editor';
+import { useMemo, useRef, useState } from 'react';
 
 import { MARKS } from '../../utils/yoopta/marks';
 import { YOOPTA_PLUGINS } from '../../utils/yoopta/plugins';
 import { TOOLS } from '../../utils/yoopta/tools';
 import { FixedToolbar } from '../../components/FixedToolbar/FixedToolbar';
-import { Operation, Path } from 'slate';
+import { withHistory } from './withHistory';
 
 export type YooptaChildrenValue = Record<string, YooptaBlockData>;
 
 const EDITOR_STYLE = {
   width: 750,
-};
-
-type HistoryStack = {
-  operations: YooptaOperation[];
-  path: YooptaBlockPath;
-};
-
-type HistoryStackName = 'undos' | 'redos';
-function inverseOperation(editor: YooEditor, op: YooptaOperation): YooptaOperation | YooptaOperation[] {
-  switch (op.type) {
-    case 'insert_block':
-      return {
-        type: 'delete_block',
-        path: op.path,
-        block: op.block,
-      };
-
-    case 'delete_block':
-      return {
-        type: 'insert_block',
-        path: op.path,
-        block: op.block,
-      };
-
-    case 'set_block_meta': {
-      return {
-        type: 'set_block_meta',
-        id: op.id,
-        properties: op.prevProperties,
-        prevProperties: op.properties,
-      };
-    }
-
-    case 'split_block': {
-      return {
-        type: 'merge_block',
-        sourceProperties: op.properties,
-        targetProperties: op.prevProperties,
-        mergedProperties: op.prevProperties,
-        slate: editor.blockEditorsMap[op.prevProperties.id],
-      };
-    }
-
-    case 'merge_block': {
-      return {
-        type: 'split_block',
-        prevProperties: op.targetProperties,
-        properties: op.sourceProperties,
-        slate: editor.blockEditorsMap[op.sourceProperties.id],
-      };
-    }
-
-    default:
-      return op;
-  }
-}
-const MAX_HISTORY_LENGTH = 100;
-
-export const withHistory = (editor: YooEditor) => {
-  const history: Record<HistoryStackName, HistoryStack[]> = {
-    undos: [],
-    redos: [],
-  };
-
-  const { applyTransforms } = editor;
-  editor.history = history;
-  editor.undo = () => {
-    // const batch = history.undos.pop();
-
-    // if (batch) {
-    //   const inverseOps = batch.operations.map((op) => inverseOperation(editor, op)).reverse();
-    //   applyTransforms(inverseOps.flat());
-    //   history.redos.push(batch);
-    // }
-
-    const batch = history.undos.pop();
-    if (batch) {
-      console.log('history.undos', history.undos);
-
-      const inverseOps = batch.operations
-        .flatMap((op) => {
-          if (op.type === 'set_slate') {
-            return {
-              ...op,
-              properties: {
-                operations: op.properties.operations.map(Operation.inverse).reverse(),
-                selectionBefore: op.properties.selectionBefore,
-              },
-            };
-          }
-          return inverseOperation(editor, op);
-        })
-        .reverse();
-
-      applyTransforms(inverseOps);
-      history.redos.push(batch);
-    }
-  };
-
-  editor.redo = () => {
-    const batch = history.redos.pop();
-
-    if (batch) {
-      applyTransforms(batch.operations);
-      history.undos.push(batch);
-    }
-  };
-
-  editor.applyTransforms = (operations: YooptaOperation[], options) => {
-    const batch = {
-      operations: operations.filter((op) => op.type !== 'set_selection_block' && op.type !== 'set_block_value'),
-      path: editor.selection,
-    };
-
-    if (batch.operations.length > 0) {
-      history.undos.push(batch);
-      history.redos = [];
-    }
-
-    if (history.undos.length > MAX_HISTORY_LENGTH) {
-      history.undos.shift();
-    }
-
-    applyTransforms(operations, options);
-  };
-
-  return editor;
 };
 
 const BasicExample = () => {

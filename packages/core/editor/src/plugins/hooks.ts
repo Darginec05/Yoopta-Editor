@@ -22,11 +22,9 @@ export const useSlateEditor = (
   withExtensions: any,
 ) => {
   return useMemo(() => {
-    console.log('useSlateEditor', id, editor, block, elements, withExtensions);
-
     let slate = editor.blockEditorsMap[id];
 
-    const { normalizeNode, insertText, apply } = slate;
+    const { normalizeNode, insertText, apply, writeHistory } = slate;
     const elementTypes = Object.keys(elements);
 
     elementTypes.forEach((elementType) => {
@@ -56,7 +54,6 @@ export const useSlateEditor = (
       const selectedPaths = Paths.getSelectedPaths(editor.selection);
       const path = Paths.getPath(editor.selection);
       if (Array.isArray(selectedPaths) && selectedPaths.length > 0) {
-        console.log('slate.insertText', selectedPaths);
         editor.setSelection([path, []]);
       }
 
@@ -153,8 +150,6 @@ export const useSlateEditor = (
     };
 
     slate.apply = (op) => {
-      console.log('apply', op);
-
       if (Operation.isSelectionOperation(op)) {
         const selectedPaths = Paths.getSelectedPaths(editor.selection);
         const path = Paths.getPath(editor.selection);
@@ -163,50 +158,6 @@ export const useSlateEditor = (
           editor.setSelection([path, []]);
         }
       }
-
-      // const lastEditorBatch = editor.history.undos[editor.history.undos.length - 1];
-      // // console.log('lastEditorBatch', lastEditorBatch);
-
-      // const lastOperation = editor.history.undos[editor.history.undos.length - 1];
-      // const isLastOperationSetSlate = lastOperation?.operations[0]?.type === 'set_slate';
-
-      // // if (isLastOperationSetSlate) {
-      // const lastBatch = lastOperation?.operations?.[0] as SetSlateOperation;
-      // const slateOperations = lastBatch?.properties?.operations || [];
-      // const lastSlateOp = slateOperations?.[slateOperations?.length - 1];
-
-      // let save = shouldSave(op, lastSlateOp);
-      // let merge = shouldMerge(op, lastSlateOp);
-
-      // if (!lastSlateOp) {
-      //   merge = false;
-      // }
-
-      // console.log('save', save);
-      // console.log('merge', merge);
-
-      // if (save) {
-      //   if (merge) {
-      //     slateOperations.push(op);
-      //   } else {
-      //     editor.history.undos.push({
-      //       operations: [
-      //         {
-      //           type: 'set_slate',
-      //           properties: {
-      //             operations: [op],
-      //             selectionBefore: slate.selection,
-      //           },
-      //           slate,
-      //         },
-      //       ],
-      //       path: [0],
-      //     });
-      //   }
-      // }
-
-      // console.log('slateOperations', slateOperations);
-      // console.log('editor.history.undos', editor.history.undos);
 
       const { operations, history } = slate;
       const { undos } = history;
@@ -230,16 +181,31 @@ export const useSlateEditor = (
           }
         }
 
-        console.log('merge', merge);
-        console.log('save', save);
-
         if (lastBatch && merge) {
-          lastBatch.operations.push(op);
+          if (lastOp !== op) {
+            lastBatch.operations.push(op);
+          }
         } else {
           const batch = {
             operations: [op],
             selectionBefore: slate.selection,
           };
+
+          const setSlateOperation: SetSlateOperation = {
+            type: 'set_slate',
+            properties: {
+              operations: batch.operations,
+              selectionBefore: batch.selectionBefore,
+            },
+            blockId: id,
+            slate: slate,
+          };
+
+          editor.history.undos.push({
+            operations: [setSlateOperation],
+            path: [0],
+          });
+
           slate.writeHistory('undos', batch);
         }
 
@@ -254,8 +220,22 @@ export const useSlateEditor = (
     };
 
     slate.writeHistory = (stack: 'undos' | 'redos', batch: any) => {
+      const setSlateOperation: SetSlateOperation = {
+        type: 'set_slate',
+        properties: {
+          operations: batch.operations,
+          selectionBefore: batch.selectionBefore,
+        },
+        blockId: id,
+        slate: slate,
+      };
+
+      editor.history.undos.push({
+        operations: [setSlateOperation],
+        path: [0],
+      });
+
       slate.history[stack].push(batch);
-      console.log('writeHistory', slate.history.undos);
     };
 
     return slate;
@@ -301,8 +281,7 @@ const shouldSave = (op: Operation, prev: Operation | undefined): boolean => {
 };
 
 const shouldMerge = (op: Operation, prev: Operation | undefined): boolean => {
-  console.log('op.type', op.type);
-  console.log('prev.type', prev?.type);
+  if (prev === op) return true;
 
   if (
     prev &&
