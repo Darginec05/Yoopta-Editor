@@ -17,7 +17,6 @@ export function deserializeListNodes(editor: YooEditor, listElement: ListElement
             const isTodoListItem = /\[\s*\S?\s*\]/.test(itemText);
 
             if (isTodoListItem) {
-                console.log('isTodoListItem', itemText);
                 return;
             }
 
