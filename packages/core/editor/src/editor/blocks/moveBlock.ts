@@ -69,7 +69,7 @@ export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: Yo
         },
         properties: {
           ...item.meta,
-          order: newOrder,
+          // order: newOrder,
         },
       });
     }
@@ -83,7 +83,7 @@ export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: Yo
     },
     properties: {
       ...draggedBlock.meta,
-      order: updatedPosition!,
+      // order: updatedPosition!,
       depth: blockInNewPosition.meta.depth,
     },
   });

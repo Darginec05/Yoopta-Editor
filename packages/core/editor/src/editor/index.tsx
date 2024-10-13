@@ -73,7 +73,7 @@ export function createYooptaEditor(): YooEditor {
 
     refElement: null,
 
-    history: {
+    historyStack: {
       undos: [],
       redos: [],
     },
