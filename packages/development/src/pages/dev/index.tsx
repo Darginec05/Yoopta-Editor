@@ -5,7 +5,6 @@ import { MARKS } from '../../utils/yoopta/marks';
 import { YOOPTA_PLUGINS } from '../../utils/yoopta/plugins';
 import { TOOLS } from '../../utils/yoopta/tools';
 import { FixedToolbar } from '../../components/FixedToolbar/FixedToolbar';
-import { withHistory } from './withHistory';
 
 export type YooptaChildrenValue = Record<string, YooptaBlockData>;
 
@@ -14,7 +13,7 @@ const EDITOR_STYLE = {
 };
 
 const BasicExample = () => {
-  const editor: YooEditor = useMemo(() => withHistory(createYooptaEditor()), []);
+  const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef<HTMLDivElement>(null);
   const [readOnly, setReadOnly] = useState(false);
   const [value, setValue] = useState<YooptaContentValue>({

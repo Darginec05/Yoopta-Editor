@@ -106,13 +106,12 @@ export function duplicateBlock(editor: YooEditor, options: DuplicateBlockOptions
       //     meta: { ...block.meta, order: block.meta.order + 1 },
       //   },
       // });
-
-      operations.push({
-        type: 'set_block_meta',
-        id: block.id,
-        properties: { order: block.meta.order + 1 },
-        prevProperties: { order: block.meta.order },
-      });
+      // operations.push({
+      //   type: 'set_block_meta',
+      //   id: block.id,
+      //   properties: { order: block.meta.order + 1 },
+      //   prevProperties: { order: block.meta.order },
+      // });
     }
   });
 

@@ -7,8 +7,9 @@ export type SetSlateOperation = {
   type: 'set_slate';
   slate: SlateEditor;
   blockId: string;
+  source: 'api' | 'user' | 'history';
   properties: {
-    operations: Operation[];
+    slateOps: Operation[];
     selectionBefore: Range | null;
   };
 };
@@ -82,18 +83,21 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
       const slate = editor.blockEditorsMap[blockId];
 
       if (slate) {
-        const { operations, selectionBefore } = properties;
-        // console.log('OPERATIONS => set_slate', operations);
-        // console.log('OPERATIONS => slate.history', slate.history);
-        Editor.withoutNormalizing(slate, () => {
-          for (const slateOp of operations) {
-            slate.apply(slateOp);
+        const { slateOps, selectionBefore } = properties;
+
+        try {
+          Editor.withoutNormalizing(slate, () => {
+            for (const slateOp of slateOps) {
+              slate.apply(slateOp);
+            }
+          });
+
+          if (selectionBefore) {
+            Transforms.select(slate, selectionBefore);
           }
-        });
-        if (selectionBefore) {
-          Transforms.select(slate, selectionBefore);
-        }
+        } catch (error) {}
       }
+
       break;
     }
 
@@ -238,41 +242,55 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
 
 export type ApplyTransformsOptions = {
   normalizePaths?: boolean;
+  source?: 'api' | 'user' | 'history';
 };
+
+const MAX_HISTORY_LENGTH = 100;
 
 export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], options?: ApplyTransformsOptions): void {
   editor.children = createDraft(editor.children);
   editor.selection = createDraft(editor.selection);
 
-  const { normalizePaths = true } = options || {};
-
+  const { normalizePaths = true, source } = options || {};
   const operations = [...ops];
 
   if (normalizePaths) {
     operations.push({ type: 'normalize_block_paths' });
   }
 
-  // console.log('applyTransforms operations', operations);
-
   for (const operation of operations) {
+    if (operation.type === 'set_slate' && source === 'api') {
+      continue;
+    }
+
     applyOperation(editor, operation);
   }
 
+  if (!isDraft(editor.children)) editor.children = createDraft(editor.children);
   editor.children = finishDraft(editor.children);
 
   if (isDraft(editor.selection)) {
     editor.selection = finishDraft(editor.selection);
   }
 
+  const historyBatch = {
+    operations: operations.filter(
+      (op) => op.type !== 'set_selection_block' && op.type !== 'set_block_value' && op.type !== 'normalize_block_paths',
+    ),
+    path: editor.selection,
+  };
+
+  if (historyBatch.operations.length > 0 && source !== 'history') {
+    editor.historyStack.undos.push(historyBatch);
+    editor.historyStack.redos = [];
+  }
+
+  if (editor.historyStack.undos.length > MAX_HISTORY_LENGTH) {
+    editor.historyStack.undos.shift();
+  }
+
   editor.emit('change', editor.children);
   editor.emit('selection-change', editor.selection);
-
-  // console.log(
-  //   'orders',
-  //   Object.keys(editor.children)
-  //     .map((k) => [k, editor.children[k].meta.order])
-  //     .sort((a, b) => a[1] - b[1]),
-  // );
 
   assertValidPaths(editor);
 }

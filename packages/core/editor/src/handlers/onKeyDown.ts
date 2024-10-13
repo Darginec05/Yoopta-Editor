@@ -45,10 +45,12 @@ export function onKeyDown(editor: YooEditor) {
 
     if (HOTKEYS.isUndo(event)) {
       event.preventDefault();
+      return;
     }
 
     if (HOTKEYS.isRedo(event)) {
       event.preventDefault();
+      return;
     }
 
     if (HOTKEYS.isEnter(event)) {

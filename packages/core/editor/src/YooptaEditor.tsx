@@ -18,6 +18,8 @@ import { YooptaPlugin } from './plugins';
 import { YooptaMark } from './marks';
 import { FakeSelectionMark } from './marks/FakeSelectionMark';
 import { generateId } from './utils/generateId';
+import { Operation } from 'slate';
+import { inverseEditorOperation, YooHistory } from './editor/core/history';
 
 export type YooptaEditorProps = {
   id?: string;
@@ -110,11 +112,45 @@ const YooptaEditor = ({
     editor.once = Events.once;
     editor.off = Events.off;
     editor.emit = Events.emit;
+    editor.historyStack = {
+      undos: [],
+      redos: [],
+    };
+
+    editor.undo = () => {
+      const { undos } = editor.historyStack;
+      if (undos.length > 0) {
+        const batch = editor.historyStack.undos[editor.historyStack.undos.length - 1];
+
+        YooHistory.withoutSaving(editor, () => {
+          const inverseOps = batch.operations.flatMap((op) => inverseEditorOperation(editor, op)).reverse();
+          editor.applyTransforms(inverseOps, { source: 'history' });
+        });
+
+        editor.historyStack.redos.push(batch);
+        editor.historyStack.undos.pop();
+      }
+    };
+
+    editor.redo = () => {
+      const { redos } = editor.historyStack;
+
+      if (redos.length > 0) {
+        const batch = redos[redos.length - 1];
+
+        YooHistory.withoutSaving(editor, () => {
+          editor.applyTransforms(batch.operations, { source: 'history' });
+        });
+
+        editor.historyStack.redos.pop();
+        editor.historyStack.undos.push(batch);
+      }
+    };
 
     return { editor, version: 0 };
   });
 
-  const [selectionPath, setSelectionPath] = useState<YooptaBlockPath | null>(null);
+  const [_, setSelectionPath] = useState<YooptaBlockPath | null>(null);
 
   const onSelectonPathChange = useCallback((path: YooptaBlockPath) => {
     setSelectionPath(path);

@@ -8,14 +8,12 @@ import { FocusBlockOptions } from './blocks/focusBlock';
 import { ToggleBlockOptions } from './blocks/toggleBlock';
 import { GetBlockOptions } from './blocks/getBlock';
 import { ReactEditor } from 'slate-react';
-import { HistoryEditor } from 'slate-history';
 import { ApplyTransformsOptions, YooptaOperation } from './core/applyTransforms';
 import { InsertBlockOptions } from './blocks/insertBlock';
 import { BlockDepthOptions } from './blocks/increaseBlockDepth';
 import { SplitBlockOptions } from './blocks/splitBlock';
 import { MergeBlockOptions } from './blocks/mergeBlock';
-
-// export type YooptaBlockPath = [number];
+import { HistoryStack, HistoryStackName } from './core/history';
 
 export type YooptaBlockData<T = Descendant | SlateElement> = {
   id: string;
@@ -32,7 +30,7 @@ export type YooptaBlockBaseMeta = {
 
 export type YooptaContentValue = Record<string, YooptaBlockData>;
 
-export type SlateEditor = ReactEditor & HistoryEditor;
+export type SlateEditor = ReactEditor;
 
 // add 'end' | 'start'
 export type FocusAt = Path | Point;
@@ -99,13 +97,7 @@ export type YooEditor = {
   batchOperations: (fn: () => void) => void;
   redo: () => void;
   undo: () => void;
-  history: Record<
-    'undos' | 'redos',
-    {
-      operations: YooptaOperation[];
-      path: YooptaBlockPath;
-    }[]
-  >;
+  historyStack: Record<HistoryStackName, HistoryStack[]>;
 
   // events handlers
   on: (event: YooEditorEvents, fn: (payload: any) => void) => void;

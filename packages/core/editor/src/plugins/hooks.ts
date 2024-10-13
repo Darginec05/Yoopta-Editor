@@ -11,8 +11,7 @@ import { HOTKEYS } from '../utils/hotkeys';
 import { withInlines } from './extenstions/withInlines';
 import { PluginEventHandlerOptions, PluginEvents } from './types';
 import { SetSlateOperation, YooptaOperation } from '../editor/core/applyTransforms';
-import { finishDraft, isDraft } from 'immer';
-import { HistoryEditor } from './slatehistory';
+import { YooHistory } from '../editor/core/history';
 
 export const useSlateEditor = (
   id: string,
@@ -24,7 +23,7 @@ export const useSlateEditor = (
   return useMemo(() => {
     let slate = editor.blockEditorsMap[id];
 
-    const { normalizeNode, insertText, apply, writeHistory } = slate;
+    const { normalizeNode, insertText, apply } = slate;
     const elementTypes = Object.keys(elements);
 
     elementTypes.forEach((elementType) => {
@@ -98,58 +97,12 @@ export const useSlateEditor = (
       slate = withExtensions(slate, editor, id);
     }
 
-    slate.history = { undos: [], redos: [] };
-
-    slate.redo = () => {
-      const { history } = slate;
-      const { redos } = history;
-
-      if (redos.length > 0) {
-        const batch = redos[redos.length - 1];
-
-        if (batch.selectionBefore) {
-          Transforms.setSelection(slate, batch.selectionBefore);
-        }
-
-        HistoryEditor.withoutSaving(slate as HistoryEditor, () => {
-          Editor.withoutNormalizing(slate, () => {
-            for (const op of batch.operations) {
-              slate.apply(op);
-            }
-          });
-        });
-
-        history.redos.pop();
-        slate.writeHistory('undos', batch);
-      }
-    };
-
-    slate.undo = () => {
-      const { history } = slate;
-      const { undos } = history;
-
-      if (undos.length > 0) {
-        const batch = undos[undos.length - 1];
-
-        HistoryEditor.withoutSaving(slate as HistoryEditor, () => {
-          Editor.withoutNormalizing(slate, () => {
-            const inverseOps = batch.operations.map(Operation.inverse).reverse();
-
-            for (const op of inverseOps) {
-              slate.apply(op);
-            }
-            if (batch.selectionBefore) {
-              Transforms.setSelection(slate, batch.selectionBefore);
-            }
-          });
-        });
-
-        slate.writeHistory('redos', batch);
-        history.undos.pop();
-      }
-    };
-
     slate.apply = (op) => {
+      let save = YooHistory.isSaving(editor);
+      if (typeof save === 'undefined') {
+        save = shouldSave(op);
+      }
+
       if (Operation.isSelectionOperation(op)) {
         const selectedPaths = Paths.getSelectedPaths(editor.selection);
         const path = Paths.getPath(editor.selection);
@@ -159,31 +112,36 @@ export const useSlateEditor = (
         }
       }
 
-      const { operations, history } = slate;
-      const { undos } = history;
-      const lastBatch = undos[undos.length - 1];
-      const lastOp = lastBatch && lastBatch.operations[lastBatch.operations.length - 1];
-      let save = HistoryEditor.isSaving(slate as HistoryEditor);
-      let merge = HistoryEditor.isMerging(slate as HistoryEditor);
-
-      if (save == null) {
-        save = shouldSave(op, lastOp);
-      }
-
       if (save) {
-        if (merge == null) {
-          if (lastBatch == null) {
-            merge = false;
-          } else if (operations.length !== 0) {
-            merge = true;
-          } else {
-            merge = shouldMerge(op, lastOp);
-          }
+        const lastEditorBatch = editor.historyStack.undos[editor.historyStack.undos.length - 1];
+        if (!lastEditorBatch || lastEditorBatch?.operations[0]?.type !== 'set_slate') {
+          const setSlateOperation: SetSlateOperation = {
+            type: 'set_slate',
+            properties: {
+              slateOps: [op],
+              selectionBefore: slate.selection,
+            },
+            source: 'api',
+            blockId: id,
+            slate: slate,
+          };
+
+          editor.applyTransforms([setSlateOperation], { source: 'api' });
+          apply(op);
+          return;
         }
 
-        if (lastBatch && merge) {
+        const lastSlateOps = (lastEditorBatch?.operations[0] as SetSlateOperation)?.properties?.slateOps;
+        const lastOp = lastSlateOps && lastSlateOps[lastSlateOps.length - 1];
+        let merge = shouldMerge(op, lastOp);
+
+        if (slate.operations.length !== 0) {
+          merge = true;
+        }
+
+        if (merge) {
           if (lastOp !== op) {
-            lastBatch.operations.push(op);
+            lastSlateOps.push(op);
           }
         } else {
           const batch = {
@@ -194,48 +152,19 @@ export const useSlateEditor = (
           const setSlateOperation: SetSlateOperation = {
             type: 'set_slate',
             properties: {
-              operations: batch.operations,
+              slateOps: batch.operations,
               selectionBefore: batch.selectionBefore,
             },
+            source: 'api',
             blockId: id,
             slate: slate,
           };
 
-          editor.history.undos.push({
-            operations: [setSlateOperation],
-            path: [0],
-          });
-
-          slate.writeHistory('undos', batch);
+          editor.applyTransforms([setSlateOperation], { source: 'api' });
         }
-
-        while (undos.length > 100) {
-          undos.shift();
-        }
-
-        history.redos = [];
       }
 
       apply(op);
-    };
-
-    slate.writeHistory = (stack: 'undos' | 'redos', batch: any) => {
-      const setSlateOperation: SetSlateOperation = {
-        type: 'set_slate',
-        properties: {
-          operations: batch.operations,
-          selectionBefore: batch.selectionBefore,
-        },
-        blockId: id,
-        slate: slate,
-      };
-
-      editor.history.undos.push({
-        operations: [setSlateOperation],
-        path: [0],
-      });
-
-      slate.history[stack].push(batch);
     };
 
     return slate;
@@ -272,7 +201,7 @@ export const useEventHandlers = (
   }, [events, editor, block]);
 };
 
-const shouldSave = (op: Operation, prev: Operation | undefined): boolean => {
+const shouldSave = (op: Operation): boolean => {
   if (op.type === 'set_selection') {
     return false;
   }
