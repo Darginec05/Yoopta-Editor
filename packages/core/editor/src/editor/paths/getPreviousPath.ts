@@ -1,11 +1,8 @@
-import { YooptaBlockPath } from '../types';
+import { YooEditor, YooptaPathIndex } from '../types';
 
-export function getPreviousPath(selection: YooptaBlockPath): YooptaBlockPath | null {
-  const path = selection[0];
-  const selected = selection[1];
-  if (typeof path === 'number') {
-    return [path - 1, selected];
-  }
+export function getPreviousPath(editor: YooEditor): YooptaPathIndex {
+  const path = editor.path.current;
 
+  if (typeof path === 'number' && path !== 0) return path - 1;
   return null;
 }

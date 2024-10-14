@@ -1,8 +1,6 @@
-import { YooEditor, YooptaBlockPath } from '../types';
+import { YooEditor, YooptaPathIndex } from '../types';
 import { YooptaOperation } from '../core/applyTransforms';
 import { Paths } from '../paths';
-import { getLastNodePoint } from '../../utils/getLastNodePoint';
-import { getSlate } from './getSlate';
 
 // export type DeleteBlockOptions = YooptaEditorTransformOptions & {
 //   deleteAll?: boolean;
@@ -10,7 +8,7 @@ import { getSlate } from './getSlate';
 // };
 
 // export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions = {}) {
-//   const { at = editor.selection, deleteAll = false, fromPaths, focus } = options;
+//   const { at = editor.path.current, deleteAll = false, fromPaths, focus } = options;
 
 //   if (Array.isArray(fromPaths) && fromPaths.length > 0) {
 //     editor.children = createDraft(editor.children);
@@ -105,7 +103,7 @@ type DeleteBlockByIdOptions = {
 };
 
 type DeleteBlockByPathOptions = {
-  at: YooptaBlockPath | null;
+  at: YooptaPathIndex;
   blockId?: never;
 };
 
@@ -132,7 +130,7 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions) {
   operations.push({
     type: 'delete_block',
     block: blockToDelete,
-    path: editor.selection,
+    path: editor.path,
   });
 
   // Object.values(editor.children).forEach((block) => {
@@ -149,7 +147,7 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions) {
   editor.applyTransforms(operations);
 
   if (focus) {
-    const prevBlockPath = Paths.getPreviousPath(editor.selection);
+    const prevBlockPath = Paths.getPreviousPath(editor);
     const prevBlock = editor.getBlock({ at: prevBlockPath });
 
     if (prevBlock) {

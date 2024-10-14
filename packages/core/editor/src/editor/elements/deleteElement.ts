@@ -14,7 +14,7 @@ export function deleteElement(editor: YooEditor, blockId: string, element: Delet
     throw new Error(`Block with id ${blockId} not found`);
   }
 
-  const slate = findSlateBySelectionPath(editor, { at: [block.meta.order] });
+  const slate = findSlateBySelectionPath(editor, { at: block.meta.order });
 
   if (!slate) {
     console.warn('No slate found');

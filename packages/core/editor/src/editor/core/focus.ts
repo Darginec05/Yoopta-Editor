@@ -5,7 +5,7 @@ import { YooEditor } from '../types';
 export function focus(editor: YooEditor) {
   if (editor.readOnly) return;
 
-  const firstBlock = findPluginBlockBySelectionPath(editor, { at: [0] });
+  const firstBlock = findPluginBlockBySelectionPath(editor, { at: 0 });
   if (firstBlock) {
     IS_FOCUSED_EDITOR.set(editor, true);
 

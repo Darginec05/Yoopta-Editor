@@ -14,6 +14,7 @@ import Code from '@yoopta/code';
 import Table, { TableCommands } from '@yoopta/table';
 import Divider, { DividerCommands } from '@yoopta/divider';
 import { Blocks, Elements, YooEditor, Paths, YooptaBlockPath } from '@yoopta/editor';
+import { YooptaPathIndex } from '@yoopta/editor/dist/editor/types';
 
 type Props = {
   editor: YooEditor;
@@ -45,7 +46,7 @@ export const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            const at: YooptaBlockPath = Paths.isEmptyPath(editor.selection) ? [2] : editor.selection;
+            const at: YooptaBlockPath = Paths.isPathEmpty(editor.selection) ? [2] : editor.selection;
             console.log('toggleBlock at', at);
             editor.toggleBlock('Blockquote', { at: at, focus: true });
           }}
@@ -90,8 +91,8 @@ export const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            const originalPath: YooptaBlockPath = Paths.isEmptyPath(editor.selection) ? [0] : editor.selection;
-            editor.duplicateBlock({ at: [0], original: { path: originalPath } });
+            const originPath: YooptaPathIndex = editor.path.current || 0;
+            editor.duplicateBlock({ at: 0, original: { path: originPath } });
           }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >

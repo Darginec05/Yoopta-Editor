@@ -3,7 +3,7 @@ import { Editor, Range, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { Blocks } from '../../editor/blocks';
 import { Paths } from '../../editor/paths';
-import { YooEditor, YooptaBlockPath } from '../../editor/types';
+import { YooEditor, YooptaPath } from '../../editor/types';
 
 type MultiSelectionOptions = {
   editor: YooEditor;
@@ -15,8 +15,8 @@ export function useMultiSelection({ editor }: MultiSelectionOptions) {
   const startBlockPathRef = useRef<number | null>(null);
   const currentBlockPathRef = useRef<number | null>(null);
 
-  const blurSlateSelection = (blockPath?: YooptaBlockPath) => {
-    const path = blockPath || editor.selection;
+  const blurSlateSelection = (blockPath?: YooptaPath['current']) => {
+    const path = blockPath || editor.path.current;
 
     if (path) {
       const slate = Blocks.getSlate(editor, { at: path });
@@ -39,7 +39,9 @@ export function useMultiSelection({ editor }: MultiSelectionOptions) {
   const onShiftKeyDown = (blockOrder: number) => {
     blurSlateSelection();
 
-    const currentSelectionIndex = Paths.getPath(editor.selection)?.[0] || 0;
+    const currentSelectionIndex = Paths.getPath(editor);
+    if (typeof currentSelectionIndex !== 'number') return;
+
     const indexesBetween = Array.from({ length: Math.abs(blockOrder - currentSelectionIndex) }).map((_, index) =>
       blockOrder > currentSelectionIndex ? currentSelectionIndex + index + 1 : currentSelectionIndex - index - 1,
     );
@@ -47,17 +49,17 @@ export function useMultiSelection({ editor }: MultiSelectionOptions) {
     console.log('indexesBetween', [...indexesBetween, currentSelectionIndex]);
 
     // editor.setBlockSelected(, { only: true });
-    editor.setSelection([blockOrder, [...indexesBetween, currentSelectionIndex]]);
+    editor.setPath({ current: blockOrder, selected: [...indexesBetween, currentSelectionIndex] });
   };
 
   const onMouseDown = (e: React.MouseEvent) => {
     if (editor.readOnly) return;
 
     editor.batchOperations(() => {
-      const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+      const selectedBlocks = Paths.getSelectedPaths(editor);
       // [TEST]
       if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0 && !e.shiftKey && !e.altKey) {
-        editor.setSelection([null]);
+        editor.setPath({ current: null });
       }
 
       const target = e.target as HTMLElement;
@@ -72,13 +74,13 @@ export function useMultiSelection({ editor }: MultiSelectionOptions) {
           startBlockPathRef.current = blockOrder;
           currentBlockPathRef.current = blockOrder;
 
-          if (e.shiftKey && Array.isArray(editor.selection) && blockOrder !== editor.selection?.[0]) {
+          if (e.shiftKey && !Paths.isPathEmpty(editor) && blockOrder !== editor.path.current) {
             onShiftKeyDown(blockOrder);
             return;
           }
 
-          if (blockOrder !== editor.selection?.[0]) {
-            editor.setSelection([blockOrder]);
+          if (blockOrder !== editor.path.current) {
+            editor.setPath({ current: blockOrder });
           }
 
           editor.refElement?.addEventListener('mousemove', onMouseMove);
@@ -106,7 +108,7 @@ export function useMultiSelection({ editor }: MultiSelectionOptions) {
           blockOrder === startBlockPathRef.current
         ) {
           currentBlockPathRef.current = blockOrder;
-          editor.setSelection([blockOrder, [blockOrder]]);
+          editor.setPath({ current: blockOrder, selected: [blockOrder] });
           return;
         }
 
@@ -121,7 +123,7 @@ export function useMultiSelection({ editor }: MultiSelectionOptions) {
           blurSlateSelection();
 
           const selectedBlocks = Array.from({ length: end - start + 1 }, (_, i) => start + i);
-          editor.setSelection([blockOrder, selectedBlocks]);
+          editor.setPath({ current: blockOrder, selected: selectedBlocks });
         }
       });
     }

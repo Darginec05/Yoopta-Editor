@@ -26,7 +26,7 @@ export function createElement<TElementKeys extends string, TElementProps>(
     throw new Error(`Block with id ${blockId} not found`);
   }
 
-  const slate = findSlateBySelectionPath(editor, { at: [blockData.meta.order] });
+  const slate = findSlateBySelectionPath(editor, { at: blockData.meta.order });
   if (!slate) {
     console.warn('No slate found');
     return;

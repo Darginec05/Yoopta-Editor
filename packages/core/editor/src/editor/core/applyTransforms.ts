@@ -1,6 +1,6 @@
 import { createDraft, finishDraft, isDraft, produce } from 'immer';
 import { buildSlateEditor } from '../../utils/buildSlate';
-import { SlateEditor, SlateElement, YooEditor, YooptaBlockData, YooptaBlockPath } from '../types';
+import { SlateEditor, SlateElement, YooEditor, YooptaBlockData, YooptaPath } from '../types';
 import { Editor, Operation, Range, Transforms } from 'slate';
 
 export type SetSlateOperation = {
@@ -16,7 +16,7 @@ export type SetSlateOperation = {
 
 export type InsertBlockOperation = {
   type: 'insert_block';
-  path: YooptaBlockPath;
+  path: YooptaPath;
   block: YooptaBlockData;
   slate?: SlateEditor;
 };
@@ -51,13 +51,13 @@ export type MergeBlockOperation = {
 
 export type DeleteBlockOperation = {
   type: 'delete_block';
-  path: YooptaBlockPath;
+  path: YooptaPath;
   block: YooptaBlockData;
 };
 
 export type SetSelectionBlockOperation = {
   type: 'set_selection_block';
-  path: YooptaBlockPath;
+  path: YooptaPath;
 };
 
 export type NormalizePathsBlockOperation = {
@@ -217,8 +217,7 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
     }
 
     case 'set_selection_block': {
-      if (!Array.isArray(op.path[1])) op.path[1] = [];
-      editor.selection = op.path;
+      editor.path = op.path;
       break;
     }
 
@@ -249,7 +248,7 @@ const MAX_HISTORY_LENGTH = 100;
 
 export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], options?: ApplyTransformsOptions): void {
   editor.children = createDraft(editor.children);
-  editor.selection = createDraft(editor.selection);
+  editor.path = createDraft(editor.path);
 
   const { normalizePaths = true, source } = options || {};
   const operations = [...ops];
@@ -269,15 +268,15 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
   if (!isDraft(editor.children)) editor.children = createDraft(editor.children);
   editor.children = finishDraft(editor.children);
 
-  if (isDraft(editor.selection)) {
-    editor.selection = finishDraft(editor.selection);
+  if (isDraft(editor.path)) {
+    editor.path = finishDraft(editor.path);
   }
 
   const historyBatch = {
     operations: operations.filter(
       (op) => op.type !== 'set_selection_block' && op.type !== 'set_block_value' && op.type !== 'normalize_block_paths',
     ),
-    path: editor.selection,
+    path: editor.path,
   };
 
   if (historyBatch.operations.length > 0 && source !== 'history') {
@@ -290,7 +289,7 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
   }
 
   editor.emit('change', editor.children);
-  editor.emit('selection-change', editor.selection);
+  editor.emit('path-change', editor.path);
 
   assertValidPaths(editor);
 }

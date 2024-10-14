@@ -26,7 +26,7 @@ const Block = ({ children, block, blockId }: BlockProps) => {
   // [4, [0, 1, 2, 3, 4]]
   // [null, [0, 1, 2, 3, 4]]
   // [null, []]
-  const isSelected = Paths.isBlockSelected(block, editor.selection);
+  const isSelected = Paths.isBlockSelected(editor, block);
   const isHovered = activeBlockId === blockId;
 
   const handleMouseEnter = useCallback(() => {

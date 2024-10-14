@@ -1,5 +1,5 @@
 import { YooptaOperation } from '../core/applyTransforms';
-import { YooEditor, YooptaBlockPath } from '../types';
+import { YooEditor, YooptaPathIndex } from '../types';
 
 // export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: YooptaBlockPath) {
 //   editor.children = createDraft(editor.children);
@@ -32,8 +32,8 @@ import { YooEditor, YooptaBlockPath } from '../types';
 //   editor.emit('change', editor.children);
 // }
 
-export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: YooptaBlockPath) {
-  const [updatedPosition] = newPath;
+export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: YooptaPathIndex) {
+  const updatedPosition = newPath;
   const draggedBlock = editor.children[draggedBlockId];
   const blockInNewPosition = Object.values(editor.children).find((item) => item.meta.order === updatedPosition);
 
@@ -69,7 +69,8 @@ export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: Yo
         },
         properties: {
           ...item.meta,
-          // order: newOrder,
+          // [TODO] - add new operation
+          order: newOrder,
         },
       });
     }
@@ -83,11 +84,12 @@ export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: Yo
     },
     properties: {
       ...draggedBlock.meta,
-      // order: updatedPosition!,
+      // [TODO] - add new operation
+      order: updatedPosition!,
       depth: blockInNewPosition.meta.depth,
     },
   });
 
   editor.applyTransforms(operations);
-  editor.setSelection([updatedPosition]);
+  editor.setPath({ current: updatedPosition });
 }

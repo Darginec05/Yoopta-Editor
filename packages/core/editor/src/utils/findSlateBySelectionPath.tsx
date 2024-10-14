@@ -1,15 +1,15 @@
-import { SlateEditor, YooEditor, YooptaBlockPath } from '../editor/types';
+import { SlateEditor, YooEditor, YooptaPathIndex } from '../editor/types';
 
 export function findSlateBySelectionPath(
   editor: YooEditor,
-  options?: { at: YooptaBlockPath | null },
+  options?: { at: YooptaPathIndex },
 ): SlateEditor | undefined {
   const childrenKeys = Object.keys(editor.children);
-  const { at = editor.selection } = options || {};
+  const { at = editor.path.current } = options || {};
 
   const blockId = childrenKeys.find((childrenId) => {
     const plugin = editor.children[childrenId];
-    return plugin.meta.order === at?.[0];
+    return plugin.meta.order === at;
   });
 
   if (!blockId) return undefined;

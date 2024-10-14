@@ -1,12 +1,12 @@
-import { YooEditor, YooptaBlockPath } from '../editor/types';
+import { YooEditor, YooptaPathIndex } from '../editor/types';
 
-export function findPluginBlockBySelectionPath(editor: YooEditor, options?: { at: YooptaBlockPath | null }) {
+export function findPluginBlockBySelectionPath(editor: YooEditor, options?: { at: YooptaPathIndex }) {
   const childrenKeys = Object.keys(editor.children);
-  const { at = editor.selection } = options || {};
+  const { at = editor.path.current } = options || {};
 
   const blockId = childrenKeys.find((childrenId) => {
     const plugin = editor.children[childrenId];
-    return plugin.meta.order === at?.[0];
+    return plugin.meta.order === at;
   });
 
   if (!blockId) return null;

@@ -1,10 +1,10 @@
 import { Operation } from 'slate';
-import { YooEditor, YooptaBlockPath } from '../types';
+import { YooEditor, YooptaPath } from '../types';
 import { YooptaOperation } from './applyTransforms';
 
 export type HistoryStack = {
   operations: YooptaOperation[];
-  path: YooptaBlockPath;
+  path: YooptaPath;
 };
 
 export type HistoryStackName = 'undos' | 'redos';

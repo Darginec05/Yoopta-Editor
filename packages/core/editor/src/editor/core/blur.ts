@@ -18,7 +18,7 @@ function blurFn(editor: YooEditor, slate: SlateEditor) {
   } catch (error) {}
 
   // editor.setBlockSelected(null);
-  editor.setSelection([null]);
+  editor.setPath({ current: null });
 }
 
 export function blur(editor: YooEditor, options: EditorBlurOptions = {}) {

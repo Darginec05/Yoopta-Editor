@@ -6,7 +6,7 @@ import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySel
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { generateId } from '../../utils/generateId';
 import { YooptaOperation } from '../core/applyTransforms';
-import { YooEditor, YooptaBlockData, SlateEditor, FocusAt, YooptaBlockPath, SlateElement } from '../types';
+import { YooEditor, YooptaBlockData, SlateEditor, FocusAt, SlateElement, YooptaPathIndex } from '../types';
 
 // export type ToggleBlockOptions = YooptaEditorTransformOptions & {
 //   deleteText?: boolean;
@@ -78,7 +78,7 @@ import { YooEditor, YooptaBlockData, SlateEditor, FocusAt, YooptaBlockPath, Slat
 // }
 
 export type ToggleBlockOptions = {
-  at?: YooptaBlockPath;
+  at?: YooptaPathIndex;
   deleteText?: boolean;
   slate?: SlateEditor;
   focus?: boolean;
@@ -106,14 +106,14 @@ function findFirstLeaf(node: SlateElement): SlateElement | null {
 }
 
 export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options: ToggleBlockOptions = {}) {
-  const fromBlock = findPluginBlockBySelectionPath(editor, { at: options.at || editor.selection });
+  const fromBlock = findPluginBlockBySelectionPath(editor, { at: options.at || editor.path.current });
   if (!fromBlock) throw new Error('Block not found at current selection');
 
   let toBlockType = fromBlock.type === toBlockTypeArg ? DEFAULT_BLOCK_TYPE : toBlockTypeArg;
   const plugin = editor.plugins[toBlockType];
   const { onBeforeCreate, onCreate } = plugin.events || {};
 
-  const slate = findSlateBySelectionPath(editor, { at: [fromBlock.meta.order] });
+  const slate = findSlateBySelectionPath(editor, { at: fromBlock.meta.order });
   if (!slate) throw new Error(`Slate not found for block in position ${fromBlock.meta.order}`);
 
   const toBlockSlateStructure = onBeforeCreate?.(editor) || buildBlockElementsStructure(editor, toBlockType);
@@ -135,8 +135,8 @@ export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options: 
   newSlate.children = [toBlockSlateStructure];
 
   const operations: YooptaOperation[] = [
-    { type: 'delete_block', block: fromBlock, path: [fromBlock.meta.order] },
-    { type: 'insert_block', path: [fromBlock.meta.order], block: newBlock, slate: newSlate },
+    { type: 'delete_block', block: fromBlock, path: { current: fromBlock.meta.order } },
+    { type: 'insert_block', path: { current: fromBlock.meta.order }, block: newBlock, slate: newSlate },
   ];
 
   editor.applyTransforms(operations);

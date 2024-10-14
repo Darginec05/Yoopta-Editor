@@ -1,9 +1,8 @@
-import { buildSlateEditor } from '../../utils/buildSlate';
 import { deepClone } from '../../utils/deepClone';
 import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
 import { generateId } from '../../utils/generateId';
 import { YooptaOperation } from '../core/applyTransforms';
-import { YooEditor, YooptaBlockData, YooptaBlockPath } from '../types';
+import { YooEditor, YooptaBlock, YooptaBlockData, YooptaPathIndex } from '../types';
 
 // export function duplicateBlock(editor: YooEditor, options: DuplicateBlockOptions = {}) {
 //   const { blockId, focus } = options;
@@ -66,9 +65,9 @@ import { YooEditor, YooptaBlockData, YooptaBlockPath } from '../types';
 // }
 
 export type DuplicateBlockOptions = {
-  original: { blockId?: never; path: YooptaBlockPath } | { blockId: string; path?: never };
+  original: { blockId?: never; path: YooptaPathIndex } | { blockId: string; path?: never };
   focus?: boolean;
-  at?: YooptaBlockPath;
+  at?: YooptaPathIndex;
 };
 
 export function duplicateBlock(editor: YooEditor, options: DuplicateBlockOptions) {
@@ -78,12 +77,11 @@ export function duplicateBlock(editor: YooEditor, options: DuplicateBlockOptions
     throw new Error('`original` should be provided');
   }
 
-  if (!original.blockId && !original.path) {
+  if (!original.blockId && typeof original.path !== 'number') {
     throw new Error('blockId or path should be provided');
   }
 
   const { blockId, path } = original;
-  console.log('duplicateBlock', blockId, path);
 
   let originalBlock: YooptaBlockData | null = blockId
     ? editor.children[blockId]
@@ -95,7 +93,6 @@ export function duplicateBlock(editor: YooEditor, options: DuplicateBlockOptions
 
   const operations: YooptaOperation[] = [];
 
-  // Обновляем порядок для всех последующих блоков
   Object.values(editor.children).forEach((block) => {
     if (block.meta.order > originalBlock!.meta.order) {
       // operations.push({
@@ -118,11 +115,11 @@ export function duplicateBlock(editor: YooEditor, options: DuplicateBlockOptions
   const duplicatedBlock = deepClone(originalBlock);
   duplicatedBlock.id = generateId();
   // [TEST]
-  duplicatedBlock.meta.order = Array.isArray(at) && typeof at[0] === 'number' ? at : originalBlock.meta.order + 1;
+  duplicatedBlock.meta.order = Array.isArray(at) && typeof at === 'number' ? at : originalBlock.meta.order + 1;
 
   operations.push({
     type: 'insert_block',
-    path: [duplicatedBlock.meta.order],
+    path: { current: duplicatedBlock.meta.order },
     block: duplicatedBlock,
   });
 

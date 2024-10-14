@@ -18,17 +18,17 @@ export function getElementEntry<TElementKeys extends string>(
     throw new Error(`Block with id ${blockId} not found`);
   }
 
-  const slate = findSlateBySelectionPath(editor, { at: [block.meta.order] });
+  const slate = findSlateBySelectionPath(editor, { at: block.meta.order });
 
   if (!slate) {
     console.warn('No slate found');
     return;
   }
 
-  let match = (n) => Element.isElement(n);
+  let match = (n): boolean => Element.isElement(n);
 
   if (options?.type) {
-    match = (n) => Element.isElement(n) && n.type === options?.type;
+    match = (n): boolean => Element.isElement(n) && n.type === options?.type;
   }
 
   try {

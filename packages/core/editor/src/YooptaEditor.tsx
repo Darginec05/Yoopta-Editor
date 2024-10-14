@@ -3,7 +3,7 @@ import { YooptaContextProvider } from './contexts/YooptaContext/YooptaContext';
 import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { Editor } from './components/Editor/Editor';
 import { CSSProperties, useCallback, useEffect, useMemo, useState } from 'react';
-import { SlateElement, YooEditor, YooptaBlockData, YooptaBlockPath, YooptaContentValue } from './editor/types';
+import { SlateElement, YooEditor, YooptaBlockData, YooptaPath, YooptaContentValue } from './editor/types';
 import { Plugin } from './plugins/types';
 import { Tools, ToolsProvider } from './contexts/YooptaContext/ToolsContext';
 import {
@@ -18,7 +18,6 @@ import { YooptaPlugin } from './plugins';
 import { YooptaMark } from './marks';
 import { FakeSelectionMark } from './marks/FakeSelectionMark';
 import { generateId } from './utils/generateId';
-import { Operation } from 'slate';
 import { inverseEditorOperation, YooHistory } from './editor/core/history';
 
 export type YooptaEditorProps = {
@@ -150,9 +149,9 @@ const YooptaEditor = ({
     return { editor, version: 0 };
   });
 
-  const [_, setSelectionPath] = useState<YooptaBlockPath | null>(null);
+  const [_, setSelectionPath] = useState<YooptaPath | null>(null);
 
-  const onSelectonPathChange = useCallback((path: YooptaBlockPath) => {
+  const onSelectonPathChange = useCallback((path: YooptaPath) => {
     setSelectionPath(path);
   }, []);
 
@@ -167,11 +166,11 @@ const YooptaEditor = ({
 
   useEffect(() => {
     editor.on('change', onValueChange);
-    editor.on('selection-change', onSelectonPathChange);
+    editor.on('path-change', onSelectonPathChange);
 
     return () => {
       editor.off('change', onValueChange);
-      editor.off('selection-change', onSelectonPathChange);
+      editor.off('path-change', onSelectonPathChange);
     };
   }, [editor, onValueChange]);
 

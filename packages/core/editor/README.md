@@ -90,15 +90,15 @@ export type YooEditor<TNodes> = {
   toggleBlock: (toBlockType: string, options?: ToggleBlockOptions) => void;
   increaseBlockDepth: (options?: BlockDepthOptions) => void;
   decreaseBlockDepth: (options?: BlockDepthOptions) => void;
-  moveBlock: (blockId: string, to: YooptaBlockPath) => void;
+  moveBlock: (blockId: string, to: YooptaPath) => void;
   focusBlock: (id: string, options?: FocusBlockOptions) => void;
   getBlock: (options: GetBlockOptions) => YooptaBlockData | null;
-  // selection: YooptaBlockPath | null;
   selectedBlocks: number[] | null;
   children: Record<string, YooptaBlockData>;
   getEditorValue: () => TNodes;
   setEditorValue: (value: YooptaContentValue) => void;
-  setSelection: (path: YooptaBlockPath | null, options?: SetSelectionOptions) => void;
+  path: YooptaPath;
+  setPath: (path: YooptaPath | null, options?: SetSelectionOptions) => void;
   // setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
   blockEditorsMap: YooptaPluginsEditorMap;
   blocks: YooptaBlocks;

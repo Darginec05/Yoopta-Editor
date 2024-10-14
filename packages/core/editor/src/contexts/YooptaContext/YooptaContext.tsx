@@ -1,8 +1,8 @@
 import { createContext, useContext, useRef } from 'react';
 import { createYooptaEditor } from '../../editor';
-import { YooEditor, YooptaBlockPath } from '../../editor/types';
+import { YooEditor, YooptaPathIndex } from '../../editor/types';
 import { PluginOptions } from '../../plugins/types';
-import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
+import { Blocks } from '../../editor/blocks';
 
 export type YooptaEditorContext = {
   editor: YooEditor;
@@ -43,12 +43,13 @@ const useYooptaReadOnly = () => useYooptaEditor().readOnly;
 const useYooptaPluginOptions = <TOptions,>(pluginType: string): PluginOptions<TOptions> =>
   useYooptaEditor().plugins[pluginType]?.options as PluginOptions<TOptions>;
 
-type UseBlockSelectedProps = { blockId: string; path?: YooptaBlockPath } | { path: YooptaBlockPath; blockId?: string };
-const useBlockSelected = ({ blockId, path }: UseBlockSelectedProps) => {
+type UseBlockSelectedProps = { blockId: string; at?: YooptaPathIndex } | { at: YooptaPathIndex; blockId?: string };
+
+const useBlockSelected = ({ blockId, at }: UseBlockSelectedProps) => {
   const editor = useYooptaEditor();
 
-  if (!blockId && !path) {
-    throw new Error('useBlockSelected must receive either blockId or path');
+  if (!blockId && typeof at !== 'number') {
+    throw new Error('useBlockSelected must receive either blockId or at');
   }
 
   let block;
@@ -57,11 +58,11 @@ const useBlockSelected = ({ blockId, path }: UseBlockSelectedProps) => {
     block = editor.children[blockId];
   }
 
-  if (path) {
-    block = findPluginBlockBySelectionPath(editor, { at: path });
+  if (at) {
+    block = Blocks.getBlock(editor, { at: at });
   }
 
-  return editor.selection?.[0] === block?.meta.order;
+  return editor.path.current === block?.meta.order;
 };
 
 export {

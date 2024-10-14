@@ -13,6 +13,7 @@ import { IS_FOCUSED_EDITOR } from '../utils/weakMaps';
 import { deserializeHTML } from '../parsers/deserializeHTML';
 import { useEventHandlers, useSlateEditor } from './hooks';
 import { SlateElement } from '../editor/types';
+import { Paths } from '../editor/paths';
 
 type Props<TElementMap extends Record<string, SlateElement>, TOptions> = Plugin<TElementMap, TOptions> & {
   id: string;
@@ -82,7 +83,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
       let { children, leaf, attributes } = props;
       const { text, ...formats } = leaf;
 
-      const isBlockSelected = editor.selection?.[0] === block.meta.order;
+      const isBlockSelected = Paths.isBlockSelected(editor, block);
 
       if (formats) {
         Object.keys(formats).forEach((format) => {
@@ -110,7 +111,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
       eventHandlers.onKeyDown?.(event);
       EVENT_HANDLERS.onKeyDown(editor)(event);
     },
-    [eventHandlers.onKeyDown, editor.readOnly, editor.selection?.[0], block.meta.order],
+    [eventHandlers.onKeyDown, editor.readOnly, editor.path.current, block.meta.order],
   );
 
   const onKeyUp = useCallback(
@@ -161,7 +162,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
         const blocks = deserializeHTML(editor, parsedHTML.body);
 
         // If no blocks from HTML, then paste as plain text using default behavior from Slate
-        if (blocks.length > 0 && Array.isArray(editor.selection)) {
+        if (blocks.length > 0 && editor.path.current !== null) {
           event.preventDefault();
 
           let shouldInsertAfterSelection = false;
@@ -177,8 +178,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
             ReactEditor.blur(slate);
           }
 
-          const insertPathIndex = editor.selection[0];
-          console.log('insertPathIndex', insertPathIndex);
+          const insertPathIndex = editor.path.current;
           if (insertPathIndex === null) return;
 
           // [TEST]
@@ -186,7 +186,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
             const newPaths: number[] = [];
 
             if (shouldDeleteCurrentBlock) {
-              editor.deleteBlock({ at: [insertPathIndex] });
+              editor.deleteBlock({ at: insertPathIndex });
             }
 
             blocks.forEach((block, idx) => {
@@ -194,11 +194,11 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
               newPaths.push(insertBlockPath);
 
               const { type, ...blockData } = block;
-              editor.insertBlock(block.type, { at: [insertBlockPath], focus: false, blockData });
+              editor.insertBlock(block.type, { at: insertBlockPath, focus: false, blockData });
             });
 
             // [TEST]
-            editor.setSelection([null, newPaths]);
+            editor.setPath({ current: null, selected: newPaths });
           });
 
           return;
@@ -214,7 +214,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
       if (editor.readOnly) return ranges;
 
       const [node, path] = nodeEntry;
-      const isCurrent = editor.selection?.[0] === block.meta.order;
+      const isCurrent = editor.path.current === block.meta.order;
 
       if (slate.selection && isCurrent) {
         if (
@@ -232,7 +232,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
 
       return ranges;
     },
-    [editor.readOnly, editor.selection?.[0], block.meta.order],
+    [editor.readOnly, editor.path.current, block.meta.order],
   );
 
   return (
