@@ -43,7 +43,7 @@ function serializeChildren(children, plugins) {
 export function getHTML(editor: YooEditor, content: YooptaContentValue): string {
   const blocks = Object.values(content)
     .filter((block) => {
-      const selectedPaths = Paths.getSelectedPaths(editor.selection);
+      const selectedPaths = Paths.getSelectedPaths(editor);
       if (Array.isArray(selectedPaths) && selectedPaths.length > 0) {
         return selectedPaths?.includes(block.meta.order);
       }

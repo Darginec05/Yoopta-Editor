@@ -50,10 +50,10 @@ export const useRectangeSelectionBox = ({ editor, root }: RectangeSelectionProps
     if (editor.readOnly || root === false) return;
 
     const isInsideEditor = editor.refElement?.contains(event.target as Node);
-    const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+    const selectedBlocks = Paths.getSelectedPaths(editor);
 
     if (!isInsideEditor && !state.selection && Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
-      editor.setSelection([null]);
+      editor.setPath({ current: null });
       return onClose();
     }
 
@@ -79,7 +79,7 @@ export const useRectangeSelectionBox = ({ editor, root }: RectangeSelectionProps
       event.pageY - window.pageYOffset,
     ]);
 
-    editor.setSelection([null, blocksUnderSelection]);
+    editor.setPath({ current: null, selected: blocksUnderSelection });
   };
 
   const onMouseUp = () => {
@@ -120,7 +120,7 @@ export const useRectangeSelectionBox = ({ editor, root }: RectangeSelectionProps
       elementMouseEl.removeEventListener('mousemove', onMouseMove);
       elementMouseEl.removeEventListener('mouseup', onMouseUp);
     };
-  }, [editor.selection, state, root, editor.readOnly]);
+  }, [editor.path, state, root, editor.readOnly]);
 
   const onClose = () => {
     setState({

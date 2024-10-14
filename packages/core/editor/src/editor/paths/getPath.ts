@@ -1,6 +1,5 @@
-import { YooptaBlockPath } from '../types';
+import { YooEditor, YooptaPath } from '../types';
 
-export function getPath(selection: YooptaBlockPath): YooptaBlockPath[0] {
-  const path = selection[0];
-  return path;
+export function getPath(editor: YooEditor): YooptaPath['current'] {
+  return editor.path.current;
 }

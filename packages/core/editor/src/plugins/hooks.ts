@@ -3,7 +3,7 @@ import { Editor, Element, Node, Operation, Path, Range, Transforms } from 'slate
 import { buildBlockData } from '../components/Editor/utils';
 import { Blocks } from '../editor/blocks';
 import { Paths } from '../editor/paths';
-import { SlateEditor, YooEditor, YooptaBlockData, YooptaBlockPath } from '../editor/types';
+import { SlateEditor, YooEditor, YooptaBlockData } from '../editor/types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { getRootBlockElementType } from '../utils/blockElements';
 import { generateId } from '../utils/generateId';
@@ -50,10 +50,10 @@ export const useSlateEditor = (
     });
 
     slate.insertText = (text) => {
-      const selectedPaths = Paths.getSelectedPaths(editor.selection);
-      const path = Paths.getPath(editor.selection);
+      const selectedPaths = Paths.getSelectedPaths(editor);
+      const path = Paths.getPath(editor);
       if (Array.isArray(selectedPaths) && selectedPaths.length > 0) {
-        editor.setSelection([path, []]);
+        editor.setPath({ current: path });
       }
 
       insertText(text);
@@ -104,11 +104,11 @@ export const useSlateEditor = (
       }
 
       if (Operation.isSelectionOperation(op)) {
-        const selectedPaths = Paths.getSelectedPaths(editor.selection);
-        const path = Paths.getPath(editor.selection);
+        const selectedPaths = Paths.getSelectedPaths(editor);
+        const path = Paths.getPath(editor);
 
         if (Array.isArray(selectedPaths) && slate.selection && Range.isExpanded(slate.selection)) {
-          editor.setSelection([path, []]);
+          editor.setPath({ current: path });
         }
       }
 

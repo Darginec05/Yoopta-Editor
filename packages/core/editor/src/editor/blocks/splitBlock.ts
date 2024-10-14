@@ -85,7 +85,6 @@ export function splitBlock(editor: YooEditor, options: SplitBlockOptions = {}) {
   const blockToSplit = findPluginBlockBySelectionPath(editor);
   const slate = options.slate || findSlateBySelectionPath(editor);
   if (!slate || !blockToSplit) return;
-  const originalSlateChildren = deepClone(slate.children);
 
   Editor.withoutNormalizing(slate, () => {
     if (!slate.selection) return;

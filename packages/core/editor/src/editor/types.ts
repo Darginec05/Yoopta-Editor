@@ -1,7 +1,6 @@
 import { Descendant, Path, Point } from 'slate';
 import { Plugin, PluginElementsMap, PluginOptions, PluginElementProps } from '../plugins/types';
 import { EditorBlurOptions } from './core/blur';
-import { SetSelectionOptions } from './selection/setSelection';
 import { DeleteBlockOptions } from './blocks/deleteBlock';
 import { DuplicateBlockOptions } from './blocks/duplicateBlock';
 import { FocusBlockOptions } from './blocks/focusBlock';
@@ -36,6 +35,11 @@ export type SlateEditor = ReactEditor;
 export type FocusAt = Path | Point;
 
 export type YooptaPluginsEditorMap = Record<string, SlateEditor>;
+export type YooptaPathIndex = number | null;
+export type YooptaPath = {
+  current: YooptaPathIndex;
+  selected?: number[] | null;
+};
 
 // Marks
 export type TextFormat = {
@@ -58,11 +62,9 @@ export type YooptaBlock = {
 export type YooptaBlocks = Record<string, YooptaBlock>;
 export type YooptaFormats = Record<string, TextFormat>;
 
-export type YooEditorEvents = 'change' | 'focus' | 'blur' | 'block:copy' | 'selection-change';
+export type YooEditorEvents = 'change' | 'focus' | 'blur' | 'block:copy' | 'path-change';
 
 export type BaseCommands = Record<string, (...args: any[]) => any>;
-
-export type YooptaBlockPath = [number | null, number[]?];
 
 // [TODO] - Fix generic and default types
 export type YooEditor = {
@@ -76,13 +78,15 @@ export type YooEditor = {
   toggleBlock: (toBlockType: string, options?: ToggleBlockOptions) => void;
   increaseBlockDepth: (options?: BlockDepthOptions) => void;
   decreaseBlockDepth: (options?: BlockDepthOptions) => void;
-  moveBlock: (blockId: string, to: YooptaBlockPath) => void;
+  moveBlock: (blockId: string, to: YooptaPathIndex) => void;
   focusBlock: (id: string, options?: FocusBlockOptions) => void;
   mergeBlock: (options?: MergeBlockOptions) => void;
   splitBlock: (options?: SplitBlockOptions) => void;
   getBlock: (options: GetBlockOptions) => YooptaBlockData | null;
-  selection: YooptaBlockPath;
-  setSelection: (path: SetSelectionOptions) => void;
+
+  path: YooptaPath;
+  setPath: (path: YooptaPath) => void;
+
   children: YooptaContentValue;
   getEditorValue: () => YooptaContentValue;
   setEditorValue: (value: YooptaContentValue) => void;

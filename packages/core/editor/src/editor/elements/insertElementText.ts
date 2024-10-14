@@ -22,7 +22,7 @@ export function insertElementText<TElementKeys extends string, TElementProps>(
     return;
   }
 
-  const slate = findSlateBySelectionPath(editor, { at: [blockData.meta.order] });
+  const slate = findSlateBySelectionPath(editor, { at: blockData.meta.order });
 
   if (!slate) {
     console.warn('No slate found');

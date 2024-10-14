@@ -46,7 +46,7 @@ export function focusBlock(editor: YooEditor, blockId: string, options: FocusBlo
 
       if (shouldUpdateBlockSelection) {
         setTimeout(() => {
-          editor.setSelection([block.meta.order]);
+          editor.setPath({ current: block.meta.order });
         }, 0);
       }
     };

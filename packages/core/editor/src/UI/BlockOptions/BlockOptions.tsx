@@ -65,23 +65,23 @@ const BlockOptions = ({ isOpen, onClose, refs, style, actions = DEFAULT_ACTIONS,
 
   if (!isOpen) return null;
 
-  const currentBlock = findPluginBlockBySelectionPath(editor, { at: editor.selection });
+  const currentBlock = findPluginBlockBySelectionPath(editor, { at: editor.path.current });
   const rootElement = getRootBlockElement(editor.blocks[currentBlock?.type || '']?.elements);
   const isVoidElement = rootElement?.props?.nodeType === 'void';
 
   const onDelete = () => {
-    editor.deleteBlock({ at: editor.selection });
+    editor.deleteBlock({ at: editor.path.current });
     // editor.setBlockSelected(null);
-    editor.setSelection([null]);
+    editor.setPath({ current: null });
 
     onClose();
   };
 
   const onDuplicate = () => {
     // [TEST]
-    if (!editor.selection) return;
+    if (typeof editor.path.current !== 'number') return;
 
-    editor.duplicateBlock({ original: { path: editor.selection }, focus: true });
+    editor.duplicateBlock({ original: { path: editor.path.current }, focus: true });
     // editor.setBlockSelected([null]);
 
     onClose();

@@ -3,7 +3,7 @@ import { deleteBlock } from './blocks/deleteBlock';
 import { moveBlock } from './blocks/moveBlock';
 import { focusBlock } from './blocks/focusBlock';
 import { splitBlock } from './blocks/splitBlock';
-import { setSelection } from './selection/setSelection';
+import { setPath } from './paths/setPath';
 import { YooEditor, YooptaContentValue } from './types';
 import { increaseBlockDepth } from './blocks/increaseBlockDepth';
 import { decreaseBlockDepth } from './blocks/decreaseBlockDepth';
@@ -28,8 +28,7 @@ export function createYooptaEditor(): YooEditor {
   const editor: YooEditor = {
     id: '',
     children: {},
-    selection: [null, []],
-    // selectedBlocks: null,
+    path: { current: null },
     readOnly: false,
     isEmpty: () => isEmpty(editor),
     getEditorValue: () => getEditorValue(editor),
@@ -46,7 +45,7 @@ export function createYooptaEditor(): YooEditor {
     updateBlock: (...args) => updateBlock(editor, ...args),
     splitBlock: (...args) => splitBlock(editor, ...args),
     mergeBlock: (...args) => mergeBlock(editor, ...args),
-    setSelection: (...args) => setSelection(editor, ...args),
+    setPath: (...args) => setPath(editor, ...args),
     // setBlockSelected: (...args) => setBlockSelected(editor, ...args),
     blockEditorsMap: {},
     blocks: {},

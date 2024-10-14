@@ -17,9 +17,9 @@ export function mergeBlock(editor: YooEditor, options: MergeBlockOptions = {}) {
   const { focus = true } = options;
 
   const currentBlock = findPluginBlockBySelectionPath(editor);
-  const slateToRemove = findSlateBySelectionPath(editor, { at: editor.selection });
+  const slateToRemove = findSlateBySelectionPath(editor, { at: editor.path.current });
 
-  const prevBlockPath = Paths.getPreviousPath(editor.selection);
+  const prevBlockPath = Paths.getPreviousPath(editor);
   const slateToMerged = findSlateBySelectionPath(editor, { at: prevBlockPath });
   const blockToMerge = findPluginBlockBySelectionPath(editor, { at: prevBlockPath });
   const blockEntityToMerge = editor.blocks[blockToMerge?.type || ''];

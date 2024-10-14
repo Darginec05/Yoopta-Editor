@@ -3,7 +3,8 @@ import { getNextPath } from './getNextPath';
 import { isBlockSelected } from './isBlockSelected';
 import { getPath } from './getPath';
 import { getSelectedPaths } from './getSelectedPaths';
-import { isEmptyPath } from './isEmptyPath';
+import { isPathEmpty } from './isPathEmpty';
+import { setPath } from './setPath';
 
 export const Paths = {
   getPath,
@@ -11,7 +12,8 @@ export const Paths = {
   getPreviousPath,
   isBlockSelected,
   getSelectedPaths,
-  isEmptyPath,
+  isPathEmpty,
+  setPath,
 };
 
 export type Paths = typeof Paths;

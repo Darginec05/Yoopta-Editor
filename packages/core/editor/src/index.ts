@@ -32,7 +32,7 @@ export {
   YooptaBlock,
   YooptaContentValue,
   SlateEditor,
-  YooptaBlockPath,
+  YooptaPath,
 } from './editor/types';
 export { buildBlockData, buildBlockElement } from './components/Editor/utils';
 export { buildBlockElementsStructure } from './utils/blockElements';

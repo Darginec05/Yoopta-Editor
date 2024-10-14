@@ -4,7 +4,7 @@ import { YooptaOperation } from '../core/applyTransforms';
 import { BlockDepthOptions } from './increaseBlockDepth';
 
 export function decreaseBlockDepth(editor: YooEditor, options: BlockDepthOptions = {}) {
-  const { at = editor.selection, blockId } = options;
+  const { at = editor.path.current, blockId } = options;
 
   const block = blockId ? editor.children[blockId] : findPluginBlockBySelectionPath(editor, { at });
   if (!block) return;

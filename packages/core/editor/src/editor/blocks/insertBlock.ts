@@ -1,10 +1,10 @@
 import { buildBlockElementsStructure } from '../../utils/blockElements';
 import { generateId } from '../../utils/generateId';
-import { YooEditor, YooptaBlockData, YooptaBlockPath } from '../types';
+import { YooEditor, YooptaBlockData, YooptaPathIndex } from '../types';
 import { YooptaOperation } from '../core/applyTransforms';
 
 export type InsertBlockOptions = {
-  at?: YooptaBlockPath | null;
+  at?: YooptaPathIndex;
   focus?: boolean;
   blockData?: Omit<Partial<YooptaBlockData>, 'type'>;
 };
@@ -12,7 +12,7 @@ export type InsertBlockOptions = {
 // [TEST]
 // [TEST] TEST EVENTS
 export function insertBlock(editor: YooEditor, type: string, options: InsertBlockOptions = {}) {
-  const { at = editor.selection, focus = false, blockData } = options;
+  const { at = editor.path.current, focus = false, blockData } = options;
 
   const plugin = editor.plugins[type];
   const { onBeforeCreate, onCreate } = plugin.events || {};
@@ -28,7 +28,7 @@ export function insertBlock(editor: YooEditor, type: string, options: InsertBloc
     meta: {
       align: blockData?.meta?.align || 'left',
       depth: blockData?.meta?.depth || 0,
-      order: at && typeof at?.[0] === 'number' ? at[0] : Object.keys(editor.children).length,
+      order: at && typeof at === 'number' ? at : Object.keys(editor.children).length,
     },
   };
 
@@ -36,7 +36,7 @@ export function insertBlock(editor: YooEditor, type: string, options: InsertBloc
 
   operations.push({
     type: 'insert_block',
-    path: [newBlock.meta.order],
+    path: { current: newBlock.meta.order },
     block: newBlock,
   });
 

@@ -9,7 +9,7 @@ import { HOTKEYS } from '../../utils/hotkeys';
 import { Editor as SlateEditor, Element, Path, Range, Transforms } from 'slate';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { ReactEditor } from 'slate-react';
-import { YooptaBlockPath, YooptaContentValue } from '../../editor/types';
+import { YooptaContentValue } from '../../editor/types';
 import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
 import { Blocks } from '../../editor/blocks';
@@ -61,19 +61,6 @@ const Editor = ({
   const selectionBox = useRectangeSelectionBox({ editor, root: selectionBoxRoot });
   const multiSelection = useMultiSelection({ editor });
 
-  // useEffect(() => {
-  //   console.log(
-  //     'orders',
-  //     Object.keys(editor.children)
-  //       .map((k) => editor.children[k].meta.order)
-  //       .sort((a, b) => a - b),
-  //   );
-  //   setTimeout(() => {
-  //     console.log('document.activeElement', document.activeElement);
-  //     console.log('editor.selection', editor.selection);
-  //   }, 100);
-  // }, [editor.selection]);
-
   let state = useRef<State>(DEFAULT_STATE).current;
 
   useEffect(() => {
@@ -86,7 +73,7 @@ const Editor = ({
 
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [editor.selection, isReadOnly]);
+  }, [editor.path, isReadOnly]);
 
   const handleEmptyZoneClick = (e: React.MouseEvent) => {
     const editorEl = editor.refElement;
@@ -99,8 +86,8 @@ const Editor = ({
 
     if (e.clientY >= paddingBottomAreaTop) {
       const lastPath = Object.keys(editor.children).length - 1;
-      const lastBlock = findPluginBlockBySelectionPath(editor, { at: [lastPath] });
-      const lastSlate = findSlateBySelectionPath(editor, { at: [lastPath] });
+      const lastBlock = findPluginBlockBySelectionPath(editor, { at: lastPath });
+      const lastSlate = findSlateBySelectionPath(editor, { at: lastPath });
 
       if (lastBlock && lastSlate && lastSlate.selection) {
         const string = SlateEditor.string(lastSlate, lastSlate.selection.anchor.path);
@@ -119,7 +106,7 @@ const Editor = ({
       }
 
       const nextPath = lastPath + 1;
-      editor.insertBlock(defaultBlock.type, { at: [nextPath], focus: true });
+      editor.insertBlock(defaultBlock.type, { at: nextPath, focus: true });
     }
   };
 
@@ -143,10 +130,10 @@ const Editor = ({
 
     resetSelectionState();
 
-    const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+    const selectedBlocks = Paths.getSelectedPaths(editor);
     if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
       // editor.setBlockSelected(null);
-      editor.setSelection([null]);
+      editor.setPath({ current: null });
     }
   };
 
@@ -166,7 +153,7 @@ const Editor = ({
     }
 
     if (HOTKEYS.isSelect(event)) {
-      const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+      const selectedBlocks = Paths.getSelectedPaths(editor);
       const isAllBlocksSelected = selectedBlocks?.length === Object.keys(editor.children).length;
 
       if (isAllBlocksSelected) {
@@ -183,7 +170,7 @@ const Editor = ({
     }
 
     if (HOTKEYS.isCopy(event) || HOTKEYS.isCut(event)) {
-      const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+      const selectedBlocks = Paths.getSelectedPaths(editor);
       if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
         event.preventDefault();
 
@@ -205,23 +192,23 @@ const Editor = ({
         if (HOTKEYS.isCut(event)) {
           // [TEST]
           editor.batchOperations(() => {
-            const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+            const selectedBlocks = Paths.getSelectedPaths(editor);
 
             if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
               const isAllBlocksSelected = selectedBlocks.length === Object.keys(editor.children).length;
 
               selectedBlocks.forEach((index) => {
-                const blockId = Blocks.getBlock(editor, { at: [index] })?.id;
+                const blockId = Blocks.getBlock(editor, { at: index })?.id;
                 if (blockId) editor.deleteBlock({ blockId });
               });
 
               // editor.setBlockSelected(null);
-              editor.setSelection([null]);
+              editor.setPath({ current: null, selected: null });
               resetSelectionState();
 
               if (isAllBlocksSelected) {
                 const defaultBlock = buildBlockData({ id: generateId() });
-                editor.insertBlock(defaultBlock.type, { at: [0], focus: true });
+                editor.insertBlock(defaultBlock.type, { at: 0, focus: true });
               }
             }
           });
@@ -232,7 +219,7 @@ const Editor = ({
 
     if (HOTKEYS.isBackspace(event)) {
       event.stopPropagation();
-      const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+      const selectedBlocks = Paths.getSelectedPaths(editor);
       const isAllBlocksSelected = selectedBlocks?.length === Object.keys(editor.children).length;
 
       if (isAllBlocksSelected) {
@@ -244,7 +231,7 @@ const Editor = ({
           allBlocks.forEach((blockId) => editor.deleteBlock({ blockId }));
 
           // editor.setBlockSelected(null);
-          editor.setSelection([null]);
+          editor.setPath({ current: null, selected: null });
           resetSelectionState();
         });
 
@@ -253,14 +240,14 @@ const Editor = ({
 
       // [TEST]
       editor.batchOperations(() => {
-        const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+        const selectedBlocks = Paths.getSelectedPaths(editor);
 
         if (Array.isArray(selectedBlocks) && selectedBlocks?.length > 0) {
           event.preventDefault();
-          selectedBlocks.forEach((index) => editor.deleteBlock({ at: [index] }));
+          selectedBlocks.forEach((index) => editor.deleteBlock({ at: index }));
 
           // editor.setBlockSelected(null);
-          editor.setSelection([null]);
+          editor.setPath({ current: null, selected: null });
           resetSelectionState();
         }
       });
@@ -280,24 +267,24 @@ const Editor = ({
         // jump to next index if started selection from this index
         if (currentIndex === state.startedIndexToSelect) {
           // editor.setBlockSelected([nextTopIndex]);
-          editor.setSelection([nextTopIndex]);
+          editor.setPath({ current: nextTopIndex });
           state.indexToSelect = nextTopIndex;
           return;
         }
 
         if (nextTopIndex < state.startedIndexToSelect) {
           // editor.setBlockSelected([nextTopIndex]);
-          editor.setSelection([nextTopIndex]);
+          editor.setPath({ current: nextTopIndex });
           state.indexToSelect = nextTopIndex;
           return;
         }
 
-        const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+        const selectedBlocks = Paths.getSelectedPaths(editor);
 
         if (selectedBlocks?.includes(currentIndex) && currentIndex !== state.startedIndexToSelect) {
           const filteredIndexes = selectedBlocks.filter((index) => index !== currentIndex);
           // editor.setBlockSelected(filteredIndexes, { only: true });
-          editor.setSelection([nextTopIndex, filteredIndexes]);
+          editor.setPath({ current: nextTopIndex, selected: filteredIndexes });
           state.indexToSelect = nextTopIndex;
           return;
         }
@@ -315,7 +302,7 @@ const Editor = ({
       const isStart = SlateEditor.isStart(slate, slate.selection.focus, parentPath);
 
       if (Range.isExpanded(slate.selection) && isStart) {
-        const prevPath = getPreviousPath(editor.selection);
+        const prevPath = getPreviousPath(editor);
         if (!prevPath) return;
 
         const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevPath });
@@ -327,7 +314,7 @@ const Editor = ({
           ReactEditor.deselect(slate);
           Transforms.deselect(slate);
 
-          editor.setSelection([null]);
+          editor.setPath({ current: null, selected: null });
           // editor.setBlockSelected([block?.meta.order, block.meta.order - 1]);
 
           state.startedIndexToSelect = block.meta.order;
@@ -347,23 +334,23 @@ const Editor = ({
         // jump to next index if started selection from this index
         if (currentIndex === state.startedIndexToSelect) {
           // editor.setBlockSelected([nextIndex]);
-          editor.setSelection([nextIndex]);
+          editor.setPath({ current: nextIndex });
           state.indexToSelect = nextIndex;
           return;
         }
 
         if (nextIndex > state.startedIndexToSelect) {
           // editor.setBlockSelected([nextIndex]);
-          editor.setSelection([nextIndex]);
+          editor.setPath({ current: nextIndex });
           state.indexToSelect = nextIndex;
           return;
         }
 
-        const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+        const selectedBlocks = Paths.getSelectedPaths(editor);
         if (selectedBlocks?.includes(currentIndex) && currentIndex !== state.startedIndexToSelect) {
           const filteredIndexes = selectedBlocks.filter((index) => index !== currentIndex);
           // editor.setBlockSelected(filteredIndexes, { only: true });
-          editor.setSelection([nextIndex, filteredIndexes]);
+          editor.setPath({ current: nextIndex, selected: filteredIndexes });
           state.indexToSelect = nextIndex;
           return;
         }
@@ -380,7 +367,7 @@ const Editor = ({
       const isEnd = SlateEditor.isEnd(slate, slate.selection.focus, parentPath);
 
       if (Range.isExpanded(slate.selection) && isEnd) {
-        const nextPath = Paths.getNextPath(editor.selection);
+        const nextPath = Paths.getNextPath(editor);
         const nextBlock = findPluginBlockBySelectionPath(editor, { at: nextPath });
 
         if (block && nextBlock) {
@@ -390,7 +377,7 @@ const Editor = ({
           ReactEditor.deselect(slate);
           Transforms.deselect(slate);
 
-          editor.setSelection([null]);
+          editor.setPath({ current: null, selected: null });
           // editor.setBlockSelected([block?.meta.order, block?.meta.order + 1]);
 
           state.startedIndexToSelect = block.meta.order;
@@ -401,13 +388,13 @@ const Editor = ({
     }
 
     if (HOTKEYS.isTab(event)) {
-      const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+      const selectedBlocks = Paths.getSelectedPaths(editor);
       if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
         event.preventDefault();
 
         editor.batchOperations(() => {
           selectedBlocks.forEach((index) => {
-            const block = Blocks.getBlock(editor, { at: [index] });
+            const block = Blocks.getBlock(editor, { at: index });
             editor.increaseBlockDepth({ blockId: block?.id });
           });
         });
@@ -416,13 +403,13 @@ const Editor = ({
     }
 
     if (HOTKEYS.isShiftTab(event)) {
-      const selectedBlocks = Paths.getSelectedPaths(editor.selection);
+      const selectedBlocks = Paths.getSelectedPaths(editor);
       if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
         event.preventDefault();
 
         editor.batchOperations(() => {
           selectedBlocks.forEach((index) => {
-            const block = Blocks.getBlock(editor, { at: [index] });
+            const block = Blocks.getBlock(editor, { at: index });
             editor.decreaseBlockDepth({ blockId: block?.id });
           });
         });
