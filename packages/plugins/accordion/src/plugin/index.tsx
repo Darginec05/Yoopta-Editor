@@ -7,8 +7,6 @@ import { AccordionItemContent } from '../renders/AccordionItemContent';
 import { Transforms } from 'slate';
 import { ListCollapse } from 'lucide-react';
 import { AccordionCommands } from '../commands';
-import DownIcon from '../icons/down.svg';
-import { renderToHtmlString } from '../utils';
 
 const ACCORDION_ELEMENTS = {
   AccordionList: 'accordion-list',
@@ -190,7 +188,7 @@ const Accordion = new YooptaPlugin<AccordionElementMap>({
                             <td style="padding: 1rem 2rem 1rem 0rem; font-weight: bold; position: relative;">
                               ${item.children.map((child) => child.text).join('')}
                               <span style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);">
-                                ${renderToHtmlString(<DownIcon style={{ width: '12px', height: '100%' }} />)}
+                                <svg viewBox="0 0 30 30" style="width: 12px; height: 100%;"><polygon points="15,17.4 4.8,7 2,9.8 15,23 28,9.8 25.2,7"></polygon></svg>
                               </span>
                             </td>
                           </tr>`;
