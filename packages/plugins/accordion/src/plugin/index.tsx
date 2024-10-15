@@ -7,6 +7,8 @@ import { AccordionItemContent } from '../renders/AccordionItemContent';
 import { Transforms } from 'slate';
 import { ListCollapse } from 'lucide-react';
 import { AccordionCommands } from '../commands';
+import DownIcon from '../icons/down.svg';
+import { renderToHtmlString } from '../utils';
 
 const ACCORDION_ELEMENTS = {
   AccordionList: 'accordion-list',
@@ -169,6 +171,42 @@ const Accordion = new YooptaPlugin<AccordionElementMap>({
               .join('')}</details>`;
           })
           .join('')}</div>`;
+      },
+    },
+    email: {
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+
+        return `
+          <table data-meta-align="${align}" data-meta-depth="${depth}" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-left: ${depth}px;">
+            <tbody>
+              ${element.children
+                .map((listItem) =>
+                  listItem.children
+                    .map((item) => {
+                      if (item.type === 'accordion-list-item-heading') {
+                        return `
+                          <tr>
+                            <td style="padding: 1rem 2rem 1rem 0rem; font-weight: bold; position: relative;">
+                              ${item.children.map((child) => child.text).join('')}
+                              <span style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);">
+                                ${renderToHtmlString(<DownIcon style={{ width: '12px', height: '100%' }} />)}
+                              </span>
+                            </td>
+                          </tr>`;
+                      }
+                      return `
+                        <tr>
+                          <td style="padding-bottom: 1rem; border-bottom: 1px solid #EFEFEE;">
+                            ${item.children.map((child) => child.text).join('')}
+                          </td>
+                        </tr>`;
+                    })
+                    .join(''),
+                )
+                .join('')}
+            </tbody>
+          </table>`;
       },
     },
   },
