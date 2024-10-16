@@ -27,8 +27,8 @@ const YooptaEditor = ({
   id,
   editor,
   value,
-  marks,
-  plugins,
+  marks: marksProps,
+  plugins: pluginsProps,
   autoFocus,
   className,
   tools,
@@ -44,14 +44,14 @@ const YooptaEditor = ({
       id={id}
       editor={editor}
       value={value}
-      marks={marks}
-      plugins={plugins}
+      marks={marksProps}
+      plugins={pluginsProps}
       tools={tools}
       readOnly={readOnly}
     >
       <Editor
         placeholder={placeholder}
-        marks={marks}
+        marks={marksProps}
         autoFocus={autoFocus}
         className={className}
         selectionBoxRoot={selectionBoxRoot}
