@@ -28,7 +28,10 @@ const CarouselBlockOptions = ({ editor, block, props }: Props) => {
   };
 
   return (
-    <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])} className="yoopta-carousel-options">
+    <ExtendedBlockActions
+      onClick={() => editor.setPath({ current: block.meta.order })}
+      className="yoopta-carousel-options"
+    >
       <BlockOptionsSeparator />
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>

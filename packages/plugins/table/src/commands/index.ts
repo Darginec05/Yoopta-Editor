@@ -1,4 +1,4 @@
-import { Blocks, Elements, generateId, SlateElement, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, Elements, generateId, SlateElement, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import { Editor, Element, Path, Span, Transforms } from 'slate';
 import { InsertTableOptions, TableCellElement, TableElement, TableRowElement } from '../types';
 
@@ -17,7 +17,7 @@ type MoveTableOptions = {
 
 type InsertOptions = Partial<
   InsertTableOptions & {
-    at: YooptaBlockPath;
+    at: YooptaPathIndex;
   }
 >;
 

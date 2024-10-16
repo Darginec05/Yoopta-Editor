@@ -1,4 +1,4 @@
-import { Blocks, buildBlockData, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, buildBlockData, generateId, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import { ParagraphElement } from '../types';
 
 type ParagraphElementOptions = {
@@ -6,7 +6,7 @@ type ParagraphElementOptions = {
 };
 
 type ParagraphInsertOptions = ParagraphElementOptions & {
-  at?: YooptaBlockPath;
+  at?: YooptaPathIndex;
   focus?: boolean;
 };
 

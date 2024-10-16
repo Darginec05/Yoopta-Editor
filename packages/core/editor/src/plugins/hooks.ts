@@ -93,16 +93,7 @@ export const useSlateEditor = (
       normalizeNode(entry);
     };
 
-    if (withExtensions) {
-      slate = withExtensions(slate, editor, id);
-    }
-
     slate.apply = (op) => {
-      let save = YooHistory.isSaving(editor);
-      if (typeof save === 'undefined') {
-        save = shouldSave(op);
-      }
-
       if (Operation.isSelectionOperation(op)) {
         const selectedPaths = Paths.getSelectedPaths(editor);
         const path = Paths.getPath(editor);
@@ -110,6 +101,11 @@ export const useSlateEditor = (
         if (Array.isArray(selectedPaths) && slate.selection && Range.isExpanded(slate.selection)) {
           editor.setPath({ current: path });
         }
+      }
+
+      let save = YooHistory.isSaving(editor);
+      if (typeof save === 'undefined') {
+        save = shouldSave(op);
       }
 
       if (save) {
@@ -166,6 +162,11 @@ export const useSlateEditor = (
 
       apply(op);
     };
+
+    if (withExtensions) {
+      // console.log(block.type, withExtensions(slate, editor, id));
+      slate = withExtensions(slate, editor, id);
+    }
 
     return slate;
   }, []);

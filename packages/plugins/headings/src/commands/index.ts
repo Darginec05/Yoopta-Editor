@@ -1,8 +1,8 @@
-import { Blocks, buildBlockData, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, buildBlockData, generateId, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import { HeadingOneElement, HeadingThreeElement, HeadingTwoElement } from '../types';
 
 export type HeadingElementOptions = { text?: string };
-export type HeadingInsertOptions = HeadingElementOptions & { at: YooptaBlockPath; focus?: boolean };
+export type HeadingInsertOptions = HeadingElementOptions & { at: YooptaPathIndex; focus?: boolean };
 
 export type HeadingOneCommands = {
   buildHeadingOneElements: (editor: YooEditor, options?: Partial<HeadingElementOptions>) => HeadingOneElement;

@@ -42,7 +42,6 @@ export function mergeBlock(editor: YooEditor, options: MergeBlockOptions = {}) {
   const prevSlateText = Editor.string(slateToMerged, [0, 0]);
   // If previous block values is empty just delete block without merging
   if (prevSlateText.length === 0) {
-    console.log('FiRED mergeBlock');
     return editor.deleteBlock({
       at: prevBlockPath,
       focus: true,

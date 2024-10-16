@@ -18,7 +18,7 @@ export function useMultiSelection({ editor }: MultiSelectionOptions) {
   const blurSlateSelection = (blockPath?: YooptaPath['current']) => {
     const path = blockPath || editor.path.current;
 
-    if (path) {
+    if (typeof path === 'number') {
       const slate = Blocks.getSlate(editor, { at: path });
       if (!slate) return;
 

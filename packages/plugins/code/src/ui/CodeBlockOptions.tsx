@@ -47,7 +47,7 @@ export const CodeBlockOptions = ({ block, editor, element }: Props) => {
   };
 
   return (
-    <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])} className="yoopta-code-options">
+    <ExtendedBlockActions onClick={() => editor.setPath({ current: block.meta.order })} className="yoopta-code-options">
       <BlockOptionsSeparator />
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>

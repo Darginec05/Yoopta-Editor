@@ -1,4 +1,4 @@
-import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import { EmbedElement, EmbedElementProps, EmbedProvider, EmbedSizes } from '../types';
 import { getProvider, ProviderGetters } from '../utils/providers';
 
@@ -12,7 +12,7 @@ type EmbedElementOptions = {
 };
 
 type InsertEmbedOptions = EmbedElementOptions & {
-  at?: YooptaBlockPath;
+  at?: YooptaPathIndex;
   focus?: boolean;
 };
 

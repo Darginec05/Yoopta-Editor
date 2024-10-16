@@ -1,4 +1,4 @@
-import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import { VideoElement, VideoElementProps } from '../types';
 
 type VideoElementOptions = {
@@ -6,7 +6,7 @@ type VideoElementOptions = {
 };
 
 type InsertVideoOptions = VideoElementOptions & {
-  at?: YooptaBlockPath;
+  at?: YooptaPathIndex;
   focus?: boolean;
 };
 

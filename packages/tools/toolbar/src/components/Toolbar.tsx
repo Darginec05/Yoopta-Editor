@@ -65,7 +65,7 @@ const Toolbar = ({ render }: ToolbarToolProps) => {
   useEffect(() => {
     window.document.addEventListener('selectionchange', onSelectionChange);
     return () => window.document.removeEventListener('selectionchange', onSelectionChange);
-  }, [editor.selection, hold, editor.children]);
+  }, [editor.path, hold, editor.children]);
 
   if (!isMounted) return null;
 
