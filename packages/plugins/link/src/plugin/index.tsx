@@ -64,8 +64,8 @@ const Link = new YooptaPlugin<LinkElementMap>({
       serialize: (element, text) => {
         const { url, target, rel, title } = element.props;
         return `
-          <table>
-            <tbody>
+          <table style="width:100%;">
+            <tbody style="width:100%;">
               <tr>
                 <td>
                   <a href="${url}" target="${target}" rel="${rel}">${serializeTextNodes(element.children)}</a>

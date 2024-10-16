@@ -57,8 +57,8 @@ const Divider = new YooptaPlugin<DividerElementMap>({
       serialize: (element, text, blockMeta) => {
         const { theme = 'solid', color = '#EFEFEE' } = element.props || {};
         return `
-        <table>
-          <tbody>
+        <table style="width: 100%;">
+          <tbody style="width: 100%;">
             <tr>
               <td>
                 <hr data-meta-theme="${theme}" data-meta-color="${color}" style="background-color: #8383e0; height: 1.2px" />

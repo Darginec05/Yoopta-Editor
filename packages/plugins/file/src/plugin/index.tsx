@@ -89,8 +89,8 @@ const File = new YooptaPlugin<FileElementMap, FilePluginOptions>({
         const justify = ALIGNS_TO_JUSTIFY[align] || 'left';
 
         return `
-          <table>
-            <tbody>
+          <table style="width:100%;">
+            <tbody style="width:100%;">
               <tr>
                 <td>
                   <div style="margin-left: ${depth}px; display: flex; width: 100%; justify-content: ${justify}"><a data-meta-align="${align}" data-meta-depth="${depth}" href="${

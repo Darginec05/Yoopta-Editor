@@ -89,8 +89,8 @@ const NumberedList = new YooptaPlugin<Pick<ListElementMap, 'numbered-list'>>({
         const { align = 'left', depth = 0 } = blockMeta || {};
 
         return `
-          <table>
-            <tbody>
+          <table style="width:100%;">
+            <tbody style="width:100%;">
               <tr>
                 <td>
                   <ol data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}"><li>${serializeTextNodes(
