@@ -71,21 +71,22 @@ const Callout = new YooptaPlugin<CalloutElementMap>({
         const theme: CSSProperties = CALLOUT_THEME_STYLES[element.props?.theme || 'default'];
         const { align = 'left', depth = 0 } = blockMeta || {};
 
-        return `<table>
-        <tbody>
-          <tr>
-            <td>
-              <div data-theme="${
-                element.props?.theme || 'default'
-              }" data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}; padding: .5rem .5rem .5rem 1rem; margin-top: .5rem; border-radius: .375rem; color: ${
+        return `
+        <table style="width: 100%;">
+          <tbody style="width: 100%;">
+            <tr>
+              <td>
+                <div data-theme="${
+                  element.props?.theme || 'default'
+                }" data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}; padding: .5rem .5rem .5rem 1rem; margin-top: .5rem; border-radius: .375rem; color: ${
           theme.color
         }; border-left: ${theme.borderLeft || 0}; background-color: ${theme.backgroundColor}">${serializeTextNodes(
           element.children,
         )}
-            </div>
-          </td>
-          </tr>
-      </tbody>
+              </div>
+            </td>
+            </tr>
+        </tbody>
       </table>`;
       },
     },

@@ -62,8 +62,8 @@ const HeadingOne = new YooptaPlugin<Record<'heading-one', HeadingOneElement>>({
       serialize: (element, text, blockMeta) => {
         const { depth = 0, align = 'left' } = blockMeta || {};
 
-        return `<table>
-        <tbody>
+        return `<table style="width:100%;">
+        <tbody style="width:100%;">
           <tr>
             <td>
               <h1 data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}">

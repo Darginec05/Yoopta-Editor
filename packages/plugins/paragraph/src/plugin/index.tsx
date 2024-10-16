@@ -39,7 +39,7 @@ const Paragraph = new YooptaPlugin<ParagraphElementMap>({
       serialize: (element, text, blockMeta) => {
         const { align = 'left', depth = 0 } = blockMeta || {};
 
-        return `<table>
+        return `<table style="width: 100%">
         <tbody>
           <tr>
             <td>

@@ -85,8 +85,8 @@ const Image = new YooptaPlugin<ImageElementMap, ImagePluginOptions>({
         const justify = ALIGNS_TO_JUSTIFY[align] || 'center';
 
         return `
-          <table>
-            <tbody>
+          <table style="width:100%;">
+            <tbody style="width:100%;">
               <tr>
                 <td>
                   <div style="margin-left: ${depth}px; display: flex; width: 100%; justify-content: "${justify}"">

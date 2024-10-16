@@ -74,7 +74,7 @@ export function getEmail(editor: YooEditor, content: YooptaContentValue): string
           </style>
         </head>
 
-        <body style="margin:0;padding: 0;" id="yoopta-clipboard" data-editor-id="${editor.id}">
+        <body style="margin:0;padding: 10px 20px;" id="yoopta-clipboard" data-editor-id="${editor.id}">
           ${email.join('')}
         </body>
       </html>

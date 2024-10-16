@@ -1,4 +1,4 @@
-import { Blocks, Elements, YooptaPlugin, buildBlockElementsStructure } from '@yoopta/editor';
+import { Blocks, Elements, YooptaPlugin, buildBlockElementsStructure, serializeTextNodes } from '@yoopta/editor';
 import { AccordionElementMap } from '../types';
 import { AccordionList } from '../renders/AccordionList';
 import { AccordionListItem } from '../renders/AccordionListItem';
@@ -162,9 +162,9 @@ const Accordion = new YooptaPlugin<AccordionElementMap>({
             return `<details data-meta-align="${align}" data-meta-depth="${depth}">${listItem.children
               .map((item) => {
                 if (item.type === 'accordion-list-item-heading') {
-                  return `<summary>${item.children.map((item) => item.text).join('')}</summary>`;
+                  return `<summary>${serializeTextNodes(item.children)}</summary>`;
                 }
-                return `<p>${item.children.map((item) => item.text).join('')}</p>`;
+                return `<p>${serializeTextNodes(item.children)}</p>`;
               })
               .join('')}</details>`;
           })
@@ -186,7 +186,7 @@ const Accordion = new YooptaPlugin<AccordionElementMap>({
                         return `
                           <tr>
                             <td style="padding: 1rem 2rem 1rem 0rem; font-weight: bold; position: relative;">
-                              ${item.children.map((child) => child.text).join('')}
+                              ${serializeTextNodes(item.children)}
                               <span style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);">
                                 <svg viewBox="0 0 30 30" style="width: 12px; height: 100%;"><polygon points="15,17.4 4.8,7 2,9.8 15,23 28,9.8 25.2,7"></polygon></svg>
                               </span>
@@ -196,7 +196,7 @@ const Accordion = new YooptaPlugin<AccordionElementMap>({
                       return `
                         <tr>
                           <td style="padding-bottom: 1rem; border-bottom: 1px solid #EFEFEE;">
-                            ${item.children.map((child) => child.text).join('')}
+                            ${serializeTextNodes(item.children)}
                           </td>
                         </tr>`;
                     })
