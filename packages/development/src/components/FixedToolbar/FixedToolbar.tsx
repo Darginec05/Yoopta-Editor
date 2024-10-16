@@ -13,8 +13,7 @@ import { HeadingOne, HeadingOneCommands, HeadingThree, HeadingTwo } from '@yoopt
 import Code from '@yoopta/code';
 import Table, { TableCommands } from '@yoopta/table';
 import Divider, { DividerCommands } from '@yoopta/divider';
-import { Blocks, Elements, YooEditor, Paths, YooptaBlockPath } from '@yoopta/editor';
-import { YooptaPathIndex } from '@yoopta/editor/dist/editor/types';
+import { Blocks, Elements, YooEditor, Paths, YooptaPathIndex } from '@yoopta/editor';
 
 type Props = {
   editor: YooEditor;
@@ -37,7 +36,7 @@ export const FixedToolbar = ({ editor }: Props) => {
             });
 
             const block = Blocks.buildBlockData({ value: [imageElements], type: 'Image' });
-            editor.insertBlock('Image', { blockData: block, at: [1], focus: true });
+            editor.insertBlock('Image', { blockData: block, at: 1, focus: true });
           }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
@@ -46,7 +45,7 @@ export const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            const at: YooptaBlockPath = Paths.isPathEmpty(editor.selection) ? [2] : editor.selection;
+            const at: YooptaPathIndex = typeof editor.path.current ? editor.path.current : 2;
             console.log('toggleBlock at', at);
             editor.toggleBlock('Blockquote', { at: at, focus: true });
           }}
@@ -64,14 +63,14 @@ export const FixedToolbar = ({ editor }: Props) => {
               });
 
               CalloutCommands.insertCallout(editor, {
-                at: [1],
+                at: 1,
                 focus: true,
                 props: { theme: 'error' },
                 text: 'Callout',
               });
 
               TodoListCommands.insertTodoList(editor, {
-                at: [1],
+                at: 1,
                 focus: true,
                 props: { checked: true },
                 text: 'Todo list',
@@ -79,7 +78,7 @@ export const FixedToolbar = ({ editor }: Props) => {
             });
 
             // editor.insertBlock('Callout', {
-            //   at: [1],
+            //   at: 1,
             //   focus: true,
             //   blockData: { value: [calloutElement] },
             // });
@@ -102,7 +101,7 @@ export const FixedToolbar = ({ editor }: Props) => {
           type="button"
           onClick={() => {
             EmbedCommands.insertEmbed(editor, {
-              at: [1],
+              at: 1,
             });
           }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
@@ -112,7 +111,7 @@ export const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            TableCommands.insertTable(editor, { rows: 3, columns: 3, headerRow: true, at: [1] });
+            TableCommands.insertTable(editor, { rows: 3, columns: 3, headerRow: true, at: 1 });
           }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
@@ -121,7 +120,7 @@ export const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            TableCommands.insertTable(editor, { rows: 6, columns: 4, at: [0] });
+            TableCommands.insertTable(editor, { rows: 6, columns: 4, at: 0 });
           }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
@@ -144,9 +143,9 @@ export const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            ParagraphCommands.insertParagraph(editor, { at: [0], focus: true });
-            const block = Blocks.getBlock(editor, { at: [0] });
-            const slate = Blocks.getSlate(editor, { at: [0] });
+            ParagraphCommands.insertParagraph(editor, { at: 0, focus: true });
+            const block = Blocks.getBlock(editor, { at: 0 });
+            const slate = Blocks.getSlate(editor, { at: 0 });
 
             if (!slate || !block) return;
 
@@ -165,7 +164,7 @@ export const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            AccordionCommands.insertAccordion(editor, { at: [1], items: 4 });
+            AccordionCommands.insertAccordion(editor, { at: 1, items: 4 });
           }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
@@ -174,7 +173,7 @@ export const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            HeadingOneCommands.insertHeadingOne(editor, { at: [1], text: 'Heading with text', focus: true });
+            HeadingOneCommands.insertHeadingOne(editor, { at: 1, text: 'Heading with text', focus: true });
           }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
@@ -183,7 +182,7 @@ export const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            editor.commands.insertBlockquote({ at: [1], text: 'Blockquote with text', focus: true });
+            editor.commands.insertBlockquote({ at: 1, text: 'Blockquote with text', focus: true });
           }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >

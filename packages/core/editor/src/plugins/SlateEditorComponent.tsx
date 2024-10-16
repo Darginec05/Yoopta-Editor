@@ -83,7 +83,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
       let { children, leaf, attributes } = props;
       const { text, ...formats } = leaf;
 
-      const isBlockSelected = Paths.isBlockSelected(editor, block);
+      const isCurrentPath = editor.path.current === block.meta.order;
 
       if (formats) {
         Object.keys(formats).forEach((format) => {
@@ -93,7 +93,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
       }
 
       const isParentElementVoid = props.children?.props?.parent?.props?.nodeType === 'void';
-      const showPlaceholder = !isParentElementVoid && isBlockSelected && leaf.withPlaceholder;
+      const showPlaceholder = !isParentElementVoid && isCurrentPath && leaf.withPlaceholder;
 
       return (
         <TextLeaf attributes={attributes} placeholder={showPlaceholder ? placeholder : undefined}>

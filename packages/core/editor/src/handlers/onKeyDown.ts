@@ -60,6 +60,9 @@ export function onKeyDown(editor: YooEditor) {
       const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
       const isEnd = Editor.isEnd(slate, slate.selection.anchor, parentPath);
 
+      console.log('isStart', isStart);
+      console.log('isEnd', isEnd);
+
       if (!isStart && !isEnd) {
         editor.splitBlock({ slate, focus: true });
         return;
@@ -150,6 +153,7 @@ export function onKeyDown(editor: YooEditor) {
         Transforms.deselect(slate);
 
         const allBlockPaths = Array.from({ length: Object.keys(editor.children).length }, (_, i) => i);
+        console.log('allBlockPaths', allBlockPaths);
         editor.setPath({ current: null, selected: allBlockPaths });
         // editor.setBlockSelected([], { allSelected: true });
         return;

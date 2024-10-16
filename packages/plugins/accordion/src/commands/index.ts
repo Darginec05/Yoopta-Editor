@@ -1,4 +1,4 @@
-import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, buildBlockData, generateId, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import {
   AccordionListElement,
   AccordionItemElement,
@@ -13,7 +13,7 @@ type AccordionElementOptions = {
 };
 
 type InsertAccordionOptions = AccordionElementOptions & {
-  at?: YooptaBlockPath;
+  at?: YooptaPathIndex;
   focus?: boolean;
 };
 

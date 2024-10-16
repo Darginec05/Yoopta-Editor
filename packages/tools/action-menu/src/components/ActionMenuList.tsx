@@ -47,7 +47,7 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
     placement: 'bottom-start',
     open: isMenuOpen,
     onOpenChange: setIsMenuOpen,
-    middleware: [inline(), flip(), shift(), offset(10)],
+    middleware: [flip(), shift(), offset(10)],
     whileElementsMounted: autoUpdate,
   });
 
@@ -78,7 +78,7 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
     updateActionMenuPosition();
 
     const handleActionMenuKeyUp = (event: KeyboardEvent) => {
-      const slate = findSlateBySelectionPath(editor, { at: editor.selection });
+      const slate = findSlateBySelectionPath(editor, { at: editor.path.current });
       const isInsideEditor = editor.refElement?.contains(event.target as Node);
 
       if (!slate || !slate.selection || !isInsideEditor) return;
@@ -91,7 +91,7 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
     };
 
     const handleActionMenuKeyDown = (event: KeyboardEvent) => {
-      const slate = findSlateBySelectionPath(editor, { at: editor.selection });
+      const slate = findSlateBySelectionPath(editor, { at: editor.path.current });
       const slateEditorRef = event.currentTarget as HTMLElement;
 
       const isInsideEditor = slateEditorRef?.contains(event.target as Node);
@@ -231,8 +231,8 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
       document.addEventListener('click', onClose);
     }
 
-    if (editor.selection) {
-      const block = findPluginBlockBySelectionPath(editor, { at: editor.selection });
+    if (typeof editor.path.current === 'number') {
+      const block = findPluginBlockBySelectionPath(editor, { at: editor.path.current });
       if (!block) return;
 
       const slateEditorRef = editor.refElement?.querySelector(
@@ -249,7 +249,7 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
         document.removeEventListener('click', onClose);
       };
     }
-  }, [actions, isMenuOpen, editor.selection?.[0]]);
+  }, [actions, isMenuOpen, editor.path]);
 
   const empty = actions.length === 0;
 

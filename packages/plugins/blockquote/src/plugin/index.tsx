@@ -1,7 +1,8 @@
-import { serializeTextNodesIntoMarkdown, YooptaPlugin } from '@yoopta/editor';
+import { serializeTextNodesIntoMarkdown, SlateEditor, YooEditor, YooptaPlugin } from '@yoopta/editor';
 import { BlockquoteCommands } from '../commands';
 import { BlockquoteElement } from '../types';
 import { BlockquoteRender } from '../ui/Blockquote';
+import { Editor, Element, Transforms } from 'slate';
 
 const Blockquote = new YooptaPlugin<Record<'blockquote', BlockquoteElement>>({
   type: 'Blockquote',
@@ -34,6 +35,11 @@ const Blockquote = new YooptaPlugin<Record<'blockquote', BlockquoteElement>>({
       },
     },
   },
+  extensions: withBlockquote,
 });
+
+export function withBlockquote(slate: SlateEditor, editor: YooEditor) {
+  return slate;
+}
 
 export { Blockquote };

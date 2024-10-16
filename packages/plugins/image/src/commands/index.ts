@@ -1,4 +1,4 @@
-import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import { ImageElement, ImageElementProps } from '../types';
 
 type ImageElementOptions = {
@@ -6,7 +6,7 @@ type ImageElementOptions = {
 };
 
 type InsertImageOptions = ImageElementOptions & {
-  at?: YooptaBlockPath;
+  at?: YooptaPathIndex;
   focus?: boolean;
 };
 

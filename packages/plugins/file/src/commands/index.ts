@@ -1,4 +1,4 @@
-import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import { FileElement, FileElementProps } from '../types';
 
 type FileElementOptions = {
@@ -6,7 +6,7 @@ type FileElementOptions = {
 };
 
 type InsertFileOptions = FileElementOptions & {
-  at?: YooptaBlockPath;
+  at?: YooptaPathIndex;
   focus?: boolean;
 };
 

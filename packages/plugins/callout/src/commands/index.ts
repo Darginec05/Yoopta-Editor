@@ -1,4 +1,4 @@
-import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import { CalloutElement, CalloutElementProps, CalloutPluginElementKeys, CalloutTheme } from '../types';
 
 type CalloutElementOptions = {
@@ -7,7 +7,7 @@ type CalloutElementOptions = {
 };
 
 type InsertCalloutOptions = CalloutElementOptions & {
-  at?: YooptaBlockPath;
+  at?: YooptaPathIndex;
   focus?: boolean;
 };
 

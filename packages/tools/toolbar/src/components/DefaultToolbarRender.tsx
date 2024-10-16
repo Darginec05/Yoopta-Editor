@@ -156,12 +156,12 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
     document.addEventListener('keydown', onKeyDown);
 
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [editor.selection, editor.children, modals.link]);
+  }, [editor.path, editor.children, modals.link]);
 
   const onUpdateLink = (link: LinkValues) => {
-    if (!editor.selection) return;
+    if (typeof editor.path.current !== 'number') return;
 
-    const slate = Blocks.getSlate(editor, { at: editor.selection });
+    const slate = Blocks.getSlate(editor, { at: editor.path.current });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
@@ -189,8 +189,8 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
   };
 
   const onDeleteLink = () => {
-    if (!editor.selection) return;
-    const slate = Blocks.getSlate(editor, { at: editor.selection });
+    if (typeof editor.path.current !== 'number') return;
+    const slate = Blocks.getSlate(editor, { at: editor.path.current });
     if (!slate) return;
 
     editor.commands.deleteLink?.({ slate });
@@ -220,7 +220,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
     editor.formats[format].toggle();
   };
 
-  const blockData = findPluginBlockBySelectionPath(editor, { at: editor.selection });
+  const blockData = findPluginBlockBySelectionPath(editor, { at: editor.path.current });
 
   const onToggleAlign = () => {
     const aligns = ['left', 'center', 'right'];

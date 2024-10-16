@@ -26,7 +26,7 @@ function getSelectionPath(slate: SlateEditor, focusAt?: FocusAt): FocusAt {
   return { path: firstLeafPath, offset: 0 };
 }
 
-// [TODO] - update editor.selection after focus
+// [TODO] - update editor.path after focus
 export function focusBlock(editor: YooEditor, blockId: string, options: FocusBlockOptions = {}) {
   try {
     const { focusAt, waitExecution = true, waitExecutionMs = 0, shouldUpdateBlockSelection = true } = options;

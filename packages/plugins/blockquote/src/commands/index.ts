@@ -1,4 +1,4 @@
-import { Blocks, buildBlockData, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, buildBlockData, generateId, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import { BlockquoteElement } from '../types';
 
 type BlockquoteElementOptions = {
@@ -7,7 +7,7 @@ type BlockquoteElementOptions = {
 
 export type InsertBlockquoteOptions = {
   text?: string;
-  at?: YooptaBlockPath;
+  at?: YooptaPathIndex;
   focus?: boolean;
 };
 

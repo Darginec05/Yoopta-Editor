@@ -43,8 +43,8 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
   const onClick = () => {
     if (isReadOnly) return;
 
-    if (editor.selection?.[0] !== block.meta.order) {
-      editor.setSelection([block.meta.order]);
+    if (editor.path.current !== block.meta.order) {
+      editor.setPath({ current: block.meta.order });
     }
   };
 
@@ -52,9 +52,8 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
     const isShiftEnter = e.key === 'Enter' && e.shiftKey;
     if (isShiftEnter) {
       e.preventDefault();
-      const currentBlockPath = block.meta.order;
       const defaultBlock = buildBlockData();
-      editor.insertBlock(defaultBlock.type, { at: [currentBlockPath + 1], focus: true, blockData: defaultBlock });
+      editor.insertBlock(defaultBlock.type, { at: block.meta.order + 1, focus: true, blockData: defaultBlock });
       return;
     }
   };

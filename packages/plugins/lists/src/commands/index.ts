@@ -1,11 +1,11 @@
-import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import { BulletedListElement, TodoListElement, NumberedListElement, TodoListElementProps } from '../types';
 
 export type ListElementOptions = { text?: string };
-export type ListInsertOptions = ListElementOptions & { at: YooptaBlockPath; focus?: boolean };
+export type ListInsertOptions = ListElementOptions & { at: YooptaPathIndex; focus?: boolean };
 
 export type TodoListElementOptions = ListElementOptions & { props?: TodoListElementProps };
-export type TodoListInsertOptions = TodoListElementOptions & { at: YooptaBlockPath; focus?: boolean };
+export type TodoListInsertOptions = TodoListElementOptions & { at: YooptaPathIndex; focus?: boolean };
 
 // BulletedList
 export type BulletedListCommands = {
