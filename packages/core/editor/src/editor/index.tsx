@@ -25,6 +25,7 @@ import { batchOperations } from './core/batchOperations';
 import { mergeBlock } from './blocks/mergeBlock';
 import { UndoRedoOptions, YooptaHistory } from './core/history';
 import EventEmitter from 'eventemitter3';
+import { getEmail } from '../parsers/getEmail';
 
 const eventEmitter = new EventEmitter();
 
@@ -79,6 +80,7 @@ export function createYooptaEditor(): YooEditor {
     getHTML: (content: YooptaContentValue) => getHTML(editor, content),
     getMarkdown: (content: YooptaContentValue) => getMarkdown(editor, content),
     getPlainText: (content: YooptaContentValue) => getPlainText(editor, content),
+    getEmail: (content: YooptaContentValue) => getEmail(editor, content),
 
     refElement: null,
 

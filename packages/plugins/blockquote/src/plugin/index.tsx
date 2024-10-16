@@ -1,8 +1,7 @@
-import { serializeTextNodesIntoMarkdown, SlateEditor, YooEditor, YooptaPlugin } from '@yoopta/editor';
+import { serializeTextNodesIntoMarkdown, YooptaPlugin } from '@yoopta/editor';
 import { BlockquoteCommands } from '../commands';
 import { BlockquoteElement } from '../types';
 import { BlockquoteRender } from '../ui/Blockquote';
-import { Editor, Element, Transforms } from 'slate';
 
 const Blockquote = new YooptaPlugin<Record<'blockquote', BlockquoteElement>>({
   type: 'Blockquote',
@@ -26,7 +25,9 @@ const Blockquote = new YooptaPlugin<Record<'blockquote', BlockquoteElement>>({
       },
       serialize: (element, text, blockMeta) => {
         const { align = 'left', depth = 0 } = blockMeta || {};
-        return `<blockquote data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}; border-left: 3px solid; color: #292929; padding: 2px 14px; margin-top: 8px;">${text}</blockquote>`;
+        return `<blockquote data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}; border-left: 3px solid; color: #292929; padding: 2px 14px; margin-top: 8px;">${serializeTextNodes(
+          element.children,
+        )}</blockquote>`;
       },
     },
     markdown: {
@@ -34,12 +35,24 @@ const Blockquote = new YooptaPlugin<Record<'blockquote', BlockquoteElement>>({
         return `> ${serializeTextNodesIntoMarkdown(element.children)}`;
       },
     },
+    email: {
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+        return `
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <blockquote data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}; border-left: 3px solid; color: #292929; padding: 2px 14px; margin-top: 8px;">${serializeTextNodes(
+          element.children,
+        )}</blockquote>
+              </td>
+            </tr>
+          </tbody>
+        </table>`;
+      },
+    },
   },
-  extensions: withBlockquote,
 });
-
-export function withBlockquote(slate: SlateEditor, editor: YooEditor) {
-  return slate;
-}
 
 export { Blockquote };

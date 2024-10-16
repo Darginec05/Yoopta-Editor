@@ -136,6 +136,7 @@ export type YooEditor = {
   getHTML: (content: YooptaContentValue) => string;
   getMarkdown: (content: YooptaContentValue) => string;
   getPlainText: (content: YooptaContentValue) => string;
+  getEmail: (content: YooptaContentValue) => string;
 
   // history
   historyStack: Record<HistoryStackName, HistoryStack[]>;
