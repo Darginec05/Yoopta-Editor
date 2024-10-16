@@ -96,7 +96,7 @@ export type PluginParsers = {
   serialize?: PluginserializeParser;
 };
 
-export type PluginParserTypes = 'html' | 'markdown';
+export type PluginParserTypes = 'html' | 'markdown' | 'email';
 export type PluginParserValues = 'deserialize' | 'serialize';
 
 export type PluginserializeParser = (

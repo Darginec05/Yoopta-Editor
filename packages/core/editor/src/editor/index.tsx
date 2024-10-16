@@ -24,6 +24,7 @@ import { getMarkdown } from '../parsers/getMarkdown';
 import { getPlainText } from '../parsers/getPlainText';
 import { isEmpty } from './core/isEmpty';
 import { Plugin } from '../plugins/types';
+import { getEmail } from '../parsers/getEmail';
 
 export function createYooptaEditor(): YooEditor {
   const editor: YooEditor = {
@@ -70,6 +71,7 @@ export function createYooptaEditor(): YooEditor {
     getHTML: (content: YooptaContentValue) => getHTML(editor, content),
     getMarkdown: (content: YooptaContentValue) => getMarkdown(editor, content),
     getPlainText: (content: YooptaContentValue) => getPlainText(editor, content),
+    getEmail: (content: YooptaContentValue) => getEmail(editor, content),
 
     refElement: null,
   };
