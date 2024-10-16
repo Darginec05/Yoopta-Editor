@@ -8,6 +8,8 @@ export {
   useYooptaPluginOptions,
 } from './contexts/YooptaContext/YooptaContext';
 import { YooptaEditor } from './YooptaEditor';
+import { YooptaEditorProvider } from './YooptaEditorProvider';
+import { Editor } from './components/Editor/Editor';
 
 // [TODO] - should be in separated package @yoopta/common/ui or @yoopta/ui
 export { UI } from './UI';
@@ -51,4 +53,5 @@ export { Elements } from './editor/elements';
 export { Blocks } from './editor/blocks';
 
 import './styles.css';
+export { YooptaEditorProvider, Editor };
 export default YooptaEditor;
