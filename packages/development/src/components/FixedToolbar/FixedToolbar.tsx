@@ -140,6 +140,16 @@ export const FixedToolbar = ({ editor }: Props) => {
         >
           Update Callout theme
         </button>
+        <button
+          type="button"
+          onClick={() => {
+            const emailContent = editor.getEmail(editor.getEditorValue());
+            console.log(emailContent);
+          }}
+          className="p-2 text-xs shadow-md hover:bg-[#64748b] hover:text-[#fff]"
+        >
+          Get email content
+        </button>
       </div>
     </div>
   );

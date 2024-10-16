@@ -60,6 +60,22 @@ const Link = new YooptaPlugin<LinkElementMap>({
         },
       },
     },
+    email: {
+      serialize: (element, text) => {
+        const { url, target, rel, title } = element.props;
+        return `
+          <table style="width:100%;">
+            <tbody style="width:100%;">
+              <tr>
+                <td>
+                  <a href="${url}" target="${target}" rel="${rel}">${serializeTextNodes(element.children)}</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        `;
+      },
+    },
   },
 });
 
