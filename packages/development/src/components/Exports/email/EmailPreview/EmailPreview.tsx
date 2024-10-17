@@ -4,6 +4,7 @@ import { YOOPTA_PLUGINS } from '../../../../utils/yoopta/plugins';
 import { MARKS } from '../../../../utils/yoopta/marks';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';
 import { Separator } from '@/components/ui/separator';
@@ -78,6 +79,7 @@ const Editor = ({ editor, onChange, value }: EditorProps) => {
 const EmailPreview = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
   const [value, setValue] = useState<YooptaContentValue>(EMAIL_EDITOR_DEFAULT_VALUE);
+  const [recipientEmail, setRecipientEmail] = useState('');
 
   console.log('value', value);
 
@@ -97,6 +99,36 @@ const EmailPreview = () => {
   const onCopy = () => {
     copy(editor.getEmail(value));
     window.alert('Email content copied to clipboard');
+  };
+
+  const sendEmail = async () => {
+    if (!recipientEmail) {
+      console.warn('Please enter a recipient email address');
+      return;
+    }
+
+    const emailContent = editor.getEmail(value);
+
+    try {
+      const response = await fetch('/api/sendEmail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          to: recipientEmail,
+          html: emailContent,
+        }),
+      });
+
+      if (response.ok) {
+        console.log('Email sent successfully!');
+      } else {
+        console.warn('Failed to send email. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
   };
 
   return (
@@ -134,6 +166,15 @@ const EmailPreview = () => {
                         </div>
                         <div className="flex items-center space-x-2">
                           <Button onClick={onCopy}>Get email content</Button>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Input
+                            type="email"
+                            placeholder="Recipient Email"
+                            value={recipientEmail}
+                            onChange={(e) => setRecipientEmail(e.target.value)}
+                          />
+                          <Button onClick={sendEmail}>Send email</Button>
                         </div>
                       </div>
                     </TabsContent>
