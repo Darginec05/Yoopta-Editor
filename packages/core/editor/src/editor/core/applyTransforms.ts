@@ -90,12 +90,14 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
             for (const slateOp of slateOps) {
               slate.apply(slateOp);
             }
-          });
 
-          if (selectionBefore) {
-            Transforms.select(slate, selectionBefore);
-          }
-        } catch (error) {}
+            if (selectionBefore) {
+              Transforms.select(slate, selectionBefore);
+            }
+          });
+        } catch (error) {
+          console.error('Error applying slate operations', error);
+        }
       }
 
       break;

@@ -109,6 +109,8 @@ export const useSlateEditor = (
       }
 
       if (save) {
+        console.log('apply op', op);
+        console.log('slate.operations', slate.operations);
         const lastEditorBatch = editor.historyStack.undos[editor.historyStack.undos.length - 1];
         if (!lastEditorBatch || lastEditorBatch?.operations[0]?.type !== 'set_slate') {
           const setSlateOperation: SetSlateOperation = {
