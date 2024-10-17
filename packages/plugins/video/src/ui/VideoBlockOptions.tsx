@@ -15,6 +15,8 @@ import CheckmarkIcon from '../icons/checkmark.svg';
 import DownloadIcon from '../icons/download.svg';
 import { useState } from 'react';
 import { Loader } from './Loader';
+import { InputThumbnailUrl } from './InputThumbnailUrl';
+import { flip, inline, offset, shift, useFloating } from '@floating-ui/react';
 
 const ALIGN_ICONS = {
   left: TextAlignLeftIcon,
@@ -37,6 +39,38 @@ const DEFAULT_LOADER_STATE: Record<Loaders, boolean> = { poster: false, video: f
 const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
   const options = useYooptaPluginOptions<VideoPluginOptions>('Video');
   const [loaders, setLoaders] = useState<Record<Loaders, boolean>>(DEFAULT_LOADER_STATE);
+
+  const [isSetThumbnailOpen, setIsSetThumbnailOpen] = useState<boolean>(false);
+  const [thumbnailUrl, setThumbnailUrl] = useState<string>(videoProps?.thumbnailUrl || '');
+
+  const { refs, floatingStyles } = useFloating({
+    placement: 'left',
+    open: isSetThumbnailOpen,
+    onOpenChange: setIsSetThumbnailOpen,
+    middleware: [inline(), flip(), shift(), offset(10)],
+  });
+
+  const onSetThumbnailUrl = (text: string) => setThumbnailUrl(text);
+
+  const onSaveThumbnailUrl = () => {
+    if (!thumbnailUrl) return;
+    Elements.updateElement<VideoPluginElements, VideoElementProps>(editor, block.id, {
+      type: 'video',
+      props: { thumbnailUrl: thumbnailUrl },
+    });
+
+    setIsSetThumbnailOpen(false);
+  };
+
+  const onDeleteThumbnailUrl = () => {
+    setThumbnailUrl('');
+    Elements.updateElement<VideoPluginElements, VideoElementProps>(editor, block.id, {
+      type: 'video',
+      props: { thumbnailUrl: '' },
+    });
+
+    setIsSetThumbnailOpen(false);
+  };
 
   const onSetLoading = (type: Loaders, state: boolean) => setLoaders((prev) => ({ ...prev, [type]: state }));
 
@@ -239,6 +273,28 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
         </>
       )}
       <BlockOptionsMenuGroup>
+        {isSetThumbnailOpen && (
+          <InputThumbnailUrl
+            value={thumbnailUrl}
+            onChange={onSetThumbnailUrl}
+            floatingStyles={floatingStyles}
+            onClose={() => setIsSetThumbnailOpen(false)}
+            refs={refs}
+            onDelete={onDeleteThumbnailUrl}
+            onSave={onSaveThumbnailUrl}
+          />
+        )}
+        <BlockOptionsMenuItem>
+          <button
+            type="button"
+            className="yoopta-block-options-button"
+            ref={refs.setReference}
+            onClick={() => setIsSetThumbnailOpen(true)}
+          >
+            <ImageIcon width={16} height={16} className="yoo-image-w-4 yoo-image-h-4 yoo-image-mr-2" />
+            Thumbnail
+          </button>
+        </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
           <button
             type="button"
