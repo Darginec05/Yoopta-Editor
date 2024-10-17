@@ -19,7 +19,7 @@ export type DeleteBlockOptions =
 export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions) {
   const { focus, blockId, at } = options;
 
-  if (!blockId && !at) {
+  if (!blockId && typeof at !== 'number') {
     throw new Error('blockId or path should be provided');
   }
 

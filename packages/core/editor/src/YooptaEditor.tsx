@@ -118,12 +118,17 @@ const YooptaEditor = ({
 
     editor.undo = () => {
       const { undos } = editor.historyStack;
+      console.log(undos);
+
       if (undos.length > 0) {
         const batch = editor.historyStack.undos[editor.historyStack.undos.length - 1];
 
         YooHistory.withoutSaving(editor, () => {
+          // [TODO] - ask Christopher Nolan to help with this
           const inverseOps = batch.operations.flatMap((op) => inverseEditorOperation(editor, op)).reverse();
           editor.applyTransforms(inverseOps, { source: 'history' });
+          console.log('undo batch', batch);
+          editor.setPath(batch.path);
         });
 
         editor.historyStack.redos.push(batch);
@@ -133,12 +138,14 @@ const YooptaEditor = ({
 
     editor.redo = () => {
       const { redos } = editor.historyStack;
+      console.log(redos);
 
       if (redos.length > 0) {
         const batch = redos[redos.length - 1];
 
         YooHistory.withoutSaving(editor, () => {
           editor.applyTransforms(batch.operations, { source: 'history' });
+          editor.setPath(batch.path);
         });
 
         editor.historyStack.redos.pop();
