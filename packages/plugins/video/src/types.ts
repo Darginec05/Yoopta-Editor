@@ -28,6 +28,7 @@ export type VideoElementProps = {
   provider?: VideoProvider;
   fit?: 'contain' | 'cover' | 'fill' | null;
   poster?: string;
+  thumbnailUrl?: string;
 };
 
 export type VideoPluginElements = 'video';
