@@ -11,7 +11,7 @@ import { HOTKEYS } from '../utils/hotkeys';
 import { withInlines } from './extenstions/withInlines';
 import { PluginEventHandlerOptions, PluginEvents } from './types';
 import { SetSlateOperation, YooptaOperation } from '../editor/core/applyTransforms';
-import { YooHistory } from '../editor/core/history';
+import { YooptaHistory } from '../editor/core/history';
 
 export const useSlateEditor = (
   id: string,
@@ -103,14 +103,12 @@ export const useSlateEditor = (
         }
       }
 
-      let save = YooHistory.isSaving(editor);
+      let save = YooptaHistory.isSavingHistory(editor);
       if (typeof save === 'undefined') {
         save = shouldSave(op);
       }
 
       if (save) {
-        console.log('apply op', op);
-        console.log('slate.operations', slate.operations);
         const lastEditorBatch = editor.historyStack.undos[editor.historyStack.undos.length - 1];
         if (!lastEditorBatch || lastEditorBatch?.operations[0]?.type !== 'set_slate') {
           const setSlateOperation: SetSlateOperation = {

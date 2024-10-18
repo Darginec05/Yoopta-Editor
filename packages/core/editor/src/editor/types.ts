@@ -12,7 +12,8 @@ import { InsertBlockOptions } from './blocks/insertBlock';
 import { BlockDepthOptions } from './blocks/increaseBlockDepth';
 import { SplitBlockOptions } from './blocks/splitBlock';
 import { MergeBlockOptions } from './blocks/mergeBlock';
-import { HistoryStack, HistoryStackName } from './core/history';
+import { HistoryStack, HistoryStackName, YooptaHistory } from './core/history';
+import { WithoutFirstArg } from '../utils/types';
 
 export type YooptaBlockData<T = Descendant | SlateElement> = {
   id: string;
@@ -99,8 +100,6 @@ export type YooEditor = {
 
   applyTransforms: (operations: YooptaOperation[], options?: ApplyTransformsOptions) => void;
   batchOperations: (fn: () => void) => void;
-  redo: () => void;
-  undo: () => void;
   historyStack: Record<HistoryStackName, HistoryStack[]>;
 
   // events handlers
@@ -118,6 +117,13 @@ export type YooEditor = {
   getHTML: (content: YooptaContentValue) => string;
   getMarkdown: (content: YooptaContentValue) => string;
   getPlainText: (content: YooptaContentValue) => string;
+
+  isSavingHistory: WithoutFirstArg<typeof YooptaHistory.isSavingHistory>;
+  withoutSavingHistory: WithoutFirstArg<typeof YooptaHistory.withoutSavingHistory>;
+  isMergingHistory: WithoutFirstArg<typeof YooptaHistory.isMergingHistory>;
+  withoutMergingHistory: WithoutFirstArg<typeof YooptaHistory.withoutMergingHistory>;
+  redo: WithoutFirstArg<typeof YooptaHistory.redo>;
+  undo: WithoutFirstArg<typeof YooptaHistory.undo>;
 
   // ref to editor element
   refElement: HTMLElement | null;

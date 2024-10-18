@@ -22,7 +22,7 @@ import {
   UI,
   Elements,
   Blocks,
-  findPluginBlockBySelectionPath,
+  findPluginBlockByPath,
   YooptaBlockData,
 } from '@yoopta/editor';
 import { Editor, Element, NodeEntry, Range, Transforms } from 'slate';
@@ -220,7 +220,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
     editor.formats[format].toggle();
   };
 
-  const blockData = findPluginBlockBySelectionPath(editor, { at: editor.path.current });
+  const blockData = findPluginBlockByPath(editor, { at: editor.path.current });
 
   const onToggleAlign = () => {
     const aligns = ['left', 'center', 'right'];

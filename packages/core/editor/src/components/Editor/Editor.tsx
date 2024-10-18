@@ -1,8 +1,8 @@
-import { ClipboardEvent, CSSProperties, ReactNode, useEffect, useLayoutEffect, useRef } from 'react';
+import { ClipboardEvent, CSSProperties, ReactNode, useEffect } from 'react';
 import { useYooptaEditor, useYooptaReadOnly } from '../../contexts/YooptaContext/YooptaContext';
 import { RenderBlocks } from './RenderBlocks';
 import { YooptaMark } from '../../marks';
-import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
+import { findPluginBlockByPath } from '../../utils/findPluginBlockByPath';
 import { buildBlockData } from './utils';
 import { generateId } from '../../utils/generateId';
 import { HOTKEYS } from '../../utils/hotkeys';
@@ -14,7 +14,6 @@ import { useRectangeSelectionBox } from '../SelectionBox/hooks';
 import { SelectionBox } from '../SelectionBox/SelectionBox';
 import { Blocks } from '../../editor/blocks';
 import { useMultiSelection } from './selection';
-import { getPreviousPath } from '../../editor/paths/getPreviousPath';
 import { Paths } from '../../editor/paths';
 
 type Props = {
@@ -34,18 +33,6 @@ const getEditorStyles = (styles: CSSProperties) => ({
   paddingBottom: typeof styles.paddingBottom === 'number' ? styles.paddingBottom : 100,
 });
 
-type State = {
-  selectionStarted: boolean;
-  indexToSelect: null | number;
-  startedIndexToSelect: null | number;
-};
-
-const DEFAULT_STATE: State = {
-  selectionStarted: false,
-  indexToSelect: null,
-  startedIndexToSelect: null,
-};
-
 const Editor = ({
   placeholder,
   marks,
@@ -60,8 +47,6 @@ const Editor = ({
   const isReadOnly = useYooptaReadOnly();
   const selectionBox = useRectangeSelectionBox({ editor, root: selectionBoxRoot });
   const multiSelection = useMultiSelection({ editor });
-
-  let state = useRef<State>(DEFAULT_STATE).current;
 
   useEffect(() => {
     if (!autoFocus || isReadOnly) return;
@@ -86,7 +71,7 @@ const Editor = ({
 
     if (e.clientY >= paddingBottomAreaTop) {
       const lastPath = Object.keys(editor.children).length - 1;
-      const lastBlock = findPluginBlockBySelectionPath(editor, { at: lastPath });
+      const lastBlock = findPluginBlockByPath(editor, { at: lastPath });
       const lastSlate = findSlateBySelectionPath(editor, { at: lastPath });
 
       if (lastBlock && lastSlate && lastSlate.selection) {
@@ -111,9 +96,9 @@ const Editor = ({
   };
 
   const resetSelectionState = () => {
-    state.indexToSelect = null;
-    state.startedIndexToSelect = null;
-    state.selectionStarted = false;
+    multiSelection.selectionState.indexToSelect = null;
+    multiSelection.selectionState.startedIndexToSelect = null;
+    multiSelection.selectionState.selectionStarted = false;
   };
 
   const onMouseDown = (event: React.MouseEvent) => {
@@ -132,8 +117,7 @@ const Editor = ({
 
     const selectedBlocks = Paths.getSelectedPaths(editor);
     if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
-      // editor.setBlockSelected(null);
-      editor.setPath({ current: null });
+      editor.setPath({ current: null, selected: null });
     }
   };
 
@@ -161,10 +145,10 @@ const Editor = ({
         return;
       }
 
-      if (state.selectionStarted) {
+      if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
+        event.preventDefault();
         const allBlockIndexes = Object.keys(editor.children).map((k, i) => i);
-        event.preventDefault([null, allBlockIndexes]);
-        // editor.setBlockSelected([], { allSelected: true });
+        editor.setPath({ current: null, selected: allBlockIndexes });
         return;
       }
     }
@@ -257,134 +241,11 @@ const Editor = ({
 
     // [TODO] - handle sharing cursor between blocks
     if (HOTKEYS.isShiftArrowUp(event)) {
-      if (typeof event.isDefaultPrevented === 'function' && event.isDefaultPrevented()) return;
-
-      if (state.selectionStarted && state.startedIndexToSelect !== null && state.indexToSelect !== null) {
-        const currentIndex = state.indexToSelect;
-        const nextTopIndex = currentIndex - 1;
-        if (currentIndex === 0) return;
-
-        // jump to next index if started selection from this index
-        if (currentIndex === state.startedIndexToSelect) {
-          // editor.setBlockSelected([nextTopIndex]);
-          editor.setPath({ current: nextTopIndex });
-          state.indexToSelect = nextTopIndex;
-          return;
-        }
-
-        if (nextTopIndex < state.startedIndexToSelect) {
-          // editor.setBlockSelected([nextTopIndex]);
-          editor.setPath({ current: nextTopIndex });
-          state.indexToSelect = nextTopIndex;
-          return;
-        }
-
-        const selectedBlocks = Paths.getSelectedPaths(editor);
-
-        if (selectedBlocks?.includes(currentIndex) && currentIndex !== state.startedIndexToSelect) {
-          const filteredIndexes = selectedBlocks.filter((index) => index !== currentIndex);
-          // editor.setBlockSelected(filteredIndexes, { only: true });
-          editor.setPath({ current: nextTopIndex, selected: filteredIndexes });
-          state.indexToSelect = nextTopIndex;
-          return;
-        }
-
-        return;
-      }
-
-      const block = findPluginBlockBySelectionPath(editor);
-      const slate = findSlateBySelectionPath(editor);
-
-      if (!slate || !slate.selection || !block) return;
-
-      const parentPath = Path.parent(slate.selection.anchor.path);
-      // [TODO] - handle cases for inline node elements
-      const isStart = SlateEditor.isStart(slate, slate.selection.focus, parentPath);
-
-      if (Range.isExpanded(slate.selection) && isStart) {
-        const prevPath = getPreviousPath(editor);
-        if (!prevPath) return;
-
-        const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevPath });
-
-        if (block && prevBlock) {
-          event.preventDefault();
-
-          ReactEditor.blur(slate);
-          ReactEditor.deselect(slate);
-          Transforms.deselect(slate);
-
-          editor.setPath({ current: null, selected: null });
-          // editor.setBlockSelected([block?.meta.order, block.meta.order - 1]);
-
-          state.startedIndexToSelect = block.meta.order;
-          state.indexToSelect = block.meta.order - 1;
-          state.selectionStarted = true;
-        }
-      }
+      multiSelection.onShiftArrowUp(event);
     }
 
     if (HOTKEYS.isShiftArrowDown(event)) {
-      if (state.selectionStarted && state.indexToSelect !== null && state.startedIndexToSelect !== null) {
-        const currentIndex = state.indexToSelect;
-        const nextIndex = currentIndex + 1;
-
-        if (nextIndex === Object.keys(editor.children).length) return;
-
-        // jump to next index if started selection from this index
-        if (currentIndex === state.startedIndexToSelect) {
-          // editor.setBlockSelected([nextIndex]);
-          editor.setPath({ current: nextIndex });
-          state.indexToSelect = nextIndex;
-          return;
-        }
-
-        if (nextIndex > state.startedIndexToSelect) {
-          // editor.setBlockSelected([nextIndex]);
-          editor.setPath({ current: nextIndex });
-          state.indexToSelect = nextIndex;
-          return;
-        }
-
-        const selectedBlocks = Paths.getSelectedPaths(editor);
-        if (selectedBlocks?.includes(currentIndex) && currentIndex !== state.startedIndexToSelect) {
-          const filteredIndexes = selectedBlocks.filter((index) => index !== currentIndex);
-          // editor.setBlockSelected(filteredIndexes, { only: true });
-          editor.setPath({ current: nextIndex, selected: filteredIndexes });
-          state.indexToSelect = nextIndex;
-          return;
-        }
-
-        return;
-      }
-
-      const block = findPluginBlockBySelectionPath(editor);
-      const slate = findSlateBySelectionPath(editor);
-      if (!slate || !slate.selection || !block) return;
-
-      const parentPath = Path.parent(slate.selection.anchor.path);
-      // [TODO] - handle cases for inline node elements
-      const isEnd = SlateEditor.isEnd(slate, slate.selection.focus, parentPath);
-
-      if (Range.isExpanded(slate.selection) && isEnd) {
-        const nextPath = Paths.getNextPath(editor);
-        const nextBlock = findPluginBlockBySelectionPath(editor, { at: nextPath });
-
-        if (block && nextBlock) {
-          event.preventDefault();
-
-          ReactEditor.blur(slate);
-          ReactEditor.deselect(slate);
-          Transforms.deselect(slate);
-
-          editor.setPath({ current: null, selected: null });
-          // editor.setBlockSelected([block?.meta.order, block?.meta.order + 1]);
-
-          state.startedIndexToSelect = block.meta.order;
-          state.indexToSelect = block.meta.order + 1;
-          state.selectionStarted = true;
-        }
-      }
+      multiSelection.onShiftArrowDown(event);
     }
 
     if (HOTKEYS.isTab(event)) {

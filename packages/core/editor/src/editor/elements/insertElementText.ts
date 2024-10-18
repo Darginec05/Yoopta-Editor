@@ -1,5 +1,5 @@
 import { Editor, Transforms, Range } from 'slate';
-import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
+import { findPluginBlockByPath } from '../../utils/findPluginBlockByPath';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { YooEditor } from '../types';
 
@@ -15,7 +15,7 @@ export function insertElementText<TElementKeys extends string, TElementProps>(
 ) {
   const { blockId, focus } = options || {};
 
-  const blockData = blockId ? editor.children[blockId] : findPluginBlockBySelectionPath(editor);
+  const blockData = blockId ? editor.children[blockId] : findPluginBlockByPath(editor);
 
   if (!blockData) {
     console.warn(`To set text programmatically, you must provide a valid blockId. Got: ${blockId}`);

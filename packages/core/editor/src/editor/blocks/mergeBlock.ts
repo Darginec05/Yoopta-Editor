@@ -1,6 +1,6 @@
 import { Editor, Text, Transforms } from 'slate';
 import { deepClone } from '../../utils/deepClone';
-import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
+import { findPluginBlockByPath } from '../../utils/findPluginBlockByPath';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { getLastNodePoint } from '../../utils/getLastNodePoint';
 import { YooptaOperation } from '../core/applyTransforms';
@@ -16,12 +16,12 @@ export type MergeBlockOptions = {
 export function mergeBlock(editor: YooEditor, options: MergeBlockOptions = {}) {
   const { focus = true } = options;
 
-  const currentBlock = findPluginBlockBySelectionPath(editor);
+  const currentBlock = findPluginBlockByPath(editor);
   const slateToRemove = findSlateBySelectionPath(editor, { at: editor.path.current });
 
   const prevBlockPath = Paths.getPreviousPath(editor);
   const slateToMerged = findSlateBySelectionPath(editor, { at: prevBlockPath });
-  const blockToMerge = findPluginBlockBySelectionPath(editor, { at: prevBlockPath });
+  const blockToMerge = findPluginBlockByPath(editor, { at: prevBlockPath });
   const blockEntityToMerge = editor.blocks[blockToMerge?.type || ''];
 
   if (!slateToRemove || !slateToRemove.selection || !currentBlock || !slateToMerged || !blockToMerge) return;

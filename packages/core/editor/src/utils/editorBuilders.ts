@@ -1,7 +1,7 @@
 import { SlateElement, YooEditor, YooptaBlockData } from '../editor/types';
 import { Plugin, PluginElementsMap } from '../plugins/types';
 import { YooptaMark } from '../marks';
-import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
+import { findPluginBlockByPath } from '../utils/findPluginBlockByPath';
 import { getRootBlockElement } from './blockElements';
 import { buildSlateEditor } from './buildSlate';
 import { getValue } from '../editor/textFormats/getValue';
@@ -55,7 +55,7 @@ export function buildBlocks(editor, plugins: Plugin<Record<string, SlateElement>
           shortcuts,
         },
         isActive: () => {
-          const block = findPluginBlockBySelectionPath(editor, { at: editor.path.current });
+          const block = findPluginBlockByPath(editor, { at: editor.path.current });
           return block?.type === plugin.type;
         },
 
