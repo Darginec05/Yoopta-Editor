@@ -119,9 +119,10 @@ export type YooEditor = {
   getPlainText: (content: YooptaContentValue) => string;
 
   isSavingHistory: WithoutFirstArg<typeof YooptaHistory.isSavingHistory>;
-  withoutSavingHistory: WithoutFirstArg<typeof YooptaHistory.withoutSavingHistory>;
   isMergingHistory: WithoutFirstArg<typeof YooptaHistory.isMergingHistory>;
+  withoutSavingHistory: WithoutFirstArg<typeof YooptaHistory.withoutSavingHistory>;
   withoutMergingHistory: WithoutFirstArg<typeof YooptaHistory.withoutMergingHistory>;
+  withMergingHistory: WithoutFirstArg<typeof YooptaHistory.withMergingHistory>;
   redo: WithoutFirstArg<typeof YooptaHistory.redo>;
   undo: WithoutFirstArg<typeof YooptaHistory.undo>;
 

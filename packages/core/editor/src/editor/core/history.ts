@@ -85,6 +85,13 @@ export const YooptaHistory = {
     return SAVING.get(editor);
   },
 
+  withMergingHistory(editor: YooEditor, fn: () => void): void {
+    const prev = YooptaHistory.isMergingHistory(editor);
+    MERGING.set(editor, true);
+    fn();
+    MERGING.set(editor, prev);
+  },
+
   withoutMergingHistory(editor: YooEditor, fn: () => void): void {
     const prev = YooptaHistory.isMergingHistory(editor);
     MERGING.set(editor, false);

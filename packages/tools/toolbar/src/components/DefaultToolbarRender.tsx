@@ -20,7 +20,6 @@ import {
   SlateElement,
   useYooptaTools,
   UI,
-  Elements,
   Blocks,
   findPluginBlockByPath,
   YooptaBlockData,
