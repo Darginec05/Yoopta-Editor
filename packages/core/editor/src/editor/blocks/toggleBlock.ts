@@ -2,7 +2,7 @@ import { Descendant, Editor, Element, Text, Transforms } from 'slate';
 import { buildBlockElementsStructure } from '../../utils/blockElements';
 import { buildSlateEditor } from '../../utils/buildSlate';
 
-import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
+import { findPluginBlockByPath } from '../../utils/findPluginBlockByPath';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { generateId } from '../../utils/generateId';
 import { YooptaOperation } from '../core/applyTransforms';
@@ -37,7 +37,7 @@ function findFirstLeaf(node: SlateElement): SlateElement | null {
 }
 
 export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options: ToggleBlockOptions = {}) {
-  const fromBlock = findPluginBlockBySelectionPath(editor, { at: options.at || editor.path.current });
+  const fromBlock = findPluginBlockByPath(editor, { at: options.at || editor.path.current });
   if (!fromBlock) throw new Error('Block not found at current selection');
 
   let toBlockType = fromBlock.type === toBlockTypeArg ? DEFAULT_BLOCK_TYPE : toBlockTypeArg;
@@ -72,6 +72,9 @@ export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options: 
 
   editor.applyTransforms(operations);
   onCreate?.(editor, newBlock.id);
+
+  console.log('newBlock', newBlock);
+  console.log('newSlate', newSlate);
 
   // [TEST]
   if (options.deleteText) {

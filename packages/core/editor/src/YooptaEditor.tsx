@@ -18,7 +18,7 @@ import { YooptaPlugin } from './plugins';
 import { YooptaMark } from './marks';
 import { FakeSelectionMark } from './marks/FakeSelectionMark';
 import { generateId } from './utils/generateId';
-import { inverseEditorOperation, YooHistory } from './editor/core/history';
+import { inverseEditorOperation, YooptaHistory } from './editor/core/history';
 
 export type YooptaEditorProps = {
   id?: string;
@@ -116,42 +116,13 @@ const YooptaEditor = ({
       redos: [],
     };
 
-    editor.undo = () => {
-      const { undos } = editor.historyStack;
-      console.log(undos);
+    editor.undo = () => YooptaHistory.undo(editor);
+    editor.redo = () => YooptaHistory.redo(editor);
 
-      if (undos.length > 0) {
-        const batch = editor.historyStack.undos[editor.historyStack.undos.length - 1];
-
-        YooHistory.withoutSaving(editor, () => {
-          // [TODO] - ask Christopher Nolan to help with this
-          const inverseOps = batch.operations.flatMap((op) => inverseEditorOperation(editor, op)).reverse();
-          editor.applyTransforms(inverseOps, { source: 'history' });
-          console.log('undo batch', batch);
-          editor.setPath(batch.path);
-        });
-
-        editor.historyStack.redos.push(batch);
-        editor.historyStack.undos.pop();
-      }
-    };
-
-    editor.redo = () => {
-      const { redos } = editor.historyStack;
-      console.log(redos);
-
-      if (redos.length > 0) {
-        const batch = redos[redos.length - 1];
-
-        YooHistory.withoutSaving(editor, () => {
-          editor.applyTransforms(batch.operations, { source: 'history' });
-          editor.setPath(batch.path);
-        });
-
-        editor.historyStack.redos.pop();
-        editor.historyStack.undos.push(batch);
-      }
-    };
+    editor.withoutSavingHistory = (fn) => YooptaHistory.withoutSavingHistory(editor, fn);
+    editor.withoutMergingHistory = (fn) => YooptaHistory.withoutMergingHistory(editor, fn);
+    editor.isSavingHistory = () => YooptaHistory.isSavingHistory(editor);
+    editor.isMergingHistory = () => YooptaHistory.isMergingHistory(editor);
 
     return { editor, version: 0 };
   });

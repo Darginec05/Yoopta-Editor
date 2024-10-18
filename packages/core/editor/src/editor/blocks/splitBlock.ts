@@ -1,6 +1,6 @@
 import { Editor, Element, Path, Transforms } from 'slate';
 import { buildSlateEditor } from '../../utils/buildSlate';
-import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
+import { findPluginBlockByPath } from '../../utils/findPluginBlockByPath';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { generateId } from '../../utils/generateId';
 import { YooptaOperation } from '../core/applyTransforms';
@@ -14,7 +14,7 @@ export type SplitBlockOptions = {
 export function splitBlock(editor: YooEditor, options: SplitBlockOptions = {}) {
   const { focus = true } = options;
 
-  const blockToSplit = findPluginBlockBySelectionPath(editor);
+  const blockToSplit = findPluginBlockByPath(editor);
   const slate = options.slate || findSlateBySelectionPath(editor);
   if (!slate || !blockToSplit) return;
 

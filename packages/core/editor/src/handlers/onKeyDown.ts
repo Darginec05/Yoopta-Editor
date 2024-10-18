@@ -4,7 +4,7 @@ import { ReactEditor } from 'slate-react';
 import { Blocks } from '../editor/blocks';
 import { Paths } from '../editor/paths';
 import { SlateEditor, YooEditor } from '../editor/types';
-import { findPluginBlockBySelectionPath } from '../utils/findPluginBlockBySelectionPath';
+import { findPluginBlockByPath } from '../utils/findPluginBlockByPath';
 import { findSlateBySelectionPath } from '../utils/findSlateBySelectionPath';
 import { generateId } from '../utils/generateId';
 import { getLastNodePoint } from '../utils/getLastNodePoint';
@@ -73,6 +73,10 @@ export function onKeyDown(editor: YooEditor) {
 
       const string = Editor.string(slate, slate.selection.anchor.path);
       const insertBefore = isStart && string.length > 0;
+      // [TEST]
+      // console.log('insertBefore', insertBefore);
+      // console.log('string', string);
+      // console.log('slate.selection', slate.selection);
       const nextPath = Paths.getNextPath(editor);
 
       editor.batchOperations(() => {
@@ -103,7 +107,7 @@ export function onKeyDown(editor: YooEditor) {
         const text = Editor.string(slate, parentPath);
         const prevBlockPath = Paths.getPreviousPath(editor);
         const prevSlate = findSlateBySelectionPath(editor, { at: prevBlockPath });
-        const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevBlockPath });
+        const prevBlock = findPluginBlockByPath(editor, { at: prevBlockPath });
 
         let lastNodePoint;
 
@@ -184,7 +188,7 @@ export function onKeyDown(editor: YooEditor) {
       if (isAllPathsInStart) {
         const prevPath = Paths.getPreviousPath(editor);
         const prevSlate = findSlateBySelectionPath(editor, { at: prevPath });
-        const prevBlock = findPluginBlockBySelectionPath(editor, { at: prevPath });
+        const prevBlock = findPluginBlockByPath(editor, { at: prevPath });
         if (prevSlate && prevBlock) {
           const [, prevLastPath] = Editor.last(prevSlate, [0]);
           const prevLastNodeTextLength = Editor.string(prevSlate, prevLastPath).length;
@@ -211,7 +215,7 @@ export function onKeyDown(editor: YooEditor) {
       if (isEnd) {
         const nextPath = Paths.getNextPath(editor);
         const nextSlate = findSlateBySelectionPath(editor, { at: nextPath });
-        const nextBlock = findPluginBlockBySelectionPath(editor, { at: nextPath });
+        const nextBlock = findPluginBlockByPath(editor, { at: nextPath });
         if (nextSlate && nextBlock) {
           // [TODO] - should parent path, but for next slate
           const selection: Point = getNextNodePoint(nextSlate, parentPath);

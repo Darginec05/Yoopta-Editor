@@ -1,5 +1,5 @@
 import { deepClone } from '../../utils/deepClone';
-import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
+import { findPluginBlockByPath } from '../../utils/findPluginBlockByPath';
 import { generateId } from '../../utils/generateId';
 import { YooptaOperation } from '../core/applyTransforms';
 import { YooEditor, YooptaBlock, YooptaBlockData, YooptaPathIndex } from '../types';
@@ -22,7 +22,7 @@ import { YooEditor, YooptaBlock, YooptaBlockData, YooptaPathIndex } from '../typ
 //   }
 
 //   if (options.at) {
-//     originalBlock = findPluginBlockBySelectionPath(editor, { at: options.at });
+//     originalBlock = findPluginBlockByPath(editor, { at: options.at });
 
 //     if (!originalBlock) {
 //       throw new Error(`Block in path ${options.at} not found`);
@@ -85,7 +85,7 @@ export function duplicateBlock(editor: YooEditor, options: DuplicateBlockOptions
 
   let originalBlock: YooptaBlockData | null = blockId
     ? editor.children[blockId]
-    : findPluginBlockBySelectionPath(editor, { at: path! });
+    : findPluginBlockByPath(editor, { at: path! });
 
   if (!originalBlock) {
     throw new Error('Block not found');

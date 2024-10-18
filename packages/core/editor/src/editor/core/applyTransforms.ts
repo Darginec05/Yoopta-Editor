@@ -95,9 +95,7 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
               Transforms.select(slate, selectionBefore);
             }
           });
-        } catch (error) {
-          console.error('Error applying slate operations', error);
-        }
+        } catch (error) {}
       }
 
       break;

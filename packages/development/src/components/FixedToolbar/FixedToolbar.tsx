@@ -182,20 +182,22 @@ export const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            editor.commands.insertBlockquote({ at: 1, text: 'Blockquote with text', focus: true });
+            editor.redo();
           }}
-          className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
+          className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff] disabled:opacity-50"
+          disabled={editor.historyStack.redos.length === 0}
         >
-          Insert Blockquote with text
+          Redo
         </button>
         <button
           type="button"
           onClick={() => {
-            CalloutCommands.updateCalloutTheme(editor, '46f231b7-74c0-4c2d-ba29-2e192e5720a3', 'warning');
+            editor.undo();
           }}
-          className="p-2 text-xs shadow-md hover:bg-[#64748b] hover:text-[#fff]"
+          className="p-2 text-xs shadow-md hover:bg-[#64748b] hover:text-[#fff] disabled:opacity-50"
+          disabled={editor.historyStack.undos.length === 0}
         >
-          Update Callout theme
+          Undo
         </button>
       </div>
     </div>

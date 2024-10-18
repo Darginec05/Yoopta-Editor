@@ -1,6 +1,6 @@
 import { YooEditor, YooptaPathIndex } from '../editor/types';
 
-export function findPluginBlockBySelectionPath(editor: YooEditor, options?: { at: YooptaPathIndex }) {
+export function findPluginBlockByPath(editor: YooEditor, options?: { at: YooptaPathIndex }) {
   const childrenKeys = Object.keys(editor.children);
   const { at = editor.path.current } = options || {};
 

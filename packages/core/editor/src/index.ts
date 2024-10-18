@@ -17,9 +17,8 @@ export { useYooptaTools, Tools } from './contexts/YooptaContext/ToolsContext';
 export { generateId } from './utils/generateId';
 export { HOTKEYS } from './utils/hotkeys';
 export { getRootBlockElementType, getRootBlockElement } from './utils/blockElements';
-export { findPluginBlockBySelectionPath } from './utils/findPluginBlockBySelectionPath';
+export { findPluginBlockByPath } from './utils/findPluginBlockByPath';
 export { findSlateBySelectionPath } from './utils/findSlateBySelectionPath';
-export { findPluginBlockByType } from './utils/findPluginBlockByType';
 export { deserializeTextNodes } from './parsers/deserializeTextNodes';
 export { serializeTextNodes, serializeTextNodesIntoMarkdown } from './parsers/serializeTextNodes';
 

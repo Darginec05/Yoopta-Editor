@@ -1,6 +1,7 @@
 import { Element, NodeEntry, Text } from 'slate';
 import { Editor, Range, Transforms } from 'slate';
 import { SlateEditor, SlateElement, YooEditor } from '../editor/types';
+import { YooptaHistory } from '../editor/core/history';
 
 export const withShortcuts = (editor: YooEditor, slate: SlateEditor) => {
   const { insertText } = slate;
@@ -33,6 +34,8 @@ export const withShortcuts = (editor: YooEditor, slate: SlateEditor) => {
 
       const matchedBlock = editor.shortcuts?.[beforeText];
       const hasMatchedBlock = !!matchedBlock;
+      console.log('matchedBlock', matchedBlock);
+      console.log('beforeText', beforeText);
 
       if (hasMatchedBlock && !matchedBlock.isActive()) {
         Transforms.select(slate, range);

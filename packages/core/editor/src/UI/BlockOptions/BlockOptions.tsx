@@ -4,7 +4,7 @@ import { useYooptaEditor } from '../../contexts/YooptaContext/YooptaContext';
 import { CSSProperties, useState } from 'react';
 import { useFloating, offset, flip, shift, inline, autoUpdate, useTransitionStyles } from '@floating-ui/react';
 import copy from 'copy-to-clipboard';
-import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
+import { findPluginBlockByPath } from '../../utils/findPluginBlockByPath';
 import { getRootBlockElement } from '../../utils/blockElements';
 import { useYooptaTools } from '../../contexts/YooptaContext/ToolsContext';
 import { buildActionMenuRenderProps } from './utils';
@@ -65,7 +65,7 @@ const BlockOptions = ({ isOpen, onClose, refs, style, actions = DEFAULT_ACTIONS,
 
   if (!isOpen) return null;
 
-  const currentBlock = findPluginBlockBySelectionPath(editor, { at: editor.path.current });
+  const currentBlock = findPluginBlockByPath(editor, { at: editor.path.current });
   const rootElement = getRootBlockElement(editor.blocks[currentBlock?.type || '']?.elements);
   const isVoidElement = rootElement?.props?.nodeType === 'void';
 
@@ -88,7 +88,7 @@ const BlockOptions = ({ isOpen, onClose, refs, style, actions = DEFAULT_ACTIONS,
   };
 
   const onCopy = () => {
-    const block = findPluginBlockBySelectionPath(editor);
+    const block = findPluginBlockByPath(editor);
     if (block) {
       copy(`${window.location.origin}${window.location.pathname}#${block.id}`);
       editor.emit('block:copy', block);

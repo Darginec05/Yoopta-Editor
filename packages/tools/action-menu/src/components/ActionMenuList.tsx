@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
 import { DefaultActionMenuRender } from './DefaultActionMenuRender';
 import { useFloating, offset, flip, shift, inline, autoUpdate, useTransitionStyles } from '@floating-ui/react';
-import { Editor, Path } from 'slate';
+import { Editor, Element, NodeEntry, Path, Transforms } from 'slate';
 import {
   YooptaBlockData,
   YooptaBlock,
   useYooptaEditor,
   findSlateBySelectionPath,
   HOTKEYS,
-  findPluginBlockBySelectionPath,
+  findPluginBlockByPath,
   UI,
+  SlateElement,
 } from '@yoopta/editor';
 import { ActionMenuRenderProps, ActionMenuToolItem, ActionMenuToolProps } from '../types';
 import { buildActionMenuRenderProps, mapActionMenuItems } from './utils';
@@ -222,6 +223,22 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
         const type = selected?.dataset.actionMenuItemType;
         if (!type) return;
 
+        const blockEntry: NodeEntry<SlateElement<string>> | undefined = Editor.above(slate, {
+          match: (n) => Element.isElement(n) && Editor.isBlock(slate, n),
+          mode: 'lowest',
+        });
+
+        if (blockEntry) {
+          const [, currentNodePath] = blockEntry;
+          const path = blockEntry ? currentNodePath : [];
+
+          const start = Editor.start(slate, path);
+          const range = { anchor: slate.selection.anchor, focus: start };
+
+          Transforms.select(slate, range);
+          Transforms.delete(slate);
+        }
+
         editor.toggleBlock(type, { deleteText: true, focus: true });
         return onClose();
       }
@@ -232,7 +249,7 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
     }
 
     if (typeof editor.path.current === 'number') {
-      const block = findPluginBlockBySelectionPath(editor, { at: editor.path.current });
+      const block = findPluginBlockByPath(editor, { at: editor.path.current });
       if (!block) return;
 
       const slateEditorRef = editor.refElement?.querySelector(

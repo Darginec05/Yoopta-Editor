@@ -1,6 +1,7 @@
 import { Operation } from 'slate';
 import { YooEditor, YooptaPath } from '../types';
 import { YooptaOperation } from './applyTransforms';
+import { WithoutFirstArg } from '../../utils/types';
 
 export type HistoryStack = {
   operations: YooptaOperation[];
@@ -75,26 +76,59 @@ export function inverseEditorOperation(editor: YooEditor, op: YooptaOperation): 
 export const SAVING = new WeakMap<YooEditor, boolean | undefined>();
 export const MERGING = new WeakMap<YooEditor, boolean | undefined>();
 
-export const YooHistory = {
-  isMerging(editor: YooEditor): boolean | undefined {
+export const YooptaHistory = {
+  isMergingHistory(editor: YooEditor): boolean | undefined {
     return MERGING.get(editor);
   },
 
-  isSaving(editor: YooEditor): boolean | undefined {
+  isSavingHistory(editor: YooEditor): boolean | undefined {
     return SAVING.get(editor);
   },
 
-  withoutMerging(editor: YooEditor, fn: () => void): void {
-    const prev = YooHistory.isMerging(editor);
+  withoutMergingHistory(editor: YooEditor, fn: () => void): void {
+    const prev = YooptaHistory.isMergingHistory(editor);
     MERGING.set(editor, false);
     fn();
     MERGING.set(editor, prev);
   },
 
-  withoutSaving(editor: YooEditor, fn: () => void): void {
-    const prev = YooHistory.isSaving(editor);
+  withoutSavingHistory(editor: YooEditor, fn: () => void): void {
+    const prev = YooptaHistory.isSavingHistory(editor);
     SAVING.set(editor, false);
     fn();
     SAVING.set(editor, prev);
+  },
+
+  redo: (editor: YooEditor) => {
+    const { redos } = editor.historyStack;
+
+    if (redos.length > 0) {
+      const batch = redos[redos.length - 1];
+
+      YooptaHistory.withoutSavingHistory(editor, () => {
+        editor.applyTransforms(batch.operations, { source: 'history' });
+        editor.setPath(batch.path);
+      });
+
+      editor.historyStack.redos.pop();
+      editor.historyStack.undos.push(batch);
+    }
+  },
+  undo: (editor: YooEditor) => {
+    const { undos } = editor.historyStack;
+
+    if (undos.length > 0) {
+      const batch = editor.historyStack.undos[editor.historyStack.undos.length - 1];
+
+      YooptaHistory.withoutSavingHistory(editor, () => {
+        // [TODO] - ask Christopher Nolan to help with this
+        const inverseOps = batch.operations.flatMap((op) => inverseEditorOperation(editor, op)).reverse();
+        editor.applyTransforms(inverseOps, { source: 'history' });
+        editor.setPath(batch.path);
+      });
+
+      editor.historyStack.redos.push(batch);
+      editor.historyStack.undos.pop();
+    }
   },
 };
