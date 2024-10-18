@@ -164,7 +164,6 @@ export const useSlateEditor = (
     };
 
     if (withExtensions) {
-      // console.log(block.type, withExtensions(slate, editor, id));
       slate = withExtensions(slate, editor, id);
     }
 

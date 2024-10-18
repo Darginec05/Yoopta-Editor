@@ -73,9 +73,6 @@ export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options: 
   editor.applyTransforms(operations);
   onCreate?.(editor, newBlock.id);
 
-  console.log('newBlock', newBlock);
-  console.log('newSlate', newSlate);
-
   // [TEST]
   if (options.deleteText) {
     Transforms.delete(newSlate, { at: [0, 0] });
