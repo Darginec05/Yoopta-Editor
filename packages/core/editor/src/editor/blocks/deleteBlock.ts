@@ -29,6 +29,9 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions) {
     throw new Error(`Block not found`);
   }
 
+  // const isLastBlock = Object.values(editor.children).length === 1;
+  // if (isLastBlock) return;
+
   const blockToDelete = editor.children[block.id];
   const operations: YooptaOperation[] = [];
 
@@ -38,25 +41,16 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions) {
     path: editor.path,
   });
 
-  // Object.values(editor.children).forEach((block) => {
-  //   if (block.meta.order > blockToDelete.meta.order) {
-  //     operations.push({
-  //       type: 'set_block_meta',
-  //       id: block.id,
-  //       properties: { order: block.meta.order - 1 },
-  //       prevProperties: { order: block.meta.order },
-  //     });
-  //   }
-  // });
-
   editor.applyTransforms(operations);
 
   if (focus) {
     const prevBlockPath = Paths.getPreviousPath(editor);
-    const prevBlock = editor.getBlock({ at: prevBlockPath });
+    if (prevBlockPath) {
+      const prevBlock = editor.getBlock({ at: prevBlockPath });
 
-    if (prevBlock) {
-      editor.focusBlock(prevBlock.id);
+      if (prevBlock) {
+        editor.focusBlock(prevBlock.id);
+      }
     }
   }
 }

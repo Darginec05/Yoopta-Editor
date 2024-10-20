@@ -2,6 +2,8 @@ import { createDraft, finishDraft, isDraft, produce } from 'immer';
 import { buildSlateEditor } from '../../utils/buildSlate';
 import { SlateEditor, SlateElement, YooEditor, YooptaBlockData, YooptaPath } from '../types';
 import { Editor, Operation, Range, Transforms } from 'slate';
+import { buildBlockData } from '../blocks/buildBlockData';
+import { generateId } from '../../utils/generateId';
 
 export type SetSlateOperation = {
   type: 'set_slate';
@@ -106,6 +108,8 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
       editor.blockEditorsMap[op.block.id] = slate || buildSlateEditor(editor);
       editor.children[op.block.id] = op.block;
 
+      console.log(op.block.id, op.block.meta.order);
+
       Object.values(editor.children).forEach((existingBlock) => {
         if (existingBlock.meta.order >= op.block.meta.order && existingBlock.id !== op.block.id) {
           if (isDraft(existingBlock)) {
@@ -124,8 +128,12 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
       delete editor.blockEditorsMap[op.block.id];
       delete editor.children[op.block.id];
 
-      // [TODO]
-      // console.log('delete_block editor.children', Object.keys(editor.children).length);
+      // if (Object.keys(editor.children).length === 0) {
+      //   const id = generateId();
+      //   const defaultBlock = buildBlockData({ id });
+      //   editor.children[id] = defaultBlock;
+      //   editor.blockEditorsMap[id] = buildSlateEditor(editor);
+      // }
 
       Object.values(editor.children).forEach((existingBlock) => {
         if (existingBlock.meta.order > op.block.meta.order) {
@@ -256,6 +264,8 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
   if (normalizePaths) {
     operations.push({ type: 'normalize_block_paths' });
   }
+
+  console.log('applyTransforms operations', operations);
 
   for (const operation of operations) {
     if (operation.type === 'set_slate' && source === 'api') {
