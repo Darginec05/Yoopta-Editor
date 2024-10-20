@@ -129,14 +129,11 @@ export const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            DividerCommands.updateDivider(editor, '2b54fac2-d026-4cd5-b9ff-d39db20a6b39', {
-              color: 'red',
-              theme: 'gradient',
-            });
+            editor.setPath({ current: null, selected: [0, 1, 2, 3] });
           }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
-          Update Divider
+          Choose selected
         </button>
       </div>
       <div className="flex justify-center">

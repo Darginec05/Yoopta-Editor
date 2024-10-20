@@ -61,11 +61,15 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, defa
         const hasText = text.trim().length > 0;
 
         if (!hasText) {
+          console.log('hasText', hasText);
+
           if (isBlockIsInFirstDepth) {
             const currentOrder = block.meta.order;
 
-            editor.deleteBlock({ blockId: block.id });
-            editor.insertBlock(defaultBlock.type, { at: currentOrder, focus: true, blockData: defaultBlock });
+            editor.batchOperations(() => {
+              editor.deleteBlock({ blockId: block.id });
+              editor.insertBlock(defaultBlock.type, { at: currentOrder, focus: true, blockData: defaultBlock });
+            });
             return;
           }
 
@@ -86,6 +90,7 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, defa
           });
 
           editor.insertBlock(prevListBlock.type, { at: block.meta.order, focus: false, blockData: prevListBlock });
+          editor.setPath({ current: prevListBlock.meta.order + 1 });
           return;
         }
 

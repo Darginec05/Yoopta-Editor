@@ -1,16 +1,30 @@
-import { Editor, Element, Node, Text } from 'slate';
+import { Editor, Element, Node, Path, Text } from 'slate';
 import { Point } from 'slate';
 import { SlateEditor } from '../editor/types';
 
+export function getLastNode(slate: SlateEditor): { node: Node; path: Path } {
+  const lastNodeEntry = Editor.last(slate, []);
+  return { node: lastNodeEntry[0], path: lastNodeEntry[1] };
+}
+
 export function getLastNodePoint(slate: SlateEditor): Point {
   try {
-    const [, lastPath] = Editor.last(slate, []);
-    console.log('getLastNodePoint lastPath', lastPath);
-    console.log('getLastNodePoint Node.get(slate, lastPath)', Node.get(slate, lastPath));
+    let point;
 
-    return { path: lastPath, offset: Node.string(Node.get(slate, lastPath)).length };
+    const [lastElement, lastPath] = Editor.last(slate, []);
+
+    if (Element.isElement(lastElement) && !Editor.isEditor(lastElement)) {
+      const [lastTextNode, lastTextPath] = Editor.last(slate, lastPath);
+
+      if (Text.isText(lastTextNode)) {
+        point = { path: lastTextPath, offset: lastTextNode.text.length };
+      }
+    } else if (Text.isText(lastElement)) {
+      point = { path: lastPath, offset: lastElement.text.length };
+    }
+
+    return point;
   } catch (error) {
-    console.log('getLastNodePoint error', error);
     return {
       path: [0, 0],
       offset: 0,

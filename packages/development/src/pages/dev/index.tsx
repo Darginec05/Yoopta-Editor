@@ -1,4 +1,10 @@
-import YooptaEditor, { createYooptaEditor, YooEditor, YooptaBlockData, YooptaContentValue } from '@yoopta/editor';
+import YooptaEditor, {
+  createYooptaEditor,
+  OnChangeOptions,
+  YooEditor,
+  YooptaBlockData,
+  YooptaContentValue,
+} from '@yoopta/editor';
 import { useMemo, useRef, useState } from 'react';
 
 import { MARKS } from '../../utils/yoopta/marks';
@@ -782,8 +788,9 @@ const BasicExample = () => {
     },
   });
 
-  const onChange = (value: YooptaContentValue) => {
-    console.log(value);
+  const onChange = (value: YooptaContentValue, options: OnChangeOptions) => {
+    console.log('options', options);
+    console.log('value', value);
     setValue(value);
   };
 

@@ -101,6 +101,7 @@ export function useMultiSelection({ editor }: MultiSelectionOptions) {
 
           editor.refElement?.addEventListener('mousemove', onMouseMove);
           editor.refElement?.addEventListener('mouseup', onMouseUp);
+          document?.addEventListener('mouseup', onMouseUp);
         }
       }
     });
@@ -152,6 +153,7 @@ export function useMultiSelection({ editor }: MultiSelectionOptions) {
     currentBlockPathRef.current = null;
     editor.refElement?.removeEventListener('mousemove', onMouseMove);
     editor.refElement?.removeEventListener('mouseup', onMouseUp);
+    document?.removeEventListener('mouseup', onMouseUp);
   };
 
   const onShiftArrowUp = (event) => {

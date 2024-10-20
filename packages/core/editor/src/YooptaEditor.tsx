@@ -18,7 +18,13 @@ import { YooptaPlugin } from './plugins';
 import { YooptaMark } from './marks';
 import { FakeSelectionMark } from './marks/FakeSelectionMark';
 import { generateId } from './utils/generateId';
-import { inverseEditorOperation, YooptaHistory } from './editor/core/history';
+import { YooptaHistory } from './editor/core/history';
+import { ChangeSource, YooptaOperation } from './editor/core/applyTransforms';
+
+export type OnChangeOptions = {
+  source: ChangeSource;
+  operations: YooptaOperation[];
+};
 
 export type YooptaEditorProps = {
   id?: string;
@@ -26,7 +32,7 @@ export type YooptaEditorProps = {
   plugins: Readonly<YooptaPlugin<Record<string, SlateElement>>[]>;
   marks?: YooptaMark<any>[];
   value?: YooptaContentValue;
-  onChange?: (value: YooptaContentValue) => void;
+  onChange?: (value: YooptaContentValue, options: OnChangeOptions) => void;
   autoFocus?: boolean;
   className?: string;
   selectionBoxRoot?: HTMLElement | React.MutableRefObject<HTMLElement | null> | false;
@@ -133,21 +139,25 @@ const YooptaEditor = ({
     setSelectionPath(path);
   }, []);
 
-  const onValueChange = useCallback(() => {
+  const onValueChange = useCallback((value, options: OnChangeOptions) => {
     setEditorState((prevState) => ({
       editor: prevState.editor,
       version: prevState.version + 1,
     }));
 
-    onChange?.(editor.children);
+    onChange?.(value, options);
   }, []);
 
   useEffect(() => {
-    editor.on('change', onValueChange);
+    const changeHandler = (options) => {
+      onValueChange(options.value, { source: options.source, operations: options.operations });
+    };
+
+    editor.on('change', changeHandler);
     editor.on('path-change', onSelectonPathChange);
 
     return () => {
-      editor.off('change', onValueChange);
+      editor.off('change', changeHandler);
       editor.off('path-change', onSelectonPathChange);
     };
   }, [editor, onValueChange]);
