@@ -260,14 +260,12 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
   editor.children = createDraft(editor.children);
   editor.path = createDraft(editor.path);
 
-  const { normalizePaths = true, source = 'user' } = options || {};
+  const { normalizePaths = true, source } = options || {};
   const operations = [...ops];
 
   if (normalizePaths) {
     operations.push({ type: 'normalize_block_paths' });
   }
-
-  console.log('applyTransforms operations', operations);
 
   for (const operation of operations) {
     if (operation.type === 'set_slate' && source === 'api') {
@@ -300,7 +298,7 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
     editor.historyStack.undos.shift();
   }
 
-  editor.emit('change', { value: editor.children, source, operations });
+  editor.emit('change', { value: editor.children, operations });
   editor.emit('path-change', editor.path);
 
   assertValidPaths(editor);

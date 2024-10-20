@@ -150,7 +150,6 @@ export const useSlateEditor = (
               slateOps: batch.operations,
               selectionBefore: batch.selectionBefore,
             },
-            source: 'api',
             blockId: id,
             slate: slate,
           };

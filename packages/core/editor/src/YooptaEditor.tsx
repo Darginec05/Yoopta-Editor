@@ -22,7 +22,6 @@ import { YooptaHistory } from './editor/core/history';
 import { ChangeSource, YooptaOperation } from './editor/core/applyTransforms';
 
 export type OnChangeOptions = {
-  source: ChangeSource;
   operations: YooptaOperation[];
 };
 
@@ -145,12 +144,21 @@ const YooptaEditor = ({
       version: prevState.version + 1,
     }));
 
-    onChange?.(value, options);
+    if (typeof onChange === 'function' && Array.isArray(options.operations)) {
+      const operations = options.operations.filter(
+        (operation) =>
+          operation.type !== 'normalize_block_paths' &&
+          operation.type !== 'set_block_path' &&
+          operation.type !== 'set_slate',
+      );
+
+      if (operations.length > 0) onChange(value, options);
+    }
   }, []);
 
   useEffect(() => {
     const changeHandler = (options) => {
-      onValueChange(options.value, { source: options.source, operations: options.operations });
+      onValueChange(options.value, { operations: options.operations });
     };
 
     editor.on('change', changeHandler);

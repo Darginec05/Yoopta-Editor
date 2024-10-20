@@ -135,6 +135,7 @@ export type SlateElementTextNode = {
   italic?: boolean;
   underline?: boolean;
   code?: boolean;
+  strike?: boolean;
   highlight?: any;
 };
 

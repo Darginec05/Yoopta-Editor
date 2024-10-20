@@ -50,7 +50,7 @@ const Editor = ({
 
   useEffect(() => {
     if (!autoFocus || isReadOnly) return;
-    // editor.focus();
+    editor.focus();
   }, [autoFocus, isReadOnly]);
 
   useEffect(() => {
