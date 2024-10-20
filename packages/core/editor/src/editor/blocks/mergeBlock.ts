@@ -30,14 +30,9 @@ export function mergeBlock(editor: YooEditor, options: MergeBlockOptions = {}) {
   const prevBlockElementRoot = Elements.getElement(editor, blockToMerge.id);
 
   // [TODO] - if prev block has custom editor (not slate) or root element is void we need jump to prev prev block
-  if (
-    blockEntityToMerge &&
-    blockEntityToMerge.hasCustomEditor &&
-    prevBlockElementRoot &&
-    prevBlockElementRoot.props.nodeType === 'void'
-  ) {
-    return;
-  }
+  if (!blockEntityToMerge) return;
+  if (blockEntityToMerge.hasCustomEditor) return;
+  if (prevBlockElementRoot?.props?.nodeType === 'void') return;
 
   const prevSlateText = Editor.string(slateToMerged, [0, 0]);
   // If previous block values is empty just delete block without merging

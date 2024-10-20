@@ -29,7 +29,9 @@ const Toolbar = ({ render }: ToolbarToolProps) => {
 
     const domSelection = window.getSelection();
 
-    if (!domSelection || domSelection?.isCollapsed) return setIsToolbarOpen(false);
+    if (!domSelection || domSelection?.isCollapsed || domSelection?.anchorOffset === domSelection?.focusOffset) {
+      return setIsToolbarOpen(false);
+    }
 
     const domRange = domSelection.getRangeAt(0);
     const selectionRect = domRange.getBoundingClientRect();

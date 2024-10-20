@@ -62,7 +62,6 @@ export function splitBlock(editor: YooEditor, options: SplitBlockOptions = {}) {
       slate: newSlate,
     });
 
-    // add events from plugins
     editor.applyTransforms(operations);
 
     if (focus) {

@@ -42,6 +42,7 @@ export const withShortcuts = (editor: YooEditor, slate: SlateEditor) => {
         Transforms.delete(slate);
 
         console.log('range', range);
+        console.log('matchedBlock.type', matchedBlock.type);
         // [TEST]
         editor.toggleBlock(matchedBlock.type, { deleteText: true, focus: true });
         return;

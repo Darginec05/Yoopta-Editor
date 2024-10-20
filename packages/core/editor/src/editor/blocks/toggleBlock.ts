@@ -42,7 +42,7 @@ export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options: 
 
   let toBlockType = fromBlock.type === toBlockTypeArg ? DEFAULT_BLOCK_TYPE : toBlockTypeArg;
   const plugin = editor.plugins[toBlockType];
-  const { onBeforeCreate, onCreate } = plugin.events || {};
+  const { onBeforeCreate } = plugin.events || {};
 
   const slate = findSlateBySelectionPath(editor, { at: fromBlock.meta.order });
   if (!slate) throw new Error(`Slate not found for block in position ${fromBlock.meta.order}`);
@@ -62,6 +62,9 @@ export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options: 
     value: [toBlockSlateStructure],
   };
 
+  console.log('toggle fromBlock', fromBlock);
+  console.log('toggle newBlock', newBlock);
+
   const newSlate = buildSlateEditor(editor);
   newSlate.children = [toBlockSlateStructure];
 
@@ -71,7 +74,6 @@ export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options: 
   ];
 
   editor.applyTransforms(operations);
-  onCreate?.(editor, newBlock.id);
 
   // [TEST]
   if (options.deleteText) {

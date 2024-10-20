@@ -60,9 +60,7 @@ export function onKeyDown(editor: YooEditor) {
       const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
       const isEnd = Editor.isEnd(slate, slate.selection.anchor, parentPath);
 
-      console.log('isStart', isStart);
-      console.log('isEnd', isEnd);
-
+      // when the cursor is in the middle of the block
       if (!isStart && !isEnd) {
         editor.splitBlock({ slate, focus: true });
         return;
@@ -73,6 +71,7 @@ export function onKeyDown(editor: YooEditor) {
 
       const string = Editor.string(slate, slate.selection.anchor.path);
       const insertBefore = isStart && string.length > 0;
+
       // [TEST]
       // console.log('insertBefore', insertBefore);
       // console.log('string', string);
