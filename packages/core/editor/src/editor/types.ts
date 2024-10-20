@@ -11,7 +11,6 @@ import { ApplyTransformsOptions, YooptaOperation } from './core/applyTransforms'
 import { InsertBlockOptions } from './blocks/insertBlock';
 import { BlockDepthOptions } from './blocks/increaseBlockDepth';
 import { SplitBlockOptions } from './blocks/splitBlock';
-import { MergeBlockOptions } from './blocks/mergeBlock';
 import { HistoryStack, HistoryStackName, YooptaHistory } from './core/history';
 import { WithoutFirstArg } from '../utils/types';
 
@@ -81,7 +80,7 @@ export type YooEditor = {
   decreaseBlockDepth: (options?: BlockDepthOptions) => void;
   moveBlock: (blockId: string, to: YooptaPathIndex) => void;
   focusBlock: (id: string, options?: FocusBlockOptions) => void;
-  mergeBlock: (options?: MergeBlockOptions) => void;
+  mergeBlock: () => void;
   splitBlock: (options?: SplitBlockOptions) => void;
   getBlock: (options: GetBlockOptions) => YooptaBlockData | null;
 
@@ -130,10 +129,19 @@ export type YooEditor = {
   refElement: HTMLElement | null;
 };
 
+export type SlateElementTextNode = {
+  text: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  code?: boolean;
+  highlight?: any;
+};
+
 // types for slate values
 export type SlateElement<K extends string = string, T = any> = {
   id: string;
   type: K;
-  children: Descendant[] | SlateElement[];
+  children: Descendant[];
   props?: PluginElementProps<T>;
 };

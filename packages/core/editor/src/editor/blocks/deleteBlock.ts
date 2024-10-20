@@ -1,6 +1,7 @@
 import { YooEditor, YooptaPathIndex } from '../types';
 import { YooptaOperation } from '../core/applyTransforms';
 import { Paths } from '../paths';
+import { getSlate } from './getSlate';
 
 type DeleteBlockByIdOptions = {
   blockId: string;
@@ -47,9 +48,12 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions) {
     const prevBlockPath = Paths.getPreviousPath(editor);
     if (prevBlockPath) {
       const prevBlock = editor.getBlock({ at: prevBlockPath });
+      const prevSlate = getSlate(editor, { id: prevBlock?.id });
 
-      if (prevBlock) {
-        editor.focusBlock(prevBlock.id);
+      const lastNodePoint = Paths.getLastNodePoint(prevSlate);
+
+      if (prevSlate && prevBlock) {
+        editor.focusBlock(prevBlock.id, { focusAt: lastNodePoint });
       }
     }
   }

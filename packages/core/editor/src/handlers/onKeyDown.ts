@@ -1,5 +1,5 @@
 import { isKeyHotkey } from 'is-hotkey';
-import { Editor, Path, Point, Range, Transforms } from 'slate';
+import { Editor, Node, Path, Point, Range, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { Blocks } from '../editor/blocks';
 import { Paths } from '../editor/paths';
@@ -7,7 +7,7 @@ import { SlateEditor, YooEditor } from '../editor/types';
 import { findPluginBlockByPath } from '../utils/findPluginBlockByPath';
 import { findSlateBySelectionPath } from '../utils/findSlateBySelectionPath';
 import { generateId } from '../utils/generateId';
-import { getLastNodePoint } from '../utils/getLastNodePoint';
+import { getLastNode, getLastNodePoint } from '../utils/getLastNodePoint';
 import { HOTKEYS } from '../utils/hotkeys';
 
 function getNextNodePoint(slate: SlateEditor, path: Path): Point {
@@ -29,13 +29,14 @@ function getNextNodePoint(slate: SlateEditor, path: Path): Point {
 
 export function onKeyDown(editor: YooEditor) {
   return (event: React.KeyboardEvent) => {
+    console.log('editor.path.current', editor.path.current);
     const slate = findSlateBySelectionPath(editor, { at: editor.path.current });
-    if (!slate || !slate.selection) return;
-
-    const parentPath = Path.parent(slate.selection.anchor.path);
+    console.log('slate', slate);
 
     if (HOTKEYS.isShiftEnter(event)) {
       if (event.isDefaultPrevented()) return;
+
+      if (!slate || !slate.selection) return;
 
       event.preventDefault();
       slate.insertText('\n');
@@ -55,13 +56,18 @@ export function onKeyDown(editor: YooEditor) {
 
     if (HOTKEYS.isEnter(event)) {
       if (event.isDefaultPrevented()) return;
+      if (!slate || !slate.selection) return;
+
       event.preventDefault();
 
-      const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
-      const isEnd = Editor.isEnd(slate, slate.selection.anchor, parentPath);
+      const first = Editor.first(slate, []);
+      const last = Editor.last(slate, []);
+      const isStart = Editor.isStart(slate, slate.selection.anchor, first[1]);
+      const isEnd = Editor.isEnd(slate, slate.selection.anchor, last[1]);
 
       // when the cursor is in the middle of the block
       if (!isStart && !isEnd) {
+        // [TEST]
         editor.splitBlock({ slate, focus: true });
         return;
       }
@@ -69,15 +75,12 @@ export function onKeyDown(editor: YooEditor) {
       const currentBlock = Blocks.getBlock(editor, { at: editor.path.current });
       const defaultBlock = Blocks.buildBlockData({ id: generateId() });
 
-      const string = Editor.string(slate, slate.selection.anchor.path);
+      const string = Editor.string(slate, []);
       const insertBefore = isStart && string.length > 0;
 
-      // [TEST]
-      // console.log('insertBefore', insertBefore);
-      // console.log('string', string);
-      // console.log('slate.selection', slate.selection);
       const nextPath = Paths.getNextPath(editor);
 
+      // [TEST]
       editor.batchOperations(() => {
         // [TEST]
         editor.insertBlock(defaultBlock.type, {
@@ -96,6 +99,7 @@ export function onKeyDown(editor: YooEditor) {
 
     if (HOTKEYS.isBackspace(event)) {
       if (event.isDefaultPrevented()) return;
+      if (!slate || !slate.selection) return;
 
       const parentPath = Path.parent(slate.selection.anchor.path);
       const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
@@ -104,21 +108,11 @@ export function onKeyDown(editor: YooEditor) {
       if (isStart) {
         event.preventDefault();
         const text = Editor.string(slate, parentPath);
-        const prevBlockPath = Paths.getPreviousPath(editor);
-        const prevSlate = findSlateBySelectionPath(editor, { at: prevBlockPath });
-        const prevBlock = findPluginBlockByPath(editor, { at: prevBlockPath });
-
-        let lastNodePoint;
-
-        if (prevSlate) {
-          lastNodePoint = getLastNodePoint(prevSlate);
-        }
 
         // If current block is empty just delete block
         if (text.trim().length === 0) {
           // [TEST]
           editor.deleteBlock({ at: editor.path.current, focus: true });
-          editor.focusBlock(prevBlock?.id || '');
           return;
         }
         // If current block is not empty merge text nodes with previous block
@@ -127,9 +121,22 @@ export function onKeyDown(editor: YooEditor) {
             return Transforms.delete(slate, { at: slate.selection });
           }
 
+          const prevBlock = Blocks.getBlock(editor, { at: Paths.getPreviousPath(editor) });
+          const prevSlate = Blocks.getSlate(editor, { id: prevBlock?.id });
+          if (prevBlock && prevSlate) {
+            const { node: lastSlateNode } = getLastNode(prevSlate);
+            const prevSlateText = Node.string(lastSlateNode);
+
+            if (prevSlateText.trim().length === 0) {
+              // [TEST]
+              editor.deleteBlock({ blockId: prevBlock.id, focus: false });
+              editor.setPath({ current: prevBlock.meta.order });
+              return;
+            }
+          }
+
           // [TEST]
-          editor.mergeBlock({ focus: false });
-          // editor.focusBlock(prevBlock?.id || '', { focusAt: lastNodePoint });
+          editor.mergeBlock();
         }
       }
       return;
@@ -137,6 +144,7 @@ export function onKeyDown(editor: YooEditor) {
 
     if (HOTKEYS.isSelect(event)) {
       if (event.isDefaultPrevented()) return;
+      if (!slate || !slate.selection) return;
 
       const [, firstElementPath] = Editor.first(slate, [0]);
       const [, lastElementPath] = Editor.last(slate, [slate.children.length - 1]);
@@ -182,8 +190,12 @@ export function onKeyDown(editor: YooEditor) {
     // [TODO] - default behavior for complex plugins
     if (HOTKEYS.isArrowUp(event)) {
       if (event.isDefaultPrevented()) return;
+      if (!slate || !slate.selection) return;
+
       // If element with any paths has all paths at 0
       const isAllPathsInStart = new Set(slate.selection.anchor.path).size === 1;
+      console.log('isAllPathsInStart', isAllPathsInStart);
+
       if (isAllPathsInStart) {
         const prevPath = Paths.getPreviousPath(editor);
         const prevSlate = findSlateBySelectionPath(editor, { at: prevPath });
@@ -209,6 +221,8 @@ export function onKeyDown(editor: YooEditor) {
     // [TODO] - default behavior for complex plugins
     if (HOTKEYS.isArrowDown(event)) {
       if (event.isDefaultPrevented()) return;
+      if (!slate || !slate.selection) return;
+
       const parentPath = Path.parent(slate.selection.anchor.path);
       const isEnd = Editor.isEnd(slate, slate.selection.anchor, parentPath);
       if (isEnd) {
@@ -225,14 +239,16 @@ export function onKeyDown(editor: YooEditor) {
       }
     }
 
-    if (Range.isExpanded(slate.selection)) {
-      const marks = Object.values(editor.formats);
-      if (marks.length > 0) {
-        for (const mark of Object.values(editor.formats)) {
-          if (mark.hotkey && isKeyHotkey(mark.hotkey)(event)) {
-            event.preventDefault();
-            editor.formats[mark.type].toggle();
-            break;
+    if (slate && slate.selection) {
+      if (Range.isExpanded(slate.selection)) {
+        const marks = Object.values(editor.formats);
+        if (marks.length > 0) {
+          for (const mark of Object.values(editor.formats)) {
+            if (mark.hotkey && isKeyHotkey(mark.hotkey)(event)) {
+              event.preventDefault();
+              editor.formats[mark.type].toggle();
+              break;
+            }
           }
         }
       }

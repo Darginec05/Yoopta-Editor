@@ -2,14 +2,14 @@ import { createDraft, finishDraft, isDraft, produce } from 'immer';
 import { buildSlateEditor } from '../../utils/buildSlate';
 import { SlateEditor, SlateElement, YooEditor, YooptaBlockData, YooptaPath } from '../types';
 import { Editor, Operation, Range, Transforms } from 'slate';
-import { buildBlockData } from '../blocks/buildBlockData';
-import { generateId } from '../../utils/generateId';
+
+export type ChangeSource = 'api' | 'user' | 'history';
 
 export type SetSlateOperation = {
   type: 'set_slate';
   slate: SlateEditor;
   blockId: string;
-  source: 'api' | 'user' | 'history';
+  source: ChangeSource;
   properties: {
     slateOps: Operation[];
     selectionBefore: Range | null;
@@ -58,7 +58,7 @@ export type DeleteBlockOperation = {
 };
 
 export type SetSelectionBlockOperation = {
-  type: 'set_selection_block';
+  type: 'set_block_path';
   path: YooptaPath;
 };
 
@@ -203,12 +203,15 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
     }
 
     case 'merge_block': {
+      // sourceProperties - block which should be merged and removed
+      // targetProperties - block which should be merged into
       const { sourceProperties, targetProperties, mergedProperties, slate } = op;
 
-      delete editor.blockEditorsMap[sourceProperties.id];
+      // [TEST]
+      // delete editor.blockEditorsMap[sourceProperties.id];
       delete editor.children[sourceProperties.id];
       editor.children[targetProperties.id] = mergedProperties;
-      editor.blockEditorsMap[targetProperties.id] = slate || buildSlateEditor(editor);
+      // editor.blockEditorsMap[targetProperties.id] = slate || buildSlateEditor(editor);
 
       Object.values(editor.children).forEach((block) => {
         if (block.meta.order > sourceProperties.meta.order) {
@@ -224,7 +227,7 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
       break;
     }
 
-    case 'set_selection_block': {
+    case 'set_block_path': {
       editor.path = op.path;
       break;
     }
@@ -249,7 +252,7 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
 
 export type ApplyTransformsOptions = {
   normalizePaths?: boolean;
-  source?: 'api' | 'user' | 'history';
+  source?: ChangeSource;
 };
 
 const MAX_HISTORY_LENGTH = 100;
@@ -284,7 +287,7 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
 
   const historyBatch = {
     operations: operations.filter(
-      (op) => op.type !== 'set_selection_block' && op.type !== 'set_block_value' && op.type !== 'normalize_block_paths',
+      (op) => op.type !== 'set_block_path' && op.type !== 'set_block_value' && op.type !== 'normalize_block_paths',
     ),
     path: editor.path,
   };
@@ -298,7 +301,7 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
     editor.historyStack.undos.shift();
   }
 
-  editor.emit('change', editor.children);
+  editor.emit('change', { value: editor.children, source, operations });
   editor.emit('path-change', editor.path);
 
   assertValidPaths(editor);
