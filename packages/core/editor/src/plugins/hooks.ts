@@ -117,7 +117,6 @@ export const useSlateEditor = (
               slateOps: [op],
               selectionBefore: slate.selection,
             },
-            source: 'api',
             blockId: id,
             slate: slate,
           };

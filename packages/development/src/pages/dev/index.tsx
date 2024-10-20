@@ -789,8 +789,7 @@ const BasicExample = () => {
   });
 
   const onChange = (value: YooptaContentValue, options: OnChangeOptions) => {
-    console.log('options', options);
-    console.log('value', value);
+    console.log('onChange', value, options);
     setValue(value);
   };
 

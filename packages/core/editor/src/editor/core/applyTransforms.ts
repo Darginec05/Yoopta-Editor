@@ -9,7 +9,6 @@ export type SetSlateOperation = {
   type: 'set_slate';
   slate: SlateEditor;
   blockId: string;
-  source: ChangeSource;
   properties: {
     slateOps: Operation[];
     selectionBefore: Range | null;
@@ -261,7 +260,7 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
   editor.children = createDraft(editor.children);
   editor.path = createDraft(editor.path);
 
-  const { normalizePaths = true, source } = options || {};
+  const { normalizePaths = true, source = 'user' } = options || {};
   const operations = [...ops];
 
   if (normalizePaths) {

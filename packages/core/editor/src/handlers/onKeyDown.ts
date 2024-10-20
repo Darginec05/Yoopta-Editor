@@ -29,9 +29,7 @@ function getNextNodePoint(slate: SlateEditor, path: Path): Point {
 
 export function onKeyDown(editor: YooEditor) {
   return (event: React.KeyboardEvent) => {
-    console.log('editor.path.current', editor.path.current);
     const slate = findSlateBySelectionPath(editor, { at: editor.path.current });
-    console.log('slate', slate);
 
     if (HOTKEYS.isShiftEnter(event)) {
       if (event.isDefaultPrevented()) return;
@@ -164,9 +162,7 @@ export function onKeyDown(editor: YooEditor) {
         Transforms.deselect(slate);
 
         const allBlockPaths = Array.from({ length: Object.keys(editor.children).length }, (_, i) => i);
-        console.log('allBlockPaths', allBlockPaths);
         editor.setPath({ current: null, selected: allBlockPaths });
-        // editor.setBlockSelected([], { allSelected: true });
         return;
       }
     }
@@ -175,6 +171,20 @@ export function onKeyDown(editor: YooEditor) {
       if (event.isDefaultPrevented()) return;
       event.preventDefault();
 
+      const selectedPaths = editor.path.selected;
+      if (Array.isArray(selectedPaths) && selectedPaths.length > 0) {
+        editor.batchOperations(() => {
+          selectedPaths.forEach((index) => {
+            const block = Blocks.getBlock(editor, { at: index });
+            if (block && block.meta.depth > 0) {
+              editor.decreaseBlockDepth({ at: index });
+            }
+          });
+        });
+
+        return;
+      }
+
       editor.decreaseBlockDepth();
       return;
     }
@@ -182,6 +192,17 @@ export function onKeyDown(editor: YooEditor) {
     if (HOTKEYS.isTab(event)) {
       if (event.isDefaultPrevented()) return;
       event.preventDefault();
+
+      const selectedPaths = editor.path.selected;
+      if (Array.isArray(selectedPaths) && selectedPaths.length > 0) {
+        editor.batchOperations(() => {
+          selectedPaths.forEach((index) => {
+            editor.increaseBlockDepth({ at: index });
+          });
+        });
+
+        return;
+      }
 
       editor.increaseBlockDepth();
       return;
@@ -194,7 +215,6 @@ export function onKeyDown(editor: YooEditor) {
 
       // If element with any paths has all paths at 0
       const isAllPathsInStart = new Set(slate.selection.anchor.path).size === 1;
-      console.log('isAllPathsInStart', isAllPathsInStart);
 
       if (isAllPathsInStart) {
         const prevPath = Paths.getPreviousPath(editor);
