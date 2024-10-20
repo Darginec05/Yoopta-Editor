@@ -116,19 +116,6 @@ const YooptaEditor = ({
     editor.once = Events.once;
     editor.off = Events.off;
     editor.emit = Events.emit;
-    editor.historyStack = {
-      undos: [],
-      redos: [],
-    };
-
-    editor.undo = () => YooptaHistory.undo(editor);
-    editor.redo = () => YooptaHistory.redo(editor);
-
-    editor.withoutSavingHistory = (fn) => YooptaHistory.withoutSavingHistory(editor, fn);
-    editor.withoutMergingHistory = (fn) => YooptaHistory.withoutMergingHistory(editor, fn);
-    editor.isSavingHistory = () => YooptaHistory.isSavingHistory(editor);
-    editor.isMergingHistory = () => YooptaHistory.isMergingHistory(editor);
-
     return { editor, version: 0 };
   });
 

@@ -23,6 +23,7 @@ import { isEmpty } from './core/isEmpty';
 import { applyTransforms } from './core/applyTransforms';
 import { batchOperations } from './core/batchOperations';
 import { mergeBlock } from './blocks/mergeBlock';
+import { UndoRedoOptions, YooptaHistory } from './core/history';
 
 export function createYooptaEditor(): YooEditor {
   const editor: YooEditor = {
@@ -46,7 +47,6 @@ export function createYooptaEditor(): YooEditor {
     splitBlock: (...args) => splitBlock(editor, ...args),
     mergeBlock: (...args) => mergeBlock(editor, ...args),
     setPath: (...args) => setPath(editor, ...args),
-    // setBlockSelected: (...args) => setBlockSelected(editor, ...args),
     blockEditorsMap: {},
     blocks: {},
     formats: {},
@@ -76,9 +76,13 @@ export function createYooptaEditor(): YooEditor {
       undos: [],
       redos: [],
     },
-
-    redo: () => {},
-    undo: () => {},
+    redo: (options?: UndoRedoOptions) => YooptaHistory.redo(editor, options),
+    undo: (options?: UndoRedoOptions) => YooptaHistory.undo(editor, options),
+    isSavingHistory: () => YooptaHistory.isSavingHistory(editor),
+    isMergingHistory: () => YooptaHistory.isMergingHistory(editor),
+    withoutSavingHistory: (fn) => YooptaHistory.withoutSavingHistory(editor, fn),
+    withoutMergingHistory: (fn) => YooptaHistory.withoutMergingHistory(editor, fn),
+    withMergingHistory: (fn) => YooptaHistory.withMergingHistory(editor, fn),
   };
 
   return editor;

@@ -42,7 +42,7 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions) {
     path: editor.path,
   });
 
-  editor.applyTransforms(operations);
+  editor.applyTransforms(operations, { normalizePaths: false });
 
   if (focus) {
     const prevBlockPath = Paths.getPreviousPath(editor);

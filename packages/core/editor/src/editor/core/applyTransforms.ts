@@ -2,6 +2,7 @@ import { createDraft, finishDraft, isDraft, produce } from 'immer';
 import { buildSlateEditor } from '../../utils/buildSlate';
 import { SlateEditor, SlateElement, YooEditor, YooptaBlockData, YooptaPath } from '../types';
 import { Editor, Operation, Range, Transforms } from 'slate';
+import { ReactEditor } from 'slate-react';
 
 export type ChangeSource = 'api' | 'user' | 'history';
 
@@ -94,6 +95,7 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
 
             if (selectionBefore) {
               Transforms.select(slate, selectionBefore);
+              ReactEditor.focus(slate);
             }
           });
         } catch (error) {}
@@ -103,23 +105,19 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
     }
 
     case 'insert_block': {
-      const { path, slate } = op;
+      const { slate } = op;
       editor.blockEditorsMap[op.block.id] = slate || buildSlateEditor(editor);
       editor.children[op.block.id] = op.block;
 
-      console.log(op.block.id, op.block.meta.order);
-
-      Object.values(editor.children).forEach((existingBlock) => {
+      Object.keys(editor.children).forEach((blockId) => {
+        const existingBlock = editor.children[blockId];
         if (existingBlock.meta.order >= op.block.meta.order && existingBlock.id !== op.block.id) {
-          if (isDraft(existingBlock)) {
-            existingBlock.meta.order++;
-          } else {
-            produce(existingBlock, (draft) => {
-              draft.meta.order++;
-            });
+          if (isDraft(editor.children[existingBlock.id])) {
+            existingBlock.meta.order = existingBlock.meta.order + 1;
           }
         }
       });
+
       break;
     }
 
@@ -134,7 +132,9 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
       //   editor.blockEditorsMap[id] = buildSlateEditor(editor);
       // }
 
-      Object.values(editor.children).forEach((existingBlock) => {
+      const blocks = Object.values(editor.children);
+
+      blocks.forEach((existingBlock) => {
         if (existingBlock.meta.order > op.block.meta.order) {
           if (isDraft(existingBlock)) {
             existingBlock.meta.order--;
@@ -143,6 +143,17 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
               draft.meta.order--;
             });
           }
+        }
+      });
+
+      blocks.sort((a, b) => a.meta.order - b.meta.order);
+      blocks.forEach((block, index) => {
+        if (!isDraft(block.meta)) {
+          produce(block, (draft) => {
+            draft.meta = { ...draft.meta, order: index };
+          });
+        } else {
+          block.meta.order = index;
         }
       });
 
@@ -183,7 +194,7 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
     }
 
     case 'split_block': {
-      const { slate, prevProperties, properties } = op;
+      const { slate, properties } = op;
       editor.children[properties.id] = properties;
       editor.blockEditorsMap[properties.id] = slate || buildSlateEditor(editor);
 
@@ -266,6 +277,15 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
   if (normalizePaths) {
     operations.push({ type: 'normalize_block_paths' });
   }
+
+  // if type is insert_block, we need to sort these operations by order
+  operations.sort((a, b) => {
+    if (a.type === 'insert_block' && b.type === 'insert_block') {
+      return a.block.meta.order - b.block.meta.order;
+    }
+
+    return 0;
+  });
 
   for (const operation of operations) {
     if (operation.type === 'set_slate' && source === 'api') {
