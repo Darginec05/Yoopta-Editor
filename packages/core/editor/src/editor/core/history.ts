@@ -2,6 +2,7 @@ import { Operation } from 'slate';
 import { YooEditor, YooptaPath } from '../types';
 import { YooptaOperation } from './applyTransforms';
 import { WithoutFirstArg } from '../../utils/types';
+import { Blocks } from '../blocks';
 
 export type HistoryStack = {
   operations: YooptaOperation[];
@@ -58,7 +59,6 @@ export function inverseEditorOperation(editor: YooEditor, op: YooptaOperation): 
       const inverseOps = op.properties.slateOps.map(Operation.inverse).reverse();
       return {
         type: 'set_slate',
-        source: 'history',
         properties: {
           slateOps: inverseOps,
           selectionBefore: op.properties.selectionBefore,
@@ -72,6 +72,10 @@ export function inverseEditorOperation(editor: YooEditor, op: YooptaOperation): 
       return op;
   }
 }
+
+export type UndoRedoOptions = {
+  scroll?: boolean;
+};
 
 export const SAVING = new WeakMap<YooEditor, boolean | undefined>();
 export const MERGING = new WeakMap<YooEditor, boolean | undefined>();
@@ -106,7 +110,7 @@ export const YooptaHistory = {
     SAVING.set(editor, prev);
   },
 
-  redo: (editor: YooEditor) => {
+  redo: (editor: YooEditor, options?: UndoRedoOptions) => {
     const { redos } = editor.historyStack;
 
     if (redos.length > 0) {
@@ -115,13 +119,24 @@ export const YooptaHistory = {
       YooptaHistory.withoutSavingHistory(editor, () => {
         editor.applyTransforms(batch.operations, { source: 'history' });
         editor.setPath(batch.path);
+
+        const { scroll = true } = options || {};
+        if (scroll && typeof batch.path.current === 'number') {
+          const block = Blocks.getBlock(editor, { at: batch.path.current });
+
+          // [TODO] - not good place to scroll. View tasks should be separated from model tasks
+          const blockElement = document.querySelector(`[data-yoopta-block-id="${block?.id}"]`);
+          if (blockElement && !isInViewport(blockElement)) {
+            blockElement.scrollIntoView({ block: 'center', behavior: 'auto' });
+          }
+        }
       });
 
       editor.historyStack.redos.pop();
       editor.historyStack.undos.push(batch);
     }
   },
-  undo: (editor: YooEditor) => {
+  undo: (editor: YooEditor, options?: UndoRedoOptions) => {
     const { undos } = editor.historyStack;
 
     if (undos.length > 0) {
@@ -132,6 +147,17 @@ export const YooptaHistory = {
         const inverseOps = batch.operations.flatMap((op) => inverseEditorOperation(editor, op)).reverse();
         editor.applyTransforms(inverseOps, { source: 'history' });
         editor.setPath(batch.path);
+
+        const { scroll = true } = options || {};
+        if (scroll && typeof batch.path.current === 'number') {
+          const block = Blocks.getBlock(editor, { at: batch.path.current });
+
+          // [TODO] - not good place to scroll. View tasks should be separated from model tasks
+          const blockElement = document.querySelector(`[data-yoopta-block-id="${block?.id}"]`);
+          if (blockElement && !isInViewport(blockElement)) {
+            blockElement.scrollIntoView({ block: 'center', behavior: 'auto' });
+          }
+        }
       });
 
       editor.historyStack.redos.push(batch);
@@ -139,3 +165,14 @@ export const YooptaHistory = {
     }
   },
 };
+
+function isInViewport(element) {
+  var rect = element.getBoundingClientRect();
+  var html = document.documentElement;
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || html.clientHeight) &&
+    rect.right <= (window.innerWidth || html.clientWidth)
+  );
+}

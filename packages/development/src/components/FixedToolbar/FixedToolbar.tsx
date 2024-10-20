@@ -179,7 +179,7 @@ export const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            editor.redo();
+            editor.redo({ scroll: false });
           }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff] disabled:opacity-50"
           disabled={editor.historyStack.redos.length === 0}
@@ -189,7 +189,7 @@ export const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            editor.undo();
+            editor.undo({ scroll: false });
           }}
           className="p-2 text-xs shadow-md hover:bg-[#64748b] hover:text-[#fff] disabled:opacity-50"
           disabled={editor.historyStack.undos.length === 0}
