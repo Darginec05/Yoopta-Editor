@@ -62,9 +62,6 @@ export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options: 
     value: [toBlockSlateStructure],
   };
 
-  console.log('toggle fromBlock', fromBlock);
-  console.log('toggle newBlock', newBlock);
-
   const newSlate = buildSlateEditor(editor);
   newSlate.children = [toBlockSlateStructure];
 

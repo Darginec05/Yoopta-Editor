@@ -5,6 +5,7 @@ import { generateId } from '../../utils/generateId';
 import { YooptaOperation } from '../core/applyTransforms';
 import { SlateEditor, SlateElement, YooEditor, YooptaBlockData } from '../types';
 import { deepClone } from '../../utils/deepClone';
+import { buildSlateNodeElement } from '../../utils/blockElements';
 
 export type SplitBlockOptions = {
   focus?: boolean;
@@ -44,7 +45,7 @@ export function splitBlock(editor: YooEditor, options: SplitBlockOptions = {}) {
       },
       properties: {
         nextBlock: nextBlock,
-        nextSlateValue: nextSlateValue,
+        nextSlateValue: !nextSlateValue ? [buildSlateNodeElement('paragraph')] : nextSlateValue,
         splitSlateValue: splitValue,
       },
       path: editor.path,
