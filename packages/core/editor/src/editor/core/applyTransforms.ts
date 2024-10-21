@@ -27,6 +27,7 @@ export type SetBlockValueOperation = {
   type: 'set_block_value';
   id: string;
   value: SlateElement[];
+  forceSlate?: boolean;
 };
 
 export type SetBlockMetaOperation = {
@@ -38,17 +39,31 @@ export type SetBlockMetaOperation = {
 
 export type SplitBlockOperation = {
   type: 'split_block';
-  properties: YooptaBlockData;
-  prevProperties: YooptaBlockData;
-  slate?: SlateEditor;
+  properties: {
+    nextBlock: YooptaBlockData;
+    splitSlateValue: SlateElement[];
+    nextSlateValue: SlateElement[];
+  };
+  prevProperties: {
+    originalBlock: YooptaBlockData;
+    originalValue: SlateElement[];
+  };
+  path: YooptaPath;
 };
 
 export type MergeBlockOperation = {
   type: 'merge_block';
-  sourceProperties: YooptaBlockData;
-  targetProperties: YooptaBlockData;
-  mergedProperties: YooptaBlockData;
-  slate?: SlateEditor;
+  properties: {
+    mergedBlock: YooptaBlockData;
+    mergedSlateValue: SlateElement[];
+  };
+  prevProperties: {
+    sourceBlock: YooptaBlockData;
+    sourceSlateValue: SlateElement[];
+    targetBlock: YooptaBlockData;
+    targetSlateValue: SlateElement[];
+  };
+  path: YooptaPath;
 };
 
 export type DeleteBlockOperation = {
@@ -87,18 +102,18 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
       if (slate) {
         const { slateOps, selectionBefore } = properties;
 
-        try {
-          Editor.withoutNormalizing(slate, () => {
-            for (const slateOp of slateOps) {
-              slate.apply(slateOp);
-            }
+        Editor.withoutNormalizing(slate, () => {
+          for (const slateOp of slateOps) {
+            slate.apply(slateOp);
+          }
 
-            if (selectionBefore) {
+          if (selectionBefore) {
+            try {
               Transforms.select(slate, selectionBefore);
               ReactEditor.focus(slate);
-            }
-          });
-        } catch (error) {}
+            } catch (error) {}
+          }
+        });
       }
 
       break;
@@ -161,7 +176,14 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
     }
 
     case 'set_block_value': {
-      const { id, value } = op;
+      const { id, value, forceSlate } = op;
+      const slate = editor.blockEditorsMap[id];
+      console.log('set_block_value', value);
+      console.log('set_block_value slate', editor.blockEditorsMap[id]);
+      if (forceSlate) {
+        slate.children = value;
+      }
+
       if (Array.isArray(value)) {
         if (isDraft(editor.children[id])) {
           editor.children[id].value = value;
@@ -194,12 +216,19 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
     }
 
     case 'split_block': {
-      const { slate, properties } = op;
-      editor.children[properties.id] = properties;
-      editor.blockEditorsMap[properties.id] = slate || buildSlateEditor(editor);
+      const { properties } = op;
+
+      const nextSlate = buildSlateEditor(editor);
+      nextSlate.children = properties.nextSlateValue;
+      editor.children[properties.nextBlock.id] = { ...properties.nextBlock, value: nextSlate.children };
+      editor.blockEditorsMap[properties.nextBlock.id] = nextSlate;
+
+      const splitSlate = editor.blockEditorsMap[op.prevProperties.originalBlock.id];
+      splitSlate.children = properties.splitSlateValue;
+      editor.children[op.prevProperties.originalBlock.id].value = splitSlate.children;
 
       Object.values(editor.children).forEach((block) => {
-        if (block.meta.order >= properties.meta.order && block.id !== properties.id) {
+        if (block.meta.order >= properties.nextBlock.meta.order && block.id !== properties.nextBlock.id) {
           if (isDraft(block)) {
             block.meta.order++;
           } else {
@@ -213,18 +242,16 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
     }
 
     case 'merge_block': {
-      // sourceProperties - block which should be merged and removed
-      // targetProperties - block which should be merged into
-      const { sourceProperties, targetProperties, mergedProperties, slate } = op;
+      const { prevProperties, properties } = op;
 
-      // [TEST]
-      // delete editor.blockEditorsMap[sourceProperties.id];
-      delete editor.children[sourceProperties.id];
-      editor.children[targetProperties.id] = mergedProperties;
-      // editor.blockEditorsMap[targetProperties.id] = slate || buildSlateEditor(editor);
+      delete editor.blockEditorsMap[prevProperties.sourceBlock.id];
+      delete editor.children[prevProperties.sourceBlock.id];
+
+      editor.children[properties.mergedBlock.id] = properties.mergedBlock;
+      editor.blockEditorsMap[properties.mergedBlock.id].children = properties.mergedSlateValue;
 
       Object.values(editor.children).forEach((block) => {
-        if (block.meta.order > sourceProperties.meta.order) {
+        if (block.meta.order > properties.mergedBlock.meta.order) {
           if (isDraft(block)) {
             block.meta.order--;
           } else {

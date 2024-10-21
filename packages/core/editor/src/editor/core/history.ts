@@ -1,7 +1,6 @@
 import { Operation } from 'slate';
-import { YooEditor, YooptaPath } from '../types';
+import { SlateElement, YooEditor, YooptaPath } from '../types';
 import { YooptaOperation } from './applyTransforms';
-import { WithoutFirstArg } from '../../utils/types';
 import { Blocks } from '../blocks';
 
 export type HistoryStack = {
@@ -37,22 +36,37 @@ export function inverseEditorOperation(editor: YooEditor, op: YooptaOperation): 
     }
 
     case 'split_block': {
-      return {
-        type: 'merge_block',
-        sourceProperties: op.properties,
-        targetProperties: op.prevProperties,
-        mergedProperties: op.prevProperties,
-        slate: editor.blockEditorsMap[op.prevProperties.id],
-      };
+      return [
+        {
+          type: 'delete_block',
+          block: op.properties.nextBlock,
+          path: op.path,
+        },
+        {
+          type: 'set_block_value',
+          id: op.prevProperties.originalBlock.id,
+          value: op.prevProperties.originalValue as SlateElement[],
+          forceSlate: true,
+        },
+      ];
     }
 
     case 'merge_block': {
-      return {
-        type: 'split_block',
-        prevProperties: op.targetProperties,
-        properties: op.sourceProperties,
-        slate: editor.blockEditorsMap[op.sourceProperties.id],
-      };
+      return [
+        {
+          type: 'split_block',
+          properties: {
+            nextBlock: op.prevProperties.sourceBlock,
+            nextSlateValue: op.prevProperties.sourceSlateValue,
+            splitSlateValue: op.prevProperties.targetSlateValue,
+          },
+          prevProperties: {
+            originalBlock: op.properties.mergedBlock,
+            originalValue: op.properties.mergedSlateValue,
+          },
+          path: op.path,
+        },
+      ];
     }
 
     case 'set_slate': {

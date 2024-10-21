@@ -5,7 +5,7 @@ import YooptaEditor, {
   YooptaBlockData,
   YooptaContentValue,
 } from '@yoopta/editor';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { MARKS } from '../../utils/yoopta/marks';
 import { YOOPTA_PLUGINS } from '../../utils/yoopta/plugins';
@@ -791,6 +791,7 @@ const BasicExample = () => {
   const onChange = (value: YooptaContentValue, options: OnChangeOptions) => {
     console.log('onChange', value, options);
     setValue(value);
+    console.log('editor.historyStack', editor.historyStack);
   };
 
   return (

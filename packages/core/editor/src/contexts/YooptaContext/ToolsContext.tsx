@@ -47,6 +47,7 @@ export const ToolsProvider = ({ children, tools }: Props) => {
       const render = tools?.[toolname]?.render;
       const props = tools?.[toolname]?.props;
       if (!Tool) return null;
+      // @ts-ignore - fixme
       return <Tool key={toolname} render={render} {...props} />;
     });
   }, [tools]);

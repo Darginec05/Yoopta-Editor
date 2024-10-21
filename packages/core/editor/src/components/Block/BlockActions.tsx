@@ -127,6 +127,7 @@ const BlockActions = ({ block, editor, dragHandleProps, onChangeActiveBlock, sho
         <Portal id="yoo-block-options-portal">
           <Overlay lockScroll className="yoo-editor-z-[100]" onClick={onCloseActionMenu}>
             <div style={actionMenuStyles} ref={actionMenuRefs.setFloating}>
+              {/* @ts-ignore - fixme */}
               <ActionMenu {...actionMenuRenderProps} />
             </div>
           </Overlay>

@@ -76,6 +76,7 @@ export function createYooptaEditor(): YooEditor {
       undos: [],
       redos: [],
     },
+
     redo: (options?: UndoRedoOptions) => YooptaHistory.redo(editor, options),
     undo: (options?: UndoRedoOptions) => YooptaHistory.undo(editor, options),
     isSavingHistory: () => YooptaHistory.isSavingHistory(editor),
