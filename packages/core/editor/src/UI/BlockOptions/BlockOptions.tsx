@@ -133,6 +133,7 @@ const BlockOptions = ({ isOpen, onClose, refs, style, actions = DEFAULT_ACTIONS,
                       <Portal id="yoo-block-options-portal">
                         <Overlay lockScroll className="yoo-editor-z-[100]" onClick={() => setIsActionMenuOpen(false)}>
                           <div style={actionMenuStyles} ref={actionMenuRefs.setFloating}>
+                            {/* @ts-ignore - fixme */}
                             <ActionMenu {...actionMenuRenderProps} />
                           </div>
                         </Overlay>

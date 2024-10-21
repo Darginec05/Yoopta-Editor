@@ -1,4 +1,4 @@
-import { Descendant, Path, Point } from 'slate';
+import { Descendant, Path, Point, Text } from 'slate';
 import { Plugin, PluginElementsMap, PluginOptions, PluginElementProps } from '../plugins/types';
 import { EditorBlurOptions } from './core/blur';
 import { DeleteBlockOptions } from './blocks/deleteBlock';

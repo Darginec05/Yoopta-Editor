@@ -23,9 +23,6 @@ const Block = ({ children, block, blockId }: BlockProps) => {
   const align = block.meta.align || 'left';
   const className = `yoopta-block yoopta-align-${align}`;
 
-  // [4, [0, 1, 2, 3, 4]]
-  // [null, [0, 1, 2, 3, 4]]
-  // [null, []]
   const isSelected = Paths.isBlockSelected(editor, block);
   const isHovered = activeBlockId === blockId;
 

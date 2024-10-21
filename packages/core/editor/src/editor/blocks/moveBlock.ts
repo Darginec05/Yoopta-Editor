@@ -53,7 +53,7 @@ export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: Yo
     },
     properties: {
       ...draggedBlock.meta,
-      // [TODO] - add new operation
+      // [TODO] - add new operation move_block
       order: updatedPosition!,
       depth: blockInNewPosition.meta.depth,
     },

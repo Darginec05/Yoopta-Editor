@@ -10,7 +10,7 @@ export type InsertBlockOptions = {
 };
 
 // [TEST]
-// [TEST] TEST EVENTS
+// [TEST] - TEST EVENTS
 export function insertBlock(editor: YooEditor, type: string, options: InsertBlockOptions = {}) {
   const { at = editor.path.current, focus = false, blockData } = options;
 
@@ -39,17 +39,6 @@ export function insertBlock(editor: YooEditor, type: string, options: InsertBloc
     path: { current: newBlock.meta.order },
     block: newBlock,
   });
-
-  // Object.values(editor.children).forEach((block) => {
-  //   if (block.meta.order >= newBlock.meta.order && block.id !== newBlock.id) {
-  //     operations.push({
-  //       type: 'set_block_meta',
-  //       id: block.id,
-  //       properties: { order: block.meta.order + 1 },
-  //       prevProperties: { order: block.meta.order },
-  //     });
-  //   }
-  // });
 
   editor.applyTransforms(operations);
   onCreate?.(editor, newBlock.id);

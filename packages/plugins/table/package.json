@@ -35,7 +35,6 @@
     "url": "https://github.com/Darginec05/Yoopta-Editor/issues"
   },
   "dependencies": {
-    "@floating-ui/react": "^0.26.22",
     "lucide-react": "^0.436.0"
   },
   "gitHead": "12d8460dfe0ead89ee1d6f3f2f1fc68239e93d4c"

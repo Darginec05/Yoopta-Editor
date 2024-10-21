@@ -33,6 +33,10 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions) {
   // const isLastBlock = Object.values(editor.children).length === 1;
   // if (isLastBlock) return;
 
+  const prevBlockPath = Paths.getPreviousPath(editor);
+  const prevBlock = prevBlockPath !== null ? editor.getBlock({ at: prevBlockPath }) : undefined;
+  const prevSlate = prevBlock ? getSlate(editor, { id: prevBlock?.id }) : undefined;
+
   const blockToDelete = editor.children[block.id];
   const operations: YooptaOperation[] = [];
 
@@ -45,16 +49,9 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions) {
   editor.applyTransforms(operations, { normalizePaths: false });
 
   if (focus) {
-    const prevBlockPath = Paths.getPreviousPath(editor);
-    if (prevBlockPath) {
-      const prevBlock = editor.getBlock({ at: prevBlockPath });
-      const prevSlate = getSlate(editor, { id: prevBlock?.id });
-
+    if (prevSlate && prevBlock) {
       const lastNodePoint = Paths.getLastNodePoint(prevSlate);
-
-      if (prevSlate && prevBlock) {
-        editor.focusBlock(prevBlock.id, { focusAt: lastNodePoint });
-      }
+      editor.focusBlock(prevBlock.id, { focusAt: lastNodePoint });
     }
   }
 }

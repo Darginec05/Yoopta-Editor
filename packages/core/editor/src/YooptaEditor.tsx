@@ -18,7 +18,7 @@ import { YooptaPlugin } from './plugins';
 import { YooptaMark } from './marks';
 import { FakeSelectionMark } from './marks/FakeSelectionMark';
 import { generateId } from './utils/generateId';
-import { YooptaHistory } from './editor/core/history';
+import { UndoRedoOptions, YooptaHistory } from './editor/core/history';
 import { ChangeSource, YooptaOperation } from './editor/core/applyTransforms';
 
 export type OnChangeOptions = {
@@ -116,6 +116,19 @@ const YooptaEditor = ({
     editor.once = Events.once;
     editor.off = Events.off;
     editor.emit = Events.emit;
+    // editor.historyStack = {
+    //   undos: [],
+    //   redos: [],
+    // };
+
+    // editor.undo = (options?: UndoRedoOptions) => YooptaHistory.undo(editor, options);
+    // editor.redo = (options?: UndoRedoOptions) => YooptaHistory.redo(editor, options);
+
+    // editor.withoutSavingHistory = (fn) => YooptaHistory.withoutSavingHistory(editor, fn);
+    // editor.withoutMergingHistory = (fn) => YooptaHistory.withoutMergingHistory(editor, fn);
+    // editor.isSavingHistory = () => YooptaHistory.isSavingHistory(editor);
+    // editor.isMergingHistory = () => YooptaHistory.isMergingHistory(editor);
+
     return { editor, version: 0 };
   });
 
