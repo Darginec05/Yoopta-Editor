@@ -70,7 +70,7 @@ export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options: 
 
   const operations: YooptaOperation[] = [
     { type: 'delete_block', block: fromBlock, path: { current: fromBlock.meta.order } },
-    { type: 'insert_block', path: { current: fromBlock.meta.order }, block: newBlock, slate: newSlate },
+    { type: 'insert_block', path: { current: fromBlock.meta.order }, block: newBlock },
   ];
 
   editor.applyTransforms(operations);
@@ -81,7 +81,7 @@ export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options: 
   }
 
   if (options.focus) {
-    editor.focusBlock(newBlock.id, { slate: newSlate });
+    editor.focusBlock(newBlock.id);
   }
 
   return newBlock.id;

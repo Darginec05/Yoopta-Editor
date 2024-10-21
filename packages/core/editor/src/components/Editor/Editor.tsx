@@ -186,16 +186,15 @@ const Editor = ({
                 if (blockId) editor.deleteBlock({ blockId });
               });
 
-              // editor.setBlockSelected(null);
-              editor.setPath({ current: null, selected: null });
-              resetSelectionState();
-
               if (isAllBlocksSelected) {
                 const defaultBlock = buildBlockData({ id: generateId() });
                 editor.insertBlock(defaultBlock.type, { at: 0, focus: true });
               }
             }
           });
+
+          editor.setPath({ current: null, selected: null });
+          resetSelectionState();
         }
         return;
       }

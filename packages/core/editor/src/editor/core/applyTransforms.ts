@@ -16,11 +16,22 @@ export type SetSlateOperation = {
   };
 };
 
+export type MoveBlockOperation = {
+  type: 'move_block';
+  prevProperties: {
+    id: string;
+    order: number;
+  };
+  properties: {
+    id: string;
+    order: number;
+  };
+};
+
 export type InsertBlockOperation = {
   type: 'insert_block';
   path: YooptaPath;
   block: YooptaBlockData;
-  slate?: SlateEditor;
 };
 
 export type SetBlockValueOperation = {
@@ -90,6 +101,7 @@ export type YooptaOperation =
   | SetBlockValueOperation
   | SetBlockMetaOperation
   | MergeBlockOperation
+  | MoveBlockOperation
   | SetSlateOperation;
 
 function applyOperation(editor: YooEditor, op: YooptaOperation): void {
@@ -120,9 +132,9 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
     }
 
     case 'insert_block': {
-      const { slate } = op;
-      editor.blockEditorsMap[op.block.id] = slate || buildSlateEditor(editor);
+      editor.blockEditorsMap[op.block.id] = buildSlateEditor(editor);
       editor.children[op.block.id] = op.block;
+      editor.blockEditorsMap[op.block.id].children = op.block.value;
 
       Object.keys(editor.children).forEach((blockId) => {
         const existingBlock = editor.children[blockId];
@@ -261,6 +273,31 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
           }
         }
       });
+      break;
+    }
+
+    case 'move_block': {
+      const { prevProperties, properties } = op;
+      const block = editor.children[prevProperties.id];
+
+      if (block) {
+        block.meta.order = properties.order;
+
+        Object.values(editor.children).forEach((otherBlock) => {
+          if (otherBlock.id !== prevProperties.id) {
+            if (prevProperties.order < properties.order) {
+              if (otherBlock.meta.order > prevProperties.order && otherBlock.meta.order <= properties.order) {
+                otherBlock.meta.order--;
+              }
+            } else {
+              if (otherBlock.meta.order < prevProperties.order && otherBlock.meta.order >= properties.order) {
+                otherBlock.meta.order++;
+              }
+            }
+          }
+        });
+      }
+
       break;
     }
 
