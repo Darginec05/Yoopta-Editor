@@ -1,4 +1,4 @@
-import { YooptaOperation } from '../core/applyTransforms';
+import { MoveBlockOperation, YooptaOperation } from '../core/applyTransforms';
 import { YooEditor, YooptaPathIndex } from '../types';
 
 export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: YooptaPathIndex) {
@@ -10,54 +10,21 @@ export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: Yo
     console.warn('Invalid block ids for move operation');
     return;
   }
-
   const operations: YooptaOperation[] = [];
 
-  const dragFromTopToBottom = draggedBlock.meta.order < blockInNewPosition.meta.order;
-  const dragFromBottomToTop = draggedBlock.meta.order > blockInNewPosition.meta.order;
-
-  Object.values(editor.children).forEach((item) => {
-    let newOrder = item.meta.order;
-
-    if (dragFromTopToBottom) {
-      if (item.meta.order > draggedBlock.meta.order && item.meta.order <= blockInNewPosition.meta.order) {
-        newOrder--;
-      }
-    } else if (dragFromBottomToTop) {
-      if (item.meta.order < draggedBlock.meta.order && item.meta.order >= blockInNewPosition.meta.order) {
-        newOrder++;
-      }
-    }
-
-    if (newOrder !== item.meta.order) {
-      operations.push({
-        type: 'set_block_meta',
-        id: item.id,
-        prevProperties: {
-          ...item.meta,
-        },
-        properties: {
-          ...item.meta,
-          // [TODO] - add new operation
-          order: newOrder,
-        },
-      });
-    }
-  });
-
-  operations.push({
-    type: 'set_block_meta',
-    id: draggedBlockId,
+  const moveOperation: MoveBlockOperation = {
+    type: 'move_block',
     prevProperties: {
-      ...draggedBlock.meta,
+      id: draggedBlockId,
+      order: draggedBlock.meta.order,
     },
     properties: {
-      ...draggedBlock.meta,
-      // [TODO] - add new operation move_block
+      id: draggedBlockId,
       order: updatedPosition!,
-      depth: blockInNewPosition.meta.depth,
     },
-  });
+  };
+
+  operations.push(moveOperation);
 
   editor.applyTransforms(operations);
   editor.setPath({ current: updatedPosition });

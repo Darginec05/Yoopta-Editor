@@ -28,7 +28,9 @@ export function mergeBlock(editor: YooEditor) {
   try {
     const point = getLastNodePoint(targetSlate);
     Transforms.select(targetSlate, point);
-  } catch (error) {}
+  } catch (error) {
+    Transforms.select(targetSlate, Editor.start(targetSlate, []));
+  }
 
   Editor.withoutNormalizing(targetSlate, () => {
     const operations: YooptaOperation[] = [];

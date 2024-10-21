@@ -69,6 +69,14 @@ export function inverseEditorOperation(editor: YooEditor, op: YooptaOperation): 
       ];
     }
 
+    case 'move_block': {
+      return {
+        type: 'move_block',
+        properties: op.prevProperties,
+        prevProperties: op.properties,
+      };
+    }
+
     case 'set_slate': {
       const inverseOps = op.properties.slateOps.map(Operation.inverse).reverse();
       return {

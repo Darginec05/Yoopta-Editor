@@ -7,7 +7,7 @@ import { SlateEditor, YooEditor } from '../editor/types';
 import { findPluginBlockByPath } from '../utils/findPluginBlockByPath';
 import { findSlateBySelectionPath } from '../utils/findSlateBySelectionPath';
 import { generateId } from '../utils/generateId';
-import { getLastNode, getLastNodePoint } from '../utils/getLastNodePoint';
+import { getLastNode } from '../utils/getLastNodePoint';
 import { HOTKEYS } from '../utils/hotkeys';
 
 function getNextNodePoint(slate: SlateEditor, path: Path): Point {
@@ -220,7 +220,8 @@ export function onKeyDown(editor: YooEditor) {
         const prevPath = Paths.getPreviousPath(editor);
         const prevSlate = findSlateBySelectionPath(editor, { at: prevPath });
         const prevBlock = findPluginBlockByPath(editor, { at: prevPath });
-        if (prevSlate && prevBlock) {
+        const prevBlockEntity = editor.blocks[prevBlock?.type || ''];
+        if (prevSlate && prevBlock && !prevBlockEntity?.hasCustomEditor) {
           const [, prevLastPath] = Editor.last(prevSlate, [0]);
           const prevLastNodeTextLength = Editor.string(prevSlate, prevLastPath).length;
           const selection: Point = {
@@ -249,7 +250,8 @@ export function onKeyDown(editor: YooEditor) {
         const nextPath = Paths.getNextPath(editor);
         const nextSlate = findSlateBySelectionPath(editor, { at: nextPath });
         const nextBlock = findPluginBlockByPath(editor, { at: nextPath });
-        if (nextSlate && nextBlock) {
+        const nextBlockEntity = editor.blocks[nextBlock?.type || ''];
+        if (nextSlate && nextBlock && !nextBlockEntity?.hasCustomEditor) {
           // [TODO] - should parent path, but for next slate
           const selection: Point = getNextNodePoint(nextSlate, parentPath);
           event.preventDefault();
