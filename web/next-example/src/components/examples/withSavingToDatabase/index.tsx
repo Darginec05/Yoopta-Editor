@@ -121,6 +121,7 @@ function WithSavingToDatabase() {
     console.log('DATA ON CHANGE', value);
   }
 
+  // [TODO] - UPDATE EXAMPLE
   useEffect(() => {
     editor.on('change', handleChange);
     return () => {
