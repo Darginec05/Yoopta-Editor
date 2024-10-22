@@ -1,8 +1,8 @@
 {
   "name": "@yoopta/editor",
-  "version": "4.8.5-rc.2",
+  "version": "4.8.5-rc.3",
   "license": "MIT",
-  "private": false,
+  "private": true,
   "main": "dist/index.js",
   "type": "module",
   "module": "dist/index.js",
@@ -66,5 +66,5 @@
     "url": "https://github.com/Darginec05/Yoopta-Editor/issues"
   },
   "homepage": "https://github.com/Darginec05/Yoopta-Editor#readme",
-  "gitHead": "45c9f9bc4b506e819728bbd64f2e2740211f53dd"
+  "gitHead": "016b0f92a45bfcc157e44a7f28820174d0cc5c7e"
 }
