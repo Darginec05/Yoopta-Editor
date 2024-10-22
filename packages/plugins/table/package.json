@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/table",
-  "version": "4.8.5-rc.2",
+  "version": "4.8.5-rc.3",
   "description": "Table plugin for Yoopta Editor [IN PROGRESS]",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Yoopta-Editor#readme",
@@ -19,7 +19,7 @@
     "react-dom": ">=17.0.2"
   },
   "publishConfig": {
-    "registry": "https://registry.yarnpkg.com"
+    "registry": "https://registry.npmjs.org"
   },
   "repository": {
     "type": "git",
@@ -37,5 +37,5 @@
   "dependencies": {
     "lucide-react": "^0.436.0"
   },
-  "gitHead": "016b0f92a45bfcc157e44a7f28820174d0cc5c7e"
+  "gitHead": "054fb22aef8ca890d17616d00928eb855e77ec29"
 }
