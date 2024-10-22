@@ -34,7 +34,27 @@ export const BlockPluginWithProps = new YooptaPlugin({
   },
 });
 
-export const TEST_PLUGIN_LIST = [InlinePlugin, DefaultParagraph, BlockPluginWithProps];
+const PluginWithSeveralElements = new YooptaPlugin({
+  type: 'PluginWithSeveralElements',
+  elements: {
+    'root-element': {
+      render: (props) => <div {...props.attributes}>{props.children}</div>,
+      props: { nodeType: 'inline' },
+      children: ['first-child-element'],
+    },
+    'first-child-element': {
+      render: (props) => <div {...props.attributes}>{props.children}</div>,
+      props: { nodeType: 'block' },
+      children: ['second-child-element'],
+    },
+    'second-child-element': {
+      render: (props) => <div {...props.attributes}>{props.children}</div>,
+      props: { nodeType: 'block' },
+    },
+  },
+});
+
+export const TEST_PLUGIN_LIST = [InlinePlugin, DefaultParagraph, BlockPluginWithProps, PluginWithSeveralElements];
 
 export function renderYooptaEditor(props: Partial<YooptaEditorProps> = {}) {
   const editor = createYooptaEditor();

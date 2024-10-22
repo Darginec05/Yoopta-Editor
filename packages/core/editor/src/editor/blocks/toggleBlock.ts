@@ -18,12 +18,22 @@ export type ToggleBlockOptions = {
 
 const DEFAULT_BLOCK_TYPE = 'Paragraph';
 
-function extractTextNodes(slate: SlateEditor, node: SlateElement | Descendant): (Text | SlateElement)[] {
-  if (Editor.isEditor(node)) return node.children.flatMap((child) => extractTextNodes(slate, child));
+function extractTextNodes(
+  slate: SlateEditor,
+  node: SlateElement | Descendant,
+  blockData: YooptaBlockData,
+  editor: YooEditor,
+): (Text | SlateElement)[] {
+  const blockEntity = editor.plugins[blockData.type];
+  if (blockEntity?.customEditor) {
+    return (blockData.value[0] as SlateElement).children;
+  }
+
+  if (Editor.isEditor(node)) return node.children.flatMap((child) => extractTextNodes(slate, child, blockData, editor));
   if (!Element.isElement(node)) return [node];
   if (Editor.isInline(slate, node)) return [node];
 
-  return node.children.flatMap((child) => extractTextNodes(slate, child));
+  return node.children.flatMap((child) => extractTextNodes(slate, child, blockData, editor));
 }
 
 function findFirstLeaf(node: SlateElement): SlateElement | null {
@@ -48,7 +58,7 @@ export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options: 
   if (!slate) throw new Error(`Slate not found for block in position ${fromBlock.meta.order}`);
 
   const toBlockSlateStructure = onBeforeCreate?.(editor) || buildBlockElementsStructure(editor, toBlockType);
-  const textNodes = extractTextNodes(slate, slate.children[0]);
+  const textNodes = extractTextNodes(slate, slate.children[0], fromBlock, editor);
   const firstLeaf = findFirstLeaf(toBlockSlateStructure);
 
   if (firstLeaf) {

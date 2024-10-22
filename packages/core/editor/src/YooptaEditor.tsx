@@ -18,8 +18,7 @@ import { YooptaPlugin } from './plugins';
 import { YooptaMark } from './marks';
 import { FakeSelectionMark } from './marks/FakeSelectionMark';
 import { generateId } from './utils/generateId';
-import { UndoRedoOptions, YooptaHistory } from './editor/core/history';
-import { ChangeSource, YooptaOperation } from './editor/core/applyTransforms';
+import { YooptaOperation } from './editor/core/applyTransforms';
 
 export type OnChangeOptions = {
   operations: YooptaOperation[];

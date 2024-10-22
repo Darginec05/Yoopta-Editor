@@ -791,7 +791,6 @@ const BasicExample = () => {
   const onChange = (value: YooptaContentValue, options: OnChangeOptions) => {
     console.log('onChange', value, options);
     setValue(value);
-    console.log('editor.historyStack', editor.historyStack);
   };
 
   return (
