@@ -190,9 +190,8 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
     case 'set_block_value': {
       const { id, value, forceSlate } = op;
       const slate = editor.blockEditorsMap[id];
-      console.log('set_block_value', value);
-      console.log('set_block_value slate', editor.blockEditorsMap[id]);
-      if (forceSlate) {
+
+      if (forceSlate && slate) {
         slate.children = value;
       }
 
