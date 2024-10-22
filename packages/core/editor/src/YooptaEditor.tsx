@@ -139,7 +139,7 @@ const YooptaEditor = ({
           operation.type !== 'set_slate',
       );
 
-      if (operations.length > 0) onChange(value, options);
+      if (operations.length > 0) onChange(value, { operations });
     }
   }, []);
 

@@ -107,7 +107,6 @@ const BlockActions = ({ block, editor, dragHandleProps, onChangeActiveBlock, sho
         Transforms.deselect(slate);
       }
 
-      // editor.setBlockSelected([block.meta.order], { only: true });
       editor.setPath({ current: block.meta.order, selected: [block.meta.order] });
 
       setIsBlockOptionsOpen(true);

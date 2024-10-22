@@ -63,6 +63,10 @@ export function onKeyDown(editor: YooEditor) {
       const isStart = Editor.isStart(slate, slate.selection.anchor, first[1]);
       const isEnd = Editor.isEnd(slate, slate.selection.anchor, last[1]);
 
+      if (Range.isExpanded(slate.selection)) {
+        Transforms.delete(slate, { at: slate.selection });
+      }
+
       // when the cursor is in the middle of the block
       if (!isStart && !isEnd) {
         // [TEST]

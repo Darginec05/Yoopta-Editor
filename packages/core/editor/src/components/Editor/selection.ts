@@ -260,7 +260,6 @@ export function useMultiSelection({ editor }: MultiSelectionOptions) {
       const selectedBlocks = Paths.getSelectedPaths(editor);
       if (selectedBlocks?.includes(currentIndex) && currentIndex !== selectionState.startedIndexToSelect) {
         const filteredIndexes = selectedBlocks.filter((index) => index !== currentIndex);
-        // editor.setBlockSelected(filteredIndexes, { only: true });
         editor.setPath({ current: nextIndex, selected: filteredIndexes });
         selectionState.indexToSelect = nextIndex;
         return;

@@ -71,7 +71,6 @@ const BlockOptions = ({ isOpen, onClose, refs, style, actions = DEFAULT_ACTIONS,
 
   const onDelete = () => {
     editor.deleteBlock({ at: editor.path.current });
-    // editor.setBlockSelected(null);
     editor.setPath({ current: null });
 
     onClose();
@@ -82,7 +81,6 @@ const BlockOptions = ({ isOpen, onClose, refs, style, actions = DEFAULT_ACTIONS,
     if (typeof editor.path.current !== 'number') return;
 
     editor.duplicateBlock({ original: { path: editor.path.current }, focus: true });
-    // editor.setBlockSelected([null]);
 
     onClose();
   };

@@ -5,7 +5,7 @@ import YooptaEditor, {
   YooptaBlockData,
   YooptaContentValue,
 } from '@yoopta/editor';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 import { MARKS } from '../../utils/yoopta/marks';
 import { YOOPTA_PLUGINS } from '../../utils/yoopta/plugins';

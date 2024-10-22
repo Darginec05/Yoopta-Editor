@@ -213,7 +213,6 @@ const Editor = ({
           const allBlocks = Object.keys(editor.children);
           allBlocks.forEach((blockId) => editor.deleteBlock({ blockId }));
 
-          // editor.setBlockSelected(null);
           editor.setPath({ current: null, selected: null });
           resetSelectionState();
         });
@@ -229,7 +228,6 @@ const Editor = ({
           event.preventDefault();
           selectedBlocks.forEach((index) => editor.deleteBlock({ at: index }));
 
-          // editor.setBlockSelected(null);
           editor.setPath({ current: null, selected: null });
           resetSelectionState();
         }

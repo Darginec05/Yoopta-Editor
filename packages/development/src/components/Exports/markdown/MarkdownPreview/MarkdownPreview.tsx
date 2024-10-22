@@ -74,6 +74,8 @@ const WriteMarkdown = ({ editor, markdown, onChange, onChangeFocusedEditor }: Vi
 };
 
 const ResultMarkdown = ({ editor, markdown, onChange, focusedEditor, onChangeFocusedEditor }: ViewProps) => {
+  const [value, setValue] = useState<YooptaContentValue>();
+
   useEffect(() => {
     if (focusedEditor === 'yoopta') return;
 
@@ -82,17 +84,14 @@ const ResultMarkdown = ({ editor, markdown, onChange, focusedEditor, onChangeFoc
     editor.setEditorValue(deserialized);
   }, [markdown, focusedEditor]);
 
-  useEffect(() => {
-    const handleChange = (value: YooptaContentValue) => {
-      const string = parsers.markdown.serialize(editor, value);
-      onChange(string);
-    };
+  const onChangeEditorValue = (value: YooptaContentValue) => {
+    console.log('value', value);
+    const string = parsers.markdown.serialize(editor, value);
+    onChange(string);
+    setValue(value);
+  };
 
-    if (focusedEditor === 'yoopta') {
-      editor.on('change', handleChange);
-      return () => editor.off('change', handleChange);
-    }
-  }, [editor, focusedEditor]);
+  console.log('value', value);
 
   return (
     <div className="w-1/2 ml-1 ">
@@ -108,6 +107,8 @@ const ResultMarkdown = ({ editor, markdown, onChange, focusedEditor, onChangeFoc
             autoFocus={false}
             selectionBoxRoot={false}
             placeholder="Write content..."
+            value={value}
+            onChange={onChangeEditorValue}
             style={{
               width: '100%',
               paddingBottom: 0,

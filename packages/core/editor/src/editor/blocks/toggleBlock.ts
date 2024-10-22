@@ -68,7 +68,7 @@ export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options: 
   const newBlock: YooptaBlockData = {
     id: generateId(),
     type: toBlockType,
-    meta: { ...fromBlock.meta },
+    meta: { ...fromBlock.meta, align: undefined },
     value: [toBlockSlateStructure],
   };
 

@@ -99,7 +99,6 @@ export type YooEditor<TNodes> = {
   setEditorValue: (value: YooptaContentValue) => void;
   path: YooptaPath;
   setPath: (path: YooptaPath | null, options?: SetSelectionOptions) => void;
-  // setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
   blockEditorsMap: YooptaPluginsEditorMap;
   blocks: YooptaBlocks;
   formats: YooptaFormats;

@@ -31,14 +31,13 @@ const codeMirrorSetup: BasicSetupOptions = {
 };
 
 type ViewProps = {
-  editor: YooEditor;
   html: string;
   onChange: (code: string) => void;
   focusedEditor: FocusedView;
   onChangeFocusedEditor: (type: FocusedView) => void;
 };
 
-const WriteHTML = ({ editor, html, onChange, onChangeFocusedEditor }: ViewProps) => {
+const WriteHTML = ({ html, onChange, onChangeFocusedEditor }: ViewProps) => {
   return (
     <div className="w-1/2 mr-1 relative">
       <p className="my-2">Type some html here and see the result on the right side (Deserializing 🎊)</p>
@@ -76,26 +75,24 @@ const WriteHTML = ({ editor, html, onChange, onChangeFocusedEditor }: ViewProps)
   );
 };
 
-const ResultHTML = ({ editor, html, onChange, focusedEditor, onChangeFocusedEditor }: ViewProps) => {
-  useEffect(() => {
-    if (focusedEditor === 'yoopta') return;
+const ResultHTML = ({ html, onChange, focusedEditor, onChangeFocusedEditor }: ViewProps) => {
+  const [value, setValue] = useState<YooptaContentValue>();
+  const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
 
-    if (html.length === 0) return;
-    const deserialized = parsers.html.deserialize(editor, html);
-    editor.setEditorValue(deserialized);
-  }, [html, focusedEditor]);
+  // useEffect(() => {
+  //   console.log('focusedEditor', focusedEditor);
+  //   if (focusedEditor === 'yoopta') return;
 
-  useEffect(() => {
-    const handleChange = (value: YooptaContentValue) => {
-      const string = parsers.html.serialize(editor, value);
-      onChange(string);
-    };
+  //   if (html.length === 0) return;
+  //   const deserialized = parsers.html.deserialize(editor, html);
+  //   editor.setEditorValue(deserialized);
+  // }, [html, focusedEditor]);
 
-    if (focusedEditor === 'yoopta') {
-      editor.on('change', handleChange);
-      return () => editor.off('change', handleChange);
-    }
-  }, [editor, focusedEditor]);
+  const onChangeEditorValue = (value: YooptaContentValue) => {
+    // const string = parsers.html.serialize(editor, value);
+    // onChange(string);
+    // setValue(value);
+  };
 
   return (
     <div className="w-1/2 ml-1 ">
@@ -111,6 +108,8 @@ const ResultHTML = ({ editor, html, onChange, focusedEditor, onChangeFocusedEdit
             autoFocus={false}
             selectionBoxRoot={false}
             placeholder="Write content..."
+            // value={value}
+            onChange={onChangeEditorValue}
             style={{
               width: '100%',
               paddingBottom: 0,
@@ -125,7 +124,6 @@ const ResultHTML = ({ editor, html, onChange, focusedEditor, onChangeFocusedEdit
 type FocusedView = 'html' | 'yoopta';
 
 const HtmlPreview = () => {
-  const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
   const [html, setHTML] = useState('');
   const [focusedEditor, setFocusedEditor] = useState<FocusedView>('html');
 
@@ -147,14 +145,12 @@ const HtmlPreview = () => {
               onChange={onChange}
               focusedEditor={focusedEditor}
               onChangeFocusedEditor={(type) => setFocusedEditor(type)}
-              editor={editor}
             />
             <ResultHTML
               html={html}
               onChange={onChange}
               focusedEditor={focusedEditor}
               onChangeFocusedEditor={(type) => setFocusedEditor(type)}
-              editor={editor}
             />
           </div>
         </div>
