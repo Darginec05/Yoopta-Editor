@@ -35,6 +35,4 @@ export function blur(editor: YooEditor, options: EditorBlurOptions = {}) {
   IS_FOCUSED_EDITOR.set(editor, false);
   blurFn(editor, slate);
   editor.emit('blur', false);
-
-  // editor.applyChanges();
 }

@@ -1,10 +1,16 @@
 import { YooEditor, YooptaContentValue } from '../types';
-import { buildBlockSlateEditors } from '../../utils/editorBuilders';
+import { SetEditorValueOperation } from './applyTransforms';
 
 export function setEditorValue(editor: YooEditor, value: YooptaContentValue) {
-  editor.children = value;
-  editor.blockEditorsMap = buildBlockSlateEditors(editor);
+  const operation: SetEditorValueOperation = {
+    type: 'set_editor_value',
+    properties: {
+      value,
+    },
+    prevProperties: {
+      value: editor.children,
+    },
+  };
 
-  // editor.applyChanges();
-  editor.emit('change', editor.children);
+  editor.applyTransforms([operation], { validatePaths: true });
 }

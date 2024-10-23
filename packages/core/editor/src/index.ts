@@ -54,12 +54,15 @@ export { Paths } from './editor/paths';
 export {
   InsertBlockOperation,
   DeleteBlockOperation,
-  SetSelectionBlockOperation,
   NormalizePathsBlockOperation,
-  YooptaOperation,
-  SetBlockMetaOperation,
+  SetSelectionBlockOperation,
+  SplitBlockOperation,
   SetBlockValueOperation,
+  SetBlockMetaOperation,
+  MergeBlockOperation,
+  MoveBlockOperation,
   SetSlateOperation,
+  SetEditorValueOperation,
 } from './editor/core/applyTransforms';
 
 import './styles.css';

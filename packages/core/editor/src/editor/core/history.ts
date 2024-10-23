@@ -90,6 +90,14 @@ export function inverseEditorOperation(editor: YooEditor, op: YooptaOperation): 
       };
     }
 
+    case 'set_editor_value': {
+      return {
+        type: 'set_editor_value',
+        properties: op.prevProperties,
+        prevProperties: op.properties,
+      };
+    }
+
     default:
       return op;
   }

@@ -13,7 +13,7 @@ export const buildBlockElement = (element?: Partial<SlateElement>): SlateElement
   };
 };
 
-type BuildBlockDataOptions = Partial<YooptaBlockData<SlateElement>> & {
+type BuildBlockDataOptions = Partial<Omit<YooptaBlockData<SlateElement>, 'meta'>> & {
   value?: SlateElement[];
   meta?: Partial<YooptaBlockBaseMeta>;
 };

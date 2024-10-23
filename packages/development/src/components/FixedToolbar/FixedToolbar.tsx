@@ -17,12 +17,24 @@ import { Blocks, Elements, YooEditor, Paths, YooptaPathIndex } from '@yoopta/edi
 
 type Props = {
   editor: YooEditor;
+  DEFAULT_DATA: any;
 };
 
-export const FixedToolbar = ({ editor }: Props) => {
+export const FixedToolbar = ({ editor, DEFAULT_DATA }: Props) => {
   return (
     <div className="bg-white z-50">
       <div className="flex justify-center mb-2">
+        {DEFAULT_DATA && (
+          <button
+            type="button"
+            onClick={() => {
+              editor.setEditorValue(DEFAULT_DATA);
+            }}
+            className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
+          >
+            Set data into editor
+          </button>
+        )}
         <button
           type="button"
           onClick={() => {

@@ -6,7 +6,6 @@ export function updateBlock(
   editor: YooEditor,
   blockId: string,
   newData: Omit<Partial<YooptaBlockData>, 'id' | 'type'>,
-  source?: string,
 ): void {
   const block = editor.children[blockId];
 
@@ -48,6 +47,6 @@ export function updateBlock(
   }
 
   if (operations.length > 0) {
-    editor.applyTransforms(operations, { normalizePaths: false });
+    editor.applyTransforms(operations, { validatePaths: false });
   }
 }

@@ -121,7 +121,7 @@ export const useSlateEditor = (
             slate: slate,
           };
 
-          editor.applyTransforms([setSlateOperation], { source: 'api', normalizePaths: false });
+          editor.applyTransforms([setSlateOperation], { source: 'api', validatePaths: false });
           apply(op);
           return;
         }
@@ -154,7 +154,7 @@ export const useSlateEditor = (
             slate: slate,
           };
 
-          editor.applyTransforms([setSlateOperation], { source: 'api', normalizePaths: false });
+          editor.applyTransforms([setSlateOperation], { source: 'api', validatePaths: false });
         }
       }
 

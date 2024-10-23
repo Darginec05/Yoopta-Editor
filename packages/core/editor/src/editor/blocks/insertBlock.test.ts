@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import { YooEditor } from '../types';
 import { insertBlock } from './insertBlock';
 
-// // Мок для generateId
 // vi.mock('./utils', () => ({
 //   generateId: () => 'mocked-id',
 // }));

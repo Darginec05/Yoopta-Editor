@@ -46,7 +46,7 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions) {
     path: editor.path,
   });
 
-  editor.applyTransforms(operations, { normalizePaths: false });
+  editor.applyTransforms(operations, { validatePaths: false });
 
   if (focus) {
     if (prevSlate && prevBlock) {

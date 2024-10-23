@@ -1,6 +1,6 @@
 import { createDraft, finishDraft, isDraft, produce } from 'immer';
 import { buildSlateEditor } from '../../utils/buildSlate';
-import { SlateEditor, SlateElement, YooEditor, YooptaBlockData, YooptaPath } from '../types';
+import { SlateEditor, SlateElement, YooEditor, YooptaBlockData, YooptaContentValue, YooptaPath } from '../types';
 import { Editor, Operation, Range, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 
@@ -89,7 +89,17 @@ export type SetSelectionBlockOperation = {
 };
 
 export type NormalizePathsBlockOperation = {
-  type: 'normalize_block_paths';
+  type: 'validate_block_paths';
+};
+
+export type SetEditorValueOperation = {
+  type: 'set_editor_value';
+  properties: {
+    value: YooptaContentValue;
+  };
+  prevProperties: {
+    value: YooptaContentValue;
+  };
 };
 
 export type YooptaOperation =
@@ -102,7 +112,8 @@ export type YooptaOperation =
   | SetBlockMetaOperation
   | MergeBlockOperation
   | MoveBlockOperation
-  | SetSlateOperation;
+  | SetSlateOperation
+  | SetEditorValueOperation;
 
 function applyOperation(editor: YooEditor, op: YooptaOperation): void {
   switch (op.type) {
@@ -208,7 +219,7 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
     }
 
     case 'set_block_meta': {
-      const { id, prevProperties, properties } = op;
+      const { id, properties } = op;
 
       const block = editor.children[id];
       if (!block) break;
@@ -305,7 +316,25 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
       break;
     }
 
-    case 'normalize_block_paths': {
+    case 'set_editor_value': {
+      editor.children = op.properties.value;
+
+      const blockEditorsMap = {};
+
+      Object.keys(editor.children).forEach((id) => {
+        const block = editor.children[id];
+        const slate = buildSlateEditor(editor);
+        slate.children = block.value;
+
+        blockEditorsMap[id] = slate;
+      });
+
+      editor.blockEditorsMap = blockEditorsMap;
+
+      break;
+    }
+
+    case 'validate_block_paths': {
       const blocks = Object.values(editor.children);
       blocks.sort((a, b) => a.meta.order - b.meta.order);
       blocks.forEach((block, index) => {
@@ -324,7 +353,7 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
 }
 
 export type ApplyTransformsOptions = {
-  normalizePaths?: boolean;
+  validatePaths?: boolean;
   source?: ChangeSource;
 };
 
@@ -334,29 +363,34 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
   editor.children = createDraft(editor.children);
   editor.path = createDraft(editor.path);
 
-  const { normalizePaths = true, source } = options || {};
+  const { validatePaths = true, source } = options || {};
   const operations = [...ops];
 
-  if (normalizePaths) {
-    operations.push({ type: 'normalize_block_paths' });
+  if (validatePaths) {
+    operations.push({ type: 'validate_block_paths' });
   }
 
-  // if type is insert_block, we need to sort these operations by order
-  operations.sort((a, b) => {
-    if (a.type === 'insert_block' && b.type === 'insert_block') {
-      return a.block.meta.order - b.block.meta.order;
-    }
+  if (operations.length > 1) {
+    // if type is insert_block, we need to sort these operations by order
+    operations.sort((a, b) => {
+      if (a.type === 'insert_block' && b.type === 'insert_block') {
+        return a.block.meta.order - b.block.meta.order;
+      }
 
-    return 0;
-  });
+      return 0;
+    });
+  }
 
   for (const operation of operations) {
+    // run `set_slate` operation only if source is history
     if (operation.type === 'set_slate' && source === 'api') {
       continue;
     }
 
     applyOperation(editor, operation);
   }
+
+  console.log('operations', operations);
 
   if (!isDraft(editor.children)) editor.children = createDraft(editor.children);
   editor.children = finishDraft(editor.children);
@@ -367,7 +401,7 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
 
   const historyBatch = {
     operations: operations.filter(
-      (op) => op.type !== 'set_block_path' && op.type !== 'set_block_value' && op.type !== 'normalize_block_paths',
+      (op) => op.type !== 'set_block_path' && op.type !== 'set_block_value' && op.type !== 'validate_block_paths',
     ),
     path: editor.path,
   };
@@ -381,22 +415,23 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
     editor.historyStack.undos.shift();
   }
 
-  editor.emit('change', { value: editor.children, operations });
+  const changeOptions = { value: editor.children, operations };
+  editor.emit('change', changeOptions);
   editor.emit('path-change', editor.path);
 
-  assertValidPaths(editor);
+  if (process.env.NODE_ENV !== 'production') {
+    assertValidPaths(editor);
+  }
 }
 
 function assertValidPaths(editor: YooEditor) {
-  if (process.env.NODE_ENV !== 'production') {
-    const blocks = Object.values(editor.children);
-    blocks.sort((a, b) => a.meta.order - b.meta.order);
-    blocks.forEach((block, index) => {
-      if (block.meta.order !== index) {
-        console.warn(
-          `Block path inconsistency detected: Block ${block.id} has order ${block.meta.order}, expected ${index}`,
-        );
-      }
-    });
-  }
+  const blocks = Object.values(editor.children);
+  blocks.sort((a, b) => a.meta.order - b.meta.order);
+  blocks.forEach((block, index) => {
+    if (block.meta.order !== index) {
+      console.warn(
+        `Block path inconsistency detected: Block ${block.id} has order ${block.meta.order}, expected ${index}`,
+      );
+    }
+  });
 }
