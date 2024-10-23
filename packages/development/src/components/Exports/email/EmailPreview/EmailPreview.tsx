@@ -4,7 +4,9 @@ import { YOOPTA_PLUGINS } from '../../../../utils/yoopta/plugins';
 import { MARKS } from '../../../../utils/yoopta/marks';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';
 import { Separator } from '@/components/ui/separator';
 import { TOOLS } from '@/utils/yoopta/tools';
@@ -78,6 +80,9 @@ const Editor = ({ editor, onChange, value }: EditorProps) => {
 const EmailPreview = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
   const [value, setValue] = useState<YooptaContentValue>(EMAIL_EDITOR_DEFAULT_VALUE);
+  const [recipientEmail, setRecipientEmail] = useState('');
+  const [subject, setSubject] = useState('test email');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   console.log('value', value);
 
@@ -99,6 +104,38 @@ const EmailPreview = () => {
     window.alert('Email content copied to clipboard');
   };
 
+  const sendEmail = async () => {
+    if (!recipientEmail) {
+      console.warn('Please enter a recipient email address');
+      return;
+    }
+
+    const emailContent = editor.getEmail(value);
+
+    try {
+      const response = await fetch('/api/sendEmail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          to: recipientEmail,
+          subject,
+          html: emailContent,
+        }),
+      });
+
+      if (response.ok) {
+        console.log('Email sent successfully!');
+      } else {
+        console.warn('Failed to send email. Please try again.');
+      }
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
+  };
+
   return (
     <div className="container relative py-8">
       <section>
@@ -107,6 +144,43 @@ const EmailPreview = () => {
             <div className="container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
               <h2 className="text-lg font-semibold text-nowrap">Email-Builder playground</h2>
               <div className="ml-auto flex w-full space-x-2 sm:justify-end"></div>
+              <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+                <DialogTrigger asChild>
+                  <Button variant="default">Send</Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Send Email</DialogTitle>
+                  </DialogHeader>
+                  <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="recipient" className="text-right">
+                        To
+                      </Label>
+                      <Input
+                        id="recipient"
+                        value={recipientEmail}
+                        onChange={(e) => setRecipientEmail(e.target.value)}
+                        className="col-span-3"
+                      />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="subject" className="text-right">
+                        Subject
+                      </Label>
+                      <Input
+                        id="subject"
+                        value={subject}
+                        onChange={(e) => setSubject(e.target.value)}
+                        className="col-span-3"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex justify-end">
+                    <Button onClick={sendEmail}>Send Email</Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
             <Separator />
             <Tabs defaultValue="editor/deserialized" className="flex-1">
@@ -135,6 +209,15 @@ const EmailPreview = () => {
                         <div className="flex items-center space-x-2">
                           <Button onClick={onCopy}>Get email content</Button>
                         </div>
+                        {/* <div className="flex items-center space-x-2">
+                          <Input
+                            type="email"
+                            placeholder="Recipient Email"
+                            value={recipientEmail}
+                            onChange={(e) => setRecipientEmail(e.target.value)}
+                          />
+                          <Button onClick={sendEmail}>Send email</Button>
+                        </div> */}
                       </div>
                     </TabsContent>
                     <TabsContent value="deserialized" className="mt-0 border-0 p-0">
