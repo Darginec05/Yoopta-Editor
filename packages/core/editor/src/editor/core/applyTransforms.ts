@@ -390,8 +390,6 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
     applyOperation(editor, operation);
   }
 
-  console.log('operations', operations);
-
   if (!isDraft(editor.children)) editor.children = createDraft(editor.children);
   editor.children = finishDraft(editor.children);
 
