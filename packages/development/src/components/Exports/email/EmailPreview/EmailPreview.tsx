@@ -2,7 +2,7 @@ import YooptaEditor, { createYooptaEditor, YooEditor, YooptaContentValue } from 
 import { useEffect, useMemo, useState } from 'react';
 import { YOOPTA_PLUGINS } from '../../../../utils/yoopta/plugins';
 import { MARKS } from '../../../../utils/yoopta/marks';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -84,8 +84,6 @@ const EmailPreview = () => {
   const [subject, setSubject] = useState('test email');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  console.log('value', value);
-
   const onChange = (data: YooptaContentValue) => {
     if (Object.keys(data).length === 0) {
       editor.setEditorValue(EMAIL_EDITOR_DEFAULT_VALUE);
@@ -100,7 +98,9 @@ const EmailPreview = () => {
   }, []);
 
   const onCopy = () => {
-    copy(editor.getEmail(value));
+    const emailString = editor.getEmail(value);
+    copy(emailString);
+    console.log('emailString', emailString);
     window.alert('Email content copied to clipboard');
   };
 

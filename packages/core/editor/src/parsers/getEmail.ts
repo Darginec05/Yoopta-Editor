@@ -67,14 +67,21 @@ export function getEmail(editor: YooEditor, content: YooptaContentValue): string
         <head>
           <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
           <meta name="x-apple-disable-message-reformatting" />
-
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+          rel="stylesheet"
+        />
           <!-- support Outlook -->
           <style type="text/css">
             .ExternalClass {width: 100%;}
           </style>
         </head>
 
-        <body style="margin:0;padding: 10px 20px;" id="yoopta-clipboard" data-editor-id="${editor.id}">
+        <body style="margin:0;padding: 10px 20px; font-family: 'Montserrat', sans-serif;" id="yoopta-clipboard" data-editor-id="${
+          editor.id
+        }">
           ${email.join('')}
         </body>
       </html>
