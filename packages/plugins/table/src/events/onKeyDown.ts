@@ -148,7 +148,7 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, curr
 
         if (Range.isExpanded(slate.selection) || string.length === 0) {
           editor.blur();
-          editor.setBlockSelected([currentBlock.meta.order]);
+          editor.setPath({ current: null, selected: [currentBlock.meta.order] });
           return;
         }
 

@@ -12,6 +12,7 @@ export function serialize(editor: YooEditor, blocksData: YooptaBlockData[]) {
       if (plugin.parsers?.markdown?.serialize) {
         const serialized = plugin.parsers.markdown.serialize(
           element,
+          // @ts-ignore - fixme
           element.children.map((child) => child.text).join(''),
         );
         if (serialized) return serialized;

@@ -33,7 +33,7 @@ const EmbedBlockOptions = ({ editor, block, props: embedProps }: Props) => {
   };
 
   return (
-    <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])}>
+    <ExtendedBlockActions onClick={() => editor.setPath({ current: block.meta.order })}>
       <BlockOptionsSeparator />
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>

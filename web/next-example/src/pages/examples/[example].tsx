@@ -13,7 +13,6 @@ import withMediaAndVoids from '@/components/examples/withMediaAndVoids';
 import withNotionActionMenu from '@/components/examples/withNotionActionMenu';
 import withReadOnly from '@/components/examples/withReadOnly';
 import withSavingToDatabase from '@/components/examples/withSavingToDatabase';
-import withEditorControl from '@/components/examples/withEditorControl';
 import withLargeDocuments from '@/components/examples/withLargeDocuments';
 import withChatSlack from '@/components/examples/withChatSlack';
 import withCustomStyles from '@/components/examples/withCustomStyles';
@@ -51,7 +50,6 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withDarkTheme,
   withMediaAndVoids,
   withReadOnly,
-  withEditorControl,
   withCustomMark,
   withCustomPlugin,
   withSavingToDatabase,
@@ -116,10 +114,6 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
   },
   withCustomStyles: {
     title: 'Custom Styles',
-    description: '',
-  },
-  withEditorControl: {
-    title: 'Editor Instance',
     description: '',
   },
   withLargeDocuments: {

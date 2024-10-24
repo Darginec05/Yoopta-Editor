@@ -34,7 +34,7 @@ const FileBlockOptions = ({ editor, block, props: fileProps }: Props) => {
   };
 
   return (
-    <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])}>
+    <ExtendedBlockActions onClick={() => editor.setPath({ current: block.meta.order })}>
       <BlockOptionsSeparator />
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>

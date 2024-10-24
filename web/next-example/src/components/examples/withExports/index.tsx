@@ -107,16 +107,6 @@ function WithExportsExample() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
 
-  useEffect(() => {
-    function handleChange(value) {
-      console.log('value', value);
-    }
-    editor.on('change', handleChange);
-    return () => {
-      editor.off('change', handleChange);
-    };
-  }, [editor]);
-
   return (
     <div className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex flex-col justify-center items-center">
       <div ref={selectionRef}>
@@ -133,10 +123,6 @@ function WithExportsExample() {
           }}
         />
       </div>
-      {/* <div className="flex flex-col">
-        <HtmlPreview />
-        <MarkdownPreview />
-      </div> */}
     </div>
   );
 }

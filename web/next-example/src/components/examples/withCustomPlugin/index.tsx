@@ -109,16 +109,6 @@ function WithCustomPluginExample() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
 
-  useEffect(() => {
-    function handleChange(data: any) {
-      console.log('WithCustomPluginExample value', data);
-    }
-    editor.on('change', handleChange);
-    return () => {
-      editor.off('change', handleChange);
-    };
-  }, [editor]);
-
   return (
     <div
       className="md:py-[100px] md:pl-[200px] md:pr-[80px] px-[20px] pt-[80px] pb-[40px] flex justify-center"

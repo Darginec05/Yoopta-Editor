@@ -1,8 +1,8 @@
-import { Blocks, buildBlockData, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, buildBlockData, generateId, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import { HeadingOneElement, HeadingThreeElement, HeadingTwoElement } from '../types';
 
 export type HeadingElementOptions = { text?: string };
-export type HeadingInsertOptions = HeadingElementOptions & { at: YooptaBlockPath; focus?: boolean };
+export type HeadingInsertOptions = HeadingElementOptions & { at: YooptaPathIndex; focus?: boolean };
 
 export type HeadingOneCommands = {
   buildHeadingOneElements: (editor: YooEditor, options?: Partial<HeadingElementOptions>) => HeadingOneElement;
@@ -17,7 +17,8 @@ export const HeadingOneCommands: HeadingOneCommands = {
   insertHeadingOne: (editor, options = {}) => {
     const { at, focus, text } = options;
     const headingOne = HeadingOneCommands.buildHeadingOneElements(editor, { text });
-    Blocks.insertBlock(editor, buildBlockData({ value: [headingOne], type: 'HeadingOne' }), { at, focus });
+    const block = buildBlockData({ value: [headingOne], type: 'HeadingOne' });
+    Blocks.insertBlock(editor, block.type, { at, focus, blockData: block });
   },
   deleteHeadingOne: (editor, blockId) => {
     Blocks.deleteBlock(editor, { blockId });
@@ -37,7 +38,8 @@ export const HeadingTwoCommands: HeadingTwoCommands = {
   insertHeadingTwo: (editor, options = {}) => {
     const { at, focus, text } = options;
     const headingTwo = HeadingTwoCommands.buildHeadingTwoElements(editor, { text });
-    Blocks.insertBlock(editor, buildBlockData({ value: [headingTwo], type: 'HeadingTwo' }), { at, focus });
+    const block = buildBlockData({ value: [headingTwo], type: 'HeadingTwo' });
+    Blocks.insertBlock(editor, block.type, { at, focus, blockData: block });
   },
   deleteHeadingTwo: (editor, blockId) => {
     Blocks.deleteBlock(editor, { blockId });
@@ -57,7 +59,8 @@ export const HeadingThreeCommands: HeadingThreeCommands = {
   insertHeadingThree: (editor, options = {}) => {
     const { at, focus, text } = options;
     const headingThree = HeadingThreeCommands.buildHeadingThreeElements(editor, { text });
-    Blocks.insertBlock(editor, buildBlockData({ value: [headingThree], type: 'HeadingThree' }), { at, focus });
+    const block = buildBlockData({ value: [headingThree], type: 'HeadingThree' });
+    Blocks.insertBlock(editor, block.type, { at, focus, blockData: block });
   },
   deleteHeadingThree: (editor, blockId) => {
     Blocks.deleteBlock(editor, { blockId });

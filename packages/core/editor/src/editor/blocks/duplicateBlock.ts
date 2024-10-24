@@ -1,70 +1,54 @@
-import { createDraft, finishDraft } from 'immer';
-import { buildSlateEditor } from '../../utils/buildSlate';
 import { deepClone } from '../../utils/deepClone';
-import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
+import { findPluginBlockByPath } from '../../utils/findPluginBlockByPath';
 import { generateId } from '../../utils/generateId';
-import { YooEditor, YooptaBlockData, YooptaEditorTransformOptions } from '../types';
+import { YooptaOperation } from '../core/applyTransforms';
+import { YooEditor, YooptaBlock, YooptaBlockData, YooptaPathIndex } from '../types';
 
-export type DuplicateBlockOptions = YooptaEditorTransformOptions & {
-  blockId?: string;
+export type DuplicateBlockOptions = {
+  original: { blockId?: never; path: YooptaPathIndex } | { blockId: string; path?: never };
+  focus?: boolean;
+  at?: YooptaPathIndex;
 };
 
-export function duplicateBlock(editor: YooEditor, options: DuplicateBlockOptions = {}) {
-  const { blockId, focus } = options;
+export function duplicateBlock(editor: YooEditor, options: DuplicateBlockOptions) {
+  const { original, focus, at } = options;
 
-  if (!blockId && !options.at) {
+  if (!original) {
+    throw new Error('`original` should be provided');
+  }
+
+  if (!original.blockId && typeof original.path !== 'number') {
     throw new Error('blockId or path should be provided');
   }
 
-  let originalBlock: YooptaBlockData | null = null;
+  const { blockId, path } = original;
 
-  if (blockId) {
-    originalBlock = editor.children[blockId];
-
-    if (!originalBlock) {
-      throw new Error(`Block not with blockId: ${blockId} found`);
-    }
-  }
-
-  if (options.at) {
-    originalBlock = findPluginBlockBySelectionPath(editor, { at: options.at });
-
-    if (!originalBlock) {
-      throw new Error(`Block in path ${options.at} not found`);
-    }
-  }
+  let originalBlock: YooptaBlockData | null = blockId
+    ? editor.children[blockId]
+    : findPluginBlockByPath(editor, { at: path! });
 
   if (!originalBlock) {
     throw new Error('Block not found');
   }
 
-  editor.children = createDraft(editor.children);
-
-  const blocks = Object.values(editor.children);
-
-  blocks.forEach((block) => {
-    if (block.meta.order > originalBlock!.meta.order) {
-      block.meta.order += 1;
-    }
-  });
+  const operations: YooptaOperation[] = [];
 
   const duplicatedBlock = deepClone(originalBlock);
-  const slate = buildSlateEditor(editor);
-
   duplicatedBlock.id = generateId();
-  duplicatedBlock.meta.order = originalBlock.meta.order + 1;
+  // [TEST]
+  duplicatedBlock.meta.order = Array.isArray(at) && typeof at === 'number' ? at : originalBlock.meta.order + 1;
 
-  // [TODO] - change ids in slate elements?
-  editor.children[duplicatedBlock.id] = duplicatedBlock;
-  editor.blockEditorsMap[duplicatedBlock.id] = slate;
+  operations.push({
+    type: 'insert_block',
+    path: { current: duplicatedBlock.meta.order },
+    block: duplicatedBlock,
+  });
 
-  const duplicatedId = duplicatedBlock.id;
-
-  editor.children = finishDraft(editor.children);
-  editor.applyChanges();
-  editor.emit('change', editor.children);
+  editor.applyTransforms(operations);
 
   if (focus) {
-    editor.focusBlock(duplicatedId, { waitExecution: true });
+    editor.focusBlock(duplicatedBlock.id, { waitExecution: true });
   }
+
+  return duplicatedBlock.id;
 }

@@ -20,12 +20,13 @@ export const useYooptaDragDrop = ({ editor }: { editor: YooEditor }) => {
 
     if (active && over && active.id !== over.id) {
       const newPluginPosition = editor.children[over.id].meta.order;
-      editor.moveBlock(active.id as string, [newPluginPosition]);
+      // [TEST]
+      editor.moveBlock(active.id as string, newPluginPosition);
     }
   }, []);
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
-    editor.setBlockSelected(null);
+    editor.setPath({ current: null });
   }, []);
 
   return { sensors, handleDragEnd, handleDragStart };

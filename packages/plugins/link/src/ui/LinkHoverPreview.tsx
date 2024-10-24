@@ -1,4 +1,12 @@
-import { Elements, findSlateBySelectionPath, SlateElement, UI, useYooptaEditor, useYooptaTools } from '@yoopta/editor';
+import {
+  Blocks,
+  Elements,
+  findSlateBySelectionPath,
+  SlateElement,
+  UI,
+  useYooptaEditor,
+  useYooptaTools,
+} from '@yoopta/editor';
 import { Copy, SquareArrowOutUpRight } from 'lucide-react';
 import { useState } from 'react';
 import { useFloating, offset, flip, shift, inline, autoUpdate, useTransitionStyles } from '@floating-ui/react';
@@ -100,6 +108,9 @@ const LinkHoverPreview = ({ style, setFloating, element, setHoldLinkTool, blockI
           type="button"
           className="yoopta-button yoopta-link-edit-button"
           onClick={() => {
+            const block = Blocks.getBlock(editor, { id: blockId });
+            if (block) editor.setPath({ current: block.meta.order });
+
             setHoldLinkTool((prev) => !prev);
             setIsEditLinkToolsOpen((prev) => !prev);
           }}

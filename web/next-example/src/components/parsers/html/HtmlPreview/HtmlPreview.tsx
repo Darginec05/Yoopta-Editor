@@ -155,6 +155,8 @@ const WriteHTML = ({ editor, html, onChange, onChangeFocusedEditor }: ViewProps)
 };
 
 const ResultHTML = ({ editor, html, onChange, focusedEditor, onChangeFocusedEditor }: ViewProps) => {
+  const [value, setValue] = useState<YooptaContentValue>();
+
   useEffect(() => {
     if (focusedEditor === 'yoopta') return;
 
@@ -163,17 +165,11 @@ const ResultHTML = ({ editor, html, onChange, focusedEditor, onChangeFocusedEdit
     editor.setEditorValue(deserialized);
   }, [html, focusedEditor]);
 
-  useEffect(() => {
-    const handleChange = (value: YooptaContentValue) => {
-      const string = parsers.html.serialize(editor, value);
-      onChange(string);
-    };
-
-    if (focusedEditor === 'yoopta') {
-      editor.on('change', handleChange);
-      return () => editor.off('change', handleChange);
-    }
-  }, [editor, focusedEditor]);
+  const onChangeEditorValue = (value: YooptaContentValue) => {
+    const string = parsers.html.serialize(editor, value);
+    onChange(string);
+    setValue(value);
+  };
 
   return (
     <div className="w-1/2 ml-1 ">
@@ -189,6 +185,8 @@ const ResultHTML = ({ editor, html, onChange, focusedEditor, onChangeFocusedEdit
             autoFocus={false}
             selectionBoxRoot={false}
             placeholder="Write content..."
+            value={value}
+            onChange={onChangeEditorValue}
             style={{
               width: '100%',
               paddingBottom: 0,

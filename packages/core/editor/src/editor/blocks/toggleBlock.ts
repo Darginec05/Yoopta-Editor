@@ -1,78 +1,95 @@
-import { createDraft, finishDraft } from 'immer';
-import { Editor, Element, Transforms } from 'slate';
-import { getRootBlockElementType } from '../../utils/blockElements';
+import { Descendant, Editor, Element, Text, Transforms } from 'slate';
+import { buildBlockElementsStructure } from '../../utils/blockElements';
 import { buildSlateEditor } from '../../utils/buildSlate';
 
-import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
+import { findPluginBlockByPath } from '../../utils/findPluginBlockByPath';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { generateId } from '../../utils/generateId';
-import { YooEditor, YooptaEditorTransformOptions, YooptaBlockData, SlateEditor } from '../types';
+import { YooptaOperation } from '../core/applyTransforms';
+import { YooEditor, YooptaBlockData, SlateEditor, FocusAt, SlateElement, YooptaPathIndex } from '../types';
 
-export type ToggleBlockOptions = YooptaEditorTransformOptions & {
+export type ToggleBlockOptions = {
+  at?: YooptaPathIndex;
   deleteText?: boolean;
+  slate?: SlateEditor;
+  focus?: boolean;
+  focusAt?: FocusAt;
 };
 
 const DEFAULT_BLOCK_TYPE = 'Paragraph';
 
-// [TODO] - handle passing old node props to new root element node,
-export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options?: ToggleBlockOptions) {
-  editor.children = createDraft(editor.children);
-  const fromBlock = findPluginBlockBySelectionPath(editor, { at: options?.at || editor.selection });
-
-  if (!fromBlock) throw new Error('Block from not found at current selection');
-
-  let toBlockType = toBlockTypeArg;
-
-  if (fromBlock.type === toBlockType) {
-    toBlockType = DEFAULT_BLOCK_TYPE;
+function extractTextNodes(
+  slate: SlateEditor,
+  node: SlateElement | Descendant,
+  blockData: YooptaBlockData,
+  editor: YooEditor,
+): (Text | SlateElement)[] {
+  const blockEntity = editor.plugins[blockData.type];
+  if (blockEntity?.customEditor) {
+    return (blockData.value[0] as SlateElement).children;
   }
 
-  const slate: SlateEditor | undefined = findSlateBySelectionPath(editor, { at: [fromBlock.meta.order] });
+  if (Editor.isEditor(node)) return node.children.flatMap((child) => extractTextNodes(slate, child, blockData, editor));
+  if (!Element.isElement(node)) return [node];
+  if (Editor.isInline(slate, node)) return [node];
+
+  return node.children.flatMap((child) => extractTextNodes(slate, child, blockData, editor));
+}
+
+function findFirstLeaf(node: SlateElement): SlateElement | null {
+  if (!Element.isElement(node)) {
+    return null;
+  }
+  if (node.children.length === 0 || Text.isText(node.children[0])) {
+    return node;
+  }
+  return findFirstLeaf(node.children[0] as SlateElement);
+}
+
+export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options: ToggleBlockOptions = {}) {
+  const fromBlock = findPluginBlockByPath(editor, { at: options.at || editor.path.current });
+  if (!fromBlock) throw new Error('Block not found at current selection');
+
+  let toBlockType = fromBlock.type === toBlockTypeArg ? DEFAULT_BLOCK_TYPE : toBlockTypeArg;
+  const plugin = editor.plugins[toBlockType];
+  const { onBeforeCreate } = plugin.events || {};
+
+  const slate = findSlateBySelectionPath(editor, { at: fromBlock.meta.order });
   if (!slate) throw new Error(`Slate not found for block in position ${fromBlock.meta.order}`);
 
-  const toBlock = editor.blocks[toBlockType];
-  const toBlockRootElementType = getRootBlockElementType(toBlock.elements);
+  const toBlockSlateStructure = onBeforeCreate?.(editor) || buildBlockElementsStructure(editor, toBlockType);
+  const textNodes = extractTextNodes(slate, slate.children[0], fromBlock, editor);
+  const firstLeaf = findFirstLeaf(toBlockSlateStructure);
 
-  Editor.withoutNormalizing(slate, () => {
-    Transforms.setNodes(
-      slate,
-      { type: toBlockRootElementType },
-      {
-        at: slate.selection || [0],
-        mode: 'lowest',
-        match: (n) => Element.isElement(n) && !Editor.isInline(slate, n),
-      },
-    );
+  if (firstLeaf) {
+    firstLeaf.children = textNodes;
+  }
 
-    if (options?.deleteText) Transforms.delete(slate, { at: [0, 0] });
+  const newBlock: YooptaBlockData = {
+    id: generateId(),
+    type: toBlockType,
+    meta: { ...fromBlock.meta, align: undefined },
+    value: [toBlockSlateStructure],
+  };
 
-    const block: YooptaBlockData = {
-      id: generateId(),
-      type: toBlockType,
-      meta: {
-        ...fromBlock.meta,
-        order: fromBlock.meta.order,
-      },
-      value: slate.children,
-    };
+  const newSlate = buildSlateEditor(editor);
+  newSlate.children = [toBlockSlateStructure];
 
-    const newSlate = buildSlateEditor(editor);
-    newSlate.children = slate.children;
+  const operations: YooptaOperation[] = [
+    { type: 'delete_block', block: fromBlock, path: { current: fromBlock.meta.order } },
+    { type: 'insert_block', path: { current: fromBlock.meta.order }, block: newBlock },
+  ];
 
-    delete editor.children[fromBlock.id];
-    delete editor.blockEditorsMap[fromBlock.id];
+  editor.applyTransforms(operations);
 
-    editor.blockEditorsMap[block.id] = newSlate;
-    editor.children[block.id] = block;
+  // [TEST]
+  if (options.deleteText) {
+    Transforms.delete(newSlate, { at: [0, 0] });
+  }
 
-    block.value = newSlate.children;
+  if (options.focus) {
+    editor.focusBlock(newBlock.id);
+  }
 
-    editor.children = finishDraft(editor.children);
-    editor.applyChanges();
-    editor.emit('change', editor.children);
-
-    if (options?.focus) {
-      editor.focusBlock(block.id, { slate: newSlate });
-    }
-  });
+  return newBlock.id;
 }

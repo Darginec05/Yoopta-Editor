@@ -10,6 +10,7 @@ export const getCodeElementText = (block: YooptaBlockData) => {
   let text = '';
 
   element.children.forEach((child) => {
+    // @ts-ignore - fixme
     text += `${child.text}`;
   });
 

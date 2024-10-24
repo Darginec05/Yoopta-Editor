@@ -2,8 +2,8 @@ import EventEmitter from 'eventemitter3';
 import { YooptaContextProvider } from './contexts/YooptaContext/YooptaContext';
 import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { Editor } from './components/Editor/Editor';
-import { CSSProperties, useMemo, useState } from 'react';
-import { SlateElement, YooEditor, YooptaBlockData, YooptaContentValue } from './editor/types';
+import { CSSProperties, useCallback, useEffect, useMemo, useState } from 'react';
+import { SlateElement, YooEditor, YooptaBlockData, YooptaPath, YooptaContentValue } from './editor/types';
 import { Plugin } from './plugins/types';
 import { Tools, ToolsProvider } from './contexts/YooptaContext/ToolsContext';
 import {
@@ -18,13 +18,19 @@ import { YooptaPlugin } from './plugins';
 import { YooptaMark } from './marks';
 import { FakeSelectionMark } from './marks/FakeSelectionMark';
 import { generateId } from './utils/generateId';
+import { YooptaOperation } from './editor/core/applyTransforms';
 
-type Props = {
+export type OnChangeOptions = {
+  operations: YooptaOperation[];
+};
+
+export type YooptaEditorProps = {
   id?: string;
   editor: YooEditor;
   plugins: Readonly<YooptaPlugin<Record<string, SlateElement>>[]>;
   marks?: YooptaMark<any>[];
   value?: YooptaContentValue;
+  onChange?: (value: YooptaContentValue, options: OnChangeOptions) => void;
   autoFocus?: boolean;
   className?: string;
   selectionBoxRoot?: HTMLElement | React.MutableRefObject<HTMLElement | null> | false;
@@ -54,6 +60,11 @@ function validateInitialValue(value: any): boolean {
   return true;
 }
 
+type EditorState = {
+  editor: YooEditor;
+  version: number;
+};
+
 const YooptaEditor = ({
   id,
   editor,
@@ -69,11 +80,8 @@ const YooptaEditor = ({
   readOnly,
   width,
   style,
-}: Props) => {
-  const applyChanges = () => {
-    setEditorState((prev) => ({ ...prev, version: prev.version + 1 }));
-  };
-
+  onChange,
+}: YooptaEditorProps) => {
   const marks = useMemo(() => {
     if (marksProps) return [FakeSelectionMark, ...marksProps];
     return [FakeSelectionMark];
@@ -83,9 +91,8 @@ const YooptaEditor = ({
     return pluginsProps.map((plugin) => plugin.getPlugin as Plugin<Record<string, SlateElement>>);
   }, [pluginsProps]);
 
-  const [editorState, setEditorState] = useState<{ editor: YooEditor; version: number }>(() => {
+  const [editorState, setEditorState] = useState<EditorState>(() => {
     if (!editor.id) editor.id = id || generateId();
-    editor.applyChanges = applyChanges;
     editor.readOnly = readOnly || false;
     if (marks) editor.formats = buildMarks(editor, marks);
     editor.blocks = buildBlocks(editor, plugins);
@@ -111,6 +118,44 @@ const YooptaEditor = ({
 
     return { editor, version: 0 };
   });
+
+  const [_, setSelectionPath] = useState<YooptaPath | null>(null);
+
+  const onSelectonPathChange = useCallback((path: YooptaPath) => {
+    setSelectionPath(path);
+  }, []);
+
+  const onValueChange = useCallback((value, options: OnChangeOptions) => {
+    setEditorState((prevState) => ({
+      editor: prevState.editor,
+      version: prevState.version + 1,
+    }));
+
+    if (typeof onChange === 'function' && Array.isArray(options.operations)) {
+      const operations = options.operations.filter(
+        (operation) =>
+          operation.type !== 'validate_block_paths' &&
+          operation.type !== 'set_block_path' &&
+          operation.type !== 'set_slate',
+      );
+
+      if (operations.length > 0) onChange(value, { operations });
+    }
+  }, []);
+
+  useEffect(() => {
+    const changeHandler = (options) => {
+      onValueChange(options.value, { operations: options.operations });
+    };
+
+    editor.on('change', changeHandler);
+    editor.on('path-change', onSelectonPathChange);
+
+    return () => {
+      editor.off('change', changeHandler);
+      editor.off('path-change', onSelectonPathChange);
+    };
+  }, [editor, onValueChange]);
 
   return (
     <YooptaContextProvider editorState={editorState}>

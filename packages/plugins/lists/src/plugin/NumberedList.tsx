@@ -1,11 +1,11 @@
 import {
   YooptaPlugin,
-  buildBlockData,
   YooptaBlockData,
   generateId,
   deserializeTextNodes,
   serializeTextNodes,
   serializeTextNodesIntoMarkdown,
+  Blocks,
 } from '@yoopta/editor';
 import { NumberedListCommands } from '../commands';
 import { NumberedListRender } from '../elements/NumberedList';
@@ -52,7 +52,7 @@ const NumberedList = new YooptaPlugin<Pick<ListElementMap, 'numbered-list'>>({
                 return !isTodoListItem;
               })
               .map((listItem, i) => {
-                return buildBlockData({
+                return Blocks.buildBlockData({
                   id: generateId(),
                   type: 'NumberedList',
                   value: [

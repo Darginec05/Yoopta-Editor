@@ -1,4 +1,4 @@
-import { Blocks, buildBlockData, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, buildBlockData, generateId, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import { BlockquoteElement } from '../types';
 
 type BlockquoteElementOptions = {
@@ -7,7 +7,7 @@ type BlockquoteElementOptions = {
 
 export type InsertBlockquoteOptions = {
   text?: string;
-  at?: YooptaBlockPath;
+  at?: YooptaPathIndex;
   focus?: boolean;
 };
 
@@ -25,7 +25,9 @@ export const BlockquoteCommands: BlockquoteCommands = {
     const { at, focus, text } = options;
 
     const blockquote = BlockquoteCommands.buildBlockquoteElements(editor, { text });
-    Blocks.insertBlock(editor, buildBlockData({ value: [blockquote], type: 'Blockquote' }), { at, focus });
+    const block = buildBlockData({ value: [blockquote], type: 'Blockquote' });
+    // [TEST]
+    Blocks.insertBlock(editor, block.type, { at, focus, blockData: block });
   },
   deleteBlockquote: (editor, blockId) => {
     Blocks.deleteBlock(editor, { blockId });

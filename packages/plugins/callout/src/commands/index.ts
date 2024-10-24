@@ -1,4 +1,4 @@
-import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import { CalloutElement, CalloutElementProps, CalloutPluginElementKeys, CalloutTheme } from '../types';
 
 type CalloutElementOptions = {
@@ -7,7 +7,7 @@ type CalloutElementOptions = {
 };
 
 type InsertCalloutOptions = CalloutElementOptions & {
-  at?: YooptaBlockPath;
+  at?: YooptaPathIndex;
   focus?: boolean;
 };
 
@@ -26,7 +26,8 @@ export const CalloutCommands: CalloutCommands = {
     const { at, focus, text, props } = options;
 
     const callout = CalloutCommands.buildCalloutElements(editor, { text, props });
-    Blocks.insertBlock(editor, buildBlockData({ value: [callout], type: 'Callout' }), { at, focus });
+    const block = buildBlockData({ value: [callout], type: 'Callout' });
+    Blocks.insertBlock(editor, block.type, { at, focus, blockData: block });
   },
   deleteCallout: (editor, blockId) => {
     Blocks.deleteBlock(editor, { blockId });

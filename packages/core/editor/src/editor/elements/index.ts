@@ -21,3 +21,5 @@ export const Elements = {
   getElementPath,
   getParentElementPath,
 };
+
+export type Elements = typeof Elements;

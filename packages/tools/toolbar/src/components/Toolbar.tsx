@@ -29,7 +29,9 @@ const Toolbar = ({ render }: ToolbarToolProps) => {
 
     const domSelection = window.getSelection();
 
-    if (!domSelection || domSelection?.isCollapsed) return setIsToolbarOpen(false);
+    if (!domSelection || domSelection?.isCollapsed || domSelection?.anchorOffset === domSelection?.focusOffset) {
+      return setIsToolbarOpen(false);
+    }
 
     const domRange = domSelection.getRangeAt(0);
     const selectionRect = domRange.getBoundingClientRect();
@@ -65,7 +67,7 @@ const Toolbar = ({ render }: ToolbarToolProps) => {
   useEffect(() => {
     window.document.addEventListener('selectionchange', onSelectionChange);
     return () => window.document.removeEventListener('selectionchange', onSelectionChange);
-  }, [editor.selectedBlocks, hold, editor.children]);
+  }, [editor.path, hold, editor.children]);
 
   if (!isMounted) return null;
 

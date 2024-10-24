@@ -1,5 +1,6 @@
 import { Element } from 'slate';
 import { buildBlockData } from '../components/Editor/utils';
+import { Blocks } from '../editor/blocks';
 import { SlateElement, YooEditor, YooptaBlockBaseMeta, YooptaBlockData } from '../editor/types';
 import { PluginDeserializeParser } from '../plugins/types';
 import { getRootBlockElementType } from '../utils/blockElements';
@@ -107,7 +108,7 @@ function buildBlock(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElement
   const align = el.getAttribute('data-meta-align') as YooptaBlockBaseMeta['align'];
   const depth = parseInt(el.getAttribute('data-meta-depth') || '0', 10);
 
-  const blockData = buildBlockData({
+  const blockData = Blocks.buildBlockData({
     id: generateId(),
     type: plugin.type,
     value: [rootNode],

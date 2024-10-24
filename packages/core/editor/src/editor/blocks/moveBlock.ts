@@ -1,33 +1,31 @@
-import { createDraft, finishDraft } from 'immer';
-import { YooEditor, YooptaBlockPath } from '../types';
+import { MoveBlockOperation, YooptaOperation } from '../core/applyTransforms';
+import { YooEditor, YooptaPathIndex } from '../types';
 
-export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: YooptaBlockPath) {
-  editor.children = createDraft(editor.children);
+export function moveBlock(editor: YooEditor, draggedBlockId: string, newPath: YooptaPathIndex) {
+  const updatedPosition = newPath;
+  const draggedBlock = editor.children[draggedBlockId];
+  const blockInNewPosition = Object.values(editor.children).find((item) => item.meta.order === updatedPosition);
 
-  const [updatedPosition] = newPath;
-  const draggedBlock = editor.children[draggedBlockId!];
-  const blockInNewPosition = Object.values(editor.children).find((item) => item.meta.order === updatedPosition)!;
+  if (!draggedBlock || !blockInNewPosition) {
+    console.warn('Invalid block ids for move operation');
+    return;
+  }
+  const operations: YooptaOperation[] = [];
 
-  const dragFromTopToBottom = draggedBlock.meta.order < blockInNewPosition.meta.order;
-  const dragFromBottomToTop = draggedBlock.meta.order > blockInNewPosition.meta.order;
+  const moveOperation: MoveBlockOperation = {
+    type: 'move_block',
+    prevProperties: {
+      id: draggedBlockId,
+      order: draggedBlock.meta.order,
+    },
+    properties: {
+      id: draggedBlockId,
+      order: updatedPosition!,
+    },
+  };
 
-  Object.values(editor.children).forEach((item) => {
-    if (dragFromTopToBottom) {
-      if (item.meta.order > draggedBlock.meta.order && item.meta.order <= blockInNewPosition.meta.order) {
-        item.meta.order--;
-      }
-    } else if (dragFromBottomToTop) {
-      if (item.meta.order < draggedBlock.meta.order && item.meta.order >= blockInNewPosition.meta.order) {
-        item.meta.order++;
-      }
-    }
-  });
+  operations.push(moveOperation);
 
-  draggedBlock.meta.order = updatedPosition;
-  draggedBlock.meta.depth = blockInNewPosition.meta.depth;
-
-  editor.setSelection([updatedPosition]);
-  editor.children = finishDraft(editor.children);
-  editor.applyChanges();
-  editor.emit('change', editor.children);
+  editor.applyTransforms(operations);
+  editor.setPath({ current: updatedPosition });
 }

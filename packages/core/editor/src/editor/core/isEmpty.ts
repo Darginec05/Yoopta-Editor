@@ -11,7 +11,7 @@ export function isEmpty(editor: YooEditor): boolean {
 
   if (blockData.type !== 'Paragraph') return false;
 
-  const slate = findSlateBySelectionPath(editor, { at: [blockData.meta.order] });
+  const slate = findSlateBySelectionPath(editor, { at: blockData.meta.order });
   if (!slate) return true;
 
   try {

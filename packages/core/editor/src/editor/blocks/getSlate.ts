@@ -1,12 +1,12 @@
-import { SlateEditor, YooEditor, YooptaBlockData, YooptaBlockPath } from '../types';
+import { SlateEditor, YooEditor, YooptaBlockData, YooptaPathIndex } from '../types';
 
 export type GetSlateOptions = {
-  at?: YooptaBlockPath;
+  at?: YooptaPathIndex;
   id?: string;
 };
 
 export function getSlate(editor: YooEditor, options: GetSlateOptions): SlateEditor {
-  if (!options?.id && !options?.at) {
+  if (!options?.id && typeof options?.at !== 'number') {
     throw new Error('getSlate requires either an id or at');
   }
 
@@ -14,7 +14,7 @@ export function getSlate(editor: YooEditor, options: GetSlateOptions): SlateEdit
     options?.id ||
     Object.keys(editor.children).find((childrenId) => {
       const plugin = editor.children[childrenId];
-      return plugin.meta.order === options?.at?.[0];
+      return plugin.meta.order === options?.at;
     });
 
   const slate = editor.blockEditorsMap[blockId || ''];

@@ -17,6 +17,7 @@ export function serializeTable(element: SlateElement, text: string, blockMeta?: 
         </colgroup>
         <tbody>${element.children
           .map((trElement) => {
+            // @ts-ignore - fixme
             return `<tr>${trElement.children
               .map((td) => {
                 const text = serializeTextNodes(td.children);

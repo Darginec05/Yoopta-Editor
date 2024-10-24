@@ -11,7 +11,6 @@ const postcss = require('rollup-plugin-postcss');
 const tailwindcss = require('tailwindcss');
 const autoprefixer = require('autoprefixer');
 const postcssNesting = require('postcss-nesting');
-const postcssScope = require('postcss-scope');
 
 // const tailwindConfig = require('./tailwind.config.js');
 const isProd = process.env.NODE_ENV === 'production';

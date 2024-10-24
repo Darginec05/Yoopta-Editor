@@ -29,7 +29,10 @@ const CalloutBlockOptions = ({ editor, block, props: calloutProps }: Props) => {
   const isActiveTheme = (theme: CalloutTheme) => calloutProps?.theme === theme;
 
   return (
-    <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])} className="yoopta-callout-options">
+    <ExtendedBlockActions
+      onClick={() => editor.setPath({ current: block.meta.order })}
+      className="yoopta-callout-options"
+    >
       <BlockOptionsSeparator />
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>

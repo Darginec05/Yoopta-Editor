@@ -4,7 +4,7 @@ import { useYooptaEditor } from '../../contexts/YooptaContext/YooptaContext';
 import { CSSProperties, useState } from 'react';
 import { useFloating, offset, flip, shift, inline, autoUpdate, useTransitionStyles } from '@floating-ui/react';
 import copy from 'copy-to-clipboard';
-import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
+import { findPluginBlockByPath } from '../../utils/findPluginBlockByPath';
 import { getRootBlockElement } from '../../utils/blockElements';
 import { useYooptaTools } from '../../contexts/YooptaContext/ToolsContext';
 import { buildActionMenuRenderProps } from './utils';
@@ -65,28 +65,28 @@ const BlockOptions = ({ isOpen, onClose, refs, style, actions = DEFAULT_ACTIONS,
 
   if (!isOpen) return null;
 
-  const currentBlock = findPluginBlockBySelectionPath(editor, { at: editor.selection });
+  const currentBlock = findPluginBlockByPath(editor, { at: editor.path.current });
   const rootElement = getRootBlockElement(editor.blocks[currentBlock?.type || '']?.elements);
   const isVoidElement = rootElement?.props?.nodeType === 'void';
 
   const onDelete = () => {
-    const selection = editor.selection;
-    editor.deleteBlock({ at: selection });
-    editor.setBlockSelected(null);
-    editor.setSelection(null);
+    editor.deleteBlock({ at: editor.path.current });
+    editor.setPath({ current: null });
 
     onClose();
   };
 
   const onDuplicate = () => {
-    editor.duplicateBlock({ at: editor.selection, focus: true });
-    editor.setBlockSelected(null);
+    // [TEST]
+    if (typeof editor.path.current !== 'number') return;
+
+    editor.duplicateBlock({ original: { path: editor.path.current }, focus: true });
 
     onClose();
   };
 
   const onCopy = () => {
-    const block = findPluginBlockBySelectionPath(editor);
+    const block = findPluginBlockByPath(editor);
     if (block) {
       copy(`${window.location.origin}${window.location.pathname}#${block.id}`);
       editor.emit('block:copy', block);
@@ -131,6 +131,7 @@ const BlockOptions = ({ isOpen, onClose, refs, style, actions = DEFAULT_ACTIONS,
                       <Portal id="yoo-block-options-portal">
                         <Overlay lockScroll className="yoo-editor-z-[100]" onClick={() => setIsActionMenuOpen(false)}>
                           <div style={actionMenuStyles} ref={actionMenuRefs.setFloating}>
+                            {/* @ts-ignore - fixme */}
                             <ActionMenu {...actionMenuRenderProps} />
                           </div>
                         </Overlay>

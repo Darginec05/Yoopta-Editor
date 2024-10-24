@@ -1,4 +1,4 @@
-import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, buildBlockData, generateId, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import {
   AccordionListElement,
   AccordionItemElement,
@@ -13,7 +13,7 @@ type AccordionElementOptions = {
 };
 
 type InsertAccordionOptions = AccordionElementOptions & {
-  at?: YooptaBlockPath;
+  at?: YooptaPathIndex;
   focus?: boolean;
 };
 
@@ -58,7 +58,9 @@ export const AccordionCommands: AccordionCommands = {
   insertAccordion: (editor: YooEditor, options = {}) => {
     const { at, focus, props, items } = options;
     const accordionList = AccordionCommands.buildAccordionElements(editor, { props, items });
-    Blocks.insertBlock(editor, buildBlockData({ value: [accordionList], type: 'Accordion' }), { focus, at });
+    const block = buildBlockData({ value: [accordionList], type: 'Accordion' });
+    // [TEST]
+    Blocks.insertBlock(editor, block.type, { focus, at, blockData: block });
   },
   deleteAccordion: (editor: YooEditor, blockId) => {
     Blocks.deleteBlock(editor, { blockId });

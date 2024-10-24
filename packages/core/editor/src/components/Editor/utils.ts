@@ -1,4 +1,4 @@
-import { YooptaBlockData, SlateElement } from '../../editor/types';
+import { YooptaBlockData, SlateElement, YooptaBlockBaseMeta } from '../../editor/types';
 import { generateId } from '../../utils/generateId';
 
 export const buildBlockElement = (element?: Partial<SlateElement>): SlateElement => {
@@ -13,7 +13,12 @@ export const buildBlockElement = (element?: Partial<SlateElement>): SlateElement
   };
 };
 
-export const buildBlockData = (block?: Partial<YooptaBlockData>): YooptaBlockData => ({
+type BuildBlockDataOptions = Partial<YooptaBlockData<SlateElement>> & {
+  value?: SlateElement[];
+  meta?: Partial<YooptaBlockBaseMeta>;
+};
+
+export const buildBlockData = (block?: BuildBlockDataOptions): YooptaBlockData => ({
   id: block?.id || generateId(),
   value: block?.value || [buildBlockElement()],
   type: block?.type || 'Paragraph',

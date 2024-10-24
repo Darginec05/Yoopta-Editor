@@ -20,9 +20,8 @@ import {
   SlateElement,
   useYooptaTools,
   UI,
-  Elements,
   Blocks,
-  findPluginBlockBySelectionPath,
+  findPluginBlockByPath,
   YooptaBlockData,
 } from '@yoopta/editor';
 import { Editor, Element, NodeEntry, Range, Transforms } from 'slate';
@@ -144,6 +143,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
 
       const title = Editor.string(slate, slate?.selection);
       const linkNodeEntry = getLinkEntry(slate);
+      console.log('linkNodeEntry', linkNodeEntry);
 
       if (linkNodeEntry) {
         const [linkNode] = linkNodeEntry as NodeEntry<SlateElement>;
@@ -156,12 +156,12 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
     document.addEventListener('keydown', onKeyDown);
 
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [editor.selection, editor.children, modals.link]);
+  }, [editor.path, editor.children, modals.link]);
 
   const onUpdateLink = (link: LinkValues) => {
-    if (!editor.selection) return;
+    if (typeof editor.path.current !== 'number') return;
 
-    const slate = Blocks.getSlate(editor, { at: editor.selection });
+    const slate = Blocks.getSlate(editor, { at: editor.path.current });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
@@ -179,7 +179,6 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
         },
       });
 
-      editor.applyChanges();
       editor.emit('change', editor.children);
 
       onChangeModal('link', false);
@@ -189,8 +188,8 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
   };
 
   const onDeleteLink = () => {
-    if (!editor.selection) return;
-    const slate = Blocks.getSlate(editor, { at: editor.selection });
+    if (typeof editor.path.current !== 'number') return;
+    const slate = Blocks.getSlate(editor, { at: editor.path.current });
     if (!slate) return;
 
     editor.commands.deleteLink?.({ slate });
@@ -220,7 +219,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
     editor.formats[format].toggle();
   };
 
-  const blockData = findPluginBlockBySelectionPath(editor, { at: editor.selection });
+  const blockData = findPluginBlockByPath(editor, { at: editor.path.current });
 
   const onToggleAlign = () => {
     const aligns = ['left', 'center', 'right'];

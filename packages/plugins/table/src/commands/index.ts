@@ -1,4 +1,4 @@
-import { Blocks, buildBlockData, Elements, generateId, SlateElement, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, Elements, generateId, SlateElement, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import { Editor, Element, Path, Span, Transforms } from 'slate';
 import { InsertTableOptions, TableCellElement, TableElement, TableRowElement } from '../types';
 
@@ -17,7 +17,7 @@ type MoveTableOptions = {
 
 type InsertOptions = Partial<
   InsertTableOptions & {
-    at: YooptaBlockPath;
+    at: YooptaPathIndex;
   }
 >;
 
@@ -78,7 +78,8 @@ export const TableCommands: TableCommands = {
   },
   insertTable: (editor: YooEditor, options?: InsertOptions) => {
     const table = TableCommands.buildTableElements(editor, options);
-    Blocks.insertBlock(editor, buildBlockData({ value: [table], type: 'Table' }), options);
+    const block = Blocks.buildBlockData({ value: [table], type: 'Table' });
+    Blocks.insertBlock(editor, block.type, { ...options, blockData: block });
   },
   deleteTable: (editor: YooEditor, blockId: string) => {
     editor.deleteBlock({ blockId });

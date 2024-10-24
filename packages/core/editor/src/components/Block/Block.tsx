@@ -4,6 +4,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { BlockActions } from './BlockActions';
 import { YooptaBlockData } from '../../editor/types';
 import { useBlockStyles } from './hooks';
+import { Paths } from '../../editor/paths';
 
 type BlockProps = {
   children: React.ReactNode;
@@ -22,7 +23,7 @@ const Block = ({ children, block, blockId }: BlockProps) => {
   const align = block.meta.align || 'left';
   const className = `yoopta-block yoopta-align-${align}`;
 
-  const isSelected = editor.selectedBlocks?.includes(block.meta.order);
+  const isSelected = Paths.isBlockSelected(editor, block);
   const isHovered = activeBlockId === blockId;
 
   const handleMouseEnter = useCallback(() => {

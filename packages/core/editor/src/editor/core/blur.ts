@@ -2,11 +2,12 @@ import { Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { IS_FOCUSED_EDITOR } from '../../utils/weakMaps';
-import { SlateEditor, YooEditor, YooptaEditorTransformOptions } from '../types';
+import { SlateEditor, YooEditor } from '../types';
 
-export type EditorBlurOptions = Pick<YooptaEditorTransformOptions, 'slate'> & {
+export type EditorBlurOptions = {
   waitExecution?: boolean;
   waitExecutionMs?: number;
+  slate?: SlateEditor;
 };
 
 function blurFn(editor: YooEditor, slate: SlateEditor) {
@@ -16,8 +17,7 @@ function blurFn(editor: YooEditor, slate: SlateEditor) {
     Transforms.deselect(slate);
   } catch (error) {}
 
-  editor.setBlockSelected(null);
-  editor.setSelection(null);
+  editor.setPath({ current: null });
 }
 
 export function blur(editor: YooEditor, options: EditorBlurOptions = {}) {
@@ -35,6 +35,4 @@ export function blur(editor: YooEditor, options: EditorBlurOptions = {}) {
   IS_FOCUSED_EDITOR.set(editor, false);
   blurFn(editor, slate);
   editor.emit('blur', false);
-
-  editor.applyChanges();
 }

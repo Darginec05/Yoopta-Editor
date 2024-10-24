@@ -1,4 +1,4 @@
-import { YooEditor, YooptaBlockPath, YooptaBlockData } from '../../editor/types';
+import { YooEditor, YooptaPath, YooptaBlockData } from '../../editor/types';
 import { generateId } from '../../utils/generateId';
 import DragIcon from './icons/drag.svg';
 import PlusIcon from './icons/plus.svg';
@@ -13,6 +13,8 @@ import { getRootBlockElement } from '../../utils/blockElements';
 import { useActionMenuToolRefs } from './hooks';
 import { Overlay } from '../../UI/Overlay/Overlay';
 import { Portal } from '../../UI/Portal/Portal';
+import { Blocks } from '../../editor/blocks';
+import { Paths } from '../../editor/paths';
 
 type ActionsProps = {
   block: YooptaBlockData;
@@ -50,7 +52,7 @@ const BlockActions = ({ block, editor, dragHandleProps, onChangeActiveBlock, sho
   const { setActivatorNodeRef, attributes, listeners } = dragHandleProps;
 
   const onPlusClick = () => {
-    const slate = findSlateBySelectionPath(editor, { at: [block.meta.order] });
+    const slate = findSlateBySelectionPath(editor, { at: block.meta.order });
     const blockEntity = editor.blocks[block.type];
 
     if (!slate) return;
@@ -66,17 +68,17 @@ const BlockActions = ({ block, editor, dragHandleProps, onChangeActiveBlock, sho
     const isEmptyString = typeof string === 'string' && string.trim().length === 0;
 
     if (hasActionMenu && isEmptyString && rootElement?.props?.nodeType !== 'void') {
-      editor.setSelection([block.meta.order]);
+      editor.setPath({ current: block.meta.order });
       editor.focusBlock(block.id);
 
       actionMenuRefs.setReference(blockEl);
       onChangeActionMenuOpen(true);
     } else {
-      const defaultBlock = buildBlockData({ id: generateId() });
-      const nextPath: YooptaBlockPath = [block.meta.order + 1];
+      const defaultBlock = Blocks.buildBlockData({ id: generateId() });
+      const nextPath = block.meta.order + 1;
 
-      editor.setSelection([block.meta.order]);
-      editor.insertBlock(defaultBlock, { at: nextPath, focus: true });
+      editor.setPath({ current: block.meta.order });
+      editor.insertBlock(defaultBlock.type, { at: nextPath, focus: true });
 
       if (hasActionMenu) {
         setTimeout(() => {
@@ -91,7 +93,7 @@ const BlockActions = ({ block, editor, dragHandleProps, onChangeActiveBlock, sho
     event.stopPropagation();
     onChangeActiveBlock(block.id);
 
-    const slate = findSlateBySelectionPath(editor, { at: [block.meta.order] });
+    const slate = findSlateBySelectionPath(editor, { at: block.meta.order });
     editor.focusBlock(block.id);
 
     if (!slate) return;
@@ -105,8 +107,7 @@ const BlockActions = ({ block, editor, dragHandleProps, onChangeActiveBlock, sho
         Transforms.deselect(slate);
       }
 
-      editor.setBlockSelected([block.meta.order], { only: true });
-      editor.setSelection([block.meta.order]);
+      editor.setPath({ current: block.meta.order, selected: [block.meta.order] });
 
       setIsBlockOptionsOpen(true);
     }, 10);
@@ -125,6 +126,7 @@ const BlockActions = ({ block, editor, dragHandleProps, onChangeActiveBlock, sho
         <Portal id="yoo-block-options-portal">
           <Overlay lockScroll className="yoo-editor-z-[100]" onClick={onCloseActionMenu}>
             <div style={actionMenuStyles} ref={actionMenuRefs.setFloating}>
+              {/* @ts-ignore - fixme */}
               <ActionMenu {...actionMenuRenderProps} />
             </div>
           </Overlay>

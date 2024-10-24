@@ -1,77 +1,51 @@
-import { createDraft, finishDraft } from 'immer';
-import { Editor } from 'slate';
-import { buildSlateEditor } from '../../utils/buildSlate';
-import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
+import { buildBlockElementsStructure } from '../../utils/blockElements';
 import { generateId } from '../../utils/generateId';
-import { YooEditor, YooptaEditorTransformOptions, YooptaBlockData } from '../types';
+import { YooEditor, YooptaBlockData, YooptaPathIndex } from '../types';
+import { YooptaOperation } from '../core/applyTransforms';
 
-// make blockData optional
-export function insertBlock(
-  editor: YooEditor,
-  blockData: YooptaBlockData,
-  options: Partial<YooptaEditorTransformOptions> = {},
-) {
-  editor.children = createDraft(editor.children);
-  const { at = null, focus = false, slate = null } = options;
+export type InsertBlockOptions = {
+  at?: YooptaPathIndex;
+  focus?: boolean;
+  blockData?: Omit<Partial<YooptaBlockData>, 'type'>;
+};
 
-  const currentBlock = findPluginBlockBySelectionPath(editor);
+// [TEST]
+// [TEST] - TEST EVENTS
+export function insertBlock(editor: YooEditor, type: string, options: InsertBlockOptions = {}) {
+  const { at = editor.path.current, focus = false, blockData } = options;
 
-  const plugin = editor.plugins[blockData.type];
-  const pluginEvents = plugin.events || {};
-  const { onCreate } = pluginEvents;
+  const plugin = editor.plugins[type];
+  const { onBeforeCreate, onCreate } = plugin.events || {};
 
-  const nextBlockPath = at;
-  const newPluginBlock = {
-    id: generateId(),
-    value: blockData.value,
-    type: blockData.type,
+  let slateStructure;
+  if (blockData && Array.isArray(blockData?.value)) slateStructure = blockData.value[0];
+  else slateStructure = onBeforeCreate?.(editor) || buildBlockElementsStructure(editor, type);
+
+  const newBlock: YooptaBlockData = {
+    id: blockData?.id || generateId(),
+    type: type,
+    value: [slateStructure],
     meta: {
-      ...blockData.meta,
-      order: 0,
+      align: blockData?.meta?.align || 'left',
+      depth: blockData?.meta?.depth || 0,
+      order: typeof at === 'number' ? at : Object.keys(editor.children).length,
     },
   };
 
-  let insertBefore = false;
+  const operations: YooptaOperation[] = [];
 
-  if (slate && slate.selection) {
-    const string = Editor.string(slate, slate.selection.anchor.path);
+  operations.push({
+    type: 'insert_block',
+    path: { current: newBlock.meta.order },
+    block: newBlock,
+  });
 
-    const isStart = Editor.isStart(slate, slate.selection.anchor, slate.selection.anchor.path);
-    insertBefore = isStart && string.length > 0;
-  }
-
-  if (nextBlockPath) {
-    const [position] = nextBlockPath;
-    Object.values(editor.children).forEach((plugin) => {
-      if (plugin.meta.order >= position) {
-        plugin.meta.order += 1;
-      }
-    });
-
-    newPluginBlock.meta.order = position;
-  } else {
-    const newIndex = Object.keys(editor.children).length;
-    newPluginBlock.meta.order = newIndex;
-  }
-
-  const newSlateEditor = buildSlateEditor(editor);
-  editor.blockEditorsMap[newPluginBlock.id] = newSlateEditor;
-
-  if (insertBefore && currentBlock) {
-    newPluginBlock.meta.order = currentBlock.meta.order;
-    currentBlock.meta.order += 1;
-  }
-
-  editor.children[newPluginBlock.id] = newPluginBlock;
-  const currentBlockId = currentBlock?.id;
-
-  editor.children = finishDraft(editor.children);
-  editor.applyChanges();
-  editor.emit('change', editor.children);
-
-  onCreate?.(editor, newPluginBlock.id);
+  editor.applyTransforms(operations);
+  onCreate?.(editor, newBlock.id);
 
   if (focus) {
-    editor.focusBlock(insertBefore && currentBlockId ? currentBlockId : newPluginBlock.id);
+    editor.focusBlock(newBlock.id);
   }
+
+  return newBlock.id;
 }
