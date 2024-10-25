@@ -398,7 +398,6 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
   }
 
   const saveHistory = editor.isSavingHistory() !== false;
-  console.log('saveHistory', saveHistory);
   if (saveHistory) {
     const historyBatch = {
       operations: operations.filter(
