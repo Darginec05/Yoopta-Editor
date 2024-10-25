@@ -211,7 +211,7 @@ const FixedToolbar = ({ editor }: Props) => {
           onClick={() => {
             ParagraphCommands.insertParagraph(editor, { at: 0, focus: true });
             const block = Blocks.getBlock(editor, { at: 0 });
-            const slate = Blocks.getSlate(editor, { at: 0 });
+            const slate = Blocks.getBlockSlate(editor, { at: 0 });
 
             if (!slate || !block) return;
 

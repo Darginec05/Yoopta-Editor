@@ -4,7 +4,7 @@ import YooptaEditor, {
   Blocks,
   useYooptaEditor,
   YooptaContentValue,
-  OnChangeOptions,
+  YooptaOnChangeOptions,
 } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
@@ -120,7 +120,7 @@ function WithBaseFullSetup() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
 
-  const onChange = (newValue: YooptaContentValue, options: OnChangeOptions) => {
+  const onChange = (newValue: YooptaContentValue, options: YooptaOnChangeOptions) => {
     setValue(newValue);
   };
 

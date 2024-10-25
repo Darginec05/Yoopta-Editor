@@ -9,9 +9,9 @@ import { duplicateBlock } from './duplicateBlock';
 import { updateBlock } from './updateBlock';
 import { toggleBlock } from './toggleBlock';
 import { getBlock } from './getBlock';
-import { getSlate } from './getSlate';
+import { getBlockSlate } from './getBlockSlate';
 import { mergeBlock } from './mergeBlock';
-import { buildDefaultChildren, buildBlockData } from './buildBlockData';
+import { buildBlockData } from './buildBlockData';
 
 export const Blocks = {
   insertBlock,
@@ -25,8 +25,7 @@ export const Blocks = {
   updateBlock,
   toggleBlock,
   getBlock,
-  getSlate,
-  buildDefaultChildren,
+  getBlockSlate,
   buildBlockData,
   mergeBlock,
 };

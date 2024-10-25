@@ -124,7 +124,7 @@ export function onKeyDown(editor: YooEditor) {
           }
 
           const prevBlock = Blocks.getBlock(editor, { at: Paths.getPreviousPath(editor) });
-          const prevSlate = Blocks.getSlate(editor, { id: prevBlock?.id });
+          const prevSlate = Blocks.getBlockSlate(editor, { id: prevBlock?.id });
           if (prevBlock && prevSlate) {
             const { node: lastSlateNode } = getLastNode(prevSlate);
             const prevSlateText = Node.string(lastSlateNode);

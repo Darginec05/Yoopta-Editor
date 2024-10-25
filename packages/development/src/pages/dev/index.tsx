@@ -1,11 +1,14 @@
 import YooptaEditor, {
+  Blocks,
+  buildBlockData,
   createYooptaEditor,
-  OnChangeOptions,
+  generateId,
+  YooptaOnChangeOptions,
   YooEditor,
   YooptaBlockData,
   YooptaContentValue,
 } from '@yoopta/editor';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { MARKS } from '../../utils/yoopta/marks';
 import { YOOPTA_PLUGINS } from '../../utils/yoopta/plugins';
@@ -784,13 +787,19 @@ const data = {
   },
 };
 
+const getDefaultValue = () => {
+  const id = generateId();
+  return {
+    [id]: Blocks.buildBlockData({ id }),
+  };
+};
+
 const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef<HTMLDivElement>(null);
-  const [readOnly, setReadOnly] = useState(false);
-  const [value, setValue] = useState<YooptaContentValue>();
+  const [value, setValue] = useState<YooptaContentValue>({});
 
-  const onChange = (value: YooptaContentValue, options: OnChangeOptions) => {
+  const onChange = (value: YooptaContentValue, options: YooptaOnChangeOptions) => {
     console.log('onChange', value, options);
     setValue(value);
   };
@@ -805,9 +814,9 @@ const BasicExample = () => {
           selectionBoxRoot={selectionRef}
           marks={MARKS}
           autoFocus={true}
+          readOnly={false}
           placeholder="Type / to open menu"
           tools={TOOLS}
-          readOnly={readOnly}
           style={EDITOR_STYLE}
           value={value}
           onChange={onChange}

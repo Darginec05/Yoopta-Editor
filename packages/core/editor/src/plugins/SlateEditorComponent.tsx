@@ -150,60 +150,60 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
   const onPaste = useCallback(
     (event: React.ClipboardEvent) => {
       if (editor.readOnly) return;
-      eventHandlers?.onPaste?.(event);
+      // eventHandlers?.onPaste?.(event);
 
-      const data = event.clipboardData;
-      const html = data.getData('text/html');
+      // const data = event.clipboardData;
+      // const html = data.getData('text/html');
 
-      const parsedHTML = new DOMParser().parseFromString(html, 'text/html');
-      console.log('parsedHTML', parsedHTML);
+      // const parsedHTML = new DOMParser().parseFromString(html, 'text/html');
+      // console.log('parsedHTML', parsedHTML);
 
-      if (parsedHTML.body.childNodes.length > 0) {
-        const blocks = deserializeHTML(editor, parsedHTML.body);
+      // if (parsedHTML.body.childNodes.length > 0) {
+      //   const blocks = deserializeHTML(editor, parsedHTML.body);
 
-        // If no blocks from HTML, then paste as plain text using default behavior from Slate
-        if (blocks.length > 0 && editor.path.current !== null) {
-          event.preventDefault();
+      //   // If no blocks from HTML, then paste as plain text using default behavior from Slate
+      //   if (blocks.length > 0 && editor.path.current !== null) {
+      //     event.preventDefault();
 
-          let shouldInsertAfterSelection = false;
-          let shouldDeleteCurrentBlock = false;
+      //     let shouldInsertAfterSelection = false;
+      //     let shouldDeleteCurrentBlock = false;
 
-          if (slate && slate.selection) {
-            const parentPath = Path.parent(slate.selection.anchor.path);
-            const text = Editor.string(slate, parentPath).trim();
-            const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
-            shouldDeleteCurrentBlock = text === '' && isStart;
-            shouldInsertAfterSelection = !isStart || text.length > 0;
+      //     if (slate && slate.selection) {
+      //       const parentPath = Path.parent(slate.selection.anchor.path);
+      //       const text = Editor.string(slate, parentPath).trim();
+      //       const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
+      //       shouldDeleteCurrentBlock = text === '' && isStart;
+      //       shouldInsertAfterSelection = !isStart || text.length > 0;
 
-            ReactEditor.blur(slate);
-          }
+      //       ReactEditor.blur(slate);
+      //     }
 
-          const insertPathIndex = editor.path.current;
-          if (insertPathIndex === null) return;
+      //     const insertPathIndex = editor.path.current;
+      //     if (insertPathIndex === null) return;
 
-          // [TEST]
-          editor.batchOperations(() => {
-            const newPaths: number[] = [];
+      //     // [TEST]
+      //     editor.batchOperations(() => {
+      //       const newPaths: number[] = [];
 
-            if (shouldDeleteCurrentBlock) {
-              editor.deleteBlock({ at: insertPathIndex });
-            }
+      //       if (shouldDeleteCurrentBlock) {
+      //         editor.deleteBlock({ at: insertPathIndex });
+      //       }
 
-            blocks.forEach((block, idx) => {
-              let insertBlockPath = shouldInsertAfterSelection ? insertPathIndex + idx + 1 : insertPathIndex + idx;
-              newPaths.push(insertBlockPath);
+      //       blocks.forEach((block, idx) => {
+      //         let insertBlockPath = shouldInsertAfterSelection ? insertPathIndex + idx + 1 : insertPathIndex + idx;
+      //         newPaths.push(insertBlockPath);
 
-              const { type, ...blockData } = block;
-              editor.insertBlock(block.type, { at: insertBlockPath, focus: false, blockData });
-            });
+      //         const { type, ...blockData } = block;
+      //         editor.insertBlock(block.type, { at: insertBlockPath, focus: false, blockData });
+      //       });
 
-            // [TEST]
-            editor.setPath({ current: null, selected: newPaths });
-          });
+      //       // [TEST]
+      //       editor.setPath({ current: null, selected: newPaths });
+      //     });
 
-          return;
-        }
-      }
+      //     return;
+      //   }
+      // }
     },
     [eventHandlers.onPaste, editor.readOnly],
   );

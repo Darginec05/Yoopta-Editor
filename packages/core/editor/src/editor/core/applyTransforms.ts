@@ -397,20 +397,24 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
     editor.path = finishDraft(editor.path);
   }
 
-  const historyBatch = {
-    operations: operations.filter(
-      (op) => op.type !== 'set_block_path' && op.type !== 'set_block_value' && op.type !== 'validate_block_paths',
-    ),
-    path: editor.path,
-  };
+  const saveHistory = editor.isSavingHistory() !== false;
+  console.log('saveHistory', saveHistory);
+  if (saveHistory) {
+    const historyBatch = {
+      operations: operations.filter(
+        (op) => op.type !== 'set_block_path' && op.type !== 'set_block_value' && op.type !== 'validate_block_paths',
+      ),
+      path: editor.path,
+    };
 
-  if (historyBatch.operations.length > 0 && source !== 'history') {
-    editor.historyStack.undos.push(historyBatch);
-    editor.historyStack.redos = [];
-  }
+    if (historyBatch.operations.length > 0 && source !== 'history') {
+      editor.historyStack.undos.push(historyBatch);
+      editor.historyStack.redos = [];
+    }
 
-  if (editor.historyStack.undos.length > MAX_HISTORY_LENGTH) {
-    editor.historyStack.undos.shift();
+    if (editor.historyStack.undos.length > MAX_HISTORY_LENGTH) {
+      editor.historyStack.undos.shift();
+    }
   }
 
   const changeOptions = { value: editor.children, operations };

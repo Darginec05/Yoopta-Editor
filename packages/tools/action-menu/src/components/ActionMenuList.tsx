@@ -283,7 +283,7 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
     onMouseEnter,
     selectedAction,
     view: 'default',
-    mode: 'create',
+    mode: 'toggle',
   });
 
   useEffect(() => {

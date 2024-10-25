@@ -47,7 +47,6 @@ export function updateElement<TElementKeys extends string, TElementProps>(
       mode: 'lowest',
     });
 
-    // editor.applyChanges();
-    editor.emit('change', editor.children);
+    // editor.emit('change', { value: editor.children, operations: [] });
   });
 }

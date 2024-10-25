@@ -1,7 +1,7 @@
 import { YooEditor, YooptaPathIndex } from '../types';
 import { YooptaOperation } from '../core/applyTransforms';
 import { Paths } from '../paths';
-import { getSlate } from './getSlate';
+import { getBlockSlate } from './getBlockSlate';
 
 type DeleteBlockByIdOptions = {
   blockId: string;
@@ -35,7 +35,7 @@ export function deleteBlock(editor: YooEditor, options: DeleteBlockOptions) {
 
   const prevBlockPath = Paths.getPreviousPath(editor);
   const prevBlock = prevBlockPath !== null ? editor.getBlock({ at: prevBlockPath }) : undefined;
-  const prevSlate = prevBlock ? getSlate(editor, { id: prevBlock?.id }) : undefined;
+  const prevSlate = prevBlock ? getBlockSlate(editor, { id: prevBlock?.id }) : undefined;
 
   const blockToDelete = editor.children[block.id];
   const operations: YooptaOperation[] = [];

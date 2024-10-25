@@ -161,7 +161,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
   const onUpdateLink = (link: LinkValues) => {
     if (typeof editor.path.current !== 'number') return;
 
-    const slate = Blocks.getSlate(editor, { at: editor.path.current });
+    const slate = Blocks.getBlockSlate(editor, { at: editor.path.current });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
@@ -179,7 +179,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
         },
       });
 
-      editor.emit('change', editor.children);
+      // editor.emit('change', { value: editor.children, operations: [] });
 
       onChangeModal('link', false);
       setLinkValues(DEFAULT_LINK_VALUE);
@@ -189,7 +189,7 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
 
   const onDeleteLink = () => {
     if (typeof editor.path.current !== 'number') return;
-    const slate = Blocks.getSlate(editor, { at: editor.path.current });
+    const slate = Blocks.getBlockSlate(editor, { at: editor.path.current });
     if (!slate) return;
 
     editor.commands.deleteLink?.({ slate });

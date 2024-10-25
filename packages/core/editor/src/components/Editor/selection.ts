@@ -36,7 +36,7 @@ export function useMultiSelection({ editor }: MultiSelectionOptions) {
     const path = editor.path.current;
 
     if (typeof path === 'number') {
-      const slate = Blocks.getSlate(editor, { at: path });
+      const slate = Blocks.getBlockSlate(editor, { at: path });
       const block = Blocks.getBlock(editor, { at: path });
       const blockEntity = editor.blocks[block?.type || ''];
       if (!slate || blockEntity?.hasCustomEditor) return;
@@ -70,6 +70,8 @@ export function useMultiSelection({ editor }: MultiSelectionOptions) {
 
   const onMouseDown = (e: React.MouseEvent) => {
     if (editor.readOnly) return;
+
+    if (!editor.isFocused()) editor.focus();
 
     editor.batchOperations(() => {
       const selectedBlocks = Paths.getSelectedPaths(editor);

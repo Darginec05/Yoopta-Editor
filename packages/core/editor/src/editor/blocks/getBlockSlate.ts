@@ -1,13 +1,13 @@
 import { SlateEditor, YooEditor, YooptaBlockData, YooptaPathIndex } from '../types';
 
-export type GetSlateOptions = {
+export type GetBlockSlateOptions = {
   at?: YooptaPathIndex;
   id?: string;
 };
 
-export function getSlate(editor: YooEditor, options: GetSlateOptions): SlateEditor {
+export function getBlockSlate(editor: YooEditor, options: GetBlockSlateOptions): SlateEditor {
   if (!options?.id && typeof options?.at !== 'number') {
-    throw new Error('getSlate requires either an id or at');
+    throw new Error('getBlockSlate requires either an id or at');
   }
 
   const blockId =

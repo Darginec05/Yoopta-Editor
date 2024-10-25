@@ -2,7 +2,7 @@ import { SlateElement, YooEditor, YooptaBlockData } from '../editor/types';
 import { Plugin, PluginElementsMap } from '../plugins/types';
 import { YooptaMark } from '../marks';
 import { findPluginBlockByPath } from '../utils/findPluginBlockByPath';
-import { getRootBlockElement } from './blockElements';
+import { buildBlockElementsStructure, getRootBlockElement } from './blockElements';
 import { buildSlateEditor } from './buildSlate';
 import { getValue } from '../editor/textFormats/getValue';
 import { isActive } from '../editor/textFormats/isActive';
@@ -79,6 +79,15 @@ export function buildBlockSlateEditors(editor: YooEditor) {
 
   Object.keys(editor.children).forEach((id) => {
     const slate = buildSlateEditor(editor);
+
+    if (slate.children.length === 0) {
+      const block = editor.children[id];
+      if (block) {
+        const slateStructure = buildBlockElementsStructure(editor, block.type);
+        slate.children = [slateStructure];
+      }
+    }
+
     blockEditorsMap[id] = slate;
   });
 

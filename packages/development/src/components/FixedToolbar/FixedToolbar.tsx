@@ -1,18 +1,13 @@
 import Paragraph, { ParagraphCommands } from '@yoopta/paragraph';
-import Blockquote, { BlockquoteCommands } from '@yoopta/blockquote';
 import Embed, { EmbedCommands } from '@yoopta/embed';
 import Image, { ImageCommands } from '@yoopta/image';
 import Link, { LinkCommands } from '@yoopta/link';
 import Callout, { CalloutCommands } from '@yoopta/callout';
-import Video from '@yoopta/video';
-import File from '@yoopta/file';
-import Accordion, { AccordionCommands } from '@yoopta/accordion';
-import { NumberedList, BulletedList, TodoList, TodoListCommands } from '@yoopta/lists';
-import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/marks';
+
+import { AccordionCommands } from '@yoopta/accordion';
+import { TodoListCommands } from '@yoopta/lists';
 import { HeadingOne, HeadingOneCommands, HeadingThree, HeadingTwo } from '@yoopta/headings';
-import Code from '@yoopta/code';
 import Table, { TableCommands } from '@yoopta/table';
-import Divider, { DividerCommands } from '@yoopta/divider';
 import { Blocks, Elements, YooEditor, Paths, YooptaPathIndex } from '@yoopta/editor';
 
 type Props = {
@@ -154,7 +149,7 @@ export const FixedToolbar = ({ editor, DEFAULT_DATA }: Props) => {
           onClick={() => {
             ParagraphCommands.insertParagraph(editor, { at: 0, focus: true });
             const block = Blocks.getBlock(editor, { at: 0 });
-            const slate = Blocks.getSlate(editor, { at: 0 });
+            const slate = Blocks.getBlockSlate(editor, { at: 0 });
 
             if (!slate || !block) return;
 

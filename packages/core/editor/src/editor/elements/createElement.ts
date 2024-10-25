@@ -90,7 +90,6 @@ export function createElement<TElementKeys extends string, TElementProps>(
       }
     }
 
-    // editor.applyChanges();
-    editor.emit('change', editor.children);
+    // editor.emit('change', { value: editor.children, operations: [] });
   });
 }

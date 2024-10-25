@@ -44,8 +44,7 @@ export function insertElementText<TElementKeys extends string, TElementProps>(
     }
 
     Transforms.insertText(slate, text, { at: path });
-    // editor.applyChanges();
-    editor.emit('change', editor.children);
+    // editor.emit('change', { value: editor.children, operations: [] });
 
     if (focus) {
       editor.focusBlock(blockData.id, { waitExecution: true, shouldUpdateBlockSelection: true });

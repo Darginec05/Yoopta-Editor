@@ -24,11 +24,22 @@ import { applyTransforms } from './core/applyTransforms';
 import { batchOperations } from './core/batchOperations';
 import { mergeBlock } from './blocks/mergeBlock';
 import { UndoRedoOptions, YooptaHistory } from './core/history';
+import EventEmitter from 'eventemitter3';
+
+const eventEmitter = new EventEmitter();
+
+const Events = {
+  on: (event, fn) => eventEmitter.on(event, fn),
+  once: (event, fn) => eventEmitter.once(event, fn),
+  off: (event, fn) => eventEmitter.off(event, fn),
+  emit: (event, payload) => eventEmitter.emit(event, payload),
+};
 
 export function createYooptaEditor(): YooEditor {
   const editor: YooEditor = {
     id: '',
     children: {},
+    blockEditorsMap: {},
     path: { current: null },
     readOnly: false,
     isEmpty: () => isEmpty(editor),
@@ -47,7 +58,6 @@ export function createYooptaEditor(): YooEditor {
     splitBlock: (...args) => splitBlock(editor, ...args),
     mergeBlock: (...args) => mergeBlock(editor, ...args),
     setPath: (...args) => setPath(editor, ...args),
-    blockEditorsMap: {},
     blocks: {},
     formats: {},
     shortcuts: {},
@@ -57,10 +67,10 @@ export function createYooptaEditor(): YooEditor {
     applyTransforms: (operations, ...args) => applyTransforms(editor, operations, ...args),
     batchOperations: (callback) => batchOperations(editor, callback),
 
-    on: (event, callback) => {},
-    off: (event, callback) => {},
-    emit: (event, ...args) => {},
-    once: (event, callback) => {},
+    on: (event, callback) => Events.on(event, callback),
+    off: (event, callback) => Events.off(event, callback),
+    emit: (event, ...args) => Events.emit(event, ...args),
+    once: (event, callback) => Events.once(event, callback),
 
     isFocused: () => isFocused(editor),
     focus: () => focus(editor),
@@ -82,6 +92,7 @@ export function createYooptaEditor(): YooEditor {
     isSavingHistory: () => YooptaHistory.isSavingHistory(editor),
     isMergingHistory: () => YooptaHistory.isMergingHistory(editor),
     withoutSavingHistory: (fn) => YooptaHistory.withoutSavingHistory(editor, fn),
+    withSavingHistory: (fn) => YooptaHistory.withSavingHistory(editor, fn),
     withoutMergingHistory: (fn) => YooptaHistory.withoutMergingHistory(editor, fn),
     withMergingHistory: (fn) => YooptaHistory.withMergingHistory(editor, fn),
   };

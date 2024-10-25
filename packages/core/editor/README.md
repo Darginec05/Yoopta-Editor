@@ -106,10 +106,10 @@ export type YooEditor<TNodes> = {
   plugins: Record<string, Plugin<string, unknown>>;
 
   // events handlers
-  on: (event: YooEditorEvents, fn: (payload: any) => void) => void;
-  once: (event: YooEditorEvents, fn: (payload: any) => void) => void;
-  off: (event: YooEditorEvents, fn: (payload: any) => void) => void;
-  emit: (event: YooEditorEvents, payload: any) => void;
+  on: (event: YooptaEditorEventKeys, fn: (payload: any) => void) => void;
+  once: (event: YooptaEditorEventKeys, fn: (payload: any) => void) => void;
+  off: (event: YooptaEditorEventKeys, fn: (payload: any) => void) => void;
+  emit: (event: YooptaEditorEventKeys, payload: any) => void;
 
   // focus handlers
   isFocused: () => boolean;

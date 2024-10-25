@@ -1,9 +1,7 @@
-import EventEmitter from 'eventemitter3';
 import { YooptaContextProvider } from './contexts/YooptaContext/YooptaContext';
-import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { Editor } from './components/Editor/Editor';
 import { CSSProperties, useCallback, useEffect, useMemo, useState } from 'react';
-import { SlateElement, YooEditor, YooptaBlockData, YooptaPath, YooptaContentValue } from './editor/types';
+import { SlateElement, YooEditor, YooptaPath, YooptaContentValue } from './editor/types';
 import { Plugin } from './plugins/types';
 import { Tools, ToolsProvider } from './contexts/YooptaContext/ToolsContext';
 import {
@@ -19,8 +17,9 @@ import { YooptaMark } from './marks';
 import { FakeSelectionMark } from './marks/FakeSelectionMark';
 import { generateId } from './utils/generateId';
 import { YooptaOperation } from './editor/core/applyTransforms';
+import { validateYooptaValue } from './utils/validateYooptaValue';
 
-export type OnChangeOptions = {
+export type YooptaOnChangeOptions = {
   operations: YooptaOperation[];
 };
 
@@ -30,7 +29,7 @@ export type YooptaEditorProps = {
   plugins: Readonly<YooptaPlugin<Record<string, SlateElement>>[]>;
   marks?: YooptaMark<any>[];
   value?: YooptaContentValue;
-  onChange?: (value: YooptaContentValue, options: OnChangeOptions) => void;
+  onChange?: (value: YooptaContentValue, options: YooptaOnChangeOptions) => void;
   autoFocus?: boolean;
   className?: string;
   selectionBoxRoot?: HTMLElement | React.MutableRefObject<HTMLElement | null> | false;
@@ -41,24 +40,6 @@ export type YooptaEditorProps = {
   width?: number | string;
   style?: CSSProperties;
 };
-
-const DEFAULT_VALUE: Record<string, YooptaBlockData> = getDefaultYooptaChildren();
-const eventEmitter = new EventEmitter();
-
-const Events = {
-  on: (event, fn) => eventEmitter.on(event, fn),
-  once: (event, fn) => eventEmitter.once(event, fn),
-  off: (event, fn) => eventEmitter.off(event, fn),
-  emit: (event, payload) => eventEmitter.emit(event, payload),
-};
-
-function validateInitialValue(value: any): boolean {
-  if (!value) return false;
-  if (typeof value !== 'object') return false;
-  if (Object.keys(value).length === 0) return false;
-
-  return true;
-}
 
 type EditorState = {
   editor: YooEditor;
@@ -97,7 +78,7 @@ const YooptaEditor = ({
     if (marks) editor.formats = buildMarks(editor, marks);
     editor.blocks = buildBlocks(editor, plugins);
 
-    const isValueValid = validateInitialValue(value);
+    const isValueValid = validateYooptaValue(value);
     if (!isValueValid && typeof value !== 'undefined') {
       // [TODO] - add link to documentation
       console.error(
@@ -105,27 +86,22 @@ const YooptaEditor = ({
       );
     }
 
-    editor.children = (isValueValid ? value : DEFAULT_VALUE) as YooptaContentValue;
+    editor.children = (isValueValid ? value : {}) as YooptaContentValue;
     editor.blockEditorsMap = buildBlockSlateEditors(editor);
     editor.shortcuts = buildBlockShortcuts(editor);
     editor.plugins = buildPlugins(plugins);
     editor.commands = buildCommands(editor, plugins);
 
-    editor.on = Events.on;
-    editor.once = Events.once;
-    editor.off = Events.off;
-    editor.emit = Events.emit;
-
     return { editor, version: 0 };
   });
 
-  const [_, setSelectionPath] = useState<YooptaPath | null>(null);
+  const [_, setStatePath] = useState<YooptaPath | null>(null);
 
-  const onSelectonPathChange = useCallback((path: YooptaPath) => {
-    setSelectionPath(path);
+  const onEditorPathChange = useCallback((path: YooptaPath) => {
+    setStatePath(path);
   }, []);
 
-  const onValueChange = useCallback((value, options: OnChangeOptions) => {
+  const onValueChange = useCallback((value, options: YooptaOnChangeOptions) => {
     setEditorState((prevState) => ({
       editor: prevState.editor,
       version: prevState.version + 1,
@@ -149,11 +125,11 @@ const YooptaEditor = ({
     };
 
     editor.on('change', changeHandler);
-    editor.on('path-change', onSelectonPathChange);
+    editor.on('path-change', onEditorPathChange);
 
     return () => {
       editor.off('change', changeHandler);
-      editor.off('path-change', onSelectonPathChange);
+      editor.off('path-change', onEditorPathChange);
     };
   }, [editor, onValueChange]);
 

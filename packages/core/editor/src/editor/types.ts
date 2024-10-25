@@ -62,11 +62,24 @@ export type YooptaBlock = {
 export type YooptaBlocks = Record<string, YooptaBlock>;
 export type YooptaFormats = Record<string, TextFormat>;
 
-export type YooEditorEvents = 'change' | 'focus' | 'blur' | 'block:copy' | 'path-change';
+export type YooptaEditorEventKeys = 'change' | 'focus' | 'blur' | 'block:copy' | 'path-change';
+export type YooptaEventChangePayload = {
+  operations: YooptaOperation[];
+  value: YooptaContentValue;
+};
+
+export type YooptaEventsMap = {
+  change: YooptaEventChangePayload;
+  focus: boolean;
+  blur: boolean;
+  'block:copy': YooptaBlockData;
+  'path-change': YooptaPath;
+};
 
 export type BaseCommands = Record<string, (...args: any[]) => any>;
 
 // [TODO] - Fix generic and default types
+// [TODO] - change with WithoutFirstArg
 export type YooEditor = {
   id: string;
   readOnly: boolean;
@@ -89,7 +102,7 @@ export type YooEditor = {
 
   children: YooptaContentValue;
   getEditorValue: () => YooptaContentValue;
-  setEditorValue: (value: YooptaContentValue) => void;
+  setEditorValue: (value: YooptaContentValue | null) => void;
   blockEditorsMap: YooptaPluginsEditorMap;
   blocks: YooptaBlocks;
   formats: YooptaFormats;
@@ -102,10 +115,10 @@ export type YooEditor = {
   historyStack: Record<HistoryStackName, HistoryStack[]>;
 
   // events handlers
-  on: (event: YooEditorEvents, fn: (payload: any) => void) => void;
-  once: (event: YooEditorEvents, fn: (payload: any) => void) => void;
-  off: (event: YooEditorEvents, fn: (payload: any) => void) => void;
-  emit: (event: YooEditorEvents, payload: any) => void;
+  on: <K extends keyof YooptaEventsMap>(event: K, fn: (payload: YooptaEventsMap[K]) => void) => void;
+  once: <K extends keyof YooptaEventsMap>(event: K, fn: (payload: YooptaEventsMap[K]) => void) => void;
+  off: <K extends keyof YooptaEventsMap>(event: K, fn: (payload: YooptaEventsMap[K]) => void) => void;
+  emit: <K extends keyof YooptaEventsMap>(event: K, payload: YooptaEventsMap[K]) => void;
 
   // focus handlers
   isFocused: () => boolean;
@@ -122,6 +135,7 @@ export type YooEditor = {
   withoutSavingHistory: WithoutFirstArg<typeof YooptaHistory.withoutSavingHistory>;
   withoutMergingHistory: WithoutFirstArg<typeof YooptaHistory.withoutMergingHistory>;
   withMergingHistory: WithoutFirstArg<typeof YooptaHistory.withMergingHistory>;
+  withSavingHistory: WithoutFirstArg<typeof YooptaHistory.withSavingHistory>;
   redo: WithoutFirstArg<typeof YooptaHistory.redo>;
   undo: WithoutFirstArg<typeof YooptaHistory.undo>;
 
