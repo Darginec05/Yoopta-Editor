@@ -1,18 +1,22 @@
-import { Descendant, Path, Point, Text } from 'slate';
+import { Descendant, Path, Point } from 'slate';
 import { Plugin, PluginElementsMap, PluginOptions, PluginElementProps } from '../plugins/types';
 import { EditorBlurOptions } from './core/blur';
-import { DeleteBlockOptions } from './blocks/deleteBlock';
-import { DuplicateBlockOptions } from './blocks/duplicateBlock';
-import { FocusBlockOptions } from './blocks/focusBlock';
-import { ToggleBlockOptions } from './blocks/toggleBlock';
+import { deleteBlock, DeleteBlockOptions } from './blocks/deleteBlock';
+import { duplicateBlock, DuplicateBlockOptions } from './blocks/duplicateBlock';
+import { focusBlock } from './blocks/focusBlock';
+import { toggleBlock, ToggleBlockOptions } from './blocks/toggleBlock';
 import { GetBlockOptions } from './blocks/getBlock';
 import { ReactEditor } from 'slate-react';
-import { ApplyTransformsOptions, YooptaOperation } from './core/applyTransforms';
-import { InsertBlockOptions } from './blocks/insertBlock';
-import { BlockDepthOptions } from './blocks/increaseBlockDepth';
+import { applyTransforms, ApplyTransformsOptions, YooptaOperation } from './core/applyTransforms';
+import { insertBlock, InsertBlockOptions } from './blocks/insertBlock';
+import { increaseBlockDepth } from './blocks/increaseBlockDepth';
 import { SplitBlockOptions } from './blocks/splitBlock';
 import { HistoryStack, HistoryStackName, YooptaHistory } from './core/history';
 import { WithoutFirstArg } from '../utils/types';
+import { moveBlock } from './blocks/moveBlock';
+import { decreaseBlockDepth } from './blocks/decreaseBlockDepth';
+import { updateBlock } from './blocks/updateBlock';
+import { setEditorValue } from './core/setEditorValue';
 
 export type YooptaBlockData<T = Descendant | SlateElement> = {
   id: string;
@@ -84,25 +88,28 @@ export type YooEditor = {
   id: string;
   readOnly: boolean;
   isEmpty: () => boolean;
-  insertBlock: (type: string, options?: InsertBlockOptions) => string;
-  updateBlock: (id: string, data: Partial<YooptaBlockData>) => void;
-  deleteBlock: (options: DeleteBlockOptions) => void;
-  duplicateBlock: (options: DuplicateBlockOptions) => void;
-  toggleBlock: (toBlockType: string, options?: ToggleBlockOptions) => void;
-  increaseBlockDepth: (options?: BlockDepthOptions) => void;
-  decreaseBlockDepth: (options?: BlockDepthOptions) => void;
-  moveBlock: (blockId: string, to: YooptaPathIndex) => void;
-  focusBlock: (id: string, options?: FocusBlockOptions) => void;
+
+  // block handlers
+  insertBlock: WithoutFirstArg<typeof insertBlock>;
+  updateBlock: WithoutFirstArg<typeof updateBlock>;
+  deleteBlock: WithoutFirstArg<typeof deleteBlock>;
+  duplicateBlock: WithoutFirstArg<typeof duplicateBlock>;
+  toggleBlock: WithoutFirstArg<typeof toggleBlock>;
+  increaseBlockDepth: WithoutFirstArg<typeof increaseBlockDepth>;
+  decreaseBlockDepth: WithoutFirstArg<typeof decreaseBlockDepth>;
+  moveBlock: WithoutFirstArg<typeof moveBlock>;
+  focusBlock: WithoutFirstArg<typeof focusBlock>;
   mergeBlock: () => void;
   splitBlock: (options?: SplitBlockOptions) => void;
   getBlock: (options: GetBlockOptions) => YooptaBlockData | null;
 
+  // path handlers
   path: YooptaPath;
   setPath: (path: YooptaPath) => void;
 
   children: YooptaContentValue;
   getEditorValue: () => YooptaContentValue;
-  setEditorValue: (value: YooptaContentValue | null) => void;
+  setEditorValue: WithoutFirstArg<typeof setEditorValue>;
   blockEditorsMap: YooptaPluginsEditorMap;
   blocks: YooptaBlocks;
   formats: YooptaFormats;
@@ -110,9 +117,9 @@ export type YooEditor = {
   plugins: Record<string, Plugin<Record<string, SlateElement>, unknown>>;
   commands: Record<string, (...args: any[]) => any>;
 
-  applyTransforms: (operations: YooptaOperation[], options?: ApplyTransformsOptions) => void;
+  // core handlers
+  applyTransforms: WithoutFirstArg<typeof applyTransforms>;
   batchOperations: (fn: () => void) => void;
-  historyStack: Record<HistoryStackName, HistoryStack[]>;
 
   // events handlers
   on: <K extends keyof YooptaEventsMap>(event: K, fn: (payload: YooptaEventsMap[K]) => void) => void;
@@ -130,6 +137,8 @@ export type YooEditor = {
   getMarkdown: (content: YooptaContentValue) => string;
   getPlainText: (content: YooptaContentValue) => string;
 
+  // history
+  historyStack: Record<HistoryStackName, HistoryStack[]>;
   isSavingHistory: WithoutFirstArg<typeof YooptaHistory.isSavingHistory>;
   isMergingHistory: WithoutFirstArg<typeof YooptaHistory.isMergingHistory>;
   withoutSavingHistory: WithoutFirstArg<typeof YooptaHistory.withoutSavingHistory>;

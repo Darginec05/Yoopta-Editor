@@ -5,6 +5,7 @@ import YooptaEditor, {
   useYooptaEditor,
   YooEditor,
   YooptaContentValue,
+  YooptaPathIndex,
 } from '@yoopta/editor';
 
 import Paragraph, { ParagraphCommands } from '@yoopta/paragraph';
@@ -159,6 +160,16 @@ const FixedToolbar = ({ editor }: Props) => {
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
           Insert Image
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            const at: YooptaPathIndex = typeof editor.path.current === 'number' ? editor.path.current : 2;
+            editor.toggleBlock('Blockquote', { at: at, focus: true });
+          }}
+          className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
+        >
+          Toggle focused block into Blockquote
         </button>
         <button
           type="button"

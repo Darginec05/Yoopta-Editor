@@ -58,7 +58,13 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
 
   const onChange = useCallback(
     (value) => {
-      editor.updateBlock(id, { value });
+      if (editor.readOnly) return;
+
+      if (window.scheduler) {
+        window.scheduler.postTask(() => editor.updateBlock(id, { value }), { priority: 'background' });
+      } else {
+        editor.updateBlock(id, { value });
+      }
     },
     [id],
   );

@@ -804,6 +804,18 @@ const BasicExample = () => {
     setValue(value);
   };
 
+  useEffect(() => {
+    editor.withoutSavingHistory(() => {
+      const id = generateId();
+      const data = {
+        [id]: Blocks.buildBlockData({ id }),
+      };
+
+      editor.setEditorValue(data);
+      editor.focusBlock(id);
+    });
+  }, []);
+
   return (
     <>
       <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={selectionRef}>

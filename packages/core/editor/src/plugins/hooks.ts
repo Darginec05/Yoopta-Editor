@@ -103,7 +103,7 @@ export const useSlateEditor = (
         }
       }
 
-      let save = YooptaHistory.isSavingHistory(editor);
+      let save = editor.isSavingHistory();
       if (typeof save === 'undefined') {
         save = shouldSave(op);
       }

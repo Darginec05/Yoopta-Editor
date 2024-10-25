@@ -58,15 +58,6 @@ export function buildBlocks(editor, plugins: Plugin<Record<string, SlateElement>
           const block = findPluginBlockByPath(editor, { at: editor.path.current });
           return block?.type === plugin.type;
         },
-
-        // // block actions
-        // toggle: (options?: ToggleBlockOptions) => toggleBlock(editor, plugin.type, options),
-        // update: <TKeys extends string, TProps>(id: string, data: Partial<Pick<YooptaBlockData, 'meta' | 'value'>>) => {
-        //   updateBlock(editor, id, data);
-        // },
-        // delete: (options: DeleteBlockOptions) => {
-        //   deleteBlock(editor, options);
-        // },
       };
     }
   });

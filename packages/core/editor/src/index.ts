@@ -33,6 +33,9 @@ export {
   SlateEditor,
   YooptaPath,
   YooptaPathIndex,
+  YooptaEventChangePayload,
+  YooptaEventsMap,
+  YooptaEditorEventKeys,
 } from './editor/types';
 export { buildBlockData, buildBlockElement } from './components/Editor/utils';
 export { buildBlockElementsStructure } from './utils/blockElements';
