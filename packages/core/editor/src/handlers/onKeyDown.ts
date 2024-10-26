@@ -236,7 +236,7 @@ export function onKeyDown(editor: YooEditor) {
           editor.focusBlock(prevBlock.id, {
             focusAt: selection,
             waitExecution: false,
-            shouldUpdateBlockSelection: true,
+            shouldUpdateBlockPath: true,
           });
           return;
         }

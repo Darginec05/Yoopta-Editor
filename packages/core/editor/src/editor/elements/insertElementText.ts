@@ -47,7 +47,7 @@ export function insertElementText<TElementKeys extends string, TElementProps>(
     // editor.emit('change', { value: editor.children, operations: [] });
 
     if (focus) {
-      editor.focusBlock(blockData.id, { waitExecution: true, shouldUpdateBlockSelection: true });
+      editor.focusBlock(blockData.id, { waitExecution: true, shouldUpdateBlockPath: true });
     }
   });
 }

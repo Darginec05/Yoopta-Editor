@@ -6,7 +6,7 @@ import { FocusAt, SlateEditor, YooEditor } from '../types';
 export type FocusBlockOptions = {
   waitExecution?: boolean;
   waitExecutionMs?: number;
-  shouldUpdateBlockSelection?: boolean;
+  shouldUpdateBlockPath?: boolean;
   focusAt?: FocusAt;
   slate?: SlateEditor;
 };
@@ -28,7 +28,7 @@ function getSelectionPath(slate: SlateEditor, focusAt?: FocusAt): FocusAt {
 
 // [TODO] - update editor.path after focus
 export function focusBlock(editor: YooEditor, blockId: string, options: FocusBlockOptions = {}) {
-  const { focusAt, waitExecution = true, waitExecutionMs = 0, shouldUpdateBlockSelection = true } = options;
+  const { focusAt, waitExecution = true, waitExecutionMs = 0, shouldUpdateBlockPath = true } = options;
 
   const focusBlockEditor = () => {
     const slate = options.slate || editor.blockEditorsMap[blockId];
@@ -46,7 +46,7 @@ export function focusBlock(editor: YooEditor, blockId: string, options: FocusBlo
       } catch (error) {}
     }
 
-    if (shouldUpdateBlockSelection) {
+    if (shouldUpdateBlockPath) {
       setTimeout(() => {
         editor.setPath({ current: block.meta.order });
       }, 0);
