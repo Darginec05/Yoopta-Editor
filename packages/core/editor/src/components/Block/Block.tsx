@@ -1,7 +1,6 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { memo } from 'react';
 import { useYooptaEditor } from '../../contexts/YooptaContext/YooptaContext';
 import { useSortable } from '@dnd-kit/sortable';
-import { BlockActions } from './BlockActions';
 import { YooptaBlockData } from '../../editor/types';
 import { useBlockStyles } from './hooks';
 import { Paths } from '../../editor/paths';
@@ -10,11 +9,11 @@ type BlockProps = {
   children: React.ReactNode;
   block: YooptaBlockData;
   blockId: string;
+  onActiveDragHandleChange: (props: any) => void;
 };
 
-const Block = ({ children, block, blockId }: BlockProps) => {
+const Block = memo(({ children, block, blockId, onActiveDragHandleChange }: BlockProps) => {
   const editor = useYooptaEditor();
-  const [activeBlockId, setActiveBlockId] = React.useState<string | null>(null);
 
   const { attributes, listeners, setNodeRef, setActivatorNodeRef, transform, transition, isOver, isDragging } =
     useSortable({ id: blockId, disabled: editor.readOnly });
@@ -24,45 +23,32 @@ const Block = ({ children, block, blockId }: BlockProps) => {
   const className = `yoopta-block yoopta-align-${align}`;
 
   const isSelected = Paths.isBlockSelected(editor, block);
-  const isHovered = activeBlockId === blockId;
 
-  const handleMouseEnter = useCallback(() => {
-    if (editor.readOnly) return;
-    setActiveBlockId(blockId);
-  }, [editor.readOnly, blockId]);
-
-  const handleMouseLeave = useCallback(() => {
-    if (editor.readOnly) return;
-    setActiveBlockId(null);
-  }, [editor.readOnly]);
-
-  const dragHandleProps = useMemo(() => ({ setActivatorNodeRef, attributes, listeners }), [block]);
+  const handleMouseEnter = () => {
+    if (!editor.readOnly && onActiveDragHandleChange) {
+      onActiveDragHandleChange({
+        attributes,
+        listeners,
+        setActivatorNodeRef,
+      });
+    }
+  };
 
   return (
     <div
       ref={setNodeRef}
       className={className}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       style={styles.container}
-      data-hovered-block={isHovered}
       data-yoopta-block
       data-yoopta-block-id={blockId}
-      data-yoopta-block-type={block.type}
+      onMouseEnter={handleMouseEnter}
     >
-      {!editor.readOnly && (
-        <BlockActions
-          block={block}
-          editor={editor}
-          dragHandleProps={dragHandleProps}
-          showActions={isHovered}
-          onChangeActiveBlock={setActiveBlockId}
-        />
-      )}
       <div style={styles.content}>{children}</div>
       {isSelected && !editor.readOnly && <div className="yoopta-selection-block" />}
     </div>
   );
-};
+});
+
+Block.displayName = 'Block';
 
 export { Block };

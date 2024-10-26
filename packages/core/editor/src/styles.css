@@ -49,7 +49,10 @@
 }
 
 .yoopta-block-actions {
-  @apply yoo-editor-flex yoo-editor-absolute -yoo-editor-left-[50px] yoo-editor-top-[2px] yoo-editor-opacity-0 yoo-editor-transition-opacity data-[hovered-state-open="true"]:yoo-editor-opacity-100
+  display: flex;
+  position: fixed;
+  display: flex;
+  pointer-events: auto;
 }
 
 .yoopta-block-actions-plus {

@@ -10,7 +10,7 @@
 
 ![](/docs/public/yoopta_intro.gif)
 
-![Alt](https://repobeats.axiom.co/api/embed/0d5703e649e2ba6be41450de891f466ce6935ff0.svg "Repobeats analytics image")
+![Alt](https://repobeats.axiom.co/api/embed/0d5703e649e2ba6be41450de891f466ce6935ff0.svg 'Repobeats analytics image')
 
 ## Introduction
 
@@ -125,9 +125,11 @@ type YooptaEditor = {
   marks?: YooptaMark<any>[];
   /* Value. [Default] - undefined */
   value?: YooptaContentValue;
+  /* Change handler  */
+  onChange?: (value: YooptaContentValue, options: YooptaOnChangeOptions) => void;
   /* autoFocus. [Default] - true */
   autoFocus?: boolean;
-  /* className */
+  /* className - class name */
   className?: string;
   /* These props define the area for the selection box. 
   Good practice - passing parent element.
