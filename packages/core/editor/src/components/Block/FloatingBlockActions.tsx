@@ -10,7 +10,7 @@ import { Editor, Transforms } from 'slate';
 import { BlockOptions } from '../../UI/BlockOptions/BlockOptions';
 import { Blocks } from '../../editor/blocks';
 import { Portal } from '../../UI/Portal/Portal';
-import { useActionMenuToolRefs, useBlockActionRefs, useBlockOptionsRefs } from './hooks';
+import { useActionMenuToolRefs, useBlockOptionsRefs } from './hooks';
 import { Overlay } from '../../UI/Overlay/Overlay';
 import { throttle } from '../../utils/throttle';
 
@@ -25,16 +25,33 @@ type FloatingBlockActionsProps = {
   dragHandleProps: dragHandleProps | null;
 };
 
+type ActionStyles = {
+  position: 'fixed';
+  top: number;
+  left: number;
+  opacity: number;
+  transform: string;
+  transition: string;
+};
+
+const INITIAL_STYLES: ActionStyles = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  opacity: 0,
+  transform: 'scale(0.95)',
+  transition: 'opacity 150ms ease-out',
+};
+
 const MOUSE_LEAVE_TIMEOUT = 300;
 
 export const FloatingBlockActions = memo(({ editor, dragHandleProps }: FloatingBlockActionsProps) => {
   const [hoveredBlock, setHoveredBlock] = useState<YooptaBlockData | null>(null);
-  const mouseLeaveTimerRef = useRef<number>();
+  const blockActionsRef = useRef<HTMLDivElement>(null);
+  const [actionStyles, setActionStyles] = useState<ActionStyles>(INITIAL_STYLES);
+  const [isMouseInEditor, setIsMouseInEditor] = useState(false);
 
   const { attributes, listeners, setActivatorNodeRef } = dragHandleProps || {};
-
-  const { setIsBlockActionsOpen, isBlockActionsMounted, blockActionsRefs, blockActionsFloatingStyle } =
-    useBlockActionRefs();
 
   const { isBlockOptionsMounted, setIsBlockOptionsOpen, blockOptionsFloatingStyle, blockOptionsRefs } =
     useBlockOptionsRefs();
@@ -50,6 +67,47 @@ export const FloatingBlockActions = memo(({ editor, dragHandleProps }: FloatingB
     ActionMenu,
   } = useActionMenuToolRefs({ editor });
 
+  const updateBlockPosition = (blockElement: HTMLElement, blockData: YooptaBlockData) => {
+    const blockElementRect = blockElement.getBoundingClientRect();
+
+    setActionStyles((prev) => ({
+      ...prev,
+      top: blockElementRect.top + 2,
+      left: blockElementRect.left - 50,
+      opacity: 1,
+      transform: 'scale(1)',
+    }));
+
+    setHoveredBlock(blockData);
+  };
+
+  const hideBlockActions = () => {
+    console.log('hideBlockActions');
+    setActionStyles((prev) => ({
+      ...prev,
+      opacity: 0,
+      transform: 'scale(0.95)',
+    }));
+
+    setTimeout(() => {
+      setHoveredBlock(null);
+    }, 150);
+  };
+
+  const checkMouseInEditor = (event: MouseEvent) => {
+    if (!editor.refElement) return;
+
+    const rect = editor.refElement.getBoundingClientRect();
+    const isInside =
+      (event.clientX >= rect.left &&
+        event.clientX <= rect.right &&
+        event.clientY >= rect.top &&
+        event.clientY <= rect.bottom) ||
+      blockActionsRef.current?.contains(event.target as Node);
+
+    setIsMouseInEditor(!!isInside);
+  };
+
   const handleMouseMove = (event: Event) => {
     if (editor.readOnly) return;
 
@@ -62,40 +120,39 @@ export const FloatingBlockActions = memo(({ editor, dragHandleProps }: FloatingB
       if (blockId === hoveredBlock?.id) return;
 
       const blockData = editor.children[blockId || ''];
-
-      if (blockData) {
-        clearTimeout(mouseLeaveTimerRef.current);
-        blockActionsRefs.setReference(blockElement);
-
-        setHoveredBlock(blockData);
-        setIsBlockActionsOpen(true);
-      }
+      if (blockData) updateBlockPosition(blockElement, blockData);
     }
   };
 
   const throttledMouseMove = throttle(handleMouseMove, 100, { leading: true, trailing: true });
+  const throttledCheckMouse = throttle(checkMouseInEditor, 100, { leading: true, trailing: true });
 
   useEffect(() => {
     const editorEl = editor.refElement;
     if (!editorEl) return;
 
     editorEl.addEventListener('mousemove', throttledMouseMove);
-    editorEl.addEventListener('scroll', throttledMouseMove);
+    document.addEventListener('scroll', hideBlockActions);
+    document.addEventListener('mousemove', throttledCheckMouse);
 
     return () => {
       editorEl.removeEventListener('mousemove', throttledMouseMove);
-      editorEl.removeEventListener('scroll', throttledMouseMove);
-      clearTimeout(mouseLeaveTimerRef.current);
+      document.removeEventListener('scroll', hideBlockActions);
+      document.removeEventListener('mousemove', throttledCheckMouse);
       throttledMouseMove.cancel();
+      throttledCheckMouse.cancel();
     };
   }, [editor.refElement]);
 
-  if (!isBlockActionsMounted || !hoveredBlock) return null;
-
-  console.log('re render', hoveredBlock.id);
+  useEffect(() => {
+    if (!isMouseInEditor && !isBlockOptionsMounted) {
+      hideBlockActions();
+    }
+  }, [isMouseInEditor]);
 
   const onPlusClick = () => {
     const block = hoveredBlock;
+    if (!block) return;
 
     const slate = Blocks.getBlockSlate(editor, { id: block.id });
     const blockEntity = editor.blocks[block.type];
@@ -131,6 +188,7 @@ export const FloatingBlockActions = memo(({ editor, dragHandleProps }: FloatingB
   const onSelectBlock = (event: React.MouseEvent) => {
     event.stopPropagation();
     const block = hoveredBlock;
+    if (!block) return;
 
     const slate = findSlateBySelectionPath(editor, { at: block.meta.order });
     editor.focusBlock(block.id);
@@ -157,27 +215,9 @@ export const FloatingBlockActions = memo(({ editor, dragHandleProps }: FloatingB
     blockOptionsRefs.setReference(node);
   };
 
-  const handleMouseEnter = () => {
-    clearTimeout(mouseLeaveTimerRef.current);
-  };
-
-  const handleMouseLeave = () => {
-    mouseLeaveTimerRef.current = window.setTimeout(() => {
-      setHoveredBlock(null);
-      setIsBlockActionsOpen(false);
-    }, MOUSE_LEAVE_TIMEOUT);
-  };
-
   return (
     <Portal id="block-actions">
-      <div
-        contentEditable={false}
-        ref={blockActionsRefs.setFloating}
-        style={blockActionsFloatingStyle}
-        className="yoopta-block-actions"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
+      <div contentEditable={false} style={actionStyles} className="yoopta-block-actions" ref={blockActionsRef}>
         {isActionMenuOpen && hasActionMenu && (
           <Portal id="yoo-block-options-portal">
             <Overlay lockScroll className="yoo-editor-z-[100]" onClick={onCloseActionMenu}>

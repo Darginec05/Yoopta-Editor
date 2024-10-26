@@ -71,38 +71,6 @@ export const useBlockStyles = (
   );
 };
 
-export const useBlockActionRefs = () => {
-  const [isBlockActionsOpen, setIsBlockActionsOpen] = useState(false);
-
-  const {
-    refs: blockActionsRefs,
-    floatingStyles: blockActionsStyles,
-    context: blockActionsContext,
-  } = useFloating({
-    placement: 'left-start',
-    middleware: [offset({ mainAxis: 5, crossAxis: 0 }), flip(), shift()],
-    onOpenChange: setIsBlockActionsOpen,
-    open: isBlockActionsOpen,
-  });
-
-  const { isMounted: isBlockActionsMounted, styles: blockActionsTransitionStyles } = useTransitionStyles(
-    blockActionsContext,
-    {
-      duration: 100,
-    },
-  );
-
-  const blockActionsFloatingStyle = { ...blockActionsStyles, ...blockActionsTransitionStyles };
-
-  return {
-    blockActionsRefs,
-    blockActionsFloatingStyle,
-    isBlockActionsOpen,
-    setIsBlockActionsOpen,
-    isBlockActionsMounted,
-  };
-};
-
 export const useBlockOptionsRefs = () => {
   const [isBlockOptionsOpen, setIsBlockOptionsOpen] = useState(false);
 

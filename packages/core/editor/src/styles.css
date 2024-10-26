@@ -50,9 +50,6 @@
 
 .yoopta-block-actions {
   display: flex;
-  position: fixed;
-  display: flex;
-  pointer-events: auto;
 }
 
 .yoopta-block-actions-plus {
