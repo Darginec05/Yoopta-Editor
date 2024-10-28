@@ -4,21 +4,21 @@
 
 ### Breaking Changes
 
-- Changed API for `editor.on('change', handler);`
+- Changed API for `editor.on('change', changeHandler);`
 
 ```javascript
 // before
 editor.on('change', (value: YooptaChildrenValue) => {
-doSomething(value);
+  setValue(value);
 });
 
 // now
 editor.on('change', (options: YooptaEventChangePayload) => {
-// [!!!But I highly recommend start to use new `onChange` prop in
-<YooptaEditor />]
-const { value, operations } = options;
-doSomething(value);
+  const { value, operations } = options;
+  setValue(value);
 });
+
+// [!!!But I highly recommend start to use new `onChange` prop in <YooptaEditor value={value} onChange={newValue => setValue(newValue)} />;
 ```
 
 ### Added
