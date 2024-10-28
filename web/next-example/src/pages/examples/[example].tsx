@@ -22,6 +22,8 @@ import withCustomElementProps from '@/components/examples/withCustomElementProps
 import withCommandsAPI from '@/components/examples/withCommandsAPI';
 import withPluginEvents from '@/components/examples/withPluginEvents';
 import withShadcnUILibrary from '@/components/examples/withShadcnUILibrary';
+import withEditorHistory from '@/components/examples/withEditorHistory';
+import withEditorOperations from '@/components/examples/withEditorOperations';
 // import withCraftExample from '@/components/examples/withCraftExample';
 // import withEditorFocusBlur from '@/components/examples/withEditorFocusBlur';
 // import withStarterKit from '@/components/examples/withStarterKit';
@@ -39,6 +41,8 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withCustomToolbar,
   withNotionActionMenu,
   withExports,
+  withEditorHistory,
+  withEditorOperations,
   withCommandsAPI,
   withPluginEvents,
   withShadcnUILibrary,
@@ -166,6 +170,14 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
   },
   withSlateExtensions: {
     title: 'Customize plugin elements behaviour (new)',
+    description: '',
+  },
+  withEditorHistory: {
+    title: 'History API: Undo/Redo (new)',
+    description: '',
+  },
+  withEditorOperations: {
+    title: 'Core: Editor Operations (new)',
     description: '',
   },
 };

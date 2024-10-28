@@ -66,6 +66,7 @@ export {
   MoveBlockOperation,
   SetSlateOperation,
   SetEditorValueOperation,
+  YooptaOperation,
 } from './editor/core/applyTransforms';
 
 import './styles.css';
