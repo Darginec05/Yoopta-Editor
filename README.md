@@ -101,12 +101,19 @@ const plugins = [...];
 
 export default function Editor() {
   const editor = useMemo(() => createYooptaEditor(), []);
+   const [value, setValue] = useState<YooptaContentValue>();
+
+  const onChange = (value: YooptaContentValue, options: YooptaOnChangeOptions) => {
+    setValue(value);
+  };
 
   return (
     <div>
       <YooptaEditor
         editor={editor}
         plugins={plugins}
+        value={value}
+        onChange={onChange}
       />
     </div>
   );
@@ -179,12 +186,18 @@ const plugins = [Paragraph, Blockquote];
 
 export default function Editor() {
   const editor = useMemo(() => createYooptaEditor(), []);
+  const [value, setValue] = useState<YooptaContentValue>();
+  const onChange = (value: YooptaContentValue, options: YooptaOnChangeOptions) => {
+    setValue(value);
+  };
 
   return (
     <div>
       <YooptaEditor
         editor={editor}
         placeholder="Type text.."
+        value={value}
+        onChange={onChange}
         // here we go
         plugins={plugins}
       />
@@ -234,6 +247,10 @@ const TOOLS = {
 
 export default function Editor() {
   const editor = useMemo(() => createYooptaEditor(), []);
+  const [value, setValue] = useState<YooptaContentValue>();
+  const onChange = (value: YooptaContentValue, options: YooptaOnChangeOptions) => {
+    setValue(value);
+  };
 
   return (
     <div>
@@ -241,6 +258,8 @@ export default function Editor() {
         editor={editor}
         plugins={plugins}
         placeholder="Type text.."
+        value={value}
+        onChange={onChange}
         // here we go
         tools={TOOLS}
       />
@@ -272,6 +291,11 @@ const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
 export default function Editor() {
   const editor = useMemo(() => createYooptaEditor(), []);
+   const [value, setValue] = useState<YooptaContentValue>();
+
+  const onChange = (value: YooptaContentValue, options: YooptaOnChangeOptions) => {
+    setValue(value);
+  };
 
   return (
     <div>
@@ -279,6 +303,8 @@ export default function Editor() {
         editor={editor}
         placeholder="Type text.."
         plugins={plugins}
+        value={value}
+        onChange={onChange}
         tools={TOOLS}
         // here we go
         marks={MARKS}

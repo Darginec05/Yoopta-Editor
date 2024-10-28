@@ -143,7 +143,6 @@ const DefaultToolbarRender = ({ activeBlock, editor, toggleHoldToolbar }: Toolba
 
       const title = Editor.string(slate, slate?.selection);
       const linkNodeEntry = getLinkEntry(slate);
-      console.log('linkNodeEntry', linkNodeEntry);
 
       if (linkNodeEntry) {
         const [linkNode] = linkNodeEntry as NodeEntry<SlateElement>;

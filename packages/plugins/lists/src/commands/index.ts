@@ -1,4 +1,4 @@
-import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaPathIndex } from '@yoopta/editor';
+import { Blocks, Elements, generateId, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import { BulletedListElement, TodoListElement, NumberedListElement, TodoListElementProps } from '../types';
 
 export type ListElementOptions = { text?: string };
@@ -72,8 +72,6 @@ export const TodoListCommands: TodoListCommands = {
     const { at, focus, text, props } = options;
     const todoList = TodoListCommands.buildTodoListElements(editor, { text, props });
     const block = Blocks.buildBlockData({ value: [todoList], type: 'TodoList' });
-    console.log('block', block);
-    console.log('todoList', todoList);
     Blocks.insertBlock(editor, block.type, { at, focus, blockData: block });
   },
   deleteTodoList: (editor, blockId) => {

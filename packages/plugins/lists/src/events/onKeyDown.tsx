@@ -61,8 +61,6 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, defa
         const hasText = text.trim().length > 0;
 
         if (!hasText) {
-          console.log('hasText', hasText);
-
           if (isBlockIsInFirstDepth) {
             const currentOrder = block.meta.order;
 

@@ -36,17 +36,6 @@ const Image = new YooptaPlugin<ImageElementMap, ImagePluginOptions>({
     accept: 'image/png, image/jpeg, image/gif, image/webp',
     maxSizes: { maxWidth: 650, maxHeight: 550 },
   },
-  events: {
-    onPaste(editor, slate, options) {
-      return (event) => {
-        const data = event.clipboardData;
-
-        const clipboardItem = data.items[0];
-        console.log('Image clipboardItem', clipboardItem);
-        console.log('Image clipboardItem.type', clipboardItem.type);
-      };
-    },
-  },
   parsers: {
     html: {
       deserialize: {

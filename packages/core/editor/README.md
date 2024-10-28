@@ -20,8 +20,11 @@ const plugins = [Paragraph];
 const Editor = () => {
   // create instance
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
+  const [value, setValue] = useState();
 
-  return <YooptaEditor editor={editor} plugins={plugins} />;
+  const onChange = (newValue) => setValue(newValue);
+
+  return <YooptaEditor editor={editor} plugins={plugins} value={value} onChange={onChange} />;
 };
 ```
 
@@ -76,40 +79,48 @@ type Props = {
 ### Editor API
 
 ```tsx
-export type YooEditor<TNodes> = {
+export type YooEditor = {
   id: string;
-  // Method to check if editor is empty
-  // [NOTE] - Empty editor means the next: If the Editor has one block with the default type "Paragraph", and this block does not contain text content
-  isEmpty: () => boolean;
   readOnly: boolean;
-  insertBlock: (data: YooptaBlockData, options?: InsertBlockOptions) => void;
+  isEmpty: () => boolean;
+
+  // block handlers
+  insertBlock: WithoutFirstArg<typeof insertBlock>;
+  updateBlock: WithoutFirstArg<typeof updateBlock>;
+  deleteBlock: WithoutFirstArg<typeof deleteBlock>;
+  duplicateBlock: WithoutFirstArg<typeof duplicateBlock>;
+  toggleBlock: WithoutFirstArg<typeof toggleBlock>;
+  increaseBlockDepth: WithoutFirstArg<typeof increaseBlockDepth>;
+  decreaseBlockDepth: WithoutFirstArg<typeof decreaseBlockDepth>;
+  moveBlock: WithoutFirstArg<typeof moveBlock>;
+  focusBlock: WithoutFirstArg<typeof focusBlock>;
+  mergeBlock: () => void;
   splitBlock: (options?: SplitBlockOptions) => void;
-  updateBlock: (id: string, data: Partial<YooptaBlockData>) => void;
-  deleteBlock: (options?: DeleteBlockOptions) => void;
-  duplicateBlock: (options: DuplicateBlockOptions) => void;
-  toggleBlock: (toBlockType: string, options?: ToggleBlockOptions) => void;
-  increaseBlockDepth: (options?: BlockDepthOptions) => void;
-  decreaseBlockDepth: (options?: BlockDepthOptions) => void;
-  moveBlock: (blockId: string, to: YooptaPath) => void;
-  focusBlock: (id: string, options?: FocusBlockOptions) => void;
   getBlock: (options: GetBlockOptions) => YooptaBlockData | null;
-  selectedBlocks: number[] | null;
-  children: Record<string, YooptaBlockData>;
-  getEditorValue: () => TNodes;
-  setEditorValue: (value: YooptaContentValue) => void;
+
+  // path handlers
   path: YooptaPath;
-  setPath: (path: YooptaPath | null, options?: SetSelectionOptions) => void;
+  setPath: (path: YooptaPath) => void;
+
+  children: YooptaContentValue;
+  getEditorValue: () => YooptaContentValue;
+  setEditorValue: WithoutFirstArg<typeof setEditorValue>;
   blockEditorsMap: YooptaPluginsEditorMap;
   blocks: YooptaBlocks;
   formats: YooptaFormats;
   shortcuts: Record<string, YooptaBlock>;
-  plugins: Record<string, Plugin<string, unknown>>;
+  plugins: Record<string, Plugin<Record<string, SlateElement>, unknown>>;
+  commands: Record<string, (...args: any[]) => any>;
+
+  // core handlers
+  applyTransforms: WithoutFirstArg<typeof applyTransforms>;
+  batchOperations: (fn: () => void) => void;
 
   // events handlers
-  on: (event: YooptaEditorEventKeys, fn: (payload: any) => void) => void;
-  once: (event: YooptaEditorEventKeys, fn: (payload: any) => void) => void;
-  off: (event: YooptaEditorEventKeys, fn: (payload: any) => void) => void;
-  emit: (event: YooptaEditorEventKeys, payload: any) => void;
+  on: <K extends keyof YooptaEventsMap>(event: K, fn: (payload: YooptaEventsMap[K]) => void) => void;
+  once: <K extends keyof YooptaEventsMap>(event: K, fn: (payload: YooptaEventsMap[K]) => void) => void;
+  off: <K extends keyof YooptaEventsMap>(event: K, fn: (payload: YooptaEventsMap[K]) => void) => void;
+  emit: <K extends keyof YooptaEventsMap>(event: K, payload: YooptaEventsMap[K]) => void;
 
   // focus handlers
   isFocused: () => boolean;
@@ -120,6 +131,17 @@ export type YooEditor<TNodes> = {
   getHTML: (content: YooptaContentValue) => string;
   getMarkdown: (content: YooptaContentValue) => string;
   getPlainText: (content: YooptaContentValue) => string;
+
+  // history
+  historyStack: Record<HistoryStackName, HistoryStack[]>;
+  isSavingHistory: WithoutFirstArg<typeof YooptaHistory.isSavingHistory>;
+  isMergingHistory: WithoutFirstArg<typeof YooptaHistory.isMergingHistory>;
+  withoutSavingHistory: WithoutFirstArg<typeof YooptaHistory.withoutSavingHistory>;
+  withoutMergingHistory: WithoutFirstArg<typeof YooptaHistory.withoutMergingHistory>;
+  withMergingHistory: WithoutFirstArg<typeof YooptaHistory.withMergingHistory>;
+  withSavingHistory: WithoutFirstArg<typeof YooptaHistory.withSavingHistory>;
+  redo: WithoutFirstArg<typeof YooptaHistory.redo>;
+  undo: WithoutFirstArg<typeof YooptaHistory.undo>;
 
   // ref to editor element
   refElement: HTMLElement | null;
