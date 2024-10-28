@@ -27,7 +27,7 @@ export const CodeBlockOptions = ({ block, editor, element }: Props) => {
     // We change it directly in the block because this plugin doesn't have Slate instance
     // because it's a plugin with custom editor
     editor.updateBlock(block.id, { value: [{ ...element, props: { ...element.props, theme } }] });
-    editor.applyChanges();
+    // editor.applyChanges();
   };
 
   const onChangeLanguage = (language: string) => {
@@ -35,7 +35,7 @@ export const CodeBlockOptions = ({ block, editor, element }: Props) => {
     // because it's a plugin with custom editor
 
     editor.updateBlock(block.id, { value: [{ ...element, props: { ...element.props, language } }] });
-    editor.applyChanges();
+    // editor.applyChanges();
   };
 
   const onCopy = () => {
@@ -47,7 +47,7 @@ export const CodeBlockOptions = ({ block, editor, element }: Props) => {
   };
 
   return (
-    <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])} className="yoopta-code-options">
+    <ExtendedBlockActions onClick={() => editor.setPath({ current: block.meta.order })} className="yoopta-code-options">
       <BlockOptionsSeparator />
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>

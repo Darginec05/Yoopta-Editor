@@ -1,68 +1,112 @@
-import { createDraft, finishDraft } from 'immer';
-import { Editor, Element, Path, Text, Transforms } from 'slate';
-import { buildSlateEditor } from '../../utils/buildSlate';
-import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
+import { Editor, Node } from 'slate';
+import { findPluginBlockByPath } from '../../utils/findPluginBlockByPath';
+import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { generateId } from '../../utils/generateId';
-import { YooEditor, YooptaBlockData, YooptaEditorTransformOptions } from '../types';
+import { YooptaOperation } from '../core/applyTransforms';
+import { SlateEditor, SlateElement, YooEditor, YooptaBlockData } from '../types';
+import { deepClone } from '../../utils/deepClone';
+import { buildSlateNodeElement } from '../../utils/blockElements';
 
-// [TODO] - handle cases for lists and nested inline elements
-export function splitBlock(editor: YooEditor, options: YooptaEditorTransformOptions = {}) {
-  const { slate, focus = true } = options;
+export type SplitBlockOptions = {
+  focus?: boolean;
+  slate?: SlateEditor;
+};
 
-  const currentBlock = findPluginBlockBySelectionPath(editor);
-  if (!slate || !slate.selection || !currentBlock) return;
+export function splitBlock(editor: YooEditor, options: SplitBlockOptions = {}) {
+  const { focus = true } = options;
+
+  const blockToSplit = findPluginBlockByPath(editor);
+  const slate = options.slate || findSlateBySelectionPath(editor);
+  if (!slate || !blockToSplit) return;
 
   Editor.withoutNormalizing(slate, () => {
-    editor.children = createDraft(editor.children);
+    if (!slate.selection) return;
 
-    const parentPath = Path.parent(slate.selection!.anchor.path);
+    const originalSlateChildren = deepClone(slate.children);
+    const operations: YooptaOperation[] = [];
+    const [splitValue, nextSlateValue] = splitSlate(slate.children, slate.selection);
 
-    Transforms.splitNodes(slate, {
-      at: slate.selection!,
-      match: (n) => Element.isElement(n),
-      always: true,
-      mode: 'highest',
-    });
-
-    const nextParentPathIndex = parentPath[0] + 1;
-    // [TODO] - or deep clone?
-    const nextBlockChildren = slate.children.slice()[nextParentPathIndex];
-
-    Transforms.removeNodes(slate, {
-      at: [nextParentPathIndex],
-      match: (n) => Element.isElement(n),
-      mode: 'highest',
-    });
-
-    const newBlock: YooptaBlockData = {
+    const nextBlock: YooptaBlockData = {
       id: generateId(),
-      type: currentBlock.type,
+      type: blockToSplit.type,
       meta: {
-        order: currentBlock.meta.order + 1,
-        depth: currentBlock.meta.depth,
-        align: currentBlock.meta.align,
+        order: blockToSplit.meta.order + 1,
+        depth: blockToSplit.meta.depth,
+        align: blockToSplit.meta.align,
       },
-      // [TODO] - check for mark text formats
-      value: [nextBlockChildren],
+      value: [],
     };
 
-    Object.values(editor.children).forEach((plugin) => {
-      if (plugin.meta.order >= newBlock.meta.order) {
-        plugin.meta.order += 1;
-      }
+    operations.push({
+      type: 'split_block',
+      prevProperties: {
+        originalBlock: blockToSplit,
+        originalValue: originalSlateChildren as SlateElement[],
+      },
+      properties: {
+        nextBlock: nextBlock,
+        nextSlateValue: !nextSlateValue ? [buildSlateNodeElement('paragraph')] : nextSlateValue,
+        splitSlateValue: splitValue,
+      },
+      path: editor.path,
     });
 
-    const newSlateEditor = buildSlateEditor(editor);
-    editor.blockEditorsMap[newBlock.id] = newSlateEditor;
-    editor.children[newBlock.id] = newBlock;
-
-    editor.children = finishDraft(editor.children);
-    editor.applyChanges();
-    editor.emit('change', editor.children);
+    editor.applyTransforms(operations);
 
     if (focus) {
-      // [TODO] - check focus for split block function
-      editor.focusBlock(newBlock.id, { slate: newSlateEditor });
+      editor.focusBlock(nextBlock.id);
     }
   });
+}
+
+function splitSlate(slateChildren, slateSelection) {
+  const { path, offset } = slateSelection.focus;
+  const [, ...childPath] = path;
+
+  const firstPart = JSON.parse(JSON.stringify(slateChildren[0]));
+
+  function splitNode(node, remainingPath, currentOffset) {
+    if (remainingPath.length === 0) {
+      if (Node.string(node).length <= currentOffset) {
+        return [node, null];
+      }
+      if ('text' in node) {
+        return [
+          { ...node, text: node.text.slice(0, currentOffset) },
+          { ...node, text: node.text.slice(currentOffset) },
+        ];
+      } else if (node.type === 'link') {
+        const [leftChild, rightChild] = splitNode(node.children[0], [], currentOffset);
+        return [
+          { ...node, children: [leftChild] },
+          { ...node, children: [rightChild] },
+        ];
+      }
+    } else {
+      const [childIndex, ...nextPath] = remainingPath;
+      const [left, right]: any = splitNode(node.children[childIndex], nextPath, currentOffset);
+      const leftChildren = node.children.slice(0, childIndex).concat(left ? [left] : []);
+      const rightChildren = (right ? [right] : []).concat(node.children.slice(childIndex + 1));
+      return [
+        { ...node, children: leftChildren },
+        { ...node, children: rightChildren },
+      ];
+    }
+  }
+
+  const [leftContent, rightContent] = splitNode(firstPart, childPath, offset);
+
+  function cleanNode(node) {
+    if ('children' in node) {
+      node.children = node.children.filter(
+        (child) => (child.text !== '' && child.text !== undefined) || (child.children && child.children.length > 0),
+      );
+      node.children.forEach(cleanNode);
+    }
+    return node;
+  }
+
+  return [cleanNode(leftContent), cleanNode(rightContent)]
+    .map((part) => [part])
+    .filter((part) => part[0].children.length > 0);
 }

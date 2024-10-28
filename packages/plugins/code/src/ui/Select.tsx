@@ -3,8 +3,8 @@ import DownIcon from '../icons/down.svg';
 import CheckmarkIcon from '../icons/checkmark.svg';
 import { useYooptaEditor } from '@yoopta/editor';
 
-const SelectRoot = SelectPrimitive.Root;
-const SelectValue = SelectPrimitive.Value;
+const SelectRoot: typeof SelectPrimitive.Root = SelectPrimitive.Root;
+const SelectValue: typeof SelectPrimitive.Value = SelectPrimitive.Value;
 
 const SelectTrigger = ({ children, className }) => {
   return (

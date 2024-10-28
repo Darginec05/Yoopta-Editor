@@ -19,7 +19,7 @@
     "@yoopta/editor": ">=4.0.0"
   },
   "publishConfig": {
-    "registry": "https://registry.yarnpkg.com"
+    "registry": "https://registry.npmjs.org"
   },
   "repository": {
     "type": "git",

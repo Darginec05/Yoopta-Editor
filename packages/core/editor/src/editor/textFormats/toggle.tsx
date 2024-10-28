@@ -16,6 +16,5 @@ export function toggle(editor: YooEditor, type: string) {
     Editor.removeMark(slate, type);
   }
 
-  editor.applyChanges();
-  editor.emit('change', editor.children);
+  // editor.emit('change', { value: editor.children, operations: [] });
 }

@@ -13,7 +13,6 @@ import withMediaAndVoids from '@/components/examples/withMediaAndVoids';
 import withNotionActionMenu from '@/components/examples/withNotionActionMenu';
 import withReadOnly from '@/components/examples/withReadOnly';
 import withSavingToDatabase from '@/components/examples/withSavingToDatabase';
-import withEditorControl from '@/components/examples/withEditorControl';
 import withLargeDocuments from '@/components/examples/withLargeDocuments';
 import withChatSlack from '@/components/examples/withChatSlack';
 import withCustomStyles from '@/components/examples/withCustomStyles';
@@ -23,6 +22,8 @@ import withCustomElementProps from '@/components/examples/withCustomElementProps
 import withCommandsAPI from '@/components/examples/withCommandsAPI';
 import withPluginEvents from '@/components/examples/withPluginEvents';
 import withShadcnUILibrary from '@/components/examples/withShadcnUILibrary';
+import withEditorHistory from '@/components/examples/withEditorHistory';
+import withEditorOperations from '@/components/examples/withEditorOperations';
 // import withCraftExample from '@/components/examples/withCraftExample';
 // import withEditorFocusBlur from '@/components/examples/withEditorFocusBlur';
 // import withStarterKit from '@/components/examples/withStarterKit';
@@ -40,6 +41,8 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withCustomToolbar,
   withNotionActionMenu,
   withExports,
+  withEditorHistory,
+  withEditorOperations,
   withCommandsAPI,
   withPluginEvents,
   withShadcnUILibrary,
@@ -51,7 +54,6 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withDarkTheme,
   withMediaAndVoids,
   withReadOnly,
-  withEditorControl,
   withCustomMark,
   withCustomPlugin,
   withSavingToDatabase,
@@ -118,10 +120,6 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
     title: 'Custom Styles',
     description: '',
   },
-  withEditorControl: {
-    title: 'Editor Instance',
-    description: '',
-  },
   withLargeDocuments: {
     title: 'Large Documents',
     description: '',
@@ -172,6 +170,14 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
   },
   withSlateExtensions: {
     title: 'Customize plugin elements behaviour (new)',
+    description: '',
+  },
+  withEditorHistory: {
+    title: 'History API: Undo/Redo (new)',
+    description: '',
+  },
+  withEditorOperations: {
+    title: 'Core: Editor Operations (new)',
     description: '',
   },
 };

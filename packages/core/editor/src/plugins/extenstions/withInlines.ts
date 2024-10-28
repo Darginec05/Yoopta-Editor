@@ -72,8 +72,8 @@ export const withInlines = (editor: YooEditor, slate: SlateEditor) => {
   };
 
   slate.insertData = (data) => {
+    // [TODO] - Check issue with pasting long strings
     const text = data.getData('text/plain');
-
     if (text && isUrl(text)) {
       addLink(editor, slate, text);
     } else {

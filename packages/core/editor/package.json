@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/editor",
-  "version": "4.8.4",
+  "version": "4.9.0",
   "license": "MIT",
   "private": false,
   "main": "dist/index.js",
@@ -19,8 +19,7 @@
     "eventemitter3": "^5.0.1",
     "immer": "^10.0.3",
     "is-hotkey": "^0.2.0",
-    "lodash.clonedeep": "^4.5.0",
-    "slate-history": "^0.100.0"
+    "lodash.clonedeep": "^4.5.0"
   },
   "peerDependencies": {
     "react": ">=17.0.2",
@@ -67,5 +66,5 @@
     "url": "https://github.com/Darginec05/Yoopta-Editor/issues"
   },
   "homepage": "https://github.com/Darginec05/Yoopta-Editor#readme",
-  "gitHead": "12d8460dfe0ead89ee1d6f3f2f1fc68239e93d4c"
+  "gitHead": "016b0f92a45bfcc157e44a7f28820174d0cc5c7e"
 }

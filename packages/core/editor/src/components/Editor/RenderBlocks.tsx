@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
@@ -8,6 +8,7 @@ import { YooptaMark } from '../../marks';
 import { SlateEditorComponent } from '../../plugins/SlateEditorComponent';
 import { useYooptaDragDrop } from './dnd';
 import { useYooptaReadOnly } from '../../contexts/YooptaContext/YooptaContext';
+import { FloatingBlockActions } from '../Block/FloatingBlockActions';
 
 const DEFAULT_EDITOR_KEYS = [];
 
@@ -20,6 +21,8 @@ type Props = {
 const RenderBlocks = ({ editor, marks, placeholder }: Props) => {
   const isReadOnly = useYooptaReadOnly();
   const { sensors, handleDragEnd, handleDragStart } = useYooptaDragDrop({ editor });
+  const [dragHandleProps, setActiveDragHandleProps] = useState(null);
+
   const childrenUnorderedKeys = Object.keys(editor.children);
   const childrenKeys = useMemo(() => {
     if (childrenUnorderedKeys.length === 0) return DEFAULT_EDITOR_KEYS;
@@ -47,7 +50,7 @@ const RenderBlocks = ({ editor, marks, placeholder }: Props) => {
     }
 
     blocks.push(
-      <Block key={blockId} block={block} blockId={blockId}>
+      <Block key={blockId} block={block} blockId={blockId} onActiveDragHandleChange={setActiveDragHandleProps}>
         <SlateEditorComponent
           key={blockId}
           type={block.type}
@@ -76,6 +79,7 @@ const RenderBlocks = ({ editor, marks, placeholder }: Props) => {
     >
       <SortableContext disabled={isReadOnly} items={childrenKeys} strategy={verticalListSortingStrategy}>
         {blocks}
+        <FloatingBlockActions editor={editor} dragHandleProps={dragHandleProps} />
       </SortableContext>
     </DndContext>
   );

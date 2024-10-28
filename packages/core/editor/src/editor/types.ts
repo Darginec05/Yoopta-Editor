@@ -1,19 +1,22 @@
 import { Descendant, Path, Point } from 'slate';
 import { Plugin, PluginElementsMap, PluginOptions, PluginElementProps } from '../plugins/types';
 import { EditorBlurOptions } from './core/blur';
-import { BlockSelectedOptions } from './selection/setBlockSelected';
-import { SetSelectionOptions } from './selection/setSelection';
-import { CreateBlockOptions } from './blocks/createBlock';
-import { DeleteBlockOptions } from './blocks/deleteBlock';
-import { DuplicateBlockOptions } from './blocks/duplicateBlock';
-import { FocusBlockOptions } from './blocks/focusBlock';
-import { ToggleBlockOptions } from './blocks/toggleBlock';
-import { DeleteBlocksOptions } from './blocks/deleteBlocks';
+import { deleteBlock, DeleteBlockOptions } from './blocks/deleteBlock';
+import { duplicateBlock, DuplicateBlockOptions } from './blocks/duplicateBlock';
+import { focusBlock } from './blocks/focusBlock';
+import { toggleBlock, ToggleBlockOptions } from './blocks/toggleBlock';
 import { GetBlockOptions } from './blocks/getBlock';
 import { ReactEditor } from 'slate-react';
-import { HistoryEditor } from 'slate-history';
-
-export type YooptaBlockPath = [number];
+import { applyTransforms, ApplyTransformsOptions, YooptaOperation } from './core/applyTransforms';
+import { insertBlock, InsertBlockOptions } from './blocks/insertBlock';
+import { increaseBlockDepth } from './blocks/increaseBlockDepth';
+import { SplitBlockOptions } from './blocks/splitBlock';
+import { HistoryStack, HistoryStackName, YooptaHistory } from './core/history';
+import { WithoutFirstArg } from '../utils/types';
+import { moveBlock } from './blocks/moveBlock';
+import { decreaseBlockDepth } from './blocks/decreaseBlockDepth';
+import { updateBlock } from './blocks/updateBlock';
+import { setEditorValue } from './core/setEditorValue';
 
 export type YooptaBlockData<T = Descendant | SlateElement> = {
   id: string;
@@ -30,20 +33,17 @@ export type YooptaBlockBaseMeta = {
 
 export type YooptaContentValue = Record<string, YooptaBlockData>;
 
-export type SlateEditor = ReactEditor & HistoryEditor;
+export type SlateEditor = ReactEditor;
 
 // add 'end' | 'start'
 export type FocusAt = Path | Point;
 
-export type YooptaEditorTransformOptions = {
-  at?: YooptaBlockPath | null;
-  focus?: boolean;
-  focusAt?: FocusAt;
-  slate?: SlateEditor;
-  blockId?: string;
-};
-
 export type YooptaPluginsEditorMap = Record<string, SlateEditor>;
+export type YooptaPathIndex = number | null;
+export type YooptaPath = {
+  current: YooptaPathIndex;
+  selected?: number[] | null;
+};
 
 // Marks
 export type TextFormat = {
@@ -61,45 +61,55 @@ export type YooptaBlock = {
   elements: PluginElementsMap<string>;
   hasCustomEditor?: boolean;
   isActive: () => boolean;
-  create: (options?: CreateBlockOptions) => void;
-  toggle: (options?: ToggleBlockOptions) => void;
-  update: (id: string, data: Partial<YooptaBlockData>) => void;
-  delete: (options: DeleteBlockOptions) => void;
 };
 
 export type YooptaBlocks = Record<string, YooptaBlock>;
 export type YooptaFormats = Record<string, TextFormat>;
 
-export type YooEditorEvents = 'change' | 'focus' | 'blur' | 'block:copy';
+export type YooptaEditorEventKeys = 'change' | 'focus' | 'blur' | 'block:copy' | 'path-change';
+export type YooptaEventChangePayload = {
+  operations: YooptaOperation[];
+  value: YooptaContentValue;
+};
+
+export type YooptaEventsMap = {
+  change: YooptaEventChangePayload;
+  focus: boolean;
+  blur: boolean;
+  'block:copy': YooptaBlockData;
+  'path-change': YooptaPath;
+};
 
 export type BaseCommands = Record<string, (...args: any[]) => any>;
 
 // [TODO] - Fix generic and default types
+// [TODO] - change with WithoutFirstArg
 export type YooEditor = {
   id: string;
   readOnly: boolean;
   isEmpty: () => boolean;
-  insertBlock: (data: YooptaBlockData, options?: YooptaEditorTransformOptions) => void;
-  insertBlocks: (blocks: YooptaBlockData[], options?: YooptaEditorTransformOptions) => void;
-  splitBlock: (options?: YooptaEditorTransformOptions) => void;
-  updateBlock: (id: string, data: Partial<YooptaBlockData>) => void;
-  deleteBlock: (options?: DeleteBlockOptions) => void;
-  deleteBlocks: (options?: DeleteBlocksOptions) => void;
-  duplicateBlock: (options?: DuplicateBlockOptions) => void;
-  toggleBlock: (toBlockType: string, options?: ToggleBlockOptions) => void;
-  increaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
-  decreaseBlockDepth: (options?: YooptaEditorTransformOptions) => void;
-  applyChanges: () => void;
-  moveBlock: (blockId: string, to: YooptaBlockPath) => void;
-  focusBlock: (id: string, options?: FocusBlockOptions) => void;
+
+  // block handlers
+  insertBlock: WithoutFirstArg<typeof insertBlock>;
+  updateBlock: WithoutFirstArg<typeof updateBlock>;
+  deleteBlock: WithoutFirstArg<typeof deleteBlock>;
+  duplicateBlock: WithoutFirstArg<typeof duplicateBlock>;
+  toggleBlock: WithoutFirstArg<typeof toggleBlock>;
+  increaseBlockDepth: WithoutFirstArg<typeof increaseBlockDepth>;
+  decreaseBlockDepth: WithoutFirstArg<typeof decreaseBlockDepth>;
+  moveBlock: WithoutFirstArg<typeof moveBlock>;
+  focusBlock: WithoutFirstArg<typeof focusBlock>;
+  mergeBlock: () => void;
+  splitBlock: (options?: SplitBlockOptions) => void;
   getBlock: (options: GetBlockOptions) => YooptaBlockData | null;
-  selection: YooptaBlockPath | null;
-  selectedBlocks: number[] | null;
+
+  // path handlers
+  path: YooptaPath;
+  setPath: (path: YooptaPath) => void;
+
   children: YooptaContentValue;
   getEditorValue: () => YooptaContentValue;
-  setEditorValue: (value: YooptaContentValue) => void;
-  setSelection: (path: YooptaBlockPath | null, options?: SetSelectionOptions) => void;
-  setBlockSelected: (path: number[] | null, options?: BlockSelectedOptions) => void;
+  setEditorValue: WithoutFirstArg<typeof setEditorValue>;
   blockEditorsMap: YooptaPluginsEditorMap;
   blocks: YooptaBlocks;
   formats: YooptaFormats;
@@ -107,11 +117,15 @@ export type YooEditor = {
   plugins: Record<string, Plugin<Record<string, SlateElement>, unknown>>;
   commands: Record<string, (...args: any[]) => any>;
 
+  // core handlers
+  applyTransforms: WithoutFirstArg<typeof applyTransforms>;
+  batchOperations: (fn: () => void) => void;
+
   // events handlers
-  on: (event: YooEditorEvents, fn: (payload: any) => void) => void;
-  once: (event: YooEditorEvents, fn: (payload: any) => void) => void;
-  off: (event: YooEditorEvents, fn: (payload: any) => void) => void;
-  emit: (event: YooEditorEvents, payload: any) => void;
+  on: <K extends keyof YooptaEventsMap>(event: K, fn: (payload: YooptaEventsMap[K]) => void) => void;
+  once: <K extends keyof YooptaEventsMap>(event: K, fn: (payload: YooptaEventsMap[K]) => void) => void;
+  off: <K extends keyof YooptaEventsMap>(event: K, fn: (payload: YooptaEventsMap[K]) => void) => void;
+  emit: <K extends keyof YooptaEventsMap>(event: K, payload: YooptaEventsMap[K]) => void;
 
   // focus handlers
   isFocused: () => boolean;
@@ -123,14 +137,35 @@ export type YooEditor = {
   getMarkdown: (content: YooptaContentValue) => string;
   getPlainText: (content: YooptaContentValue) => string;
 
+  // history
+  historyStack: Record<HistoryStackName, HistoryStack[]>;
+  isSavingHistory: WithoutFirstArg<typeof YooptaHistory.isSavingHistory>;
+  isMergingHistory: WithoutFirstArg<typeof YooptaHistory.isMergingHistory>;
+  withoutSavingHistory: WithoutFirstArg<typeof YooptaHistory.withoutSavingHistory>;
+  withoutMergingHistory: WithoutFirstArg<typeof YooptaHistory.withoutMergingHistory>;
+  withMergingHistory: WithoutFirstArg<typeof YooptaHistory.withMergingHistory>;
+  withSavingHistory: WithoutFirstArg<typeof YooptaHistory.withSavingHistory>;
+  redo: WithoutFirstArg<typeof YooptaHistory.redo>;
+  undo: WithoutFirstArg<typeof YooptaHistory.undo>;
+
   // ref to editor element
   refElement: HTMLElement | null;
+};
+
+export type SlateElementTextNode = {
+  text: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  code?: boolean;
+  strike?: boolean;
+  highlight?: any;
 };
 
 // types for slate values
 export type SlateElement<K extends string = string, T = any> = {
   id: string;
   type: K;
-  children: Descendant[] | SlateElement[];
+  children: Descendant[];
   props?: PluginElementProps<T>;
 };
