@@ -60,7 +60,9 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
     (value) => {
       if (editor.readOnly) return;
 
+      // @ts-ignore - fixme
       if (window.scheduler) {
+        // @ts-ignore - fixme
         window.scheduler.postTask(() => editor.updateBlock(id, { value }), { priority: 'background' });
       } else {
         editor.updateBlock(id, { value });

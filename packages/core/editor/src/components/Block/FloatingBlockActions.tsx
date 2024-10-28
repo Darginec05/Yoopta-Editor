@@ -43,13 +43,10 @@ const INITIAL_STYLES: ActionStyles = {
   transition: 'opacity 150ms ease-out',
 };
 
-const MOUSE_LEAVE_TIMEOUT = 300;
-
 export const FloatingBlockActions = memo(({ editor, dragHandleProps }: FloatingBlockActionsProps) => {
   const [hoveredBlock, setHoveredBlock] = useState<YooptaBlockData | null>(null);
   const blockActionsRef = useRef<HTMLDivElement>(null);
   const [actionStyles, setActionStyles] = useState<ActionStyles>(INITIAL_STYLES);
-  const [isMouseInEditor, setIsMouseInEditor] = useState(false);
 
   const { attributes, listeners, setActivatorNodeRef } = dragHandleProps || {};
 
@@ -82,7 +79,6 @@ export const FloatingBlockActions = memo(({ editor, dragHandleProps }: FloatingB
   };
 
   const hideBlockActions = () => {
-    console.log('hideBlockActions');
     setActionStyles((prev) => ({
       ...prev,
       opacity: 0,
@@ -94,21 +90,10 @@ export const FloatingBlockActions = memo(({ editor, dragHandleProps }: FloatingB
     }, 150);
   };
 
-  const checkMouseInEditor = (event: MouseEvent) => {
-    if (!editor.refElement) return;
-
-    const rect = editor.refElement.getBoundingClientRect();
-    const isInside =
-      (event.clientX >= rect.left &&
-        event.clientX <= rect.right &&
-        event.clientY >= rect.top &&
-        event.clientY <= rect.bottom) ||
-      blockActionsRef.current?.contains(event.target as Node);
-
-    setIsMouseInEditor(!!isInside);
-  };
-
   const handleMouseMove = (event: Event) => {
+    const isInsideEditor = editor.refElement?.contains(event.target as Node);
+
+    if (!isInsideEditor) return hideBlockActions();
     if (editor.readOnly) return;
 
     const target = event.target as HTMLElement;
@@ -125,30 +110,17 @@ export const FloatingBlockActions = memo(({ editor, dragHandleProps }: FloatingB
   };
 
   const throttledMouseMove = throttle(handleMouseMove, 100, { leading: true, trailing: true });
-  const throttledCheckMouse = throttle(checkMouseInEditor, 100, { leading: true, trailing: true });
 
   useEffect(() => {
-    const editorEl = editor.refElement;
-    if (!editorEl) return;
-
-    editorEl.addEventListener('mousemove', throttledMouseMove);
     document.addEventListener('scroll', hideBlockActions);
-    document.addEventListener('mousemove', throttledCheckMouse);
+    document.addEventListener('mousemove', throttledMouseMove);
 
     return () => {
-      editorEl.removeEventListener('mousemove', throttledMouseMove);
       document.removeEventListener('scroll', hideBlockActions);
-      document.removeEventListener('mousemove', throttledCheckMouse);
+      document.removeEventListener('mousemove', throttledMouseMove);
       throttledMouseMove.cancel();
-      throttledCheckMouse.cancel();
     };
-  }, [editor.refElement]);
-
-  useEffect(() => {
-    if (!isMouseInEditor && !isBlockOptionsMounted) {
-      hideBlockActions();
-    }
-  }, [isMouseInEditor]);
+  }, []);
 
   const onPlusClick = () => {
     const block = hoveredBlock;
