@@ -39,7 +39,7 @@ const INITIAL_STYLES: ActionStyles = {
   top: 0,
   left: 0,
   opacity: 0,
-  transform: 'scale(0.95)',
+  transform: 'scale(0.95) translateX(-46px)',
   transition: 'opacity 150ms ease-out',
 };
 
@@ -65,24 +65,25 @@ export const FloatingBlockActions = memo(({ editor, dragHandleProps }: FloatingB
   } = useActionMenuToolRefs({ editor });
 
   const updateBlockPosition = (blockElement: HTMLElement, blockData: YooptaBlockData) => {
+    setHoveredBlock(blockData);
+
     const blockElementRect = blockElement.getBoundingClientRect();
+    const blockActionsWidth = blockActionsRef.current?.offsetWidth || 46;
 
     setActionStyles((prev) => ({
       ...prev,
       top: blockElementRect.top + 2,
-      left: blockElementRect.left - 50,
+      left: blockElementRect.left,
       opacity: 1,
-      transform: 'scale(1)',
+      transform: `scale(1) translateX(-${blockActionsWidth}px)`,
     }));
-
-    setHoveredBlock(blockData);
   };
 
   const hideBlockActions = () => {
     setActionStyles((prev) => ({
       ...prev,
       opacity: 0,
-      transform: 'scale(0.95)',
+      transform: INITIAL_STYLES.transform,
     }));
 
     setTimeout(() => {
@@ -90,7 +91,7 @@ export const FloatingBlockActions = memo(({ editor, dragHandleProps }: FloatingB
     }, 150);
   };
 
-  const handleMouseMove = (event: Event) => {
+  const handleMouseMove = (event: MouseEvent) => {
     const isInsideEditor = editor.refElement?.contains(event.target as Node);
 
     if (!isInsideEditor) return hideBlockActions();
@@ -190,35 +191,37 @@ export const FloatingBlockActions = memo(({ editor, dragHandleProps }: FloatingB
   return (
     <Portal id="block-actions">
       <div contentEditable={false} style={actionStyles} className="yoopta-block-actions" ref={blockActionsRef}>
-        {isActionMenuOpen && hasActionMenu && (
-          <Portal id="yoo-block-options-portal">
-            <Overlay lockScroll className="yoo-editor-z-[100]" onClick={onCloseActionMenu}>
-              <div style={actionMenuStyles} ref={actionMenuRefs.setFloating}>
-                {/* @ts-ignore - fixme */}
-                <ActionMenu {...actionMenuRenderProps} />
-              </div>
-            </Overlay>
-          </Portal>
-        )}
-        <button type="button" onClick={onPlusClick} className="yoopta-block-actions-plus">
-          <PlusIcon />
-        </button>
-        <button
-          ref={onDragButtonRef}
-          type="button"
-          className="yoopta-block-actions-drag"
-          onClick={onSelectBlock}
-          {...attributes}
-          {...listeners}
-        >
-          <DragIcon />
-        </button>
-        <BlockOptions
-          isOpen={isBlockOptionsMounted}
-          refs={blockOptionsRefs}
-          style={blockOptionsFloatingStyle}
-          onClose={() => setIsBlockOptionsOpen(false)}
-        />
+        <div className="yoopta-block-action-buttons">
+          {isActionMenuOpen && hasActionMenu && (
+            <Portal id="yoo-block-options-portal">
+              <Overlay lockScroll className="yoo-editor-z-[100]" onClick={onCloseActionMenu}>
+                <div style={actionMenuStyles} ref={actionMenuRefs.setFloating}>
+                  {/* @ts-ignore - fixme */}
+                  <ActionMenu {...actionMenuRenderProps} />
+                </div>
+              </Overlay>
+            </Portal>
+          )}
+          <button type="button" onClick={onPlusClick} className="yoopta-block-actions-plus">
+            <PlusIcon />
+          </button>
+          <button
+            ref={onDragButtonRef}
+            type="button"
+            className="yoopta-block-actions-drag"
+            onClick={onSelectBlock}
+            {...attributes}
+            {...listeners}
+          >
+            <DragIcon />
+          </button>
+          <BlockOptions
+            isOpen={isBlockOptionsMounted}
+            refs={blockOptionsRefs}
+            style={blockOptionsFloatingStyle}
+            onClose={() => setIsBlockOptionsOpen(false)}
+          />
+        </div>
       </div>
     </Portal>
   );

@@ -49,7 +49,12 @@
 }
 
 .yoopta-block-actions {
+  pointer-events: none;
+}
+
+.yoopta-block-action-buttons {
   display: flex;
+  pointer-events: auto;
 }
 
 .yoopta-block-actions-plus {
