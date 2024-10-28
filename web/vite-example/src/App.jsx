@@ -20,7 +20,7 @@ import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 
 import { uploadToCloudinary } from './utils/cloudinary';
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 const plugins = [
   File.extend({
@@ -111,6 +111,11 @@ const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 function App() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
+  const [value, setValue] = useState();
+
+  const onChange = (value) => {
+    setValue(value);
+  };
 
   return (
     <div className="editor-container" ref={selectionRef}>
@@ -122,6 +127,8 @@ function App() {
         selectionBoxRoot={selectionRef}
         width="100%"
         autoFocus
+        value={value}
+        onChange={onChange}
       />
     </div>
   );
