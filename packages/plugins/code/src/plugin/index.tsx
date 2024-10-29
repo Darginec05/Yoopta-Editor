@@ -82,9 +82,6 @@ const Code = new YooptaPlugin<CodeElementMap, CodePluginBlockOptions>({
 
         const props = Object.assign({}, element.props);
 
-        console.log('element.props', props);
-        console.log('justify', justify);
-
         return `
           <table style="width:100%;">
             <tbody style="width:100%;">
