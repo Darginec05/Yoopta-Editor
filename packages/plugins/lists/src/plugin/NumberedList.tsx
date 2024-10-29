@@ -93,9 +93,9 @@ const NumberedList = new YooptaPlugin<Pick<ListElementMap, 'numbered-list'>>({
             <tbody style="width:100%;">
               <tr>
                 <td>
-                  <ol data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${
-          depth * 20
-        }px; text-align: ${align}"><li>${serializeTextNodes(element.children)}</li></ol>
+                  <ol data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}"><li>${serializeTextNodes(
+          element.children,
+        )}</li></ol>
                 </td>
               </tr>
             </tbody>
