@@ -11,6 +11,7 @@ import { TABLE_SLATE_TO_SELECTION_SET } from '../utils/weakMaps';
 import { deserializeTable } from '../parsers/html/deserialize';
 import { serializeTable } from '../parsers/html/serialize';
 import { serializeMarkown } from '../parsers/markdown/serialize';
+import { serializeTableToEmail } from '../parsers/email/serialize';
 
 const Table = new YooptaPlugin<TableElementMap>({
   type: 'Table',
@@ -55,6 +56,9 @@ const Table = new YooptaPlugin<TableElementMap>({
     },
     markdown: {
       serialize: serializeMarkown,
+    },
+    email: {
+      serialize: serializeTableToEmail,
     },
   },
   extensions: withTable,

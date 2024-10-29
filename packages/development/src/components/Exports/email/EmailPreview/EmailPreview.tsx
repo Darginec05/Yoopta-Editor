@@ -24,8 +24,8 @@ const ResultEmail = ({ editor, value }: ResultEmailProps) => {
   const [emailHTML, setEmailHTML] = useState<string>('');
 
   useEffect(() => {
-    const emailContent = editor.getEmail(debounceValue);
-    setEmailHTML(emailContent);
+    const emailString = editor.getEmail(debounceValue);
+    setEmailHTML(emailString);
   }, [debounceValue]);
 
   return (
@@ -49,21 +49,16 @@ type EditorProps = {
 };
 
 const Editor = ({ editor, onChange, value }: EditorProps) => {
-  useEffect(() => {
-    const handleChange = (value: YooptaContentValue) => {
-      onChange(value);
-    };
-
-    editor.on('change', handleChange);
-    return () => editor.off('change', handleChange);
-  }, [editor]);
+  const handleChange = (value: YooptaContentValue) => {
+    onChange(value);
+  };
 
   return (
     <YooptaEditor
-      id="html"
+      id="email"
       style={{
         width: '100%',
-        paddingBottom: 0,
+        paddingBottom: 100,
       }}
       className="h-full min-h-[300px] lg:min-h-[700px] xl:min-h-[700px] rounded-md border border-input bg-transparent text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring px-[3.5rem] py-[1.5rem]"
       placeholder="Start building your email..."
@@ -71,8 +66,9 @@ const Editor = ({ editor, onChange, value }: EditorProps) => {
       plugins={YOOPTA_PLUGINS}
       marks={MARKS}
       selectionBoxRoot={false}
-      autoFocus={false}
       tools={TOOLS}
+      value={value}
+      onChange={handleChange}
     />
   );
 };
@@ -84,18 +80,11 @@ const EmailPreview = () => {
   const [subject, setSubject] = useState('test email');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const onChange = (data: YooptaContentValue) => {
-    if (Object.keys(data).length === 0) {
-      editor.setEditorValue(EMAIL_EDITOR_DEFAULT_VALUE);
-      return;
-    }
+  console.log('value', value);
 
+  const onChange = (data: YooptaContentValue) => {
     setValue(data);
   };
-
-  useEffect(() => {
-    editor.setEditorValue(EMAIL_EDITOR_DEFAULT_VALUE);
-  }, []);
 
   const onCopy = () => {
     const emailString = editor.getEmail(value);
@@ -226,7 +215,7 @@ const EmailPreview = () => {
                           <div className="flex flex-col space-y-4">
                             <div className="flex flex-1 flex-col space-y-2">
                               <Label htmlFor="input">Input</Label>
-                              <Editor editor={editor} value={value} onChange={onChange} />
+                              {/* <Editor editor={editor} value={value} onChange={onChange} /> */}
                             </div>
                           </div>
                           <div className="mt-[21px] min-h-[400px] rounded-md border bg-muted lg:min-h-[700px]" />

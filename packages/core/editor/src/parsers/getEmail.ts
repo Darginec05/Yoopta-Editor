@@ -1,3 +1,4 @@
+import { Paths } from '../editor/paths';
 import { SlateElement, YooEditor, YooptaContentValue } from '../editor/types';
 import { getPluginByInlineElement } from '../utils/blockElements';
 
@@ -41,8 +42,10 @@ function serializeChildren(children, plugins) {
 export function getEmail(editor: YooEditor, content: YooptaContentValue): string {
   const blocks = Object.values(content)
     .filter((item) => {
-      if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
-        return editor.selectedBlocks?.includes(item.meta.order);
+      const selectedBlocks = Paths.getSelectedPaths(editor);
+
+      if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
+        return selectedBlocks?.includes(item.meta.order);
       }
 
       return true;
@@ -79,7 +82,7 @@ export function getEmail(editor: YooEditor, content: YooptaContentValue): string
           </style>
         </head>
 
-        <body style="margin:0;padding: 10px 20px; font-family: 'Montserrat', sans-serif;" id="yoopta-clipboard" data-editor-id="${
+        <body style="margin:0 auto;padding: 10px 20px; width: 600px; font-family: 'Montserrat', sans-serif;" id="yoopta-clipboard" data-editor-id="${
           editor.id
         }">
           ${email.join('')}

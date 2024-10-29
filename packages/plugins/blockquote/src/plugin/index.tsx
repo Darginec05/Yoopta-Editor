@@ -1,4 +1,4 @@
-import { serializeTextNodesIntoMarkdown, YooptaPlugin } from '@yoopta/editor';
+import { serializeTextNodes, serializeTextNodesIntoMarkdown, YooptaPlugin } from '@yoopta/editor';
 import { BlockquoteCommands } from '../commands';
 import { BlockquoteElement } from '../types';
 import { BlockquoteRender } from '../ui/Blockquote';
@@ -25,7 +25,9 @@ const Blockquote = new YooptaPlugin<Record<'blockquote', BlockquoteElement>>({
       },
       serialize: (element, text, blockMeta) => {
         const { align = 'left', depth = 0 } = blockMeta || {};
-        return `<blockquote data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}; border-left: 3px solid; color: #292929; padding: 2px 14px; margin-top: 8px;">${serializeTextNodes(
+        return `<blockquote data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${
+          depth * 20
+        }px; text-align: ${align}; border-left: 3px solid; color: #292929; padding: 2px 14px; margin-top: 8px;">${serializeTextNodes(
           element.children,
         )}</blockquote>`;
       },
@@ -43,7 +45,9 @@ const Blockquote = new YooptaPlugin<Record<'blockquote', BlockquoteElement>>({
           <tbody style="width:100%;">
             <tr>
               <td>
-                <blockquote data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}; border-left: 3px solid; color: #292929; padding: 2px 14px; margin-top: 8px;">${serializeTextNodes(
+                <blockquote data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${
+          depth * 20
+        }px; text-align: ${align}; border-left: 3px solid; color: #292929; padding: 2px 14px; margin-top: 8px;">${serializeTextNodes(
           element.children,
         )}</blockquote>
               </td>

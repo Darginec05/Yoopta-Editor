@@ -48,9 +48,9 @@ const HeadingOne = new YooptaPlugin<Record<'heading-one', HeadingOneElement>>({
       serialize: (element, text, blockMeta) => {
         const { depth = 0, align = 'left' } = blockMeta || {};
 
-        return `<h1 data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}">${serializeTextNodes(
-          element.children,
-        )}</h1>`;
+        return `<h1 data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${
+          depth * 20
+        }px; text-align: ${align}">${serializeTextNodes(element.children)}</h1>`;
       },
     },
     markdown: {
@@ -66,7 +66,9 @@ const HeadingOne = new YooptaPlugin<Record<'heading-one', HeadingOneElement>>({
         <tbody style="width:100%;">
           <tr>
             <td>
-              <h1 data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}">
+              <h1 data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${
+          depth * 20
+        }px; text-align: ${align}">
                 ${serializeTextNodes(element.children)}
               </h1>
             </td>
