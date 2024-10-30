@@ -1,14 +1,14 @@
-import { BaseText, Descendant } from 'slate';
 import { Paths } from '../editor/paths';
 import { SlateElement, YooEditor, YooptaContentValue } from '../editor/types';
 import { getPluginByInlineElement } from '../utils/blockElements';
 
 const MARKS_NODE_NAME_MATCHERS_MAP = {
-  underline: { type: 'underline', tag: 'U' },
-  strike: { type: 'strike', tag: 'S' },
-  code: { type: 'code', tag: 'CODE' },
-  italic: { type: 'italic', tag: 'I' },
-  bold: { type: 'bold', tag: 'B' },
+  underline: { type: 'underline', tag: 'u' },
+  strike: { type: 'strike', tag: 's' },
+  code: { type: 'code', tag: 'code' },
+  italic: { type: 'italic', tag: 'i' },
+  bold: { type: 'bold', tag: 'strong' },
+  strong: { type: 'bold', tag: 'strong' },
 };
 
 function serializeChildren(children, plugins) {
