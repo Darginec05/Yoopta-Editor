@@ -8,7 +8,7 @@ const MARKS_NODE_NAME_MATCHERS_MAP = {
   code: { type: 'code', tag: 'code' },
   italic: { type: 'italic', tag: 'i' },
   bold: { type: 'bold', tag: 'strong' },
-  strong: { type: 'strong', tag: 'strong' },
+  strong: { type: 'bold', tag: 'strong' },
 };
 
 function serializeChildren(children, plugins) {
