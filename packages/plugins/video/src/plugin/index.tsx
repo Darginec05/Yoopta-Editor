@@ -128,6 +128,81 @@ const Video = new YooptaPlugin<VideoElementMap, VideoPluginOptions>({
         return `![${element.props.src}](${element.props.src})\n`;
       },
     },
+    email: {
+      serialize: (element, text, blockMeta) => {
+        const { align = 'center', depth = 0 } = blockMeta || {};
+        const justify = ALIGNS_TO_JUSTIFY[align] || 'center';
+
+        return `
+          <table style="width: 100%;">
+            <tbody style="width: 100%;">
+              <tr>
+                <td
+                  style="
+                    margin-left: ${depth}px;
+                    display: flex;
+                    width: 100%;
+                    justify-content: ${justify};
+                    padding: 1rem 0rem;
+                    position: relative;
+                  "
+                >
+                  <a
+                    href="${element.props.src}"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    style="
+                      position: relative;
+                      display: block;
+                      width: ${element.props.sizes.width}px;
+                      height: ${element.props.sizes.height}px;
+                      background-color: #999999;
+                      min-height: 300px;
+                      border-radius: 12px;
+                      border: none;
+                      overflow: hidden;
+                    "
+                  >
+                    <img
+                      data-meta-align="${align}"
+                      data-meta-depth="${depth}"
+                      src="${element.props.poster}"
+                      width="${element.props.sizes.width}"
+                      height="${element.props.sizes.height}"
+                      objectFit="${element.props.fit}"
+                      alt="Poster"
+                      style="
+                        object-fit: cover;
+                        height: 100%;
+                      "
+                    />
+                    <span
+                      style="
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        pointer-events: none;
+                      "
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        width="50"
+                        height="50"
+                      >
+                        <circle cx="12" cy="12" r="10" fill="rgba(0, 0, 0, 0.6)" />
+                        <polygon points="10,8 16,12 10,16" fill="white" />
+                      </svg>
+                    </span>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        `;
+      },
+    },
   },
 });
 
