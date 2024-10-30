@@ -143,7 +143,8 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
 
       if (isInsideCustomEditor || !slate || !slate.selection || !isInsideEditor) return;
 
-      const isSlashKey = event.key === '/' || event.keyCode === 111;
+      // [TODO] - event.code Slash works for both '/' and '?' keys
+      const isSlashKey = event.key === '/' || event.which === 191 || event.code === 'Slash';
 
       if (isSlashKey || HOTKEYS.isSlashCommand(event)) {
         const isInTypingMode = slate.selection && !Editor.isEditor(slate.selection.anchor.path[0]);
