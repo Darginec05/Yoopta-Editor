@@ -79,6 +79,7 @@ const EmailPreview = () => {
   const [recipientEmail, setRecipientEmail] = useState('');
   const [subject, setSubject] = useState('test email');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   console.log('value', value);
 
@@ -99,7 +100,10 @@ const EmailPreview = () => {
       return;
     }
 
+    setIsLoading(true);
+
     const emailContent = editor.getEmail(value);
+    console.log('emailContent', emailContent);
 
     try {
       const response = await fetch('/api/sendEmail', {
@@ -122,6 +126,8 @@ const EmailPreview = () => {
       setIsModalOpen(false);
     } catch (error) {
       console.error('Error sending email:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -134,6 +140,9 @@ const EmailPreview = () => {
               <h2 className="text-lg font-semibold text-nowrap">Email-Builder playground</h2>
               <div className="ml-auto flex w-full space-x-2 sm:justify-end"></div>
               <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+                <Button onClick={onCopy} variant="outline" className="mr-2">
+                  Get email content
+                </Button>
                 <DialogTrigger asChild>
                   <Button variant="default">Send</Button>
                 </DialogTrigger>
@@ -166,7 +175,9 @@ const EmailPreview = () => {
                     </div>
                   </div>
                   <div className="flex justify-end">
-                    <Button onClick={sendEmail}>Send Email</Button>
+                    <Button onClick={sendEmail} disabled={isLoading}>
+                      Send Email
+                    </Button>
                   </div>
                 </DialogContent>
               </Dialog>

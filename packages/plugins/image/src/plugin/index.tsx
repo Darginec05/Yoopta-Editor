@@ -94,11 +94,11 @@ const Image = new YooptaPlugin<ImageElementMap, ImagePluginOptions>({
               <tr>
                 <td>
                   <div style="margin-left: ${depth * 20}px; display: flex; width: 100%; justify-content: ${justify};">
-                    <img data-meta-align="${align}" style="object-fit:${
+                    <img data-meta-align="${align}" style="margin: 0 auto; object-fit:${
           element.props.fit || 'contain'
         };" data-meta-depth="${depth}" src="${element.props.src}" alt="${element.props.alt}" width="${
           element.props.sizes.width
-        }" height="${element.props.sizes.height}" objectFit="${element.props.fit}"></img>
+        }" height="${element.props.sizes.height}" objectfit="${element.props.fit}" />
                   </div>
                 </td>
               </tr>

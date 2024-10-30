@@ -7,7 +7,7 @@ export function serializeTextNodes(nodes: any[]): string {
         let text = node.text;
 
         if (node.bold) {
-          text = `<strong>${text}</strong>`;
+          text = `<strong style="font-weight: bolder;">${text}</strong>`;
         }
         if (node.italic) {
           text = `<i>${text}</i>`;
@@ -19,7 +19,7 @@ export function serializeTextNodes(nodes: any[]): string {
           text = `<u>${text}</u>`;
         }
         if (node.code) {
-          text = `<code>${text}</code>`;
+          text = `<code style="background-color: rgb(242 242 242); border-radius: .25rem; font-size: 75%; padding: 3px 6px;">${text}</code>`;
         }
         if (node.highlight) {
           text = `<span style="color:${node.highlight.color};">${text}</span>`;
@@ -32,7 +32,11 @@ export function serializeTextNodes(nodes: any[]): string {
         const { url, target, rel } = node.props;
         const children = serializeTextNodes(node.children);
 
-        return `<a href="${url}" target="${target}" rel="${rel}">${children}</a>`;
+        return `<a href="${url}" target="${target}" rel="${rel}" style="color: rgb(0 122 255);
+    cursor: pointer;
+    position: relative;
+    text-decoration-line: underline;
+    text-underline-offset: 4px;">${children}</a>`;
       }
 
       return '';
