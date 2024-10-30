@@ -22,10 +22,17 @@ export const DefaultParagraph = new YooptaPlugin({
       props: { nodeType: 'block' },
     },
   },
+  options: {
+    shortcuts: ['p', 'text', 'para'],
+    display: {
+      title: 'Paragraph',
+      description: 'Paragraph block',
+    },
+  },
 });
 
 export const BlockPluginWithProps = new YooptaPlugin({
-  type: 'Block',
+  type: 'BlockPluginWithProps',
   elements: {
     block: {
       render: (props) => <div {...props.attributes}>{props.children}</div>,
@@ -56,28 +63,32 @@ const PluginWithSeveralElements = new YooptaPlugin({
 
 export const TEST_PLUGIN_LIST = [InlinePlugin, DefaultParagraph, BlockPluginWithProps, PluginWithSeveralElements];
 
-export function renderYooptaEditor(props: Partial<YooptaEditorProps> = {}) {
-  const editor = createYooptaEditor();
-
-  return render(
-    <YooptaEditor {...props} editor={props.editor || editor} plugins={props.plugins || TEST_PLUGIN_LIST} />,
-  );
-}
-
-const data = {
+const DEFAULT_EDITOR_STATE = {
   'aafd7597-1e9a-4c80-ab6c-88786595d72a': {
-    'aafd7597-1e9a-4c80-ab6c-88786595d72a': {
-      id: 'aafd7597-1e9a-4c80-ab6c-88786595d72a',
-      meta: { depth: 0, order: 0 },
-      type: 'Paragraph',
-      value: [
-        {
-          id: '3aff9e2c-5fee-43ff-b426-1e4fee8b303c',
-          type: 'paragraph',
-          props: { nodeType: 'block' },
-          children: [{ text: '' }],
-        },
-      ],
-    },
+    id: 'aafd7597-1e9a-4c80-ab6c-88786595d72a',
+    meta: { depth: 0, order: 0 },
+    type: 'Paragraph',
+    value: [
+      {
+        id: '3aff9e2c-5fee-43ff-b426-1e4fee8b303c',
+        type: 'paragraph',
+        props: { nodeType: 'block' },
+        children: [{ text: '' }],
+      },
+    ],
   },
 };
+
+export function renderYooptaEditor(props: Partial<YooptaEditorProps> = {}) {
+  const editor = props.editor || createYooptaEditor();
+
+  return render(
+    <YooptaEditor
+      {...props}
+      value={props.value || DEFAULT_EDITOR_STATE}
+      editor={props.editor || editor}
+      plugins={props.plugins || TEST_PLUGIN_LIST}
+      autoFocus={props.autoFocus || false}
+    />,
+  );
+}
