@@ -1,4 +1,9 @@
-import { PluginElementRenderProps, serializeTextNodesIntoMarkdown, YooptaPlugin } from '@yoopta/editor';
+import {
+  PluginElementRenderProps,
+  serializeTextNodes,
+  serializeTextNodesIntoMarkdown,
+  YooptaPlugin,
+} from '@yoopta/editor';
 import { HeadingThreeCommands } from '../commands';
 import { HeadingThreeElement } from '../types';
 
@@ -49,7 +54,9 @@ const HeadingThree = new YooptaPlugin<Record<'heading-three', HeadingThreeElemen
       serialize: (element, text, blockMeta) => {
         const { depth = 0, align = 'left' } = blockMeta || {};
 
-        return `<h3 data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}">${text}</h3>`;
+        return `<h3 data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${
+          depth * 20
+        }px; text-align: ${align}">${serializeTextNodes(element.children)}</h3>`;
       },
     },
     markdown: {

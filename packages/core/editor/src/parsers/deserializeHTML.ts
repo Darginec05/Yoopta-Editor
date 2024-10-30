@@ -15,6 +15,7 @@ const MARKS_NODE_NAME_MATCHERS_MAP = {
   S: { type: 'strike' },
   CODE: { type: 'code' },
   EM: { type: 'italic' },
+  MARK: { type: 'highlight', parse: (el) => ({ color: el.style.color }) },
 };
 
 const VALID_TEXT_ALIGNS = ['left', 'center', 'right', undefined];
@@ -144,9 +145,9 @@ function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames, el: H
 
     return children.map((child) => {
       if (typeof child === 'string') {
-        return { [markType]: true, text: child };
+        return { [markType]: mark.parse ? mark.parse(parent) : true, text: child };
       } else if (child.text) {
-        return { ...child, [markType]: true };
+        return { ...child, [markType]: mark.parse ? mark.parse(parent) : true };
       }
       return child;
     });

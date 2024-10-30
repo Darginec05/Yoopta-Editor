@@ -38,7 +38,9 @@ const File = new YooptaPlugin<FileElementMap, FilePluginOptions>({
         const { align = 'left', depth = 0 } = blockMeta || {};
         const justify = ALIGNS_TO_JUSTIFY[align] || 'left';
 
-        return `<div style="margin-left: ${depth}px; display: flex; width: 100%; justify-content: ${justify}"><a data-meta-align="${align}" data-meta-depth="${depth}" href="${
+        return `<div style="margin-left: ${
+          depth * 20
+        }px; display: flex; width: 100%; justify-content: ${justify}"><a data-meta-align="${align}" data-meta-depth="${depth}" href="${
           element.props.src
         }" data-size="${element.props.size}" download="${
           element.props.name

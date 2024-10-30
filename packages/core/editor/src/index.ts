@@ -8,6 +8,7 @@ export {
   useYooptaPluginOptions,
 } from './contexts/YooptaContext/YooptaContext';
 import { YooptaEditor, type YooptaEditorProps, type YooptaOnChangeOptions } from './YooptaEditor';
+export { deserializeHTML } from './parsers/deserializeHTML';
 
 // [TODO] - should be in separated package @yoopta/common/ui or @yoopta/ui
 export { UI } from './UI';
@@ -17,6 +18,8 @@ export { useYooptaTools, Tools } from './contexts/YooptaContext/ToolsContext';
 export { generateId } from './utils/generateId';
 export { HOTKEYS } from './utils/hotkeys';
 export { getRootBlockElementType, getRootBlockElement } from './utils/blockElements';
+
+// to remove
 export { findPluginBlockByPath } from './utils/findPluginBlockByPath';
 export { findSlateBySelectionPath } from './utils/findSlateBySelectionPath';
 export { deserializeTextNodes } from './parsers/deserializeTextNodes';
