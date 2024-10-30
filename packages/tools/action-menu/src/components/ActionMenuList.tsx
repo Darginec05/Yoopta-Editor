@@ -59,6 +59,18 @@ const filterActionMenuItems = (block: YooptaBlock, searchText: string): boolean 
   });
 };
 
+function isSlashPressed(event: KeyboardEvent): boolean {
+  return (
+    event.key === '/' ||
+    event.keyCode === 191 ||
+    event.which === 191 ||
+    // [TODO] - event.code Slash works for both '/' and '?' keys
+    event.code === 'Slash' ||
+    event.key === '/' ||
+    (event.key === '.' && event.shiftKey)
+  );
+}
+
 // [TODO] - add to props
 const TRIGGER = '/';
 
@@ -143,8 +155,7 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
 
       if (isInsideCustomEditor || !slate || !slate.selection || !isInsideEditor) return;
 
-      // [TODO] - event.code Slash works for both '/' and '?' keys
-      const isSlashKey = event.key === '/' || event.which === 191 || event.code === 'Slash';
+      const isSlashKey = isSlashPressed(event);
 
       if (isSlashKey || HOTKEYS.isSlashCommand(event)) {
         const isInTypingMode = slate.selection && !Editor.isEditor(slate.selection.anchor.path[0]);
