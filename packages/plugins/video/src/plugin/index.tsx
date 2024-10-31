@@ -112,8 +112,14 @@ const Video = new YooptaPlugin<VideoElementMap, VideoPluginOptions>({
         const justify = ALIGNS_TO_JUSTIFY[align] || 'center';
 
         return `
-        <div style="margin-left: ${depth}px; display: flex; width: 100%; justify-content: "${justify}"">
-        <video data-meta-align="${align}" data-meta-depth="${depth}" src="${element.props.src}" width="${element.props.sizes.width}" height="${element.props.sizes.height}" controls="${element.props.settings.controls}" loop="${element.props.settings.loop}" muted="${element.props.settings.muted}" autoplay="${element.props.settings.autoPlay}" style="margin: 0 auto;" objectFit="${element.props.fit}" />
+        <div style="margin-left: ${depth * 20}px; display: flex; width: 100%; justify-content: ${justify};">
+        <video data-meta-align="${align}" data-meta-depth="${depth}" src="${element.props.src}" width="${
+          element.props.sizes.width
+        }" height="${element.props.sizes.height}" controls="${element.props.settings.controls}" loop="${
+          element.props.settings.loop
+        }" muted="${element.props.settings.muted}" autoplay="${
+          element.props.settings.autoPlay
+        }" style="margin: 0 auto;" objectFit="${element.props.fit}" />
         </div>`;
       },
     },

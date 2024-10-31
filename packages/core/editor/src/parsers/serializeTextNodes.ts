@@ -7,7 +7,7 @@ export function serializeTextNodes(nodes: any[]): string {
         let text = node.text;
 
         if (node.bold) {
-          text = `<b>${text}</b>`;
+          text = `<strong>${text}</strong>`;
         }
         if (node.italic) {
           text = `<i>${text}</i>`;
@@ -20,6 +20,9 @@ export function serializeTextNodes(nodes: any[]): string {
         }
         if (node.code) {
           text = `<code>${text}</code>`;
+        }
+        if (node.highlight) {
+          text = `<mark style="color: ${node.highlight?.color}">${text}</mark>`;
         }
 
         return text;

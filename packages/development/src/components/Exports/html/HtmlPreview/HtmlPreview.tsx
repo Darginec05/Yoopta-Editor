@@ -1,4 +1,5 @@
 import YooptaEditor, { createYooptaEditor, YooEditor, YooptaContentValue } from '@yoopta/editor';
+import parsers from '@yoopta/exports';
 import { useEffect, useMemo, useState } from 'react';
 import { YOOPTA_PLUGINS } from '../../../../utils/yoopta/plugins';
 import { MARKS } from '../../../../utils/yoopta/marks';
@@ -45,7 +46,7 @@ const ResultHTML = ({ editor, value }: ResultHTMLProps) => {
   const [html, setHTML] = useState<string>('');
 
   useEffect(() => {
-    const htmlString = editor.getHTML(debounceValue);
+    const htmlString = parsers.html.serialize(editor, debounceValue);
     const beautifiedHTML = jsBeatify.html_beautify(htmlString, {
       indent_with_tabs: false,
       indent_size: 2,

@@ -1,5 +1,4 @@
 import { deserializeTextNodes, generateId, YooEditor } from '@yoopta/editor';
-import { Descendant } from 'slate';
 import { TableElement, TableRowElement } from '../../types';
 
 export function deserializeTable(el: HTMLElement, editor: YooEditor) {

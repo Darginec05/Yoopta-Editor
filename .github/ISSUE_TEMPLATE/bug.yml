@@ -23,13 +23,6 @@ body:
     validations:
       required: true
   - type: textarea
-    id: steps
-    attributes:
-      label: Steps to Reproduce
-      description:  To help us recreate the bug, provide a numbered list of the exact steps taken to trigger the buggy behavior.
-    validations:
-      required: false
-  - type: textarea
     id: screenshots
     attributes:
       label: Screenshots
@@ -45,12 +38,5 @@ body:
         - "No"
         - "Yes"
       default: 0
-    validations:
-      required: false
-  - type: textarea
-    id: extrainfo
-    attributes:
-      label: If "yes" to above, please explain how you would technically implement this
-      description: For example reference any existing code
     validations:
       required: false
