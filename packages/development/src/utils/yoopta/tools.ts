@@ -5,12 +5,8 @@ import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 
 export const TOOLS: Tools = {
   ActionMenu: {
-    // render: ActionNotionMenuExample,
     render: DefaultActionMenuRender,
     tool: ActionMenuList,
-    props: {
-      // items: ['Callout', 'Blockquote', 'HeadingOne', 'HeadingTwo', 'HeadingThree', 'Image', 'File'],
-    },
   },
   Toolbar: {
     render: DefaultToolbarRender,

@@ -25,6 +25,7 @@ import { batchOperations } from './core/batchOperations';
 import { mergeBlock } from './blocks/mergeBlock';
 import { UndoRedoOptions, YooptaHistory } from './core/history';
 import EventEmitter from 'eventemitter3';
+import { deserializeHTML } from '../parsers/deserializeHTML';
 import { getEmail } from '../parsers/getEmail';
 
 const eventEmitter = new EventEmitter();

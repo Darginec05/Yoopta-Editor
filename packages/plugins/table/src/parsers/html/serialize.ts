@@ -1,4 +1,4 @@
-import { serializeTextNodes, SlateElement, YooEditor, YooptaBlockData } from '@yoopta/editor';
+import { serializeTextNodes, SlateElement, YooptaBlockData } from '@yoopta/editor';
 import { TableCellElement } from '../../types';
 
 export function serializeTable(element: SlateElement, text: string, blockMeta?: YooptaBlockData['meta']) {
