@@ -3050,10 +3050,10 @@
   resolved "https://registry.yarnpkg.com/@yoopta/paragraph/-/paragraph-4.7.1-rc.6.tgz#bb1a7e9b8083a6a75002c09df189a3285e1b62ce"
   integrity sha512-Ng9m0erhkrbxoEcRAqkv4jrxDBaDLoQYfXq9rQxHwG+PuoxFAb+56vvS35zU7fS/MuPLjhbFpK3SmP6+r/to/w==
 
-"@yoopta/starter-kit@4.9.1":
-  version "4.7.1-rc.0"
-  resolved "https://registry.npmjs.org/@yoopta/starter-kit/-/starter-kit-4.7.1-rc.0.tgz#7388dc3bc85e616081e6d1a91256330c743f39f4"
-  integrity sha512-OXAwTowgBJxtQPCjYsWtjTGOihhTJfPztRi5I0PvhZolAWDfx9r1yZ+XP7+IeGITXQQ0EYkR6YHyMLcGIpJ92Q==
+"@yoopta/starter-kit@^4.7.1-alpha.3":
+  version "4.7.1-alpha.3"
+  resolved "https://registry.npmjs.org/@yoopta/starter-kit/-/starter-kit-4.7.1-alpha.3.tgz#4dbb1a173704e34ac2279940443686941db7b355"
+  integrity sha512-vtyeWSmohUx7xJLgNEwzxX3fD6bKYahHbSwXzoFrwX3Qs0HoqsKnBuFxurBwFFnv47kUs/ZQYeMEd7pzs9xcqw==
   dependencies:
     "@yoopta/accordion" latest
     "@yoopta/action-menu-list" latest
@@ -3071,12 +3071,13 @@
     "@yoopta/lists" latest
     "@yoopta/marks" latest
     "@yoopta/paragraph" latest
+    "@yoopta/table" latest
     "@yoopta/toolbar" latest
     "@yoopta/video" latest
     slate "^0.102.0"
     slate-react "^0.102.0"
 
-"@yoopta/table@4.9.1":
+"@yoopta/table@4.9.1", "@yoopta/table@latest":
   version "4.9.1"
   resolved "https://registry.npmjs.org/@yoopta/table/-/table-4.9.1.tgz#1de8201fb40d189748fe8524faec5b43abd8e1b9"
   integrity sha512-T8p/DGkfIcXV5Og7aGzdgitaeEedK4MyDijGXTDs7nEzUbl6KGSysNBKBWYe8b1pirMSh/FNVYoUY+GHOLVi1A==
