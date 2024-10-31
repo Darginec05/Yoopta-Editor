@@ -1,6 +1,22 @@
 # Changelog
 
-## [4.9.0] - 2024-10-23
+## [4.9.1] - 2024-10-31
+
+### Added
+
+- `Added supporting highlight colors when serialize/deserialize html`
+
+### Fixed
+
+- `Fixed searching in Action Menu List`
+- `Fixed triggering Action Menu List by slash command`
+- `Fixed `catastrophic backtracking` for regex url checking. Replaced it with validator-js`
+- `Reducing size of `@yoopta/exports``
+- `Fixed searching by shortcuts in Action Menu List`
+- `Fixed styles for depth when serialize/deserialize html`
+- `Fixed example with Medium toolbar`
+
+## [4.9.0] - 2024-10-27
 
 ### Breaking Changes
 
