@@ -74,7 +74,7 @@ const Image = new YooptaPlugin<ImageElementMap, ImagePluginOptions>({
           element.props.alt
         }" width="${element.props.sizes.width}" height="${element.props.sizes.height}" objectFit="${
           element.props.fit
-        }"></img>
+        }"/>
         </div>`;
       },
     },

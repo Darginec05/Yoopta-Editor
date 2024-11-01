@@ -1,6 +1,5 @@
 import YooptaEditor, {
   Blocks,
-  buildBlockData,
   createYooptaEditor,
   generateId,
   YooptaOnChangeOptions,
@@ -14,8 +13,6 @@ import { MARKS } from '../../utils/yoopta/marks';
 import { YOOPTA_PLUGINS } from '../../utils/yoopta/plugins';
 import { TOOLS } from '../../utils/yoopta/tools';
 import { FixedToolbar } from '../../components/FixedToolbar/FixedToolbar';
-
-export type YooptaChildrenValue = Record<string, YooptaBlockData>;
 
 const EDITOR_STYLE = {
   width: 750,
@@ -787,13 +784,6 @@ const data = {
   },
 };
 
-const getDefaultValue = () => {
-  const id = generateId();
-  return {
-    [id]: Blocks.buildBlockData({ id }),
-  };
-};
-
 const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef<HTMLDivElement>(null);
@@ -807,11 +797,8 @@ const BasicExample = () => {
   useEffect(() => {
     editor.withoutSavingHistory(() => {
       const id = generateId();
-      const data = {
-        [id]: Blocks.buildBlockData({ id }),
-      };
 
-      editor.setEditorValue(data);
+      editor.setEditorValue(data as YooptaContentValue);
       editor.focusBlock(id);
     });
   }, []);

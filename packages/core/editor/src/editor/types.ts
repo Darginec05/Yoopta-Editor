@@ -17,6 +17,10 @@ import { moveBlock } from './blocks/moveBlock';
 import { decreaseBlockDepth } from './blocks/decreaseBlockDepth';
 import { updateBlock } from './blocks/updateBlock';
 import { setEditorValue } from './core/setEditorValue';
+import { getHTML } from '../parsers/getHTML';
+import { getMarkdown } from '../parsers/getMarkdown';
+import { getPlainText } from '../parsers/getPlainText';
+import { getEmail } from '../parsers/getEmail';
 
 export type YooptaBlockData<T = Descendant | SlateElement> = {
   id: string;
@@ -133,10 +137,10 @@ export type YooEditor = {
   focus: () => void;
 
   // parser handlers
-  getHTML: (content: YooptaContentValue) => string;
-  getMarkdown: (content: YooptaContentValue) => string;
-  getPlainText: (content: YooptaContentValue) => string;
-  getEmail: (content: YooptaContentValue) => string;
+  getHTML: WithoutFirstArg<typeof getHTML>;
+  getMarkdown: WithoutFirstArg<typeof getMarkdown>;
+  getPlainText: WithoutFirstArg<typeof getPlainText>;
+  getEmail: WithoutFirstArg<typeof getEmail>;
 
   // history
   historyStack: Record<HistoryStackName, HistoryStack[]>;
