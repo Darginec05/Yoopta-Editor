@@ -1,4 +1,4 @@
-import YooptaEditor, { createYooptaEditor } from '@yoopta/editor';
+import YooptaEditor, { Blocks, createYooptaEditor, generateId, YooptaBlockData } from '@yoopta/editor';
 import Blockquote from '@yoopta/blockquote';
 import Paragraph from '@yoopta/paragraph';
 import Image from '@yoopta/image';
@@ -8,7 +8,7 @@ import Link from '@yoopta/link';
 import Video from '@yoopta/video';
 import File from '@yoopta/file';
 import Code from '@yoopta/code';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import s from './SlackChat.module.scss';
 import { SlackTopToolbar } from './SlackTopToolbar';
 
@@ -52,6 +52,15 @@ const MARKS = [Bold, Italic, CodeMark, Strike, Underline];
 
 const SlackChat = () => {
   const editor = useMemo(() => createYooptaEditor(), []);
+
+  useEffect(() => {
+    editor.withoutSavingHistory(() => {
+      const id = generateId();
+      const blockData: YooptaBlockData = Blocks.buildBlockData({ id });
+      editor.setEditorValue({ [id]: blockData });
+      editor.focusBlock(id);
+    });
+  }, []);
 
   return (
     <div id="slack" className={s.root}>
