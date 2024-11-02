@@ -77,8 +77,7 @@ const Callout = new YooptaPlugin<CalloutElementMap>({
         <table style="width: 100%;">
           <tbody style="width: 100%;">
             <tr>
-              <td>
-                <div data-theme="${
+                <td data-theme="${
                   element.props?.theme || 'default'
                 }" data-meta-align="${align}" data-meta-depth="${depth}" style="border-radius: .375rem;
     font-size: 16px;
@@ -94,8 +93,7 @@ const Callout = new YooptaPlugin<CalloutElementMap>({
         }; border-left: ${theme.borderLeft || 0}; background-color: ${theme.backgroundColor};">${serializeTextNodes(
           element.children,
         )}
-              </div>
-            </td>
+              </td>
             </tr>
         </tbody>
       </table>`;

@@ -49,7 +49,7 @@ export {
   PluginEventHandlerOptions,
   PluginCustomEditorRenderProps,
   PluginDeserializeParser,
-  PluginserializeParser,
+  PluginSerializeParser,
   YooptaMarkProps,
   PluginOptions,
 } from './plugins/types';

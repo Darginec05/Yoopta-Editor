@@ -36,10 +36,10 @@ export function serializeTextNodes(nodes: any[]): string {
         const children = serializeTextNodes(node.children);
 
         return `<a href="${url}" target="${target}" rel="${rel}" style="color: rgb(0 122 255);
-    cursor: pointer;
-    position: relative;
-    text-decoration-line: underline;
-    text-underline-offset: 4px;">${children}</a>`;
+                cursor: pointer;
+                position: relative;
+                text-decoration-line: underline;
+                text-underline-offset: 4px;">${children}</a>`;
       }
 
       return '';

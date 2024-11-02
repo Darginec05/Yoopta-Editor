@@ -3,6 +3,7 @@ import { RenderElementProps as RenderSlateElementProps, RenderLeafProps } from '
 import { SlateEditor, SlateElement, YooEditor, YooptaBlockBaseMeta, YooptaBlockData } from '../editor/types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS_TYPE } from '../utils/hotkeys';
+import { EmailElementRenderer } from '../parsers/getEmail';
 
 export enum NodeType {
   Block = 'block',
@@ -93,16 +94,17 @@ export type Plugin<TElementMap extends Record<string, SlateElement>, TPluginOpti
 
 export type PluginParsers = {
   deserialize?: PluginDeserializeParser;
-  serialize?: PluginserializeParser;
+  serialize?: PluginSerializeParser;
 };
 
 export type PluginParserTypes = 'html' | 'markdown' | 'email';
 export type PluginParserValues = 'deserialize' | 'serialize';
 
-export type PluginserializeParser = (
+export type PluginSerializeParser = (
   element: SlateElement,
-  text: string,
+  content: string,
   blockMetaData?: YooptaBlockBaseMeta,
+  customRender?: EmailElementRenderer,
 ) => string;
 
 export type PluginDeserializeParser = {

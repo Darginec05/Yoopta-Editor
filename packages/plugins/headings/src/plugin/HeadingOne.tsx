@@ -59,18 +59,27 @@ const HeadingOne = new YooptaPlugin<Record<'heading-one', HeadingOneElement>>({
       },
     },
     email: {
-      serialize: (element, text, blockMeta) => {
+      serialize: (element, content, blockMeta, customRender) => {
         const { depth = 0, align = 'left' } = blockMeta || {};
+
+        let headingOneHTML = `<h1 data-meta-align="${align}" data-meta-depth="${depth}" style="
+                margin-bottom: .5rem;
+                scroll-margin: 5rem; font-size: 2.25rem;
+                font-weight: 700;
+                line-height: 2.5rem;
+                margin-top: 1.5rem; margin-left: ${depth * 20}px; text-align: ${align}">
+                ${content}
+              </h1>`;
+
+        if (typeof customRender === 'function') {
+          headingOneHTML = customRender(element, content, blockMeta);
+        }
 
         return `<table style="width:100%;">
         <tbody style="width:100%;">
           <tr>
             <td>
-              <h1 data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${
-          depth * 20
-        }px; text-align: ${align}">
-                ${serializeTextNodes(element.children)}
-              </h1>
+              ${headingOneHTML}
             </td>
           </tr>
         </tbody>
