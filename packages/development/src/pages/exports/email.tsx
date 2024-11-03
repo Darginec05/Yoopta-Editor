@@ -1,5 +1,5 @@
-import { EmailPreview } from '../../components/Exports/email/EmailPreview/EmailPreview';
+import { EmailExample } from '../../components/Exports/email/EmailExample/EmailExample';
 
 export default function HtmlExports() {
-  return <EmailPreview />;
+  return <EmailExample />;
 }

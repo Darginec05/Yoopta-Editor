@@ -37,7 +37,7 @@ const CodeEditor = ({ blockId }: PluginCustomEditorRenderProps) => {
 
   const onChange = (value: string) => {
     setCode(value);
-    editor.updateBlock(blockId, { value: [{ ...element, children: [{ text: value }] }] });
+    // editor.updateBlock(blockId, { value: [{ ...element, children: [{ text: value }] }] });
   };
 
   const onClick = () => {

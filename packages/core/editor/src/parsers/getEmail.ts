@@ -60,6 +60,11 @@ export type GetEmailOptions<TPlugins extends Record<string, Record<string, unkno
     className?: string;
     width?: number | string;
   };
+  content: {
+    attributes?: string;
+    style?: Partial<CSSStyleDeclaration>;
+    className?: string;
+  };
   plugins?: {
     [K in keyof TPlugins]?: {
       [E in keyof TPlugins[K]['elements']]?: EmailElementRenderer;
@@ -74,21 +79,14 @@ const DEFAULT_OPTIONS: GetEmailOptions = {
     dir: 'ltr',
   },
   head: {
-    fonts: '',
     styles: '.ExternalClass {width: 100%;}',
     meta: {
       'content-type': 'text/html; charset=UTF-8',
       'x-apple-disable-message-reformatting': '',
     },
   },
-  body: {
-    style: {
-      margin: '0 auto',
-      padding: '10px 20px',
-      width: '600px',
-      fontFamily: "'Montserrat', sans-serif",
-    },
-  },
+  body: {},
+  content: {},
 };
 
 export function getEmail(editor: YooEditor, content: YooptaContentValue, opts?: Partial<GetEmailOptions>): string {
@@ -113,6 +111,7 @@ export function getEmail(editor: YooEditor, content: YooptaContentValue, opts?: 
       const element = blockData.value[0] as SlateElement;
       const rendererFn = options?.plugins?.[blockData.type]?.[element.type];
 
+      // @ts-ignore - fixme
       const innerContent = serializeTextNodes(blockData.value[0].children);
 
       return plugin.parsers.email.serialize(
@@ -139,11 +138,19 @@ export function getEmail(editor: YooEditor, content: YooptaContentValue, opts?: 
     .join('\n');
 
   const fonts = Array.isArray(options.head.fonts) ? options.head.fonts.join('\n') : options.head.fonts;
+
   const bodyAttributes = options.body.attributes ? ` ${options.body.attributes}` : '';
   const bodyClass = options.body.className ? ` class="${options.body.className}"` : '';
   const bodyStyle = objectToCssString({
     ...DEFAULT_OPTIONS.body.style,
     ...options.body.style,
+  });
+
+  const contentAttributes = options.content.attributes ? ` ${options.content.attributes}` : '';
+  const contentClass = options.content.className ? ` class="${options.content.className}"` : '';
+  const contentStyle = objectToCssString({
+    ...DEFAULT_OPTIONS.content.style,
+    ...options.content.style,
   });
 
   return `
@@ -157,7 +164,9 @@ export function getEmail(editor: YooEditor, content: YooptaContentValue, opts?: 
         </style>
       </head>
         <body style="${bodyStyle}"${bodyAttributes}${bodyClass} id="yoopta-clipboard" data-editor-id="${editor.id}">
-          ${emailContent}
+          <div style="${contentStyle}"${contentAttributes}${contentClass} id="yoopta-clipboard" data-editor-id="${editor.id}">
+            ${emailContent}
+          </div>
         </body>
       </html>
   `;
