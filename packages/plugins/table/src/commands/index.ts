@@ -1,4 +1,4 @@
-import { Blocks, buildBlockData, Elements, generateId, SlateElement, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, Elements, generateId, SlateElement, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import { Editor, Element, Path, Span, Transforms } from 'slate';
 import { InsertTableOptions, TableCellElement, TableElement, TableRowElement } from '../types';
 
@@ -17,7 +17,7 @@ type MoveTableOptions = {
 
 type InsertOptions = Partial<
   InsertTableOptions & {
-    at: YooptaBlockPath;
+    at: YooptaPathIndex;
   }
 >;
 
@@ -78,13 +78,14 @@ export const TableCommands: TableCommands = {
   },
   insertTable: (editor: YooEditor, options?: InsertOptions) => {
     const table = TableCommands.buildTableElements(editor, options);
-    Blocks.insertBlock(editor, buildBlockData({ value: [table], type: 'Table' }), options);
+    const block = Blocks.buildBlockData({ value: [table], type: 'Table' });
+    Blocks.insertBlock(editor, block.type, { ...options, blockData: block });
   },
   deleteTable: (editor: YooEditor, blockId: string) => {
     editor.deleteBlock({ blockId });
   },
   insertTableRow: (editor: YooEditor, blockId: string, options?: Options) => {
-    const slate = Blocks.getSlate(editor, { id: blockId });
+    const slate = Blocks.getBlockSlate(editor, { id: blockId });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
@@ -123,7 +124,7 @@ export const TableCommands: TableCommands = {
     });
   },
   deleteTableRow: (editor: YooEditor, blockId: string, options?: DeleteOptions) => {
-    const slate = Blocks.getSlate(editor, { id: blockId });
+    const slate = Blocks.getBlockSlate(editor, { id: blockId });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
@@ -155,7 +156,7 @@ export const TableCommands: TableCommands = {
     });
   },
   moveTableRow: (editor: YooEditor, blockId: string, { from, to }: MoveTableOptions) => {
-    const slate = Blocks.getSlate(editor, { id: blockId });
+    const slate = Blocks.getBlockSlate(editor, { id: blockId });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
@@ -167,7 +168,7 @@ export const TableCommands: TableCommands = {
     });
   },
   moveTableColumn: (editor: YooEditor, blockId: string, { from, to }: MoveTableOptions) => {
-    const slate = Blocks.getSlate(editor, { id: blockId });
+    const slate = Blocks.getBlockSlate(editor, { id: blockId });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
@@ -187,7 +188,7 @@ export const TableCommands: TableCommands = {
     });
   },
   insertTableColumn: (editor: YooEditor, blockId: string, options?: Options) => {
-    const slate = Blocks.getSlate(editor, { id: blockId });
+    const slate = Blocks.getBlockSlate(editor, { id: blockId });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
@@ -228,7 +229,7 @@ export const TableCommands: TableCommands = {
     });
   },
   deleteTableColumn: (editor: YooEditor, blockId: string, options?: DeleteOptions) => {
-    const slate = Blocks.getSlate(editor, { id: blockId });
+    const slate = Blocks.getBlockSlate(editor, { id: blockId });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
@@ -267,7 +268,7 @@ export const TableCommands: TableCommands = {
     });
   },
   updateColumnWidth: (editor: YooEditor, blockId: string, columnIndex: number, width: number) => {
-    const slate = Blocks.getSlate(editor, { id: blockId });
+    const slate = Blocks.getBlockSlate(editor, { id: blockId });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
@@ -292,7 +293,7 @@ export const TableCommands: TableCommands = {
     });
   },
   toggleHeaderRow: (editor: YooEditor, blockId: string) => {
-    const slate = Blocks.getSlate(editor, { id: blockId });
+    const slate = Blocks.getBlockSlate(editor, { id: blockId });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {
@@ -327,7 +328,7 @@ export const TableCommands: TableCommands = {
     });
   },
   toggleHeaderColumn: (editor: YooEditor, blockId: string) => {
-    const slate = Blocks.getSlate(editor, { id: blockId });
+    const slate = Blocks.getBlockSlate(editor, { id: blockId });
     if (!slate) return;
 
     Editor.withoutNormalizing(slate, () => {

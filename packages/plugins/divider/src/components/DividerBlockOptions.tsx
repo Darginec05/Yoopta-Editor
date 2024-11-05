@@ -26,7 +26,10 @@ const DividerBlockOptions = ({ editor, block, props: dividerProps }: Props) => {
   const isActiveTheme = (theme: DividerTheme) => dividerProps?.theme === theme;
 
   return (
-    <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])} className="yoopta-divider-options">
+    <ExtendedBlockActions
+      onClick={() => editor.setPath({ current: block.meta.order })}
+      className="yoopta-divider-options"
+    >
       <BlockOptionsSeparator />
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>

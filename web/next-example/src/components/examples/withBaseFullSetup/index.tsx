@@ -1,4 +1,11 @@
-import YooptaEditor, { createYooptaEditor, Elements, Blocks, useYooptaEditor } from '@yoopta/editor';
+import YooptaEditor, {
+  createYooptaEditor,
+  Elements,
+  Blocks,
+  useYooptaEditor,
+  YooptaContentValue,
+  YooptaOnChangeOptions,
+} from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
@@ -14,13 +21,13 @@ import { Bold, Italic, CodeMark, Underline, Strike, Highlight } from '@yoopta/ma
 import { HeadingOne, HeadingThree, HeadingTwo } from '@yoopta/headings';
 import Code from '@yoopta/code';
 import Table from '@yoopta/table';
-import Divider, { DividerCommands } from '@yoopta/divider';
+import Divider from '@yoopta/divider';
 import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
 import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { WITH_BASIC_INIT_VALUE } from './initValue';
 
 const plugins = [
@@ -109,8 +116,13 @@ const TOOLS = {
 const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
 function WithBaseFullSetup() {
+  const [value, setValue] = useState(WITH_BASIC_INIT_VALUE);
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
+
+  const onChange = (newValue: YooptaContentValue, options: YooptaOnChangeOptions) => {
+    setValue(newValue);
+  };
 
   return (
     <div
@@ -123,7 +135,8 @@ function WithBaseFullSetup() {
         tools={TOOLS}
         marks={MARKS}
         selectionBoxRoot={selectionRef}
-        value={WITH_BASIC_INIT_VALUE}
+        value={value}
+        onChange={onChange}
         autoFocus
       />
     </div>

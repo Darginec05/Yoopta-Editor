@@ -1,19 +1,22 @@
 import { Editor, Element as SlateElement, Transforms, Range } from 'slate';
 import { SlateEditor, YooEditor } from '../../editor/types';
+import isURL from 'validator/lib/isURL';
 
-// [TODO] - JUST FOR TEST
-function isUrl(string) {
-  const pattern = new RegExp(
-    '^(https?:\\/\\/)?' +
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' +
-      '((\\d{1,3}\\.){3}\\d{1,3}))' +
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' +
-      '(\\?[;&a-z\\d%_.~+=-]*)?' +
-      '(\\#[-a-z\\d_]*)?$',
-    'i',
-  );
+function isUrl(string: string): boolean {
+  if (!string || string.length > 2048) return false;
 
-  return !!pattern.test(string);
+  return isURL(string, {
+    protocols: ['http', 'https'],
+    require_protocol: true,
+    require_valid_protocol: true,
+    require_host: true,
+    require_port: false,
+    allow_protocol_relative_urls: false,
+    allow_fragments: true,
+    allow_query_components: true,
+    allow_underscores: true,
+    disallow_auth: false,
+  });
 }
 
 const isLinkActive = (slate) => {
@@ -61,8 +64,6 @@ const addLink = (editor: YooEditor, slate: SlateEditor, url: string) => {
 export const withInlines = (editor: YooEditor, slate: SlateEditor) => {
   const { insertData, insertText } = slate;
 
-  // slate.isInline = (element) => ['link', 'mention'].includes(element.type) || isInline(element);
-
   slate.insertText = (text) => {
     if (text && isUrl(text)) {
       addLink(editor, slate, text);
@@ -73,7 +74,6 @@ export const withInlines = (editor: YooEditor, slate: SlateEditor) => {
 
   slate.insertData = (data) => {
     const text = data.getData('text/plain');
-
     if (text && isUrl(text)) {
       addLink(editor, slate, text);
     } else {

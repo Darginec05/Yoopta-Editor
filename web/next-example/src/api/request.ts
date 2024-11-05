@@ -49,12 +49,25 @@ export async function fetchRepoContributors({ owner, repo }: RepoFetchOptions): 
   return contributors;
 }
 
-export async function fetchRepoSponsors({ owner, repo }: RepoFetchOptions) {
-  const sponsors = await request(`https://api.github.com/repos/${owner}/${repo}/sponsors`, {
+export async function fetchRepoSponsors({ owner, repo }: RepoFetchOptions): Promise<Sponsors> {
+  const sponsors = await request<SponsorResponse>(`https://ghs.vercel.app/v3/sponsors/${owner}`, {
     headers: {
       Authorization: `token ${GITHUB_TOKEN}`,
       Accept: 'application/vnd.github.v3+json',
     },
   });
-  return sponsors;
+
+  return sponsors.sponsors;
 }
+
+export type SponsorItem = {
+  username: string;
+  avatar: string;
+};
+
+export type Sponsors = Record<'current' | 'past', SponsorItem[]>;
+
+export type SponsorResponse = {
+  status: string;
+  sponsors: Sponsors;
+};

@@ -1,46 +1,52 @@
-import { createDraft, finishDraft } from 'immer';
-import { YooEditor, YooptaBlockData } from '../types';
+import { SlateElement, YooEditor, YooptaBlockData } from '../types';
+import { YooptaOperation } from '../core/applyTransforms';
 
-// [TODO] - optimize updateBlock
-export function updateBlock<TElementKeys extends string, TProps>(
+// Maybe add source pararmeter to this function?
+export function updateBlock(
   editor: YooEditor,
   blockId: string,
-  data: Partial<YooptaBlockData>,
-) {
-  editor.children = createDraft(editor.children);
-  let shouldApply = false;
-
+  newData: Omit<Partial<YooptaBlockData>, 'id' | 'type'>,
+): void {
   const block = editor.children[blockId];
 
   if (!block) {
+    console.warn(`Block with id ${blockId} does not exist.`);
     return;
   }
 
-  if (data.id) {
-    block.id = data.id;
-    shouldApply = true;
+  const updateBlockMetaOperation: YooptaOperation = {
+    type: 'set_block_meta',
+    id: blockId,
+    properties: {},
+    prevProperties: {},
+  };
+
+  const updateBlockValueOperation: YooptaOperation = {
+    type: 'set_block_value',
+    id: blockId,
+    value: [],
+  };
+
+  if (newData.meta) {
+    updateBlockMetaOperation.prevProperties = block.meta;
+    updateBlockMetaOperation.properties = { ...block.meta, ...newData.meta };
   }
 
-  if (data.type) {
-    block.type = data.type;
-    shouldApply = true;
+  if (newData.value) {
+    updateBlockValueOperation.value = newData.value as SlateElement[];
   }
 
-  if (data.meta) {
-    block.meta = data.meta;
-    shouldApply = true;
+  const operations: YooptaOperation[] = [];
+
+  if (Object.keys(updateBlockMetaOperation.properties).length) {
+    operations.push(updateBlockMetaOperation);
   }
 
-  if (data.value) {
-    block.value = data.value;
+  if (updateBlockValueOperation.value.length) {
+    operations.push(updateBlockValueOperation);
   }
 
-  editor.children = finishDraft(editor.children);
-
-  // [TODO] - optimize applyChanges while updating slate value
-  if (shouldApply) {
-    editor.applyChanges();
+  if (operations.length > 0) {
+    editor.applyTransforms(operations, { validatePaths: false });
   }
-
-  editor.emit('change', editor.children);
 }

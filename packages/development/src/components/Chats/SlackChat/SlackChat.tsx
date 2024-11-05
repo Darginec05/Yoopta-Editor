@@ -96,22 +96,14 @@ const SlackChat = () => {
           <button
             className={s.toolbarItem}
             data-state-active={editor.blocks.NumberedList?.isActive()}
-            onClick={() =>
-              editor.blocks.NumberedList.isActive()
-                ? editor.blocks.Paragraph.create()
-                : editor.blocks.NumberedList.create()
-            }
+            onClick={() => editor.toggleBlock('NumberedList', { focus: true })}
           >
             <ListOrdered size={15} strokeWidth={1.5} />
           </button>
           <button
             className={s.toolbarItem}
             data-state-active={editor.blocks.BulletedList?.isActive()}
-            onClick={() =>
-              editor.blocks.BulletedList.isActive()
-                ? editor.blocks.Paragraph.create()
-                : editor.blocks.BulletedList.create()
-            }
+            onClick={() => editor.toggleBlock('BulletedList', { focus: true })}
           >
             <List size={15} strokeWidth={1.5} />
           </button>
@@ -119,11 +111,7 @@ const SlackChat = () => {
           <button
             className={s.toolbarItem}
             data-state-active={editor.blocks.Blockquote?.isActive()}
-            onClick={() => {
-              editor.blocks.Blockquote.isActive()
-                ? editor.blocks.Paragraph.create()
-                : editor.blocks.Blockquote.create();
-            }}
+            onClick={() => editor.toggleBlock('Blockquote', { focus: true })}
           >
             <TextQuoteIcon size={15} strokeWidth={1.5} />
           </button>
@@ -131,12 +119,7 @@ const SlackChat = () => {
           <button className={s.toolbarItem} onClick={() => editor.formats.code.toggle()}>
             <CodeIcon size={15} strokeWidth={1.5} />
           </button>
-          <button
-            className={s.toolbarItem}
-            onClick={() => {
-              editor.blocks.Code.isActive() ? editor.blocks.Paragraph.create() : editor.blocks.Code.create();
-            }}
-          >
+          <button className={s.toolbarItem} onClick={() => editor.toggleBlock('Code', { focus: true })}>
             <FileCodeIcon size={15} strokeWidth={1.5} />
           </button>
         </div>

@@ -1,5 +1,5 @@
 import { Editor, Transforms, Range } from 'slate';
-import { findPluginBlockBySelectionPath } from '../../utils/findPluginBlockBySelectionPath';
+import { findPluginBlockByPath } from '../../utils/findPluginBlockByPath';
 import { findSlateBySelectionPath } from '../../utils/findSlateBySelectionPath';
 import { YooEditor } from '../types';
 
@@ -15,14 +15,14 @@ export function insertElementText<TElementKeys extends string, TElementProps>(
 ) {
   const { blockId, focus } = options || {};
 
-  const blockData = blockId ? editor.children[blockId] : findPluginBlockBySelectionPath(editor);
+  const blockData = blockId ? editor.children[blockId] : findPluginBlockByPath(editor);
 
   if (!blockData) {
     console.warn(`To set text programmatically, you must provide a valid blockId. Got: ${blockId}`);
     return;
   }
 
-  const slate = findSlateBySelectionPath(editor, { at: [blockData.meta.order] });
+  const slate = findSlateBySelectionPath(editor, { at: blockData.meta.order });
 
   if (!slate) {
     console.warn('No slate found');
@@ -44,11 +44,10 @@ export function insertElementText<TElementKeys extends string, TElementProps>(
     }
 
     Transforms.insertText(slate, text, { at: path });
-    editor.applyChanges();
-    editor.emit('change', editor.children);
+    // editor.emit('change', { value: editor.children, operations: [] });
 
     if (focus) {
-      editor.focusBlock(blockData.id, { waitExecution: true, shouldUpdateBlockSelection: true });
+      editor.focusBlock(blockData.id, { waitExecution: true, shouldUpdateBlockPath: true });
     }
   });
 }

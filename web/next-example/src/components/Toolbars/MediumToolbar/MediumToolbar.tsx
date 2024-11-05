@@ -43,7 +43,7 @@ const MediumToolbar = (props: ToolbarRenderProps) => {
           type="button"
           style={editor.blocks.HeadingOne.isActive() ? { color: '#b5e5a4' } : { color: '#fff' }}
           className={s.button}
-          onClick={() => editor.blocks.HeadingOne.toggle()}
+          onClick={() => editor.toggleBlock('HeadingOne')}
         >
           <span className={s.item}>
             <TitleIcon />
@@ -53,7 +53,7 @@ const MediumToolbar = (props: ToolbarRenderProps) => {
           type="button"
           style={editor.blocks.HeadingTwo.isActive() ? { color: '#b5e5a4' } : { color: '#fff' }}
           className={s.button}
-          onClick={() => editor.blocks.HeadingTwo.toggle()}
+          onClick={() => editor.toggleBlock('HeadingTwo')}
         >
           <span className={s.item}>
             <SubtitleIcon />
@@ -63,7 +63,7 @@ const MediumToolbar = (props: ToolbarRenderProps) => {
           type="button"
           className={s.button}
           style={editor.blocks.Blockquote.isActive() ? { color: '#b5e5a4' } : { color: '#fff' }}
-          onClick={() => editor.blocks.Blockquote.toggle()}
+          onClick={() => editor.toggleBlock('Blockquote')}
         >
           <span className={s.item}>
             <BlockquoteIcon />

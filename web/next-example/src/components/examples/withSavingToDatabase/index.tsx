@@ -1,4 +1,4 @@
-import YooptaEditor, { createYooptaEditor } from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor, YooptaContentValue, YooptaEventChangePayload } from '@yoopta/editor';
 
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
@@ -22,8 +22,9 @@ import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 import { Sheet } from '@/components/ui/sheet';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { withSavingToDatabaseValue } from './initValue';
+import { useDebounce } from 'use-debounce';
 
 const plugins = [
   Paragraph,
@@ -105,28 +106,41 @@ const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 function WithSavingToDatabase() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
+  const [value, setValue] = useState<YooptaContentValue>(withSavingToDatabaseValue);
+  const [debouncedValue] = useDebounce(value, 1000);
 
-  const fetchToServer = async (data) => {
+  const fetchToServer = async (data: YooptaContentValue, showAlert = false) => {
     //...your async call to server
     console.log('SUBMITED DATA', data);
-    alert('check your content data in console');
+    if (showAlert) {
+      alert('check your content data in console');
+    }
   };
 
   const onSaveToServer = async () => {
     const editorContent = editor.getEditorValue();
-    await fetchToServer(editorContent);
+    await fetchToServer(editorContent, true);
   };
 
-  function handleChange(value) {
-    console.log('DATA ON CHANGE', value);
+  function handleChange(payload: YooptaEventChangePayload) {
+    console.log('DATA ON CHANGE', payload.value);
   }
 
+  // [TODO] - UPDATE EXAMPLE
   useEffect(() => {
     editor.on('change', handleChange);
     return () => {
       editor.off('change', handleChange);
     };
   }, [editor]);
+
+  const onChange = (newValue: YooptaContentValue) => {
+    setValue(newValue);
+  };
+
+  useEffect(() => {
+    fetchToServer(value);
+  }, [debouncedValue]);
 
   return (
     <div
@@ -146,7 +160,8 @@ function WithSavingToDatabase() {
         tools={TOOLS}
         marks={MARKS}
         selectionBoxRoot={selectionRef}
-        value={withSavingToDatabaseValue}
+        value={value}
+        onChange={onChange}
       />
     </div>
   );

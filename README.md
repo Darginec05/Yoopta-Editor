@@ -10,6 +10,8 @@
 
 ![](/docs/public/yoopta_intro.gif)
 
+![Alt](https://repobeats.axiom.co/api/embed/0d5703e649e2ba6be41450de891f466ce6935ff0.svg 'Repobeats analytics image')
+
 ## Introduction
 
 Yoopta-Editor is a free, open-source rich-text editor built for React apps. It’s packed with features that let you build an editor as powerful and user-friendly as Notion, Craft, Coda, Medium etc.
@@ -99,12 +101,19 @@ const plugins = [...];
 
 export default function Editor() {
   const editor = useMemo(() => createYooptaEditor(), []);
+   const [value, setValue] = useState<YooptaContentValue>();
+
+  const onChange = (value: YooptaContentValue, options: YooptaOnChangeOptions) => {
+    setValue(value);
+  };
 
   return (
     <div>
       <YooptaEditor
         editor={editor}
         plugins={plugins}
+        value={value}
+        onChange={onChange}
       />
     </div>
   );
@@ -123,9 +132,11 @@ type YooptaEditor = {
   marks?: YooptaMark<any>[];
   /* Value. [Default] - undefined */
   value?: YooptaContentValue;
+  /* Change handler  */
+  onChange?: (value: YooptaContentValue, options: YooptaOnChangeOptions) => void;
   /* autoFocus. [Default] - true */
   autoFocus?: boolean;
-  /* className */
+  /* className - class name */
   className?: string;
   /* These props define the area for the selection box. 
   Good practice - passing parent element.
@@ -175,12 +186,18 @@ const plugins = [Paragraph, Blockquote];
 
 export default function Editor() {
   const editor = useMemo(() => createYooptaEditor(), []);
+  const [value, setValue] = useState<YooptaContentValue>();
+  const onChange = (value: YooptaContentValue, options: YooptaOnChangeOptions) => {
+    setValue(value);
+  };
 
   return (
     <div>
       <YooptaEditor
         editor={editor}
         placeholder="Type text.."
+        value={value}
+        onChange={onChange}
         // here we go
         plugins={plugins}
       />
@@ -230,6 +247,10 @@ const TOOLS = {
 
 export default function Editor() {
   const editor = useMemo(() => createYooptaEditor(), []);
+  const [value, setValue] = useState<YooptaContentValue>();
+  const onChange = (value: YooptaContentValue, options: YooptaOnChangeOptions) => {
+    setValue(value);
+  };
 
   return (
     <div>
@@ -237,6 +258,8 @@ export default function Editor() {
         editor={editor}
         plugins={plugins}
         placeholder="Type text.."
+        value={value}
+        onChange={onChange}
         // here we go
         tools={TOOLS}
       />
@@ -268,6 +291,11 @@ const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
 export default function Editor() {
   const editor = useMemo(() => createYooptaEditor(), []);
+   const [value, setValue] = useState<YooptaContentValue>();
+
+  const onChange = (value: YooptaContentValue, options: YooptaOnChangeOptions) => {
+    setValue(value);
+  };
 
   return (
     <div>
@@ -275,6 +303,8 @@ export default function Editor() {
         editor={editor}
         placeholder="Type text.."
         plugins={plugins}
+        value={value}
+        onChange={onChange}
         tools={TOOLS}
         // here we go
         marks={MARKS}

@@ -47,14 +47,14 @@ const SlackTopToolbar = () => {
       <button
         className={s.toolbarItem}
         data-state-active={editor.blocks.NumberedList?.isActive()}
-        onClick={() => editor.blocks.NumberedList.toggle({ focus: true })}
+        onClick={() => editor.toggleBlock('NumberedList')}
       >
         <ListOrdered size={15} strokeWidth={1.5} />
       </button>
       <button
         className={s.toolbarItem}
         data-state-active={editor.blocks.BulletedList?.isActive()}
-        onClick={() => editor.blocks.BulletedList.toggle({ focus: true })}
+        onClick={() => editor.toggleBlock('BulletedList')}
       >
         <List size={15} strokeWidth={1.5} />
       </button>
@@ -63,7 +63,7 @@ const SlackTopToolbar = () => {
         className={s.toolbarItem}
         data-state-active={editor.blocks.Blockquote?.isActive()}
         onClick={() => {
-          editor.blocks.Blockquote.toggle({ focus: true });
+          editor.toggleBlock('Blockquote');
         }}
       >
         <TextQuoteIcon size={15} strokeWidth={1.5} />
@@ -75,7 +75,7 @@ const SlackTopToolbar = () => {
       <button
         className={s.toolbarItem}
         onClick={() => {
-          editor.blocks.Code.toggle({ focus: true });
+          editor.toggleBlock('Code');
         }}
       >
         <FileCodeIcon size={15} strokeWidth={1.5} />

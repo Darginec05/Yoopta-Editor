@@ -1,12 +1,12 @@
 import React, { memo, useCallback, useMemo, useRef } from 'react';
-import { DefaultElement, Editable, RenderElementProps, Slate } from 'slate-react';
+import { DefaultElement, Editable, ReactEditor, RenderElementProps, Slate } from 'slate-react';
 import { useYooptaEditor, useBlockData } from '../contexts/YooptaContext/YooptaContext';
 import { EVENT_HANDLERS } from '../handlers';
 import { YooptaMark } from '../marks';
 
 import { ExtendedLeafProps, PluginCustomEditorRenderProps, Plugin, PluginEvents } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
-import { Editor, NodeEntry, Range } from 'slate';
+import { Editor, NodeEntry, Path, Range } from 'slate';
 import { TextLeaf } from '../components/TextLeaf/TextLeaf';
 
 import { IS_FOCUSED_EDITOR } from '../utils/weakMaps';
@@ -14,6 +14,7 @@ import { deserializeHTML } from '../parsers/deserializeHTML';
 import { pasteClipboardImage } from '../parsers/getClipboardImage';
 import { useEventHandlers, useSlateEditor } from './hooks';
 import { SlateElement } from '../editor/types';
+import { Paths } from '../editor/paths';
 
 type Props<TElementMap extends Record<string, SlateElement>, TOptions> = Plugin<TElementMap, TOptions> & {
   id: string;
@@ -58,9 +59,17 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
 
   const onChange = useCallback(
     (value) => {
-      editor.updateBlock(id, { value });
+      if (editor.readOnly) return;
+
+      // @ts-ignore - fixme
+      if (window.scheduler) {
+        // @ts-ignore - fixme
+        window.scheduler.postTask(() => editor.updateBlock(id, { value }), { priority: 'background' });
+      } else {
+        editor.updateBlock(id, { value });
+      }
     },
-    [id, editor],
+    [id],
   );
 
   const renderElement = useCallback(
@@ -75,7 +84,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
         <ElementComponent {...props} attributes={attributes} blockId={id} HTMLAttributes={options?.HTMLAttributes} />
       );
     },
-    [elements, slate.children],
+    [elements],
   );
 
   const renderLeaf = useCallback(
@@ -83,7 +92,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
       let { children, leaf, attributes } = props;
       const { text, ...formats } = leaf;
 
-      const isBlockSelected = editor.selection?.[0] === block.meta.order;
+      const isCurrentPath = editor.path.current === block.meta.order;
 
       if (formats) {
         Object.keys(formats).forEach((format) => {
@@ -93,7 +102,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
       }
 
       const isParentElementVoid = props.children?.props?.parent?.props?.nodeType === 'void';
-      const showPlaceholder = !isParentElementVoid && isBlockSelected && leaf.withPlaceholder;
+      const showPlaceholder = !isParentElementVoid && isCurrentPath && leaf.withPlaceholder;
 
       return (
         <TextLeaf attributes={attributes} placeholder={showPlaceholder ? placeholder : undefined}>
@@ -111,7 +120,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
       eventHandlers.onKeyDown?.(event);
       EVENT_HANDLERS.onKeyDown(editor)(event);
     },
-    [eventHandlers.onKeyDown, editor.readOnly, editor.selection?.[0], block.meta.order],
+    [eventHandlers.onKeyDown, editor.readOnly, editor.path.current, block.meta.order],
   );
 
   const onKeyUp = useCallback(
@@ -150,7 +159,6 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
   const onPaste = useCallback(
     (event: React.ClipboardEvent) => {
       if (editor.readOnly) return;
-
       eventHandlers?.onPaste?.(event);
 
       const data = event.clipboardData;
@@ -162,9 +170,45 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
         const blocks = deserializeHTML(editor, parsedHTML.body);
 
         // If no blocks from HTML, then paste as plain text using default behavior from Slate
-        if (blocks.length > 0) {
+        if (blocks.length > 0 && editor.path.current !== null) {
           event.preventDefault();
-          editor.insertBlocks(blocks, { at: editor.selection, focus: true });
+
+          let shouldInsertAfterSelection = false;
+          let shouldDeleteCurrentBlock = false;
+
+          if (slate && slate.selection) {
+            const parentPath = Path.parent(slate.selection.anchor.path);
+            const text = Editor.string(slate, parentPath).trim();
+            const isStart = Editor.isStart(slate, slate.selection.anchor, parentPath);
+            shouldDeleteCurrentBlock = text === '' && isStart;
+            shouldInsertAfterSelection = !isStart || text.length > 0;
+
+            ReactEditor.blur(slate);
+          }
+
+          const insertPathIndex = editor.path.current;
+          if (insertPathIndex === null) return;
+
+          // [TEST]
+          editor.batchOperations(() => {
+            const newPaths: number[] = [];
+
+            if (shouldDeleteCurrentBlock) {
+              editor.deleteBlock({ at: insertPathIndex });
+            }
+
+            blocks.forEach((block, idx) => {
+              let insertBlockPath = shouldInsertAfterSelection ? insertPathIndex + idx + 1 : insertPathIndex + idx;
+              newPaths.push(insertBlockPath);
+
+              const { type, ...blockData } = block;
+              editor.insertBlock(block.type, { at: insertBlockPath, focus: false, blockData });
+            });
+
+            // [TEST]
+            editor.setPath({ current: null, selected: newPaths });
+          });
+
           return;
         }
       }
@@ -183,7 +227,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
       if (editor.readOnly) return ranges;
 
       const [node, path] = nodeEntry;
-      const isCurrent = editor.selection?.[0] === block.meta.order;
+      const isCurrent = editor.path.current === block.meta.order;
 
       if (slate.selection && isCurrent) {
         if (
@@ -201,7 +245,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
 
       return ranges;
     },
-    [editor.readOnly, editor.selection?.[0], block.meta.order],
+    [editor.readOnly, editor.path.current, block.meta.order],
   );
 
   return (
@@ -267,7 +311,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     }
 
     return (
-      <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onChange={onChange}>
+      <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onValueChange={onChange}>
         <Editable
           key={`editable-${id}`}
           renderElement={renderElement}
@@ -280,7 +324,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
           onFocus={onFocus}
           decorate={decorate}
           // [TODO] - carefully check onBlur, e.x. transforms using functions, e.x. highlight update
-          onBlur={onBlur}
+          // onBlur={onBlur}
           readOnly={readOnly}
           onPaste={onPaste}
         />

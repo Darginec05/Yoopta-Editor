@@ -1,9 +1,9 @@
 {
   "name": "@yoopta/exports",
-  "version": "4.8.3",
+  "version": "4.9.1",
   "description": "Serialize/deserialize exports in different formats for Yoopta-Editor",
   "author": "Darginec05 <devopsbanda@gmail.com>",
-  "homepage": "https://github.com/Darginec05/Editor-Yoopta#readme",
+  "homepage": "https://github.com/Darginec05/Yoopta-Editor#readme",
   "license": "MIT",
   "private": false,
   "main": "dist/index.js",
@@ -19,11 +19,11 @@
     "react-dom": ">=17.0.2"
   },
   "publishConfig": {
-    "registry": "https://registry.yarnpkg.com"
+    "registry": "https://registry.npmjs.org"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Darginec05/Editor-Yoopta.git"
+    "url": "git+https://github.com/Darginec05/Yoopta-Editor.git"
   },
   "scripts": {
     "start": "rollup --config rollup.config.js --watch --bundleConfigAsCjs --environment NODE_ENV:development",
@@ -31,10 +31,10 @@
     "build": "rollup --config rollup.config.js --bundleConfigAsCjs --environment NODE_ENV:production"
   },
   "bugs": {
-    "url": "https://github.com/Darginec05/Editor-Yoopta/issues"
+    "url": "https://github.com/Darginec05/Yoopta-Editor/issues"
   },
   "dependencies": {
     "marked": "^13.0.0"
   },
-  "gitHead": "12d8460dfe0ead89ee1d6f3f2f1fc68239e93d4c"
+  "gitHead": "054fb22aef8ca890d17616d00928eb855e77ec29"
 }
