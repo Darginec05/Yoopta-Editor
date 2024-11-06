@@ -1,11 +1,22 @@
 import { useMemo, useState } from 'react';
-import { createYooptaEditor } from '@yoopta/editor';
+import { createYooptaEditor, EmailOptions } from '@yoopta/editor';
 import { EmailPreview } from '../EmailPreview/EmailPreview';
 import copy from 'copy-to-clipboard';
-import { Header } from '../Header/Header';
+import { EmailHeader } from '../EmailHeader/EmailHeader';
 import { EmailEditor } from '../EmailEditor/EmailEditor';
-import { EmailBuilderProps } from '../../utils/types';
+import { EmailProps, EmailView } from '../../utils/types';
 import { ScreenSize } from '../ScreenSizeSwitcher/ScreenSizeSwitcher';
+
+type EmailBuilderProps = EmailProps & {
+  header?: null;
+  view?: EmailView;
+  template?: EmailOptions;
+};
+
+type MailFields = {
+  recipientEmail: string;
+  subject: string;
+};
 
 // @yoopta/email-builder
 // DEFAULT-PLUGINS
@@ -23,23 +34,32 @@ function EmailBuilder({
   className,
   placeholder,
   media,
+  header,
+  view: viewProp = 'editor',
   editor: editorProps,
   selectionBoxRoot = false,
+  template,
 }: EmailBuilderProps) {
   const editor = useMemo(() => editorProps || createYooptaEditor(), [editorProps]);
   const [screenSize, setScreenSize] = useState<ScreenSize>('desktop');
-  const [view, setView] = useState<'editor' | 'preview'>('editor');
-
-  const onCopy = () => {};
+  const [view, setView] = useState<EmailView>(viewProp);
   const onScreenSizeChange = (v: ScreenSize) => setScreenSize(v);
 
   return (
     <div id="yoopta-email-builder" className="min-h-screen bg-background">
-      <Header view={view} onViewChange={setView} screenSize={screenSize} onScreenSizeChange={onScreenSizeChange} />
+      {header !== null && (
+        <EmailHeader
+          view={view}
+          onViewChange={setView}
+          screenSize={screenSize}
+          onScreenSizeChange={onScreenSizeChange}
+        />
+      )}
 
-      <main className="mx-auto py-6">
+      <main className="mx-auto py-0">
         {view === 'editor' ? (
           <EmailEditor
+            id={id}
             value={value}
             onChange={onChange}
             editor={editor}
@@ -50,9 +70,10 @@ function EmailBuilder({
             className={className}
             style={style}
             media={media}
+            emailOptions={template}
           />
         ) : (
-          <EmailPreview value={value} editor={editor} screenSize={screenSize} />
+          <EmailPreview value={value} template={template} editor={editor} screenSize={screenSize} />
         )}
       </main>
     </div>

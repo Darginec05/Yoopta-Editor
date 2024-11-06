@@ -9,7 +9,7 @@ export type MediaUploadsFn = {
   fileUpload?: (file: File) => Promise<FileUploadResponse>;
 };
 
-export type EmailBuilderProps = {
+export type EmailProps = {
   id?: YooptaEditorProps['id'];
   editor?: YooptaEditorProps['editor'];
   value: Required<YooptaEditorProps>['value'];
@@ -22,3 +22,5 @@ export type EmailBuilderProps = {
   selectionBoxRoot?: YooptaEditorProps['selectionBoxRoot'];
   media?: MediaUploadsFn;
 };
+
+export type EmailView = 'editor' | 'preview';

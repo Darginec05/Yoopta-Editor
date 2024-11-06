@@ -92,7 +92,14 @@ const BulletedList = new YooptaPlugin<Pick<ListElementMap, 'bulleted-list'>>({
                 <td>
                   <ul data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${
           depth * 20
-        }px; text-align: ${align}"><li>${serializeTextNodes(element.children)}</li></ul>
+        }px; text-align: ${align}; 
+        font-size: 16px;
+        line-height: 1.75rem;
+        padding-bottom: 2px;
+        padding-left: 1rem;
+        padding-top: 2px;
+        margin: 0;
+        "><li style="margin: 0">${serializeTextNodes(element.children)}</li></ul>
                 </td>
               </tr>
             </tbody>

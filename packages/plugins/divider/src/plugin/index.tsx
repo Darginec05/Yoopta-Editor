@@ -56,13 +56,16 @@ const Divider = new YooptaPlugin<DividerElementMap>({
     email: {
       serialize: (element, text, blockMeta) => {
         const { theme = 'solid', color = '#EFEFEE' } = element.props || {};
+        let dividerHTML = `<hr data-meta-theme="${theme}" data-meta-color="${color}" style="border-color: ${color}; height: 1.2px;" />`;
+        if (theme === 'gradient') {
+          dividerHTML = `<hr data-meta-theme="${theme}" data-meta-color="${color}" style="background: linear-gradient(to right, transparent, ${color}, transparent); height: 2px; width: 100%;" />`;
+        }
+
         return `
         <table style="width: 100%;">
           <tbody style="width: 100%;">
             <tr>
-              <td>
-                <hr data-meta-theme="${theme}" data-meta-color="${color}" style="background-color: #8383e0; height: 1.2px" />
-              </td>
+              <td>${dividerHTML}</td>
             </tr>
           </tbody>
         </table>`;

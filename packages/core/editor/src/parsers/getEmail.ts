@@ -1,95 +1,97 @@
 import { Paths } from '../editor/paths';
-import { SlateElement, YooEditor, YooptaBlockBaseMeta, YooptaContentValue } from '../editor/types';
-import { getPluginByInlineElement } from '../utils/blockElements';
+import { SlateElement, YooEditor, YooptaContentValue } from '../editor/types';
 import { serializeTextNodes } from './serializeTextNodes';
 
-const MARKS_NODE_NAME_MATCHERS_MAP = {
-  underline: { type: 'underline', tag: 'U' },
-  strike: { type: 'strike', tag: 'S' },
-  code: { type: 'code', tag: 'CODE' },
-  italic: { type: 'italic', tag: 'I' },
-  bold: { type: 'bold', tag: 'B' },
-  strong: { type: 'bold', tag: 'B' },
-  mark: { type: 'mark', tag: 'MARK' },
+type StyleElement = {
+  id?: string;
+  content: string;
 };
 
-function serializeChildren(children, plugins) {
-  return children
-    .map((child) => {
-      let innerHtml = '';
+type MetaElement = {
+  content?: string;
+  name?: string;
+  'http-equiv'?: string;
+  property?: string;
+  charset?: string;
+};
 
-      if (child.text) {
-        innerHtml = Object.keys(MARKS_NODE_NAME_MATCHERS_MAP).reduce((acc, mark) => {
-          if (child[mark]) {
-            return `<${MARKS_NODE_NAME_MATCHERS_MAP[mark].tag}>${acc}</${MARKS_NODE_NAME_MATCHERS_MAP[mark].tag}>`;
-          }
-          return acc;
-        }, child.text);
+type StyleAttribute = {
+  [key: string]: string | number;
+};
 
-        return innerHtml;
-      } else if (child.type) {
-        const childPlugin = getPluginByInlineElement(plugins, child.type);
+type ElementAttributes = {
+  style?: StyleAttribute;
+  [key: string]: any;
+};
 
-        if (childPlugin && childPlugin.parsers?.html?.serialize) {
-          // We don't pass block meta data to this because it's inline element inside block
-          innerHtml = childPlugin.parsers.html.serialize(child, serializeChildren(child.children, plugins));
-          return innerHtml;
-        }
-      }
-
-      return innerHtml;
-    })
-    .join('');
-}
-
-export type EmailElementRenderer = (element: SlateElement, content: string, meta?: YooptaBlockBaseMeta) => string;
-
-export type GetEmailOptions<TPlugins extends Record<string, Record<string, unknown>> = any> = {
-  html: {
-    lang?: string;
-    dir?: 'ltr' | 'rtl';
+export type EmailOptions = {
+  head?: {
+    styles?: StyleElement[];
+    meta?: MetaElement[];
+    title?: string;
   };
-  head: {
-    fonts?: string | string[];
-    styles?: string;
-    meta?: Record<string, string>;
+  body?: {
+    attrs?: ElementAttributes;
   };
-  body: {
-    attributes?: string;
-    style?: Partial<CSSStyleDeclaration>;
-    className?: string;
-    width?: number | string;
-  };
-  content: {
-    attributes?: string;
-    style?: Partial<CSSStyleDeclaration>;
-    className?: string;
-  };
-  plugins?: {
-    [K in keyof TPlugins]?: {
-      [E in keyof TPlugins[K]['elements']]?: EmailElementRenderer;
-    };
+  container?: {
+    attrs?: ElementAttributes;
   };
   customTemplate?: (content: string) => string;
 };
 
-const DEFAULT_OPTIONS: GetEmailOptions = {
-  html: {
-    lang: 'en',
-    dir: 'ltr',
-  },
-  head: {
-    styles: '.ExternalClass {width: 100%;}',
-    meta: {
-      'content-type': 'text/html; charset=UTF-8',
-      'x-apple-disable-message-reformatting': '',
-    },
-  },
-  body: {},
-  content: {},
-};
+const DEFAULT_OPTIONS: EmailOptions = {};
 
-export function getEmail(editor: YooEditor, content: YooptaContentValue, opts?: Partial<GetEmailOptions>): string {
+function generateMetaTags(meta: MetaElement[] = []): string {
+  return meta
+    .map((tag) => {
+      const attrs = Object.entries(tag)
+        .filter(([_, value]) => value !== undefined)
+        .map(([key, value]) => {
+          if (value === '') return key;
+          return `${key}="${value}"`;
+        })
+        .join(' ');
+
+      return `<meta ${attrs}>`;
+    })
+    .join('\n');
+}
+
+function generateStyles(styles: StyleElement[] = []): string {
+  return styles
+    .map((style) => {
+      const idAttr = style.id ? ` id="${style.id}"` : '';
+      return `<style${idAttr}>${style.content}</style>`;
+    })
+    .join('\n');
+}
+
+function styleObjectToString(style?: StyleAttribute): string {
+  if (!style) return '';
+
+  return Object.entries(style)
+    .map(([key, value]) => {
+      const cssKey = key.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
+      return `${cssKey}: ${value}${typeof value === 'number' ? 'px' : ''};`;
+    })
+    .join(' ');
+}
+
+function attributesToString(attrs?: ElementAttributes): string {
+  if (!attrs) return '';
+
+  return Object.entries(attrs)
+    .map(([key, value]) => {
+      if (key === 'style') {
+        const styleString = styleObjectToString(value as StyleAttribute);
+        return `style="${styleString}"`;
+      }
+      return `${key}="${value}"`;
+    })
+    .join(' ');
+}
+export function getEmail(editor: YooEditor, content: YooptaContentValue, opts?: EmailOptions): string {
+  const options = deepMerge(DEFAULT_OPTIONS, opts || {});
   const blocks = Object.values(content)
     .filter((item) => {
       const selectedBlocks = Paths.getSelectedPaths(editor);
@@ -102,24 +104,13 @@ export function getEmail(editor: YooEditor, content: YooptaContentValue, opts?: 
     })
     .sort((a, b) => a.meta.order - b.meta.order);
 
-  const options = deepMerge(DEFAULT_OPTIONS, opts || {});
-
   const email = blocks.map((blockData) => {
     const plugin = editor.plugins[blockData.type];
 
     if (plugin && plugin.parsers?.email?.serialize) {
-      const element = blockData.value[0] as SlateElement;
-      const rendererFn = options?.plugins?.[blockData.type]?.[element.type];
-
       // @ts-ignore - fixme
       const innerContent = serializeTextNodes(blockData.value[0].children);
-
-      return plugin.parsers.email.serialize(
-        blockData.value[0] as SlateElement,
-        innerContent,
-        blockData.meta,
-        rendererFn,
-      );
+      return plugin.parsers.email.serialize(blockData.value[0] as SlateElement, innerContent, blockData.meta);
     }
 
     return '';
@@ -131,66 +122,37 @@ export function getEmail(editor: YooEditor, content: YooptaContentValue, opts?: 
     return options.customTemplate(emailContent);
   }
 
-  const htmlAttrs = options.html;
-
-  const metaTags = Object.entries(options.head.meta || {})
-    .map(([name, content]) => `<meta name="${name}" content="${content}" />`)
-    .join('\n');
-
-  const fonts = Array.isArray(options.head.fonts) ? options.head.fonts.join('\n') : options.head.fonts;
-
-  const bodyAttributes = options.body.attributes ? ` ${options.body.attributes}` : '';
-  const bodyClass = options.body.className ? ` class="${options.body.className}"` : '';
-  const bodyStyle = objectToCssString({
-    ...DEFAULT_OPTIONS.body.style,
-    ...options.body.style,
-  });
-
-  const contentAttributes = options.content.attributes ? ` ${options.content.attributes}` : '';
-  const contentClass = options.content.className ? ` class="${options.content.className}"` : '';
-  const contentStyle = objectToCssString({
-    ...DEFAULT_OPTIONS.content.style,
-    ...options.content.style,
-  });
+  const bodyAttrs = attributesToString(options.body?.attrs);
+  const containerAttrs = attributesToString(options.container?.attrs);
 
   return `
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-      <html dir="${htmlAttrs.dir}" lang="${htmlAttrs.lang}">
       <head>
-        ${metaTags}
-        ${fonts}
-        <style type="text/css">
-          ${options.head.styles}
-        </style>
+        <title>${options?.head?.title || 'Email-Builder'}</title>
+        <meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
+        ${generateMetaTags(options.head?.meta)}
+        ${generateStyles(options.head?.styles)}
       </head>
-        <body style="${bodyStyle}"${bodyAttributes}${bodyClass} id="yoopta-clipboard" data-editor-id="${editor.id}">
-          <div style="${contentStyle}"${contentAttributes}${contentClass} id="yoopta-clipboard" data-editor-id="${editor.id}">
-            ${emailContent}
-          </div>
-        </body>
-      </html>
+      <body id="yoopta-email" ${bodyAttrs}>
+        <table ${containerAttrs}>
+          ${emailContent}
+        </table>
+      </body>
+    </html>
   `;
 }
 
-function objectToCssString(styles: Partial<CSSStyleDeclaration>): string {
-  return Object.entries(styles)
-    .map(([key, value]) => {
-      const cssKey = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-      return `${cssKey}: ${value}`;
-    })
-    .join(';');
-}
+function deepMerge(target: any, source: any): any {
+  if (Array.isArray(target) && Array.isArray(source)) {
+    return target.concat(source);
+  }
 
-function deepMerge<T>(target: T, source: Partial<T>): T {
-  const result = { ...target };
+  if (typeof target === 'object' && typeof source === 'object') {
+    return Object.keys({ ...target, ...source }).reduce((acc, key) => {
+      acc[key] = deepMerge(target[key], source[key]);
+      return acc;
+    }, {});
+  }
 
-  Object.entries(source).forEach(([key, value]) => {
-    if (value && typeof value === 'object' && !Array.isArray(value)) {
-      result[key] = deepMerge(result[key], value);
-    } else {
-      result[key] = value as any;
-    }
-  });
-
-  return result;
+  return source;
 }

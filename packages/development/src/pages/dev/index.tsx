@@ -787,21 +787,21 @@ const data = {
 const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef<HTMLDivElement>(null);
-  const [value, setValue] = useState<YooptaContentValue>({});
+  const [value, setValue] = useState<YooptaContentValue>(data);
 
   const onChange = (value: YooptaContentValue, options: YooptaOnChangeOptions) => {
     console.log('onChange', value, options);
     setValue(value);
   };
 
-  useEffect(() => {
-    editor.withoutSavingHistory(() => {
-      const id = generateId();
+  // useEffect(() => {
+  //   editor.withoutSavingHistory(() => {
+  //     const id = generateId();
 
-      editor.setEditorValue(data as YooptaContentValue);
-      editor.focusBlock(id);
-    });
-  }, []);
+  //     editor.setEditorValue(data as YooptaContentValue);
+  //     editor.focusBlock(id);
+  //   });
+  // }, []);
 
   return (
     <>

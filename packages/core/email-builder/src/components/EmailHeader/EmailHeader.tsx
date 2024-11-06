@@ -3,6 +3,7 @@ import { ToggleGroup, ToggleGroupItem } from '../ui/toggle-group';
 import { ScreenSize, ScreenSizeSwitcher } from '../ScreenSizeSwitcher/ScreenSizeSwitcher';
 import { Separator } from '../ui/separator';
 import { cn } from '../../lib/utils';
+import { Button } from '../ui/button';
 
 type View = 'editor' | 'preview';
 
@@ -13,7 +14,7 @@ type Props = {
   onScreenSizeChange: (size: ScreenSize) => void;
 };
 
-export function Header({ view, onViewChange, onScreenSizeChange, screenSize }: Props) {
+export function EmailHeader({ view, onViewChange, onScreenSizeChange, screenSize }: Props) {
   return (
     <header className="border-b">
       <div className="mx-auto px-4 py-4">

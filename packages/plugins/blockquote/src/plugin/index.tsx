@@ -45,11 +45,9 @@ const Blockquote = new YooptaPlugin<Record<'blockquote', BlockquoteElement>>({
           <tbody style="width:100%;">
             <tr>
               <td>
-                <blockquote data-meta-align="${align}" data-meta-depth="${depth}" style="border-left-color: rgb(229 231 235);
-    border-left-width: 2px;
+                <blockquote data-meta-align="${align}" data-meta-depth="${depth}" style="
     line-height: 1.75rem;
-    margin: 8px 0 0;
-    padding-left: 1.5rem; border-color: #e5e7eb; margin-left: ${
+    margin: 8px 0 0; border-color: #e5e7eb; margin-left: ${
       depth * 20
     }px; text-align: ${align}; border-left: 3px solid; color: #292929; padding: 2px 14px; margin-top: 8px;">${serializeTextNodes(
           element.children,

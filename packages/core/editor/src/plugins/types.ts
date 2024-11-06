@@ -3,7 +3,6 @@ import { RenderElementProps as RenderSlateElementProps, RenderLeafProps } from '
 import { SlateEditor, SlateElement, YooEditor, YooptaBlockBaseMeta, YooptaBlockData } from '../editor/types';
 import { EditorEventHandlers } from '../types/eventHandlers';
 import { HOTKEYS_TYPE } from '../utils/hotkeys';
-import { EmailElementRenderer } from '../parsers/getEmail';
 
 export enum NodeType {
   Block = 'block',
@@ -104,7 +103,6 @@ export type PluginSerializeParser = (
   element: SlateElement,
   content: string,
   blockMetaData?: YooptaBlockBaseMeta,
-  customRender?: EmailElementRenderer,
 ) => string;
 
 export type PluginDeserializeParser = {

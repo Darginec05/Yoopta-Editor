@@ -9,7 +9,7 @@ const ALIGNS_TO_JUSTIFY = {
   right: 'flex-end',
 };
 
-// [TODO] - caption element??,
+// [TODO] - caption element??
 const Image = new YooptaPlugin<ImageElementMap, ImagePluginOptions>({
   type: 'Image',
   elements: {
@@ -92,12 +92,14 @@ const Image = new YooptaPlugin<ImageElementMap, ImagePluginOptions>({
           <table style="width:100%;">
             <tbody style="width:100%;">
               <tr>
-                <td style="margin-left: ${depth * 20}px; display: flex; width: 100%; justify-content: ${justify};">
+                <td style="margin-left: ${
+                  depth * 20
+                }px; display: flex; width: 100%; justify-content: ${justify}; margin-top: 1rem;">
                     <img data-meta-align="${align}" style="margin: 0 auto; object-fit:${
           element.props.fit || 'contain'
         };" data-meta-depth="${depth}" src="${element.props.src}" alt="${element.props.alt}" width="${
           element.props.sizes.width
-        }" height="${element.props.sizes.height}" objectfit="${element.props.fit}" />
+        }" height="${element.props.sizes.height}" />
                 </td>
               </tr>
             </tbody>

@@ -25,7 +25,7 @@ export function serializeTextNodes(nodes: any[]): string {
           text = `<span style="color:${node.highlight.color};">${text}</span>`;
         }
         if (node.highlight) {
-          text = `<mark style="color: ${node.highlight?.color}">${text}</mark>`;
+          text = `<mark style="color: ${node.highlight?.color}; background-color: ${node.highlight?.backgroundColor};">${text}</mark>`;
         }
 
         return text;

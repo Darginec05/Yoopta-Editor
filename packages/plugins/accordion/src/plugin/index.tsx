@@ -176,7 +176,7 @@ const Accordion = new YooptaPlugin<AccordionElementMap>({
         const { align = 'left', depth = 0 } = blockMeta || {};
 
         return `
-          <table data-meta-align="${align}" data-meta-depth="${depth}" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-left: ${depth}px;">
+          <table data-meta-align="${align}" data-meta-depth="${depth}" style="width: 100%; border-collapse: collapse; margin-left: ${depth}px;">
             <tbody>
               ${element.children
                 .map((listItem) =>
@@ -185,17 +185,30 @@ const Accordion = new YooptaPlugin<AccordionElementMap>({
                       if (item.type === 'accordion-list-item-heading') {
                         return `
                           <tr>
-                            <td style="padding: 1rem 2rem 1rem 0rem; font-weight: bold; position: relative;">
+                            <td style="
+                                border-radius: 0;
+                                border-width: 0;
+                                cursor: pointer;
+                                font-size: 1rem;
+                                font-weight: 500;
+                                line-height: 1.5rem;
+                                margin-bottom: 0;
+                                padding-bottom: 1rem;
+                                padding-right: 2rem;
+                                padding-top: 1rem;
+                                position: relative;
+                                width: 100%;
+                              ">
                               ${serializeTextNodes(item.children)}
                               <span style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);">
-                                <svg viewBox="0 0 30 30" style="width: 12px; height: 100%;"><polygon points="15,17.4 4.8,7 2,9.8 15,23 28,9.8 25.2,7"></polygon></svg>
+                                <svg viewbox="0 0 30 30" style="width: 12px; height: 100%;"><polygon points="15,17.4 4.8,7 2,9.8 15,23 28,9.8 25.2,7"></polygon></svg>
                               </span>
                             </td>
                           </tr>`;
                       }
                       return `
                         <tr>
-                          <td style="padding-bottom: 1rem; border-bottom: 1px solid #EFEFEE;">
+                          <td style="padding-bottom: 1rem; border-bottom: 1px solid #EFEFEE; font-size: .875rem; line-height: 1.25rem; overflow: hidden;">
                             ${serializeTextNodes(item.children)}
                           </td>
                         </tr>`;
