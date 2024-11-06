@@ -8,11 +8,8 @@ const Mention = new YooptaPlugin<PluginElementKeys, MentionElementProps>({
     mention: {
       render: MentionRender,
       props: {
-        url: null,
-        target: '_blank',
-        rel: 'noreferrer',
-        character: null,
-        nodeType: 'inlineVoid',
+        initialMentions: null,
+        fetchMentions: () => null,
       },
     },
   },
