@@ -1,33 +1,27 @@
-import { Mail, Eye } from 'lucide-react';
+import { Mail, Eye, FilePenIcon } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '../ui/toggle-group';
-import { ScreenSize, ScreenSizeSwitcher } from '../ScreenSizeSwitcher/ScreenSizeSwitcher';
-import { Separator } from '../ui/separator';
+import { ScreenSize } from '../ScreenSizeSwitcher/ScreenSizeSwitcher';
 import { cn } from '../../lib/utils';
-import { Button } from '../ui/button';
+import { EmailOptions } from '@yoopta/editor';
 
 type View = 'editor' | 'preview';
 
 type Props = {
   view: View;
   onViewChange: (view: View) => void;
-  screenSize: ScreenSize;
-  onScreenSizeChange: (size: ScreenSize) => void;
+  template?: EmailOptions;
 };
 
-export function EmailHeader({ view, onViewChange, onScreenSizeChange, screenSize }: Props) {
+export function EmailHeader({ view, template, onViewChange }: Props) {
+  const { width, maxWidth } = template?.container?.attrs?.style || {};
+
   return (
-    <header className="border-b">
+    <header className="border-b min-w-[550px] max-w-[800px]" style={{ width, maxWidth, margin: '0 auto' }}>
       <div className="mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Mail className="h-6 w-6" />
-            <h1 className="text-xl font-semibold ml-2">Email Builder</h1>
-            {view === 'preview' && (
-              <>
-                <Separator orientation="vertical" className="h-6 mx-4" />
-                <ScreenSizeSwitcher size={screenSize} onSizeChange={onScreenSizeChange} />
-              </>
-            )}
+            <h1 className="text-xl font-semibold">Yoopta Email-Builder</h1>
           </div>
           <ToggleGroup
             type="single"
@@ -43,7 +37,8 @@ export function EmailHeader({ view, onViewChange, onScreenSizeChange, screenSize
                 'transition-all duration-200',
               )}
             >
-              <Mail className="h-4 w-4 mr-2" />
+              {/* <Mail  /> */}
+              <FilePenIcon className="h-4 w-4 mr-2" />
               Editor
             </ToggleGroupItem>
             <ToggleGroupItem

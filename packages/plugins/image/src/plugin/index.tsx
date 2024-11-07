@@ -2,6 +2,7 @@ import { generateId, SlateElement, YooptaPlugin } from '@yoopta/editor';
 import { ImageCommands } from '../commands';
 import { ImageElementMap, ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';
 import { ImageRender } from '../ui/Image';
+import { limitSizes } from '../utils/limitSizes';
 
 const ALIGNS_TO_JUSTIFY = {
   left: 'flex-start',
@@ -84,7 +85,7 @@ const Image = new YooptaPlugin<ImageElementMap, ImagePluginOptions>({
       },
     },
     email: {
-      serialize: (element, text, blockMeta) => {
+      serialize: (element, text, blockMeta, editor) => {
         const { align = 'center', depth = 0 } = blockMeta || {};
         const justify = ALIGNS_TO_JUSTIFY[align] || 'center';
 

@@ -39,8 +39,87 @@ export type EmailOptions = {
   customTemplate?: (content: string) => string;
 };
 
-const DEFAULT_OPTIONS: EmailOptions = {};
+const DEFAULT_OPTIONS: EmailOptions = {
+  head: {
+    meta: [
+      { content: 'width=device-width', name: 'viewport' },
+      { charset: 'UTF-8' },
+      { content: 'IE=edge', 'http-equiv': 'X-UA-Compatible' },
+    ],
+  },
+  body: {
+    attrs: {
+      style: {
+        margin: '0 auto',
+        padding: 0,
+        width: '900px',
+      },
+    },
+  },
+  container: {
+    attrs: {
+      style: {
+        margin: '0 auto',
+        width: '600px',
+      },
+    },
+  },
+};
 
+export function getEmail(editor: YooEditor, content: YooptaContentValue, opts?: EmailOptions): string {
+  const options = deepMerge(DEFAULT_OPTIONS, opts || {});
+  const blocks = Object.values(content)
+    .filter((item) => {
+      const selectedBlocks = Paths.getSelectedPaths(editor);
+
+      if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
+        return selectedBlocks?.includes(item.meta.order);
+      }
+
+      return true;
+    })
+    .sort((a, b) => a.meta.order - b.meta.order);
+
+  const email = blocks.map((blockData) => {
+    const plugin = editor.plugins[blockData.type];
+
+    if (plugin && plugin.parsers?.email?.serialize) {
+      // @ts-ignore - fixme
+      const innerContent = serializeTextNodes(blockData.value[0].children);
+      return plugin.parsers.email.serialize(blockData.value[0] as SlateElement, innerContent, blockData.meta, editor);
+    }
+
+    return '';
+  });
+
+  const emailContent = email.join('');
+
+  if (options.customTemplate) {
+    return options.customTemplate(emailContent);
+  }
+
+  const bodyAttrs = attributesToString(options.body?.attrs);
+  const containerAttrs = attributesToString(options.container?.attrs);
+
+  return `
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+      <html lang="en">
+      <head>
+        <title>${options?.head?.title || 'Email-Builder'}</title>
+        <meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
+        ${generateMetaTags(options.head?.meta)}
+        ${generateStyles(options.head?.styles)}
+      </head>
+      <body id="yoopta-email" ${bodyAttrs}>
+        <table ${containerAttrs}>
+          ${emailContent}
+        </table>
+      </body>
+    </html>
+  `;
+}
+
+// Email helpers
 function generateMetaTags(meta: MetaElement[] = []): string {
   return meta
     .map((tag) => {
@@ -89,57 +168,6 @@ function attributesToString(attrs?: ElementAttributes): string {
       return `${key}="${value}"`;
     })
     .join(' ');
-}
-export function getEmail(editor: YooEditor, content: YooptaContentValue, opts?: EmailOptions): string {
-  const options = deepMerge(DEFAULT_OPTIONS, opts || {});
-  const blocks = Object.values(content)
-    .filter((item) => {
-      const selectedBlocks = Paths.getSelectedPaths(editor);
-
-      if (Array.isArray(selectedBlocks) && selectedBlocks.length > 0) {
-        return selectedBlocks?.includes(item.meta.order);
-      }
-
-      return true;
-    })
-    .sort((a, b) => a.meta.order - b.meta.order);
-
-  const email = blocks.map((blockData) => {
-    const plugin = editor.plugins[blockData.type];
-
-    if (plugin && plugin.parsers?.email?.serialize) {
-      // @ts-ignore - fixme
-      const innerContent = serializeTextNodes(blockData.value[0].children);
-      return plugin.parsers.email.serialize(blockData.value[0] as SlateElement, innerContent, blockData.meta);
-    }
-
-    return '';
-  });
-
-  const emailContent = email.join('');
-
-  if (options.customTemplate) {
-    return options.customTemplate(emailContent);
-  }
-
-  const bodyAttrs = attributesToString(options.body?.attrs);
-  const containerAttrs = attributesToString(options.container?.attrs);
-
-  return `
-    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-      <head>
-        <title>${options?.head?.title || 'Email-Builder'}</title>
-        <meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
-        ${generateMetaTags(options.head?.meta)}
-        ${generateStyles(options.head?.styles)}
-      </head>
-      <body id="yoopta-email" ${bodyAttrs}>
-        <table ${containerAttrs}>
-          ${emailContent}
-        </table>
-      </body>
-    </html>
-  `;
 }
 
 function deepMerge(target: any, source: any): any {

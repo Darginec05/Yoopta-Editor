@@ -3,8 +3,8 @@ import { RenderElementProps } from 'slate-react';
 import { ImageElementProps } from '../types';
 
 type ImageComponentProps = Omit<ImageElementProps, 'sizes'> & {
-  width: number;
-  height: number;
+  width: number | string;
+  height: number | string;
   layout?: Layout;
 } & Pick<RenderElementProps, 'attributes' | 'children'>;
 

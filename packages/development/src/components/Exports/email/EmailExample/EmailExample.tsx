@@ -1,5 +1,5 @@
 import YooptaEditor, { createYooptaEditor, EmailOptions, YooEditor, YooptaContentValue } from '@yoopta/editor';
-import EmailBuilder, { EmailPreview } from '@yoopta/email-builder';
+import EmailBuilder, { EmailPreview, createYooptaEmailEditor, YooptaEmailEditor } from '@yoopta/email-builder';
 import { useEffect, useMemo, useState } from 'react';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -10,27 +10,14 @@ import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';
 import { Separator } from '@/components/ui/separator';
 import copy from 'copy-to-clipboard';
 import { EMAIL_EDITOR_DEFAULT_VALUE } from './defaultEditorValue';
+import { uploadToCloudinary } from '@/utils/cloudinary';
 
 const emailOptions: EmailOptions = {
   head: {
     styles: [
       {
-        id: 'font-inter',
-        content: `@font-face {
-          font-family: 'Inter';
-          font-style: normal;
-          font-weight: 400;
-          src: url(https://rsms.me/inter/font-files/Inter-Regular.woff2?v=3.19) format('woff2');
-        }
-        * {
-          font-family: 'Inter', sans-serif;
-        }`,
-      },
-      {
-        content: `blockquote, h1, h2, h3, img, li, ol, p, ul {
-          margin-top: 0;
-          margin-bottom: 0;
-        }`,
+        id: 'font',
+        content: `body { font-family: Verdana, sans-serif; }`,
       },
     ],
     meta: [
@@ -45,17 +32,16 @@ const emailOptions: EmailOptions = {
   body: {
     attrs: {
       style: {
-        margin: 0,
-        // backgroundColor: '#fafafa',
-        width: '100%',
-        color: '#333',
+        backgroundColor: '#fafafa',
+        // width: '900px',
+        margin: '0 auto',
       },
     },
   },
   container: {
     attrs: {
       style: {
-        width: '600px',
+        // width: 600,
         margin: '0 auto',
       },
     },
@@ -63,7 +49,7 @@ const emailOptions: EmailOptions = {
 };
 
 const EmailExample = () => {
-  const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
+  const editor: YooptaEmailEditor = useMemo(() => createYooptaEmailEditor(emailOptions), []);
   const [value, setValue] = useState<YooptaContentValue>(EMAIL_EDITOR_DEFAULT_VALUE);
   const [recipientEmail, setRecipientEmail] = useState('devopsbanda@gmail.com');
   const [subject, setSubject] = useState('test email');
@@ -76,7 +62,7 @@ const EmailExample = () => {
   };
 
   const onCopy = () => {
-    const emailString = editor.getEmail(value);
+    const emailString = editor.getEmail(value, emailOptions);
     copy(emailString);
     console.log('emailString', emailString);
     window.alert('Email content copied to clipboard');
@@ -90,7 +76,7 @@ const EmailExample = () => {
 
     setIsLoading(true);
 
-    const emailContent = editor.getEmail(value);
+    const emailContent = editor.getEmail(value, emailOptions);
     console.log('emailContent', emailContent);
 
     try {
@@ -119,15 +105,74 @@ const EmailExample = () => {
     }
   };
 
+  const onImageUpload = async (file: File) => {
+    const response = await uploadToCloudinary(file);
+    return {
+      src: response.secure_url,
+      sizes: {
+        width: response.width,
+        height: response.height,
+      },
+    };
+  };
+
+  const onVideoUpload = async (file: File) => {
+    const response = await uploadToCloudinary(file, 'video');
+    return {
+      src: response.secure_url,
+      sizes: {
+        width: response.width,
+        height: response.height,
+      },
+    };
+  };
+
+  const onVideoUploadPoster = async (file: File) => {
+    const response = await uploadToCloudinary(file);
+    return response.url;
+  };
+
+  const onFileUpload = async (file: File) => {
+    const response = await uploadToCloudinary(file, 'auto');
+
+    return {
+      src: response.secure_url,
+      format: response.format,
+      name: response.name,
+      size: response.bytes,
+    };
+  };
+
   return (
-    <div className="w-full flex justify-center">
-      <div>
+    <div className="w-full">
+      <div className="w-full">
         <Button onClick={sendEmail} variant="outline">
           Send Email
         </Button>
       </div>
+      <div className="w-full">
+        <Button onClick={onCopy} variant="outline">
+          Copy
+        </Button>
+      </div>
       <div>
-        <EmailBuilder value={value} onChange={onChange} template={emailOptions} />
+        <EmailBuilder
+          editor={editor}
+          value={value}
+          onChange={onChange}
+          media={{
+            image: {
+              upload: onImageUpload,
+            },
+            video: {
+              upload: onVideoUpload,
+              uploadPoster: onVideoUploadPoster,
+            },
+            file: {
+              upload: onFileUpload,
+            },
+          }}
+        />
       </div>
     </div>
   );

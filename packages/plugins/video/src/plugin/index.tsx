@@ -169,10 +169,10 @@ const Video = new YooptaPlugin<VideoElementMap, VideoPluginOptions>({
                       src="${element.props.poster}"
                       width="${element.props.sizes.width}"
                       height="${element.props.sizes.height}"
-                      objectFit="${element.props.fit}"
+                      objectfit="${element.props.fit}"
                       alt="Poster"
                       style="
-                        object-fit: cover;
+                        object-fit: ${element.props.fit};
                         height: 100%;
                       "
                     />

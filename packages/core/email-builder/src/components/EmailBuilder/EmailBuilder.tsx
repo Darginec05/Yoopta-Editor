@@ -1,29 +1,14 @@
-import { useMemo, useState } from 'react';
-import { createYooptaEditor, EmailOptions } from '@yoopta/editor';
+import { useState } from 'react';
 import { EmailPreview } from '../EmailPreview/EmailPreview';
-import copy from 'copy-to-clipboard';
 import { EmailHeader } from '../EmailHeader/EmailHeader';
 import { EmailEditor } from '../EmailEditor/EmailEditor';
 import { EmailProps, EmailView } from '../../utils/types';
-import { ScreenSize } from '../ScreenSizeSwitcher/ScreenSizeSwitcher';
 
 type EmailBuilderProps = EmailProps & {
   header?: null;
   view?: EmailView;
-  template?: EmailOptions;
 };
 
-type MailFields = {
-  recipientEmail: string;
-  subject: string;
-};
-
-// @yoopta/email-builder
-// DEFAULT-PLUGINS
-// PRIVATE-PLUGINS
-// THEMING
-// BUILDER
-// Email checker
 function EmailBuilder({
   id,
   value,
@@ -36,25 +21,14 @@ function EmailBuilder({
   media,
   header,
   view: viewProp = 'editor',
-  editor: editorProps,
+  editor,
   selectionBoxRoot = false,
-  template,
 }: EmailBuilderProps) {
-  const editor = useMemo(() => editorProps || createYooptaEditor(), [editorProps]);
-  const [screenSize, setScreenSize] = useState<ScreenSize>('desktop');
   const [view, setView] = useState<EmailView>(viewProp);
-  const onScreenSizeChange = (v: ScreenSize) => setScreenSize(v);
 
   return (
     <div id="yoopta-email-builder" className="min-h-screen bg-background">
-      {header !== null && (
-        <EmailHeader
-          view={view}
-          onViewChange={setView}
-          screenSize={screenSize}
-          onScreenSizeChange={onScreenSizeChange}
-        />
-      )}
+      {header !== null && <EmailHeader view={view} onViewChange={setView} />}
 
       <main className="mx-auto py-0">
         {view === 'editor' ? (
@@ -70,10 +44,10 @@ function EmailBuilder({
             className={className}
             style={style}
             media={media}
-            emailOptions={template}
+            template={editor.emailTemplate}
           />
         ) : (
-          <EmailPreview value={value} template={template} editor={editor} screenSize={screenSize} />
+          <EmailPreview value={value} template={editor.emailTemplate} editor={editor} />
         )}
       </main>
     </div>

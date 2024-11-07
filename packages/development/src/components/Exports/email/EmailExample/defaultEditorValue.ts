@@ -281,7 +281,7 @@ export const EMAIL_EDITOR_DEFAULT_VALUE = {
                 type: 'accordion-list-item-content',
                 children: [
                   {
-                    text: 'Правильное отображение шрифтов',
+                    text: 'Correct message displayed when the accordion is expanded',
                   },
                 ],
                 props: {

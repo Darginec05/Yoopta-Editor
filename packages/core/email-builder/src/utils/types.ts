@@ -1,17 +1,24 @@
-import { YooptaEditorProps } from '@yoopta/editor';
+import { EmailOptions, YooEditor, YooptaEditorProps } from '@yoopta/editor';
 import { FileUploadResponse } from '@yoopta/file';
 import { ImageUploadResponse } from '@yoopta/image';
 import { VideoUploadResponse } from '@yoopta/video';
 
 export type MediaUploadsFn = {
-  imageUpload?: (file: File) => Promise<ImageUploadResponse>;
-  videoUpload?: (file: File) => Promise<VideoUploadResponse>;
-  fileUpload?: (file: File) => Promise<FileUploadResponse>;
+  image?: {
+    upload: (file: File) => Promise<ImageUploadResponse>;
+  };
+  video?: {
+    upload: (file: File) => Promise<VideoUploadResponse>;
+    uploadPoster?: (file: File) => Promise<string>;
+  };
+  file?: {
+    upload: (file: File) => Promise<FileUploadResponse>;
+  };
 };
 
 export type EmailProps = {
   id?: YooptaEditorProps['id'];
-  editor?: YooptaEditorProps['editor'];
+  editor: YooptaEmailEditor;
   value: Required<YooptaEditorProps>['value'];
   onChange: Required<YooptaEditorProps>['onChange'];
   readOnly?: YooptaEditorProps['readOnly'];
@@ -24,3 +31,7 @@ export type EmailProps = {
 };
 
 export type EmailView = 'editor' | 'preview';
+
+export type YooptaEmailEditor = YooEditor & {
+  emailTemplate: EmailOptions;
+};

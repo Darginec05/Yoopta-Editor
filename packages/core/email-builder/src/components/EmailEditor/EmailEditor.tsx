@@ -1,14 +1,14 @@
 import { Card } from '../ui/card';
-import YooptaEditor, { EmailOptions, YooEditor } from '@yoopta/editor';
+import YooptaEditor, { EmailOptions, generateId, YooEditor } from '@yoopta/editor';
 import { getPlugins } from '../../utils/plugins';
 import { TOOLS } from '../../utils/tools';
 import { MARKS } from '../../utils/marks';
 import { EmailProps } from '../../utils/types';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 type EmailEditorProps = EmailProps & {
   editor: YooEditor;
-  emailOptions?: EmailOptions;
+  template?: EmailOptions;
 };
 
 export function EmailEditor({
@@ -21,46 +21,50 @@ export function EmailEditor({
   autoFocus,
   placeholder,
   selectionBoxRoot,
-  emailOptions,
+  template,
 }: EmailEditorProps) {
+  const editorContainerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const styles = emailOptions?.head?.styles;
-    if (!styles?.length) return;
+    if (!Array.isArray(template?.head?.styles)) return;
+    const styles = window.structuredClone(template?.head?.styles);
 
     styles.forEach((style) => {
       const styleElement = document.createElement('style');
       if (style.id) {
-        styleElement.id = `email-editor-${style.id}`;
+        styleElement.id = `yoopta-email-builder-${style.id}`;
+      } else {
+        style.id = generateId();
+        styleElement.id = `yoopta-email-builder-${style.id}`;
       }
+
       styleElement.textContent = style.content;
-      document.head.appendChild(styleElement);
+      editorContainerRef.current?.appendChild(styleElement);
     });
 
     return () => {
+      // [TODO] - remove all passed style elements
       styles.forEach((style) => {
         if (style.id) {
-          const styleElement = document.getElementById(`email-editor-${style.id}`);
+          const styleElement = document.getElementById(`yoopta-email-builder-${style.id}`);
           styleElement?.remove();
         }
       });
     };
-  }, [emailOptions?.head?.styles]);
+  }, [template?.head?.styles]);
 
-  const containerStyle = emailOptions?.container?.attrs?.style || {};
-
-  const bodyStyle = useMemo(() => {
-    return emailOptions?.body?.attrs?.style || {};
-  }, [emailOptions?.body?.attrs?.style]);
+  const containerStyle = template?.container?.attrs?.style;
+  const bodyStyle = template?.body?.attrs?.style;
 
   return (
     <Card className="w-full h-[calc(100vh-8rem)] overflow-auto flex flex-col p-4 gap-4">
-      <div style={bodyStyle} className="flex-1">
+      <div ref={editorContainerRef} style={bodyStyle} className="flex-1">
         <YooptaEditor
           key={id}
           id={id}
           selectionBoxRoot={selectionBoxRoot}
           editor={editor}
-          plugins={getPlugins({ media })}
+          plugins={getPlugins({ media, sizes: { width: containerStyle?.width } })}
           tools={TOOLS}
           marks={MARKS}
           readOnly={readOnly}
