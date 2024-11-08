@@ -43,7 +43,6 @@ export function EmailEditor({
     });
 
     return () => {
-      // [TODO] - remove all passed style elements
       styles.forEach((style) => {
         if (style.id) {
           const styleElement = document.getElementById(`yoopta-email-builder-${style.id}`);
@@ -69,7 +68,6 @@ export function EmailEditor({
           marks={MARKS}
           readOnly={readOnly}
           autoFocus={autoFocus}
-          className="h-full"
           style={containerStyle}
           placeholder={placeholder || 'Start building your email...'}
           onChange={onChange}

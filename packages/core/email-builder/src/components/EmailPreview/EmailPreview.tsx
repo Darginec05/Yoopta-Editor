@@ -21,11 +21,6 @@ const EmailPreview = ({ editor, value, template }: EmailPreviewProps) => {
     setEmailHTML(emailString);
   }, [debounceValue]);
 
-  useEffect(() => {
-    const emailString = editor.getEmail(debounceValue, template);
-    setEmailHTML(emailString);
-  }, [debounceValue]);
-
   const bodyStyle = template?.body?.attrs?.style;
 
   return (

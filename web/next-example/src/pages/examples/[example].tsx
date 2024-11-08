@@ -24,6 +24,7 @@ import withPluginEvents from '@/components/examples/withPluginEvents';
 import withShadcnUILibrary from '@/components/examples/withShadcnUILibrary';
 import withEditorHistory from '@/components/examples/withEditorHistory';
 import withEditorOperations from '@/components/examples/withEditorOperations';
+import withEmailBuilder from '@/components/examples/withEmailBuilder';
 // import withCraftExample from '@/components/examples/withCraftExample';
 // import withEditorFocusBlur from '@/components/examples/withEditorFocusBlur';
 // import withStarterKit from '@/components/examples/withStarterKit';
@@ -42,6 +43,7 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withNotionActionMenu,
   withExports,
   withEditorHistory,
+  withEmailBuilder,
   withEditorOperations,
   withCommandsAPI,
   withPluginEvents,
@@ -178,6 +180,10 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
   },
   withEditorOperations: {
     title: 'Core: Editor Operations (new)',
+    description: '',
+  },
+  withEmailBuilder: {
+    title: 'Meet Email-Builder based on Yoopta! (new)',
     description: '',
   },
 };

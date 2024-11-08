@@ -90,7 +90,7 @@
   }
 }
 
-.yoopta-editor {
+.yoopta-editor:not(#yoopta-email-builder .yoopta-editor) {
   width: 750px !important;
 }
 

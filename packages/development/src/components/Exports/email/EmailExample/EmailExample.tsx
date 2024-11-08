@@ -17,7 +17,7 @@ const templateEmailOptions: EmailTemplateOptions = {
     styles: [
       {
         id: 'font',
-        content: `body { font-family: Verdana, sans-serif; }`,
+        content: `* { font-family: Verdana, sans-serif; }`,
       },
     ],
     meta: [
