@@ -1,7 +1,11 @@
-import { createYooptaEditor, EmailOptions } from '@yoopta/editor';
+import { createYooptaEditor, EmailTemplateOptions } from '@yoopta/editor';
 import { YooptaEmailEditor } from './utils/types';
 
-export const createYooptaEmailEditor = (template: EmailOptions): YooptaEmailEditor => {
+export type YooptaEmailEditorOptions = {
+  template: EmailTemplateOptions;
+};
+
+export const createYooptaEmailEditor = ({ template }: YooptaEmailEditorOptions): YooptaEmailEditor => {
   const editor = createYooptaEditor() as YooptaEmailEditor;
 
   const { getEmail } = editor;
@@ -9,6 +13,10 @@ export const createYooptaEmailEditor = (template: EmailOptions): YooptaEmailEdit
   editor.getEmail = (value) => {
     return getEmail(value, editor.emailTemplate);
   };
+
+  // [TODO] - for future
+  // editor.sanitiazeEmail = (value) => {}
+  // editor.validateEmail = (value) => {}
 
   return editor;
 };

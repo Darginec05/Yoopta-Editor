@@ -1,4 +1,4 @@
-import { EmailOptions, YooEditor, YooptaContentValue } from '@yoopta/editor';
+import { EmailTemplateOptions, YooEditor, YooptaContentValue } from '@yoopta/editor';
 import { CSSProperties, useEffect, useRef, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 import { Card } from '../ui/card';
@@ -8,7 +8,7 @@ type EmailPreviewProps = {
   value: YooptaContentValue;
   style?: CSSProperties;
   className?: string;
-  template?: EmailOptions;
+  template?: EmailTemplateOptions;
 };
 
 const EmailPreview = ({ editor, value, template }: EmailPreviewProps) => {
@@ -26,7 +26,6 @@ const EmailPreview = ({ editor, value, template }: EmailPreviewProps) => {
     setEmailHTML(emailString);
   }, [debounceValue]);
 
-  const containerStyle = template?.container?.attrs?.style;
   const bodyStyle = template?.body?.attrs?.style;
 
   return (
@@ -37,7 +36,7 @@ const EmailPreview = ({ editor, value, template }: EmailPreviewProps) => {
           srcDoc={emailHTML}
           title="Email Preview"
           className="w-full border-none bg-white"
-          style={{ ...containerStyle, width: containerStyle?.width || 400, height: '100%' }}
+          style={{ height: '100%' }}
           sandbox="allow-same-origin"
         />
       </div>

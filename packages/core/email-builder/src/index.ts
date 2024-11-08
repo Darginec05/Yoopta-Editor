@@ -7,5 +7,5 @@ export { EmailPreview };
 import { YooptaEmailEditor } from './utils/types';
 export { YooptaEmailEditor };
 
-export { createYooptaEmailEditor } from './editor';
+export { createYooptaEmailEditor, YooptaEmailEditorOptions } from './editor';
 import './styles.css';

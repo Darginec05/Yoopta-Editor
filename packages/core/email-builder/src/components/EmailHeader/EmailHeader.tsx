@@ -1,15 +1,14 @@
 import { Mail, Eye, FilePenIcon } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '../ui/toggle-group';
-import { ScreenSize } from '../ScreenSizeSwitcher/ScreenSizeSwitcher';
 import { cn } from '../../lib/utils';
-import { EmailOptions } from '@yoopta/editor';
+import { EmailTemplateOptions } from '@yoopta/editor';
 
 type View = 'editor' | 'preview';
 
 type Props = {
   view: View;
   onViewChange: (view: View) => void;
-  template?: EmailOptions;
+  template?: EmailTemplateOptions;
 };
 
 export function EmailHeader({ view, template, onViewChange }: Props) {
@@ -32,22 +31,15 @@ export function EmailHeader({ view, template, onViewChange }: Props) {
             <ToggleGroupItem
               value="editor"
               aria-label="Editor view"
-              className={cn(
-                'data-[state=on]:bg-background data-[state=on]:text-foreground',
-                'transition-all duration-200',
-              )}
+              className={cn('data-[state=on]:bg-[#fff] data-[state=on]:text-foreground', 'transition-all duration-200')}
             >
-              {/* <Mail  /> */}
               <FilePenIcon className="h-4 w-4 mr-2" />
               Editor
             </ToggleGroupItem>
             <ToggleGroupItem
               value="preview"
               aria-label="Preview view"
-              className={cn(
-                'data-[state=on]:bg-background data-[state=on]:text-foreground',
-                'transition-all duration-200',
-              )}
+              className={cn('data-[state=on]:bg-[#fff] data-[state=on]:text-foreground', 'transition-all duration-200')}
             >
               <Eye className="h-4 w-4 mr-2" />
               Preview

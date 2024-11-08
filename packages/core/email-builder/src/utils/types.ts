@@ -1,4 +1,4 @@
-import { EmailOptions, YooEditor, YooptaEditorProps } from '@yoopta/editor';
+import { EmailTemplateOptions, YooEditor, YooptaEditorProps } from '@yoopta/editor';
 import { FileUploadResponse } from '@yoopta/file';
 import { ImageUploadResponse } from '@yoopta/image';
 import { VideoUploadResponse } from '@yoopta/video';
@@ -33,5 +33,5 @@ export type EmailProps = {
 export type EmailView = 'editor' | 'preview';
 
 export type YooptaEmailEditor = YooEditor & {
-  emailTemplate: EmailOptions;
+  emailTemplate: EmailTemplateOptions;
 };

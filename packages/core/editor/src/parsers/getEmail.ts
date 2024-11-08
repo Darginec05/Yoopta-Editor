@@ -24,7 +24,7 @@ type ElementAttributes = {
   [key: string]: any;
 };
 
-export type EmailOptions = {
+export type EmailTemplateOptions = {
   head?: {
     styles?: StyleElement[];
     meta?: MetaElement[];
@@ -39,7 +39,7 @@ export type EmailOptions = {
   customTemplate?: (content: string) => string;
 };
 
-const DEFAULT_OPTIONS: EmailOptions = {
+const DEFAULT_OPTIONS: EmailTemplateOptions = {
   head: {
     meta: [
       { content: 'width=device-width', name: 'viewport' },
@@ -66,8 +66,9 @@ const DEFAULT_OPTIONS: EmailOptions = {
   },
 };
 
-export function getEmail(editor: YooEditor, content: YooptaContentValue, opts?: EmailOptions): string {
+export function getEmail(editor: YooEditor, content: YooptaContentValue, opts?: EmailTemplateOptions): string {
   const options = deepMerge(DEFAULT_OPTIONS, opts || {});
+  console.log('options', options);
   const blocks = Object.values(content)
     .filter((item) => {
       const selectedBlocks = Paths.getSelectedPaths(editor);
@@ -112,7 +113,13 @@ export function getEmail(editor: YooEditor, content: YooptaContentValue, opts?: 
       </head>
       <body id="yoopta-email" ${bodyAttrs}>
         <table ${containerAttrs}>
-          ${emailContent}
+          <tbody>
+            <tr>
+              <td>
+                ${emailContent}
+              </td>
+            </tr>
+          </tbody>
         </table>
       </body>
     </html>
@@ -161,10 +168,13 @@ function attributesToString(attrs?: ElementAttributes): string {
 
   return Object.entries(attrs)
     .map(([key, value]) => {
+      console.log('key', key, value);
+
       if (key === 'style') {
         const styleString = styleObjectToString(value as StyleAttribute);
         return `style="${styleString}"`;
       }
+
       return `${key}="${value}"`;
     })
     .join(' ');

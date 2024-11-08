@@ -41,18 +41,26 @@ const Image = new YooptaPlugin<ImageElementMap, ImagePluginOptions>({
     html: {
       deserialize: {
         nodeNames: ['IMG'],
-        parse: (el) => {
+        parse: (el, editor) => {
           if (el.nodeName === 'IMG') {
+            const sizes = {
+              width: el.getAttribute('width') ? parseInt(el.getAttribute('width') || '650', 10) : 650,
+              height: el.getAttribute('height') ? parseInt(el.getAttribute('height') || '500', 10) : 500,
+            };
+
+            const maxSizes = (editor.plugins.Image.options as ImagePluginOptions)?.maxSizes;
+            const limitedSizes = limitSizes(sizes!, {
+              width: maxSizes!.maxWidth!,
+              height: maxSizes!.maxHeight!,
+            });
+
             const props: SlateElement<'image', ImageElementProps>['props'] = {
               nodeType: 'void',
               src: el.getAttribute('src') || '',
               alt: el.getAttribute('alt') || '',
               srcSet: el.getAttribute('srcset') || '',
               fit: (el.getAttribute('objectFit') || 'contain') as ImageElementProps['fit'],
-              sizes: {
-                width: el.getAttribute('width') ? parseInt(el.getAttribute('width') || '650', 10) : 650,
-                height: el.getAttribute('height') ? parseInt(el.getAttribute('height') || '500', 10) : 500,
-              },
+              sizes: limitedSizes,
             };
 
             const node: SlateElement = {

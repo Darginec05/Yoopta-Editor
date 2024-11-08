@@ -1,5 +1,5 @@
 import { Card } from '../ui/card';
-import YooptaEditor, { EmailOptions, generateId, YooEditor } from '@yoopta/editor';
+import YooptaEditor, { EmailTemplateOptions, generateId, YooEditor } from '@yoopta/editor';
 import { getPlugins } from '../../utils/plugins';
 import { TOOLS } from '../../utils/tools';
 import { MARKS } from '../../utils/marks';
@@ -8,7 +8,7 @@ import { useEffect, useMemo, useRef } from 'react';
 
 type EmailEditorProps = EmailProps & {
   editor: YooEditor;
-  template?: EmailOptions;
+  template?: EmailTemplateOptions;
 };
 
 export function EmailEditor({

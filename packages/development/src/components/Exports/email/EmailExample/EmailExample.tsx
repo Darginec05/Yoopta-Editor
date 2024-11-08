@@ -1,4 +1,4 @@
-import YooptaEditor, { createYooptaEditor, EmailOptions, YooEditor, YooptaContentValue } from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor, EmailTemplateOptions, YooEditor, YooptaContentValue } from '@yoopta/editor';
 import EmailBuilder, { EmailPreview, createYooptaEmailEditor, YooptaEmailEditor } from '@yoopta/email-builder';
 import { useEffect, useMemo, useState } from 'react';
 import { Tabs, TabsContent } from '@/components/ui/tabs';
@@ -12,7 +12,7 @@ import copy from 'copy-to-clipboard';
 import { EMAIL_EDITOR_DEFAULT_VALUE } from './defaultEditorValue';
 import { uploadToCloudinary } from '@/utils/cloudinary';
 
-const emailOptions: EmailOptions = {
+const templateEmailOptions: EmailTemplateOptions = {
   head: {
     styles: [
       {
@@ -33,7 +33,7 @@ const emailOptions: EmailOptions = {
     attrs: {
       style: {
         backgroundColor: '#fafafa',
-        // width: '900px',
+        width: '900px',
         margin: '0 auto',
       },
     },
@@ -41,7 +41,7 @@ const emailOptions: EmailOptions = {
   container: {
     attrs: {
       style: {
-        // width: 600,
+        width: 600,
         margin: '0 auto',
       },
     },
@@ -49,7 +49,7 @@ const emailOptions: EmailOptions = {
 };
 
 const EmailExample = () => {
-  const editor: YooptaEmailEditor = useMemo(() => createYooptaEmailEditor(emailOptions), []);
+  const editor: YooptaEmailEditor = useMemo(() => createYooptaEmailEditor({ template: templateEmailOptions }), []);
   const [value, setValue] = useState<YooptaContentValue>(EMAIL_EDITOR_DEFAULT_VALUE);
   const [recipientEmail, setRecipientEmail] = useState('devopsbanda@gmail.com');
   const [subject, setSubject] = useState('test email');
@@ -62,7 +62,7 @@ const EmailExample = () => {
   };
 
   const onCopy = () => {
-    const emailString = editor.getEmail(value, emailOptions);
+    const emailString = editor.getEmail(value, templateEmailOptions);
     copy(emailString);
     console.log('emailString', emailString);
     window.alert('Email content copied to clipboard');
@@ -76,7 +76,7 @@ const EmailExample = () => {
 
     setIsLoading(true);
 
-    const emailContent = editor.getEmail(value, emailOptions);
+    const emailContent = editor.getEmail(value, templateEmailOptions);
     console.log('emailContent', emailContent);
 
     try {

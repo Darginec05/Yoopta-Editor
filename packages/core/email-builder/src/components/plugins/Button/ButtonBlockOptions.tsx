@@ -1,6 +1,5 @@
 import { Elements, UI, YooEditor, YooptaBlockData } from '@yoopta/editor';
 import { ButtonElementProps, ButtonElementVariant } from './types';
-import { BorderSolidIcon } from '@radix-ui/react-icons';
 import { CSSProperties } from 'react';
 const { ExtendedBlockActions, BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptionsSeparator } = UI;
 
@@ -60,15 +59,7 @@ const ButtonBlockOptions = ({ editor, block, props: buttonProps }: Props) => {
             className="yoopta-block-options-button justify-between"
             onClick={() => onChangeVariant('default')}
           >
-            <span className="flex">
-              <BorderSolidIcon
-                width={14}
-                height={16}
-                className="w-4 h-4 mr-2"
-                color={buttonProps?.color || '#EFEFEE'}
-              />
-              Default
-            </span>
+            <span className="flex">Default</span>
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
@@ -77,15 +68,7 @@ const ButtonBlockOptions = ({ editor, block, props: buttonProps }: Props) => {
             className="yoopta-block-options-button justify-between"
             onClick={() => onChangeVariant('destructive')}
           >
-            <span className="flex">
-              <BorderSolidIcon
-                width={14}
-                height={16}
-                className="w-4 h-4 mr-2"
-                color={buttonProps?.color || '#EFEFEE'}
-              />
-              Destructive
-            </span>
+            <span className="flex">Destructive</span>
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
@@ -94,15 +77,7 @@ const ButtonBlockOptions = ({ editor, block, props: buttonProps }: Props) => {
             className="yoopta-block-options-button justify-between"
             onClick={() => onChangeVariant('outline')}
           >
-            <span className="flex">
-              <BorderSolidIcon
-                width={14}
-                height={16}
-                className="w-4 h-4 mr-2"
-                color={buttonProps?.color || '#EFEFEE'}
-              />
-              Outline
-            </span>
+            <span className="flex">Outline</span>
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
@@ -111,15 +86,7 @@ const ButtonBlockOptions = ({ editor, block, props: buttonProps }: Props) => {
             className="yoopta-block-options-button justify-between"
             onClick={() => onChangeVariant('secondary')}
           >
-            <span className="flex">
-              <BorderSolidIcon
-                width={14}
-                height={16}
-                className="w-4 h-4 mr-2"
-                color={buttonProps?.color || '#EFEFEE'}
-              />
-              Secondary
-            </span>
+            <span className="flex">Secondary</span>
           </button>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
@@ -128,15 +95,7 @@ const ButtonBlockOptions = ({ editor, block, props: buttonProps }: Props) => {
             className="yoopta-block-options-button justify-between"
             onClick={() => onChangeVariant('ghost')}
           >
-            <span className="flex">
-              <BorderSolidIcon
-                width={14}
-                height={16}
-                className="w-4 h-4 mr-2"
-                color={buttonProps?.color || '#EFEFEE'}
-              />
-              Ghost
-            </span>
+            <span className="flex">Ghost</span>
           </button>
         </BlockOptionsMenuItem>
       </BlockOptionsMenuGroup>

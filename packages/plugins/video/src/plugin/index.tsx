@@ -2,6 +2,7 @@ import { generateId, YooptaPlugin } from '@yoopta/editor';
 import { VideoCommands } from '../commands';
 import { VideoElementMap, VideoPluginOptions } from '../types';
 import { VideoRender } from '../ui/Video';
+import { limitSizes } from '../utils/limitSizes';
 
 const ALIGNS_TO_JUSTIFY = {
   left: 'flex-start',
@@ -49,12 +50,23 @@ const Video = new YooptaPlugin<VideoElementMap, VideoPluginOptions>({
     html: {
       deserialize: {
         nodeNames: ['VIDEO'],
-        parse: (el) => {
+        parse: (el, editor) => {
           if (el.nodeName === 'VIDEO') {
             const src = el.getAttribute('src');
             const srcSet = el.getAttribute('srcset');
             const bgColor = el.getAttribute('bgcolor');
-            const sizes = { width: el.getAttribute('width'), height: el.getAttribute('height') };
+
+            const sizes = {
+              width: el.getAttribute('width') ? parseInt(el.getAttribute('width') || '650', 10) : 650,
+              height: el.getAttribute('height') ? parseInt(el.getAttribute('height') || '500', 10) : 500,
+            };
+
+            const maxSizes = (editor.plugins.Image.options as VideoPluginOptions)?.maxSizes;
+            const limitedSizes = limitSizes(sizes!, {
+              width: maxSizes!.maxWidth!,
+              height: maxSizes!.maxHeight!,
+            });
+
             const controls = el.getAttribute('controls');
             const loop = el.getAttribute('loop');
             const muted = el.getAttribute('muted');
@@ -65,7 +77,7 @@ const Video = new YooptaPlugin<VideoElementMap, VideoPluginOptions>({
               src,
               srcSet,
               bgColor,
-              sizes,
+              sizes: limitedSizes,
               fit,
               settings: {
                 controls: !!controls,
