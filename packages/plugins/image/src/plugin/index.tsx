@@ -85,7 +85,7 @@ const Image = new YooptaPlugin<ImageElementMap, ImagePluginOptions>({
       },
     },
     email: {
-      serialize: (element, text, blockMeta, editor) => {
+      serialize: (element, text, blockMeta) => {
         const { align = 'center', depth = 0 } = blockMeta || {};
         const justify = ALIGNS_TO_JUSTIFY[align] || 'center';
 

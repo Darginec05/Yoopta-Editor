@@ -37,7 +37,6 @@ const VARIANT_STYLES: Record<ButtonElementVariant, CSSProperties> = {
 
 const ButtonBlockOptions = ({ editor, block, props: buttonProps }: Props) => {
   const onChangeVariant = (variant: ButtonElementVariant) => {
-    console.log('onChangeVariant:', variant);
     Elements.updateElement(editor, block.id, {
       type: 'button',
       props: {
