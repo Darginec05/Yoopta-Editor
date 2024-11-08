@@ -33,7 +33,6 @@
     "@yoopta/link-tool": "*",
     "@yoopta/lists": "*",
     "@yoopta/marks": "*",
-    "@yoopta/mention": "*",
     "@yoopta/paragraph": "*",
     "@yoopta/starter-kit": "*",
     "@yoopta/table": "*",
