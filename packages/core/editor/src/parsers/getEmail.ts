@@ -68,7 +68,6 @@ const DEFAULT_OPTIONS: EmailTemplateOptions = {
 
 export function getEmail(editor: YooEditor, content: YooptaContentValue, opts?: EmailTemplateOptions): string {
   const options = deepMerge(DEFAULT_OPTIONS, opts || {});
-  console.log('options', options);
   const blocks = Object.values(content)
     .filter((item) => {
       const selectedBlocks = Paths.getSelectedPaths(editor);
@@ -168,8 +167,6 @@ function attributesToString(attrs?: ElementAttributes): string {
 
   return Object.entries(attrs)
     .map(([key, value]) => {
-      console.log('key', key, value);
-
       if (key === 'style') {
         const styleString = styleObjectToString(value as StyleAttribute);
         return `style="${styleString}"`;

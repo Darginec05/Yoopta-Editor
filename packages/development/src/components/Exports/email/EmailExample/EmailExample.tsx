@@ -62,7 +62,7 @@ const EmailExample = () => {
   };
 
   const onCopy = () => {
-    const emailString = editor.getEmail(value, templateEmailOptions);
+    const emailString = editor.getEmail(value);
     copy(emailString);
     console.log('emailString', emailString);
     window.alert('Email content copied to clipboard');
@@ -76,7 +76,7 @@ const EmailExample = () => {
 
     setIsLoading(true);
 
-    const emailContent = editor.getEmail(value, templateEmailOptions);
+    const emailContent = editor.getEmail(value);
     console.log('emailContent', emailContent);
 
     try {
