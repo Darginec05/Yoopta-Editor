@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import EventEmitter from 'eventemitter3';
 import { getDefaultYooptaChildren } from './components/Editor/utils';
 import { YooptaContextProvider } from './contexts/YooptaContext/YooptaContext';
@@ -18,6 +18,9 @@ import { FakeSelectionMark } from './marks/FakeSelectionMark';
 import { generateId } from './utils/generateId';
 import { YooEditor, YooptaBlockData, YooptaContentValue } from './editor/types';
 import { Plugin } from './plugins/types';
+import { validateYooptaValue } from './utils/validateYooptaValue';
+import { YooptaOnChangeOptions } from './YooptaEditor';
+import { YooptaPath } from './editor/types';
 
 type Props = {
   id?: string;
@@ -28,8 +31,13 @@ type Props = {
   tools?: any;
   children?: React.ReactNode;
   readOnly?: boolean;
+  onChange?: (value: YooptaContentValue, options: YooptaOnChangeOptions) => void;
 };
 
+type EditorState = {
+  editor: YooEditor;
+  version: number;
+};
 const DEFAULT_VALUE: Record<string, YooptaBlockData> = getDefaultYooptaChildren();
 const eventEmitter = new EventEmitter();
 
@@ -57,11 +65,8 @@ const YooptaEditorProvider = ({
   tools,
   children,
   readOnly,
+  onChange,
 }: Props) => {
-  const applyChanges = () => {
-    setEditorState((prev) => ({ ...prev, version: prev.version + 1 }));
-  };
-
   const marks = useMemo(() => {
     if (marksProps) return [FakeSelectionMark, ...marksProps];
     return [FakeSelectionMark];
@@ -71,17 +76,13 @@ const YooptaEditorProvider = ({
     return pluginsProps.map((plugin) => plugin.getPlugin as Plugin<Record<string, SlateElement>>);
   }, [pluginsProps]);
 
-  const [editorState, setEditorState] = useState<{
-    editor: YooEditor;
-    version: number;
-  }>(() => {
+  const [editorState, setEditorState] = useState<EditorState>(() => {
     if (!editor.id) editor.id = id || generateId();
-    editor.applyChanges = applyChanges;
     editor.readOnly = readOnly || false;
     if (marks) editor.formats = buildMarks(editor, marks);
     editor.blocks = buildBlocks(editor, plugins);
 
-    const isValueValid = validateInitialValue(value);
+    const isValueValid = validateYooptaValue(value);
     if (!isValueValid && typeof value !== 'undefined') {
       // [TODO] - add link to documentation
       console.error(
@@ -89,19 +90,52 @@ const YooptaEditorProvider = ({
       );
     }
 
-    editor.children = (isValueValid ? value : DEFAULT_VALUE) as YooptaContentValue;
+    editor.children = (isValueValid ? value : {}) as YooptaContentValue;
     editor.blockEditorsMap = buildBlockSlateEditors(editor);
     editor.shortcuts = buildBlockShortcuts(editor);
     editor.plugins = buildPlugins(plugins);
     editor.commands = buildCommands(editor, plugins);
 
-    editor.on = Events.on;
-    editor.once = Events.once;
-    editor.off = Events.off;
-    editor.emit = Events.emit;
-
     return { editor, version: 0 };
   });
+
+  const [_, setStatePath] = useState<YooptaPath | null>(null);
+
+  const onEditorPathChange = useCallback((path: YooptaPath) => {
+    setStatePath(path);
+  }, []);
+
+  const onValueChange = useCallback((value, options: YooptaOnChangeOptions) => {
+    setEditorState((prevState) => ({
+      editor: prevState.editor,
+      version: prevState.version + 1,
+    }));
+
+    if (typeof onChange === 'function' && Array.isArray(options.operations)) {
+      const operations = options.operations.filter(
+        (operation) =>
+          operation.type !== 'validate_block_paths' &&
+          operation.type !== 'set_block_path' &&
+          operation.type !== 'set_slate',
+      );
+
+      if (operations.length > 0) onChange(value, { operations });
+    }
+  }, []);
+
+  useEffect(() => {
+    const changeHandler = (options) => {
+      onValueChange(options.value, { operations: options.operations });
+    };
+
+    editor.on('change', changeHandler);
+    editor.on('path-change', onEditorPathChange);
+
+    return () => {
+      editor.off('change', changeHandler);
+      editor.off('path-change', onEditorPathChange);
+    };
+  }, [editor, onValueChange]);
 
   return (
     <YooptaContextProvider editorState={editorState}>
