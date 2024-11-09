@@ -50,7 +50,7 @@ const templateEmailOptions: EmailTemplateOptions = {
 
 const EmailExample = () => {
   const editor: YooptaEmailEditor = useMemo(() => createYooptaEmailEditor({ template: templateEmailOptions }), []);
-  const [value, setValue] = useState<YooptaContentValue>(EMAIL_EDITOR_DEFAULT_VALUE);
+  const [value, setValue] = useState<YooptaContentValue>({});
   const [recipientEmail, setRecipientEmail] = useState('devopsbanda@gmail.com');
   const [subject, setSubject] = useState('test email');
   const [isModalOpen, setIsModalOpen] = useState(false);

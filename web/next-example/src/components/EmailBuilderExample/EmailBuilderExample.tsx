@@ -1,4 +1,4 @@
-import { buildBlockData, EmailTemplateOptions, YooptaContentValue } from '@yoopta/editor';
+import { EmailTemplateOptions, YooptaContentValue } from '@yoopta/editor';
 import EmailBuilder, { createYooptaEmailEditor, YooptaEmailEditor } from '@yoopta/email-builder';
 import { ChangeEvent, useMemo, useState } from 'react';
 import { Button } from '../ui/button';
@@ -11,6 +11,7 @@ import { Label } from '../ui/label';
 import { toast } from 'sonner';
 import { initValue } from './initValue';
 import copy from 'copy-to-clipboard';
+import { MailWarningIcon, CopyIcon, ExternalLinkIcon } from 'lucide-react';
 import { Separator } from '../ui/separator';
 
 const templateOptions: EmailTemplateOptions = {
@@ -106,8 +107,6 @@ const EmailBuilderExample = () => {
     subjectEmail: '',
   });
 
-  console.log('value', value);
-
   const onChange = (data: YooptaContentValue) => setValue(data);
 
   const onChangeEmailField = (event: ChangeEvent<HTMLInputElement>) => {
@@ -181,6 +180,7 @@ const EmailBuilderExample = () => {
               href="https://github.com/Darginec05/Yoopta-Editor/tree/master/packages/core/email-builder"
               target="_blank"
               rel="noreferrer"
+              className="underline"
             >
               @yoopta/email-builder
             </a>{' '}
@@ -188,19 +188,19 @@ const EmailBuilderExample = () => {
           package.
         </p>
         <div className="w-auto mt-2">
-          <Button onClick={onCopy} className="mr-1" variant="secondary">
-            Copy email html
+          <Button onClick={onOpenEmailModal} className="mr-1" variant="default">
+            Test Email <MailWarningIcon size={16} className="ml-2" />
           </Button>
-          <Button onClick={onOpenEmailModal} className="mr-1 m-1" variant="outline">
-            Send Email
+          <Button onClick={onCopy} className="mr-1 m-1" variant="secondary">
+            Copy email html <CopyIcon size={16} className="ml-2" />
           </Button>
-          <Button asChild className="ml-1" variant="default">
+          <Button asChild className="ml-1" variant="outline">
             <a
               href="https://yoodocs.space/yoopta-editor/yoopta/email-builder-_hZvTkSNoI?v=1.0.0&lang=en"
               target="_blank"
               rel="noreferrer"
             >
-              Full Docs
+              Full Docs <ExternalLinkIcon size={16} className="ml-2" />
             </a>
           </Button>
         </div>
