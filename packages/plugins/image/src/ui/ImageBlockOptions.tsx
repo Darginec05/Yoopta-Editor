@@ -143,7 +143,10 @@ const ImageBlockOptions = ({ editor, block, props: imageProps }: Props) => {
   };
 
   return (
-    <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])} className="yoopta-image-options">
+    <ExtendedBlockActions
+      onClick={() => editor.setPath({ current: block.meta.order })}
+      className="yoopta-image-options"
+    >
       <BlockOptionsSeparator />
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>

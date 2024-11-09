@@ -1,4 +1,12 @@
-import YooptaEditor, { createYooptaEditor, Elements, Blocks, useYooptaEditor, YooEditor } from '@yoopta/editor';
+import YooptaEditor, {
+  createYooptaEditor,
+  Elements,
+  Blocks,
+  useYooptaEditor,
+  YooEditor,
+  YooptaContentValue,
+  YooptaPathIndex,
+} from '@yoopta/editor';
 
 import Paragraph, { ParagraphCommands } from '@yoopta/paragraph';
 import Blockquote, { BlockquoteCommands } from '@yoopta/blockquote';
@@ -20,7 +28,7 @@ import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { WITH_BASIC_COMMANDS_API_VALUE } from './initValue';
 
 const plugins = [
@@ -102,14 +110,9 @@ const TOOLS = {
 const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
 function WithCommandsAPI() {
+  const [value, setValue] = useState<YooptaContentValue>(WITH_BASIC_COMMANDS_API_VALUE);
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
-
-  useEffect(() => {
-    editor.on('change', (value) => {
-      console.log('value', value);
-    });
-  }, []);
 
   return (
     <div
@@ -123,7 +126,8 @@ function WithCommandsAPI() {
         tools={TOOLS}
         marks={MARKS}
         selectionBoxRoot={selectionRef}
-        value={WITH_BASIC_COMMANDS_API_VALUE}
+        value={value}
+        onChange={(val: YooptaContentValue) => setValue(val)}
         autoFocus
       />
     </div>
@@ -135,6 +139,8 @@ type Props = {
 };
 
 const FixedToolbar = ({ editor }: Props) => {
+  console.log('editor.historyStack', editor.historyStack);
+
   return (
     <div className="bg-white z-50">
       <div className="flex justify-center mb-2">
@@ -142,7 +148,7 @@ const FixedToolbar = ({ editor }: Props) => {
           type="button"
           onClick={() => {
             ImageCommands.insertImage(editor, {
-              at: [1],
+              at: 1,
               props: {
                 src: 'https://res.cloudinary.com/ench-app/image/upload/v1713028758/Cheems_doge_fx8yvq.jpg',
                 alt: 'Insert image',
@@ -158,7 +164,17 @@ const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            TableCommands.insertTable(editor, { rows: 3, columns: 3, headerRow: true, at: [1] });
+            const at: YooptaPathIndex = typeof editor.path.current === 'number' ? editor.path.current : 2;
+            editor.toggleBlock('Blockquote', { at: at, focus: true });
+          }}
+          className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
+        >
+          Toggle focused block into Blockquote
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            TableCommands.insertTable(editor, { rows: 3, columns: 3, headerRow: true, at: 1 });
           }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
@@ -167,7 +183,7 @@ const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            TableCommands.insertTable(editor, { rows: 6, columns: 4, at: [0] });
+            TableCommands.insertTable(editor, { rows: 6, columns: 4, at: 0 });
           }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
@@ -189,7 +205,7 @@ const FixedToolbar = ({ editor }: Props) => {
           type="button"
           onClick={() => {
             EmbedCommands.insertEmbed(editor, {
-              at: [1],
+              at: 1,
               props: {
                 provider: {
                   url: 'https://youtu.be/TzRm01Gm_0k?si=wnGyvg2kel7zCiVq',
@@ -201,14 +217,12 @@ const FixedToolbar = ({ editor }: Props) => {
         >
           Insert Embed
         </button>
-      </div>
-      <div className="flex justify-center">
         <button
           type="button"
           onClick={() => {
-            ParagraphCommands.insertParagraph(editor, { at: [0], focus: true });
-            const block = Blocks.getBlock(editor, { at: [0] });
-            const slate = Blocks.getSlate(editor, { at: [0] });
+            ParagraphCommands.insertParagraph(editor, { at: 0, focus: true });
+            const block = Blocks.getBlock(editor, { at: 0 });
+            const slate = Blocks.getBlockSlate(editor, { at: 0 });
 
             if (!slate || !block) return;
 
@@ -224,10 +238,12 @@ const FixedToolbar = ({ editor }: Props) => {
         >
           Insert Link
         </button>
+      </div>
+      <div className="flex justify-center">
         <button
           type="button"
           onClick={() => {
-            AccordionCommands.insertAccordion(editor, { at: [1], items: 4 });
+            AccordionCommands.insertAccordion(editor, { at: 1, items: 4 });
           }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
@@ -236,7 +252,7 @@ const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            HeadingOneCommands.insertHeadingOne(editor, { at: [1], text: 'Heading with text', focus: true });
+            HeadingOneCommands.insertHeadingOne(editor, { at: 1, text: 'Heading with text', focus: true });
           }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
@@ -245,7 +261,7 @@ const FixedToolbar = ({ editor }: Props) => {
         <button
           type="button"
           onClick={() => {
-            editor.commands.insertBlockquote({ at: [1], text: 'Blockquote with text', focus: true });
+            editor.commands.insertBlockquote({ at: 1, text: 'Blockquote with text', focus: true });
           }}
           className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff]"
         >
@@ -259,6 +275,26 @@ const FixedToolbar = ({ editor }: Props) => {
           className="p-2 text-xs shadow-md hover:bg-[#64748b] hover:text-[#fff]"
         >
           Update Callout theme
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            editor.redo({ scroll: false });
+          }}
+          className="p-2 text-xs shadow-md border-r hover:bg-[#64748b] hover:text-[#fff] disabled:opacity-50"
+          disabled={editor.historyStack.redos.length === 0}
+        >
+          Redo
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            editor.undo({ scroll: false });
+          }}
+          className="p-2 text-xs shadow-md hover:bg-[#64748b] hover:text-[#fff] disabled:opacity-50"
+          disabled={editor.historyStack.undos.length === 0}
+        >
+          Undo
         </button>
       </div>
     </div>

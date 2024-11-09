@@ -1,4 +1,4 @@
-import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, Elements, generateId, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import { VideoElement, VideoElementProps } from '../types';
 
 type VideoElementOptions = {
@@ -6,7 +6,7 @@ type VideoElementOptions = {
 };
 
 type InsertVideoOptions = VideoElementOptions & {
-  at?: YooptaBlockPath;
+  at?: YooptaPathIndex;
   focus?: boolean;
 };
 
@@ -25,7 +25,8 @@ export const VideoCommands: VideoCommands = {
   insertVideo: (editor: YooEditor, options = {}) => {
     const { at, focus, props } = options;
     const video = VideoCommands.buildVideoElements(editor, { props });
-    Blocks.insertBlock(editor, buildBlockData({ value: [video], type: 'Video' }), { focus, at });
+    const block = Blocks.buildBlockData({ value: [video], type: 'Video', meta: { align: 'center', depth: 0 } });
+    Blocks.insertBlock(editor, block.type, { focus, at, blockData: block });
   },
   deleteVideo: (editor: YooEditor, blockId) => {
     Blocks.deleteBlock(editor, { blockId });

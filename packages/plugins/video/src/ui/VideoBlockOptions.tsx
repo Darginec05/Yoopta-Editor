@@ -141,7 +141,7 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
   };
 
   return (
-    <ExtendedBlockActions onClick={() => editor.setSelection([block.meta.order])} id="yoopta-video-options">
+    <ExtendedBlockActions onClick={() => editor.setPath({ current: block.meta.order })} id="yoopta-video-options">
       <BlockOptionsSeparator />
       {!isExternalVideo && (
         <>

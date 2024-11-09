@@ -1,7 +1,7 @@
 import {
   YooEditor,
   PluginEventHandlerOptions,
-  findPluginBlockBySelectionPath,
+  findPluginBlockByPath,
   YooptaBlockData,
   buildBlockData,
   buildBlockElement,
@@ -16,7 +16,7 @@ type ListNode = NumberedListElement | BulletedListElement | TodoListElement;
 export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, defaultBlock }: PluginEventHandlerOptions) {
   return (event) => {
     Editor.withoutNormalizing(slate, () => {
-      const block = findPluginBlockBySelectionPath(editor);
+      const block = findPluginBlockByPath(editor);
 
       if (!slate.selection || !block) return;
       const selection = slate.selection;
@@ -64,8 +64,10 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, defa
           if (isBlockIsInFirstDepth) {
             const currentOrder = block.meta.order;
 
-            editor.deleteBlock({ blockId: block.id });
-            editor.insertBlock(defaultBlock, { at: [currentOrder], focus: true });
+            editor.batchOperations(() => {
+              editor.deleteBlock({ blockId: block.id });
+              editor.insertBlock(defaultBlock.type, { at: currentOrder, focus: true, blockData: defaultBlock });
+            });
             return;
           }
 
@@ -85,7 +87,8 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, defa
             ],
           });
 
-          editor.insertBlock(prevListBlock, { at: [block.meta.order], focus: false });
+          editor.insertBlock(prevListBlock.type, { at: block.meta.order, focus: false, blockData: prevListBlock });
+          editor.setPath({ current: prevListBlock.meta.order + 1 });
           return;
         }
 
@@ -105,7 +108,7 @@ export function onKeyDown(editor: YooEditor, slate: SlateEditor, { hotkeys, defa
           ],
         });
 
-        editor.insertBlock(nextListBlock, { at: [block.meta.order + 1], focus: true });
+        editor.insertBlock(nextListBlock.type, { at: block.meta.order + 1, focus: true, blockData: nextListBlock });
         return;
       }
     });

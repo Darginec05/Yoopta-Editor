@@ -768,7 +768,7 @@ export const WITH_BASIC_INIT_VALUE: any = {
     id: '697aa54b-aea0-4a88-82e5-ec5a6f2c5791',
     type: 'HeadingThree',
     meta: {
-      order: 54,
+      order: 48,
       depth: 0,
       align: 'center',
     },
@@ -999,94 +999,6 @@ export const WITH_BASIC_INIT_VALUE: any = {
       depth: 0,
     },
   },
-  '7ac415e1-4788-4864-8f28-f82bfaa1a253': {
-    id: '7ac415e1-4788-4864-8f28-f82bfaa1a253',
-    value: [
-      {
-        id: '0feff7ea-24a3-436e-88e2-83346e9cb3c5',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Redo/undo between blocks',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 48,
-      depth: 0,
-    },
-  },
-  '9095bf5d-b6d6-4815-bd6a-bf06fe97affd': {
-    id: '9095bf5d-b6d6-4815-bd6a-bf06fe97affd',
-    value: [
-      {
-        id: 'cb362a05-a783-478f-bbad-78d08e263bee',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Tests',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 51,
-      depth: 0,
-    },
-  },
-  '8120e3f9-fef0-44bd-ad86-ee26f45cdad9': {
-    id: '8120e3f9-fef0-44bd-ad86-ee26f45cdad9',
-    value: [
-      {
-        id: '73a001b1-9620-4484-a128-c78076d27831',
-        type: 'heading-two',
-        children: [
-          {
-            text: 'Currently known issues',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'HeadingTwo',
-    meta: {
-      order: 47,
-      depth: 0,
-    },
-  },
-  '95f23367-0837-440a-b778-a95c09df2b09': {
-    id: '95f23367-0837-440a-b778-a95c09df2b09',
-    value: [
-      {
-        id: '7423d69d-bb48-4733-8f33-05d82e759d91',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Dragndrop with selected blocks',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 49,
-      depth: 0,
-    },
-  },
   '784122f7-2b72-4b19-a1e7-c4a06c013662': {
     id: '784122f7-2b72-4b19-a1e7-c4a06c013662',
     value: [
@@ -1105,29 +1017,7 @@ export const WITH_BASIC_INIT_VALUE: any = {
     ],
     type: 'Paragraph',
     meta: {
-      order: 52,
-      depth: 0,
-    },
-  },
-  '8bf97157-698f-4365-882a-68e6eff020fb': {
-    id: '8bf97157-698f-4365-882a-68e6eff020fb',
-    value: [
-      {
-        id: '5fad6d4d-eee1-4998-9613-80bdc4134abb',
-        type: 'bulleted-list',
-        children: [
-          {
-            text: 'Focusing blocks with custom editor',
-          },
-        ],
-        props: {
-          nodeType: 'block',
-        },
-      },
-    ],
-    type: 'BulletedList',
-    meta: {
-      order: 50,
+      order: 47,
       depth: 0,
     },
   },
@@ -1398,7 +1288,7 @@ export const WITH_BASIC_INIT_VALUE: any = {
     ],
     type: 'Accordion',
     meta: {
-      order: 55,
+      order: 50,
       depth: 0,
       align: 'center',
     },
@@ -1423,7 +1313,7 @@ export const WITH_BASIC_INIT_VALUE: any = {
     ],
     type: 'Divider',
     meta: {
-      order: 53,
+      order: 49,
       depth: 0,
       align: 'center',
     },

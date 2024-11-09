@@ -1,4 +1,4 @@
-import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import { EmbedElement, EmbedElementProps, EmbedProvider, EmbedSizes } from '../types';
 import { getProvider, ProviderGetters } from '../utils/providers';
 
@@ -12,7 +12,7 @@ type EmbedElementOptions = {
 };
 
 type InsertEmbedOptions = EmbedElementOptions & {
-  at?: YooptaBlockPath;
+  at?: YooptaPathIndex;
   focus?: boolean;
 };
 
@@ -47,7 +47,8 @@ export const EmbedCommands: EmbedCommands = {
   insertEmbed: (editor: YooEditor, options = {}) => {
     const { at, focus, props } = options;
     const embed = EmbedCommands.buildEmbedElements(editor, { props });
-    Blocks.insertBlock(editor, buildBlockData({ value: [embed], type: 'Embed' }), { focus, at });
+    const block = buildBlockData({ value: [embed], type: 'Embed', meta: { align: 'center', depth: 0 } });
+    Blocks.insertBlock(editor, block.type, { focus, at, blockData: block });
   },
   deleteEmbed: (editor: YooEditor, blockId) => {
     Blocks.deleteBlock(editor, { blockId });

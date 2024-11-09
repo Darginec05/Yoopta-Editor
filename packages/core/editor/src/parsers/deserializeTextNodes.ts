@@ -64,6 +64,16 @@ export function deserializeTextNodes(editor: YooEditor, nodes: NodeListOf<ChildN
         });
       }
 
+      if (element.nodeName === 'MARK') {
+        const color = element.style.color;
+
+        deserializedNodes.push({
+          // @ts-ignore [FIXME] - Fix types
+          highlight: { color: color || 'yellow' },
+          ...deserializeTextNodes(editor, element.childNodes)[0],
+        });
+      }
+
       if (element.nodeName === 'A') {
         deserializedNodes.push({
           id: generateId(),

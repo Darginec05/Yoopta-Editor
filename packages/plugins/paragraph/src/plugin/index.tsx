@@ -25,9 +25,9 @@ const Paragraph = new YooptaPlugin<ParagraphElementMap>({
       },
       serialize: (element, text, blockMeta) => {
         const { align = 'left', depth = 0 } = blockMeta || {};
-        return `<p data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align}">${serializeTextNodes(
-          element.children,
-        )}</p>`;
+        return `<p data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${
+          depth * 20
+        }px; text-align: ${align}">${serializeTextNodes(element.children)}</p>`;
       },
     },
     markdown: {

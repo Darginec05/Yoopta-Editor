@@ -165,12 +165,6 @@ function WithShadcnUILibrary() {
   const editor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef(null);
 
-  useEffect(() => {
-    editor.on('change', (value) => {
-      console.log('value', value);
-    });
-  }, []);
-
   const plugins = useMemo(() => getPlugins(), []);
 
   return (

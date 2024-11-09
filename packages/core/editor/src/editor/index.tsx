@@ -3,42 +3,50 @@ import { deleteBlock } from './blocks/deleteBlock';
 import { moveBlock } from './blocks/moveBlock';
 import { focusBlock } from './blocks/focusBlock';
 import { splitBlock } from './blocks/splitBlock';
-import { setSelection } from './selection/setSelection';
+import { setPath } from './paths/setPath';
 import { YooEditor, YooptaContentValue } from './types';
 import { increaseBlockDepth } from './blocks/increaseBlockDepth';
 import { decreaseBlockDepth } from './blocks/decreaseBlockDepth';
 import { getEditorValue } from './core/getEditorValue';
 import { setEditorValue } from './core/setEditorValue';
-import { setBlockSelected } from './selection/setBlockSelected';
 import { duplicateBlock } from './blocks/duplicateBlock';
-import { insertBlocks } from './blocks/insertBlocks';
 import { updateBlock } from './blocks/updateBlock';
 import { toggleBlock } from './blocks/toggleBlock';
 import { blur } from './core/blur';
 import { focus } from './core/focus';
 import { isFocused } from './core/isFocused';
-import { deleteBlocks } from './blocks/deleteBlocks';
 import { getBlock } from './blocks/getBlock';
 import { getHTML } from '../parsers/getHTML';
 import { getMarkdown } from '../parsers/getMarkdown';
 import { getPlainText } from '../parsers/getPlainText';
 import { isEmpty } from './core/isEmpty';
-import { Plugin } from '../plugins/types';
+import { applyTransforms } from './core/applyTransforms';
+import { batchOperations } from './core/batchOperations';
+import { mergeBlock } from './blocks/mergeBlock';
+import { UndoRedoOptions, YooptaHistory } from './core/history';
+import EventEmitter from 'eventemitter3';
+import { deserializeHTML } from '../parsers/deserializeHTML';
+
+const eventEmitter = new EventEmitter();
+
+const Events = {
+  on: (event, fn) => eventEmitter.on(event, fn),
+  once: (event, fn) => eventEmitter.once(event, fn),
+  off: (event, fn) => eventEmitter.off(event, fn),
+  emit: (event, payload) => eventEmitter.emit(event, payload),
+};
 
 export function createYooptaEditor(): YooEditor {
   const editor: YooEditor = {
     id: '',
     children: {},
-    selection: null,
-    selectedBlocks: null,
+    blockEditorsMap: {},
+    path: { current: null },
     readOnly: false,
     isEmpty: () => isEmpty(editor),
     getEditorValue: () => getEditorValue(editor),
     setEditorValue: (...args) => setEditorValue(editor, ...args),
-    applyChanges: () => {},
     insertBlock: (...args) => insertBlock(editor, ...args),
-    insertBlocks: (...args) => insertBlocks(editor, ...args),
-    deleteBlocks: (...args) => deleteBlocks(editor, ...args),
     deleteBlock: (...args) => deleteBlock(editor, ...args),
     duplicateBlock: (...args) => duplicateBlock(editor, ...args),
     toggleBlock: (...args) => toggleBlock(editor, ...args),
@@ -49,19 +57,21 @@ export function createYooptaEditor(): YooEditor {
     getBlock: (...args) => getBlock(editor, ...args),
     updateBlock: (...args) => updateBlock(editor, ...args),
     splitBlock: (...args) => splitBlock(editor, ...args),
-    setSelection: (...args) => setSelection(editor, ...args),
-    setBlockSelected: (...args) => setBlockSelected(editor, ...args),
-    blockEditorsMap: {},
+    mergeBlock: (...args) => mergeBlock(editor, ...args),
+    setPath: (...args) => setPath(editor, ...args),
     blocks: {},
     formats: {},
     shortcuts: {},
     plugins: {},
     commands: {},
 
-    on: (event, callback) => {},
-    off: (event, callback) => {},
-    emit: (event, ...args) => {},
-    once: (event, callback) => {},
+    applyTransforms: (operations, ...args) => applyTransforms(editor, operations, ...args),
+    batchOperations: (callback) => batchOperations(editor, callback),
+
+    on: (event, callback) => Events.on(event, callback),
+    off: (event, callback) => Events.off(event, callback),
+    emit: (event, ...args) => Events.emit(event, ...args),
+    once: (event, callback) => Events.once(event, callback),
 
     isFocused: () => isFocused(editor),
     focus: () => focus(editor),
@@ -72,6 +82,20 @@ export function createYooptaEditor(): YooEditor {
     getPlainText: (content: YooptaContentValue) => getPlainText(editor, content),
 
     refElement: null,
+
+    historyStack: {
+      undos: [],
+      redos: [],
+    },
+
+    redo: (options?: UndoRedoOptions) => YooptaHistory.redo(editor, options),
+    undo: (options?: UndoRedoOptions) => YooptaHistory.undo(editor, options),
+    isSavingHistory: () => YooptaHistory.isSavingHistory(editor),
+    isMergingHistory: () => YooptaHistory.isMergingHistory(editor),
+    withoutSavingHistory: (fn) => YooptaHistory.withoutSavingHistory(editor, fn),
+    withSavingHistory: (fn) => YooptaHistory.withSavingHistory(editor, fn),
+    withoutMergingHistory: (fn) => YooptaHistory.withoutMergingHistory(editor, fn),
+    withMergingHistory: (fn) => YooptaHistory.withMergingHistory(editor, fn),
   };
 
   return editor;

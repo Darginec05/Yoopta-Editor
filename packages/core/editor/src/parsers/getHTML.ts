@@ -1,13 +1,14 @@
-import { BaseText, Descendant } from 'slate';
+import { Paths } from '../editor/paths';
 import { SlateElement, YooEditor, YooptaContentValue } from '../editor/types';
 import { getPluginByInlineElement } from '../utils/blockElements';
 
 const MARKS_NODE_NAME_MATCHERS_MAP = {
-  underline: { type: 'underline', tag: 'U' },
-  strike: { type: 'strike', tag: 'S' },
-  code: { type: 'code', tag: 'CODE' },
-  italic: { type: 'italic', tag: 'I' },
-  bold: { type: 'bold', tag: 'B' },
+  underline: { type: 'underline', tag: 'u' },
+  strike: { type: 'strike', tag: 's' },
+  code: { type: 'code', tag: 'code' },
+  italic: { type: 'italic', tag: 'i' },
+  bold: { type: 'bold', tag: 'strong' },
+  strong: { type: 'bold', tag: 'strong' },
 };
 
 function serializeChildren(children, plugins) {
@@ -41,9 +42,10 @@ function serializeChildren(children, plugins) {
 
 export function getHTML(editor: YooEditor, content: YooptaContentValue): string {
   const blocks = Object.values(content)
-    .filter((item) => {
-      if (Array.isArray(editor.selectedBlocks) && editor.selectedBlocks.length > 0) {
-        return editor.selectedBlocks?.includes(item.meta.order);
+    .filter((block) => {
+      const selectedPaths = Paths.getSelectedPaths(editor);
+      if (Array.isArray(selectedPaths) && selectedPaths.length > 0) {
+        return selectedPaths?.includes(block.meta.order);
       }
 
       return true;

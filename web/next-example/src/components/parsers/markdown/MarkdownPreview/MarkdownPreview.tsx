@@ -1,7 +1,17 @@
 import YooptaEditor, { createYooptaEditor, YooEditor, YooptaContentValue } from '@yoopta/editor';
 import parsers from '@yoopta/exports';
-import s from './MarkdownPreview.module.scss';
-
+import { Tabs, TabsContent } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { CounterClockwiseClockIcon } from '@radix-ui/react-icons';
+import { Separator } from '@/components/ui/separator';
+import { useDebounce } from 'use-debounce';
+import copy from 'copy-to-clipboard';
+import { MARKDOWN_EDITOR_DEFAULT_VALUE } from './defaultEditorValue';
+import ActionMenuList, { DefaultActionMenuRender } from '@yoopta/action-menu-list';
+import { Tools } from '@yoopta/editor';
+import LinkTool, { DefaultLinkToolRender } from '@yoopta/link-tool';
+import Toolbar, { DefaultToolbarRender } from '@yoopta/toolbar';
 import Paragraph from '@yoopta/paragraph';
 import Blockquote from '@yoopta/blockquote';
 import Embed from '@yoopta/embed';
@@ -18,33 +28,35 @@ import Table from '@yoopta/table';
 import Code from '@yoopta/code';
 import Divider from '@yoopta/divider';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
+import jsBeatify from 'js-beautify';
+import { markdown as codemirrorMarkdown } from '@codemirror/lang-markdown';
 
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import { useEffect, useMemo, useState } from 'react';
 
-import { markdown as codemirrorMD } from '@codemirror/lang-markdown';
-import { xml } from '@codemirror/lang-xml';
-import { html as codemirrorHTML } from '@codemirror/lang-html';
 import { vscodeDark } from '@uiw/codemirror-theme-vscode';
-
 import { Head } from '@/components/Head/Head';
-import NextLink from 'next/link';
 
 const LANGUAGES_MAP = {
   markdown: {
     type: 'markdown',
     name: 'Markdown',
-    extension: codemirrorMD(),
+    extension: codemirrorMarkdown(),
   },
-  xml: {
-    type: 'xml',
-    name: 'XML',
-    extension: xml(),
+};
+
+export const TOOLS: Tools = {
+  ActionMenu: {
+    render: DefaultActionMenuRender,
+    tool: ActionMenuList,
   },
-  html: {
-    type: 'html',
-    name: 'HTML',
-    extension: codemirrorHTML(),
+  Toolbar: {
+    render: DefaultToolbarRender,
+    tool: Toolbar,
+  },
+  LinkTool: {
+    render: DefaultLinkToolRender,
+    tool: LinkTool,
   },
 };
 
@@ -120,122 +132,175 @@ const plugins = [
 
 const MARKS = [Bold, Italic, CodeMark, Underline, Strike, Highlight];
 
-type ViewProps = {
+type ResultHTMLProps = {
   editor: YooEditor;
-  markdown: string;
-  onChange: (code: string) => void;
-  focusedEditor: FocusedView;
-  onChangeFocusedEditor: (type: FocusedView) => void;
+  value: YooptaContentValue;
 };
 
-const WriteMarkdown = ({ editor, markdown, onChange, onChangeFocusedEditor }: ViewProps) => {
+const ResultMD = ({ editor, value }: ResultHTMLProps) => {
+  const [debounceValue] = useDebounce(value, 1000);
+  const [markdown, setMarkdown] = useState<string>('');
+
+  useEffect(() => {
+    const htmlString = editor.getMarkdown(debounceValue);
+    const beautifiedMD = jsBeatify.html_beautify(htmlString, {
+      indent_with_tabs: false,
+      indent_size: 2,
+    });
+
+    console.log(beautifiedMD);
+
+    setMarkdown(beautifiedMD);
+  }, [debounceValue]);
+
+  const onChange = (value: string) => {
+    setMarkdown(value);
+  };
+
   return (
-    <div className="w-1/2 mr-1">
-      <p className="my-2">Type some markdown here and see the result on the right side (Deserializing 🎊)</p>
-      <div className={s.commentBox}>
-        <CodeMirror
-          value={markdown}
-          height="100%"
-          extensions={[LANGUAGES_MAP.markdown.extension]}
-          onChange={onChange}
-          width="100%"
-          theme={vscodeDark}
-          className="yoopta-code-cm-editor"
-          placeholder="Write some markdown..."
-          basicSetup={codeMirrorSetup}
-          style={{ caretColor: 'red', tabSize: 2 }}
-          onFocus={() => onChangeFocusedEditor('markdown')}
-        />
-      </div>
+    <div className="h-full bg-muted">
+      {/* @ts-ignore */}
+      <CodeMirror
+        value={markdown}
+        height="100%"
+        extensions={[LANGUAGES_MAP.markdown.extension]}
+        onChange={onChange}
+        width="720"
+        theme={vscodeDark}
+        className="yoopta-code-cm-editor w-full h-full bg-muted"
+        // readOnly
+        basicSetup={codeMirrorSetup}
+        style={{ caretColor: 'red', tabSize: 2 }}
+      />
     </div>
   );
 };
 
-const ResultMarkdown = ({ editor, markdown, onChange, focusedEditor, onChangeFocusedEditor }: ViewProps) => {
-  useEffect(() => {
-    if (focusedEditor === 'yoopta') return;
-
-    if (markdown.length === 0) return;
-    const deserialized = parsers.markdown.deserialize(editor, markdown);
-    editor.setEditorValue(deserialized);
-  }, [markdown, focusedEditor]);
-
-  useEffect(() => {
-    const handleChange = (value: YooptaContentValue) => {
-      const string = parsers.markdown.serialize(editor, value);
-      onChange(string);
-    };
-
-    if (focusedEditor === 'yoopta') {
-      editor.on('change', handleChange);
-      return () => editor.off('change', handleChange);
-    }
-  }, [editor, focusedEditor]);
-
-  return (
-    <div className="w-1/2 ml-1 ">
-      <p className="my-2">Type some content here and see the markdown on the left side (Serializing 🎉)</p>
-      <div className="bg-[#30363d]">
-        <div className={s.previewBox} onMouseDown={() => onChangeFocusedEditor('yoopta')}>
-          <YooptaEditor
-            id="markdown"
-            editor={editor}
-            className={s.preview}
-            plugins={plugins}
-            marks={MARKS}
-            autoFocus={false}
-            selectionBoxRoot={false}
-            placeholder="Write content..."
-            style={{
-              width: '100%',
-              paddingBottom: 0,
-            }}
-          />
-        </div>
-      </div>
-    </div>
-  );
+type EditorProps = {
+  editor: YooEditor;
+  value: YooptaContentValue;
+  onChange: (v: YooptaContentValue) => void;
 };
 
-type FocusedView = 'markdown' | 'yoopta';
+const Editor = ({ editor, onChange, value }: EditorProps) => {
+  const handleChange = (value: YooptaContentValue) => {
+    onChange(value);
+  };
+
+  return (
+    <YooptaEditor
+      id="markdown"
+      style={{
+        width: '100%',
+        paddingBottom: 0,
+      }}
+      className="h-full min-h-[300px] lg:min-h-[700px] xl:min-h-[700px] rounded-md border border-input bg-transparent text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring px-[3.5rem] py-[1.5rem]"
+      placeholder="Start building your markdown..."
+      editor={editor}
+      plugins={plugins}
+      marks={MARKS}
+      selectionBoxRoot={false}
+      tools={TOOLS}
+      value={value}
+      onChange={handleChange}
+    />
+  );
+};
 
 const MarkdownPreview = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
-  const [markdown, setMarkdown] = useState('');
-  const [focusedEditor, setFocusedEditor] = useState<FocusedView>('markdown');
+  const [value, setValue] = useState<YooptaContentValue>({});
 
-  const onChange = (code: string) => setMarkdown(code);
+  const onChange = (data: YooptaContentValue) => {
+    setValue(data);
+  };
+
+  useEffect(() => {
+    editor.withoutSavingHistory(() => {
+      editor.setEditorValue(MARKDOWN_EDITOR_DEFAULT_VALUE);
+      editor.focus();
+    });
+  }, []);
+
+  const onCopy = () => {
+    const htmlString = editor.getMarkdown(value);
+    const beautifiedMD = jsBeatify.html_beautify(htmlString, {
+      indent_with_tabs: false,
+      indent_size: 2,
+    });
+
+    copy(beautifiedMD);
+    console.log(beautifiedMD);
+    window.alert('Markdown content copied to clipboard or logged to console');
+  };
 
   return (
-    <>
-      <Head />
-      <NextLink href="/examples/withExports" className="text-blue-500 underline">
-        Back to examples
-      </NextLink>
-      <div className="w-full p-0 m-0 min-h-[100vh] overflow-hidden px-2">
-        <h1 className="text-center my-4 mx-auto scroll-m-20 text-3xl font-bold tracking-tight max-w-[60%]">
-          This example shows how <b>markdown</b> deserialize/serialize methods from <b>@yoopta/exports</b> work
-        </h1>
-        <div className="h-full">
-          <div className="flex h-full">
-            <WriteMarkdown
-              markdown={markdown}
-              onChange={onChange}
-              focusedEditor={focusedEditor}
-              onChangeFocusedEditor={(type) => setFocusedEditor(type)}
-              editor={editor}
-            />
-            <ResultMarkdown
-              markdown={markdown}
-              onChange={onChange}
-              focusedEditor={focusedEditor}
-              onChangeFocusedEditor={(type) => setFocusedEditor(type)}
-              editor={editor}
-            />
+    <div className="container relative py-8">
+      <Head title="Markdown Playground" description="Deserialize/serialize your content from/to markdown" />
+      <section>
+        <div className="overflow-hidden rounded-[0.5rem] border bg-background shadow">
+          <div className="hidden h-full flex-col md:flex">
+            <div className="container flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
+              <h2 className="text-lg font-semibold text-nowrap">Markdown playground</h2>
+              <div className="ml-auto flex w-full space-x-2 sm:justify-end"></div>
+            </div>
+            <Separator />
+            <Tabs defaultValue="editor/deserialized" className="flex-1">
+              <div className="container h-full py-6">
+                {/* <div className="grid h-full items-stretch gap-6 md:grid-cols-[1fr_200px]"> */}
+                <div className="grid h-full items-stretch gap-6">
+                  <div className="hidden flex-col space-y-4 sm:flex md:order-2"></div>
+                  <div className="md:order-1">
+                    <TabsContent value="editor" className="mt-0 border-0 p-0">
+                      <div className="flex h-full flex-col space-y-4">
+                        <Editor editor={editor} value={value} onChange={onChange} />
+
+                        <div className="flex items-center space-x-2">
+                          <Button onClick={onCopy}>Get markdown content</Button>
+                        </div>
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="editor/deserialized" className="mt-0 border-0 p-0">
+                      <div className="flex flex-col space-y-4">
+                        <div className="grid h-full grid-rows-2 gap-6 lg:grid-cols-2 lg:grid-rows-1">
+                          <Editor editor={editor} value={value} onChange={onChange} />
+                          <div className="rounded-md border">
+                            <ResultMD value={value} editor={editor} />
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Button onClick={onCopy}>Get markdown content</Button>
+                        </div>
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="deserialized" className="mt-0 border-0 p-0">
+                      <div className="flex flex-col space-y-4">
+                        <div className="grid h-full gap-6 lg:grid-cols-2">
+                          <div className="flex flex-col space-y-4">
+                            <div className="flex flex-1 flex-col space-y-2">
+                              <Label htmlFor="input">Input</Label>
+                              <Editor editor={editor} value={value} onChange={onChange} />
+                            </div>
+                          </div>
+                          <div className="mt-[21px] min-h-[400px] rounded-md border bg-muted lg:min-h-[700px]" />
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Button onClick={onCopy}>Get markdown</Button>
+                          <Button variant="secondary">
+                            {/* @ts-ignore */}
+                            <CounterClockwiseClockIcon className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </TabsContent>
+                  </div>
+                </div>
+              </div>
+            </Tabs>
           </div>
         </div>
-      </div>
-    </>
+      </section>
+    </div>
   );
 };
 

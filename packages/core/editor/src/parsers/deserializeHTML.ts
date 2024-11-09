@@ -1,5 +1,6 @@
 import { Element } from 'slate';
 import { buildBlockData } from '../components/Editor/utils';
+import { Blocks } from '../editor/blocks';
 import { SlateElement, YooEditor, YooptaBlockBaseMeta, YooptaBlockData } from '../editor/types';
 import { PluginDeserializeParser } from '../plugins/types';
 import { getRootBlockElementType } from '../utils/blockElements';
@@ -14,6 +15,7 @@ const MARKS_NODE_NAME_MATCHERS_MAP = {
   S: { type: 'strike' },
   CODE: { type: 'code' },
   EM: { type: 'italic' },
+  MARK: { type: 'highlight', parse: (el) => ({ color: el.style.color }) },
 };
 
 const VALID_TEXT_ALIGNS = ['left', 'center', 'right', undefined];
@@ -107,7 +109,7 @@ function buildBlock(editor: YooEditor, plugin: PluginsMapByNode, el: HTMLElement
   const align = el.getAttribute('data-meta-align') as YooptaBlockBaseMeta['align'];
   const depth = parseInt(el.getAttribute('data-meta-depth') || '0', 10);
 
-  const blockData = buildBlockData({
+  const blockData = Blocks.buildBlockData({
     id: generateId(),
     type: plugin.type,
     value: [rootNode],
@@ -143,9 +145,9 @@ function deserialize(editor: YooEditor, pluginsMap: PluginsMapByNodeNames, el: H
 
     return children.map((child) => {
       if (typeof child === 'string') {
-        return { [markType]: true, text: child };
+        return { [markType]: mark.parse ? mark.parse(parent) : true, text: child };
       } else if (child.text) {
-        return { ...child, [markType]: true };
+        return { ...child, [markType]: mark.parse ? mark.parse(parent) : true };
       }
       return child;
     });

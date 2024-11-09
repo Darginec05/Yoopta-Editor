@@ -7,9 +7,10 @@ export {
   useYooptaReadOnly,
   useYooptaPluginOptions,
 } from './contexts/YooptaContext/YooptaContext';
-import { YooptaEditor } from './YooptaEditor';
 import { YooptaEditorProvider } from './YooptaEditorProvider';
 import { Editor } from './components/Editor/Editor';
+import { YooptaEditor, type YooptaEditorProps, type YooptaOnChangeOptions } from './YooptaEditor';
+export { deserializeHTML } from './parsers/deserializeHTML';
 
 // [TODO] - should be in separated package @yoopta/common/ui or @yoopta/ui
 export { UI } from './UI';
@@ -19,9 +20,10 @@ export { useYooptaTools, Tools } from './contexts/YooptaContext/ToolsContext';
 export { generateId } from './utils/generateId';
 export { HOTKEYS } from './utils/hotkeys';
 export { getRootBlockElementType, getRootBlockElement } from './utils/blockElements';
-export { findPluginBlockBySelectionPath } from './utils/findPluginBlockBySelectionPath';
+
+// to remove
+export { findPluginBlockByPath } from './utils/findPluginBlockByPath';
 export { findSlateBySelectionPath } from './utils/findSlateBySelectionPath';
-export { findPluginBlockByType } from './utils/findPluginBlockByType';
 export { deserializeTextNodes } from './parsers/deserializeTextNodes';
 export { serializeTextNodes, serializeTextNodesIntoMarkdown } from './parsers/serializeTextNodes';
 
@@ -34,10 +36,15 @@ export {
   YooptaBlock,
   YooptaContentValue,
   SlateEditor,
-  YooptaBlockPath,
+  YooptaPath,
+  YooptaPathIndex,
+  YooptaEventChangePayload,
+  YooptaEventsMap,
+  YooptaEditorEventKeys,
 } from './editor/types';
 export { buildBlockData, buildBlockElement } from './components/Editor/utils';
 export { buildBlockElementsStructure } from './utils/blockElements';
+export { buildSlateEditor } from './utils/buildSlate';
 
 export {
   PluginElementRenderProps,
@@ -51,7 +58,23 @@ export {
 
 export { Elements } from './editor/elements';
 export { Blocks } from './editor/blocks';
+export { Paths } from './editor/paths';
+export {
+  InsertBlockOperation,
+  DeleteBlockOperation,
+  NormalizePathsBlockOperation,
+  SetSelectionBlockOperation,
+  SplitBlockOperation,
+  SetBlockValueOperation,
+  SetBlockMetaOperation,
+  MergeBlockOperation,
+  MoveBlockOperation,
+  SetSlateOperation,
+  SetEditorValueOperation,
+  YooptaOperation,
+} from './editor/core/applyTransforms';
 
 import './styles.css';
 export { YooptaEditorProvider, Editor };
 export default YooptaEditor;
+export { YooptaEditorProps, YooptaOnChangeOptions };

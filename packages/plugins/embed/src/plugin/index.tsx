@@ -78,8 +78,10 @@ const Embed = new YooptaPlugin<EmbedElementMap, EmbedPluginOptions>({
           url = URL_BUILDERS[element.props.provider.type](element.props.provider.id);
         }
 
-        return `<div style="margin-left: ${depth}px; display: flex; width: 100%; justify-content: ${justify}">
-        <iframe data-meta-align="${align}" data-meta-depth="${depth}" src="${url}" width="${element.props.sizes.width}" height="${element.props.sizes.height}"></iframe> </div>`;
+        return `<div style="margin-left: ${depth * 20}px; display: flex; width: 100%; justify-content: ${justify}">
+        <iframe data-meta-align="${align}" data-meta-depth="${depth}" src="${url}" width="${
+          element.props.sizes.width
+        }" height="${element.props.sizes.height}"></iframe> </div>`;
       },
     },
     markdown: {

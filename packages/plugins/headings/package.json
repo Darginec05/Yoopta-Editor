@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/headings",
-  "version": "4.8.4",
+  "version": "4.9.1",
   "description": "Headings plugin for Yoopta Editor",
   "author": "Darginec05 <devopsbanda@gmail.com>",
   "homepage": "https://github.com/Darginec05/Yoopta-Editor#readme",
@@ -24,7 +24,7 @@
     "tailwindcss": "^3.3.0"
   },
   "publishConfig": {
-    "registry": "https://registry.yarnpkg.com"
+    "registry": "https://registry.npmjs.org"
   },
   "repository": {
     "type": "git",
@@ -39,5 +39,5 @@
   "bugs": {
     "url": "https://github.com/Darginec05/Yoopta-Editor/issues"
   },
-  "gitHead": "12d8460dfe0ead89ee1d6f3f2f1fc68239e93d4c"
+  "gitHead": "054fb22aef8ca890d17616d00928eb855e77ec29"
 }

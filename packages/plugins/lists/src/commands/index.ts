@@ -1,11 +1,11 @@
-import { Blocks, buildBlockData, Elements, generateId, YooEditor, YooptaBlockPath } from '@yoopta/editor';
+import { Blocks, Elements, generateId, YooEditor, YooptaPathIndex } from '@yoopta/editor';
 import { BulletedListElement, TodoListElement, NumberedListElement, TodoListElementProps } from '../types';
 
 export type ListElementOptions = { text?: string };
-export type ListInsertOptions = ListElementOptions & { at: YooptaBlockPath; focus?: boolean };
+export type ListInsertOptions = ListElementOptions & { at: YooptaPathIndex; focus?: boolean };
 
 export type TodoListElementOptions = ListElementOptions & { props?: TodoListElementProps };
-export type TodoListInsertOptions = TodoListElementOptions & { at: YooptaBlockPath; focus?: boolean };
+export type TodoListInsertOptions = TodoListElementOptions & { at: YooptaPathIndex; focus?: boolean };
 
 // BulletedList
 export type BulletedListCommands = {
@@ -21,7 +21,8 @@ export const BulletedListCommands: BulletedListCommands = {
   insertBulletedList: (editor, options = {}) => {
     const { at, focus, text } = options;
     const bulletList = BulletedListCommands.buildBulletedListElements(editor, { text });
-    Blocks.insertBlock(editor, buildBlockData({ value: [bulletList], type: 'BulletedList' }), { at, focus });
+    const block = Blocks.buildBlockData({ value: [bulletList], type: 'BulletedList' });
+    Blocks.insertBlock(editor, block.type, { at, focus, blockData: block });
   },
   deleteBulletedList: (editor, blockId) => {
     Blocks.deleteBlock(editor, { blockId });
@@ -42,7 +43,8 @@ export const NumberedListCommands: NumberedListCommands = {
   insertNumberedList: (editor, options = {}) => {
     const { at, focus, text } = options;
     const numberdedList = NumberedListCommands.buildNumberedListElements(editor, { text });
-    Blocks.insertBlock(editor, buildBlockData({ value: [numberdedList], type: 'NumberedList' }), { at, focus });
+    const block = Blocks.buildBlockData({ value: [numberdedList], type: 'NumberedList' });
+    Blocks.insertBlock(editor, block.type, { at, focus, blockData: block });
   },
   deleteNumberedList: (editor, blockId) => {
     Blocks.deleteBlock(editor, { blockId });
@@ -59,12 +61,18 @@ export type TodoListCommands = {
 
 export const TodoListCommands: TodoListCommands = {
   buildTodoListElements: (editor, options) => {
-    return { id: generateId(), type: 'todo-list', children: [{ text: options?.text || '' }] };
+    return {
+      id: generateId(),
+      type: 'todo-list',
+      children: [{ text: options?.text || '' }],
+      props: options?.props || { checked: false },
+    };
   },
   insertTodoList: (editor, options = {}) => {
     const { at, focus, text, props } = options;
     const todoList = TodoListCommands.buildTodoListElements(editor, { text, props });
-    Blocks.insertBlock(editor, buildBlockData({ value: [todoList], type: 'TodoList' }), { at, focus });
+    const block = Blocks.buildBlockData({ value: [todoList], type: 'TodoList' });
+    Blocks.insertBlock(editor, block.type, { at, focus, blockData: block });
   },
   deleteTodoList: (editor, blockId) => {
     Blocks.deleteBlock(editor, { blockId });

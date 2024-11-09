@@ -9,7 +9,6 @@ export function update(editor: YooEditor, type: any, value: any) {
 
   if (Range.isExpanded(slate.selection)) {
     Editor.addMark(slate, type, value);
-    editor.applyChanges();
-    editor.emit('change', editor.children);
+    // editor.emit('change', { value: editor.children, operations: [] });
   }
 }

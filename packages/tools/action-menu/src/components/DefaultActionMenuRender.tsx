@@ -34,7 +34,7 @@ const DefaultActionMenuRender = ({
   };
 
   return (
-    <div style={wrapStyles} className="yoopta-action-menu-list-content">
+    <div style={wrapStyles} role="listbox" className="yoopta-action-menu-list-content">
       <div className="yoo-action-menu-max-h-[300px] yoo-action-menu-overflow-y-auto yoo-action-menu-overflow-x-hidden">
         <div
           {...getRootProps()}

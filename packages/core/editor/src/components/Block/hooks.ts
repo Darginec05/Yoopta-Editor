@@ -70,3 +70,34 @@ export const useBlockStyles = (
     [block.meta.depth, transform, transition, isDragging, isOver],
   );
 };
+
+export const useBlockOptionsRefs = () => {
+  const [isBlockOptionsOpen, setIsBlockOptionsOpen] = useState(false);
+
+  const {
+    refs: blockOptionsRefs,
+    floatingStyles: blockOptionsStyles,
+    context: blockOptionsContext,
+  } = useFloating({
+    placement: 'right-start',
+    open: isBlockOptionsOpen,
+    onOpenChange: setIsBlockOptionsOpen,
+    middleware: [inline(), flip(), shift(), offset()],
+  });
+
+  const { isMounted: isBlockOptionsMounted, styles: blockOptionsTransitionStyles } = useTransitionStyles(
+    blockOptionsContext,
+    {
+      duration: 100,
+    },
+  );
+  const blockOptionsFloatingStyle = { ...blockOptionsStyles, ...blockOptionsTransitionStyles };
+
+  return {
+    blockOptionsRefs,
+    blockOptionsFloatingStyle,
+    isBlockOptionsOpen,
+    setIsBlockOptionsOpen,
+    isBlockOptionsMounted,
+  };
+};

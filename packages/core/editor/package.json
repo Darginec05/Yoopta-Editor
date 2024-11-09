@@ -1,6 +1,6 @@
 {
   "name": "@yoopta/editor",
-  "version": "4.8.4",
+  "version": "4.9.1",
   "license": "MIT",
   "private": false,
   "main": "dist/index.js",
@@ -20,7 +20,7 @@
     "immer": "^10.0.3",
     "is-hotkey": "^0.2.0",
     "lodash.clonedeep": "^4.5.0",
-    "slate-history": "^0.100.0"
+    "validator": "^13.12.0"
   },
   "peerDependencies": {
     "react": ">=17.0.2",
@@ -55,7 +55,8 @@
     "wysiwym"
   ],
   "devDependencies": {
-    "@types/lodash.uniqwith": "^4.5.7"
+    "@types/lodash.uniqwith": "^4.5.7",
+    "@types/validator": "^13.12.2"
   },
   "description": "<h2 align=\"center\">Yoopta-Editor v1 🎉</h2> <p align=\"center\">Yoopta-Editor - is an open source notion-like editor 💥</p> <div align=\"center\"> <img width=\"574\" alt=\"Screen Shot 2023-01-25 at 16 04 29\" src=\"https://user-images.githubusercontent.com/29093118/215324525-882bf403-646c-4267-bb5f-c0f37509ac09.png\"> </div>",
   "repository": {
@@ -67,5 +68,5 @@
     "url": "https://github.com/Darginec05/Yoopta-Editor/issues"
   },
   "homepage": "https://github.com/Darginec05/Yoopta-Editor#readme",
-  "gitHead": "12d8460dfe0ead89ee1d6f3f2f1fc68239e93d4c"
+  "gitHead": "016b0f92a45bfcc157e44a7f28820174d0cc5c7e"
 }

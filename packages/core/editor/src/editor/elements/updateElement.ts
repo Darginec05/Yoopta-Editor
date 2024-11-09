@@ -22,7 +22,7 @@ export function updateElement<TElementKeys extends string, TElementProps>(
     throw new Error(`Block with id ${blockId} not found`);
   }
 
-  const slate = findSlateBySelectionPath(editor, { at: [block.meta.order] });
+  const slate = findSlateBySelectionPath(editor, { at: block.meta.order });
 
   if (!slate) {
     console.warn('No slate found');
@@ -47,7 +47,6 @@ export function updateElement<TElementKeys extends string, TElementProps>(
       mode: 'lowest',
     });
 
-    editor.applyChanges();
-    editor.emit('change', editor.children);
+    // editor.emit('change', { value: editor.children, operations: [] });
   });
 }

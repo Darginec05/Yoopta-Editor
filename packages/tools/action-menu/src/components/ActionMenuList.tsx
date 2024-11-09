@@ -1,35 +1,75 @@
 import { useEffect, useState } from 'react';
 import { DefaultActionMenuRender } from './DefaultActionMenuRender';
-import { useFloating, offset, flip, shift, inline, autoUpdate, useTransitionStyles } from '@floating-ui/react';
-import { Editor, Path } from 'slate';
+import { useFloating, offset, flip, shift, autoUpdate, useTransitionStyles } from '@floating-ui/react';
+import { Editor, Element, NodeEntry, Path, Transforms } from 'slate';
 import {
   YooptaBlockData,
   YooptaBlock,
   useYooptaEditor,
-  findSlateBySelectionPath,
   HOTKEYS,
-  findPluginBlockBySelectionPath,
+  findPluginBlockByPath,
   UI,
+  SlateElement,
+  Blocks,
 } from '@yoopta/editor';
 import { ActionMenuRenderProps, ActionMenuToolItem, ActionMenuToolProps } from '../types';
 import { buildActionMenuRenderProps, mapActionMenuItems } from './utils';
 
 const { Portal } = UI;
 
-const filterBy = (item: YooptaBlockData | YooptaBlock['options'], text: string, field: string) => {
-  if (!item || !item?.[field]) return false;
-  const itemField = Array.isArray(item[field]) ? item[field].join(' ') : item[field];
-  return itemField.toLowerCase().indexOf(text.toLowerCase()) > -1;
+const filterBy = (item: YooptaBlockData | YooptaBlock['options'], text: string, field: string): boolean => {
+  if (!item || typeof item[field] === 'undefined') return false;
+
+  const value = item[field];
+  const searchText = text.toLowerCase().trim();
+
+  if (Array.isArray(value)) {
+    return value
+      .filter(Boolean)
+      .map((v) => String(v).toLowerCase())
+      .some((v) => v.includes(searchText));
+  }
+
+  return String(value).toLowerCase().includes(searchText);
 };
 
-const filterActionMenuItems = (block: YooptaBlock, text: string) => {
-  if (!text) return true;
-  return (
-    filterBy(block, text, 'type') ||
-    filterBy(block.options?.display, text, 'title') ||
-    filterBy(block.options, text, 'shortcuts')
-  );
+const filterActionMenuItems = (block: YooptaBlock, searchText: string): boolean => {
+  if (!searchText.trim()) return true;
+  if (!block) return false;
+
+  const searchTerms = searchText.toLowerCase().split(/\s+/);
+
+  return searchTerms.every((term) => {
+    const typeMatch = filterBy(block, term, 'type');
+    if (typeMatch) return true;
+
+    const titleMatch = block.options?.display && filterBy(block.options.display, term, 'title');
+    if (titleMatch) return true;
+
+    const shortcutMatch = block.options && filterBy(block.options, term, 'shortcuts');
+    if (shortcutMatch) return true;
+
+    const descriptionMatch = block.options?.display && filterBy(block.options.display, term, 'description');
+    if (descriptionMatch) return true;
+
+    const aliasMatch = block.options?.aliases && filterBy(block.options, term, 'aliases');
+    if (aliasMatch) return true;
+
+    return false;
+  });
 };
+
+function isSlashPressed(event: KeyboardEvent): boolean {
+  return (
+    event.key === '/' ||
+    event.keyCode === 191 ||
+    event.which === 191 ||
+    // [TODO] - event.code Slash works for both '/' and '?' keys
+    event.code === 'Slash' ||
+    event.key === '/' ||
+    (event.key === '.' && event.shiftKey)
+  );
+}
 
 // [TODO] - add to props
 const TRIGGER = '/';
@@ -64,12 +104,24 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
   const onClose = () => setIsMenuOpen(false);
 
   const onFilter = ({ text }) => {
-    const string = text.trim().replace(TRIGGER, '');
+    const searchText = text.trim().replace(TRIGGER, '');
 
-    if (string.length === 0 || string === TRIGGER) return setActions(blockTypes);
-    const filteredActions = actions.filter((action) => filterActionMenuItems(editor.blocks[action.type], string));
-    const isSelectedItemInsideFilteredActions = filteredActions.some((item) => item.type === selectedAction.type);
-    if (filteredActions.length > 0 && !isSelectedItemInsideFilteredActions) setSelectedAction(filteredActions[0]);
+    if (!searchText) {
+      setActions(blockTypes);
+      return;
+    }
+
+    const filteredActions = blockTypes.filter((action) =>
+      filterActionMenuItems(editor.blocks[action.type], searchText),
+    );
+
+    if (filteredActions.length > 0) {
+      const currentExists = filteredActions.some((item) => item.type === selectedAction?.type);
+
+      if (!currentExists) {
+        setSelectedAction(filteredActions[0]);
+      }
+    }
 
     setActions(filteredActions);
   };
@@ -78,7 +130,7 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
     updateActionMenuPosition();
 
     const handleActionMenuKeyUp = (event: KeyboardEvent) => {
-      const slate = findSlateBySelectionPath(editor, { at: editor.selection });
+      const slate = Blocks.getBlockSlate(editor, { at: editor.path.current });
       const isInsideEditor = editor.refElement?.contains(event.target as Node);
 
       if (!slate || !slate.selection || !isInsideEditor) return;
@@ -91,7 +143,9 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
     };
 
     const handleActionMenuKeyDown = (event: KeyboardEvent) => {
-      const slate = findSlateBySelectionPath(editor, { at: editor.selection });
+      if (event.isComposing) return;
+
+      const slate = Blocks.getBlockSlate(editor, { at: editor.path.current });
       const slateEditorRef = event.currentTarget as HTMLElement;
 
       const isInsideEditor = slateEditorRef?.contains(event.target as Node);
@@ -101,7 +155,12 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
 
       if (isInsideCustomEditor || !slate || !slate.selection || !isInsideEditor) return;
 
-      if (HOTKEYS.isSlashCommand(event)) {
+      const isSlashKey = isSlashPressed(event);
+
+      if (isSlashKey || HOTKEYS.isSlashCommand(event)) {
+        const isInTypingMode = slate.selection && !Editor.isEditor(slate.selection.anchor.path[0]);
+        if (!isInTypingMode) return;
+
         const parentPath = Path.parent(slate.selection.anchor.path);
         const string = Editor.string(slate, parentPath);
         const isStart = Editor.isStart(slate, slate.selection.anchor, slate.selection.focus);
@@ -222,7 +281,23 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
         const type = selected?.dataset.actionMenuItemType;
         if (!type) return;
 
-        editor.blocks[type].create({ deleteText: true, focus: true });
+        const blockEntry: NodeEntry<SlateElement<string>> | undefined = Editor.above(slate, {
+          match: (n) => Element.isElement(n) && Editor.isBlock(slate, n),
+          mode: 'lowest',
+        });
+
+        if (blockEntry) {
+          const [, currentNodePath] = blockEntry;
+          const path = blockEntry ? currentNodePath : [];
+
+          const start = Editor.start(slate, path);
+          const range = { anchor: slate.selection.anchor, focus: start };
+
+          Transforms.select(slate, range);
+          Transforms.delete(slate);
+        }
+
+        editor.toggleBlock(type, { deleteText: true, focus: true });
         return onClose();
       }
     };
@@ -231,8 +306,8 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
       document.addEventListener('click', onClose);
     }
 
-    if (editor.selection) {
-      const block = findPluginBlockBySelectionPath(editor, { at: editor.selection });
+    if (typeof editor.path.current === 'number') {
+      const block = findPluginBlockByPath(editor, { at: editor.path.current });
       if (!block) return;
 
       const slateEditorRef = editor.refElement?.querySelector(
@@ -249,7 +324,7 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
         document.removeEventListener('click', onClose);
       };
     }
-  }, [actions, isMenuOpen, editor.selection?.[0]]);
+  }, [actions, isMenuOpen, editor.path]);
 
   const empty = actions.length === 0;
 
@@ -266,7 +341,7 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
     onMouseEnter,
     selectedAction,
     view: 'default',
-    mode: 'create',
+    mode: 'toggle',
   });
 
   useEffect(() => {
@@ -294,7 +369,6 @@ const ActionMenuList = ({ items, render }: ActionMenuToolProps) => {
   }
 
   return (
-    // [TODO] - take care about SSR
     <Portal id="yoo-action-menu-list-portal">
       {isMounted && (
         <div className="yoopta-action-menu-list" style={style} ref={refs.setFloating}>
