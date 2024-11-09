@@ -5,11 +5,11 @@ Open-source email-builder built on top of the Yoopta-Editor
 ## Installation
 
 ```javascript
-npm install @yoopta/email-builder
+npm install @yoopta/email-builder slate slate-react
 # or
-yarn add @yoopta/email-builder
+yarn add @yoopta/email-builder slate slate-react
 # or
-pnpm add @yoopta/email-builder
+pnpm add @yoopta/email-builder slate slate-react
 ```
 
 ## Quick Start
