@@ -43,6 +43,7 @@ const Video = new YooptaPlugin<VideoElementMap, VideoPluginOptions>({
       title: 'Video',
       description: 'Upload from device, embed from Youtube, Vimeo',
     },
+    enableFromClipboard: true,
   },
   commands: VideoCommands,
   parsers: {

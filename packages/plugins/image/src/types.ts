@@ -32,6 +32,7 @@ export type ImagePluginOptions = {
     maxWidth?: number;
     maxHeight?: number;
   };
+  enableFromClipboard?: boolean;
 };
 
 export type ImageElementMap = {

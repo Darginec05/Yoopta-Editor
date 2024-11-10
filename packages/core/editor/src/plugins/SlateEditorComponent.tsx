@@ -11,7 +11,6 @@ import { TextLeaf } from '../components/TextLeaf/TextLeaf';
 
 import { IS_FOCUSED_EDITOR } from '../utils/weakMaps';
 import { deserializeHTML } from '../parsers/deserializeHTML';
-import { pasteClipboardImage } from '../parsers/getClipboardImage';
 import { useEventHandlers, useSlateEditor } from './hooks';
 import { SlateElement } from '../editor/types';
 import { Paths } from '../editor/paths';
@@ -163,9 +162,9 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
 
       const data = event.clipboardData;
       const html = data.getData('text/html');
-      const clipboardItem = data.items[0];
 
       const parsedHTML = new DOMParser().parseFromString(html, 'text/html');
+
       if (parsedHTML.body.childNodes.length > 0) {
         const blocks = deserializeHTML(editor, parsedHTML.body);
 
@@ -211,11 +210,6 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
 
           return;
         }
-      }
-      const isImageInClipboard = clipboardItem?.type?.startsWith('image/');
-      if (isImageInClipboard) {
-        event.preventDefault();
-        pasteClipboardImage(editor, clipboardItem);
       }
     },
     [eventHandlers.onPaste, editor.readOnly],

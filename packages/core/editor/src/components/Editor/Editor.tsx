@@ -169,7 +169,6 @@ const Editor = ({
 
         navigator.clipboard.write([clipboardItem]).then(() => {
           const html = new DOMParser().parseFromString(htmlString, 'text/html');
-          console.log('HTML copied\n', html.body);
         });
 
         if (HOTKEYS.isCut(event)) {
@@ -306,6 +305,57 @@ const Editor = ({
     }
   };
 
+  const addImageOrVideoFromClipboard = async (file: File) => {
+    const ImagePlugin = {
+      plugin: editor.plugins.Image,
+      type: 'Image',
+    };
+    const VideoPlugin = {
+      plugin: editor.plugins.Video,
+      type: 'Video',
+    };
+
+    const isImage = file.type.startsWith('image/');
+    const { plugin, type } = isImage ? ImagePlugin : VideoPlugin;
+
+    if (!plugin?.options) return;
+
+    if (!plugin.options.enableFromClipboard) return;
+
+    const mimeTypes = plugin.options.accept;
+    if (isImage && !mimeTypes.includes(file.type)) return;
+    if (!file.type.includes('video')) return;
+
+    const element = await plugin.options.onUpload(file);
+    let block;
+    if (type === 'Image') {
+      block = plugin.commands?.buildImageElements(editor, { props: element });
+    }
+    if (type === 'Video') {
+      block = plugin.commands?.buildVideoElements(editor, { props: element });
+    }
+    const blockData = Blocks.buildBlockData({ type, value: [block] });
+    Blocks.insertBlock(editor, type, { focus: true, blockData });
+  };
+
+  const onPaste = (e: ClipboardEvent) => {
+    const items = e.clipboardData.items;
+    for (const item of items) {
+      const file = item.getAsFile();
+      if (!file) continue;
+      addImageOrVideoFromClipboard(file);
+    }
+  };
+
+  const onDrop = (e: DragEvent) => {
+    const items = e.dataTransfer?.files;
+    if (!items) return;
+    for (const file of items) {
+      if (!file) continue;
+      addImageOrVideoFromClipboard(file);
+    }
+  };
+
   const editorStyles: CSSProperties = getEditorStyles({
     userSelect: selectionBox.selection ? 'none' : 'auto',
     pointerEvents: selectionBox.selection ? 'none' : 'auto',
@@ -322,6 +372,8 @@ const Editor = ({
       onBlur={onBlur}
       onCopy={onCopy}
       onCut={onCopy}
+      onPaste={onPaste}
+      onDrop={onDrop}
     >
       <RenderBlocks editor={editor} marks={marks} placeholder={placeholder} />
       {selectionBoxRoot !== false && (
