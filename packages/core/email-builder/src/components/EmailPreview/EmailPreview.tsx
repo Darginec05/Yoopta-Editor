@@ -1,6 +1,5 @@
 import { EmailTemplateOptions, YooEditor, YooptaContentValue } from '@yoopta/editor';
 import { CSSProperties, useEffect, useRef, useState } from 'react';
-import { useDebounce } from 'use-debounce';
 import { Card } from '../ui/card';
 
 type EmailPreviewProps = {
@@ -16,9 +15,7 @@ const EmailPreview = ({ editor, value, template }: EmailPreviewProps) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
-    console.log('EmailPreview value', value);
     const emailString = editor.getEmail(value);
-    console.log('EmailPreview emailString', emailString);
     setEmailHTML(emailString);
   }, [value]);
 
