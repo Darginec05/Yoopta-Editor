@@ -74,7 +74,7 @@ const Callout = new YooptaPlugin<CalloutElementMap>({
         const { align = 'left', depth = 0 } = blockMeta || {};
 
         return `
-        <table style="width: 100%;">
+        <table style="width: 100%; ">
           <tbody style="width: 100%;">
             <tr>
                 <td data-theme="${

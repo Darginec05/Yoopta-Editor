@@ -12,14 +12,15 @@ type EmailPreviewProps = {
 };
 
 const EmailPreview = ({ editor, value, template }: EmailPreviewProps) => {
-  const [debounceValue] = useDebounce(value, 1000);
   const [emailHTML, setEmailHTML] = useState<string>('');
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
-    const emailString = editor.getEmail(debounceValue);
+    console.log('EmailPreview value', value);
+    const emailString = editor.getEmail(value);
+    console.log('EmailPreview emailString', emailString);
     setEmailHTML(emailString);
-  }, [debounceValue]);
+  }, [value]);
 
   const bodyStyle = template?.body?.attrs?.style;
 

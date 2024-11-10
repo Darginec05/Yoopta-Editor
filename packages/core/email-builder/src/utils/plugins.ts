@@ -34,7 +34,7 @@ export const getPlugins = ({ media, sizes }: PluginParams) => {
     HeadingThree,
     Blockquote,
     Callout,
-    // ButtonPlugin,
+    ButtonPlugin,
     NumberedList,
     BulletedList,
     TodoList,

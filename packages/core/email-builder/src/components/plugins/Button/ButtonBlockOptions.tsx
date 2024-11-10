@@ -1,15 +1,16 @@
 import { Elements, UI, YooEditor, YooptaBlockData } from '@yoopta/editor';
-import { ButtonElementProps, ButtonElementVariant } from './types';
+import { ButtonElement, ButtonElementProps, ButtonElementSize, ButtonElementVariant } from './types';
 import { CSSProperties } from 'react';
+import { Select, SelectTrigger } from '../../ui/select';
+import { PaletteIcon, RulerIcon } from 'lucide-react';
 const { ExtendedBlockActions, BlockOptionsMenuGroup, BlockOptionsMenuItem, BlockOptionsSeparator } = UI;
 
 type Props = {
   editor: YooEditor;
   block: YooptaBlockData;
   props?: ButtonElementProps;
+  element: ButtonElement;
 };
-
-// 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost'
 
 const VARIANT_STYLES: Record<ButtonElementVariant, CSSProperties> = {
   default: {
@@ -34,8 +35,20 @@ const VARIANT_STYLES: Record<ButtonElementVariant, CSSProperties> = {
   },
 };
 
-const ButtonBlockOptions = ({ editor, block, props: buttonProps }: Props) => {
-  const onChangeVariant = (variant: ButtonElementVariant) => {
+const SIZE_STYLES: Record<ButtonElementSize, CSSProperties> = {
+  default: {
+    padding: '0.5rem 1rem',
+  },
+  sm: {
+    padding: '0.25rem 0.5rem',
+  },
+  lg: {
+    padding: '0.75rem 1.5rem',
+  },
+};
+
+const ButtonBlockOptions = ({ editor, block, element, props: buttonProps }: Props) => {
+  const onChangeVariant = (variant: string) => {
     Elements.updateElement(editor, block.id, {
       type: 'button',
       props: {
@@ -43,8 +56,14 @@ const ButtonBlockOptions = ({ editor, block, props: buttonProps }: Props) => {
       },
     });
   };
-
-  const isActiveTheme = (variant: ButtonElementVariant) => buttonProps?.variant === variant;
+  const onChangeSize = (size: string) => {
+    Elements.updateElement(editor, block.id, {
+      type: 'button',
+      props: {
+        size,
+      },
+    });
+  };
 
   return (
     <ExtendedBlockActions
@@ -54,49 +73,40 @@ const ButtonBlockOptions = ({ editor, block, props: buttonProps }: Props) => {
       <BlockOptionsSeparator />
       <BlockOptionsMenuGroup>
         <BlockOptionsMenuItem>
-          <button
-            type="button"
-            className="yoopta-block-options-button justify-between"
-            onClick={() => onChangeVariant('default')}
+          <Select
+            className="select-button-theme"
+            options={Object.keys(VARIANT_STYLES)
+              .map((key) => ({
+                value: key,
+                label: key,
+              }))
+              .sort((a, b) => a.label.localeCompare(b.label))}
+            onChange={onChangeVariant}
+            value={buttonProps?.variant || 'default'}
           >
-            <span className="flex">Default</span>
-          </button>
+            <SelectTrigger className="yoopta-block-options-button">
+              <PaletteIcon className="w-4 h-4 mr-2" />
+              Variants
+            </SelectTrigger>
+          </Select>
         </BlockOptionsMenuItem>
         <BlockOptionsMenuItem>
-          <button
-            type="button"
-            className="yoopta-block-options-button justify-between"
-            onClick={() => onChangeVariant('destructive')}
+          <Select
+            className="select-button-size"
+            options={Object.keys(SIZE_STYLES)
+              .map((key) => ({
+                value: key,
+                label: key,
+              }))
+              .sort((a, b) => a.label.localeCompare(b.label))}
+            onChange={onChangeSize}
+            value={buttonProps?.size || 'default'}
           >
-            <span className="flex">Destructive</span>
-          </button>
-        </BlockOptionsMenuItem>
-        <BlockOptionsMenuItem>
-          <button
-            type="button"
-            className="yoopta-block-options-button justify-between"
-            onClick={() => onChangeVariant('outline')}
-          >
-            <span className="flex">Outline</span>
-          </button>
-        </BlockOptionsMenuItem>
-        <BlockOptionsMenuItem>
-          <button
-            type="button"
-            className="yoopta-block-options-button justify-between"
-            onClick={() => onChangeVariant('secondary')}
-          >
-            <span className="flex">Secondary</span>
-          </button>
-        </BlockOptionsMenuItem>
-        <BlockOptionsMenuItem>
-          <button
-            type="button"
-            className="yoopta-block-options-button justify-between"
-            onClick={() => onChangeVariant('ghost')}
-          >
-            <span className="flex">Ghost</span>
-          </button>
+            <SelectTrigger className="yoopta-block-options-button">
+              <RulerIcon className="w-4 h-4 mr-2" />
+              Size
+            </SelectTrigger>
+          </Select>
         </BlockOptionsMenuItem>
       </BlockOptionsMenuGroup>
     </ExtendedBlockActions>

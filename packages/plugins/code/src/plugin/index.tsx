@@ -91,7 +91,7 @@ const Code = new YooptaPlugin<CodeElementMap, CodePluginBlockOptions>({
           props.language || 'javascript'
         }" data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${
           depth * 20
-        }px; display: flex; width: 100%; justify-content: ${justify}; background-color: #263238; color: #fff; padding: 20px 24px; white-space: pre-line;"><code>${escapedText}</code></pre>
+        }px; display: flex; width: auto; justify-content: ${justify}; background-color: #263238; color: #fff; padding: 20px 24px;"><code>${escapedText}</code></pre>
                 </td>
               </tr>
             </tbody>

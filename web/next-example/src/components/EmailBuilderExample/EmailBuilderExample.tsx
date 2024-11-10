@@ -19,7 +19,7 @@ const templateOptions: EmailTemplateOptions = {
     styles: [
       {
         id: 'font',
-        content: `* { font-family: Verdana, sans-serif; }`,
+        content: `* { font-family: Verdana, sans-serif; } table { border-collapse: collapse; border-spacing: 0; }`,
       },
     ],
     meta: [

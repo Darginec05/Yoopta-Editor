@@ -1,47 +1,123 @@
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
-import { cva, type VariantProps } from 'class-variance-authority';
+import { type VariantProps } from 'class-variance-authority';
+import { ButtonElementSize, ButtonElementVariant } from '../plugins/Button/types';
 
-import { cn } from '../../lib/utils';
-
-const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
-  {
-    variants: {
-      variant: {
-        default: 'bg-primary text-primary-foreground shadow hover:bg-primary/90',
-        destructive: 'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
-        outline: 'border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground',
-        secondary: 'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-primary underline-offset-4 hover:underline',
-      },
-      size: {
-        default: 'h-9 px-4 py-2',
-        sm: 'h-8 rounded-md px-3 text-xs',
-        lg: 'h-10 rounded-md px-8',
-        icon: 'h-9 w-9',
-      },
-    },
-    defaultVariants: {
-      variant: 'default',
-      size: 'default',
-    },
+export const baseStyles = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  cursor: 'pointer',
+  justifyContent: 'center',
+  borderRadius: '0.375rem',
+  transition: 'all 0.2s',
+  borderWidth: 0,
+  '&:focusVisible': {
+    outline: 'none',
+    ring: '1',
   },
-);
+};
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+export const defaultSizeStyles = {
+  ...baseStyles,
+  height: '2.25rem',
+  padding: '0.75rem 1rem',
+  fontSize: '0.875rem',
+};
+
+export const smallSizeStyles = {
+  ...baseStyles,
+  height: '2rem',
+  padding: '0.5rem 0.75rem',
+  fontSize: '0.75rem',
+};
+
+export const largeSizeStyles = {
+  ...baseStyles,
+  height: '2.5rem',
+  padding: '1rem 1.5rem',
+  fontSize: '1rem',
+};
+
+export const defaultVariantStyles = {
+  ...baseStyles,
+  backgroundColor: '#3B82F6',
+  color: '#fff',
+  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+  '&:hover': {
+    backgroundColor: '#3B82F6',
+  },
+};
+
+export const destructiveVariantStyles = {
+  ...baseStyles,
+  backgroundColor: '#EF4444',
+  color: '#fff',
+  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+  '&:hover': {
+    backgroundColor: '#EF4444',
+  },
+};
+
+export const outlineVariantStyles = {
+  ...baseStyles,
+  border: '1px solid #D1D5DB',
+  backgroundColor: '#F9FAFB',
+  color: '#111827',
+  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+  '&:hover': {
+    backgroundColor: '#F9FAFB',
+    color: '#3B82F6',
+  },
+};
+
+export const secondaryVariantStyles = {
+  ...baseStyles,
+  backgroundColor: '#6B7280',
+  color: '#fff',
+  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+  '&:hover': {
+    backgroundColor: '#6B7280',
+  },
+};
+
+export const ghostVariantStyles = {
+  ...baseStyles,
+  '&:hover': {
+    backgroundColor: '#3B82F6',
+    color: '#fff',
+  },
+};
+
+export const VARIANT_STYLES_MAP = {
+  default: defaultVariantStyles,
+  destructive: destructiveVariantStyles,
+  outline: outlineVariantStyles,
+  secondary: secondaryVariantStyles,
+  ghost: ghostVariantStyles,
+};
+
+export const SIZE_STYLES_MAP = {
+  default: defaultSizeStyles,
+  sm: smallSizeStyles,
+  lg: largeSizeStyles,
+};
+
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   asChild?: boolean;
+  variant: ButtonElementVariant;
+  size: ButtonElementSize;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
-    return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
+    const variantStyle = VARIANT_STYLES_MAP[variant || 'default'];
+    const sizeStyle = SIZE_STYLES_MAP[size || 'default'];
+    const style = { ...variantStyle, ...sizeStyle };
+    return <Comp style={style} ref={ref} data-variant={variant} data-size={size} {...props} />;
   },
 );
+
 Button.displayName = 'Button';
 
-export { Button, buttonVariants };
+export { Button };

@@ -13,7 +13,7 @@ const TableRow = ({
     return extendRender({ attributes, children, blockId, element, HTMLAttributes });
   }
 
-  const { className, ...htmlAttrs } = HTMLAttributes || {};
+  const { className = '', ...htmlAttrs } = HTMLAttributes || {};
 
   return (
     <tr {...htmlAttrs} className={`yoopta-table-row ${className}`} data-element-id={element.id} {...attributes}>

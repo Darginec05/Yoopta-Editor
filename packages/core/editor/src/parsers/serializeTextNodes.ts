@@ -22,10 +22,9 @@ export function serializeTextNodes(nodes: any[]): string {
           text = `<code style="background-color: rgb(242 242 242); border-radius: .25rem; font-size: 75%; padding: 3px 6px;">${text}</code>`;
         }
         if (node.highlight) {
-          text = `<span style="color:${node.highlight.color};">${text}</span>`;
-        }
-        if (node.highlight) {
-          text = `<mark style="color: ${node.highlight?.color}; background-color: ${node.highlight?.backgroundColor};">${text}</mark>`;
+          text = `<mark style="color: ${node.highlight?.color}; background-color: ${
+            node.highlight?.backgroundColor || 'transparent'
+          };">${text}</mark>`;
         }
 
         return text;
