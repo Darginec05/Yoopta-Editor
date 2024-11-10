@@ -64,6 +64,32 @@ const HeadingThree = new YooptaPlugin<Record<'heading-three', HeadingThreeElemen
         return `### ${serializeTextNodesIntoMarkdown(element.children)}\n`;
       },
     },
+    email: {
+      serialize: (element, text, blockMeta) => {
+        const { depth = 0, align = 'left' } = blockMeta || {};
+
+        return `<table style="width:100%;">
+        <tbody style="width:100%;">
+          <tr>
+            <td>
+              <h3 data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${
+          depth * 20
+        }px; text-align: ${align}; 
+        font-size: 1.5rem;
+        font-weight: 600;
+        letter-spacing: -.025em;
+        line-height: 2rem;
+        margin-bottom: .25rem;
+        margin-top: .5rem;
+        scroll-margin: 5rem;">
+                ${serializeTextNodes(element.children)}
+              </h3>
+            </td>
+          </tr>
+        </tbody>
+      </table>`;
+      },
+    },
   },
 });
 

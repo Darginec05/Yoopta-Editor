@@ -9,6 +9,7 @@ export {
 } from './contexts/YooptaContext/YooptaContext';
 import { YooptaEditor, type YooptaEditorProps, type YooptaOnChangeOptions } from './YooptaEditor';
 export { deserializeHTML } from './parsers/deserializeHTML';
+export { type EmailTemplateOptions } from './parsers/getEmail';
 
 // [TODO] - should be in separated package @yoopta/common/ui or @yoopta/ui
 export { UI } from './UI';
@@ -49,7 +50,7 @@ export {
   PluginEventHandlerOptions,
   PluginCustomEditorRenderProps,
   PluginDeserializeParser,
-  PluginserializeParser,
+  PluginSerializeParser,
   YooptaMarkProps,
   PluginOptions,
 } from './plugins/types';

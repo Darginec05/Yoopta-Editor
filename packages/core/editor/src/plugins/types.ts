@@ -93,15 +93,15 @@ export type Plugin<TElementMap extends Record<string, SlateElement>, TPluginOpti
 
 export type PluginParsers = {
   deserialize?: PluginDeserializeParser;
-  serialize?: PluginserializeParser;
+  serialize?: PluginSerializeParser;
 };
 
-export type PluginParserTypes = 'html' | 'markdown';
+export type PluginParserTypes = 'html' | 'markdown' | 'email';
 export type PluginParserValues = 'deserialize' | 'serialize';
 
-export type PluginserializeParser = (
+export type PluginSerializeParser = (
   element: SlateElement,
-  text: string,
+  content: string,
   blockMetaData?: YooptaBlockBaseMeta,
 ) => string;
 

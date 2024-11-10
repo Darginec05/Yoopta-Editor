@@ -89,6 +89,31 @@ const TodoList = new YooptaPlugin<Pick<ListElementMap, 'todo-list'>>({
         return `- ${element.props.checked ? '[x]' : '[ ]'} ${serializeTextNodesIntoMarkdown(element.children)}`;
       },
     },
+    email: {
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+
+        return `
+          <table style="width:100%;">
+           <tbody style="width:100%;">
+              <tr>
+                <td>
+                  <ul data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${
+          depth * 20
+        }px; text-align: ${align}; font-size: 16px;
+    line-height: 28px;
+    padding-bottom: 2px;
+    padding-left: 1rem;
+    padding-top: 2px;
+    margin: 0;
+    "><li>[${element.props.checked ? 'x' : ' '}] ${serializeTextNodes(element.children)}</li></ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        `;
+      },
+    },
   },
 });
 

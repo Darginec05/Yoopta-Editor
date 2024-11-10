@@ -6,8 +6,8 @@ import VimeoPlayer from './VimeoPlayer';
 import YouTubePlayer from './YoutubePlayer';
 
 type VideoComponentProps = Omit<VideoElementProps, 'sizes'> & {
-  width: number;
-  height: number;
+  width: number | string;
+  height: number | string;
 } & Pick<RenderElementProps, 'attributes' | 'children'>;
 
 const PROVIDERS = {

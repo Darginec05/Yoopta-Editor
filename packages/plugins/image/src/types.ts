@@ -1,8 +1,8 @@
 import { type SlateElement } from '@yoopta/editor';
 
 export type ImageSizes = {
-  width: number;
-  height: number;
+  width: number | string;
+  height: number | string;
 };
 
 export type ImageElementProps = {
@@ -29,8 +29,8 @@ export type ImagePluginOptions = {
   accept?: string;
   optimizations?: ImageOptimizationFields;
   maxSizes?: {
-    maxWidth?: number;
-    maxHeight?: number;
+    maxWidth?: number | string;
+    maxHeight?: number | string;
   };
 };
 

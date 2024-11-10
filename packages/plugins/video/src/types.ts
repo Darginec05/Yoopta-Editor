@@ -1,8 +1,8 @@
 import { type SlateElement } from '@yoopta/editor';
 
 export type VideoSizes = {
-  width: number;
-  height: number;
+  width: number | string;
+  height: number | string;
 };
 
 export type VideoElementSettings = {
@@ -40,8 +40,8 @@ export type VideoPluginOptions = {
   onUploadPoster?: (file: File) => Promise<string>;
   accept?: string;
   maxSizes?: {
-    maxWidth?: number;
-    maxHeight?: number;
+    maxWidth?: number | string;
+    maxHeight?: number | string;
   };
 };
 

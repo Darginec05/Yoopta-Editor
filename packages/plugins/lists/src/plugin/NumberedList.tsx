@@ -84,6 +84,29 @@ const NumberedList = new YooptaPlugin<Pick<ListElementMap, 'numbered-list'>>({
         return `- ${serializeTextNodesIntoMarkdown(element.children)}`;
       },
     },
+    email: {
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+
+        return `
+          <table style="width:100%;">
+            <tbody style="width:100%;">
+              <tr>
+                <td>
+                  <ol data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${depth}px; text-align: ${align};     font-size: 16px;
+    line-height: 28px;
+    padding-bottom: 2px;
+    padding-left: 1rem;
+    padding-top: 2px;
+    margin: 0;
+    "><li>${serializeTextNodes(element.children)}</li></ol>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        `;
+      },
+    },
   },
 });
 

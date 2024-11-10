@@ -2,6 +2,7 @@ import { generateId, SlateElement, YooptaPlugin } from '@yoopta/editor';
 import { ImageCommands } from '../commands';
 import { ImageElementMap, ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';
 import { ImageRender } from '../ui/Image';
+import { limitSizes } from '../utils/limitSizes';
 
 const ALIGNS_TO_JUSTIFY = {
   left: 'flex-start',
@@ -9,7 +10,7 @@ const ALIGNS_TO_JUSTIFY = {
   right: 'flex-end',
 };
 
-// [TODO] - caption element??,
+// [TODO] - caption element??
 const Image = new YooptaPlugin<ImageElementMap, ImagePluginOptions>({
   type: 'Image',
   elements: {
@@ -40,18 +41,26 @@ const Image = new YooptaPlugin<ImageElementMap, ImagePluginOptions>({
     html: {
       deserialize: {
         nodeNames: ['IMG'],
-        parse: (el) => {
+        parse: (el, editor) => {
           if (el.nodeName === 'IMG') {
+            const sizes = {
+              width: el.getAttribute('width') ? parseInt(el.getAttribute('width') || '650', 10) : 650,
+              height: el.getAttribute('height') ? parseInt(el.getAttribute('height') || '500', 10) : 500,
+            };
+
+            const maxSizes = (editor.plugins.Image.options as ImagePluginOptions)?.maxSizes;
+            const limitedSizes = limitSizes(sizes!, {
+              width: maxSizes!.maxWidth!,
+              height: maxSizes!.maxHeight!,
+            });
+
             const props: SlateElement<'image', ImageElementProps>['props'] = {
               nodeType: 'void',
               src: el.getAttribute('src') || '',
               alt: el.getAttribute('alt') || '',
               srcSet: el.getAttribute('srcset') || '',
               fit: (el.getAttribute('objectFit') || 'contain') as ImageElementProps['fit'],
-              sizes: {
-                width: el.getAttribute('width') ? parseInt(el.getAttribute('width') || '650', 10) : 650,
-                height: el.getAttribute('height') ? parseInt(el.getAttribute('height') || '500', 10) : 500,
-              },
+              sizes: limitedSizes,
             };
 
             const node: SlateElement = {
@@ -74,13 +83,37 @@ const Image = new YooptaPlugin<ImageElementMap, ImagePluginOptions>({
           element.props.alt
         }" width="${element.props.sizes.width}" height="${element.props.sizes.height}" objectFit="${
           element.props.fit
-        }"></img>
+        }"/>
         </div>`;
       },
     },
     markdown: {
       serialize: (element, text) => {
         return `![${element.props.alt}](${element.props.src})\n`;
+      },
+    },
+    email: {
+      serialize: (element, text, blockMeta) => {
+        const { align = 'center', depth = 0 } = blockMeta || {};
+        const justify = ALIGNS_TO_JUSTIFY[align] || 'center';
+
+        return `
+          <table style="width:100%;">
+            <tbody style="width:100%;">
+              <tr>
+                <td style="margin-left: ${
+                  depth * 20
+                }px; display: flex; width: 100%; justify-content: ${justify}; margin-top: 1rem;">
+                    <img data-meta-align="${align}" style="margin: 0 auto; object-fit:${
+          element.props.fit || 'contain'
+        };" data-meta-depth="${depth}" src="${element.props.src}" alt="${element.props.alt}" width="${
+          element.props.sizes.width
+        }" height="${element.props.sizes.height}" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        `;
       },
     },
   },

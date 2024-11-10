@@ -66,7 +66,9 @@ export function mergeBlock(editor: YooEditor) {
     editor.setPath({ current: targetBlock.meta.order });
 
     try {
-      ReactEditor.focus(targetSlate);
+      setTimeout(() => {
+        ReactEditor.focus(targetSlate);
+      }, 0);
     } catch (error) {
       console.error('Error setting focus:', error);
     }

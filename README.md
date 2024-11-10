@@ -49,7 +49,7 @@ All of this is customizable, extensible, and easy to set up!
 
   - [**@yoopta/editor**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/core/editor/README.md)
   - [**@yoopta/exports**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/core/exports/README.md)
-  - [**@yoopta/starter-kit**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/core/starter-kit/README.md)
+  - [**@yoopta/email-builder**](https://github.com/Darginec05/Yoopta-Editor/blob/master/packages/core/email-builder/README.md)
 
 - Plugins
 

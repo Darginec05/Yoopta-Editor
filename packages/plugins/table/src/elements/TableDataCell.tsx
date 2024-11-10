@@ -69,7 +69,7 @@ const TableDataCell = ({
     minWidth: elementWidth,
   };
 
-  const { className: extendedClassName, ...htmlAttrs } = HTMLAttributes || {};
+  const { className: extendedClassName = '', ...htmlAttrs } = HTMLAttributes || {};
 
   const className = isDataCellAsHeader
     ? `yoopta-table-data-cell yoopta-table-data-cell-head ${extendedClassName}`
