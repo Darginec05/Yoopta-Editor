@@ -183,7 +183,11 @@ const EmailBuilderExample = () => {
 
   return (
     <div className="w-full p-10">
-      <Head title="Open-Source Email builder" />
+      <Head
+        title="Yoopta Email Builder — Professional Email Template Editor"
+        description="Free and open-source email builder for creating beautiful, responsive email templates. Features real-time preview, customizable components, and HTML export."
+        keywords="rich-text,notion,notion-editor, email builder, email editor, email template builder, react email builder, open source email editor, responsive email templates, html email creator"
+      />
       <CheckSourceCode
         withBackButton
         directLink="https://github.com/Darginec05/Yoopta-Editor/blob/master/web/next-example/src/components/EmailBuilderExample/EmailBuilderExample.tsx#L268"
