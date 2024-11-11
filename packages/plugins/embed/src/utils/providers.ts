@@ -24,6 +24,16 @@ export const getDailymotionId = (url: string) => {
   return null;
 };
 
+export const getWistiaId = (url: string) => {
+  const match = url.match(/(?:https?:\/\/)?(?:www\.)?wistia\.com\/medias\/(.+)/);
+  return match ? match[1] : null;
+};
+
+export const getLoomId = (url: string) => {
+  const match = url.match(/(?:https?:\/\/)?(?:www\.)?loom\.com\/share\/(.+)/);
+  return match ? match[1] : null;
+};
+
 export function getInstagramId(url: string) {
   const regex = /(?:https?:\/\/)?(?:www\.)?instagram\.com(?:\/p\/|\/reel\/|\/tv\/)([^\/?#&]+).*$/;
   const match = url.match(regex);
@@ -37,6 +47,10 @@ export function getProvider(url: string): EmbedProviderTypes | null {
     return 'vimeo';
   } else if (url.includes('dailymotion.com') || url.includes('dai.ly')) {
     return 'dailymotion';
+  } else if (url.includes('loom.com')) {
+    return 'loom';
+  } else if (url.includes('wistia.com')) {
+    return 'wistia';
   } else if (url.includes('twitter') || url.includes('https://x.com')) {
     return 'twitter';
   } else if (url.includes('figma')) {
@@ -70,6 +84,8 @@ export const ProviderGetters = {
   youtube: getYoutubeId,
   vimeo: getVimeoId,
   dailymotion: getDailymotionId,
+  wistia: getWistiaId,
+  loom: getLoomId,
   twitter: getTwitterEmbedId,
   figma: getFigmaUrl,
   instagram: getInstagramId,
