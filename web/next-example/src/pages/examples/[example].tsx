@@ -163,23 +163,23 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
     description: '',
   },
   withCommandsAPI: {
-    title: 'Editor Commands API (new)',
+    title: 'Editor Commands API',
     description: '',
   },
   withPluginEvents: {
-    title: 'Plugin Events (new)',
+    title: 'Plugin Events',
     description: '',
   },
   withSlateExtensions: {
-    title: 'Customize plugin elements behaviour (new)',
+    title: 'Customize plugin elements behaviour',
     description: '',
   },
   withEditorHistory: {
-    title: 'History API: Undo/Redo (new)',
+    title: 'History API: Undo/Redo',
     description: '',
   },
   withEditorOperations: {
-    title: 'Core: Editor Operations (new)',
+    title: 'Core: Editor Operations',
     description: '',
   },
   withEmailBuilder: {

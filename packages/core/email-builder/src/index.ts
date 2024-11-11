@@ -1,8 +1,9 @@
 import { EmailBuilder } from './components/EmailBuilder/EmailBuilder';
 import { EmailPreview } from './components/EmailPreview/EmailPreview';
+import { EmailHeader } from './components/EmailHeader/EmailHeader';
 
 export default EmailBuilder;
-export { EmailPreview };
+export { EmailPreview, EmailHeader };
 
 import { YooptaEmailEditor } from './utils/types';
 export { YooptaEmailEditor };

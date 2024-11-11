@@ -1,6 +1,6 @@
 import { EmailTemplateOptions, YooptaContentValue } from '@yoopta/editor';
 import EmailBuilder, { createYooptaEmailEditor, YooptaEmailEditor } from '@yoopta/email-builder';
-import { ChangeEvent, useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { Button } from '../ui/button';
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import { Head } from '../Head/Head';
@@ -107,7 +107,9 @@ const EmailBuilderExample = () => {
     subjectEmail: '',
   });
 
-  const onChange = (data: YooptaContentValue) => setValue(data);
+  const onChange = (data: YooptaContentValue) => {
+    setValue(data);
+  };
 
   const onChangeEmailField = (event: ChangeEvent<HTMLInputElement>) => {
     setEmailFields((prev) => ({ ...prev, [event.target.name]: event.target.value }));
@@ -164,15 +166,32 @@ const EmailBuilderExample = () => {
     toast(<p>Email content copied to clipboard</p>);
   };
 
+  // !!! Use onChange prop instead of this
+  // [TODO] Weird behavior with NextJS on production mode
+  useEffect(() => {
+    console.log('isprod', process.env.NODE_ENV === 'production');
+    if (process.env.NODE_ENV === 'production') {
+      // in dev mode it's object, in prod it's array. WTF NextJS?
+      const handleChange = (payload) => {
+        onChange(payload?.[0]?.value);
+      };
+
+      editor.on('change', handleChange);
+      return () => editor.off('change', handleChange);
+    }
+  }, []);
+
   return (
     <div className="w-full p-10">
       <Head title="Open-Source Email builder" />
       <CheckSourceCode
         withBackButton
-        directLink="https://github.com/Darginec05/Yoopta-Editor/blob/master/web/next-example/src/components/EmailBuilderExample/EmailBuilderExample.tsx"
+        directLink="https://github.com/Darginec05/Yoopta-Editor/blob/master/web/next-example/src/components/EmailBuilderExample/EmailBuilderExample.tsx#L268"
       />
-      <div className="flex flex-col items-center mb-4">
-        <h1 className="text-2xl font-bold">Yoopta Email-Builder Playground</h1>
+      <div className="flex flex-col items-center mb-4 mt-6 md:mt-0">
+        <h1 className="text-2xl font-bold">
+          Yoopta Email-Builder Playground <sup className="text-[60%]">beta</sup>
+        </h1>
         <p className="text-sm text-gray-500">
           This is live example of how to use the Email Builder from{' '}
           <code>

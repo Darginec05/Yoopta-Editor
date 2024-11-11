@@ -8,7 +8,11 @@ type Props = {
 
 const CheckSourceCode = ({ example, withBackButton = false, directLink }: Props) => {
   return (
-    <div className="fixed px-2 md:top-2 md:right-0 right-[18px] top-[14.5px] flex z-50 justify-between w-full">
+    <div
+      className={`fixed px-2 md:top-2 md:right-0 right-[18px] top-[14.5px] flex z-50 justify-between w-${
+        withBackButton ? 'full' : 'auto'
+      }`}
+    >
       <div className="flex">
         {withBackButton && (
           <button

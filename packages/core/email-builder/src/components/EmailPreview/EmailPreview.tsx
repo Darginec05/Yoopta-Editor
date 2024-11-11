@@ -1,12 +1,10 @@
 import { EmailTemplateOptions, YooEditor, YooptaContentValue } from '@yoopta/editor';
-import { CSSProperties, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Card } from '../ui/card';
 
 type EmailPreviewProps = {
   editor: YooEditor;
   value: YooptaContentValue;
-  style?: CSSProperties;
-  className?: string;
   template?: EmailTemplateOptions;
 };
 

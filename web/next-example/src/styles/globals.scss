@@ -95,7 +95,7 @@
 }
 
 @media (max-width: 768px) {
-  .yoopta-editor {
+  .yoopta-editor:not(#yoopta-email-builder .yoopta-editor) {
     width: 100% !important;
 
     & .yoopta-block-actions-plus {
