@@ -190,7 +190,7 @@ const EmailBuilderExample = () => {
       />
       <CheckSourceCode
         withBackButton
-        directLink="https://github.com/Darginec05/Yoopta-Editor/blob/master/web/next-example/src/components/EmailBuilderExample/EmailBuilderExample.tsx#L268"
+        directLink="https://github.com/Darginec05/Yoopta-Editor/blob/master/web/next-example/src/components/EmailBuilderExample/EmailBuilderExample.tsx#L291"
       />
       <div className="flex flex-col items-center mb-4 mt-6 md:mt-0">
         <h1 className="text-2xl font-bold">
