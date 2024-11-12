@@ -306,36 +306,21 @@ const Editor = ({
   };
 
   const addImageOrVideoFromClipboard = async (file: File) => {
-    const ImagePlugin = {
-      plugin: editor.plugins.Image,
-      type: 'Image',
-    };
-    const VideoPlugin = {
-      plugin: editor.plugins.Video,
-      type: 'Video',
-    };
+    const plugin = Object.keys(editor.plugins).find((plugin) => {
+      const pluginInstance = editor.plugins[plugin];
+      const mimeTypes = pluginInstance.clipboardPasteOrDropRules?.mimeTypes;
+      if (!mimeTypes) return false;
+      return mimeTypes.includes(file.type);
+    });
 
-    const isImage = file.type.startsWith('image/');
-    const { plugin, type } = isImage ? ImagePlugin : VideoPlugin;
+    if (!plugin) return;
 
-    if (!plugin?.options) return;
+    const pluginInstance = editor.plugins[plugin];
+    const block = await pluginInstance.clipboardPasteOrDropRules?.handler(file);
+    if (!block) return;
 
-    if (!plugin.options.enableFromClipboard) return;
-
-    const mimeTypes = plugin.options.accept;
-    if (isImage && !mimeTypes.includes(file.type)) return;
-    if (!file.type.includes('video')) return;
-
-    const element = await plugin.options.onUpload(file);
-    let block;
-    if (type === 'Image') {
-      block = plugin.commands?.buildImageElements(editor, { props: element });
-    }
-    if (type === 'Video') {
-      block = plugin.commands?.buildVideoElements(editor, { props: element });
-    }
-    const blockData = Blocks.buildBlockData({ type, value: [block] });
-    Blocks.insertBlock(editor, type, { focus: true, blockData });
+    const blockData = Blocks.buildBlockData({ type: pluginInstance.type, value: [block] });
+    Blocks.insertBlock(editor, pluginInstance.type, { focus: true, blockData });
   };
 
   const onPaste = (e: ClipboardEvent) => {

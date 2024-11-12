@@ -43,7 +43,14 @@ const Video = new YooptaPlugin<VideoElementMap, VideoPluginOptions>({
       title: 'Video',
       description: 'Upload from device, embed from Youtube, Vimeo',
     },
-    enableFromClipboard: true,
+  },
+  clipboardPasteOrDropRules: {
+    mimeTypes: ['video/mp4', 'video/webm', 'video/ogg', 'video/quicktime'],
+    handler: async (file: File) => {
+      const data = await Video.getPlugin.options.onUpload(file);
+      const block = VideoCommands.buildVideoElements(undefined, { props: data });
+      return block;
+    },
   },
   commands: VideoCommands,
   parsers: {

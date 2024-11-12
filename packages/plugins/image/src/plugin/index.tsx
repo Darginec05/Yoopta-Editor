@@ -35,7 +35,14 @@ const Image = new YooptaPlugin<ImageElementMap, ImagePluginOptions>({
     onUpload: () => Promise.resolve({ src: null, alt: null }),
     accept: 'image/png, image/jpeg, image/gif, image/webp',
     maxSizes: { maxWidth: 650, maxHeight: 550 },
-    enableFromClipboard: true,
+  },
+  clipboardPasteOrDropRules: {
+    mimeTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
+    handler: async (file: File) => {
+      const data = await Image.getPlugin.options.onUpload(file);
+      const block = ImageCommands.buildImageElements(undefined, { props: data });
+      return block;
+    },
   },
   parsers: {
     html: {

@@ -89,6 +89,7 @@ export type Plugin<TElementMap extends Record<string, SlateElement>, TPluginOpti
   events?: PluginEvents;
   options?: PluginOptions<TPluginOptions>;
   parsers?: Partial<Record<PluginParserTypes, PluginParsers>>;
+  clipboardPasteOrDropRules?: Record<string, any>;
 };
 
 export type PluginParsers = {

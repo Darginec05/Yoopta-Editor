@@ -43,7 +43,6 @@ export type VideoPluginOptions = {
     maxWidth?: number;
     maxHeight?: number;
   };
-  enableFromClipboard?: boolean;
 };
 
 export type VideoElementMap = {
