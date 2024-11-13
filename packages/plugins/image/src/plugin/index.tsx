@@ -1,4 +1,4 @@
-import { generateId, SlateElement, YooptaPlugin } from '@yoopta/editor';
+import { generateId, SlateElement, YooptaPlugin, YooEditor } from '@yoopta/editor';
 import { ImageCommands } from '../commands';
 import { ImageElementMap, ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';
 import { ImageRender } from '../ui/Image';
@@ -38,8 +38,9 @@ const Image = new YooptaPlugin<ImageElementMap, ImagePluginOptions>({
   },
   clipboardPasteOrDropRules: {
     mimeTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
-    handler: async (file: File) => {
-      const data = await Image.getPlugin.options.onUpload(file);
+    handler: async (file: File, editor: YooEditor) => {
+      const pluginOptions = editor.plugins.Image.options as ImagePluginOptions;
+      const data = await pluginOptions.onUpload(file);
       const block = ImageCommands.buildImageElements(undefined, { props: data });
       return block;
     },

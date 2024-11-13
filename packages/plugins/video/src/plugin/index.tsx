@@ -1,4 +1,4 @@
-import { generateId, YooptaPlugin } from '@yoopta/editor';
+import { generateId, YooptaPlugin, YooEditor } from '@yoopta/editor';
 import { VideoCommands } from '../commands';
 import { VideoElementMap, VideoPluginOptions } from '../types';
 import { VideoRender } from '../ui/Video';
@@ -46,8 +46,9 @@ const Video = new YooptaPlugin<VideoElementMap, VideoPluginOptions>({
   },
   clipboardPasteOrDropRules: {
     mimeTypes: ['video/mp4', 'video/webm', 'video/ogg', 'video/quicktime'],
-    handler: async (file: File) => {
-      const data = await Video.getPlugin.options.onUpload(file);
+    handler: async (file: File, editor: YooEditor) => {
+      const pluginOptions = editor.plugins.Video.options as VideoPluginOptions;
+      const data = await pluginOptions.onUpload(file);
       const block = VideoCommands.buildVideoElements(undefined, { props: data });
       return block;
     },

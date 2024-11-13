@@ -305,7 +305,7 @@ const Editor = ({
     }
   };
 
-  const addImageOrVideoFromClipboard = async (file: File) => {
+  const handleClipboardContent = async (file: File) => {
     const plugin = Object.keys(editor.plugins).find((plugin) => {
       const pluginInstance = editor.plugins[plugin];
       const mimeTypes = pluginInstance.clipboardPasteOrDropRules?.mimeTypes;
@@ -316,7 +316,7 @@ const Editor = ({
     if (!plugin) return;
 
     const pluginInstance = editor.plugins[plugin];
-    const block = await pluginInstance.clipboardPasteOrDropRules?.handler(file);
+    const block = await pluginInstance.clipboardPasteOrDropRules?.handler(file, editor);
     if (!block) return;
 
     const blockData = Blocks.buildBlockData({ type: pluginInstance.type, value: [block] });
@@ -328,7 +328,7 @@ const Editor = ({
     for (const item of items) {
       const file = item.getAsFile();
       if (!file) continue;
-      addImageOrVideoFromClipboard(file);
+      handleClipboardContent(file);
     }
   };
 
@@ -337,7 +337,7 @@ const Editor = ({
     if (!items) return;
     for (const file of items) {
       if (!file) continue;
-      addImageOrVideoFromClipboard(file);
+      handleClipboardContent(file);
     }
   };
 
