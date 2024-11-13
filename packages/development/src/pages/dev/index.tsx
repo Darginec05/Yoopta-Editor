@@ -1,18 +1,13 @@
-import YooptaEditor, {
-  Blocks,
-  createYooptaEditor,
-  generateId,
-  YooptaOnChangeOptions,
-  YooEditor,
-  YooptaBlockData,
-  YooptaContentValue,
-} from '@yoopta/editor';
+import YooptaEditor, { createYooptaEditor, YooEditor, YooptaContentValue, YooptaOnChangeOptions } from '@yoopta/editor';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { MARKS } from '../../utils/yoopta/marks';
 import { YOOPTA_PLUGINS } from '../../utils/yoopta/plugins';
 import { TOOLS } from '../../utils/yoopta/tools';
 import { FixedToolbar } from '../../components/FixedToolbar/FixedToolbar';
+import { HocuspocusProvider } from '@hocuspocus/provider';
+import * as Y from 'yjs';
+import { withCollaboration } from '@/collaborative/withCollaboration';
 
 const EDITOR_STYLE = {
   width: 750,
@@ -782,10 +777,60 @@ const data = {
       },
     ],
   },
-};
+} as YooptaContentValue;
 
 const BasicExample = () => {
-  const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
+  const { provider, editor, blocks } = useMemo(() => {
+    const doc = new Y.Doc();
+    const blocks = doc.getMap('blocks');
+
+    const provider = new HocuspocusProvider({
+      url: 'ws://localhost:1234',
+      name: 'my-document',
+      document: doc,
+      parameters: {
+        userId: `user-${Math.random()}`,
+        userName: `User ${Math.random().toString(36).slice(2, 7)}`,
+        userColor: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
+      },
+      onAwarenessUpdate: ({ states }) => {
+        const cursors = Array.from(states.entries())
+          .map(([clientId, state]: [number, any]) => ({
+            clientId,
+            user: state.user,
+            cursor: state.selection,
+          }))
+          .filter(({ clientId }) => clientId !== provider?.awareness?.clientID);
+
+        // setCursors(cursors);
+      },
+      onConnect: () => {
+        console.log('Connected to server');
+        // setStatus('connected')
+      },
+      onDisconnect: () => {
+        console.log('Disconnected from server');
+        // setStatus('disconnected
+      },
+      onStatus: ({ status }) => {
+        console.log('Status:', status);
+        // setStatus(status)
+      },
+    });
+
+    const baseEditor = createYooptaEditor();
+    const editor = withCollaboration(baseEditor, provider, blocks);
+
+    editor.on('path-change', (path) => {
+      provider.setAwarenessField('selection', {
+        path,
+        timestamp: Date.now(),
+      });
+    });
+
+    return { provider, editor, blocks };
+  }, []);
+
   const selectionRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState<YooptaContentValue>(data);
 
@@ -793,15 +838,6 @@ const BasicExample = () => {
     console.log('onChange', value, options);
     setValue(value);
   };
-
-  // useEffect(() => {
-  //   editor.withoutSavingHistory(() => {
-  //     const id = generateId();
-
-  //     editor.setEditorValue(data as YooptaContentValue);
-  //     editor.focusBlock(id);
-  //   });
-  // }, []);
 
   return (
     <>
