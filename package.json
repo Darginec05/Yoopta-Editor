@@ -21,6 +21,7 @@
     "release": "yarn clean && yarn build && yarn lerna publish --no-private"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.2.0",
     "@floating-ui/dom": "^1.6.11",
     "@hocuspocus/extension-database": "^2.13.7",
     "@hocuspocus/extension-sqlite": "^2.13.7",
@@ -73,6 +74,7 @@
     "postcss-nesting": "^12.0.2",
     "postcss-scope": "^1.7.3",
     "prettier": "2.8.8",
+    "prismjs": "^1.29.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "resend": "^4.0.0",

@@ -110,9 +110,7 @@ const YooptaEditor = ({
     if (typeof onChange === 'function' && Array.isArray(options.operations)) {
       const operations = options.operations.filter(
         (operation) =>
-          operation.type !== 'validate_block_paths' &&
-          operation.type !== 'set_block_path' &&
-          operation.type !== 'set_slate',
+          operation.type !== 'validate_block_paths' && operation.type !== 'set_path' && operation.type !== 'set_slate',
       );
 
       if (operations.length > 0) onChange(value, { operations });

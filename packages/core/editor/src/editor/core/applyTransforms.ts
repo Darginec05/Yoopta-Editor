@@ -84,7 +84,7 @@ export type DeleteBlockOperation = {
 };
 
 export type SetSelectionBlockOperation = {
-  type: 'set_block_path';
+  type: 'set_path';
   path: YooptaPath;
 };
 
@@ -311,7 +311,7 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
       break;
     }
 
-    case 'set_block_path': {
+    case 'set_path': {
       editor.path = op.path;
       break;
     }
@@ -401,7 +401,7 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
   if (saveHistory) {
     const historyBatch = {
       operations: operations.filter(
-        (op) => op.type !== 'set_block_path' && op.type !== 'set_block_value' && op.type !== 'validate_block_paths',
+        (op) => op.type !== 'set_path' && op.type !== 'set_block_value' && op.type !== 'validate_block_paths',
       ),
       path: editor.path,
     };

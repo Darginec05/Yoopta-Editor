@@ -134,12 +134,26 @@
   dependencies:
     lib0 "^0.2.87"
 
+"@hocuspocus/common@^2.14.0":
+  version "2.14.0"
+  resolved "https://registry.npmjs.org/@hocuspocus/common/-/common-2.14.0.tgz#3da9ce0f2d179a83ffba36f7cededcc9c96de991"
+  integrity sha512-ACtaKxfpf9p5GkrAHn3/lkD/evLAMkud1EZo3T2VTEDORqj2Es8MKx2QwhdY+PyGUlWZFKhgQrshWnzJmnCQDA==
+  dependencies:
+    lib0 "^0.2.87"
+
 "@hocuspocus/extension-database@^2.13.7":
   version "2.13.7"
   resolved "https://registry.npmjs.org/@hocuspocus/extension-database/-/extension-database-2.13.7.tgz#d71aee885a91a050efacf85c2fec763c8dae65db"
   integrity sha512-GMSnluhmfpy3V+P8uCyR/dwh7nNqIERSAf+Jpkg0GVSeOuGdDuoWTJr+gkQWTAVDVMwNAqlp+ZLpzc0Y/L34mg==
   dependencies:
     "@hocuspocus/server" "^2.13.7"
+
+"@hocuspocus/extension-logger@^2.14.0":
+  version "2.14.0"
+  resolved "https://registry.npmjs.org/@hocuspocus/extension-logger/-/extension-logger-2.14.0.tgz#35d0caa04356291cd1fd46d5d6c6f64f1b9f493b"
+  integrity sha512-Z6kffQK/wO+JW43UzfDXkFl5s+3eNc92ReDz8nayByjSOAAXz5EZ/e/YWhrwU+ViwONQ4yLyx2x/lmxDA8lZ5g==
+  dependencies:
+    "@hocuspocus/server" "^2.14.0"
 
 "@hocuspocus/extension-sqlite@^2.9.0":
   version "2.13.7"
@@ -156,6 +170,18 @@
   integrity sha512-D9juGX9NZoKT9/Ty/HGhaimHJe71DyKbYssC831oetYF33x3WSYV6GY82RhHo9xjKZE6r0Le7jgxgQb+u08slw==
   dependencies:
     "@hocuspocus/common" "^2.13.7"
+    async-lock "^1.3.1"
+    kleur "^4.1.4"
+    lib0 "^0.2.47"
+    uuid "^10.0.0"
+    ws "^8.5.0"
+
+"@hocuspocus/server@^2.14.0":
+  version "2.14.0"
+  resolved "https://registry.npmjs.org/@hocuspocus/server/-/server-2.14.0.tgz#c227448ff4ad07626837a8a48b0c464d0be47228"
+  integrity sha512-8ol/g9+M4fAgJOvHSp83gLyTKe95oMnBZaY7FtT2beTOFzDNGdpOJEZX7PIMSY7vGZlT8pOYAauOdpCtBpkz7w==
+  dependencies:
+    "@hocuspocus/common" "^2.14.0"
     async-lock "^1.3.1"
     kleur "^4.1.4"
     lib0 "^0.2.47"

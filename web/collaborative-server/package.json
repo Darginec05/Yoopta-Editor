@@ -9,6 +9,7 @@
     "clean": "rimraf dist db"
   },
   "dependencies": {
+    "@hocuspocus/extension-logger": "^2.14.0",
     "@hocuspocus/extension-sqlite": "^2.9.0",
     "@hocuspocus/server": "^2.9.0"
   },

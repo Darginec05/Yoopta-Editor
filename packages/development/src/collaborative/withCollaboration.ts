@@ -1,135 +1,166 @@
 import * as Y from 'yjs';
-import { HocuspocusProvider } from '@hocuspocus/provider';
-import { YooEditor, YooptaOperation } from '@yoopta/editor';
+import { Blocks, SlateElement, YooEditor, YooptaBlockData, YooptaOperation } from '@yoopta/editor';
 
-const LOCAL_ORIGIN = 'yoopta-local-change';
+const LOCAL_ORIGIN = Symbol('yoopta-local-change');
+const CONNECTED: WeakSet<YjsYooEditor> = new WeakSet();
 
-export const withCollaboration = (editor: YooEditor, provider: HocuspocusProvider, blocks: Y.Map<any>) => {
+export type YjsYooEditor = YooEditor & {
+  sharedRoot: Y.Map<YooptaBlockData>;
+  localOrigin: symbol;
+  isLocalOrigin: (origin: symbol) => boolean;
+  applyRemoteEvents: (events: any[], origin: symbol) => void;
+  connect: () => void;
+  disconnect: () => void;
+};
+
+export const withCollaboration = (editor: YjsYooEditor, sharedRoot: Y.Map<YooptaBlockData>) => {
   const { applyTransforms } = editor;
 
-  blocks.observe((event, transaction) => {
-    if (transaction.origin === LOCAL_ORIGIN) return;
+  editor.sharedRoot = sharedRoot;
+  editor.localOrigin = LOCAL_ORIGIN;
+  editor.isLocalOrigin = (origin) => origin === editor.localOrigin;
 
-    console.log('CHANGE FROM REMOTE:', event.changes.keys);
-    event.changes.keys.forEach((change, key) => {
-      const blockId = key;
+  editor.applyRemoteEvents = (events, origin) => {
+    events.forEach((event) => {
+      if (!(event instanceof Y.YMapEvent)) return;
+      const operations: YooptaOperation[] = [];
 
-      switch (change.action) {
-        case 'add': {
-          const block = blocks.get(blockId);
+      Array.from(event.keys).forEach(([blockId, change]) => {
+        if (change.action === 'add') {
+          const block = editor.sharedRoot.get(blockId);
           if (!block) return;
 
-          editor.withoutSavingHistory(() => {
-            editor.applyTransforms([
-              {
-                type: 'insert_block',
-                path: { current: block.meta.order },
-                block,
-              },
-            ]);
+          operations.push({
+            type: 'insert_block',
+            path: { current: block.meta.order },
+            block,
           });
-          break;
-        }
-
-        case 'delete': {
+        } else if (change.action === 'delete') {
           const existingBlock = editor.children[blockId];
           if (!existingBlock) return;
 
-          editor.withoutSavingHistory(() => {
-            editor.applyTransforms([
-              {
-                type: 'delete_block',
-                path: { current: existingBlock.meta.order },
-                block: existingBlock,
-              },
-            ]);
+          operations.push({
+            type: 'delete_block',
+            path: { current: existingBlock.meta.order },
+            block: existingBlock,
           });
-          break;
-        }
-
-        case 'update': {
-          const block = blocks.get(blockId);
+        } else if (change.action === 'update') {
+          const updatedBlock = editor.sharedRoot.get(blockId);
           const existingBlock = editor.children[blockId];
-          if (!block || !existingBlock) return;
 
-          editor.withoutSavingHistory(() => {
-            if (JSON.stringify(block.value) !== JSON.stringify(existingBlock.value)) {
-              editor.applyTransforms([
-                {
-                  type: 'set_block_value',
-                  id: blockId,
-                  value: block.value,
-                },
-              ]);
-            }
+          if (!updatedBlock || !existingBlock) return;
 
-            console.log('update: run move_block?', block.meta.order !== existingBlock.meta.order);
+          const isBlockOrderChanged = updatedBlock.meta.order !== existingBlock.meta.order;
+          const isMetaChanged = JSON.stringify(updatedBlock.meta) !== JSON.stringify(existingBlock.meta);
+          const isValueChanged = JSON.stringify(updatedBlock.value) !== JSON.stringify(existingBlock.value);
 
-            if (block.meta.order !== existingBlock.meta.order) {
-              editor.applyTransforms([
-                {
-                  type: 'move_block',
-                  prevProperties: {
-                    id: blockId,
-                    order: existingBlock.meta.order,
-                  },
-                  properties: {
-                    id: blockId,
-                    order: block.meta.order,
-                  },
-                },
-              ]);
-            }
-          });
-          break;
+          if (isBlockOrderChanged) {
+            operations.push({
+              type: 'move_block',
+              prevProperties: { id: existingBlock.id, order: existingBlock.meta.order },
+              properties: { id: updatedBlock.id, order: updatedBlock.meta.order },
+            });
+          }
+
+          if (isMetaChanged && !isBlockOrderChanged) {
+            operations.push({
+              type: 'set_block_meta',
+              id: updatedBlock.id,
+              properties: { align: updatedBlock.meta.align, depth: updatedBlock.meta.depth },
+              prevProperties: { align: existingBlock.meta.align, depth: existingBlock.meta.depth },
+            });
+          }
+
+          if (isValueChanged) {
+            const slate = Blocks.getBlockSlate(editor, { id: updatedBlock.id });
+            operations.push({
+              type: 'set_block_value',
+              id: updatedBlock.id,
+              value: updatedBlock.value as SlateElement[],
+            });
+          }
         }
+      });
+
+      if (operations.length) {
+        editor.withoutSavingHistory(() => editor.applyTransforms(operations, { validatePaths: true }));
       }
     });
-  });
+  };
+
+  function handleYEvents(events: Y.YEvent<any>[], transaction: Y.Transaction) {
+    if (editor.isLocalOrigin(transaction.origin)) {
+      return;
+    }
+
+    editor.applyRemoteEvents(events, transaction.origin);
+  }
+
+  editor.connect = () => {
+    editor.sharedRoot.observeDeep(handleYEvents);
+    // const content = yMapToYooptaContent(e.sharedRoot);
+    // editor.setEditorValue(content);
+    CONNECTED.add(editor);
+  };
+
+  editor.disconnect = () => {
+    editor.sharedRoot.unobserveDeep(handleYEvents);
+    CONNECTED.delete(editor);
+  };
 
   editor.applyTransforms = (operations: YooptaOperation[], options?: any) => {
-    applyTransforms(operations, options);
+    applyTransforms(operations, { ...options, validatePaths: true });
 
-    provider.document.transact(() => {
-      console.log('__CHANGES FROM ME__', operations);
+    editor.sharedRoot.doc?.transact(() => {
       operations.forEach((op) => {
         switch (op.type) {
           case 'insert_block': {
-            blocks.set(op.block.id, op.block);
+            editor.sharedRoot.set(op.block.id, op.block);
             break;
           }
 
           case 'delete_block': {
-            blocks.delete(op.block.id);
+            editor.sharedRoot.delete(op.block.id);
             break;
           }
 
-          case 'set_block_value': {
-            const block = editor.children[op.id];
-            if (block) {
-              blocks.set(op.id, block);
-            }
+          case 'merge_block': {
+            console.log('merge_block', op);
+            break;
+          }
+
+          case 'split_block': {
+            console.log('split_block', op);
+
             break;
           }
 
           case 'move_block': {
-            const block = editor.children[op.properties.id];
-            if (block) {
-              blocks.set(op.properties.id, block);
-            }
+            const block = editor.sharedRoot.get(op.properties.id);
+            if (!block) return;
+            const reorderedBlock = { ...block, meta: { ...block.meta, order: op.properties.order } };
+            editor.sharedRoot.set(block.id, reorderedBlock);
             break;
           }
 
           case 'set_block_meta': {
-            const block = editor.children[op.id];
-            if (block) {
-              blocks.set(op.id, block);
-            }
+            const block = editor.sharedRoot.get(op.id);
+            if (!block) return;
+            const updatedBlock = { ...block, meta: { ...block.meta, ...op.properties } };
+            editor.sharedRoot.set(block.id, updatedBlock);
+            break;
+          }
+
+          case 'set_block_value': {
+            const block = editor.sharedRoot.get(op.id);
+            if (!block) return;
+            const updatedBlock = { ...block, value: op.value };
+            editor.sharedRoot.set(block.id, updatedBlock);
             break;
           }
         }
       });
-    }, LOCAL_ORIGIN);
+    }, editor.localOrigin);
   };
 
   return editor;

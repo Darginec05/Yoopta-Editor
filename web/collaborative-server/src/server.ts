@@ -1,11 +1,10 @@
 // src/server.ts
 import { Server } from '@hocuspocus/server';
 import { SQLite } from '@hocuspocus/extension-sqlite';
-// import { Logger } from '@hocuspocus/server';
 import { mkdir } from 'fs/promises';
 import { join } from 'path';
+import initialValue from './data/initialValue.json';
 
-// Убедимся что директория существует
 const ensureDbDir = async () => {
   const dbDir = join(process.cwd(), 'db');
   try {
@@ -17,24 +16,17 @@ const ensureDbDir = async () => {
   }
 };
 
-// Конфигурация сервера
 const createServer = async () => {
   await ensureDbDir();
 
   const server = Server.configure({
     name: 'yoopta-collab',
     port: 1234,
-
-    // Настраиваем SQLite с абсолютным путем
     extensions: [
       new SQLite({
-        database: join(process.cwd(), 'db', 'documents.sqlite'),
+        database: 'db.sqlite',
       }),
     ],
-
-    // logger: new Logger({
-    //   level: process.env.NODE_ENV === 'development' ? 'debug' : 'info',
-    // }),
 
     async onConnect(data) {
       const { context, documentName } = data;
@@ -48,8 +40,7 @@ const createServer = async () => {
     },
 
     async onLoadDocument(data) {
-      const { documentName } = data;
-      console.log(`📄 Loading document: ${documentName}`);
+      return initialValue;
     },
 
     async onChange(data) {
@@ -61,7 +52,6 @@ const createServer = async () => {
   return server;
 };
 
-// Функция запуска сервера
 const startServer = async () => {
   try {
     const server = await createServer();
