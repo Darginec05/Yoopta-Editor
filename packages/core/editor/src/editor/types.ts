@@ -1,4 +1,4 @@
-import { Descendant, Path, Point } from 'slate';
+import { Descendant, Path, Point, Selection } from 'slate';
 import { Plugin, PluginElementsMap, PluginOptions, PluginElementProps } from '../plugins/types';
 import { EditorBlurOptions } from './core/blur';
 import { deleteBlock, DeleteBlockOptions } from './blocks/deleteBlock';
@@ -47,6 +47,7 @@ export type YooptaPathIndex = number | null;
 export type YooptaPath = {
   current: YooptaPathIndex;
   selected?: number[] | null;
+  selection?: Selection | null;
 };
 
 // Marks

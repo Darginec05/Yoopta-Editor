@@ -312,6 +312,16 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
     }
 
     case 'set_path': {
+      // reset anchor selection if several blocks are selected
+      if (Array.isArray(op.path.selected) && op.path.selected.length > 0 && op.path.selection) {
+        op.path.selection = null;
+      }
+
+      // reset anchor selection if we change focused block
+      if (op.path.current !== editor.path.current && op.path.selection) {
+        op.path.selection = null;
+      }
+
       editor.path = op.path;
       break;
     }

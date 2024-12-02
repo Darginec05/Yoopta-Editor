@@ -274,7 +274,6 @@ const Editor = ({
       return;
     }
   };
-
   // This event handler will be fired only in read-only mode
   const onCopy = (e: ClipboardEvent) => {
     if (!isReadOnly) return;

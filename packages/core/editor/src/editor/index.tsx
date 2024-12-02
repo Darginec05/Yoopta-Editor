@@ -41,7 +41,7 @@ export function createYooptaEditor(): YooEditor {
     id: '',
     children: {},
     blockEditorsMap: {},
-    path: { current: null },
+    path: { current: null, selection: null, selected: null },
     readOnly: false,
     isEmpty: () => isEmpty(editor),
     getEditorValue: () => getEditorValue(editor),

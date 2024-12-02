@@ -1,19 +1,24 @@
 import { Awareness } from 'y-protocols/awareness';
 import { YjsYooEditor } from './withCollaboration';
+import { Blocks, YooptaPath } from '@yoopta/editor';
 
 export type CursorUser = {
-  id: string;
   name: string;
   color: string;
 };
 
+export type CursorPath = {
+  selection: YooptaPath['selection'];
+  blockId: string | null;
+  current: YooptaPath['current'];
+  selected: YooptaPath['selected'];
+};
+
 export type CursorState = {
-  user: CursorUser;
-  selection?: {
-    blockId: string;
-    path: any;
-    timestamp: number;
-  };
+  user: string | null;
+  color: string | undefined;
+  path: CursorPath;
+  timestamp: number;
 };
 
 export type CursorStateChangeEvent = {
@@ -22,119 +27,142 @@ export type CursorStateChangeEvent = {
   removed: number[];
 };
 
+export type RemoteCursorChangeEventListener = (event: CursorStateChangeEvent) => void;
+
+const CURSOR_CHANGE_EVENT_LISTENERS: WeakMap<EditorWithAwareness, Set<RemoteCursorChangeEventListener>> = new WeakMap();
+
 export type EditorWithAwareness = YjsYooEditor & {
   awareness: Awareness;
-  cursorOptions: WithCursorsOptions;
-  updateCursor: (selection?: { blockId: string; path: any }) => void;
-  getCursors: () => Map<number, CursorState>;
+  cursor: {
+    on: (event: 'change', handler: RemoteCursorChangeEventListener) => void;
+    off: (event: 'change', handler: RemoteCursorChangeEventListener) => void;
+    getStates: () => Map<number, CursorState>;
+    getLocalState: () => CursorState;
+  };
 };
 
 export type WithCursorsOptions = {
-  data?: Partial<CursorUser>;
-  autoSend?: boolean;
-  debounce?: number;
-  filter?: (state: CursorState) => boolean;
+  data: CursorUser;
 };
 
 export function withYjsCursors(
   editor: YjsYooEditor,
   awareness: Awareness,
-  options: WithCursorsOptions = {},
+  options: WithCursorsOptions,
 ): EditorWithAwareness {
   const e = editor as EditorWithAwareness;
 
-  const defaultOptions: WithCursorsOptions = {
-    autoSend: true,
-    debounce: 50,
-    data: {},
-    filter: (state) => {
-      const isRecent = state.selection ? Date.now() - state.selection.timestamp < 5 * 60 * 1000 : false;
-      return isRecent;
-    },
-  };
-
   e.awareness = awareness;
-  e.cursorOptions = { ...defaultOptions, ...options };
 
-  e.updateCursor = (selection) => {
-    e.awareness.setLocalState({
-      user: e.cursorOptions.data,
-      selection: selection
-        ? {
-            ...selection,
-            timestamp: Date.now(),
-          }
-        : undefined,
-    });
-  };
+  const awarenessChangeHandler = (yEvent: CursorStateChangeEvent) => {
+    const listeners = CURSOR_CHANGE_EVENT_LISTENERS.get(e);
 
-  e.getCursors = () => {
-    const states = e.awareness.getStates();
-    const filteredStates = new Map();
-
-    states.forEach((state: CursorState, clientId: number) => {
-      if (clientId === e.awareness.clientID) return;
-
-      if (e.cursorOptions.filter?.(state)) {
-        filteredStates.set(clientId, state);
-      }
-    });
-
-    return filteredStates;
-  };
-
-  const handleAwarenessChange = (yEvent: CursorStateChangeEvent) => {
-    console.log('handleAwarenessChange yEvent', yEvent);
+    if (!listeners) {
+      return;
+    }
 
     const localId = e.awareness.clientID;
+
     const event = {
       added: yEvent.added.filter((id) => id !== localId),
       removed: yEvent.removed.filter((id) => id !== localId),
       updated: yEvent.updated.filter((id) => id !== localId),
     };
 
-    const cursors = e.getCursors();
-    console.log('handleAwarenessChange cursors', cursors);
-    e.emit('cursors-update', cursors);
+    if (event.added.length > 0 || event.removed.length > 0 || event.updated.length > 0) {
+      listeners.forEach((listener) => listener(event));
+    }
   };
 
-  if (e.cursorOptions.autoSend) {
-    let debounceTimeout: NodeJS.Timeout;
+  const updateCursor = (path: YooptaPath) => {
+    const { selected, selection, current } = path;
+    let block;
+    if (current !== null) {
+      block = Blocks.getBlock(e, { at: current });
+    }
 
-    const updateSelectionState = (path: any) => {
-      clearTimeout(debounceTimeout);
-      debounceTimeout = setTimeout(() => {
-        const blockId =
-          path?.current !== null
-            ? Object.keys(e.children).find((id) => e.children[id].meta.order === path.current)
-            : undefined;
-
-        e.updateCursor(blockId ? { blockId, path } : undefined);
-      }, e.cursorOptions.debounce);
+    const cursorState: CursorState = {
+      user: options.data!.name,
+      color: options.data!.color,
+      path: {
+        selection: selection || null,
+        blockId: block?.id || null,
+        current,
+        selected,
+      },
+      timestamp: Date.now(),
     };
 
-    e.on('path-change', updateSelectionState);
-  }
+    e.awareness.setLocalState(cursorState);
+  };
+
+  e.cursor = {
+    on: (event: 'change', handler: RemoteCursorChangeEventListener) => {
+      if (event !== 'change') {
+        return;
+      }
+
+      const listeners = CURSOR_CHANGE_EVENT_LISTENERS.get(e) ?? new Set();
+      listeners.add(handler);
+      CURSOR_CHANGE_EVENT_LISTENERS.set(e, listeners);
+    },
+    off: (event: 'change', listener: RemoteCursorChangeEventListener) => {
+      if (event !== 'change') {
+        return;
+      }
+
+      const listeners = CURSOR_CHANGE_EVENT_LISTENERS.get(e);
+      if (listeners) {
+        listeners.delete(listener);
+      }
+    },
+    getStates: () => {
+      const states = new Map();
+      const localId = e.awareness.clientID;
+
+      e.awareness.getStates().forEach((state, clientId) => {
+        if (clientId !== localId) {
+          states.set(clientId, state);
+        }
+      });
+
+      return states;
+    },
+    getLocalState: () => {
+      return e.awareness.getLocalState() as CursorState;
+    },
+  };
 
   const { disconnect, connect } = e;
 
   e.connect = () => {
     connect?.();
-    e.awareness.on('change', handleAwarenessChange);
-    handleAwarenessChange({
+    e.awareness.on('change', awarenessChangeHandler);
+    awarenessChangeHandler({
       removed: [],
       added: Array.from(e.awareness.getStates().keys()),
       updated: [],
     });
 
-    if (e.cursorOptions.autoSend) {
-      e.updateCursor();
-    }
+    e.awareness.setLocalState({
+      user: options.data?.name,
+      color: options.data?.color,
+      path: {
+        blockId: null,
+        current: null,
+        selected: null,
+        selection: null,
+      },
+    });
+
+    e.on('path-change', updateCursor);
   };
 
   e.disconnect = () => {
-    e.awareness.off('change', handleAwarenessChange);
+    e.awareness.off('change', awarenessChangeHandler);
+    e.off('path-change', updateCursor);
     e.awareness.setLocalState(null);
+    CURSOR_CHANGE_EVENT_LISTENERS.delete(e); // очищаем слушатели
     disconnect?.();
   };
 

@@ -15,90 +15,17 @@ import { FixedToolbar } from '../../components/FixedToolbar/FixedToolbar';
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import * as Y from 'yjs';
 import { withCollaboration, YjsYooEditor } from '@/collaborative/withCollaboration';
-import { CursorState, EditorWithAwareness, withYjsCursors } from '@/collaborative/withYjsCursors';
+import {
+  CursorState,
+  EditorWithAwareness,
+  RemoteCursorChangeEventListener,
+  withYjsCursors,
+} from '@/collaborative/withYjsCursors';
 import { Awareness } from 'y-protocols/awareness';
+import { RemoteOverlayCursor } from '@/collaborative/RemoteCursorOverlay';
 
 const EDITOR_STYLE = {
   width: 750,
-};
-
-interface CursorMarkerProps {
-  clientId: number;
-  state: CursorState;
-}
-
-const CursorMarker = ({ state }: CursorMarkerProps) => {
-  const blockElement = document.querySelector(`[data-yoopta-block-id="${state.selection?.blockId}"]`);
-
-  if (!blockElement || !state.selection) {
-    return null;
-  }
-
-  const { top, left } = blockElement.getBoundingClientRect();
-
-  return (
-    <div
-      className="remote-cursor-container"
-      style={{
-        position: 'absolute',
-        top: `${top}px`,
-        left: `${left}px`,
-        pointerEvents: 'none',
-      }}
-    >
-      <div
-        className="cursor"
-        style={{
-          width: 2,
-          height: 20,
-          backgroundColor: state.user.color,
-          position: 'absolute',
-        }}
-      />
-      <div
-        className="label"
-        style={{
-          backgroundColor: state.user.color,
-          color: 'white',
-          padding: '2px 4px',
-          borderRadius: 4,
-          fontSize: 12,
-          position: 'absolute',
-          top: -20,
-          whiteSpace: 'nowrap',
-        }}
-      >
-        {state.user.name}
-      </div>
-    </div>
-  );
-};
-
-interface RemoteCursorsProps {
-  editor: EditorWithAwareness;
-}
-
-export const RemoteCursors = ({ editor }: RemoteCursorsProps) => {
-  const [cursors, setCursors] = useState<Map<number, CursorState>>(new Map());
-
-  useEffect(() => {
-    const handleCursorsUpdate = (newCursors: Map<number, CursorState>) => {
-      setCursors(new Map(newCursors));
-    };
-
-    editor.on('cursors-update', handleCursorsUpdate);
-    return () => {
-      editor.off('cursors-update', handleCursorsUpdate);
-    };
-  }, [editor]);
-
-  return (
-    <div className="remote-cursors">
-      {Array.from(cursors.entries()).map(([clientId, state]) => (
-        <CursorMarker key={clientId} clientId={clientId} state={state} />
-      ))}
-    </div>
-  );
 };
 
 const {
@@ -130,7 +57,6 @@ const BasicExample = () => {
       provider.awareness as Awareness,
       {
         data: {
-          id: `user-${Math.random()}`,
           name: `${firstName()} ${lastName()}`,
           color: rgb(),
         },
@@ -162,7 +88,7 @@ const BasicExample = () => {
           plugins={YOOPTA_PLUGINS}
           selectionBoxRoot={selectionRef}
           marks={MARKS}
-          autoFocus={true}
+          autoFocus={false}
           readOnly={false}
           placeholder="Type / to open menu"
           tools={TOOLS}
@@ -170,7 +96,7 @@ const BasicExample = () => {
           value={value}
           onChange={onChange}
         />
-        {connected && <RemoteCursors editor={editor} />}
+        {connected && <RemoteOverlayCursor editor={editor} />}
       </div>
     </>
   );

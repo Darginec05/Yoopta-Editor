@@ -25,6 +25,8 @@ export const withCollaboration = (editor: YjsYooEditor, sharedRoot: Y.Map<Yoopta
       if (!(event instanceof Y.YMapEvent)) return;
       const operations: YooptaOperation[] = [];
 
+      console.log('event.keys', event.keys.entries());
+      console.log('editor.sharedRoot', editor.sharedRoot.entries().next().value);
       Array.from(event.keys).forEach(([blockId, change]) => {
         if (change.action === 'add') {
           const block = editor.sharedRoot.get(blockId);
@@ -73,11 +75,11 @@ export const withCollaboration = (editor: YjsYooEditor, sharedRoot: Y.Map<Yoopta
 
           if (isValueChanged) {
             const slate = Blocks.getBlockSlate(editor, { id: updatedBlock.id });
-            operations.push({
-              type: 'set_block_value',
-              id: updatedBlock.id,
-              value: updatedBlock.value as SlateElement[],
-            });
+            // operations.push({
+            //   type: 'set_block_value',
+            //   id: updatedBlock.id,
+            //   value: updatedBlock.value as SlateElement[],
+            // });
           }
         }
       });
