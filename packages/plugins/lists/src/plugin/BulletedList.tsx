@@ -81,6 +81,32 @@ const BulletedList = new YooptaPlugin<Pick<ListElementMap, 'bulleted-list'>>({
         return `- ${serializeTextNodesIntoMarkdown(element.children)}`;
       },
     },
+    email: {
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+
+        return `
+          <table style="width:100%;">
+            <tbody style="width:100%;">
+              <tr>
+                <td>
+                  <ul data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${
+          depth * 20
+        }px; text-align: ${align}; 
+        font-size: 16px;
+        line-height: 1.75rem;
+        padding-bottom: 2px;
+        padding-left: 1rem;
+        padding-top: 2px;
+        margin: 0;
+        "><li style="margin: 0">${serializeTextNodes(element.children)}</li></ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        `;
+      },
+    },
   },
 });
 

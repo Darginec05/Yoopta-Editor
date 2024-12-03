@@ -1,5 +1,6 @@
 import { Elements, useYooptaEditor, useYooptaPluginOptions } from '@yoopta/editor';
 import { VideoElementProps, VideoPluginElements, VideoPluginOptions } from '../types';
+import { limitSizes } from '../utils/limitSizes';
 
 type Props = {
   onClose: () => void;
@@ -23,12 +24,18 @@ const FileUploader = ({ accept = 'video/*', onClose, blockId, onSetLoading }: Pr
       // [TODO] - abort controller?
       const data = await options?.onUpload(file);
       const defaultVideoProps = editor.plugins.Video.elements.video.props as VideoElementProps;
+      const sizes = data.sizes || defaultVideoProps.sizes;
+      const maxSizes = (editor.plugins.Image.options as VideoPluginOptions)?.maxSizes;
+      const limitedSizes = limitSizes(sizes!, {
+        width: maxSizes!.maxWidth!,
+        height: maxSizes!.maxHeight!,
+      });
 
       Elements.updateElement<VideoPluginElements, VideoElementProps>(editor, blockId, {
         type: 'video',
         props: {
           src: data.src,
-          sizes: data.sizes || defaultVideoProps.sizes,
+          sizes: limitedSizes,
           bgColor: data.bgColor || defaultVideoProps.bgColor,
           fit: data.fit || defaultVideoProps.fit || 'cover',
           settings: data.settings || defaultVideoProps.settings,

@@ -1,8 +1,8 @@
 import { type SlateElement } from '@yoopta/editor';
 
 export type VideoSizes = {
-  width: number;
-  height: number;
+  width: number | string;
+  height: number | string;
 };
 
 export type VideoElementSettings = {
@@ -12,7 +12,7 @@ export type VideoElementSettings = {
   autoPlay?: boolean;
 };
 
-export type VideoProviderTypes = 'youtube' | 'vimeo' | 'dailymotion' | string | null;
+export type VideoProviderTypes = 'youtube' | 'vimeo' | 'dailymotion' | 'loom' | 'wistia' | string | null;
 export type VideoProvider = {
   type: VideoProviderTypes;
   id: string;
@@ -40,8 +40,8 @@ export type VideoPluginOptions = {
   onUploadPoster?: (file: File) => Promise<string>;
   accept?: string;
   maxSizes?: {
-    maxWidth?: number;
-    maxHeight?: number;
+    maxWidth?: number | string;
+    maxHeight?: number | string;
   };
 };
 

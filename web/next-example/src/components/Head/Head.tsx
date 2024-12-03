@@ -1,12 +1,12 @@
 import NextHead from 'next/head';
 
 const hostname = 'https://yopta-editor-darginec05.vercel.app';
-const keywords =
-  'react,javascript,editor,contenteditable,wysiwyg,slate,rich-text-editor,wysiwyg-editor,rich-text,notion,notion-editor';
 
 type Props = {
   title?: string;
   description?: string;
+  content?: string;
+  keywords?: string;
 };
 
 const Head = (props: Props) => {
@@ -14,6 +14,10 @@ const Head = (props: Props) => {
   const description =
     props.description ||
     'Using Yoopta-Editor you can effortlessly create a robust and versatile editor that rivals the likes of Notion and Medium.';
+  const content = props.content || 'Yoopta-Editor - open-source rich-text editor';
+  const keywords =
+    props.keywords ||
+    'react,javascript,editor,contenteditable,wysiwyg,slate,rich-text-editor,wysiwyg-editor,rich-text,notion,notion-editor';
 
   return (
     <NextHead>
@@ -28,12 +32,12 @@ const Head = (props: Props) => {
       <link rel="icon" sizes="16x16" href="/favicon.ico" />
       <link rel="manifest" href="/site.webmanifest" />
       <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#f9a32a" />
-      <meta name="apple-mobile-web-app-title" content="Yoopta-Editor - open-source rich-text editor" />
-      <meta name="application-name" content="Yoopta-Editor - open-source rich-text editor" />
+      <meta name="apple-mobile-web-app-title" content={content} />
+      <meta name="application-name" content={content} />
       <meta name="msapplication-TileColor" content="#ffffff" />
       <meta name="msapplication-TileImage" content="/mstile-150x150.png" />
       <meta name="theme-color" content="#ffffff" />
-      <meta property="twitter:title" content="Yoopta-Editor - open-source rich-text editor" />
+      <meta property="twitter:title" content={content} />
       <meta property="twitter:description" content={description} />
 
       <meta name="twitter:card" content="summary" />

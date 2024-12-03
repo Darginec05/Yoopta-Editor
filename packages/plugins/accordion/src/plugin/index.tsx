@@ -1,4 +1,4 @@
-import { Blocks, Elements, YooptaPlugin, buildBlockElementsStructure } from '@yoopta/editor';
+import { Blocks, Elements, YooptaPlugin, buildBlockElementsStructure, serializeTextNodes } from '@yoopta/editor';
 import { AccordionElementMap } from '../types';
 import { AccordionList } from '../renders/AccordionList';
 import { AccordionListItem } from '../renders/AccordionListItem';
@@ -162,13 +162,62 @@ const Accordion = new YooptaPlugin<AccordionElementMap>({
             return `<details data-meta-align="${align}" data-meta-depth="${depth}">${listItem.children
               .map((item) => {
                 if (item.type === 'accordion-list-item-heading') {
-                  return `<summary>${item.children.map((item) => item.text).join('')}</summary>`;
+                  return `<summary>${serializeTextNodes(item.children)}</summary>`;
                 }
-                return `<p>${item.children.map((item) => item.text).join('')}</p>`;
+                return `<p>${serializeTextNodes(item.children)}</p>`;
               })
               .join('')}</details>`;
           })
           .join('')}</div>`;
+      },
+    },
+    email: {
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+
+        return `
+          <table data-meta-align="${align}" data-meta-depth="${depth}" style="width: 100%; border-collapse: collapse; margin-left: ${depth}px;">
+            <tbody>
+              ${element.children
+                .map((listItem) =>
+                  listItem.children
+                    .map((item) => {
+                      if (item.type === 'accordion-list-item-heading') {
+                        return `
+                          <tr>
+                            <td style="
+                                border-radius: 0;
+                                border-width: 0;
+                                cursor: pointer;
+                                font-size: 1rem;
+                                font-weight: 500;
+                                line-height: 1.5rem;
+                                margin-bottom: 0;
+                                padding-bottom: 1rem;
+                                padding-right: 2rem;
+                                padding-top: 1rem;
+                                position: relative;
+                                width: 100%;
+                              ">
+                              ${serializeTextNodes(item.children)}
+                              <span style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);">
+                                <svg viewbox="0 0 30 30" style="width: 12px; height: 100%;"><polygon points="15,17.4 4.8,7 2,9.8 15,23 28,9.8 25.2,7"></polygon></svg>
+                              </span>
+                            </td>
+                          </tr>`;
+                      }
+                      return `
+                        <tr>
+                          <td style="padding-bottom: 1rem; border-bottom: 1px solid #EFEFEE; font-size: .875rem; line-height: 1.25rem; overflow: hidden;">
+                            ${serializeTextNodes(item.children)}
+                          </td>
+                        </tr>`;
+                    })
+                    .join(''),
+                )
+                .join('')}
+            </tbody>
+          </table>`;
       },
     },
   },

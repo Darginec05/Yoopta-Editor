@@ -139,8 +139,6 @@ type Props = {
 };
 
 const FixedToolbar = ({ editor }: Props) => {
-  console.log('editor.historyStack', editor.historyStack);
-
   return (
     <div className="bg-white z-50">
       <div className="flex justify-center mb-2">

@@ -342,6 +342,7 @@ const Editor = ({
   };
 
   const editorStyles: CSSProperties = getEditorStyles({
+    ...style,
     userSelect: selectionBox.selection ? 'none' : 'auto',
     pointerEvents: selectionBox.selection ? 'none' : 'auto',
     width: width || style?.width,

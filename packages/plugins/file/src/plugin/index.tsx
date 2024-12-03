@@ -27,7 +27,7 @@ const File = new YooptaPlugin<FileElementMap, FilePluginOptions>({
   options: {
     display: {
       title: 'File',
-      description: 'For file videos, google maps and more',
+      description: 'For files and more',
     },
     accept: '',
     // onUpload: async () => Promise.resolve({ src: '' }),
@@ -83,6 +83,32 @@ const File = new YooptaPlugin<FileElementMap, FilePluginOptions>({
     markdown: {
       serialize: (element, text) => {
         return `[${element.props.name}](${element.props.src})`;
+      },
+    },
+    email: {
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+        const justify = ALIGNS_TO_JUSTIFY[align] || 'left';
+
+        return `
+          <table style="width:100%;">
+            <tbody style="width:100%;">
+              <tr>
+                <td>
+                  <div style="margin-left: ${
+                    depth * 20
+                  }px; display: flex; width: 100%; justify-content: ${justify}"><a data-meta-align="${align}" data-meta-depth="${depth}" href="${
+          element.props.src
+        }" data-size="${element.props.size}" download="${
+          element.props.name
+        }" target="_blank" rel="noopener noreferrer">${
+          element.props.format ? `${element.props.name}.${element.props.format}` : `${element.props.name}`
+        }</a></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>            
+        `;
       },
     },
   },

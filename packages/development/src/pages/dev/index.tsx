@@ -1,6 +1,5 @@
 import YooptaEditor, {
   Blocks,
-  buildBlockData,
   createYooptaEditor,
   generateId,
   YooptaOnChangeOptions,
@@ -14,8 +13,6 @@ import { MARKS } from '../../utils/yoopta/marks';
 import { YOOPTA_PLUGINS } from '../../utils/yoopta/plugins';
 import { TOOLS } from '../../utils/yoopta/tools';
 import { FixedToolbar } from '../../components/FixedToolbar/FixedToolbar';
-
-export type YooptaChildrenValue = Record<string, YooptaBlockData>;
 
 const EDITOR_STYLE = {
   width: 750,
@@ -787,34 +784,24 @@ const data = {
   },
 };
 
-const getDefaultValue = () => {
-  const id = generateId();
-  return {
-    [id]: Blocks.buildBlockData({ id }),
-  };
-};
-
 const BasicExample = () => {
   const editor: YooEditor = useMemo(() => createYooptaEditor(), []);
   const selectionRef = useRef<HTMLDivElement>(null);
-  const [value, setValue] = useState<YooptaContentValue>({});
+  const [value, setValue] = useState<YooptaContentValue>(data);
 
   const onChange = (value: YooptaContentValue, options: YooptaOnChangeOptions) => {
     console.log('onChange', value, options);
     setValue(value);
   };
 
-  useEffect(() => {
-    editor.withoutSavingHistory(() => {
-      const id = generateId();
-      const data = {
-        [id]: Blocks.buildBlockData({ id }),
-      };
+  // useEffect(() => {
+  //   editor.withoutSavingHistory(() => {
+  //     const id = generateId();
 
-      editor.setEditorValue(data);
-      editor.focusBlock(id);
-    });
-  }, []);
+  //     editor.setEditorValue(data as YooptaContentValue);
+  //     editor.focusBlock(id);
+  //   });
+  // }, []);
 
   return (
     <>

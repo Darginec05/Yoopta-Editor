@@ -66,12 +66,37 @@ const Code = new YooptaPlugin<CodeElementMap, CodePluginBlockOptions>({
           element.props.language
         }" data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${
           depth * 20
-        }px; display: flex; width: 100%; justify-content: "${justify}"; background-color: #263238; color: #fff; padding: 20px 24px; white-space: pre-line;"><code>${escapedText}</code></pre>`.toString();
+        }px; display: flex; width: 100%; justify-content: ${justify}; background-color: #263238; color: #fff; padding: 20px 24px; white-space: pre-line;"><code>${escapedText}</code></pre>`.toString();
       },
     },
     markdown: {
       serialize: (element, text) => {
         return `\`\`\`${element.props.language || 'javascript'}\n${text}\n\`\`\``;
+      },
+    },
+    email: {
+      serialize: (element, text, blockMeta) => {
+        const { align = 'left', depth = 0 } = blockMeta || {};
+        const justify = ALIGNS_TO_JUSTIFY[align] || 'left';
+        const escapedText = escapeHTML(text);
+
+        const props = Object.assign({}, element.props);
+
+        return `
+          <table style="width:100%;">
+            <tbody style="width:100%;">
+              <tr>
+                <td>
+                  <pre data-theme="${props.theme || 'VSCode'}" data-language="${
+          props.language || 'javascript'
+        }" data-meta-align="${align}" data-meta-depth="${depth}" style="margin-left: ${
+          depth * 20
+        }px; display: flex; width: auto; justify-content: ${justify}; background-color: #263238; color: #fff; padding: 20px 24px;"><code>${escapedText}</code></pre>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        `.toString();
       },
     },
   },

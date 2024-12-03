@@ -66,10 +66,11 @@ export function deserializeTextNodes(editor: YooEditor, nodes: NodeListOf<ChildN
 
       if (element.nodeName === 'MARK') {
         const color = element.style.color;
+        const backgroundColor = element.style.backgroundColor || 'transparent';
 
         deserializedNodes.push({
           // @ts-ignore [FIXME] - Fix types
-          highlight: { color: color || 'yellow' },
+          highlight: { color: color, backgroundColor: backgroundColor },
           ...deserializeTextNodes(editor, element.childNodes)[0],
         });
       }

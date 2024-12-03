@@ -1,0 +1,29 @@
+@tailwind utilities;
+
+.yoopta-button-plugin .yoopta-button-options {
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+  right: 3px;
+  top: 3px;
+  color: #000;
+}
+
+.yoopta-button-plugin .yoopta-link {
+  text-decoration-line: none !important;
+  color: inherit !important;
+}
+
+.yoopta-button-plugin:hover .yoopta-button-options {
+  opacity: 1;
+}
+
+.yoopta-button-select,
+.yoopta-button-options {
+  opacity: 0;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.yoopta-button:hover .yoopta-button-select,
+.yoopta-button:hover .yoopta-button-options {
+  opacity: 1;
+}

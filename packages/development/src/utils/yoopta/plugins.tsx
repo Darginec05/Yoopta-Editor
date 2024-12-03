@@ -24,9 +24,9 @@ export const YOOPTA_PLUGINS = [
       },
     },
     options: {
-      HTMLAttributes: {
-        className: 'table-element-extended',
-      },
+      // HTMLAttributes: {
+      //   className: 'table-element-extended',
+      // },
       display: {
         title: 'Table with Shadcn',
       },
@@ -76,9 +76,9 @@ export const YOOPTA_PLUGINS = [
   }),
   Paragraph.extend({
     options: {
-      HTMLAttributes: {
-        className: 'paragraph-element-extended',
-      },
+      // HTMLAttributes: {
+      //   className: 'paragraph-element-extended',
+      // },
     },
   }),
   Image.extend({
@@ -101,9 +101,9 @@ export const YOOPTA_PLUGINS = [
     },
     options: {
       maxSizes: { maxHeight: 750, maxWidth: 750 },
-      HTMLAttributes: {
-        className: 'image-element-extended',
-      },
+      // HTMLAttributes: {
+      //   className: 'image-element-extended',
+      // },
 
       onUpload: async (file: File) => {
         const data = await uploadToCloudinary(file, 'image');
@@ -120,24 +120,24 @@ export const YOOPTA_PLUGINS = [
   }),
   Headings.HeadingOne.extend({
     options: {
-      HTMLAttributes: {
-        className: 'heading-one-element-extended',
-      },
+      // HTMLAttributes: {
+      //   className: 'heading-one-element-extended',
+      // },
     },
   }),
   Headings.HeadingTwo.extend({
     options: {
-      HTMLAttributes: {
-        className: 'heading-two-element-extended',
-      },
+      // HTMLAttributes: {
+      //   className: 'heading-two-element-extended',
+      // },
     },
   }),
   Headings.HeadingThree,
   Blockquote.extend({
     options: {
-      HTMLAttributes: {
-        className: 'blockquote-element-extended',
-      },
+      // HTMLAttributes: {
+      //   className: 'blockquote-element-extended',
+      // },
     },
   }),
   Callout.extend({
@@ -148,16 +148,16 @@ export const YOOPTA_PLUGINS = [
       }),
     },
     options: {
-      HTMLAttributes: {
-        className: 'callout-element-extended',
-      },
+      // HTMLAttributes: {
+      //   className: 'callout-element-extended',
+      // },
     },
   }),
   Lists.BulletedList.extend({
     options: {
-      HTMLAttributes: {
-        className: 'bulleted-list-element-extended',
-      },
+      // HTMLAttributes: {
+      //   className: 'bulleted-list-element-extended',
+      // },
     },
   }),
   Lists.NumberedList,
@@ -184,9 +184,9 @@ export const YOOPTA_PLUGINS = [
       }),
     },
     options: {
-      HTMLAttributes: {
-        className: 'video-element-extended',
-      },
+      // HTMLAttributes: {
+      //   className: 'video-element-extended',
+      // },
       onUploadPoster: async (file: File) => {
         const data = await uploadToCloudinary(file, 'image');
         return data.secure_url;
@@ -214,7 +214,7 @@ export const YOOPTA_PLUGINS = [
     },
     options: {
       HTMLAttributes: {
-        className: 'link-element',
+        // className: 'link-element',
       },
     },
   }),

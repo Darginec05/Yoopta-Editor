@@ -58,6 +58,33 @@ const HeadingTwo = new YooptaPlugin<Record<'heading-two', HeadingTwoElement>>({
         return `## ${serializeTextNodesIntoMarkdown(element.children)}\n`;
       },
     },
+    email: {
+      serialize: (element, content, blockMeta) => {
+        const { depth = 0, align = 'left' } = blockMeta || {};
+
+        let headingTwoHTML = `<h2 data-meta-align="${align}" data-meta-depth="${depth}" style="
+                font-size: 1.875rem;
+                font-weight: 600;
+                line-height: 2.25rem;
+                letter-spacing: -.025em;
+                margin-bottom: .5rem;
+                scroll-margin: 5rem;
+                margin-top: 1rem;
+                margin-left: ${depth * 20}px; text-align: ${align}">
+                ${content}
+              </h2>`;
+
+        return `<table style="width:100%;">
+        <tbody style="width:100%;">
+          <tr>
+            <td>
+              ${headingTwoHTML}
+            </td>
+          </tr>
+        </tbody>
+      </table>`;
+      },
+    },
   },
 });
 

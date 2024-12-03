@@ -24,6 +24,7 @@ import withPluginEvents from '@/components/examples/withPluginEvents';
 import withShadcnUILibrary from '@/components/examples/withShadcnUILibrary';
 import withEditorHistory from '@/components/examples/withEditorHistory';
 import withEditorOperations from '@/components/examples/withEditorOperations';
+import withEmailBuilder from '@/components/examples/withEmailBuilder';
 // import withCraftExample from '@/components/examples/withCraftExample';
 // import withEditorFocusBlur from '@/components/examples/withEditorFocusBlur';
 // import withStarterKit from '@/components/examples/withStarterKit';
@@ -42,6 +43,7 @@ export const EXAMPLES: Record<string, () => React.JSX.Element> = {
   withNotionActionMenu,
   withExports,
   withEditorHistory,
+  withEmailBuilder,
   withEditorOperations,
   withCommandsAPI,
   withPluginEvents,
@@ -161,23 +163,27 @@ const EXAMPLE_MAP: Record<keyof typeof EXAMPLES, any> = {
     description: '',
   },
   withCommandsAPI: {
-    title: 'Editor Commands API (new)',
+    title: 'Editor Commands API',
     description: '',
   },
   withPluginEvents: {
-    title: 'Plugin Events (new)',
+    title: 'Plugin Events',
     description: '',
   },
   withSlateExtensions: {
-    title: 'Customize plugin elements behaviour (new)',
+    title: 'Customize plugin elements behaviour',
     description: '',
   },
   withEditorHistory: {
-    title: 'History API: Undo/Redo (new)',
+    title: 'History API: Undo/Redo',
     description: '',
   },
   withEditorOperations: {
-    title: 'Core: Editor Operations (new)',
+    title: 'Core: Editor Operations',
+    description: '',
+  },
+  withEmailBuilder: {
+    title: 'Meet Email-Builder based on Yoopta! (new)',
     description: '',
   },
 };
