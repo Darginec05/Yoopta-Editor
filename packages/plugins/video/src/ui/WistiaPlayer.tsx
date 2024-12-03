@@ -26,7 +26,7 @@ function WistiaPlayer({ videoId, children, attributes, width, height, ...other }
       >
         {isInViewport && (
           <iframe
-            src={`https://fast.wistia.net/embed/iframe/${videoId}?videoFoam=true`}
+            src={`https://fast.wistia.net/embed/iframe/${videoId}?videoFoam=true&videoHeight=${height}&videoWidth=${width}`}
             title="Wistia Video Player"
             frameBorder="0"
             allowFullScreen

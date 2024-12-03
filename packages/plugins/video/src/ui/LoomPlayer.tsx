@@ -38,8 +38,6 @@ function LoomPlayer({ videoId, children, attributes, width, height, ...other }) 
             title="Loom Video Player"
             src={`https://www.loom.com/embed/${videoId}?hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true`}
             frameBorder="0"
-            webkitallowfullscreen="true"
-            mozallowfullscreen="true"
             allowFullScreen
             onLoad={() => {
               console.log('Loom iframe loaded');

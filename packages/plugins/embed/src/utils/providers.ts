@@ -25,13 +25,30 @@ export const getDailymotionId = (url: string) => {
 };
 
 export const getWistiaId = (url: string) => {
-  const match = url.match(/(?:https?:\/\/)?(?:www\.)?wistia\.com\/medias\/(.+)/);
-  return match ? match[1] : null;
+  try {
+    // Handle iframe embed URLs
+    const iframeMatch = url.match(/(?:https?:\/\/)?(?:fast\.)?wistia\.(?:com|net)\/embed\/iframe\/([a-zA-Z0-9]+)/);
+    if (iframeMatch) return iframeMatch[1];
+
+    // Handle medias URLs
+    const mediasMatch = url.match(/(?:https?:\/\/)?(?:www\.)?wistia\.com\/medias\/([a-zA-Z0-9]+)/);
+    if (mediasMatch) return mediasMatch[1];
+
+    return null;
+  } catch (error) {
+    console.error('Error extracting Wistia ID:', error);
+    return null;
+  }
 };
 
 export const getLoomId = (url: string) => {
-  const match = url.match(/(?:https?:\/\/)?(?:www\.)?loom\.com\/share\/(.+)/);
-  return match ? match[1] : null;
+  try {
+    const match = url.match(/(?:https?:\/\/)?(?:www\.)?loom\.com\/share\/([a-zA-Z0-9]+)/);
+    return match ? match[1] : null;
+  } catch (error) {
+    console.error('Error extracting Loom ID:', error);
+    return null;
+  }
 };
 
 export function getInstagramId(url: string) {
@@ -49,7 +66,7 @@ export function getProvider(url: string): EmbedProviderTypes | null {
     return 'dailymotion';
   } else if (url.includes('loom.com')) {
     return 'loom';
-  } else if (url.includes('wistia.com')) {
+  } else if (url.includes('wistia.com') || url.includes('wistia.net')) {
     return 'wistia';
   } else if (url.includes('twitter') || url.includes('https://x.com')) {
     return 'twitter';

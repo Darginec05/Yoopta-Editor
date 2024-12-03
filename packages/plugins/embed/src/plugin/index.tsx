@@ -1,12 +1,6 @@
 import { generateId, YooptaPlugin } from '@yoopta/editor';
 import { EmbedCommands } from '../commands';
-import {
-  EmbedElementMap,
-  EmbedElementProps,
-  EmbedPluginElements,
-  EmbedPluginOptions,
-  EmbedProviderTypes,
-} from '../types';
+import { EmbedElementMap, EmbedPluginOptions } from '../types';
 import { EmbedRender } from '../ui/Embed';
 
 const ALIGNS_TO_JUSTIFY = {
@@ -70,6 +64,11 @@ const Embed = new YooptaPlugin<EmbedElementMap, EmbedPluginOptions>({
           vimeo: (id: string) => `https://player.vimeo.com/embed/${id}`,
           dailymotion: (id: string) => `https://www.dailymotion.com/embed/embed/${id}`,
           figma: (id: string) => `https://www.figma.com/embed?embed_host=share&url=${id}`,
+          loom: (id: string) =>
+            `https://www.loom.com/embed/${id}?hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true`,
+          instagram: (id: string) => `https://www.instagram.com/p/${id}/embed`,
+          wistia: (id: string) => `https://fast.wistia.net/embed/iframe/${id}?videoFoam=false`,
+          twitter: (id: string) => `https://platform.twitter.com/widgets/tweet.html?id=${id}`,
         };
 
         let url = element.props.provider.url;
