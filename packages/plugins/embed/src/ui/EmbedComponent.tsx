@@ -5,6 +5,8 @@ import Instagram from '../providers/Instagram';
 import Twitter from '../providers/Twitter';
 import { Vimeo } from '../providers/Vimeo';
 import { YouTube } from '../providers/Youtube';
+import { Loom } from '../providers/Loom';
+import { Wistia } from '../providers/Wistia';
 import { EmbedElementProps } from '../types';
 
 type EmbedComponentProps = Omit<EmbedElementProps, 'sizes'> & {

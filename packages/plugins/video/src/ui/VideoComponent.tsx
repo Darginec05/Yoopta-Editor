@@ -4,6 +4,8 @@ import { VideoElementProps } from '../types';
 import DailyMotion from './DailyMotionPlayer';
 import VimeoPlayer from './VimeoPlayer';
 import YouTubePlayer from './YoutubePlayer';
+import LoomPlayer from './LoomPlayer';
+import WistiaPlayer from './WistiaPlayer';
 
 type VideoComponentProps = Omit<VideoElementProps, 'sizes'> & {
   width: number | string;
@@ -14,6 +16,8 @@ const PROVIDERS = {
   vimeo: VimeoPlayer,
   youtube: YouTubePlayer,
   dailymotion: DailyMotion,
+  loom: LoomPlayer,
+  wistia: WistiaPlayer,
 };
 
 const VideoComponent = ({
