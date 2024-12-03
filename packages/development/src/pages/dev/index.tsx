@@ -23,6 +23,7 @@ import {
 } from '@/collaborative/withYjsCursors';
 import { Awareness } from 'y-protocols/awareness';
 import { RemoteOverlayCursor } from '@/collaborative/RemoteCursorOverlay';
+import { withYjsHistory } from '@/collaborative/withYjsHistory';
 
 const EDITOR_STYLE = {
   width: 750,
@@ -52,14 +53,21 @@ const BasicExample = () => {
 
   const editor = useMemo(() => {
     const sharedType = provider.document.get('content', Y.Map<YooptaBlockData>) as Y.Map<YooptaBlockData>;
-    return withYjsCursors(
-      withCollaboration(createYooptaEditor() as YjsYooEditor, sharedType),
-      provider.awareness as Awareness,
-      {
-        data: {
-          name: `${firstName()} ${lastName()}`,
-          color: rgb(),
+    return withYjsHistory(
+      withYjsCursors(
+        withCollaboration(createYooptaEditor() as YjsYooEditor, sharedType),
+        provider.awareness as Awareness,
+        {
+          data: {
+            name: `${firstName()} ${lastName()}`,
+            color: rgb(),
+          },
         },
+      ),
+      {
+        captureTimeout: 500,
+        onStackItemAdded: () => console.log('Added to history'),
+        onStackItemPopped: () => console.log('Restored from history'),
       },
     );
   }, [provider.document]);
@@ -82,7 +90,7 @@ const BasicExample = () => {
   return (
     <>
       <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={selectionRef}>
-        <FixedToolbar editor={editor} DEFAULT_DATA={{}} />
+        {/* <FixedToolbar editor={editor} DEFAULT_DATA={{}} /> */}
         <YooptaEditor
           editor={editor}
           plugins={YOOPTA_PLUGINS}

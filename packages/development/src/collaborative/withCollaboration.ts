@@ -1,5 +1,5 @@
 import * as Y from 'yjs';
-import { Blocks, SlateElement, YooEditor, YooptaBlockData, YooptaOperation } from '@yoopta/editor';
+import { Blocks, YooEditor, YooptaBlockData, YooptaOperation } from '@yoopta/editor';
 
 const LOCAL_ORIGIN = Symbol('yoopta-local-change');
 const CONNECTED: WeakSet<YjsYooEditor> = new WeakSet();
@@ -25,8 +25,6 @@ export const withCollaboration = (editor: YjsYooEditor, sharedRoot: Y.Map<Yoopta
       if (!(event instanceof Y.YMapEvent)) return;
       const operations: YooptaOperation[] = [];
 
-      console.log('event.keys', event.keys.entries());
-      console.log('editor.sharedRoot', editor.sharedRoot.entries().next().value);
       Array.from(event.keys).forEach(([blockId, change]) => {
         if (change.action === 'add') {
           const block = editor.sharedRoot.get(blockId);
@@ -71,15 +69,6 @@ export const withCollaboration = (editor: YjsYooEditor, sharedRoot: Y.Map<Yoopta
               properties: { align: updatedBlock.meta.align, depth: updatedBlock.meta.depth },
               prevProperties: { align: existingBlock.meta.align, depth: existingBlock.meta.depth },
             });
-          }
-
-          if (isValueChanged) {
-            const slate = Blocks.getBlockSlate(editor, { id: updatedBlock.id });
-            // operations.push({
-            //   type: 'set_block_value',
-            //   id: updatedBlock.id,
-            //   value: updatedBlock.value as SlateElement[],
-            // });
           }
         }
       });
@@ -133,7 +122,6 @@ export const withCollaboration = (editor: YjsYooEditor, sharedRoot: Y.Map<Yoopta
 
           case 'split_block': {
             console.log('split_block', op);
-
             break;
           }
 

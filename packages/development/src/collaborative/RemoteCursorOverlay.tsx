@@ -110,10 +110,10 @@ const CursorOverlay = ({ state, editor }: CursorOverlayProps) => {
   const renderBlockSlateSelection = () => {
     if (!state.path.blockId || !state.path.selection) return null;
 
-    const slate = Blocks.getBlockSlate(editor, { id: state.path.blockId });
-    if (!slate) return null;
-
     try {
+      const slate = Blocks.getBlockSlate(editor, { id: state.path.blockId });
+      if (!slate) return null;
+
       const domRange = ReactEditor.toDOMRange(slate, state.path.selection);
       const rects = Array.from(domRange.getClientRects());
 
@@ -173,10 +173,10 @@ const CursorOverlay = ({ state, editor }: CursorOverlayProps) => {
   const renderCaret = () => {
     if (!state.path.blockId || !state.path.selection) return null;
 
-    const slate = Blocks.getBlockSlate(editor, { id: state.path.blockId });
-    if (!slate) return null;
-
     try {
+      const slate = Blocks.getBlockSlate(editor, { id: state.path.blockId });
+      if (!slate) return null;
+
       const [node, offset] = ReactEditor.toDOMPoint(slate, state.path.selection.focus);
       const range = document.createRange();
       range.setStart(node, offset);
