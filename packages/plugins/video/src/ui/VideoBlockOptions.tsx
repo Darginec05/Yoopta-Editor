@@ -213,7 +213,7 @@ const VideoBlockOptions = ({ editor, block, props: videoProps }: Props) => {
         </>
       )}
       <BlockOptionsMenuGroup>
-        {options.onUploadPoster && (
+        {options.onUploadPoster && !isExternalVideo && (
           <BlockOptionsMenuItem>
             <label
               htmlFor="video-poster-uploader"

@@ -60,7 +60,7 @@ export function getProvider(url: string): VideoProviderTypes | null {
     return 'dailymotion';
   } else if (url.includes('loom.com')) {
     return 'loom';
-  } else if (url.includes('wistia.com')) {
+  } else if (url.includes('wistia.com') || url.includes('wistia.net')) {
     return 'wistia';
   }
   // } else if (url.includes('twitch.tv')) {

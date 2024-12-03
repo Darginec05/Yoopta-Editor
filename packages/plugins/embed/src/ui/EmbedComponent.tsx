@@ -22,6 +22,8 @@ const PROVIDERS = {
   figma: Figma,
   twitter: Twitter,
   instagram: Instagram,
+  loom: Loom,
+  wistia: Wistia,
 };
 
 const EmbedComponent = ({ width, height, provider, blockId, attributes, children }: EmbedComponentProps) => {
@@ -29,6 +31,7 @@ const EmbedComponent = ({ width, height, provider, blockId, attributes, children
 
   if (provider && provider.id && provider.type && PROVIDERS[provider.type]) {
     const Provider = PROVIDERS[provider.type];
+
     return (
       <Provider provider={provider} width={width} height={height} blockId={blockId} attributes={attributes}>
         {children}
