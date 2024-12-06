@@ -15,6 +15,12 @@ import { ImagePluginOptions } from '../types';
 import { ImageBlockOptions } from './ImageBlockOptions';
 import { Resizer } from './Resizer';
 
+export type ImageLoadingState = null | {
+  progress: number;
+  base64: string;
+  loading: boolean;
+};
+
 const ImageRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
   const { element, blockId, children, attributes } = props;
   const { src, alt, srcSet, bgColor, fit, sizes: propSizes } = element.props || {};
@@ -28,6 +34,8 @@ const ImageRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
     width: propSizes?.width || 650,
     height: propSizes?.height || 440,
   });
+
+  const [loadingState, setLoadingState] = useState<ImageLoadingState>(null);
 
   useEffect(
     () =>
@@ -70,25 +78,58 @@ const ImageRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
         });
       },
       handleComponent: {
-        left: isReadOnly ? <></> : <Resizer position="left" />,
-        right: isReadOnly ? <></> : <Resizer position="right" />,
+        left: isReadOnly || typeof loadingState?.base64 === 'string' ? <></> : <Resizer position="left" />,
+        right: isReadOnly || typeof loadingState?.base64 === 'string' ? <></> : <Resizer position="right" />,
       },
     }),
     [sizes.width, sizes.height],
   );
 
+  const currentAlign = blockData?.meta?.align || 'center';
+  const alignClass = `yoopta-align-${currentAlign}`;
+
   if (!src) {
     if (isReadOnly) return <></>;
 
+    const onUpdateLoadingState = (loadingState: ImageLoadingState) => {
+      setLoadingState(loadingState);
+    };
+
+    if (typeof loadingState?.base64 === 'string') {
+      return (
+        <div
+          contentEditable={false}
+          draggable={false}
+          className={`yoo-image-mt-4 yoo-image-relative yoo-image-flex opacity-70 pointer-events-none ${alignClass} yoopta-image`}
+        >
+          <ImageComponent
+            key={element.id}
+            src={loadingState.base64}
+            alt={alt}
+            srcSet={srcSet}
+            fit={fit}
+            width={sizes?.width}
+            bgColor={bgColor}
+            height={sizes?.height}
+            attributes={attributes}
+          >
+            {children}
+          </ImageComponent>
+        </div>
+      );
+    }
+
     return (
-      <Placeholder attributes={attributes} blockId={blockId}>
+      <Placeholder
+        loadingState={loadingState}
+        onUpdateLoadingState={onUpdateLoadingState}
+        attributes={attributes}
+        blockId={blockId}
+      >
         {children}
       </Placeholder>
     );
   }
-
-  const currentAlign = blockData?.meta?.align || 'center';
-  const alignClass = `yoopta-align-${currentAlign}`;
 
   return (
     <div
@@ -104,6 +145,7 @@ const ImageRender = ({ extendRender, ...props }: PluginElementRenderProps) => {
           extendRender(props)
         ) : (
           <ImageComponent
+            key={element.id}
             src={src}
             alt={alt}
             srcSet={srcSet}

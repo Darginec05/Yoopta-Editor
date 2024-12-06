@@ -94,13 +94,13 @@ export const YOOPTA_PLUGINS = [
         alt: 'cloudinary',
         sizes: {
           width: 500,
-          height: 500,
+          height: 400,
         },
         fit: 'contain',
       }),
     },
     options: {
-      maxSizes: { maxHeight: 750, maxWidth: 750 },
+      maxSizes: { maxHeight: 400, maxWidth: 750 },
       // HTMLAttributes: {
       //   className: 'image-element-extended',
       // },

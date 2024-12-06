@@ -1,3 +1,4 @@
+import { Blocks } from '../../editor/blocks';
 import { YooptaBlockData, SlateElement, YooptaBlockBaseMeta } from '../../editor/types';
 import { generateId } from '../../utils/generateId';
 
@@ -36,3 +37,21 @@ export const getDefaultYooptaChildren = () => {
     [pId]: buildBlockData({ id: pId }),
   };
 };
+
+export async function handleClipboardItems(editor, file: File) {
+  const plugin = Object.keys(editor.plugins).find((plugin) => {
+    const pluginInstance = editor.plugins[plugin];
+    const mimeTypes = pluginInstance.clipboardPasteOrDropRules?.mimeTypes;
+    if (!mimeTypes) return false;
+    return mimeTypes.includes(file.type);
+  });
+
+  if (!plugin) return;
+
+  const pluginInstance = editor.plugins[plugin];
+  const block = await pluginInstance.clipboardPasteOrDropRules?.handler(file, editor);
+  if (!block) return;
+
+  const blockData = Blocks.buildBlockData({ type: pluginInstance.type, value: [block] });
+  Blocks.insertBlock(editor, pluginInstance.type, { focus: true, blockData });
+}

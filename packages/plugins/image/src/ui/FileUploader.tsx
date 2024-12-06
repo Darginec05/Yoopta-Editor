@@ -1,15 +1,25 @@
 import { Elements, useYooptaEditor, useYooptaPluginOptions } from '@yoopta/editor';
 import { ImageElementProps, ImagePluginElements, ImagePluginOptions } from '../types';
 import { limitSizes } from '../utils/limitSizes';
+import { ImageLoadingState } from './Image';
 
 type Props = {
   onClose: () => void;
   blockId: string;
   accept?: string;
-  onSetLoading: (_s: boolean) => void;
+  onUpdateLoadingState: (state: ImageLoadingState) => void;
 };
 
-const FileUploader = ({ accept = 'image/*', onClose, blockId, onSetLoading }: Props) => {
+function toBase64(file: File): Promise<string | ArrayBuffer | null> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+  });
+}
+
+const FileUploader = ({ accept = 'image/*', onClose, blockId, onUpdateLoadingState }: Props) => {
   const options = useYooptaPluginOptions<ImagePluginOptions>('Image');
   const editor = useYooptaEditor();
 
@@ -19,9 +29,11 @@ const FileUploader = ({ accept = 'image/*', onClose, blockId, onSetLoading }: Pr
       return;
     }
     onClose();
-    onSetLoading(true);
 
     try {
+      const base64 = (await toBase64(file)) as string;
+      onUpdateLoadingState({ progress: 100, base64, loading: true });
+
       const data = await options?.onUpload(file);
       const defaultImageProps = editor.plugins.Image.elements.image.props as ImageElementProps;
       const sizes = data.sizes || defaultImageProps.sizes;
@@ -43,7 +55,7 @@ const FileUploader = ({ accept = 'image/*', onClose, blockId, onSetLoading }: Pr
       });
     } catch (error) {
     } finally {
-      onSetLoading(false);
+      onUpdateLoadingState(null);
     }
   };
 

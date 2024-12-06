@@ -2,19 +2,20 @@ import { UI } from '@yoopta/editor';
 import { CSSProperties, useState } from 'react';
 import { EmbedUploader } from './EmbedUploader';
 import { FileUploader } from './FileUploader';
+import { ImageLoadingState } from './Image';
 
 type Props = {
   floatingStyles: CSSProperties;
   refs: any;
   blockId: string;
   onClose: () => void;
-  onSetLoading: (_s: boolean) => void;
+  onUpdateLoadingState: (state: ImageLoadingState) => void;
 };
 const { Overlay, Portal } = UI;
 
 type Tab = 'upload' | 'embed';
 
-const ImageUploader = ({ floatingStyles, refs, onClose, blockId, onSetLoading }: Props) => {
+const ImageUploader = ({ floatingStyles, refs, onClose, blockId, onUpdateLoadingState }: Props) => {
   const [activeTab, setActiveTab] = useState<Tab>('upload');
 
   const switchTab = (tab: Tab) => setActiveTab(tab);
@@ -53,7 +54,9 @@ const ImageUploader = ({ floatingStyles, refs, onClose, blockId, onSetLoading }:
             </div>
             <div className="yoo-image-pt-[6px] yoo-image-pb-[6px] yoo-image-mt-[4px] yoo-image-flex yoo-image-justify-center yoo-image-mr-[12px] yoo-image-ml-[12px]">
               {isEmbed && <EmbedUploader onClose={onClose} blockId={blockId} />}
-              {isUploader && <FileUploader onClose={onClose} blockId={blockId} onSetLoading={onSetLoading} />}
+              {isUploader && (
+                <FileUploader onClose={onClose} blockId={blockId} onUpdateLoadingState={onUpdateLoadingState} />
+              )}
             </div>
           </div>
         </div>

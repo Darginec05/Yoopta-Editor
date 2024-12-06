@@ -1,9 +1,9 @@
-import { ClipboardEvent, CSSProperties, ReactNode, useEffect } from 'react';
+import { ClipboardEvent, CSSProperties, DragEvent, DragEventHandler, ReactNode, useEffect } from 'react';
 import { useYooptaEditor, useYooptaReadOnly } from '../../contexts/YooptaContext/YooptaContext';
 import { RenderBlocks } from './RenderBlocks';
 import { YooptaMark } from '../../marks';
 import { findPluginBlockByPath } from '../../utils/findPluginBlockByPath';
-import { buildBlockData } from './utils';
+import { buildBlockData, handleClipboardItems } from './utils';
 import { generateId } from '../../utils/generateId';
 import { HOTKEYS } from '../../utils/hotkeys';
 import { Editor as SlateEditor, Element, Path } from 'slate';
@@ -305,39 +305,21 @@ const Editor = ({
     }
   };
 
-  const handleClipboardContent = async (file: File) => {
-    const plugin = Object.keys(editor.plugins).find((plugin) => {
-      const pluginInstance = editor.plugins[plugin];
-      const mimeTypes = pluginInstance.clipboardPasteOrDropRules?.mimeTypes;
-      if (!mimeTypes) return false;
-      return mimeTypes.includes(file.type);
-    });
-
-    if (!plugin) return;
-
-    const pluginInstance = editor.plugins[plugin];
-    const block = await pluginInstance.clipboardPasteOrDropRules?.handler(file, editor);
-    if (!block) return;
-
-    const blockData = Blocks.buildBlockData({ type: pluginInstance.type, value: [block] });
-    Blocks.insertBlock(editor, pluginInstance.type, { focus: true, blockData });
-  };
-
   const onPaste = (e: ClipboardEvent) => {
     const items = e.clipboardData.items;
     for (const item of items) {
       const file = item.getAsFile();
       if (!file) continue;
-      handleClipboardContent(file);
+      handleClipboardItems(editor, file);
     }
   };
 
-  const onDrop = (e: DragEvent) => {
+  const onDrop = (e: DragEvent<HTMLDivElement>) => {
     const items = e.dataTransfer?.files;
     if (!items) return;
     for (const file of items) {
       if (!file) continue;
-      handleClipboardContent(file);
+      handleClipboardItems(editor, file);
     }
   };
 
