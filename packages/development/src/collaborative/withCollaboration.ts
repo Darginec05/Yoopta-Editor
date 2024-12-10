@@ -1,5 +1,6 @@
 import * as Y from 'yjs';
 import { Blocks, YooEditor, YooptaBlockData, YooptaOperation } from '@yoopta/editor';
+import { withSlateYjs, YjsSlateEditor } from './slate-yjs/withSlateYjs';
 
 const LOCAL_ORIGIN = Symbol('yoopta-local-change');
 const CONNECTED: WeakSet<YjsYooEditor> = new WeakSet();
@@ -16,6 +17,7 @@ export type YjsYooEditor = YooEditor & {
 export const withCollaboration = (editor: YjsYooEditor, sharedRoot: Y.Map<YooptaBlockData>) => {
   const { applyTransforms } = editor;
 
+  const blockValues = new Map<string, YjsSlateEditor>();
   editor.sharedRoot = sharedRoot;
   editor.localOrigin = LOCAL_ORIGIN;
   editor.isLocalOrigin = (origin) => origin === editor.localOrigin;
@@ -99,6 +101,33 @@ export const withCollaboration = (editor: YjsYooEditor, sharedRoot: Y.Map<Yoopta
     CONNECTED.delete(editor);
   };
 
+  editor.on('block_inserted', (event) => {
+    const slate = blockValues.get(event.id) as YjsSlateEditor;
+
+    if (!slate) return;
+
+    const sharedSlateRoot = new Y.XmlText();
+    const { apply, onChange } = withSlateYjs(slate, sharedSlateRoot, { localOrigin: LOCAL_ORIGIN });
+    slate.apply = (op) => {
+      if (YjsSlateEditor.connected(slate) && YjsSlateEditor.isLocal(slate)) {
+        YjsSlateEditor.storeLocalChange(slate, op);
+      }
+
+      apply(op);
+    };
+
+    slate.onChange = () => {
+      if (YjsSlateEditor.connected(slate)) {
+        YjsSlateEditor.flushLocalChanges(slate);
+      }
+
+      onChange();
+    };
+
+    slate?.connect();
+    console.log('block_inserted slate', slate?.children);
+  });
+
   editor.applyTransforms = (operations: YooptaOperation[], options?: any) => {
     applyTransforms(operations, { ...options, validatePaths: true });
 
@@ -107,6 +136,8 @@ export const withCollaboration = (editor: YjsYooEditor, sharedRoot: Y.Map<Yoopta
         switch (op.type) {
           case 'insert_block': {
             editor.sharedRoot.set(op.block.id, op.block);
+            blockValues.set(op.block.id, editor.blockEditorsMap[op.block.id] as YjsSlateEditor);
+            editor.emit('block_inserted', op.block);
             break;
           }
 

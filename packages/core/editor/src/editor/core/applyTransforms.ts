@@ -374,11 +374,13 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
   editor.path = createDraft(editor.path);
 
   const { validatePaths = true, source } = options || {};
-  const operations = [...ops];
+  const operations = ops.slice();
 
   if (validatePaths) {
     operations.push({ type: 'validate_block_paths' });
   }
+
+  // console.log('applyTransforms operations', operations);
 
   if (operations.length > 1) {
     // if type is insert_block, we need to sort these operations by order

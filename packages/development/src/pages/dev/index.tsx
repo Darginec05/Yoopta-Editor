@@ -24,6 +24,7 @@ import {
 import { Awareness } from 'y-protocols/awareness';
 import { RemoteOverlayCursor } from '@/collaborative/RemoteCursorOverlay';
 import { withYjsHistory } from '@/collaborative/withYjsHistory';
+import Head from 'next/head';
 
 const EDITOR_STYLE = {
   width: 750,
@@ -38,6 +39,7 @@ const BasicExample = () => {
   const [connected, setConnected] = useState(false);
   const selectionRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState<YooptaContentValue>();
+  const [username] = useState(`${firstName()} ${lastName()}`);
 
   const provider = useMemo(
     () =>
@@ -52,14 +54,14 @@ const BasicExample = () => {
   );
 
   const editor = useMemo(() => {
-    const sharedType = provider.document.get('content', Y.Map<YooptaBlockData>) as Y.Map<YooptaBlockData>;
+    const sharedBlocks = provider.document.get('content', Y.Map<YooptaBlockData>) as Y.Map<YooptaBlockData>;
     return withYjsHistory(
       withYjsCursors(
-        withCollaboration(createYooptaEditor() as YjsYooEditor, sharedType),
+        withCollaboration(createYooptaEditor() as YjsYooEditor, sharedBlocks),
         provider.awareness as Awareness,
         {
           data: {
-            name: `${firstName()} ${lastName()}`,
+            name: username,
             color: rgb(),
           },
         },
@@ -90,6 +92,9 @@ const BasicExample = () => {
   return (
     <>
       <div className="px-[100px] max-w-[900px] mx-auto my-10 flex flex-col items-center" ref={selectionRef}>
+        <Head>
+          <title>Yoopta | {username}</title>
+        </Head>
         {/* <FixedToolbar editor={editor} DEFAULT_DATA={{}} /> */}
         <YooptaEditor
           editor={editor}
