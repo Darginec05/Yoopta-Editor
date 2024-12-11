@@ -1,4 +1,4 @@
-import { PlusIcon, ExternalLinkIcon } from 'lucide-react';
+import { PlusIcon, ExternalLinkIcon, MailIcon } from 'lucide-react';
 import { Head } from '@/components/Head/Head';
 import { ProductHuntButton } from '@/components/landing/ProductHuntButton/ProductHuntButton';
 import { GithubButton } from '@/components/landing/GithubButton/GithubButton';
@@ -53,12 +53,18 @@ export default function Home({ repoData, sponsors, contributors }: Props) {
           . Install and use it in your project. Easy to to use and fully customizable. Just relax, I'm here to solve all
           your challenges with rich-text editors.
         </p>
-        <div className="mt-4 flex flex-col items-center">
+        <div className="mt-4 flex flex-col md:flex-row justify-center items-center">
           <button
             onClick={() => window.open('/examples/withBaseFullSetup', '_blank')}
             className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-[#1f6feb] text-primary-foreground shadow hover:bg-[#1f6feb]/90 h-9 px-4 py-2"
           >
             Play with demo's <ExternalLinkIcon size={16} className="ml-2" />
+          </button>
+          <button
+            onClick={() => window.open('/examples/withEmailBuilder/email-builder', '_blank')}
+            className="mt-2 ml-0 md:mt-0 md:ml-2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-[#1f6feb] text-primary-foreground shadow hover:bg-[#1f6feb]/90 h-9 px-4 py-2"
+          >
+            Check Email-Builder (new) <MailIcon size={16} className="ml-2" />
           </button>
         </div>
 

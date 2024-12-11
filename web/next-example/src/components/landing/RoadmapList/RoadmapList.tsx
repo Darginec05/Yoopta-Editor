@@ -33,6 +33,19 @@ export const RoadmapList = () => {
           description="We plan to integrate advanced AI tools to provide intelligent editing capabilities, making content creation faster, smarter, and more intuitive."
         />
         <Card
+          title={
+            <a
+              className="text-[#1f6feb] underline"
+              href="https://yoopta.dev/examples/withEmailBuilder/email-builder"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open-Source Email Builder
+            </a>
+          }
+          description="Plans are underway to develop an open-source email builder that will provide developers and designers with the tools to create responsive, professionally designed emails easily, enhancing how email campaigns are built and managed."
+        />
+        <Card
           title="Collabrative editing"
           description="We aim to incorporate advanced AI features to streamline content creation and editing, making the editor smarter and more intuitive."
         />
@@ -45,10 +58,6 @@ export const RoadmapList = () => {
           description="A one-stop-shop for plugins where developers can share and monetize their own plugins, and users can easily enhance their editor's capabilities."
         />
 
-        <Card
-          title="Open-Source Email Builder"
-          description="Plans are underway to develop an open-source email builder that will provide developers and designers with the tools to create responsive, professionally designed emails easily, enhancing how email campaigns are built and managed."
-        />
         <Card
           title="Simplify the building of custom plugins"
           description='We plan to introduce a "plugin builder" tool that will simplify the process of creating custom plugins, enabling developers to build and share their own plugins with ease.'
