@@ -84,6 +84,16 @@ export function toggleBlock(editor: YooEditor, toBlockTypeArg: string, options: 
 
   // [TEST]
   if (options.deleteText) {
+    editor.updateBlock(newBlock.id, {
+      meta: newBlock.meta,
+      value: [
+        {
+          ...newBlock.value[0],
+          children: [{ text: '' }],
+        },
+      ],
+    });
+
     Transforms.delete(newSlate, { at: [0, 0] });
   }
 
