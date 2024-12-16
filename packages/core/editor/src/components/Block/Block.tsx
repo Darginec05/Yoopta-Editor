@@ -44,7 +44,7 @@ const Block = memo(({ children, block, blockId, onActiveDragHandleChange }: Bloc
       onMouseEnter={handleMouseEnter}
     >
       <div style={styles.content}>{children}</div>
-      {isSelected && !editor.readOnly && <div className="yoopta-selection-block" />}
+      <div data-selected={isSelected} className="yoopta-selection-block" />
     </div>
   );
 });

@@ -6,7 +6,7 @@ import { YooptaMark } from '../marks';
 
 import { ExtendedLeafProps, PluginCustomEditorRenderProps, Plugin, PluginEvents } from './types';
 import { EditorEventHandlers } from '../types/eventHandlers';
-import { Editor, NodeEntry, Path, Range } from 'slate';
+import { Editor, NodeEntry, Path, Range, Selection } from 'slate';
 import { TextLeaf } from '../components/TextLeaf/TextLeaf';
 
 import { IS_FOCUSED_EDITOR } from '../utils/weakMaps';
@@ -69,6 +69,16 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
       }
     },
     [id],
+  );
+
+  const onSelectionChange = useCallback(
+    (selection: Selection) => {
+      if (editor.readOnly) return;
+
+      editor.setPath({ current: editor.path.current, selected: editor.path.selected, selection: selection });
+      // editor.setPath({ current: selection.anchor.path[0] });
+    },
+    [editor.readOnly],
   );
 
   const renderElement = useCallback(
@@ -205,7 +215,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
             });
 
             // [TEST]
-            editor.setPath({ current: null, selected: newPaths });
+            editor.setPath({ current: null, selected: newPaths, selection: null });
           });
 
           return;
@@ -259,6 +269,7 @@ const SlateEditorComponent = <TElementMap extends Record<string, SlateElement>, 
       customEditor={customEditor}
       readOnly={editor.readOnly}
       onPaste={onPaste}
+      onSelectionChange={onSelectionChange}
     />
   );
 };
@@ -269,6 +280,7 @@ type SlateEditorInstanceProps = {
   readOnly: boolean;
   initialValue: any;
   onChange: (value: any) => void;
+  onSelectionChange: (selection: Selection) => void;
   renderLeaf: (props: ExtendedLeafProps<any, any>) => JSX.Element;
   renderElement: (props: RenderElementProps) => JSX.Element;
   eventHandlers: EditorEventHandlers;
@@ -288,6 +300,7 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     slate,
     initialValue,
     onChange,
+    onSelectionChange,
     renderLeaf,
     renderElement,
     eventHandlers,
@@ -305,7 +318,13 @@ const SlateEditorInstance = memo<SlateEditorInstanceProps>(
     }
 
     return (
-      <Slate key={`slate-${id}`} editor={slate} initialValue={initialValue} onValueChange={onChange}>
+      <Slate
+        key={`slate-${id}`}
+        editor={slate}
+        initialValue={initialValue}
+        onValueChange={onChange}
+        onSelectionChange={onSelectionChange}
+      >
         <Editable
           key={`editable-${id}`}
           renderElement={renderElement}

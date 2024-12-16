@@ -1,0 +1,23 @@
+{
+  "name": "@yoopta/collab-server",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm run clean && cross-env NODE_ENV=development tsup --watch",
+    "build": "npm run clean && cross-env NODE_ENV=production tsup",
+    "start": "cross-env NODE_ENV=production node dist/server.js",
+    "clean": "rimraf dist db"
+  },
+  "dependencies": {
+    "@hocuspocus/extension-logger": "^2.14.0",
+    "@hocuspocus/extension-sqlite": "^2.9.0",
+    "@hocuspocus/server": "^2.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "cross-env": "^7.0.3",
+    "rimraf": "^5.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  }
+}

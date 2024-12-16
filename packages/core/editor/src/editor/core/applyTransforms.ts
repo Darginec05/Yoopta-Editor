@@ -84,7 +84,7 @@ export type DeleteBlockOperation = {
 };
 
 export type SetSelectionBlockOperation = {
-  type: 'set_block_path';
+  type: 'set_path';
   path: YooptaPath;
 };
 
@@ -311,7 +311,17 @@ function applyOperation(editor: YooEditor, op: YooptaOperation): void {
       break;
     }
 
-    case 'set_block_path': {
+    case 'set_path': {
+      // reset anchor selection if several blocks are selected
+      if (Array.isArray(op.path.selected) && op.path.selected.length > 0 && op.path.selection) {
+        op.path.selection = null;
+      }
+
+      // reset anchor selection if we change focused block
+      if (op.path.current !== editor.path.current && op.path.selection) {
+        op.path.selection = null;
+      }
+
       editor.path = op.path;
       break;
     }
@@ -364,11 +374,15 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
   editor.path = createDraft(editor.path);
 
   const { validatePaths = true, source } = options || {};
-  const operations = [...ops];
+  const operations = ops.slice();
+
+  editor.operations = [...editor.operations, ...operations];
 
   if (validatePaths) {
     operations.push({ type: 'validate_block_paths' });
   }
+
+  // console.log('applyTransforms operations', operations);
 
   if (operations.length > 1) {
     // if type is insert_block, we need to sort these operations by order
@@ -390,6 +404,8 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
     applyOperation(editor, operation);
   }
 
+  console.log('operations', operations);
+
   if (!isDraft(editor.children)) editor.children = createDraft(editor.children);
   editor.children = finishDraft(editor.children);
 
@@ -397,11 +413,18 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
     editor.path = finishDraft(editor.path);
   }
 
+  console.log(
+    'editor.children orders',
+    Object.values(editor.children)
+      .map((block) => [block.id, block.meta.order])
+      .sort((a, b) => a[1] - b[1]),
+  );
+
   const saveHistory = editor.isSavingHistory() !== false;
   if (saveHistory) {
     const historyBatch = {
       operations: operations.filter(
-        (op) => op.type !== 'set_block_path' && op.type !== 'set_block_value' && op.type !== 'validate_block_paths',
+        (op) => op.type !== 'set_path' && op.type !== 'set_block_value' && op.type !== 'validate_block_paths',
       ),
       path: editor.path,
     };
@@ -419,6 +442,10 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
   const changeOptions = { value: editor.children, operations };
   editor.emit('change', changeOptions);
   editor.emit('path-change', editor.path);
+
+  Promise.resolve().then(() => {
+    editor.operations = [];
+  });
 
   if (process.env.NODE_ENV !== 'production') {
     assertValidPaths(editor);

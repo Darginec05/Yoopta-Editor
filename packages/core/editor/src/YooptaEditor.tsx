@@ -30,6 +30,7 @@ export type YooptaEditorProps = {
   marks?: YooptaMark<any>[];
   value?: YooptaContentValue;
   onChange?: (value: YooptaContentValue, options: YooptaOnChangeOptions) => void;
+  onPathChange?: (path: YooptaPath) => void;
   autoFocus?: boolean;
   className?: string;
   selectionBoxRoot?: HTMLElement | React.MutableRefObject<HTMLElement | null> | false;
@@ -62,6 +63,7 @@ const YooptaEditor = ({
   width,
   style,
   onChange,
+  onPathChange,
 }: YooptaEditorProps) => {
   const marks = useMemo(() => {
     if (marksProps) return [FakeSelectionMark, ...marksProps];
@@ -107,12 +109,18 @@ const YooptaEditor = ({
       version: prevState.version + 1,
     }));
 
+    if (typeof onPathChange === 'function' && Array.isArray(options.operations)) {
+      const operations = options.operations.filter((operation) => operation.type === 'set_path');
+
+      if (operations.length > 0) {
+        onPathChange(editor.path);
+      }
+    }
+
     if (typeof onChange === 'function' && Array.isArray(options.operations)) {
       const operations = options.operations.filter(
         (operation) =>
-          operation.type !== 'validate_block_paths' &&
-          operation.type !== 'set_block_path' &&
-          operation.type !== 'set_slate',
+          operation.type !== 'validate_block_paths' && operation.type !== 'set_path' && operation.type !== 'set_slate',
       );
 
       if (operations.length > 0) onChange(value, { operations });
@@ -125,11 +133,11 @@ const YooptaEditor = ({
     };
 
     editor.on('change', changeHandler);
-    editor.on('path-change', onEditorPathChange);
+    // editor.on('path-change', onEditorPathChange);
 
     return () => {
       editor.off('change', changeHandler);
-      editor.off('path-change', onEditorPathChange);
+      // editor.off('path-change', onEditorPathChange);
     };
   }, [editor, onValueChange]);
 
