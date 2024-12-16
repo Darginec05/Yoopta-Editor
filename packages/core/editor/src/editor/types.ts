@@ -123,6 +123,7 @@ export type YooEditor = {
   commands: Record<string, (...args: any[]) => any>;
 
   // core handlers
+  operations: YooptaOperation[];
   applyTransforms: WithoutFirstArg<typeof applyTransforms>;
   batchOperations: (fn: () => void) => void;
 

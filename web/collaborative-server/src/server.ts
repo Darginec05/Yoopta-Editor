@@ -40,7 +40,26 @@ const createServer = async () => {
     },
 
     async onLoadDocument(data) {
-      return initialValue;
+      const sharedContent = data.document.getMap('content');
+      console.log('📄 Document loaded sharedContent.has:', sharedContent.has('state'));
+      console.log('sharedContent', Array.from(sharedContent.values()));
+
+      if (!sharedContent.has('state')) {
+        const operation = {
+          type: 'set_editor_value',
+          properties: {
+            value: initialValue,
+          },
+          prevProperties: {
+            value: {},
+          },
+        };
+
+        sharedContent.set('state', {
+          operations: [operation],
+          timestamp: Date.now(),
+        });
+      }
     },
 
     async onChange(data) {

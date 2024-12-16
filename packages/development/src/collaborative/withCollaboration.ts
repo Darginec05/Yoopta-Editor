@@ -1,12 +1,21 @@
 import * as Y from 'yjs';
 import { Blocks, YooEditor, YooptaBlockData, YooptaOperation } from '@yoopta/editor';
 import { withSlateYjs, YjsSlateEditor } from './slate-yjs/withSlateYjs';
+import debounce from 'lodash/debounce';
+import BlockOrderResolver from './conflict-resolver';
 
 const LOCAL_ORIGIN = Symbol('yoopta-local-change');
 const CONNECTED: WeakSet<YjsYooEditor> = new WeakSet();
 
+const orderResolver = new BlockOrderResolver();
+
+export type EditorState = {
+  operations: YooptaOperation[];
+  timestamp: number;
+};
+
 export type YjsYooEditor = YooEditor & {
-  sharedRoot: Y.Map<YooptaBlockData>;
+  sharedState: Y.Map<EditorState>;
   localOrigin: symbol;
   isLocalOrigin: (origin: symbol) => boolean;
   applyRemoteEvents: (events: any[], origin: symbol) => void;
@@ -14,174 +23,88 @@ export type YjsYooEditor = YooEditor & {
   disconnect: () => void;
 };
 
-export const withCollaboration = (editor: YjsYooEditor, sharedRoot: Y.Map<YooptaBlockData>) => {
+const isValidState = (state: unknown): state is EditorState => {
+  return (
+    !!state &&
+    typeof state === 'object' &&
+    'operations' in state &&
+    Array.isArray((state as EditorState).operations) &&
+    'timestamp' in state &&
+    typeof (state as EditorState).timestamp === 'number'
+  );
+};
+
+export const withCollaboration = (editor: YjsYooEditor, sharedState: Y.Map<EditorState>) => {
   const { applyTransforms } = editor;
 
-  const blockValues = new Map<string, YjsSlateEditor>();
-  editor.sharedRoot = sharedRoot;
+  editor.sharedState = sharedState;
   editor.localOrigin = LOCAL_ORIGIN;
   editor.isLocalOrigin = (origin) => origin === editor.localOrigin;
 
-  editor.applyRemoteEvents = (events, origin) => {
-    events.forEach((event) => {
-      if (!(event instanceof Y.YMapEvent)) return;
-      const operations: YooptaOperation[] = [];
+  function handleYEvents(event: Y.YMapEvent<EditorState>, transaction: Y.Transaction) {
+    console.log('handleYEvents transaction.origin', transaction.origin);
+    if (editor.isLocalOrigin(transaction.origin)) return;
 
-      Array.from(event.keys).forEach(([blockId, change]) => {
-        if (change.action === 'add') {
-          const block = editor.sharedRoot.get(blockId);
-          if (!block) return;
+    const state = sharedState.get('state');
+    if (!state) return;
 
-          operations.push({
-            type: 'insert_block',
-            path: { current: block.meta.order },
-            block,
-          });
-        } else if (change.action === 'delete') {
-          const existingBlock = editor.children[blockId];
-          if (!existingBlock) return;
+    const remoteOperations = state.operations;
+    const resolvedOperations = orderResolver.resolveConflicts(state, editor.children);
+    console.log('handleYEvents remoteOperations', remoteOperations);
+    console.log('handleYEvents state.timestamp', state.timestamp);
+    console.log('handleYEvents editor.children', editor.children);
 
-          operations.push({
-            type: 'delete_block',
-            path: { current: existingBlock.meta.order },
-            block: existingBlock,
-          });
-        } else if (change.action === 'update') {
-          const updatedBlock = editor.sharedRoot.get(blockId);
-          const existingBlock = editor.children[blockId];
-
-          if (!updatedBlock || !existingBlock) return;
-
-          const isBlockOrderChanged = updatedBlock.meta.order !== existingBlock.meta.order;
-          const isMetaChanged = JSON.stringify(updatedBlock.meta) !== JSON.stringify(existingBlock.meta);
-          const isValueChanged = JSON.stringify(updatedBlock.value) !== JSON.stringify(existingBlock.value);
-
-          if (isBlockOrderChanged) {
-            operations.push({
-              type: 'move_block',
-              prevProperties: { id: existingBlock.id, order: existingBlock.meta.order },
-              properties: { id: updatedBlock.id, order: updatedBlock.meta.order },
-            });
-          }
-
-          if (isMetaChanged && !isBlockOrderChanged) {
-            operations.push({
-              type: 'set_block_meta',
-              id: updatedBlock.id,
-              properties: { align: updatedBlock.meta.align, depth: updatedBlock.meta.depth },
-              prevProperties: { align: existingBlock.meta.align, depth: existingBlock.meta.depth },
-            });
-          }
-        }
+    if (remoteOperations.length > 0) {
+      editor.withoutSavingHistory(() => {
+        applyTransforms(remoteOperations, { validatePaths: true });
       });
-
-      if (operations.length) {
-        editor.withoutSavingHistory(() => editor.applyTransforms(operations, { validatePaths: true }));
-      }
-    });
-  };
-
-  function handleYEvents(events: Y.YEvent<any>[], transaction: Y.Transaction) {
-    if (editor.isLocalOrigin(transaction.origin)) {
-      return;
     }
-
-    editor.applyRemoteEvents(events, transaction.origin);
   }
 
   editor.connect = () => {
-    editor.sharedRoot.observeDeep(handleYEvents);
-    // const content = yMapToYooptaContent(e.sharedRoot);
-    // editor.setEditorValue(content);
+    if (CONNECTED.has(editor)) {
+      console.warn('Editor already connected');
+      return;
+    }
+
+    editor.sharedState.observe(handleYEvents);
     CONNECTED.add(editor);
+
+    const state = editor.sharedState.get('state');
+    if (state && Array.isArray(state.operations)) {
+      const ops = state.operations.filter(
+        (op) => !!op?.type && op.type !== 'set_path' && op.type !== 'set_block_value',
+      );
+      if (ops.length > 0) {
+        editor.withoutSavingHistory(() => {
+          console.log('editor.connect ops', ops);
+          applyTransforms(ops, { validatePaths: true });
+        });
+      }
+    }
   };
 
   editor.disconnect = () => {
-    editor.sharedRoot.unobserveDeep(handleYEvents);
+    editor.sharedState.unobserve(handleYEvents);
     CONNECTED.delete(editor);
   };
-
-  editor.on('block_inserted', (event) => {
-    const slate = blockValues.get(event.id) as YjsSlateEditor;
-
-    if (!slate) return;
-
-    const sharedSlateRoot = new Y.XmlText();
-    const { apply, onChange } = withSlateYjs(slate, sharedSlateRoot, { localOrigin: LOCAL_ORIGIN });
-    slate.apply = (op) => {
-      if (YjsSlateEditor.connected(slate) && YjsSlateEditor.isLocal(slate)) {
-        YjsSlateEditor.storeLocalChange(slate, op);
-      }
-
-      apply(op);
-    };
-
-    slate.onChange = () => {
-      if (YjsSlateEditor.connected(slate)) {
-        YjsSlateEditor.flushLocalChanges(slate);
-      }
-
-      onChange();
-    };
-
-    slate?.connect();
-    console.log('block_inserted slate', slate?.children);
-  });
 
   editor.applyTransforms = (operations: YooptaOperation[], options?: any) => {
     applyTransforms(operations, { ...options, validatePaths: true });
 
-    editor.sharedRoot.doc?.transact(() => {
-      operations.forEach((op) => {
-        switch (op.type) {
-          case 'insert_block': {
-            editor.sharedRoot.set(op.block.id, op.block);
-            blockValues.set(op.block.id, editor.blockEditorsMap[op.block.id] as YjsSlateEditor);
-            editor.emit('block_inserted', op.block);
-            break;
-          }
+    const ops = operations.filter((op) => !!op?.type && op.type !== 'set_path' && op.type !== 'set_block_value');
+    if (ops.length > 0) {
+      // debounce(() => {
+      editor.sharedState.doc?.transact(() => {
+        console.log('editor.applyTransforms ops', ops);
 
-          case 'delete_block': {
-            editor.sharedRoot.delete(op.block.id);
-            break;
-          }
-
-          case 'merge_block': {
-            console.log('merge_block', op);
-            break;
-          }
-
-          case 'split_block': {
-            console.log('split_block', op);
-            break;
-          }
-
-          case 'move_block': {
-            const block = editor.sharedRoot.get(op.properties.id);
-            if (!block) return;
-            const reorderedBlock = { ...block, meta: { ...block.meta, order: op.properties.order } };
-            editor.sharedRoot.set(block.id, reorderedBlock);
-            break;
-          }
-
-          case 'set_block_meta': {
-            const block = editor.sharedRoot.get(op.id);
-            if (!block) return;
-            const updatedBlock = { ...block, meta: { ...block.meta, ...op.properties } };
-            editor.sharedRoot.set(block.id, updatedBlock);
-            break;
-          }
-
-          case 'set_block_value': {
-            const block = editor.sharedRoot.get(op.id);
-            if (!block) return;
-            const updatedBlock = { ...block, value: op.value };
-            editor.sharedRoot.set(block.id, updatedBlock);
-            break;
-          }
-        }
-      });
-    }, editor.localOrigin);
+        editor.sharedState.set('state', {
+          operations: ops,
+          timestamp: Date.now(),
+        });
+      }, editor.localOrigin);
+      // }, 100);
+    }
   };
 
   return editor;

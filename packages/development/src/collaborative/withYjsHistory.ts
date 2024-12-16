@@ -20,36 +20,35 @@ export interface YjsHistoryOptions {
 export function withYjsHistory(editor: YjsYooEditor, options: YjsHistoryOptions = {}): EditorWithYjsHistory {
   const e = editor as EditorWithYjsHistory;
 
-  const undoManager = new Y.UndoManager(e.sharedRoot, {
+  const undoManager = new Y.UndoManager(e.sharedState, {
     trackedOrigins: options.trackedOrigins || new Set([e.localOrigin]),
     captureTimeout: options.captureTimeout || 500,
   });
 
-  undoManager.on('stack-item-added', () => {
+  const handleStackItemAdded = (...params) => {
     options.onStackItemAdded?.();
+  };
 
-    e.emit('history-change', {
-      canUndo: undoManager.canUndo(),
-      canRedo: undoManager.canRedo(),
-    });
-  });
-
-  undoManager.on('stack-item-popped', () => {
+  const handleStackItemPopped = (...params) => {
     options.onStackItemPopped?.();
+  };
 
-    e.emit('history-change', {
-      canUndo: undoManager.canUndo(),
-      canRedo: undoManager.canRedo(),
-    });
-  });
+  const handleStackItemUpdated = (...params) => {
+    // e.sharedState.set('state', {
+    //   operations: undoManager.toJSON(),
+    //   timestamp: Date.now(),
+    // });
+  };
 
   e.undo = () => {
+    console.log('undoManager.canUndo()', undoManager.canUndo());
     if (undoManager.canUndo()) {
       undoManager.undo();
     }
   };
 
   e.redo = () => {
+    console.log('undoManager.canRedo()', undoManager.canRedo());
     if (undoManager.canRedo()) {
       undoManager.redo();
     }
@@ -69,14 +68,17 @@ export function withYjsHistory(editor: YjsYooEditor, options: YjsHistoryOptions 
 
   e.connect = () => {
     connect?.();
-    e.emit('history-change', {
-      canUndo: undoManager.canUndo(),
-      canRedo: undoManager.canRedo(),
-    });
+
+    e.undoManager.on('stack-item-added', handleStackItemAdded);
+    e.undoManager.on('stack-item-popped', handleStackItemPopped);
+    e.undoManager.on('stack-item-updated', handleStackItemUpdated);
   };
 
   e.disconnect = () => {
-    undoManager.clear();
+    e.undoManager.off('stack-item-added', handleStackItemAdded);
+    e.undoManager.off('stack-item-popped', handleStackItemPopped);
+    e.undoManager.off('stack-item-updated', handleStackItemUpdated);
+
     disconnect?.();
   };
 

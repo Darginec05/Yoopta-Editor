@@ -65,6 +65,7 @@ export function createYooptaEditor(): YooEditor {
     plugins: {},
     commands: {},
 
+    operations: [],
     applyTransforms: (operations, ...args) => applyTransforms(editor, operations, ...args),
     batchOperations: (callback) => batchOperations(editor, callback),
 

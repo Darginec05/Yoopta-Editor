@@ -4,6 +4,7 @@ import YooptaEditor, {
   YooptaBlockData,
   YooptaContentValue,
   YooptaOnChangeOptions,
+  YooptaOperation,
 } from '@yoopta/editor';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { faker } from '@faker-js/faker';
@@ -14,7 +15,7 @@ import { TOOLS } from '../../utils/yoopta/tools';
 import { FixedToolbar } from '../../components/FixedToolbar/FixedToolbar';
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import * as Y from 'yjs';
-import { withCollaboration, YjsYooEditor } from '@/collaborative/withCollaboration';
+import { EditorState, withCollaboration, YjsYooEditor } from '@/collaborative/withCollaboration';
 import {
   CursorState,
   EditorWithAwareness,
@@ -54,10 +55,11 @@ const BasicExample = () => {
   );
 
   const editor = useMemo(() => {
-    const sharedBlocks = provider.document.get('content', Y.Map<YooptaBlockData>) as Y.Map<YooptaBlockData>;
+    const sharedContent = provider.document.getMap('content') as Y.Map<EditorState>;
+
     return withYjsHistory(
       withYjsCursors(
-        withCollaboration(createYooptaEditor() as YjsYooEditor, sharedBlocks),
+        withCollaboration(createYooptaEditor() as YjsYooEditor, sharedContent),
         provider.awareness as Awareness,
         {
           data: {

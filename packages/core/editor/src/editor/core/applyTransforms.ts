@@ -376,6 +376,8 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
   const { validatePaths = true, source } = options || {};
   const operations = ops.slice();
 
+  editor.operations = [...editor.operations, ...operations];
+
   if (validatePaths) {
     operations.push({ type: 'validate_block_paths' });
   }
@@ -402,12 +404,21 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
     applyOperation(editor, operation);
   }
 
+  console.log('operations', operations);
+
   if (!isDraft(editor.children)) editor.children = createDraft(editor.children);
   editor.children = finishDraft(editor.children);
 
   if (isDraft(editor.path)) {
     editor.path = finishDraft(editor.path);
   }
+
+  console.log(
+    'editor.children orders',
+    Object.values(editor.children)
+      .map((block) => [block.id, block.meta.order])
+      .sort((a, b) => a[1] - b[1]),
+  );
 
   const saveHistory = editor.isSavingHistory() !== false;
   if (saveHistory) {
@@ -431,6 +442,10 @@ export function applyTransforms(editor: YooEditor, ops: YooptaOperation[], optio
   const changeOptions = { value: editor.children, operations };
   editor.emit('change', changeOptions);
   editor.emit('path-change', editor.path);
+
+  Promise.resolve().then(() => {
+    editor.operations = [];
+  });
 
   if (process.env.NODE_ENV !== 'production') {
     assertValidPaths(editor);
