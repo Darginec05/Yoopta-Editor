@@ -24,6 +24,33 @@ export const getDailymotionId = (url: string) => {
   return null;
 };
 
+export const getWistiaId = (url: string) => {
+  try {
+    // Handle iframe embed URLs
+    const iframeMatch = url.match(/(?:https?:\/\/)?(?:fast\.)?wistia\.(?:com|net)\/embed\/iframe\/([a-zA-Z0-9]+)/);
+    if (iframeMatch) return iframeMatch[1];
+
+    // Handle medias URLs
+    const mediasMatch = url.match(/(?:https?:\/\/)?(?:www\.)?wistia\.com\/medias\/([a-zA-Z0-9]+)/);
+    if (mediasMatch) return mediasMatch[1];
+
+    return null;
+  } catch (error) {
+    console.error('Error extracting Wistia ID:', error);
+    return null;
+  }
+};
+
+export const getLoomId = (url: string) => {
+  try {
+    const match = url.match(/(?:https?:\/\/)?(?:www\.)?loom\.com\/share\/([a-zA-Z0-9]+)/);
+    return match ? match[1] : null;
+  } catch (error) {
+    console.error('Error extracting Loom ID:', error);
+    return null;
+  }
+};
+
 export function getProvider(url: string): VideoProviderTypes | null {
   if (url.includes('youtube.com') || url.includes('youtu.be')) {
     return 'youtube';
@@ -31,6 +58,10 @@ export function getProvider(url: string): VideoProviderTypes | null {
     return 'vimeo';
   } else if (url.includes('dailymotion.com') || url.includes('dai.ly')) {
     return 'dailymotion';
+  } else if (url.includes('loom.com')) {
+    return 'loom';
+  } else if (url.includes('wistia.com') || url.includes('wistia.net')) {
+    return 'wistia';
   }
   // } else if (url.includes('twitch.tv')) {
   //   return 'Twitch';
@@ -44,4 +75,6 @@ export const ProviderGetters = {
   youtube: getYoutubeId,
   vimeo: getVimeoId,
   dailymotion: getDailymotionId,
+  loom: getLoomId,
+  wistia: getWistiaId,
 };

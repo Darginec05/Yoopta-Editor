@@ -10,6 +10,8 @@ export type EmbedProviderTypes =
   | 'youtube'
   | 'vimeo'
   | 'dailymotion'
+  | 'wistia'
+  | 'loom'
   | 'twitter'
   | 'figma'
   | 'instagram'

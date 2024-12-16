@@ -12,7 +12,7 @@ export type VideoElementSettings = {
   autoPlay?: boolean;
 };
 
-export type VideoProviderTypes = 'youtube' | 'vimeo' | 'dailymotion' | string | null;
+export type VideoProviderTypes = 'youtube' | 'vimeo' | 'dailymotion' | 'loom' | 'wistia' | string | null;
 export type VideoProvider = {
   type: VideoProviderTypes;
   id: string;
